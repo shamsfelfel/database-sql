@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 2 · Lesson 2 — ALTER TABLE · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="2" data-lesson="2">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="2" data-lesson="2"></nav>
+
+    <h1 class="i18n-en">Lesson 2 — ALTER TABLE</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٢ — تعديل الجدول (ALTER TABLE)</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">A table's shape isn't fixed forever. <code>ALTER TABLE ... ADD COLUMN</code> adds a new column to an existing table — every existing row gets an empty/<code>NULL</code> value in it until you fill it in. <code>ALTER TABLE ... DROP COLUMN</code> removes a column entirely, along with whatever data it held for every row. There's no undo, so treat <code>DROP COLUMN</code> with the same care as a <code>DELETE</code> without a <code>WHERE</code>.</p>
+      <p class="i18n-ar" dir="rtl">بنية الجدول ليست ثابتة إلى الأبد. تُضيف <code>ALTER TABLE ... ADD COLUMN</code> عمودًا جديدًا إلى جدول موجود — ويحصل كل صف موجود على قيمة فارغة/<code>NULL</code> فيه حتى تملأها. أما <code>ALTER TABLE ... DROP COLUMN</code> فتحذف العمود بالكامل مع كل ما حواه من بيانات في كل صف. ولا تراجُع عن ذلك، لذا عامل <code>DROP COLUMN</code> بالحذر ذاته الذي تعامل به <code>DELETE</code> بلا <code>WHERE</code>.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>ALTER TABLE table_name ADD COLUMN new_col TEXT;
+ALTER TABLE table_name DROP COLUMN old_col;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — the <code>books</code> table</h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — جدول <code>books</code></h2>
+      <p class="i18n-en">The <strong>Bright Books Library</strong> <code>books</code> table is loaded with its seven rows. We add a <code>notes</code> column, fill it in for one row, then drop it again.</p>
+      <p class="i18n-ar" dir="rtl">جدول <code>books</code> في <strong>Bright Books Library</strong> محمّل بصفوفه السبعة. نضيف عمود <code>notes</code>، ونملؤه لصف واحد، ثم نحذفه مجددًا.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — add a column</span><span class="i18n-ar" dir="rtl">مثال ١ — إضافة عمود</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"sql":"ALTER TABLE books ADD COLUMN notes TEXT;\nSELECT * FROM books;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">The new <code>notes</code> column appears on every row, empty until it's filled in.</p>
+      <p class="caption i18n-ar" dir="rtl">يظهر عمود <code>notes</code> الجديد في كل صف، فارغًا إلى أن يُملأ.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — fill the new column for one row</span><span class="i18n-ar" dir="rtl">مثال ٢ — ملء العمود الجديد لصف واحد</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"setup":["ALTER TABLE books ADD COLUMN notes TEXT"],"sql":"UPDATE books SET notes = 'staff pick' WHERE id = 1;\nSELECT * FROM books WHERE id = 1;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">The same <code>UPDATE</code> from chapter 1 fills the newly added column for one chosen row.</p>
+      <p class="caption i18n-ar" dir="rtl">عبارة <code>UPDATE</code> ذاتها من الفصل الأول تملأ العمود المُضاف حديثًا لصفٍ واحد مختار.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — drop the column</span><span class="i18n-ar" dir="rtl">مثال ٣ — حذف العمود</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"setup":["ALTER TABLE books ADD COLUMN notes TEXT"],"sql":"ALTER TABLE books DROP COLUMN notes;\nSELECT * FROM books;"}
+        </script>
+      </div>
+      <p class="caption i18n-en"><code>ADD</code> and <code>DROP COLUMN</code> let a table's shape evolve — but <code>DROP COLUMN</code> discards that column's data for every row, permanently.</p>
+      <p class="caption i18n-ar" dir="rtl">تتيح <code>ADD</code> و<code>DROP COLUMN</code> لبنية الجدول أن تتطوّر — لكن <code>DROP COLUMN</code> تتخلّص من بيانات ذلك العمود في كل صف، وبشكل دائم.</p>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Now the <strong>Orbit Electronics</strong> <code>products</code> table. We add a <code>warehouse</code> column, fill it for one row, then drop it.</p>
+      <p class="i18n-ar" dir="rtl">الآن جدول <code>products</code> في <strong>Orbit Electronics</strong>. نضيف عمود <code>warehouse</code>، ونملؤه لصف واحد، ثم نحذفه.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — add a column</span><span class="i18n-ar" dir="rtl">مثال ١ — إضافة عمود</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"sql":"ALTER TABLE products ADD COLUMN warehouse TEXT;\nSELECT * FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — fill the new column for one row</span><span class="i18n-ar" dir="rtl">مثال ٢ — ملء العمود الجديد لصف واحد</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"setup":["ALTER TABLE products ADD COLUMN warehouse TEXT"],"sql":"UPDATE products SET warehouse = 'North Dock' WHERE id = 3;\nSELECT * FROM products WHERE id = 3;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — drop the column</span><span class="i18n-ar" dir="rtl">مثال ٣ — حذف العمود</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"setup":["ALTER TABLE products ADD COLUMN warehouse TEXT"],"sql":"ALTER TABLE products DROP COLUMN warehouse;\nSELECT * FROM products;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="2" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which statement adds a new column to an existing table?","ar":"أي عبارة تضيف عمودًا جديدًا إلى جدول موجود؟"},
+         "options":[{"en":"ALTER TABLE ... ADD COLUMN ...","ar":"ALTER TABLE ... ADD COLUMN ..."},{"en":"CREATE COLUMN ...","ar":"CREATE COLUMN ..."},{"en":"INSERT COLUMN ...","ar":"INSERT COLUMN ..."},{"en":"UPDATE TABLE ... ADD ...","ar":"UPDATE TABLE ... ADD ..."}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="2" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"DROP COLUMN removes only future inserts into that column, not the data already there.","ar":"تحذف DROP COLUMN الإدراجات المستقبلية في ذلك العمود فقط، لا البيانات الموجودة فيه أصلًا."},
+         "correct":false,
+         "explain":{"en":"DROP COLUMN removes the column and all of its existing data across every row at once, permanently.","ar":"تحذف DROP COLUMN العمودَ وكل بياناته الموجودة في جميع الصفوف دفعةً واحدة، وبشكل دائم."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="2" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"ALTER TABLE products ____ COLUMN warehouse TEXT;","answers":["ADD"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="2" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a statement that adds a discount_pct REAL column to products.","ar":"رتّب الأجزاء لتكوين عبارة تضيف عمود discount_pct من نوع REAL إلى products."},
+         "items":["ALTER TABLE products","ADD COLUMN discount_pct","REAL;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Add a column named <code>discount_pct</code> of type <code>REAL</code> to <code>products</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أضف عمودًا باسم <code>discount_pct</code> من نوع <code>REAL</code> إلى <code>products</code>.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="2" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":2,"placeholder":"ALTER TABLE products ...","grade":{"mode":"structural","table":"products","columns":["discount_pct"],"probe":false}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>courses</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدولها <code>courses</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="2" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"What happens to existing rows' values in a newly ADDed column?","ar":"ماذا يحدث لقيم الصفوف الموجودة في عمود أُضيف حديثًا؟"},
+         "options":[{"en":"They start empty/NULL until set","ar":"تبدأ فارغة/NULL إلى أن تُضبط"},{"en":"They're filled with 0 automatically","ar":"تُملأ بالقيمة 0 تلقائيًا"},{"en":"The ADD fails if rows already exist","ar":"تفشل الإضافة إن كانت هناك صفوف بالفعل"},{"en":"They copy the id column's value","ar":"تنسخ قيمة عمود id"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="2" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"ALTER TABLE ... DROP COLUMN can be undone with a single follow-up statement.","ar":"يمكن التراجع عن ALTER TABLE ... DROP COLUMN بعبارة لاحقة واحدة."},
+         "correct":false,
+         "explain":{"en":"Dropping a column discards its data permanently; re-adding the column brings it back empty, not with the old values.","ar":"يتخلّص حذف العمود من بياناته بشكل دائم؛ وإعادة إضافته تُرجعه فارغًا، لا بقيمه القديمة."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="2" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"ALTER TABLE courses DROP ____ active;","answers":["COLUMN"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="2" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each statement to what it does.","ar":"طابِق كل عبارة بما تفعله."},
+         "left":[{"en":"ALTER TABLE courses ADD COLUMN room TEXT;","ar":"ALTER TABLE courses ADD COLUMN room TEXT;"},{"en":"ALTER TABLE courses DROP COLUMN room;","ar":"ALTER TABLE courses DROP COLUMN room;"},{"en":"UPDATE courses SET room = 'B12' WHERE id = 1;","ar":"UPDATE courses SET room = 'B12' WHERE id = 1;"}],
+         "right":[{"en":"Adds a new, empty column to every row","ar":"تضيف عمودًا جديدًا فارغًا إلى كل صف"},{"en":"Removes a column and its data from every row","ar":"تحذف عمودًا وبياناته من كل صف"},{"en":"Fills in a value for one existing row","ar":"تملأ قيمة لصف واحد موجود"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="2" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a statement adding a waitlist_size INTEGER column to courses.","ar":"رتّب الأجزاء لتكوين عبارة تضيف عمود waitlist_size من نوع INTEGER إلى courses."},
+         "items":["ALTER TABLE courses","ADD COLUMN waitlist_size","INTEGER;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Add a column named <code>waitlist_size</code> of type <code>INTEGER</code> to <code>courses</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أضف عمودًا باسم <code>waitlist_size</code> من نوع <code>INTEGER</code> إلى <code>courses</code>.</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="2" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":2,"placeholder":"ALTER TABLE courses ...","grade":{"mode":"structural","table":"courses","columns":["waitlist_size"],"probe":false}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="2" data-lesson="2"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

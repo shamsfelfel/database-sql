@@ -1,0 +1,117 @@
+/* Reset, typography, layout primitives. Uses logical properties so the same
+   rules mirror correctly under dir="rtl". */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Arabic UI font when the document is in Arabic / RTL. */
+:root[lang="ar"] body,
+:root[dir="rtl"] body { font-family: var(--font-ar); }
+
+h1, h2, h3, h4 { line-height: 1.25; font-weight: 600; margin: 0 0 var(--sp-3); color: var(--text); }
+h1 { font-size: 1.9rem; }
+h2 { font-size: 1.4rem; }
+h3 { font-size: 1.15rem; }
+p { margin: 0 0 var(--sp-4); }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+ul, ol { margin: 0 0 var(--sp-4); padding-inline-start: 1.4em; }
+li { margin-bottom: var(--sp-1); }
+code, kbd { font-family: var(--font-mono); font-size: .92em; }
+:not(pre) > code {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: .08em .35em;
+}
+kbd {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-sm);
+  padding: .05em .4em;
+  font-size: .82em;
+}
+hr { border: none; border-top: 1px solid var(--border); margin: var(--sp-5) 0; }
+
+img, svg { max-width: 100%; }
+
+/* Layout */
+.page { max-width: var(--maxw); margin-inline: auto; padding: var(--sp-5) var(--sp-4) var(--sp-7); }
+
+.site-header {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(1.4) blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.site-header .brand {
+  font-weight: 600; letter-spacing: .01em; color: var(--text);
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+}
+.site-header .brand .logo {
+  width: 26px; height: 26px; border-radius: 7px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  display: inline-grid; place-items: center;
+  color: #fff; font-family: var(--font-mono); font-weight: 600; font-size: .8rem;
+}
+.site-header .spacer { flex: 1; }
+
+.breadcrumbs {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2);
+  color: var(--text-dim); font-size: .85rem; margin-bottom: var(--sp-4);
+}
+.breadcrumbs a { color: var(--text-dim); }
+.breadcrumbs .sep { color: var(--text-faint); }
+.breadcrumbs [aria-current="page"] { color: var(--text); }
+
+.lead { color: var(--text-dim); font-size: 1.05rem; max-width: 62ch; }
+
+.stack > * + * { margin-top: var(--sp-4); }
+.grid { display: grid; gap: var(--sp-4); }
+
+.footer-nav {
+  display: flex; justify-content: space-between; gap: var(--sp-3);
+  margin-top: var(--sp-7); padding-top: var(--sp-4);
+  border-top: 1px solid var(--border);
+}
+.footer-nav a { display: inline-flex; flex-direction: column; gap: 2px; }
+.footer-nav .dir { font-size: .78rem; color: var(--text-faint); }
+.footer-nav .next { text-align: end; margin-inline-start: auto; }
+
+.site-foot {
+  margin-top: var(--sp-7); padding: var(--sp-5) var(--sp-4);
+  border-top: 1px solid var(--border);
+  color: var(--text-faint); font-size: .82rem; text-align: center;
+}
+
+/* i18n block visibility — one rule, driven by the document language.
+   Long-form content is authored inline in both languages; only the active
+   language is shown. Short labels use data-i18n text swaps (see i18n.js). */
+:root[lang="en"] .i18n-ar { display: none !important; }
+:root[lang="ar"] .i18n-en { display: none !important; }
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+@media (max-width: 780px) {
+  body { font-size: 15px; }
+  h1 { font-size: 1.55rem; }
+  .page { padding: var(--sp-4) var(--sp-3) var(--sp-6); }
+}

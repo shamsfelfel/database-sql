@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 2 · Lesson 3 — Selecting Columns · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="2" data-lesson="3">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="2" data-lesson="3"></nav>
+
+    <h1 class="i18n-en">Lesson 3 — Selecting Columns</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٣ — تحديد الأعمدة</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">Chapter 1 only ever selected <code>*</code> (everything) or a single column. Now that a table has more columns, you can name exactly the ones you want — comma-separated — in whatever order you'd like them to appear in the result. The order in the <code>SELECT</code> list does <em>not</em> have to match the table's column order, so you can present the same information more usefully for whoever's reading the result.</p>
+      <p class="i18n-ar" dir="rtl">لم يكن الفصل الأول يحدد سوى <code>*</code> (كل شيء) أو عمودًا واحدًا. أما الآن وقد صار للجدول أعمدة أكثر، فيمكنك تسمية الأعمدة التي تريدها بالضبط — مفصولة بفواصل — بأي ترتيب تريد أن تظهر به في النتيجة. وترتيب قائمة <code>SELECT</code> <em>ليس</em> ملزَمًا بمطابقة ترتيب أعمدة الجدول، فبإمكانك عرض المعلومات نفسها بصورة أنفع لمن يقرأ النتيجة.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>SELECT col_a, col_b FROM table_name;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — the <code>books</code> table</h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — جدول <code>books</code></h2>
+      <p class="i18n-en">The <strong>Bright Books Library</strong> <code>books</code> table is pre-loaded with all seven rows. Notice how each query returns only the columns you name.</p>
+      <p class="i18n-ar" dir="rtl">جدول <code>books</code> في <strong>Bright Books Library</strong> محمّل مسبقًا بصفوفه السبعة جميعها. لاحظ كيف يُرجع كل استعلام الأعمدة التي تسمّيها فقط.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — two columns</span><span class="i18n-ar" dir="rtl">مثال ١ — عمودان</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"sql":"SELECT title, price FROM books;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — the same two columns, reordered</span><span class="i18n-ar" dir="rtl">مثال ٢ — العمودان نفسهما بترتيب مختلف</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"sql":"SELECT price, title FROM books;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — three columns</span><span class="i18n-ar" dir="rtl">مثال ٣ — ثلاثة أعمدة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"sql":"SELECT title, published_year, in_stock FROM books;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">You choose which columns come back, and in what order — independent of how the table itself is defined.</p>
+      <p class="caption i18n-ar" dir="rtl">أنت من يختار أي الأعمدة تعود، وبأي ترتيب — بمعزل عن كيفية تعريف الجدول نفسه.</p>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Now the <strong>Orbit Electronics</strong> <code>products</code> table, pre-loaded with all seven rows.</p>
+      <p class="i18n-ar" dir="rtl">الآن جدول <code>products</code> في <strong>Orbit Electronics</strong>، محمّل مسبقًا بصفوفه السبعة جميعها.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — two columns</span><span class="i18n-ar" dir="rtl">مثال ١ — عمودان</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"sql":"SELECT name, price FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — the same two columns, reordered</span><span class="i18n-ar" dir="rtl">مثال ٢ — العمودان نفسهما بترتيب مختلف</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"sql":"SELECT price, name FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — three columns</span><span class="i18n-ar" dir="rtl">مثال ٣ — ثلاثة أعمدة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"sql":"SELECT name, stock_qty, is_featured FROM products;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="2" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"SELECT price, name FROM products; — what determines the order of columns in the result?","ar":"SELECT price, name FROM products; — ما الذي يحدد ترتيب الأعمدة في النتيجة؟"},
+         "options":[{"en":"The order they're listed after SELECT","ar":"الترتيب الذي سُردت به بعد SELECT"},{"en":"The order they're defined in the table","ar":"ترتيب تعريفها في الجدول"},{"en":"Alphabetical order","ar":"الترتيب الأبجدي"},{"en":"It's random","ar":"عشوائي"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="2" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"SELECT name, price FROM products; and SELECT price, name FROM products; return the same set of columns.","ar":"العبارتان SELECT name, price FROM products; وSELECT price, name FROM products; تُرجعان مجموعة الأعمدة نفسها."},
+         "correct":true,
+         "explain":{"en":"Both return the name and price columns — the same set of data, just displayed in a different column order.","ar":"كلتاهما تُرجعان عمودي name وprice — البيانات نفسها، لكن معروضة بترتيب أعمدة مختلف فحسب."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="2" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"SELECT name, stock_qty ____ products;","answers":["FROM"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="2" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a statement selecting name and is_featured from products.","ar":"رتّب الأجزاء لتكوين عبارة تحدد name وis_featured من products."},
+         "items":["SELECT name, is_featured","FROM products;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Select the <code>name</code> and <code>price</code> columns, in that order, from <code>products</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">حدّد عمودي <code>name</code> و<code>price</code>، بهذا الترتيب، من <code>products</code>.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="2" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":2,"placeholder":"SELECT ... FROM products;","grade":{"mode":"result","expected":"SELECT name, price FROM products"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>courses</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدولها <code>courses</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="2" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which statement selects the title and credits columns from courses?","ar":"أي عبارة تحدد عمودي title وcredits من courses؟"},
+         "options":[{"en":"SELECT title, credits FROM courses;","ar":"SELECT title, credits FROM courses;"},{"en":"SELECT title AND credits FROM courses;","ar":"SELECT title AND credits FROM courses;"},{"en":"SELECT title + credits FROM courses;","ar":"SELECT title + credits FROM courses;"},{"en":"SELECT (title, credits) FROM courses;","ar":"SELECT (title, credits) FROM courses;"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="2" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"You can select the same column twice in one SELECT list.","ar":"يمكنك تحديد العمود نفسه مرتين في قائمة SELECT واحدة."},
+         "correct":true,
+         "explain":{"en":"A SELECT list can name the same column more than once — the result simply shows that column repeated.","ar":"يمكن لقائمة SELECT أن تسمّي العمود نفسه أكثر من مرة — وتُظهر النتيجة ذلك العمود مكررًا فحسب."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="2" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"SELECT title, level, active ____ courses;","answers":["FROM"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="2" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each query to the columns it returns.","ar":"طابِق كل استعلام بالأعمدة التي يُرجعها."},
+         "left":[{"en":"SELECT title FROM courses;","ar":"SELECT title FROM courses;"},{"en":"SELECT title, credits FROM courses;","ar":"SELECT title, credits FROM courses;"},{"en":"SELECT * FROM courses;","ar":"SELECT * FROM courses;"}],
+         "right":[{"en":"Just title","ar":"عمود title فقط"},{"en":"title and credits","ar":"العمودان title وcredits"},{"en":"Every column","ar":"كل الأعمدة"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="2" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a statement selecting title and level from courses.","ar":"رتّب الأجزاء لتكوين عبارة تحدد title وlevel من courses."},
+         "items":["SELECT title, level","FROM courses;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Select the <code>title</code> and <code>credits</code> columns from <code>courses</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">حدّد عمودي <code>title</code> و<code>credits</code> من <code>courses</code>.</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="2" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":2,"placeholder":"SELECT ... FROM courses;","grade":{"mode":"result","expected":"SELECT title, credits FROM courses"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="2" data-lesson="3"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

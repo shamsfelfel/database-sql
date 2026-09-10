@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 2 test · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="2">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs">
+      <a href="../index.html" data-i18n="nav_home">Home</a>
+      <span class="sep">›</span>
+      <a href="../chapters/chapter-2.html"><span data-i18n="nav_chapter">Chapter</span> 2</a>
+      <span class="sep">›</span>
+      <span aria-current="page" data-i18n="chapter_test">Chapter test</span>
+    </nav>
+
+    <h1 class="i18n-en">Chapter 2 test</h1>
+    <h1 class="i18n-ar" dir="rtl">اختبار الفصل الثاني</h1>
+    <p class="lead i18n-en">Twenty questions across all six lessons. Most of this test builds up a new <code>workshops</code> table as you go — create it, add and drop a column, insert rows, query, filter, update, and delete. Each write-statement question is graded as if the earlier ones were answered correctly, so answer them in order.</p>
+    <p class="lead i18n-ar" dir="rtl">عشرون سؤالًا تغطي الدروس الستة جميعها. يبني معظم هذا الاختبار جدولًا جديدًا اسمه <code>workshops</code> أثناء تقدّمك — تُنشئه، وتضيف عمودًا وتحذفه، وتُدرج صفوفًا، وتستعلم وتصفّي وتحدّث وتحذف. ويُصحَّح كل سؤال كتابة عبارة كأن الأسئلة السابقة أُجيبت بشكل صحيح، لذا أجِبها بالترتيب.</p>
+
+    <!-- 1 CREATE -->
+    <div class="question" data-qid="t1">
+      <div class="q-head"><span class="q-num">1</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Create a table named <code>workshops</code> with: <code>id</code> (integer primary key), <code>title</code> (text), <code>hours</code> (integer), <code>online</code> (boolean).</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أنشئ جدولًا اسمه <code>workshops</code> يحتوي: <code>id</code> (مفتاح أساسي صحيح)، <code>title</code> (نص)، <code>hours</code> (عدد صحيح)، <code>online</code> (منطقي).</p>
+      <div class="qb-widget" data-qid="t1" data-chapter="2" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":2,"placeholder":"CREATE TABLE workshops ( ... );","grade":{"mode":"structural","table":"workshops","columns":["id","title","hours","online"]}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 2 MCQ -->
+    <div class="question" data-qtype="mcq" data-qid="t2" data-chapter="2" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":2,"prompt":{"en":"Which type suits a whole-number hours column?","ar":"أي نوع يناسب عمود hours ذا الأعداد الصحيحة؟"},
+       "options":[{"en":"INTEGER","ar":"INTEGER"},{"en":"REAL","ar":"REAL"},{"en":"TEXT","ar":"TEXT"},{"en":"BOOLEAN","ar":"BOOLEAN"}],"correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 3 T/F -->
+    <div class="question" data-qtype="tf" data-qid="t3" data-chapter="2" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":3,"prompt":{"en":"A table can have columns of different types.","ar":"يمكن أن يحتوي الجدول على أعمدة من أنواع مختلفة."},"correct":true}
+      </script>
+    </div>
+
+    <!-- 4 Fill -->
+    <div class="question" data-qtype="fill" data-qid="t4" data-chapter="2" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":4,"prompt":{"en":"Give the type for a true/false column.","ar":"اذكر النوع المناسب لعمود صحيح/خطأ."},
+       "template":"online ____","answers":["BOOLEAN"]}
+      </script>
+    </div>
+
+    <!-- 5 ADD COLUMN -->
+    <div class="question" data-qid="t5">
+      <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Add a column named <code>seats_left</code> of type INTEGER to <code>workshops</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أضِف عمودًا اسمه <code>seats_left</code> من نوع INTEGER إلى <code>workshops</code>.</p>
+      <div class="qb-widget" data-qid="t5" data-chapter="2" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":2,"setup":["CREATE TABLE workshops (id INTEGER PRIMARY KEY, title TEXT, hours INTEGER, online BOOLEAN)"],"placeholder":"ALTER TABLE workshops ...","grade":{"mode":"structural","table":"workshops","columns":["seats_left"],"probe":false}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 6 MCQ -->
+    <div class="question" data-qtype="mcq" data-qid="t6" data-chapter="2" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":6,"prompt":{"en":"What happens to existing rows when you ADD COLUMN?","ar":"ماذا يحدث للصفوف الموجودة عند إضافة عمود بـ ADD COLUMN؟"},
+       "options":[{"en":"The new column starts empty/NULL for them","ar":"يبدأ العمود الجديد فارغًا/NULL لديها"},{"en":"They're deleted","ar":"تُحذَف"},{"en":"The ADD fails","ar":"تفشل الإضافة"},{"en":"They get a default of 0 always","ar":"تحصل دائمًا على قيمة افتراضية 0"}],"correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 7 T/F -->
+    <div class="question" data-qtype="tf" data-qid="t7" data-chapter="2" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":7,"prompt":{"en":"DROP COLUMN can be safely reversed afterward.","ar":"يمكن التراجع بأمان عن DROP COLUMN بعد تنفيذه."},"correct":false,
+       "explain":{"en":"DROP COLUMN discards the column and its data permanently.","ar":"تُلغي DROP COLUMN العمود وبياناته نهائيًا."}}
+      </script>
+    </div>
+
+    <!-- 8 INSERT 3 -->
+    <div class="question" data-qid="t8">
+      <div class="q-head"><span class="q-num">8</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Insert three workshops (columns in order <code>id, title, hours, online, seats_left</code>): <code>(1, 'Intro to Git', 2, true, 20)</code>, <code>(2, 'SQL Fundamentals', 3, false, 15)</code>, <code>(3, 'Data Viz Basics', 2, true, 25)</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أدرج ثلاث ورش (الأعمدة بالترتيب <code>id, title, hours, online, seats_left</code>): <code>(1, 'Intro to Git', 2, true, 20)</code> و<code>(2, 'SQL Fundamentals', 3, false, 15)</code> و<code>(3, 'Data Viz Basics', 2, true, 25)</code>.</p>
+      <div class="qb-widget" data-qid="t8" data-chapter="2" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":2,"setup":["CREATE TABLE workshops (id INTEGER PRIMARY KEY, title TEXT, hours INTEGER, online BOOLEAN)","ALTER TABLE workshops ADD COLUMN seats_left INTEGER"],"placeholder":"INSERT INTO workshops (id, title, hours, online, seats_left) VALUES ...","grade":{"mode":"state","check":"SELECT * FROM workshops","expected":[{"id":1,"title":"Intro to Git","hours":2,"online":true,"seats_left":20},{"id":2,"title":"SQL Fundamentals","hours":3,"online":false,"seats_left":15},{"id":3,"title":"Data Viz Basics","hours":2,"online":true,"seats_left":25}]}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 9 SELECT cols -->
+    <div class="question" data-qid="t9">
+      <div class="q-head"><span class="q-num">9</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Select just the <code>title</code> and <code>hours</code> columns from <code>workshops</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">اختر عمودَي <code>title</code> و<code>hours</code> فقط من <code>workshops</code>.</p>
+      <div class="qb-widget" data-qid="t9" data-chapter="2" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":2,"setup":["CREATE TABLE workshops (id INTEGER PRIMARY KEY, title TEXT, hours INTEGER, online BOOLEAN)","ALTER TABLE workshops ADD COLUMN seats_left INTEGER","INSERT INTO workshops (id, title, hours, online, seats_left) VALUES (1, 'Intro to Git', 2, true, 20), (2, 'SQL Fundamentals', 3, false, 15), (3, 'Data Viz Basics', 2, true, 25)"],"placeholder":"SELECT ... FROM workshops;","grade":{"mode":"result","expected":"SELECT title, hours FROM workshops"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 10 MCQ -->
+    <div class="question" data-qtype="mcq" data-qid="t10" data-chapter="2" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":10,"prompt":{"en":"In a SELECT list, what decides the order of columns in the result?","ar":"في قائمة SELECT، ما الذي يحدد ترتيب الأعمدة في النتيجة؟"},
+       "options":[{"en":"The order you list them","ar":"الترتيب الذي تسردها به"},{"en":"The table's own column order","ar":"ترتيب أعمدة الجدول نفسه"},{"en":"Alphabetical order","ar":"الترتيب الأبجدي"},{"en":"The order they were inserted","ar":"ترتيب إدراجها"}],"correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 11 SELECT filter -->
+    <div class="question" data-qid="t11">
+      <div class="q-head"><span class="q-num">11</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Select every workshop where <code>hours</code> is greater than 2 AND <code>online</code> is true.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">اختر كل ورشة يكون فيها <code>hours</code> أكبر من 2 و<code>online</code> يساوي true.</p>
+      <div class="qb-widget" data-qid="t11" data-chapter="2" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":2,"setup":["CREATE TABLE workshops (id INTEGER PRIMARY KEY, title TEXT, hours INTEGER, online BOOLEAN)","ALTER TABLE workshops ADD COLUMN seats_left INTEGER","INSERT INTO workshops (id, title, hours, online, seats_left) VALUES (1, 'Intro to Git', 2, true, 20), (2, 'SQL Fundamentals', 3, false, 15), (3, 'Data Viz Basics', 2, true, 25)"],"placeholder":"SELECT * FROM workshops WHERE ...","grade":{"mode":"result","expected":"SELECT * FROM workshops WHERE hours > 2 AND online = true"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 12 T/F -->
+    <div class="question" data-qtype="tf" data-qid="t12" data-chapter="2" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":12,"prompt":{"en":"WHERE hours > 2 OR online = true can match more rows than WHERE hours > 2 AND online = true.","ar":"يمكن لـ WHERE hours > 2 OR online = true أن تطابق صفوفًا أكثر من WHERE hours > 2 AND online = true."},"correct":true}
+      </script>
+    </div>
+
+    <!-- 13 Fill -->
+    <div class="question" data-qtype="fill" data-qid="t13" data-chapter="2" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":13,"prompt":{"en":"Complete the filter: at least 18 seats left.","ar":"أكمل التصفية: 18 مقعدًا متبقيًا على الأقل."},
+       "template":"SELECT * FROM workshops WHERE seats_left ____ 18;","answers":[">="]}
+      </script>
+    </div>
+
+    <!-- 14 Match -->
+    <div class="question" data-qtype="match" data-qid="t14" data-chapter="2" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":14,"prompt":{"en":"Match each operator to its meaning.","ar":"طابِق كل عامل بمعناه."},
+       "left":[{"en":"<>","ar":"<>"},{"en":">=","ar":">="},{"en":"<=","ar":"<="},{"en":"=","ar":"="}],
+       "right":[{"en":"Not equal to","ar":"لا يساوي"},{"en":"Greater than or equal to","ar":"أكبر من أو يساوي"},{"en":"Less than or equal to","ar":"أصغر من أو يساوي"},{"en":"Equal to","ar":"يساوي"}],
+       "correctPairs":[[0,0],[1,1],[2,2],[3,3]]}
+      </script>
+    </div>
+
+    <!-- 15 UPDATE multi -->
+    <div class="question" data-qid="t15">
+      <div class="q-head"><span class="q-num">15</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">For the workshop with <code>id</code> 2, set <code>hours</code> to 4 and <code>online</code> to true, in one statement.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">للورشة ذات <code>id</code> 2، اضبط <code>hours</code> على 4 و<code>online</code> على true، في عبارة واحدة.</p>
+      <div class="qb-widget" data-qid="t15" data-chapter="2" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":2,"setup":["CREATE TABLE workshops (id INTEGER PRIMARY KEY, title TEXT, hours INTEGER, online BOOLEAN)","ALTER TABLE workshops ADD COLUMN seats_left INTEGER","INSERT INTO workshops (id, title, hours, online, seats_left) VALUES (1, 'Intro to Git', 2, true, 20), (2, 'SQL Fundamentals', 3, false, 15), (3, 'Data Viz Basics', 2, true, 25)"],"placeholder":"UPDATE workshops SET ... WHERE ...","grade":{"mode":"state","check":"SELECT hours, online FROM workshops WHERE id = 2","expected":[{"hours":4,"online":true}]}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 16 T/F -->
+    <div class="question" data-qtype="tf" data-qid="t16" data-chapter="2" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":16,"prompt":{"en":"A single UPDATE statement's SET clause can only change one column.","ar":"يمكن لجملة SET في عبارة UPDATE واحدة أن تُغيّر عمودًا واحدًا فقط."},"correct":false}
+      </script>
+    </div>
+
+    <!-- 17 Order -->
+    <div class="question" data-qtype="order" data-qid="t17" data-chapter="2" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":17,"prompt":{"en":"Arrange the fragments into a statement that deletes workshops with fewer than 18 seats left AND online = false.","ar":"رتّب الأجزاء لتكوين عبارة تحذف الورش التي بها أقل من 18 مقعدًا متبقيًا و online = false."},
+       "items":["DELETE FROM workshops","WHERE seats_left < 18","AND online = false;"]}
+      </script>
+    </div>
+
+    <!-- 18 DELETE multi -->
+    <div class="question" data-qid="t18">
+      <div class="q-head"><span class="q-num">18</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Delete every workshop where <code>seats_left</code> is less than 18 AND <code>online</code> is false.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">احذف كل ورشة يكون فيها <code>seats_left</code> أقل من 18 و<code>online</code> يساوي false.</p>
+      <div class="qb-widget" data-qid="t18" data-chapter="2" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":2,"setup":["CREATE TABLE workshops (id INTEGER PRIMARY KEY, title TEXT, hours INTEGER, online BOOLEAN)","ALTER TABLE workshops ADD COLUMN seats_left INTEGER","INSERT INTO workshops (id, title, hours, online, seats_left) VALUES (1, 'Intro to Git', 2, true, 20), (2, 'SQL Fundamentals', 3, false, 15), (3, 'Data Viz Basics', 2, true, 25)","UPDATE workshops SET hours = 4, online = true WHERE id = 2"],"placeholder":"DELETE FROM workshops WHERE ...","grade":{"mode":"state","check":"SELECT * FROM workshops","expected":"SELECT * FROM workshops WHERE NOT (seats_left < 18 AND online = false)"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 19 MCQ -->
+    <div class="question" data-qtype="mcq" data-qid="t19" data-chapter="2" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":19,"prompt":{"en":"Which is riskier?","ar":"أيّهما أكثر خطورة؟"},
+       "options":[{"en":"A DELETE with a condition that happens to match every row","ar":"عبارة DELETE بشرط يصادف أن يطابق كل صف"},{"en":"A DELETE with a condition matching one row","ar":"عبارة DELETE بشرط يطابق صفًا واحدًا"},{"en":"A SELECT with no WHERE","ar":"عبارة SELECT بلا WHERE"},{"en":"An ALTER TABLE ADD COLUMN","ar":"عبارة ALTER TABLE ADD COLUMN"}],"correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 20 DROP COLUMN -->
+    <div class="question" data-qid="t20">
+      <div class="q-head"><span class="q-num">20</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Remove the <code>seats_left</code> column from <code>workshops</code> entirely.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أزِل عمود <code>seats_left</code> من <code>workshops</code> بالكامل.</p>
+      <div class="qb-widget" data-qid="t20" data-chapter="2" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":2,"setup":["CREATE TABLE workshops (id INTEGER PRIMARY KEY, title TEXT, hours INTEGER, online BOOLEAN)","ALTER TABLE workshops ADD COLUMN seats_left INTEGER","INSERT INTO workshops (id, title, hours, online, seats_left) VALUES (1, 'Intro to Git', 2, true, 20), (2, 'SQL Fundamentals', 3, false, 15), (3, 'Data Viz Basics', 2, true, 25)","UPDATE workshops SET hours = 4, online = true WHERE id = 2","DELETE FROM workshops WHERE seats_left < 18 AND online = false"],"placeholder":"ALTER TABLE workshops ...","grade":{"mode":"structural","table":"workshops","absent":["seats_left"]}}
+        </script>
+      </div>
+    </div>
+
+    <div class="card" id="score-card" style="margin-top:var(--sp-6); text-align:center;">
+      <button class="btn btn-primary" id="score-btn" data-i18n="score">Score</button>
+      <h2 id="score-line" hidden style="margin-top:var(--sp-4)"></h2>
+      <div class="progress-bar" id="score-bar" hidden style="max-width:360px;margin:var(--sp-3) auto 0;"><span></span></div>
+    </div>
+
+    <nav class="footer-nav" style="justify-content:center;">
+      <a class="btn btn-secondary" href="../chapters/chapter-2.html"><span data-i18n="back_to_chapter">Back to chapter</span></a>
+    </nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script>
+    window.PageInit = function () {
+      var QIDS = []; for (var i = 1; i <= 20; i++) QIDS.push('t' + i);
+      function t(k) { return window.I18N ? window.I18N.t(k) : k; }
+      function tally() { var p = 0; QIDS.forEach(function (q) { if (window.Progress.questionResult('2', 'test', q) === true) p++; }); return p; }
+      function show() {
+        var passed = tally(), total = QIDS.length;
+        var line = document.getElementById('score-line'), bar = document.getElementById('score-bar');
+        line.hidden = false; bar.hidden = false;
+        line.textContent = t('test_score') + ' ' + passed + ' ' + t('test_of') + ' ' + total;
+        bar.querySelector('span').style.width = (passed / total * 100) + '%';
+      }
+      document.getElementById('score-btn').addEventListener('click', show);
+      document.addEventListener('progress:change', function () { if (!document.getElementById('score-line').hidden) show(); });
+    };
+  </script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

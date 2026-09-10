@@ -1,0 +1,12 @@
+{
+  "tables": {
+    "authors": [
+      { "id": 1, "name": "Laila Hammoud" },
+      { "id": 2, "name": "Marcus Reyes" },
+      { "id": 3, "name": "Aiko Tanaka" },
+      { "id": 4, "name": "Daniel Kessler" },
+      { "id": 5, "name": "Fatima Zahra" },
+      { "id": 6, "name": "Tom Whitfield" }
+    ]
+  }
+}

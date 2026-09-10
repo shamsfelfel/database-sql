@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 4 · Lesson 6 — Derived Tables (Subquery in FROM) · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="4" data-lesson="6">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="4" data-lesson="6"></nav>
+
+    <h1 class="i18n-en">Lesson 6 — Derived Tables (Subquery in FROM)</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٦ — الجداول المشتقة</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">A subquery can appear in <code>FROM</code>, where it becomes a temporary table — a <em>derived table</em>. It must be given an alias (it has no name of its own), and only the columns named in its <code>SELECT</code> list are visible outside it.</p>
+      <p class="i18n-ar" dir="rtl">يمكن أن يظهر الاستعلام الفرعي في <code>FROM</code>، حيث يصير جدولًا مؤقتًا — <em>جدولًا مشتقًّا</em>. ويجب أن يُعطى اسمًا بديلًا (alias) لأنه لا اسم له خاصًّا به، ولا تكون مرئيةً خارجه إلا الأعمدة المذكورة في قائمة <code>SELECT</code> الخاصة به.</p>
+      <p class="i18n-en">(These examples use <code>GROUP BY</code> inside the derived table to make it worth deriving — treat it as &ldquo;count/average per group&rdquo;; <code>GROUP BY</code> is taught fully in Chapter 5.)</p>
+      <p class="i18n-ar" dir="rtl">(تستخدم هذه الأمثلة <code>GROUP BY</code> داخل الجدول المشتق لتجعل اشتقاقه ذا فائدة — اعتبِرها &ldquo;عدًّا/متوسطًا لكل مجموعة&rdquo;؛ ويُشرَح <code>GROUP BY</code> شرحًا وافيًا في الفصل الخامس.)</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>SELECT a.name, bc.total_books
+FROM authors a
+JOIN (SELECT author_id, COUNT(*) AS total_books FROM books GROUP BY author_id) AS bc
+  ON a.id = bc.author_id;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — deriving from <code>books</code> and <code>authors</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — الاشتقاق من <code>books</code> و<code>authors</code></h2>
+      <p class="i18n-en">These read from the chapter-4 snapshot, deriving a small temporary table and joining it back.</p>
+      <p class="i18n-ar" dir="rtl">تقرأ هذه الأمثلة من لقطة الفصل الرابع، فتشتقّ جدولًا مؤقتًا صغيرًا ثم تربطه من جديد.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — each author's book count via a derived table</span><span class="i18n-ar" dir="rtl">مثال ١ — عدد كتب كل مؤلف عبر جدول مشتق</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT a.name, book_counts.total_books FROM authors a JOIN (SELECT author_id, COUNT(*) AS total_books FROM books GROUP BY author_id) AS book_counts ON a.id = book_counts.author_id;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — a derived table can be a filtered slice of a table</span><span class="i18n-ar" dir="rtl">مثال ٢ — قد يكون الجدول المشتق شريحةً مُرشَّحة من جدول</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT a.name, pricey.title, pricey.price FROM authors a JOIN (SELECT * FROM books WHERE price > 18) AS pricey ON a.id = pricey.author_id;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — filter on a column computed inside the derived table</span><span class="i18n-ar" dir="rtl">مثال ٣ — التصفية على عمود محسوب داخل الجدول المشتق</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT name, total_books FROM (SELECT a.name, COUNT(b.id) AS total_books FROM authors a JOIN books b ON a.id = b.author_id GROUP BY a.name) AS author_totals WHERE total_books > 1;"}
+        </script>
+      </div>
+      <p class="caption i18n-en"><code>total_books</code> exists only inside the derived table — reachable outside only because it was named there.</p>
+      <p class="caption i18n-ar" dir="rtl"><code>total_books</code> موجود فقط داخل الجدول المشتق — ولا يمكن الوصول إليه خارجه إلا لأنه سُمّي هناك.</p>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Now derive tables from <strong>Orbit Electronics</strong>' <code>products</code> and join them to <code>categories</code>.</p>
+      <p class="i18n-ar" dir="rtl">الآن اشتقّ جداول من <code>products</code> في <strong>Orbit Electronics</strong> واربطها بجدول <code>categories</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — each category's product count</span><span class="i18n-ar" dir="rtl">مثال ١ — عدد منتجات كل فئة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT c.name, product_counts.total_products FROM categories c JOIN (SELECT category_id, COUNT(*) AS total_products FROM products GROUP BY category_id) AS product_counts ON c.id = product_counts.category_id;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — a filtered slice joined back to its category</span><span class="i18n-ar" dir="rtl">مثال ٢ — شريحة مُرشَّحة مربوطة من جديد بفئتها</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT c.name AS category_name, pricey.name AS product_name, pricey.price FROM categories c JOIN (SELECT * FROM products WHERE price > 200) AS pricey ON c.id = pricey.category_id;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — filter on a count computed inside the derived table</span><span class="i18n-ar" dir="rtl">مثال ٣ — التصفية على عدد محسوب داخل الجدول المشتق</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT name, total_products FROM (SELECT c.name, COUNT(p.id) AS total_products FROM categories c JOIN products p ON c.id = p.category_id GROUP BY c.name) AS category_totals WHERE total_products > 1;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="4" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"A derived table is:","ar":"الجدول المشتق هو:"},
+         "options":[{"en":"a subquery used in the FROM clause","ar":"استعلام فرعي يُستخدم في جملة FROM"},{"en":"a permanent CREATE TABLE","ar":"جدول دائم مُنشأ بـCREATE TABLE"},{"en":"a view","ar":"عرض (view)"},{"en":"an index","ar":"فهرس (index)"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="4" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A derived table must be given an alias to be usable in the outer query.","ar":"يجب إعطاء الجدول المشتق اسمًا بديلًا (alias) ليكون قابلًا للاستخدام في الاستعلام الخارجي."},
+         "correct":true}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="4" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the join condition to the derived table.","ar":"أكمل شرط الربط بالجدول المشتق."},
+         "template":"... JOIN (SELECT category_id, COUNT(*) AS n FROM products GROUP BY category_id) AS pc ON c.id = pc.____;","answers":["category_id"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="lab-q4" data-chapter="4" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each to its rule.","ar":"طابِق كلًّا منها بقاعدته."},
+         "left":[{"en":"derived table","ar":"جدول مشتق"},{"en":"alias requirement","ar":"اشتراط الاسم البديل"},{"en":"column scope","ar":"نطاق الأعمدة"}],
+         "right":[{"en":"a subquery in FROM, used as a table","ar":"استعلام فرعي في FROM، يُستخدَم كجدول"},{"en":"always required","ar":"مطلوب دائمًا"},{"en":"only columns named in the derived SELECT are visible outside","ar":"لا تكون مرئية خارجًا إلا الأعمدة المذكورة في SELECT المشتق"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Show each category's average product price next to its <code>name</code>, using a derived table aliased <code>avgs</code> with the average column aliased <code>avg_price</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اعرض متوسط سعر منتجات كل فئة بجانب <code>name</code> الخاص بها، باستخدام جدول مشتق باسم بديل <code>avgs</code> وعمود المتوسط باسم بديل <code>avg_price</code>.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="4" data-lesson="6">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":4,"placeholder":"SELECT c.name, avgs.avg_price FROM categories c JOIN (...) AS avgs ON ...","grade":{"mode":"result","expected":"SELECT c.name, avgs.avg_price FROM categories c JOIN (SELECT category_id, AVG(price) AS avg_price FROM products GROUP BY category_id) AS avgs ON c.id = avgs.category_id"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>courses</code> / <code>departments</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدوليها <code>courses</code> و<code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="4" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"A derived table is:","ar":"الجدول المشتق هو:"},
+         "options":[{"en":"a permanent table from CREATE TABLE","ar":"جدول دائم من CREATE TABLE"},{"en":"a subquery used in the FROM clause","ar":"استعلام فرعي يُستخدم في جملة FROM"},{"en":"a view","ar":"عرض (view)"},{"en":"an index","ar":"فهرس (index)"}],
+         "correctIndex":1}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="4" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A derived table must be given an alias to be usable in the outer query.","ar":"يجب إعطاء الجدول المشتق اسمًا بديلًا (alias) ليكون قابلًا للاستخدام في الاستعلام الخارجي."},
+         "correct":true}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="4" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the join to the derived table.","ar":"أكمل الربط بالجدول المشتق."},
+         "template":"... JOIN (SELECT department_id, COUNT(*) AS course_count FROM courses GROUP BY department_id) AS totals ON d.id = totals.____;","answers":["department_id"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Show each department's average course credits next to its <code>name</code>, using a derived table aliased <code>t</code> with the average aliased <code>avg_credits</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اعرض متوسط الساعات المعتمدة لمقرّرات كل قسم بجانب <code>name</code> الخاص به، باستخدام جدول مشتق باسم بديل <code>t</code> والمتوسط باسم بديل <code>avg_credits</code>.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="4" data-lesson="6">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":4,"placeholder":"SELECT d.name, t.avg_credits FROM departments d JOIN (...) AS t ON ...","grade":{"mode":"result","expected":"SELECT d.name, t.avg_credits FROM departments d JOIN (SELECT department_id, AVG(credits) AS avg_credits FROM courses GROUP BY department_id) AS t ON d.id = t.department_id"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="4" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Order what happens.","ar":"رتّب ما يحدث."},
+         "items":["The derived table's SELECT runs, producing a temporary result","The outer query joins/filters against it as if it were a table","The final result is returned"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t6" data-chapter="4" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Match each to its rule.","ar":"طابِق كلًّا منها بقاعدته."},
+         "left":[{"en":"derived table","ar":"جدول مشتق"},{"en":"alias","ar":"اسم بديل"},{"en":"column scope","ar":"نطاق الأعمدة"}],
+         "right":[{"en":"subquery in FROM, used as a table","ar":"استعلام فرعي في FROM، يُستخدَم كجدول"},{"en":"always required","ar":"مطلوب دائمًا"},{"en":"only its named columns are visible outside","ar":"لا تكون مرئية خارجًا إلا أعمدته المسمّاة"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="4" data-lesson="6"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

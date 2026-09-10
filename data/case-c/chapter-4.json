@@ -1,0 +1,20 @@
+{
+  "tables": {
+    "departments": [
+      { "id": 1, "name": "Computer Science", "building": "Sciences Hall", "budget": 500000 },
+      { "id": 2, "name": "Mathematics", "building": "Sciences Hall", "budget": 320000 },
+      { "id": 3, "name": "Physics", "building": "Sciences Hall", "budget": 410000 },
+      { "id": 4, "name": "Biology", "building": "Life Sciences", "budget": 380000 },
+      { "id": 5, "name": "Business Administration", "building": "Commerce", "budget": 290000 },
+      { "id": 6, "name": "Fine Arts", "building": "Arts Center", "budget": 210000 }
+    ],
+    "courses": [
+      { "id": 1, "title": "Intro to Algorithms", "credits": 4, "level": "undergrad", "active": true, "department_id": 1, "enrollment_cap": 120 },
+      { "id": 2, "title": "Linear Algebra", "credits": 3, "level": "undergrad", "active": true, "department_id": 2, "enrollment_cap": 90 },
+      { "id": 3, "title": "Distributed Systems", "credits": 4, "level": "graduate", "active": true, "department_id": 1, "enrollment_cap": 60 },
+      { "id": 4, "title": "Classical Mechanics", "credits": 3, "level": "undergrad", "active": false, "department_id": 3, "enrollment_cap": 80 },
+      { "id": 5, "title": "Cell Biology", "credits": 3, "level": "undergrad", "active": true, "department_id": 4, "enrollment_cap": 100 },
+      { "id": 6, "title": "Advanced Statistics", "credits": 4, "level": "graduate", "active": true, "department_id": 2, "enrollment_cap": 70 }
+    ]
+  }
+}

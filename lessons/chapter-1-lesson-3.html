@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 1 · Lesson 3 — SELECT · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="1" data-lesson="3">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="1" data-lesson="3"></nav>
+
+    <h1 class="i18n-en">Lesson 3 — SELECT</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٣ — الاستعلام (SELECT)</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en"><code>SELECT</code> reads rows back out of a table. <code>SELECT * FROM table_name;</code> returns every column of every row. <code>SELECT column_name FROM table_name;</code> returns just that column. Adding <code>WHERE column = value</code> narrows it down to the row(s) matching that condition — with a primary key, that's exactly one row.</p>
+      <p class="i18n-ar" dir="rtl">تقرأ <code>SELECT</code> الصفوف من الجدول. تُعيد <code>SELECT * FROM table_name;</code> كل عمود من كل صف. وتُعيد <code>SELECT column_name FROM table_name;</code> ذلك العمود فقط. وإضافة <code>WHERE column = value</code> تُضيّق النتيجة إلى الصف/الصفوف المطابقة لذلك الشرط — ومع مفتاح أساسي، يكون ذلك صفًا واحدًا بالضبط.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>SELECT * FROM table_name;
+SELECT name FROM table_name;
+SELECT * FROM table_name WHERE id = 3;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — the <code>authors</code> table</h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — جدول <code>authors</code></h2>
+      <p class="i18n-en">The <code>authors</code> table is pre-loaded with all six rows.</p>
+      <p class="i18n-ar" dir="rtl">جدول <code>authors</code> محمّل مسبقًا بالصفوف الستة كاملة.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — every column, every row</span><span class="i18n-ar" dir="rtl">مثال ١ — كل عمود، كل صف</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":1,"sql":"SELECT * FROM authors;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — just the name column</span><span class="i18n-ar" dir="rtl">مثال ٢ — عمود الاسم فقط</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":1,"sql":"SELECT name FROM authors;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — one specific row</span><span class="i18n-ar" dir="rtl">مثال ٣ — صف واحد محدد</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":1,"sql":"SELECT * FROM authors WHERE id = 3;"}
+        </script>
+      </div>
+      <p class="caption i18n-en"><code>WHERE</code> narrows the result down to rows matching the condition — with a primary key, that's at most one row (Aiko Tanaka).</p>
+      <p class="caption i18n-ar" dir="rtl">تُضيّق <code>WHERE</code> النتيجة إلى الصفوف المطابقة للشرط — ومع مفتاح أساسي، يكون ذلك صفًا واحدًا على الأكثر (Aiko Tanaka).</p>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">The <strong>Orbit Electronics</strong> <code>categories</code> table, pre-loaded with all six rows.</p>
+      <p class="i18n-ar" dir="rtl">جدول <code>categories</code> في <strong>Orbit Electronics</strong>، محمّل مسبقًا بالصفوف الستة كاملة.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1</span><span class="i18n-ar" dir="rtl">مثال ١</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":1,"sql":"SELECT * FROM categories;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2</span><span class="i18n-ar" dir="rtl">مثال ٢</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":1,"sql":"SELECT name FROM categories;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the Wearables row</span><span class="i18n-ar" dir="rtl">مثال ٣ — صف Wearables</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":1,"sql":"SELECT * FROM categories WHERE id = 4;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="1" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which statement returns only the name column from every row of categories?","ar":"أي عبارة تُعيد عمود name فقط من كل صف في categories؟"},
+         "options":[{"en":"SELECT name FROM categories;","ar":"SELECT name FROM categories;"},{"en":"SELECT * FROM categories WHERE name;","ar":"SELECT * FROM categories WHERE name;"},{"en":"SELECT categories.name;","ar":"SELECT categories.name;"},{"en":"SELECT ONLY name FROM categories;","ar":"SELECT ONLY name FROM categories;"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="1" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"SELECT * FROM categories WHERE id = 2; can return more than one row.","ar":"يمكن أن تُعيد SELECT * FROM categories WHERE id = 2; أكثر من صف."},
+         "correct":false,
+         "explain":{"en":"id is a primary key, so at most one row matches.","ar":"العمود id مفتاح أساسي، لذا يطابقه صف واحد على الأكثر."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="1" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"SELECT * FROM categories ____ id = 5;","answers":["WHERE"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="1" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a statement that selects the single category with id 6.","ar":"رتّب الأجزاء لتكوين عبارة تختار الفئة الوحيدة ذات المعرّف 6."},
+         "items":["SELECT *","FROM categories","WHERE id = 6;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Select just the <code>name</code> column for the category whose <code>id</code> is 3.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اختر عمود <code>name</code> فقط للفئة التي معرّفها <code>id</code> يساوي 3.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="1" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":1,"placeholder":"SELECT ... FROM categories WHERE ...","grade":{"mode":"result","expected":"SELECT name FROM categories WHERE id = 3"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>departments</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدولها <code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="1" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"What does SELECT * FROM departments; return?","ar":"ماذا تُعيد SELECT * FROM departments;؟"},
+         "options":[{"en":"Every column of every row","ar":"كل عمود من كل صف"},{"en":"Just the id column","ar":"عمود id فقط"},{"en":"Just one row","ar":"صف واحد فقط"},{"en":"Nothing, * is invalid","ar":"لا شيء، فالرمز * غير صالح"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="1" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"SELECT name FROM departments; also returns the id column.","ar":"تُعيد SELECT name FROM departments; عمود id أيضًا."},
+         "correct":false,
+         "explain":{"en":"It returns only the columns you list — here, just name.","ar":"تُعيد فقط الأعمدة التي تسردها — هنا name فقط."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="1" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the query to fetch the Mathematics department (its id is 2).","ar":"أكمل الاستعلام لجلب قسم الرياضيات (معرّفه 2)."},
+         "template":"SELECT * FROM departments WHERE id = ____;","answers":["2"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="1" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each query to what it returns.","ar":"طابِق كل استعلام بما يُعيده."},
+         "left":[{"en":"SELECT * FROM departments;","ar":"SELECT * FROM departments;"},{"en":"SELECT name FROM departments;","ar":"SELECT name FROM departments;"},{"en":"SELECT * FROM departments WHERE id = 4;","ar":"SELECT * FROM departments WHERE id = 4;"}],
+         "right":[{"en":"Every column, every row","ar":"كل عمود، كل صف"},{"en":"Just the name column, every row","ar":"عمود name فقط، لكل صف"},{"en":"Every column, only the Biology row","ar":"كل عمود، لصف Biology فقط"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="1" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a statement that selects just the name of the department with id 5.","ar":"رتّب الأجزاء لتكوين عبارة تختار اسم القسم ذي المعرّف 5 فقط."},
+         "items":["SELECT name","FROM departments","WHERE id = 5;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Select the full row for the department whose name is <code>'Physics'</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اختر الصف الكامل للقسم الذي اسمه <code>'Physics'</code>.</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="1" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":1,"placeholder":"SELECT * FROM departments WHERE ...","grade":{"mode":"result","expected":"SELECT * FROM departments WHERE name = 'Physics'"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="1" data-lesson="3"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

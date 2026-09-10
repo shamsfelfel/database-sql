@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 4 · Lesson 8 — Subquery vs. JOIN · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="4" data-lesson="8">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="4" data-lesson="8"></nav>
+
+    <h1 class="i18n-en">Lesson 8 — Subquery vs. JOIN</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٨ — الاستعلام الفرعي مقابل JOIN</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">Every technique in this chapter has a <code>JOIN</code>-based cousin from Chapter 3. This lesson puts them side by side. A <code>JOIN</code> can return columns from both tables, while a subquery filter can only return the outer table's columns.</p>
+      <p class="i18n-ar" dir="rtl">لكل أسلوب في هذا الفصل نظير معتمِد على <code>JOIN</code> من الفصل الثالث. يضع هذا الدرس الأسلوبين جنبًا إلى جنب. يستطيع <code>JOIN</code> أن يعيد أعمدة من الجدولين معًا، بينما لا يعيد مرشِّح الاستعلام الفرعي إلا أعمدة الجدول الخارجي.</p>
+      <p class="i18n-en"><code>EXISTS</code> returns each outer row once, whereas a <code>JOIN</code> needs <code>DISTINCT</code> to avoid duplicates. And some problems — comparing to a per-group computed value — need a correlated subquery or a derived table, which a plain <code>JOIN</code> cannot do alone.</p>
+      <p class="i18n-ar" dir="rtl">يعيد <code>EXISTS</code> كل صف خارجي مرة واحدة، في حين يحتاج <code>JOIN</code> إلى <code>DISTINCT</code> لتجنّب التكرار. كما أن بعض المسائل — كالمقارنة بقيمة محسوبة لكل مجموعة — تحتاج إلى استعلام فرعي مترابط أو جدول مشتقّ، وهو ما لا يستطيع <code>JOIN</code> البسيط فعله وحده.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>-- subquery
+SELECT title FROM books WHERE author_id IN (SELECT id FROM authors WHERE country = 'Canada');
+-- JOIN
+SELECT b.title FROM books b JOIN authors a ON b.author_id = a.id WHERE a.country = 'Canada';</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — the same question, two ways</h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — السؤال نفسه بطريقتين</h2>
+      <p class="i18n-en">These read from the chapter-4 snapshot of <code>books</code> and <code>authors</code>.</p>
+      <p class="i18n-ar" dir="rtl">تقرأ هذه الأمثلة من لقطة الفصل الرابع لجدولَي <code>books</code> و<code>authors</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — subquery (IN)</span><span class="i18n-ar" dir="rtl">مثال ١ — استعلام فرعي (IN)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT title FROM books WHERE author_id IN (SELECT id FROM authors WHERE country = 'Canada');"}
+        </script>
+      </div>
+      <p class="caption i18n-en">The subquery version returns only <code>books</code> columns.</p>
+      <p class="caption i18n-ar" dir="rtl">نسخة الاستعلام الفرعي تعيد أعمدة <code>books</code> فقط.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — JOIN</span><span class="i18n-ar" dir="rtl">مثال ٢ — JOIN</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT b.title, a.name FROM books b JOIN authors a ON b.author_id = a.id WHERE a.country = 'Canada';"}
+        </script>
+      </div>
+      <p class="caption i18n-en">The JOIN version can also return <code>a.name</code> — a column from the other table.</p>
+      <p class="caption i18n-ar" dir="rtl">نسخة JOIN تستطيع أيضًا إعادة <code>a.name</code> — عمود من الجدول الآخر.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — a per-group comparison a plain JOIN can't express</span><span class="i18n-ar" dir="rtl">مثال ٣ — مقارنة لكل مجموعة لا يعبّر عنها JOIN البسيط</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT b1.title FROM books b1 WHERE b1.price > (SELECT AVG(b2.price) FROM books b2 WHERE b2.genre = b1.genre);"}
+        </script>
+      </div>
+      <p class="caption i18n-en">Comparing each book to its own genre's average needs a correlated subquery — a plain JOIN can't do this alone.</p>
+      <p class="caption i18n-ar" dir="rtl">مقارنة كل كتاب بمتوسّط نوعه تحتاج إلى استعلام فرعي مترابط — ولا يستطيع JOIN البسيط فعل ذلك وحده.</p>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Compare the approaches against <strong>Orbit Electronics</strong>' <code>products</code> and <code>categories</code>.</p>
+      <p class="i18n-ar" dir="rtl">قارن الأساليب على جدولَي <code>products</code> و<code>categories</code> في <strong>Orbit Electronics</strong>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — EXISTS</span><span class="i18n-ar" dir="rtl">مثال ١ — EXISTS</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT c.name FROM categories c WHERE EXISTS (SELECT 1 FROM products p WHERE p.category_id = c.id);"}
+        </script>
+      </div>
+      <p class="caption i18n-en"><code>EXISTS</code> returns each category once.</p>
+      <p class="caption i18n-ar" dir="rtl">يعيد <code>EXISTS</code> كل فئة مرة واحدة.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — JOIN with DISTINCT</span><span class="i18n-ar" dir="rtl">مثال ٢ — JOIN مع DISTINCT</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT DISTINCT c.name FROM categories c JOIN products p ON c.id = p.category_id;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">The JOIN needs <code>DISTINCT</code>, or a category with 3 products appears 3 times.</p>
+      <p class="caption i18n-ar" dir="rtl">يحتاج JOIN إلى <code>DISTINCT</code>، وإلا ظهرت الفئة التي لها ٣ منتجات ٣ مرّات.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — derived table</span><span class="i18n-ar" dir="rtl">مثال ٣ — جدول مشتقّ</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT p.name FROM products p JOIN (SELECT category_id, COUNT(*) AS n FROM products GROUP BY category_id) AS pc ON p.category_id = pc.category_id WHERE pc.n > 1;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">A derived table does the per-group count a plain JOIN can't.</p>
+      <p class="caption i18n-ar" dir="rtl">الجدول المشتقّ يؤدّي عدّ كل مجموعة الذي يعجز عنه JOIN البسيط.</p>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="4" data-lesson="8">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which problem type cannot be solved by a plain JOIN alone?","ar":"أيّ نوع من المسائل لا يمكن حلّه بـ JOIN بسيط وحده؟"},
+         "options":[{"en":"comparing to a per-group computed average","ar":"المقارنة بمتوسّط محسوب لكل مجموعة"},{"en":"filtering by a literal","ar":"التصفية بقيمة ثابتة"},{"en":"combining columns from two related tables","ar":"دمج أعمدة من جدولين مترابطين"},{"en":"filtering by a joined row's attribute","ar":"التصفية حسب خاصيّة صف مربوط"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="4" data-lesson="8">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"`EXISTS` and `JOIN ... DISTINCT` can sometimes produce identical result sets.","ar":"يمكن أن ينتج `EXISTS` و`JOIN ... DISTINCT` أحيانًا مجموعتَي نتائج متطابقتين."},
+         "correct":true,
+         "explain":{"en":"For an existence question, EXISTS returns each outer row once, and JOIN with DISTINCT collapses duplicates to the same set.","ar":"في سؤال الوجود، يعيد EXISTS كل صف خارجي مرة واحدة، ويُلغي JOIN مع DISTINCT التكرار ليعطي المجموعة نفسها."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="4" data-lesson="8">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"An existence check like EXISTS never needs this keyword, because it can't duplicate an outer row.","ar":"فحص الوجود مثل EXISTS لا يحتاج أبدًا إلى هذه الكلمة، لأنه لا يمكن أن يكرّر صفًّا خارجيًّا."},
+         "template":"An EXISTS check never needs ____ to avoid duplicate rows.","answers":["DISTINCT"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="lab-q4" data-chapter="4" data-lesson="8">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each technique to its clearest use.","ar":"طابِق كل أسلوب باستخدامه الأوضح."},
+         "left":[{"en":"JOIN","ar":"JOIN"},{"en":"IN / EXISTS","ar":"IN / EXISTS"},{"en":"correlated subquery / derived table","ar":"استعلام فرعي مترابط / جدول مشتقّ"}],
+         "right":[{"en":"need columns from both tables","ar":"الحاجة إلى أعمدة من الجدولين"},{"en":"filter by membership or existence","ar":"التصفية بالانتماء أو الوجود"},{"en":"compare to a per-group value","ar":"المقارنة بقيمة لكل مجموعة"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return the <code>name</code> of every product that belongs to a category having MORE THAN ONE product, using a derived table aliased <code>pc</code> (count aliased <code>n</code>) joined to <code>products</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد <code>name</code> كل منتج ينتمي إلى فئة لها أكثر من منتج واحد، مستخدمًا جدولًا مشتقًّا باسم بديل <code>pc</code> (العدّ باسم بديل <code>n</code>) مربوطًا بجدول <code>products</code>.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="4" data-lesson="8">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":4,"placeholder":"SELECT p.name FROM products p JOIN (SELECT ... ) AS pc ON ... WHERE pc.n > 1;","grade":{"mode":"result","expected":"SELECT p.name FROM products p JOIN (SELECT category_id, COUNT(*) AS n FROM products GROUP BY category_id) AS pc ON p.category_id = pc.category_id WHERE pc.n > 1"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>courses</code> / <code>departments</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدوليها <code>courses</code> و<code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="4" data-lesson="8">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which cannot be solved by a plain JOIN alone?","ar":"أيّ ممّا يلي لا يمكن حلّه بـ JOIN بسيط وحده؟"},
+         "options":[{"en":"filtering by a literal","ar":"التصفية بقيمة ثابتة"},{"en":"comparing to a per-group computed average","ar":"المقارنة بمتوسّط محسوب لكل مجموعة"},{"en":"combining columns from two related tables","ar":"دمج أعمدة من جدولين مترابطين"},{"en":"filtering by a joined row's attribute","ar":"التصفية حسب خاصيّة صف مربوط"}],
+         "correctIndex":1}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="4" data-lesson="8">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"`EXISTS` and `JOIN ... DISTINCT` can sometimes produce identical result sets.","ar":"يمكن أن ينتج `EXISTS` و`JOIN ... DISTINCT` أحيانًا مجموعتَي نتائج متطابقتين."},
+         "correct":true,
+         "explain":{"en":"Both can answer an existence question by returning each qualifying outer row exactly once.","ar":"يمكن لكليهما الإجابة عن سؤال الوجود بإعادة كل صف خارجي مؤهَّل مرة واحدة بالضبط."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="4" data-lesson="8">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"An existence-style query never needs this keyword.","ar":"الاستعلام الذي على نمط الوجود لا يحتاج أبدًا إلى هذه الكلمة."},
+         "template":"A subquery existence check never needs ____ to avoid duplicates.","answers":["DISTINCT"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return the <code>name</code> of every department whose average course credits exceed the university-wide average course credits — use a derived table aliased <code>t</code> (average aliased <code>avg_credits</code>) and a scalar subquery for the overall average.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد <code>name</code> كل قسم يتجاوز متوسّط ساعات مقرّراته المعتمدة المتوسّطَ العامَّ لساعات المقرّرات على مستوى الجامعة — مستخدمًا جدولًا مشتقًّا باسم بديل <code>t</code> (المتوسّط باسم بديل <code>avg_credits</code>) واستعلامًا فرعيًّا قياسيًّا للمتوسّط العام.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="4" data-lesson="8">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":4,"placeholder":"SELECT t.name FROM (SELECT ... ) AS t WHERE t.avg_credits > (SELECT ... );","grade":{"mode":"result","expected":"SELECT t.name FROM (SELECT d.name, AVG(c.credits) AS avg_credits FROM departments d JOIN courses c ON d.id = c.department_id GROUP BY d.name) AS t WHERE t.avg_credits > (SELECT AVG(credits) FROM courses)"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="4" data-lesson="8">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Order these query-design steps.","ar":"رتّب خطوات تصميم الاستعلام هذه."},
+         "items":["Identify whether the comparison value is a literal, a joined row, or computed","If computed, pick scalar / IN / correlated / EXISTS / derived table by shape","Write and test the query"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t6" data-chapter="4" data-lesson="8">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Match each technique to its clearest use.","ar":"طابِق كل أسلوب باستخدامه الأوضح."},
+         "left":[{"en":"JOIN","ar":"JOIN"},{"en":"IN / EXISTS","ar":"IN / EXISTS"},{"en":"correlated subquery / derived table","ar":"استعلام فرعي مترابط / جدول مشتقّ"}],
+         "right":[{"en":"need columns from both tables","ar":"الحاجة إلى أعمدة من الجدولين"},{"en":"filter by membership / existence","ar":"التصفية بالانتماء / الوجود"},{"en":"compare to a per-group value","ar":"المقارنة بقيمة لكل مجموعة"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="4" data-lesson="8"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

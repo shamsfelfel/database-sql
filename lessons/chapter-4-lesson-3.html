@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 4 · Lesson 3 — IN / NOT IN Subqueries · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="4" data-lesson="3">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="4" data-lesson="3"></nav>
+
+    <h1 class="i18n-en">Lesson 3 — IN / NOT IN Subqueries</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٣ — استعلامات IN / NOT IN</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en"><code>IN</code> widens "equal to one value" into "equal to any value in a list": the subquery after <code>IN</code> may return many rows (still a single column), and the outer row matches if its value appears anywhere in that list. This is the first place we can set a subquery directly beside the Chapter 3 <code>JOIN</code> version of the very same question and compare them.</p>
+      <p class="i18n-ar" dir="rtl">يوسّع <code>IN</code> عبارة «يساوي قيمة واحدة» إلى «يساوي أي قيمة في قائمة»: فالاستعلام الفرعي الذي يلي <code>IN</code> قد يُعيد صفوفًا كثيرة (بعمود واحد رغم ذلك)، ويتطابق الصف الخارجي إن ظهرت قيمته في أي مكان من تلك القائمة. وهنا لأول مرة يمكننا وضع استعلام فرعي جنبًا إلى جنب مع نسخة <code>JOIN</code> من الفصل الثالث للسؤال نفسه ومقارنتهما.</p>
+      <p class="i18n-en"><code>NOT IN</code> is the negation. But beware: it behaves unexpectedly when the subquery can return a <code>NULL</code> — because comparing anything to <code>NULL</code> is "unknown", <code>NOT IN</code> can silently return no rows at all.</p>
+      <p class="i18n-ar" dir="rtl"><code>NOT IN</code> هو النفي. لكن انتبه: يتصرّف بشكل غير متوقّع عندما يمكن للاستعلام الفرعي أن يُعيد قيمة <code>NULL</code> — لأن مقارنة أي شيء بـ<code>NULL</code> تُعطي «غير معروف»، فقد يُعيد <code>NOT IN</code> بلا صفوف على الإطلاق ودون تحذير.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>SELECT title FROM books
+WHERE author_id IN (SELECT id FROM authors WHERE country = 'Canada');</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code> and <code>authors</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code> و<code>authors</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — books by any Canadian author (IN)</span><span class="i18n-ar" dir="rtl">مثال ١ — كتب أيّ مؤلف كندي (IN)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT title FROM books WHERE author_id IN (SELECT id FROM authors WHERE country = 'Canada');"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — the same question as a JOIN</span><span class="i18n-ar" dir="rtl">مثال ٢ — السؤال نفسه بصيغة JOIN</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT b.title, a.name FROM books b JOIN authors a ON b.author_id = a.id WHERE a.country = 'Canada';"}
+        </script>
+      </div>
+      <p class="caption i18n-en">Same rows; the JOIN can also return <code>a.name</code>, whereas the <code>IN</code> version can only return <code>books</code> columns.</p>
+      <p class="caption i18n-ar" dir="rtl">الصفوف نفسها؛ لكن الـJOIN يستطيع أيضًا إعادة <code>a.name</code>، بينما نسخة <code>IN</code> لا تستطيع إعادة سوى أعمدة <code>books</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — books NOT by a Canadian author (NOT IN)</span><span class="i18n-ar" dir="rtl">مثال ٣ — كتب ليست لمؤلف كندي (NOT IN)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT title FROM books WHERE author_id NOT IN (SELECT id FROM authors WHERE country = 'Canada');"}
+        </script>
+      </div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Now try <code>IN</code> and <code>NOT IN</code> against <strong>Orbit Electronics</strong>' <code>products</code> and <code>categories</code>.</p>
+      <p class="i18n-ar" dir="rtl">الآن جرّب <code>IN</code> و<code>NOT IN</code> على جدولَي <code>products</code> و<code>categories</code> في <strong>Orbit Electronics</strong>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — products in an Electronics category (IN)</span><span class="i18n-ar" dir="rtl">مثال ١ — منتجات في فئة إلكترونيات (IN)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT name FROM products WHERE category_id IN (SELECT id FROM categories WHERE department = 'Electronics');"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — the same question as a JOIN</span><span class="i18n-ar" dir="rtl">مثال ٢ — السؤال نفسه بصيغة JOIN</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT p.name, c.name AS category_name FROM products p JOIN categories c ON p.category_id = c.id WHERE c.department = 'Electronics';"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — products NOT in an Electronics category (NOT IN)</span><span class="i18n-ar" dir="rtl">مثال ٣ — منتجات ليست في فئة إلكترونيات (NOT IN)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT name FROM products WHERE category_id NOT IN (SELECT id FROM categories WHERE department = 'Electronics');"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="4" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"`IN` differs from `=` with a subquery because it:","ar":"يختلف `IN` عن `=` مع استعلام فرعي لأنه:"},
+         "options":[{"en":"accepts a subquery returning multiple rows","ar":"يقبل استعلامًا فرعيًا يُعيد صفوفًا متعدّدة"},{"en":"runs faster","ar":"يعمل أسرع"},{"en":"only works with numbers","ar":"يعمل مع الأرقام فقط"},{"en":"is identical to =","ar":"مطابق تمامًا لـ ="}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="4" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"Every `IN`-subquery query can be rewritten as a JOIN returning exactly the same columns.","ar":"يمكن إعادة كتابة كل استعلام يستخدم `IN` مع استعلام فرعي بصيغة JOIN تُعيد الأعمدة نفسها تمامًا."},
+         "correct":false,
+         "explain":{"en":"The IN version can only return the outer table's columns; the JOIN version can also return the subquery table's columns, so they are not always column-identical.","ar":"نسخة IN لا تُعيد سوى أعمدة الجدول الخارجي؛ أما نسخة JOIN فتستطيع أيضًا إعادة أعمدة جدول الاستعلام الفرعي، فليستا دائمًا متطابقتين في الأعمدة."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="4" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the filter: products in an 'Electronics' category.","ar":"أكمل المرشِّح: المنتجات في فئة 'Electronics'."},
+         "template":"SELECT name FROM products WHERE category_id ____ (SELECT id FROM categories WHERE department = 'Electronics');","answers":["IN"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="lab-q4" data-chapter="4" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each operator to its meaning.","ar":"طابِق كل عامل بمعناه."},
+         "left":[{"en":"IN","ar":"IN"},{"en":"NOT IN","ar":"NOT IN"},{"en":"risk with NOT IN","ar":"خطر NOT IN"}],
+         "right":[{"en":"value is one of these","ar":"القيمة واحدة من هذه"},{"en":"value is none of these","ar":"القيمة ليست أيًّا من هذه"},{"en":"a NULL in the list breaks it silently","ar":"وجود NULL في القائمة يُعطّله بصمت"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return the <code>name</code> of every category that has zero products (use <code>NOT IN</code> against <code>products</code>).</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد <code>name</code> كل فئة ليس لها أي منتجات (باستخدام <code>NOT IN</code> على <code>products</code>).</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="4" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":4,"placeholder":"SELECT name FROM categories WHERE id NOT IN (SELECT ... FROM products);","grade":{"mode":"result","expected":"SELECT name FROM categories WHERE id NOT IN (SELECT category_id FROM products)"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>courses</code> / <code>departments</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدوليها <code>courses</code> و<code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="4" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"`IN` with a subquery differs from `=` because:","ar":"يختلف `IN` مع استعلام فرعي عن `=` لأنه:"},
+         "options":[{"en":"it's faster","ar":"أسرع"},{"en":"it accepts a subquery returning multiple rows","ar":"يقبل استعلامًا فرعيًا يُعيد صفوفًا متعدّدة"},{"en":"it only works with numbers","ar":"يعمل مع الأرقام فقط"},{"en":"there is no difference","ar":"لا فرق بينهما"}],
+         "correctIndex":1}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="4" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"Every `IN`-subquery query can be rewritten as a JOIN returning exactly the same columns.","ar":"يمكن إعادة كتابة كل استعلام يستخدم `IN` مع استعلام فرعي بصيغة JOIN تُعيد الأعمدة نفسها تمامًا."},
+         "correct":false,
+         "explain":{"en":"The IN version can only return the outer table's columns, so it is not always column-identical to a JOIN.","ar":"نسخة IN لا تُعيد سوى أعمدة الجدول الخارجي، فليست دائمًا متطابقة في الأعمدة مع JOIN."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="4" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the membership filter.","ar":"أكمل مرشِّح الانتماء."},
+         "template":"SELECT title FROM courses WHERE department_id ____ (SELECT id FROM departments WHERE building = 'Sciences Hall');","answers":["IN"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return the <code>title</code> of every course whose department is NOT in the 'Sciences Hall' building.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد <code>title</code> كل مقرّر ليس قسمه في مبنى 'Sciences Hall'.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="4" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":4,"placeholder":"SELECT title FROM courses WHERE department_id NOT IN (SELECT ... FROM departments WHERE ...);","grade":{"mode":"result","expected":"SELECT title FROM courses WHERE department_id NOT IN (SELECT id FROM departments WHERE building = 'Sciences Hall')"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="4" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Order the execution.","ar":"رتّب خطوات التنفيذ."},
+         "items":["The inner subquery returns a list of ids","The outer query checks each row's id against that list","The matching rows are returned"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t6" data-chapter="4" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Match each to its meaning.","ar":"طابِق كلًّا بمعناه."},
+         "left":[{"en":"IN","ar":"IN"},{"en":"NOT IN","ar":"NOT IN"},{"en":"NOT IN risk","ar":"خطر NOT IN"}],
+         "right":[{"en":"value is one of these","ar":"القيمة واحدة من هذه"},{"en":"value is none of these","ar":"القيمة ليست أيًّا من هذه"},{"en":"breaks silently on a NULL in the list","ar":"يتعطّل بصمت عند وجود NULL في القائمة"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="4" data-lesson="3"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

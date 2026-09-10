@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 4 · Lesson 1 — From Filters to Subqueries · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="4" data-lesson="1">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="4" data-lesson="1"></nav>
+
+    <h1 class="i18n-en">Lesson 1 — From Filters to Subqueries</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ١ — من التصفية إلى الاستعلامات الفرعية</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">Every filter so far compared a column to something already known — a literal (Chapter 1) or a joined row (Chapter 3).</p>
+      <p class="i18n-ar" dir="rtl">كل تصفية حتى الآن كانت تقارن عمودًا بشيء معروف مسبقًا — قيمة حرفية (الفصل ١) أو صف مضموم من جدول آخر (الفصل ٣).</p>
+      <p class="i18n-en">A subquery lets the comparison value be <em>computed by another query</em>: a <code>SELECT</code> nested in parentheses, used where a value would go. It runs first, returns a value, and that value takes the literal's place.</p>
+      <p class="i18n-ar" dir="rtl">يتيح الاستعلام الفرعي أن تكون قيمة المقارنة <em>محسوبة باستعلام آخر</em>: جملة <code>SELECT</code> مُضمَّنة بين قوسين، تُوضَع حيث تُوضَع القيمة. يُنفَّذ أولًا فيُرجع قيمة، وتحل تلك القيمة محل القيمة الحرفية.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>SELECT title, price
+FROM books
+WHERE price > (SELECT AVG(price) FROM books);</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code> and <code>authors</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code> و<code>authors</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — a literal guess</span><span class="i18n-ar" dir="rtl">مثال ١ — تخمين بقيمة حرفية</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT title, price FROM books WHERE price > 25.00;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en"><code>25.00</code> is a guess — what we really want is "above average".</span><span class="i18n-ar" dir="rtl"><code>25.00</code> مجرد تخمين — وما نريده فعلًا هو "أعلى من المتوسط".</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — a JOIN compares to a row</span><span class="i18n-ar" dir="rtl">مثال ٢ — الضم يقارن بصفٍّ آخر</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT b.title, a.name FROM books b JOIN authors a ON b.author_id = a.id WHERE a.country = 'Canada';"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">A <code>JOIN</code> handles "a row in another table", not "a computed number".</span><span class="i18n-ar" dir="rtl">يعالج <code>JOIN</code> حالة "صف في جدول آخر"، لا حالة "رقم محسوب".</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — compare to a computed value</span><span class="i18n-ar" dir="rtl">مثال ٣ — المقارنة بقيمة محسوبة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT title, price FROM books WHERE price > (SELECT AVG(price) FROM books);"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">The parenthesized <code>SELECT</code> runs first and its number replaces the literal.</span><span class="i18n-ar" dir="rtl">تُنفَّذ جملة <code>SELECT</code> الموجودة بين القوسين أولًا، فيحل الرقم الناتج عنها محل القيمة الحرفية.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">The same idea against <strong>Orbit Electronics</strong> — the <code>products</code> and <code>categories</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">الفكرة نفسها على <strong>Orbit Electronics</strong> — جدولا <code>products</code> و<code>categories</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — a literal guess</span><span class="i18n-ar" dir="rtl">مثال ١ — تخمين بقيمة حرفية</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT name, price FROM products WHERE price > 50;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — a JOIN compares to a row</span><span class="i18n-ar" dir="rtl">مثال ٢ — الضم يقارن بصفٍّ آخر</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT p.name, c.name AS category_name FROM products p JOIN categories c ON p.category_id = c.id WHERE c.department = 'Home';"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — compare to a computed value</span><span class="i18n-ar" dir="rtl">مثال ٣ — المقارنة بقيمة محسوبة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT name, price FROM products WHERE price > (SELECT AVG(price) FROM products);"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="4" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"A subquery is:","ar":"الاستعلام الفرعي هو:"},
+         "options":[{"en":"A SELECT nested inside another statement","ar":"جملة SELECT مُضمَّنة داخل عبارة أخرى"},{"en":"A kind of JOIN","ar":"نوع من أنواع JOIN"},{"en":"A saved view","ar":"عرض (view) محفوظ"},{"en":"A stored procedure","ar":"إجراء مخزَّن (stored procedure)"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="4" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"WHERE price > 50 and WHERE price > (SELECT AVG(price) FROM products) have the same shape but different behavior.","ar":"العبارتان WHERE price > 50 و WHERE price > (SELECT AVG(price) FROM products) لهما الشكل نفسه لكن سلوكهما مختلف."},
+         "correct":true,
+         "explain":{"en":"The right-hand side is a fixed guess in one and a value computed at runtime in the other.","ar":"الطرف الأيمن في الأولى تخمين ثابت، وفي الثانية قيمة تُحسَب أثناء التنفيذ."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="4" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the clause to filter by the average, not a literal.","ar":"أكمل الجملة للتصفية حسب المتوسط بدلًا من قيمة حرفية."},
+         "template":"SELECT name FROM products WHERE price > (SELECT ____(price) FROM products);","answers":["AVG"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="4" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Order how a subquery-filter executes.","ar":"رتّب كيفية تنفيذ التصفية بالاستعلام الفرعي."},
+         "items":[{"en":"The inner subquery runs and returns a value","ar":"يُنفَّذ الاستعلام الفرعي الداخلي ويُرجع قيمة"},{"en":"The outer WHERE compares each row to that value","ar":"تقارن جملة WHERE الخارجية كل صف بتلك القيمة"},{"en":"Matching outer rows are returned","ar":"تُرجَع الصفوف الخارجية المطابقة"}]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return the <code>name</code> of every product cheaper than the overall average price.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أرجِع <code>name</code> كل منتج سعره أقل من متوسط السعر الإجمالي.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="4" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":4,"placeholder":"SELECT name FROM products WHERE price < (SELECT ...)","grade":{"mode":"result","expected":"SELECT name FROM products WHERE price < (SELECT AVG(price) FROM products)"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> — the <code>courses</code> and <code>departments</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> — جدولا <code>courses</code> و<code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="4" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"A subquery is:","ar":"الاستعلام الفرعي هو:"},
+         "options":[{"en":"a query stored as a view","ar":"استعلام محفوظ على هيئة عرض (view)"},{"en":"a SELECT nested inside another statement","ar":"جملة SELECT مُضمَّنة داخل عبارة أخرى"},{"en":"a type of JOIN","ar":"نوع من أنواع JOIN"},{"en":"a stored procedure","ar":"إجراء مخزَّن (stored procedure)"}],
+         "correctIndex":1}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="4" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A subquery used in a WHERE clause must always return more than one row.","ar":"يجب أن يُرجع الاستعلام الفرعي المستخدَم في جملة WHERE أكثر من صف دائمًا."},
+         "correct":false}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="4" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the filter comparing to the average.","ar":"أكمل التصفية بالمقارنة مع المتوسط."},
+         "template":"SELECT title FROM courses WHERE credits > (SELECT ____(credits) FROM courses);","answers":["AVG"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return the <code>title</code> of courses whose <code>enrollment_cap</code> is above the average enrollment cap across all courses.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أرجِع <code>title</code> المقررات التي يكون <code>enrollment_cap</code> فيها أعلى من متوسط سعة التسجيل عبر جميع المقررات.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="4" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":4,"placeholder":"SELECT title FROM courses WHERE enrollment_cap > (SELECT ...)","grade":{"mode":"result","expected":"SELECT title FROM courses WHERE enrollment_cap > (SELECT AVG(enrollment_cap) FROM courses)"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="4" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Put these in execution order.","ar":"رتّب هذه حسب ترتيب التنفيذ."},
+         "items":[{"en":"The inner subquery runs and returns a value","ar":"يُنفَّذ الاستعلام الفرعي الداخلي ويُرجع قيمة"},{"en":"The outer WHERE compares each row to that value","ar":"تقارن جملة WHERE الخارجية كل صف بتلك القيمة"},{"en":"The outer query returns the matching rows","ar":"يُرجع الاستعلام الخارجي الصفوف المطابقة"}]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t6" data-chapter="4" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Match each comparison to the chapter that introduced it.","ar":"طابِق كل نوع مقارنة بالفصل الذي قدّمه."},
+         "left":[{"en":"Compare to a literal","ar":"المقارنة بقيمة حرفية"},{"en":"Compare to a joined row","ar":"المقارنة بصفٍّ مضموم"},{"en":"Compare to a computed value","ar":"المقارنة بقيمة محسوبة"}],
+         "right":[{"en":"Chapter 1","ar":"الفصل ١"},{"en":"Chapter 3","ar":"الفصل ٣"},{"en":"Chapter 4","ar":"الفصل ٤"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="4" data-lesson="1"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

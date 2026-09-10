@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 3 · Lesson 3 — Joining Tables (JOIN) · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="3" data-lesson="3">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="3" data-lesson="3"></nav>
+
+    <h1 class="i18n-en">Lesson 3 — Joining Tables (JOIN)</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٣ — ربط الجداول (JOIN)</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en"><code>JOIN</code> lets one <code>SELECT</code> read matched data from two tables at once, following a foreign key from a child row to its parent row. You name both tables, and an <code>ON</code> clause saying how they match — the child's foreign key equals the parent's primary key. You can then select columns from either table in the same result. Give each table a short <strong>alias</strong> (e.g. <code>b</code> for <code>books</code>, <code>a</code> for <code>authors</code>) to keep column references short and unambiguous.</p>
+      <p class="i18n-ar" dir="rtl">يتيح <code>JOIN</code> لعبارة <code>SELECT</code> واحدة قراءة بيانات متطابقة من جدولين معًا، متتبِّعًا مفتاحًا أجنبيًا من صف ابن إلى صف الأب. تذكر كلا الجدولين، وتكتب جملة <code>ON</code> تُبيّن كيف يتطابقان — المفتاح الأجنبي للابن يساوي المفتاح الأساسي للأب. عندها يمكنك اختيار أعمدة من أي من الجدولين في النتيجة نفسها. وأعطِ كل جدول اسمًا مختصرًا (<strong>alias</strong>) (مثل <code>b</code> لـ<code>books</code> و<code>a</code> لـ<code>authors</code>) لإبقاء الإشارة إلى الأعمدة قصيرة وواضحة.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>SELECT b.title, a.name AS author_name
+FROM books b
+JOIN authors a ON b.author_id = a.id;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code> joined to <code>authors</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code> مربوطًا بـ<code>authors</code></h2>
+      <p class="i18n-en">These read from the chapter-3 snapshot, where <code>books.author_id</code> is already populated.</p>
+      <p class="i18n-ar" dir="rtl">تقرأ هذه الأمثلة من لقطة الفصل الثالث، حيث يكون <code>books.author_id</code> مملوءًا بالفعل.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — every book with its author's name</span><span class="i18n-ar" dir="rtl">مثال ١ — كل كتاب مع اسم مؤلفه</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":3,"sql":"SELECT b.title, a.name AS author_name FROM books b JOIN authors a ON b.author_id = a.id;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">This is the payoff of lesson 1's <code>author_id</code> column — you no longer have to look the author up yourself, <code>JOIN</code> does it for every row.</p>
+      <p class="caption i18n-ar" dir="rtl">هذه هي ثمرة عمود <code>author_id</code> من الدرس الأول — لم تعد بحاجة إلى البحث عن المؤلف بنفسك، فـ<code>JOIN</code> يفعل ذلك لكل صف.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — JOIN combined with a WHERE filter</span><span class="i18n-ar" dir="rtl">مثال ٢ — JOIN مع مرشِّح WHERE</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":3,"sql":"SELECT b.title, b.price, a.name AS author_name FROM books b JOIN authors a ON b.author_id = a.id WHERE b.price > 18;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — read starting from the parent side, sorted</span><span class="i18n-ar" dir="rtl">مثال ٣ — القراءة انطلاقًا من جهة الأب، مرتَّبة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":3,"sql":"SELECT a.name AS author_name, b.title FROM authors a JOIN books b ON a.id = b.author_id ORDER BY a.name;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">Same relationship, read from the parent side. An author with more than one book appears once per book.</p>
+      <p class="caption i18n-ar" dir="rtl">العلاقة نفسها، مقروءة من جهة الأب. والمؤلف الذي له أكثر من كتاب يظهر مرة لكل كتاب.</p>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Now join <strong>Orbit Electronics</strong>' <code>products</code> to their <code>categories</code>.</p>
+      <p class="i18n-ar" dir="rtl">الآن اربط جدول <code>products</code> في <strong>Orbit Electronics</strong> بجدول <code>categories</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1</span><span class="i18n-ar" dir="rtl">مثال ١</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":3,"sql":"SELECT p.name, c.name AS category_name FROM products p JOIN categories c ON p.category_id = c.id;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2</span><span class="i18n-ar" dir="rtl">مثال ٢</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":3,"sql":"SELECT p.name, p.price, c.name AS category_name FROM products p JOIN categories c ON p.category_id = c.id WHERE p.price > 100;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3</span><span class="i18n-ar" dir="rtl">مثال ٣</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":3,"sql":"SELECT c.name AS category_name, p.name FROM categories c JOIN products p ON c.id = p.category_id ORDER BY c.name;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="3" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"What does the ON clause in a JOIN specify?","ar":"ماذا تُحدّد جملة ON في عبارة JOIN؟"},
+         "options":[{"en":"How rows from the two tables are matched to each other","ar":"كيف تُطابَق صفوف الجدولين ببعضها"},{"en":"Which columns to return","ar":"أي الأعمدة تُعاد"},{"en":"A sort order","ar":"ترتيب الفرز"},{"en":"A row limit","ar":"حدّ عدد الصفوف"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="3" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"In `products p JOIN categories c ON p.category_id = c.id`, `p` and `c` are table aliases.","ar":"في `products p JOIN categories c ON p.category_id = c.id`، يُعدّ `p` و`c` اسمين مختصرين (aliases) للجدولين."},
+         "correct":true,
+         "explain":{"en":"`p` and `c` are short aliases so column references like `p.name` and `c.name` stay short and unambiguous.","ar":"`p` و`c` اسمان مختصران حتى تبقى الإشارات إلى الأعمدة مثل `p.name` و`c.name` قصيرة وواضحة."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="3" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"SELECT p.name, c.name FROM products p JOIN categories c ____ p.category_id = c.id;","answers":["ON"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="3" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a statement joining products to their category names.","ar":"رتّب الأجزاء لتكوين عبارة تربط المنتجات بأسماء فئاتها."},
+         "items":["SELECT p.name, c.name AS category_name","FROM products p","JOIN categories c ON p.category_id = c.id;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Select each product's name and its category's name, aliasing the category name as <code>category_name</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اختر اسم كل منتج واسم فئته، مع تسمية اسم الفئة بديلًا بـ<code>category_name</code>.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="3" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":3,"placeholder":"SELECT ... FROM products p JOIN categories c ON ...","grade":{"mode":"result","expected":"SELECT p.name, c.name AS category_name FROM products p JOIN categories c ON p.category_id = c.id"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>courses</code> / <code>departments</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدوليها <code>courses</code> و<code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="3" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which JOIN correctly matches courses to their department?","ar":"أيّ JOIN يُطابق المقرّرات بأقسامها بشكل صحيح؟"},
+         "options":[{"en":"FROM courses c JOIN departments d ON c.department_id = d.id","ar":"FROM courses c JOIN departments d ON c.department_id = d.id"},{"en":"FROM courses c JOIN departments d ON c.id = d.id","ar":"FROM courses c JOIN departments d ON c.id = d.id"},{"en":"FROM courses c JOIN departments d ON c.department_id = d.department_id","ar":"FROM courses c JOIN departments d ON c.department_id = d.department_id"},{"en":"FROM courses c, departments d","ar":"FROM courses c, departments d"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="3" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A department with no courses will appear in the result of `FROM courses c JOIN departments d ON c.department_id = d.id`.","ar":"القسم الذي لا مقرّرات له سيظهر في نتيجة `FROM courses c JOIN departments d ON c.department_id = d.id`."},
+         "correct":false,
+         "explain":{"en":"A plain JOIN only returns matched rows, so a department with no courses is left out. LEFT JOIN (a later chapter) would keep it.","ar":"عبارة JOIN العادية تُعيد الصفوف المتطابقة فقط، فيُستبعَد القسم الذي لا مقرّرات له. أما LEFT JOIN (في فصل لاحق) فتُبقيه."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="3" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"SELECT c.title, d.name AS department_name FROM courses c JOIN departments d ____ c.department_id = d.id;","answers":["ON"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="3" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each part of the JOIN statement to its role.","ar":"طابِق كل جزء من عبارة JOIN بدوره."},
+         "left":[{"en":"courses c","ar":"courses c"},{"en":"departments d","ar":"departments d"},{"en":"ON c.department_id = d.id","ar":"ON c.department_id = d.id"}],
+         "right":[{"en":"The child table, aliased","ar":"الجدول الابن، باسم مختصر"},{"en":"The parent table, aliased","ar":"الجدول الأب، باسم مختصر"},{"en":"How the two are matched","ar":"كيف يتطابق الجدولان"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="3" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a statement joining courses to their department name, filtered to active courses only.","ar":"رتّب الأجزاء لتكوين عبارة تربط المقرّرات باسم قسمها، مُرشَّحة على المقرّرات النشطة فقط."},
+         "items":["SELECT c.title, d.name AS department_name","FROM courses c","JOIN departments d ON c.department_id = d.id","WHERE c.active = true;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Select each active course's title and its department's name (aliased as <code>department_name</code>).</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اختر عنوان كل مقرّر نشِط واسم قسمه (باسم بديل <code>department_name</code>).</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="3" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":3,"placeholder":"SELECT ... FROM courses c JOIN departments d ON ...","grade":{"mode":"result","expected":"SELECT c.title, d.name AS department_name FROM courses c JOIN departments d ON c.department_id = d.id WHERE c.active = true"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="3" data-lesson="3"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

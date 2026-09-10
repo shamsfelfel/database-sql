@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 2 · Lesson 1 — Types &amp; Many Columns · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="2" data-lesson="1">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="2" data-lesson="1"></nav>
+
+    <h1 class="i18n-en">Lesson 1 — Types &amp; Many Columns</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ١ — الأنواع والأعمدة المتعددة</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">A column's <strong>type</strong> tells the database what kind of value the column holds, and it constrains what you can do with that value. This chapter uses four types: <code>INTEGER</code> (whole numbers), <code>TEXT</code> (strings), <code>REAL</code> (decimal numbers, for things like prices), and <code>BOOLEAN</code> (true/false). A single table can mix as many columns of as many types as it needs — you simply list them all, comma-separated, inside the <code>CREATE TABLE</code> parentheses. It's the same shape as chapter 1's two-column tables, just longer.</p>
+      <p class="i18n-ar" dir="rtl">يُخبر <strong>نوع</strong> العمود قاعدةَ البيانات بنوع القيمة التي يحملها العمود، ويقيّد ما يمكنك فعله بتلك القيمة. يستخدم هذا الفصل أربعة أنواع: <code>INTEGER</code> (أعداد صحيحة)، و<code>TEXT</code> (نصوص)، و<code>REAL</code> (أعداد عشرية، لأشياء مثل الأسعار)، و<code>BOOLEAN</code> (صحيح/خطأ). ويمكن للجدول الواحد أن يمزج ما يشاء من الأعمدة بما تشاء من الأنواع — فقط تسردها جميعًا مفصولة بفواصل داخل قوسي <code>CREATE TABLE</code>. إنها البنية ذاتها لجداول الفصل الأول ذات العمودين، لكنها أطول فحسب.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>CREATE TABLE table_name (
+  id INTEGER PRIMARY KEY,
+  col_a TEXT,
+  col_b REAL,
+  col_c INTEGER,
+  col_d BOOLEAN
+);</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — the <code>books</code> table</h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — جدول <code>books</code></h2>
+      <p class="i18n-en">We build the <strong>Bright Books Library</strong> <code>books</code> table, which carries five columns of four different types. Watch the <strong>Database</strong> panel as the table takes shape.</p>
+      <p class="i18n-ar" dir="rtl">نبني جدول <code>books</code> في <strong>Bright Books Library</strong>، وهو يحمل خمسة أعمدة من أربعة أنواع مختلفة. راقب لوحة <strong>قاعدة البيانات</strong> بينما يتشكّل الجدول.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — the full CREATE for <code>books</code></span><span class="i18n-ar" dir="rtl">مثال ١ — عبارة CREATE الكاملة لجدول <code>books</code></span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"sql":"CREATE TABLE books (id INTEGER PRIMARY KEY, title TEXT, price REAL, published_year INTEGER, in_stock BOOLEAN);\nSELECT * FROM books;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">Same <code>CREATE TABLE</code> shape as chapter 1 — just more columns, each with its own type. The table is created empty, so the <code>SELECT</code> returns 0 rows.</p>
+      <p class="caption i18n-ar" dir="rtl">البنية ذاتها لعبارة <code>CREATE TABLE</code> من الفصل الأول — لكن بأعمدة أكثر، لكل منها نوعه الخاص. يُنشأ الجدول فارغًا، لذا يُرجع <code>SELECT</code> صفرًا من الصفوف.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — CREATE TABLE IF NOT EXISTS</span><span class="i18n-ar" dir="rtl">مثال ٢ — CREATE TABLE IF NOT EXISTS</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"sql":"CREATE TABLE IF NOT EXISTS books (id INTEGER PRIMARY KEY, title TEXT, price REAL, published_year INTEGER, in_stock BOOLEAN);"}
+        </script>
+      </div>
+      <p class="caption i18n-en">The safety habits from chapter 1 — <code>IF NOT EXISTS</code>, <code>DROP TABLE IF EXISTS</code> — still apply, no matter how many columns a table has. You can run this twice in a row without an error.</p>
+      <p class="caption i18n-ar" dir="rtl">عادات الأمان من الفصل الأول — <code>IF NOT EXISTS</code> و<code>DROP TABLE IF EXISTS</code> — تبقى سارية مهما بلغ عدد أعمدة الجدول. يمكنك تشغيل هذه العبارة مرتين متتاليتين دون خطأ.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — insert one full row and read it back</span><span class="i18n-ar" dir="rtl">مثال ٣ — إدراج صف كامل وقراءته مجددًا</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"sql":"CREATE TABLE books (id INTEGER PRIMARY KEY, title TEXT, price REAL, published_year INTEGER, in_stock BOOLEAN);\nINSERT INTO books (id, title, price, published_year, in_stock) VALUES (1, 'The Glass Bridge', 18.50, 2019, true);\nSELECT * FROM books;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">Every column gets a value, in the order you named them — a <code>REAL</code> for the price, an <code>INTEGER</code> for the year, <code>true</code>/<code>false</code> for <code>in_stock</code>.</p>
+      <p class="caption i18n-ar" dir="rtl">يأخذ كل عمود قيمةً، بالترتيب الذي سمّيتها به — قيمة <code>REAL</code> للسعر، وقيمة <code>INTEGER</code> للسنة، و<code>true</code>/<code>false</code> للعمود <code>in_stock</code>.</p>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Now build the <strong>Orbit Electronics</strong> <code>products</code> table — five columns of the same four types.</p>
+      <p class="i18n-ar" dir="rtl">الآن ابنِ جدول <code>products</code> في <strong>Orbit Electronics</strong> — خمسة أعمدة من الأنواع الأربعة ذاتها.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — the full CREATE for <code>products</code></span><span class="i18n-ar" dir="rtl">مثال ١ — عبارة CREATE الكاملة لجدول <code>products</code></span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"sql":"CREATE TABLE products (id INTEGER PRIMARY KEY, name TEXT, price REAL, stock_qty INTEGER, is_featured BOOLEAN);\nSELECT * FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — CREATE TABLE IF NOT EXISTS</span><span class="i18n-ar" dir="rtl">مثال ٢ — CREATE TABLE IF NOT EXISTS</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"sql":"CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY, name TEXT, price REAL, stock_qty INTEGER, is_featured BOOLEAN);"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — insert one full row and read it back</span><span class="i18n-ar" dir="rtl">مثال ٣ — إدراج صف كامل وقراءته مجددًا</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"sql":"CREATE TABLE products (id INTEGER PRIMARY KEY, name TEXT, price REAL, stock_qty INTEGER, is_featured BOOLEAN);\nINSERT INTO products (id, name, price, stock_qty, is_featured) VALUES (1, 'Voyager 14 Laptop', 1299.00, 8, true);\nSELECT * FROM products;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="2" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which type best fits a price column like 89.99?","ar":"أي نوع يناسب عمود سعر مثل 89.99؟"},
+         "options":[{"en":"REAL","ar":"REAL"},{"en":"INTEGER","ar":"INTEGER"},{"en":"TEXT","ar":"TEXT"},{"en":"BOOLEAN","ar":"BOOLEAN"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="2" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A table's columns must all be the same type.","ar":"يجب أن تكون كل أعمدة الجدول من النوع نفسه."},
+         "correct":false,
+         "explain":{"en":"A single table can mix columns of any types it needs — INTEGER, TEXT, REAL and BOOLEAN together in one table is normal.","ar":"يمكن للجدول الواحد أن يمزج أعمدة من أي أنواع يحتاجها — فوجود INTEGER وTEXT وREAL وBOOLEAN معًا في جدول واحد أمر طبيعي."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="2" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Choose the type for a whole-number quantity column.","ar":"اختر النوع المناسب لعمود كمية بأعداد صحيحة."},
+         "template":"stock_qty ____","answers":["INTEGER"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="2" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a valid CREATE TABLE for a reviews table with id (PK), product_id (INTEGER), rating (INTEGER), and comment (TEXT).","ar":"رتّب الأجزاء لتكوين عبارة CREATE TABLE صحيحة لجدول reviews يحوي id (مفتاح أساسي)، وproduct_id (INTEGER)، وrating (INTEGER)، وcomment (TEXT)."},
+         "items":["CREATE TABLE reviews (","id INTEGER PRIMARY KEY,","product_id INTEGER,","rating INTEGER,","comment TEXT",");"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Create a table named <code>reviews</code> with: <code>id</code> (integer primary key), <code>product_id</code> (integer), <code>rating</code> (integer), <code>comment</code> (text).</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أنشئ جدولًا باسم <code>reviews</code> يحوي: <code>id</code> (مفتاح أساسي عددي صحيح)، و<code>product_id</code> (عدد صحيح)، و<code>rating</code> (عدد صحيح)، و<code>comment</code> (نص).</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="2" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"dataset":{},"placeholder":"CREATE TABLE reviews ( ... );","grade":{"mode":"structural","table":"reviews","columns":["id","product_id","rating","comment"]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>courses</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدولها <code>courses</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="2" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which type fits a true/false column like active?","ar":"أي نوع يناسب عمودًا من نوع صحيح/خطأ مثل active؟"},
+         "options":[{"en":"BOOLEAN","ar":"BOOLEAN"},{"en":"TEXT","ar":"TEXT"},{"en":"INTEGER","ar":"INTEGER"},{"en":"REAL","ar":"REAL"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="2" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"credits INTEGER and credits TEXT would behave identically.","ar":"العمودان credits INTEGER وcredits TEXT سيتصرفان بالطريقة نفسها تمامًا."},
+         "correct":false,
+         "explain":{"en":"The type changes how values are stored and what operations make sense — an INTEGER credits column and a TEXT one are not interchangeable.","ar":"يُغيّر النوعُ كيفيةَ تخزين القيم والعمليات التي لها معنى — فعمود credits من نوع INTEGER لا يكافئ نظيره من نوع TEXT."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="2" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing type.","ar":"أكمل النوع الناقص."},
+         "template":"CREATE TABLE courses (id INTEGER PRIMARY KEY, title TEXT, credits ____, level TEXT, active BOOLEAN);","answers":["INTEGER"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="2" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each sample value to the column type it belongs in.","ar":"طابِق كل قيمة نموذجية بنوع العمود الذي تنتمي إليه."},
+         "left":[{"en":"'Cell Biology'","ar":"'Cell Biology'"},{"en":"3","ar":"3"},{"en":"true","ar":"true"},{"en":"89.99","ar":"89.99"}],
+         "right":[{"en":"TEXT","ar":"TEXT"},{"en":"INTEGER","ar":"INTEGER"},{"en":"BOOLEAN","ar":"BOOLEAN"},{"en":"REAL","ar":"REAL"}],
+         "correctPairs":[[0,0],[1,1],[2,2],[3,3]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="2" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a valid CREATE TABLE for a sections table: id (PK), course_id (INTEGER), room (TEXT), capacity (INTEGER).","ar":"رتّب الأجزاء لتكوين عبارة CREATE TABLE صحيحة لجدول sections: id (مفتاح أساسي)، وcourse_id (INTEGER)، وroom (TEXT)، وcapacity (INTEGER)."},
+         "items":["CREATE TABLE sections (","id INTEGER PRIMARY KEY,","course_id INTEGER,","room TEXT,","capacity INTEGER",");"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Create a table named <code>sections</code> with: <code>id</code> (integer primary key), <code>course_id</code> (integer), <code>room</code> (text), <code>capacity</code> (integer).</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أنشئ جدولًا باسم <code>sections</code> يحوي: <code>id</code> (مفتاح أساسي عددي صحيح)، و<code>course_id</code> (عدد صحيح)، و<code>room</code> (نص)، و<code>capacity</code> (عدد صحيح).</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="2" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"dataset":{},"placeholder":"CREATE TABLE sections ( ... );","grade":{"mode":"structural","table":"sections","columns":["id","course_id","room","capacity"]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="2" data-lesson="1"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

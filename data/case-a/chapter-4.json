@@ -1,0 +1,21 @@
+{
+  "tables": {
+    "authors": [
+      { "id": 1, "name": "Laila Hammoud", "country": "Lebanon", "birth_year": 1975 },
+      { "id": 2, "name": "Marcus Reyes", "country": "Canada", "birth_year": 1982 },
+      { "id": 3, "name": "Aiko Tanaka", "country": "Japan", "birth_year": 1968 },
+      { "id": 4, "name": "Daniel Kessler", "country": "Canada", "birth_year": 1990 },
+      { "id": 5, "name": "Fatima Zahra", "country": "Morocco", "birth_year": 1979 },
+      { "id": 6, "name": "Tom Whitfield", "country": "United Kingdom", "birth_year": 1965 }
+    ],
+    "books": [
+      { "id": 1, "title": "The Glass Bridge", "price": 18.50, "published_year": 2019, "in_stock": true, "author_id": 2, "genre": "Fiction" },
+      { "id": 2, "title": "Coastal Winters", "price": 12.00, "published_year": 2021, "in_stock": true, "author_id": 5, "genre": "Fiction" },
+      { "id": 3, "title": "A Quiet Machine", "price": 24.99, "published_year": 2017, "in_stock": false, "author_id": 1, "genre": "Science Fiction" },
+      { "id": 4, "title": "Paper Kingdoms", "price": 15.75, "published_year": 2022, "in_stock": true, "author_id": 3, "genre": "Fantasy" },
+      { "id": 5, "title": "The Long Ledger", "price": 21.00, "published_year": 2015, "in_stock": false, "author_id": 2, "genre": "Fiction" },
+      { "id": 6, "title": "Nightshift Diaries", "price": 9.99, "published_year": 2023, "in_stock": true, "author_id": 6, "genre": "Science Fiction" },
+      { "id": 7, "title": "Salt and Circuits", "price": 19.25, "published_year": 2020, "in_stock": true, "author_id": 1, "genre": "Science Fiction" }
+    ]
+  }
+}

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 1 · Lesson 4 — UPDATE · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="1" data-lesson="4">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="1" data-lesson="4"></nav>
+
+    <h1 class="i18n-en">Lesson 4 — UPDATE</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٤ — التحديث (UPDATE)</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en"><code>UPDATE</code> changes existing rows. You state the table, <code>SET column = new_value</code> for whichever column(s) you're changing, and a <code>WHERE</code> clause identifying which row(s). The <code>WHERE</code> clause is critical: an <code>UPDATE</code> with no <code>WHERE</code> clause changes <em>every</em> row in the table. Always double-check the <code>WHERE</code> before running an <code>UPDATE</code>.</p>
+      <p class="i18n-ar" dir="rtl">تُغيّر <code>UPDATE</code> الصفوف الموجودة. تذكر اسم الجدول، ثم <code>SET column = new_value</code> للعمود/الأعمدة التي تُغيّرها، ثم جملة <code>WHERE</code> تُحدِّد أي صف/صفوف. وجملة <code>WHERE</code> بالغة الأهمية: فعبارة <code>UPDATE</code> بلا <code>WHERE</code> تُغيّر <em>كل</em> صف في الجدول. تحقّق دائمًا من <code>WHERE</code> قبل تشغيل <code>UPDATE</code>.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>UPDATE table_name SET name = 'New Name' WHERE id = 1;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — the <code>authors</code> table</h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — جدول <code>authors</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — update by id</span><span class="i18n-ar" dir="rtl">مثال ١ — التحديث حسب المعرّف</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":1,"sql":"UPDATE authors SET name = 'Laila H. Hammoud' WHERE id = 1;\nSELECT * FROM authors WHERE id = 1;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — match on a value instead of the id</span><span class="i18n-ar" dir="rtl">مثال ٢ — المطابقة على قيمة بدل المعرّف</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":1,"sql":"UPDATE authors SET name = 'M. Reyes' WHERE name = 'Marcus Reyes';\nSELECT * FROM authors;"}
+        </script>
+      </div>
+      <p class="caption i18n-en"><code>WHERE</code> can match on any column, not just the primary key — just be sure it's specific enough.</p>
+      <p class="caption i18n-ar" dir="rtl">يمكن لـ<code>WHERE</code> أن تطابق على أي عمود، لا المفتاح الأساسي فقط — فقط تأكّد أنها محدّدة بما يكفي.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the danger case (shown, not run)</span><span class="i18n-ar" dir="rtl">مثال ٣ — حالة الخطر (معروضة، لا تُشغَّل)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","readonly":true,"dataset":{},"sql":"UPDATE authors SET name = 'Anonymous';"}
+        </script>
+      </div>
+      <div class="callout warn">
+        <p class="i18n-en" style="margin:0">No <code>WHERE</code> clause means every row matches — this would rename <em>every</em> author to 'Anonymous'. Always check your <code>WHERE</code> clause before running an <code>UPDATE</code>.</p>
+        <p class="i18n-ar" dir="rtl" style="margin:0">غياب جملة <code>WHERE</code> يعني أن كل صف يطابق — وهذا سيُعيد تسمية <em>كل</em> مؤلف إلى 'Anonymous'. تحقّق دائمًا من جملة <code>WHERE</code> قبل تشغيل <code>UPDATE</code>.</p>
+      </div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">The <strong>Orbit Electronics</strong> <code>categories</code> table.</p>
+      <p class="i18n-ar" dir="rtl">جدول <code>categories</code> في <strong>Orbit Electronics</strong>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1</span><span class="i18n-ar" dir="rtl">مثال ١</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":1,"sql":"UPDATE categories SET name = 'Laptops & Notebooks' WHERE id = 1;\nSELECT * FROM categories WHERE id = 1;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2</span><span class="i18n-ar" dir="rtl">مثال ٢</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":1,"sql":"UPDATE categories SET name = 'Home Audio' WHERE name = 'Audio';\nSELECT * FROM categories;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the danger case (shown, not run)</span><span class="i18n-ar" dir="rtl">مثال ٣ — حالة الخطر (معروضة، لا تُشغَّل)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","readonly":true,"dataset":{},"sql":"UPDATE categories SET name = 'Misc';"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="1" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"What happens if an UPDATE statement has no WHERE clause?","ar":"ماذا يحدث إذا لم تحتوِ عبارة UPDATE على جملة WHERE؟"},
+         "options":[{"en":"Every row in the table is updated","ar":"يُحدَّث كل صف في الجدول"},{"en":"The statement is rejected","ar":"تُرفض العبارة"},{"en":"Only the first row is updated","ar":"يُحدَّث الصف الأول فقط"},{"en":"Nothing happens","ar":"لا يحدث شيء"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="1" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"WHERE in an UPDATE can only match on the primary key column.","ar":"لا يمكن لـ WHERE في UPDATE أن تطابق إلا على عمود المفتاح الأساسي."},
+         "correct":false,
+         "explain":{"en":"WHERE can match on any column.","ar":"يمكن لـ WHERE أن تطابق على أي عمود."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="1" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"UPDATE categories ____ name = 'Wearable Tech' WHERE id = 4;","answers":["SET"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="1" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a valid UPDATE that renames the category with id 6 to 'Add-ons'.","ar":"رتّب الأجزاء لتكوين عبارة UPDATE صحيحة تُعيد تسمية الفئة ذات المعرّف 6 إلى 'Add-ons'."},
+         "items":["UPDATE categories","SET name = 'Add-ons'","WHERE id = 6;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Rename the category with <code>id</code> 2 to <code>'Mobile Phones'</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد تسمية الفئة ذات <code>id</code> 2 إلى <code>'Mobile Phones'</code>.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="1" data-lesson="4">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":1,"placeholder":"UPDATE categories SET ... WHERE ...","grade":{"mode":"state","check":"SELECT * FROM categories WHERE id = 2","expected":[{"id":2,"name":"Mobile Phones"}]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>departments</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدولها <code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="1" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which clause tells UPDATE which rows to change?","ar":"أي جملة تُخبر UPDATE أي صفوف تُغيّر؟"},
+         "options":[{"en":"WHERE","ar":"WHERE"},{"en":"SET","ar":"SET"},{"en":"FROM","ar":"FROM"},{"en":"INTO","ar":"INTO"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="1" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"UPDATE departments SET name = 'Renamed'; with no WHERE clause is safe because it only changes one row.","ar":"العبارة UPDATE departments SET name = 'Renamed'; بلا WHERE آمنة لأنها تُغيّر صفًا واحدًا فقط."},
+         "correct":false,
+         "explain":{"en":"With no WHERE, it changes every row.","ar":"بلا WHERE، تُغيّر كل صف."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="1" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"UPDATE departments SET name = 'Applied Mathematics' ____ id = 2;","answers":["WHERE"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="1" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each clause to its role in an UPDATE statement.","ar":"طابِق كل جملة بدورها في عبارة UPDATE."},
+         "left":[{"en":"UPDATE departments","ar":"UPDATE departments"},{"en":"SET name = '...'","ar":"SET name = '...'"},{"en":"WHERE id = ...","ar":"WHERE id = ..."}],
+         "right":[{"en":"Names the table being changed","ar":"تُسمّي الجدول الذي يجري تغييره"},{"en":"Specifies the new value","ar":"تُحدِّد القيمة الجديدة"},{"en":"Limits which row(s) are changed","ar":"تُقيّد أي صف/صفوف يجري تغييرها"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="1" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a statement renaming the department with id 6 to 'Visual Arts'.","ar":"رتّب الأجزاء لتكوين عبارة تُعيد تسمية القسم ذي المعرّف 6 إلى 'Visual Arts'."},
+         "items":["UPDATE departments","SET name = 'Visual Arts'","WHERE id = 6;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Rename the department with <code>id</code> 3 to <code>'Applied Physics'</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد تسمية القسم ذي <code>id</code> 3 إلى <code>'Applied Physics'</code>.</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="1" data-lesson="4">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":1,"placeholder":"UPDATE departments SET ... WHERE ...","grade":{"mode":"state","check":"SELECT * FROM departments WHERE id = 3","expected":[{"id":3,"name":"Applied Physics"}]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="1" data-lesson="4"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

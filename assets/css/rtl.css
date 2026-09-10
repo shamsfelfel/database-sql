@@ -1,0 +1,30 @@
+/* Arabic / RTL-specific overrides. Kept LAST in load order so it wins.
+   Most mirroring is handled by logical properties in base/components; this file
+   covers the few things that need an explicit direction-aware tweak, plus the
+   Arabic font swap. */
+
+:root[dir="rtl"] {
+  /* Swap the UI face to the Arabic family; keep mono for code. */
+  --font-ui: var(--font-ar);
+}
+
+/* Prose and chrome mirror with dir=rtl automatically. A few nudges: */
+:root[dir="rtl"] .footer-nav .next { text-align: start; }
+:root[dir="rtl"] .example-label { letter-spacing: 0; }
+
+/* Code, SQL editors, and result tables stay LTR regardless of UI language.
+   (Reinforces the direction:ltr already set on these in widget.css/questions.css.) */
+:root[dir="rtl"] .qb-widget textarea.editor,
+:root[dir="rtl"] .qb-widget .result-table,
+:root[dir="rtl"] .qb-widget .error-banner,
+:root[dir="rtl"] .fill-line input,
+:root[dir="rtl"] .order-item,
+:root[dir="rtl"] code,
+:root[dir="rtl"] pre {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Numeric monospace chips inside Arabic prose read left-to-right. */
+:root[dir="rtl"] .chip,
+:root[dir="rtl"] .q-num { direction: ltr; }

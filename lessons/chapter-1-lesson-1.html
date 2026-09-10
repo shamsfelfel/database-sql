@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 1 · Lesson 1 — CREATE TABLE · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="1" data-lesson="1">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="1" data-lesson="1"></nav>
+
+    <h1 class="i18n-en">Lesson 1 — CREATE TABLE</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ١ — إنشاء جدول (CREATE TABLE)</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">A table is where a database stores rows of the same shape — think of it like a single sheet in a spreadsheet, or an array of same-shaped objects in code. You define a table's shape once with <code>CREATE TABLE</code>: its name, and a list of columns, each with a type. The <code>PRIMARY KEY</code> marks the column that uniquely identifies each row — no two rows may share the same value there, and it can never be empty. In this lesson every table has just two columns: an <code>id</code> (a whole number, the primary key) and a <code>name</code> (text). Later chapters add more columns, more types, and relationships between tables — for now, keep it this simple on purpose.</p>
+      <p class="i18n-ar" dir="rtl">الجدول هو المكان الذي تُخزِّن فيه قاعدة البيانات صفوفًا لها الشكل نفسه — تخيّله كورقة واحدة في جدول بيانات، أو كمصفوفة من كائنات متطابقة الشكل في الكود. تُعرّف شكل الجدول مرة واحدة باستخدام <code>CREATE TABLE</code>: اسمه، وقائمة بأعمدته، ولكل عمود نوع. ويُحدِّد <code>PRIMARY KEY</code> العمودَ الذي يُميّز كل صف بشكل فريد — لا يمكن لصفّين أن يتشاركا القيمة نفسها فيه، ولا يمكن أن يكون فارغًا أبدًا. في هذا الدرس يتكوّن كل جدول من عمودين فقط: <code>id</code> (عدد صحيح، وهو المفتاح الأساسي) و<code>name</code> (نص). ستضيف الفصول اللاحقة مزيدًا من الأعمدة والأنواع والعلاقات بين الجداول — أمّا الآن فنُبقيها بهذه البساطة عن قصد.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>CREATE TABLE table_name (
+  id INTEGER PRIMARY KEY,
+  name TEXT
+);</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — the <code>authors</code> table</h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — جدول <code>authors</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — the basic statement</span><span class="i18n-ar" dir="rtl">مثال ١ — العبارة الأساسية</span></div>
+      <div class="qb-widget" data-mode="demo">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"sql":"CREATE TABLE authors (id INTEGER PRIMARY KEY, name TEXT);\nSELECT * FROM authors;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">Creating a table just defines its shape. It starts out empty — the <code>SELECT</code> returns 0 rows.</p>
+      <p class="caption i18n-ar" dir="rtl">إنشاء الجدول يُعرِّف شكله فقط. يبدأ فارغًا — لذا يُعيد <code>SELECT</code> صفرًا من الصفوف.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — recreating safely with DROP TABLE IF EXISTS</span><span class="i18n-ar" dir="rtl">مثال ٢ — إعادة الإنشاء بأمان عبر DROP TABLE IF EXISTS</span></div>
+      <div class="qb-widget" data-mode="demo">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"sql":"DROP TABLE IF EXISTS authors;\nCREATE TABLE authors (id INTEGER PRIMARY KEY, name TEXT);"}
+        </script>
+      </div>
+      <p class="caption i18n-en">While experimenting, it's common to drop and recreate a table from scratch. <code>IF EXISTS</code> prevents an error on the DROP if it isn't there yet.</p>
+      <p class="caption i18n-ar" dir="rtl">أثناء التجربة، من الشائع حذف الجدول وإعادة إنشائه من الصفر. تمنع <code>IF EXISTS</code> حدوث خطأ عند الحذف إذا لم يكن الجدول موجودًا بعد.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — guarding the CREATE itself</span><span class="i18n-ar" dir="rtl">مثال ٣ — حماية عبارة الإنشاء نفسها</span></div>
+      <div class="qb-widget" data-mode="demo">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"sql":"CREATE TABLE IF NOT EXISTS authors (id INTEGER PRIMARY KEY, name TEXT);"}
+        </script>
+      </div>
+      <p class="caption i18n-en"><code>IF NOT EXISTS</code> is the CREATE-side guard — running this twice in a row never errors.</p>
+      <p class="caption i18n-ar" dir="rtl"><code>IF NOT EXISTS</code> هي الحماية من جهة الإنشاء — تشغيلها مرتين متتاليتين لا يُسبِّب أي خطأ.</p>
+
+      <h2 class="i18n-en">Sandbox</h2>
+      <h2 class="i18n-ar" dir="rtl">ساحة التجريب</h2>
+      <p class="i18n-en">This sandbox is pre-loaded with a populated <code>authors</code> table (you'll learn to fill one in the next lesson). Try a query, or tap an example chip.</p>
+      <p class="i18n-ar" dir="rtl">هذه الساحة محمّلة مسبقًا بجدول <code>authors</code> ممتلئ (ستتعلّم تعبئته في الدرس التالي). جرّب استعلامًا، أو اضغط على أحد أمثلة الرقاقات.</p>
+      <div class="qb-widget" data-mode="explore">
+        <script type="application/json" class="wd-config">
+        {"mode":"explore","case":"a","chapter":1,"sql":"SELECT * FROM authors;","examples":[{"label":"all rows","sql":"SELECT * FROM authors;"},{"label":"one row","sql":"SELECT * FROM authors WHERE id = 3;"},{"label":"names only","sql":"SELECT name FROM authors;"}]}
+        </script>
+      </div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Same three patterns, a different database: <strong>Orbit Electronics</strong> and its <code>categories</code> table. Run each, then work through the practice questions.</p>
+      <p class="i18n-ar" dir="rtl">الأنماط الثلاثة نفسها، لكن على قاعدة بيانات مختلفة: <strong>Orbit Electronics</strong> وجدولها <code>categories</code>. شغّل كلًّا منها، ثم انتقل إلى أسئلة التمارين.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1</span><span class="i18n-ar" dir="rtl">مثال ١</span></div>
+      <div class="qb-widget" data-mode="demo">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"sql":"CREATE TABLE categories (id INTEGER PRIMARY KEY, name TEXT);\nSELECT * FROM categories;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2</span><span class="i18n-ar" dir="rtl">مثال ٢</span></div>
+      <div class="qb-widget" data-mode="demo">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"sql":"DROP TABLE IF EXISTS categories;\nCREATE TABLE categories (id INTEGER PRIMARY KEY, name TEXT);"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3</span><span class="i18n-ar" dir="rtl">مثال ٣</span></div>
+      <div class="qb-widget" data-mode="demo">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"sql":"CREATE TABLE IF NOT EXISTS categories (id INTEGER PRIMARY KEY, name TEXT);"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="1" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which keyword marks a column as the one that uniquely identifies each row in a table?","ar":"أي كلمة مفتاحية تُحدِّد العمود الذي يُميّز كل صف في الجدول بشكل فريد؟"},
+         "options":[{"en":"PRIMARY KEY","ar":"PRIMARY KEY"},{"en":"UNIQUE ID","ar":"UNIQUE ID"},{"en":"INDEX KEY","ar":"INDEX KEY"},{"en":"AUTO KEY","ar":"AUTO KEY"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="1" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"Two different rows in the same table can have the same PRIMARY KEY value.","ar":"يمكن لصفّين مختلفين في الجدول نفسه أن يحملا القيمة نفسها للمفتاح الأساسي."},
+         "correct":false,
+         "explain":{"en":"A primary key must be unique — that's exactly what it guarantees.","ar":"يجب أن يكون المفتاح الأساسي فريدًا — وهذا بالضبط ما يضمنه."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="1" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"____ TABLE categories (id INTEGER PRIMARY KEY, name TEXT);","answers":["CREATE"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="1" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange these fragments into a valid CREATE TABLE statement for a table named brands with an integer primary key id and a text column name.","ar":"رتّب هذه الأجزاء لتكوين عبارة CREATE TABLE صحيحة لجدول اسمه brands، بمفتاح أساسي صحيح id وعمود نصّي name."},
+         "items":["CREATE TABLE brands (","id INTEGER PRIMARY KEY,","name TEXT",");"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Create a table named <code>suppliers</code> with an integer primary key column <code>id</code> and a text column <code>name</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أنشئ جدولًا اسمه <code>suppliers</code> بعمود مفتاح أساسي صحيح <code>id</code> وعمود نصّي <code>name</code>.</p>
+        <div class="qb-widget" data-mode="exercise" data-qid="lab-q5" data-chapter="1" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"dataset":{},"sql":"","placeholder":"CREATE TABLE suppliers ( ... );","grade":{"mode":"structural","table":"suppliers","columns":["id","name"]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz on this lesson, against <strong>GreenField University</strong> and its <code>departments</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على هذا الدرس، على قاعدة بيانات <strong>GreenField University</strong> وجدولها <code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="1" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"What happens if you try to CREATE TABLE a table that already exists, without IF NOT EXISTS?","ar":"ماذا يحدث إذا حاولت إنشاء جدول (CREATE TABLE) موجود بالفعل، دون استخدام IF NOT EXISTS؟"},
+         "options":[{"en":"It silently does nothing","ar":"لا يفعل شيئًا بصمت"},{"en":"It raises an error","ar":"يُطلق خطأً"},{"en":"It replaces the old table","ar":"يستبدل الجدول القديم"},{"en":"It renames the old table","ar":"يُعيد تسمية الجدول القديم"}],
+         "correctIndex":1}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="1" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A table's primary key column is allowed to be left empty (NULL) on some rows.","ar":"يُسمح بترك عمود المفتاح الأساسي فارغًا (NULL) في بعض الصفوف."},
+         "correct":false,
+         "explain":{"en":"A primary key can never be empty — every row must have one.","ar":"لا يمكن أن يكون المفتاح الأساسي فارغًا أبدًا — لكل صف قيمة فيه."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="1" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"CREATE TABLE IF NOT ____ departments (id INTEGER PRIMARY KEY, name TEXT);","answers":["EXISTS"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="1" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each term to its meaning.","ar":"طابِق كل مصطلح بمعناه."},
+         "left":[{"en":"TABLE","ar":"جدول (TABLE)"},{"en":"PRIMARY KEY","ar":"المفتاح الأساسي (PRIMARY KEY)"},{"en":"COLUMN","ar":"عمود (COLUMN)"},{"en":"ROW","ar":"صف (ROW)"}],
+         "right":[{"en":"A named, structured collection of rows","ar":"مجموعة منظَّمة ومُسمّاة من الصفوف"},{"en":"The column that uniquely identifies each row","ar":"العمود الذي يُميّز كل صف بشكل فريد"},{"en":"A single named field every row has","ar":"حقل واحد مُسمّى موجود في كل صف"},{"en":"A single record stored in a table","ar":"سجلّ واحد مخزَّن في الجدول"}],
+         "correctPairs":[[0,0],[1,1],[2,2],[3,3]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="1" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange these fragments into a valid CREATE TABLE statement for a table named majors with an integer primary key id and a text column name.","ar":"رتّب هذه الأجزاء لتكوين عبارة CREATE TABLE صحيحة لجدول اسمه majors، بمفتاح أساسي صحيح id وعمود نصّي name."},
+         "items":["CREATE TABLE majors (","id INTEGER PRIMARY KEY,","name TEXT",");"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Create a table named <code>majors</code> with an integer primary key <code>id</code> and a text column <code>name</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أنشئ جدولًا اسمه <code>majors</code> بمفتاح أساسي صحيح <code>id</code> وعمود نصّي <code>name</code>.</p>
+        <div class="qb-widget" data-mode="exercise" data-qid="test-t6" data-chapter="1" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"dataset":{},"sql":"","placeholder":"CREATE TABLE majors ( ... );","grade":{"mode":"structural","table":"majors","columns":["id","name"]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="1" data-lesson="1"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

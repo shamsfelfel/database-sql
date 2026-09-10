@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 3 · Lesson 2 — Inserting with a Key · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="3" data-lesson="2">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="3" data-lesson="2"></nav>
+
+    <h1 class="i18n-en">Lesson 2 — Inserting with a Key</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٢ — الإدراج بمفتاح</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">Once a foreign-key column exists, inserting a new child row is exactly like any other <code>INSERT</code> (chapter 1) — you just include a value for the foreign-key column, and that value should be the <code>id</code> of an <strong>existing</strong> parent row. Order doesn't matter for the insert itself, but the relationship only makes sense if the parent row already exists.</p>
+      <p class="i18n-ar" dir="rtl">بمجرد وجود عمود المفتاح الأجنبي، يصبح إدراج صف ابن جديد تمامًا مثل أي <code>INSERT</code> آخر (الفصل الأول) — تكتفي بتضمين قيمة لعمود المفتاح الأجنبي، وينبغي أن تكون تلك القيمة رقم <code>id</code> لصفٍّ أب <strong>موجود</strong>. الترتيب لا يهمّ للإدراج نفسه، لكن العلاقة لا يكون لها معنى إلا إذا كان صف الأب موجودًا بالفعل.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>INSERT INTO child_table (id, ..., parent_id_col) VALUES (..., &lt;existing parent id&gt;);</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — inserting <code>books</code> with an <code>author_id</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — إدراج <code>books</code> مع <code>author_id</code></h2>
+      <p class="i18n-en">The <code>books</code> table already carries the <code>author_id</code> column from lesson 1. Each new book names an existing author by their id.</p>
+      <p class="i18n-ar" dir="rtl">يحمل جدول <code>books</code> عمود <code>author_id</code> منذ الدرس الأول. وكل كتاب جديد يذكر مؤلفًا موجودًا برقمه.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — insert a child row referencing author 4</span><span class="i18n-ar" dir="rtl">مثال ١ — إدراج صف ابن يشير إلى المؤلف 4</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":3,"sql":"INSERT INTO books (id, title, price, published_year, in_stock, author_id) VALUES (8, 'Winter Static', 17.00, 2024, true, 4);\nSELECT * FROM books WHERE id = 8;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">This gives Daniel Kessler (author id 4) his first book.</p>
+      <p class="caption i18n-ar" dir="rtl">هذا يمنح Daniel Kessler (المؤلف رقم 4) أول كتاب له.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — confirm the referenced author exists</span><span class="i18n-ar" dir="rtl">مثال ٢ — التأكد من وجود المؤلف المُشار إليه</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":3,"sql":"SELECT * FROM authors WHERE id = 4;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">Author id 4 really is there — that's why pointing a book at it makes sense.</p>
+      <p class="caption i18n-ar" dir="rtl">المؤلف رقم 4 موجود فعلًا — ولهذا يكون توجيه كتاب إليه ذا معنى.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — a second book for the same author</span><span class="i18n-ar" dir="rtl">مثال ٣ — كتاب ثانٍ للمؤلف نفسه</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":3,"sql":"INSERT INTO books (id, title, price, published_year, in_stock, author_id) VALUES (9, 'Field Notes', 13.50, 2024, true, 4);\nSELECT * FROM books WHERE author_id = 4;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">Two books now point at the same author — that's the "one author, many books" shape.</p>
+      <p class="caption i18n-ar" dir="rtl">كتابان يشيران الآن إلى المؤلف نفسه — وهذه هي صورة "مؤلف واحد، كتب كثيرة".</p>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Now the same on <strong>Orbit Electronics</strong>: new <code>products</code>, each naming an existing category by its id.</p>
+      <p class="i18n-ar" dir="rtl">الآن الأمر نفسه على <strong>Orbit Electronics</strong>: منتجات جديدة، كلٌّ منها يذكر فئة موجودة برقمها.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1</span><span class="i18n-ar" dir="rtl">مثال ١</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":3,"sql":"INSERT INTO products (id, name, price, stock_qty, is_featured, category_id) VALUES (8, 'Sonic Hub Speaker', 129.00, 30, false, 3);\nSELECT * FROM products WHERE id = 8;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2</span><span class="i18n-ar" dir="rtl">مثال ٢</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":3,"sql":"SELECT * FROM categories WHERE id = 3;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3</span><span class="i18n-ar" dir="rtl">مثال ٣</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":3,"sql":"INSERT INTO products (id, name, price, stock_qty, is_featured, category_id) VALUES (9, 'BassBar Mini', 79.00, 50, false, 3);\nSELECT * FROM products WHERE category_id = 3;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="3" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"When inserting a child row, what should the foreign-key value be?","ar":"عند إدراج صف ابن، ماذا ينبغي أن تكون قيمة المفتاح الأجنبي؟"},
+         "options":[{"en":"The id of an existing row in the parent table","ar":"رقم id لصفٍّ موجود في جدول الأب"},{"en":"Any text describing the parent","ar":"أي نص يصف الأب"},{"en":"Always 0","ar":"دائمًا 0"},{"en":"The child row's own id","ar":"رقم id لصف الابن نفسه"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="3" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"Two different products can have the same category_id.","ar":"يمكن لمنتجين مختلفين أن يحملا القيمة category_id نفسها."},
+         "correct":true,
+         "explain":{"en":"Many child rows may point at the same parent — that's the whole point of one-to-many.","ar":"يمكن لصفوف أبناء كثيرة أن تشير إلى الأب نفسه — وهذا جوهر علاقة واحد-إلى-متعدد."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="3" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"INSERT INTO products (id, name, price, stock_qty, is_featured, category_id) ____ (10, 'Loop Earbuds', 45.00, 60, false, 3);","answers":["VALUES"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="3" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a statement inserting a new product in category 5 (Gaming).","ar":"رتّب الأجزاء لتكوين عبارة تُدرج منتجًا جديدًا في الفئة 5 (Gaming)."},
+         "items":["INSERT INTO products (id, name, price, stock_qty, is_featured, category_id)","VALUES","(11, 'ArcPad Controller', 39.00, 44, false, 5);"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Insert a new product: <code>id</code> 11, name <code>'ArcPad Controller'</code>, price <code>39.00</code>, stock_qty <code>44</code>, is_featured <code>false</code>, category_id <code>5</code> (Gaming — its first product).</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أدرج منتجًا جديدًا: <code>id</code> 11، الاسم <code>'ArcPad Controller'</code>، السعر <code>39.00</code>، stock_qty <code>44</code>، is_featured <code>false</code>، category_id <code>5</code> (Gaming — أول منتج لها).</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="3" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":3,"placeholder":"INSERT INTO products ...","grade":{"mode":"state","check":"SELECT * FROM products WHERE id = 11","expected":[{"id":11,"name":"ArcPad Controller","price":39.00,"stock_qty":44,"is_featured":false,"category_id":5}]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>courses</code> / <code>departments</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدوليها <code>courses</code> و<code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="3" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Before inserting a course with department_id = 5, what should be true?","ar":"قبل إدراج مقرّر بقيمة department_id = 5، ماذا ينبغي أن يكون صحيحًا؟"},
+         "options":[{"en":"A department with id 5 should already exist","ar":"ينبغي أن يكون هناك قسم رقمه 5 موجودًا بالفعل"},{"en":"The course's id must equal 5","ar":"يجب أن يساوي رقم id المقرّر 5"},{"en":"department_id must be TEXT","ar":"يجب أن يكون نوع department_id نصًّا (TEXT)"},{"en":"Nothing — any value is fine","ar":"لا شيء — أي قيمة تصلح"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="3" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"Inserting a child row automatically creates the parent row if it doesn't exist yet.","ar":"إدراج صف ابن يُنشئ صف الأب تلقائيًا إذا لم يكن موجودًا بعد."},
+         "correct":false,
+         "explain":{"en":"An INSERT only adds the row you write — it never creates a parent for you. You must insert the parent first.","ar":"عبارة INSERT تضيف الصف الذي تكتبه فقط — ولا تُنشئ أبًا نيابةً عنك أبدًا. عليك إدراج الأب أولًا."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="3" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in Business Administration's id.","ar":"أكمل رقم id قسم Business Administration."},
+         "template":"INSERT INTO courses (id, title, credits, level, active, department_id) VALUES (7, 'Intro to Marketing', 3, 'undergrad', true, ____);","answers":["5"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="3" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each insert to what it does.","ar":"طابِق كل عبارة إدراج بما تفعله."},
+         "left":[{"en":"INSERT INTO courses (...) VALUES (7, ..., department_id=5)","ar":"INSERT INTO courses (...) VALUES (7, ..., department_id=5)"},{"en":"INSERT INTO courses (...) VALUES (8, ..., department_id=5)","ar":"INSERT INTO courses (...) VALUES (8, ..., department_id=5)"},{"en":"INSERT INTO departments (...) VALUES (7, 'Design')","ar":"INSERT INTO departments (...) VALUES (7, 'Design')"}],
+         "right":[{"en":"Gives Business Administration its first course","ar":"يمنح Business Administration أول مقرّر له"},{"en":"Gives Business Administration a second course","ar":"يمنح Business Administration مقرّرًا ثانيًا"},{"en":"Adds an entirely new department","ar":"يضيف قسمًا جديدًا كليًا"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="3" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a statement inserting Business Administration's first course.","ar":"رتّب الأجزاء لتكوين عبارة تُدرج أول مقرّر لقسم Business Administration."},
+         "items":["INSERT INTO courses (id, title, credits, level, active, department_id)","VALUES","(7, 'Intro to Marketing', 3, 'undergrad', true, 5);"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Insert a new course: <code>id</code> 8, title <code>'Fine Arts Studio I'</code>, credits <code>3</code>, level <code>'undergrad'</code>, active <code>true</code>, department_id <code>6</code> (Fine Arts — its first course).</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أدرج مقرّرًا جديدًا: <code>id</code> 8، العنوان <code>'Fine Arts Studio I'</code>، credits <code>3</code>، level <code>'undergrad'</code>، active <code>true</code>، department_id <code>6</code> (Fine Arts — أول مقرّر له).</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="3" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":3,"placeholder":"INSERT INTO courses ...","grade":{"mode":"state","check":"SELECT * FROM courses WHERE id = 8","expected":[{"id":8,"title":"Fine Arts Studio I","credits":3,"level":"undergrad","active":true,"department_id":6}]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="3" data-lesson="2"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

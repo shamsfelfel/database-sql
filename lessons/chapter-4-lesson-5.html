@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 4 · Lesson 5 — EXISTS / NOT EXISTS · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="4" data-lesson="5">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="4" data-lesson="5"></nav>
+
+    <h1 class="i18n-en">Lesson 5 — EXISTS / NOT EXISTS</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٥ — وجود الصفوف (EXISTS)</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en"><code>EXISTS</code> is how most correlated checks are written in practice: instead of computing a value and comparing it, it asks &ldquo;does at least one matching row exist?&rdquo; It ignores the subquery's <code>SELECT</code> list — only whether any row comes back matters (so <code>SELECT 1</code> is idiomatic).</p>
+      <p class="i18n-ar" dir="rtl"><code>EXISTS</code> هو الأسلوب الذي تُكتب به معظم الفحوص المترابطة عمليًا: فبدلًا من حساب قيمة ومقارنتها، يسأل &ldquo;هل يوجد صفٌّ مطابقٌ واحد على الأقل؟&rdquo;. وهو يتجاهل قائمة <code>SELECT</code> في الاستعلام الفرعي — فالمهم فقط هل عاد أيّ صف أم لا (لذا يُستخدَم <code>SELECT 1</code> اصطلاحًا).</p>
+      <p class="i18n-en"><code>NOT EXISTS</code> asks the opposite, and unlike <code>NOT IN</code> it is not broken by NULLs — a reason it's usually preferred.</p>
+      <p class="i18n-ar" dir="rtl">أما <code>NOT EXISTS</code> فيسأل العكس، وخلافًا لـ<code>NOT IN</code> فإنه لا يتعطّل بسبب القيم NULL — وهذا سبب تفضيله عادةً.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>SELECT a.name FROM authors a
+WHERE EXISTS (SELECT 1 FROM books b WHERE b.author_id = a.id);</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>authors</code> and their <code>books</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>authors</code> وكتبهم <code>books</code></h2>
+      <p class="i18n-en">These read from the chapter-4 snapshot, where each book's <code>author_id</code> points back to its author.</p>
+      <p class="i18n-ar" dir="rtl">تقرأ هذه الأمثلة من لقطة الفصل الرابع، حيث يشير <code>author_id</code> لكل كتاب إلى مؤلفه.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — authors who have written at least one book</span><span class="i18n-ar" dir="rtl">مثال ١ — المؤلفون الذين ألّفوا كتابًا واحدًا على الأقل</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT a.name FROM authors a WHERE EXISTS (SELECT 1 FROM books b WHERE b.author_id = a.id);"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — authors with no books at all</span><span class="i18n-ar" dir="rtl">مثال ٢ — المؤلفون الذين ليس لديهم أي كتب</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT a.name FROM authors a WHERE NOT EXISTS (SELECT 1 FROM books b WHERE b.author_id = a.id);"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — authors with at least one book priced above 20</span><span class="i18n-ar" dir="rtl">مثال ٣ — المؤلفون الذين لديهم كتاب واحد على الأقل سعره فوق ٢٠</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT a.name FROM authors a WHERE EXISTS (SELECT 1 FROM books b WHERE b.author_id = a.id AND b.price > 20);"}
+        </script>
+      </div>
+      <p class="caption i18n-en"><code>EXISTS</code> answers yes/no — it can't express &ldquo;more than one&rdquo;; that still needs <code>COUNT</code>.</p>
+      <p class="caption i18n-ar" dir="rtl"><code>EXISTS</code> يجيب بنعم/لا — ولا يستطيع التعبير عن &ldquo;أكثر من واحد&rdquo;؛ فذلك لا يزال يحتاج إلى <code>COUNT</code>.</p>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Now use <code>EXISTS</code> against <strong>Orbit Electronics</strong>' <code>categories</code> and <code>products</code>.</p>
+      <p class="i18n-ar" dir="rtl">الآن استخدم <code>EXISTS</code> على جدولَي <code>categories</code> و<code>products</code> في <strong>Orbit Electronics</strong>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — categories that hold at least one product</span><span class="i18n-ar" dir="rtl">مثال ١ — الفئات التي تضم منتجًا واحدًا على الأقل</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT c.name FROM categories c WHERE EXISTS (SELECT 1 FROM products p WHERE p.category_id = c.id);"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — categories with no products</span><span class="i18n-ar" dir="rtl">مثال ٢ — الفئات التي لا منتجات فيها</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT c.name FROM categories c WHERE NOT EXISTS (SELECT 1 FROM products p WHERE p.category_id = c.id);"}
+        </script>
+      </div>
+      <p class="caption i18n-en">Unlike <code>NOT IN</code>, <code>NOT EXISTS</code> isn't broken by NULLs.</p>
+      <p class="caption i18n-ar" dir="rtl">خلافًا لـ<code>NOT IN</code>، فإن <code>NOT EXISTS</code> لا يتعطّل بسبب القيم NULL.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — categories holding a product priced above 100</span><span class="i18n-ar" dir="rtl">مثال ٣ — الفئات التي تضم منتجًا سعره فوق ١٠٠</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT c.name FROM categories c WHERE EXISTS (SELECT 1 FROM products p WHERE p.category_id = c.id AND p.price > 100);"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="4" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"`EXISTS` returns true when:","ar":"يُعيد `EXISTS` القيمة true عندما:"},
+         "options":[{"en":"the subquery returns at least one row","ar":"يُعيد الاستعلام الفرعي صفًا واحدًا على الأقل"},{"en":"the subquery returns a specific value","ar":"يُعيد الاستعلام الفرعي قيمة محددة"},{"en":"the subquery is syntactically valid","ar":"يكون الاستعلام الفرعي صحيحًا نحويًا"},{"en":"the outer table is not empty","ar":"لا يكون الجدول الخارجي فارغًا"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="4" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"`EXISTS` subqueries commonly use `SELECT 1` because the selected columns don't matter.","ar":"غالبًا ما تستخدم استعلامات `EXISTS` الفرعية `SELECT 1` لأن الأعمدة المختارة لا تهمّ."},
+         "correct":true}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="4" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete to find categories with NO products.","ar":"أكمل لإيجاد الفئات التي لا منتجات فيها."},
+         "template":"SELECT name FROM categories c WHERE ____ EXISTS (SELECT 1 FROM products p WHERE p.category_id = c.id);","answers":["NOT"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="lab-q4" data-chapter="4" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each to its meaning.","ar":"طابِق كلًّا منها بمعناه."},
+         "left":[{"en":"EXISTS","ar":"EXISTS"},{"en":"NOT EXISTS","ar":"NOT EXISTS"},{"en":"NOT IN risk","ar":"خطر NOT IN"}],
+         "right":[{"en":"does any row match?","ar":"هل يطابق أيّ صف؟"},{"en":"does no row match?","ar":"هل لا يطابق أيّ صف؟"},{"en":"breaks silently on NULL, unlike NOT EXISTS","ar":"يتعطّل بصمت عند وجود NULL، بخلاف NOT EXISTS"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return each DISTINCT <code>brand</code> that has at least one product in stock (<code>stock_qty &gt; 0</code>).</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد كل <code>brand</code> مميّزة (DISTINCT) لها منتج واحد على الأقل متوفّر في المخزون (<code>stock_qty &gt; 0</code>).</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="4" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":4,"placeholder":"SELECT DISTINCT ... FROM products WHERE ...","grade":{"mode":"result","expected":"SELECT DISTINCT brand FROM products WHERE stock_qty > 0"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>courses</code> / <code>departments</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدوليها <code>courses</code> و<code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="4" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"`EXISTS` returns true when:","ar":"يُعيد `EXISTS` القيمة true عندما:"},
+         "options":[{"en":"the subquery returns a specific value","ar":"يُعيد الاستعلام الفرعي قيمة محددة"},{"en":"the subquery returns at least one row","ar":"يُعيد الاستعلام الفرعي صفًا واحدًا على الأقل"},{"en":"the subquery is syntactically valid","ar":"يكون الاستعلام الفرعي صحيحًا نحويًا"},{"en":"the outer table is not empty","ar":"لا يكون الجدول الخارجي فارغًا"}],
+         "correctIndex":1}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="4" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"`EXISTS` subqueries typically use `SELECT *` or `SELECT 1` because the selected columns don't matter.","ar":"عادةً ما تستخدم استعلامات `EXISTS` الفرعية `SELECT *` أو `SELECT 1` لأن الأعمدة المختارة لا تهمّ."},
+         "correct":true}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="4" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete to find departments with NO courses.","ar":"أكمل لإيجاد الأقسام التي لا مقرّرات لها."},
+         "template":"SELECT name FROM departments d WHERE ____ EXISTS (SELECT 1 FROM courses c WHERE c.department_id = d.id);","answers":["NOT"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return the <code>name</code> of every department that offers at least one course with <code>credits</code> of 4 or more.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد <code>name</code> كل قسم يقدّم مقرّرًا واحدًا على الأقل عدد ساعاته المعتمدة <code>credits</code> ٤ أو أكثر.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="4" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":4,"placeholder":"SELECT name FROM departments d WHERE EXISTS (...)","grade":{"mode":"result","expected":"SELECT name FROM departments d WHERE EXISTS (SELECT 1 FROM courses c WHERE c.department_id = d.id AND c.credits >= 4)"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="4" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Order the execution.","ar":"رتّب خطوات التنفيذ."},
+         "items":["The outer row's value is used to filter the inner query","The inner query checks for any matching row","EXISTS returns true or false to the outer WHERE"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t6" data-chapter="4" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Match each to its meaning.","ar":"طابِق كلًّا منها بمعناه."},
+         "left":[{"en":"EXISTS","ar":"EXISTS"},{"en":"NOT EXISTS","ar":"NOT EXISTS"},{"en":"NOT IN","ar":"NOT IN"}],
+         "right":[{"en":"does any row match?","ar":"هل يطابق أيّ صف؟"},{"en":"does no row match?","ar":"هل لا يطابق أيّ صف؟"},{"en":"breaks silently on NULL, unlike NOT EXISTS","ar":"يتعطّل بصمت عند وجود NULL، بخلاف NOT EXISTS"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="4" data-lesson="5"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

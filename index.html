@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SQL Lab — Interactive SQL course</title>
+  <!-- Apply saved language + theme before first paint (avoids flash). -->
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l;
+        document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '';
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/rtl.css">
+</head>
+<body data-base="">
+  <header class="site-header">
+    <span class="brand"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></span>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page stack">
+    <section>
+      <h1 class="i18n-en">Learn SQL by running it</h1>
+      <h1 class="i18n-ar" dir="rtl">تعلّم SQL بتشغيله فعليًا</h1>
+      <p class="lead i18n-en">A hands-on, bilingual SQL course for people who already code. Every idea comes with a live editor — type a query, run it against a real in-browser database, and see the rows come back. Eight chapters, from your first <code>CREATE TABLE</code> to joins, subqueries, aggregation, and bulk operations.</p>
+      <p class="lead i18n-ar" dir="rtl">دورة عملية ثنائية اللغة في SQL لمن يعرفون البرمجة مسبقًا. كل فكرة مصحوبة بمحرّر حيّ — اكتب استعلامًا، وشغّله على قاعدة بيانات حقيقية داخل المتصفح، وشاهد الصفوف تعود إليك. ثمانية فصول، من أول <code>CREATE TABLE</code> إلى الربط والاستعلامات الفرعية والتجميع والعمليات المجمّعة.</p>
+    </section>
+
+    <section id="continue-box" hidden>
+      <a class="card card-link" id="continue-link" href="#">
+        <span class="example-label" data-i18n="continue">Continue where you left off</span>
+        <h3 id="continue-title">—</h3>
+      </a>
+    </section>
+
+    <section>
+      <h2 data-i18n="chapters">Chapters</h2>
+      <ul class="chapter-list" id="chapter-list"></ul>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <span data-i18n="offline_ready">Works fully offline</span> · SQL Lab
+  </footer>
+
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/progress.js"></script>
+  <!-- Index page renderer: builds the chapter list from the COURSE registry. -->
+  <script>
+    window.Index = (function () {
+      function L(v) { var lang = window.I18N ? window.I18N.lang : 'en'; return (v && typeof v === 'object') ? (v[lang] != null ? v[lang] : v.en) : v; }
+      function t(k) { return window.I18N ? window.I18N.t(k) : k; }
+      function chapterHref(n) { return 'chapters/chapter-' + n + '.html'; }
+      function lessonHref(ch, n) { return 'lessons/chapter-' + ch + '-lesson-' + n + '.html'; }
+
+      function renderList() {
+        var ul = document.getElementById('chapter-list'); if (!ul) return;
+        ul.innerHTML = '';
+        window.COURSE.chapters.forEach(function (c) {
+          var li = document.createElement('li');
+          li.className = 'chapter-item';
+          if (c.published) {
+            var a = document.createElement('a');
+            a.className = 'card card-link'; a.href = chapterHref(c.num);
+            a.innerHTML =
+              '<span class="num">' + t('nav_chapter').toUpperCase() + ' ' + c.num + '</span>' +
+              '<h3>' + escapeHtml(L(c.title)) + '</h3>';
+            var pr = window.Progress.chapterProgress(c.num);
+            var meta = document.createElement('div'); meta.className = 'meta';
+            meta.textContent = c.lessons.length + ' ' + t('lesson').toLowerCase() + 's · ' + Math.round(pr.frac * 100) + '% ' + t('progress_done');
+            a.appendChild(meta);
+            var bar = document.createElement('div'); bar.className = 'progress-bar';
+            var span = document.createElement('span'); span.style.width = (pr.frac * 100) + '%';
+            bar.appendChild(span); a.appendChild(bar);
+            li.appendChild(a);
+          } else {
+            li.classList.add('soon');
+            var d = document.createElement('div');
+            d.className = 'card';
+            d.innerHTML =
+              '<span class="num">' + t('nav_chapter').toUpperCase() + ' ' + c.num + '</span>' +
+              '<h3>' + escapeHtml(L(c.title)) + '</h3>' +
+              '<div class="meta">' + escapeHtml(t('coming_soon')) + '</div>';
+            li.appendChild(d);
+          }
+          ul.appendChild(li);
+        });
+      }
+
+      function renderContinue() {
+        var last = window.Progress.lastLesson();
+        var box = document.getElementById('continue-box');
+        if (!last) { box.hidden = true; return; }
+        var parts = last.split('/'); var ch = parts[0], lesson = parts[1];
+        var c = window.COURSE.chapters.filter(function (x) { return x.num === +ch; })[0];
+        if (!c) { box.hidden = true; return; }
+        var ls = c.lessons.filter(function (x) { return x.n === +lesson; })[0];
+        document.getElementById('continue-link').href = lessonHref(ch, lesson);
+        document.getElementById('continue-title').textContent =
+          t('nav_chapter') + ' ' + ch + ' · ' + t('lesson') + ' ' + lesson + (ls ? ' — ' + L(ls.title) : '');
+        box.hidden = false;
+      }
+
+      function escapeHtml(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+
+      function init() { renderList(); renderContinue(); document.addEventListener('i18n:change', function () { renderList(); renderContinue(); }); document.addEventListener('progress:change', function () { renderList(); renderContinue(); }); }
+      return { init: init };
+    })();
+  </script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

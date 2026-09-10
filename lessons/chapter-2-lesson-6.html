@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 2 · Lesson 6 — Multi-condition DELETE · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="2" data-lesson="6">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="2" data-lesson="6"></nav>
+
+    <h1 class="i18n-en">Lesson 6 — Multi-condition DELETE</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٦ — حذف متعدد الشروط</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en"><code>DELETE</code>'s <code>WHERE</code> clause supports exactly the same <code>AND</code>/<code>OR</code>/comparison-operator combinations <code>SELECT</code> does. Combining conditions lets you remove precisely the rows that match every (or any) criterion you care about, instead of only ever matching a single column.</p>
+      <p class="i18n-ar" dir="rtl">تدعم جملة <code>WHERE</code> في <code>DELETE</code> نفس تركيبات <code>AND</code> و<code>OR</code> ومعاملات المقارنة التي تدعمها <code>SELECT</code> تمامًا. ودمج الشروط يتيح لك حذف الصفوف التي تطابق كل معيار (أو أيًّا منه) تهتم به بدقة، بدل الاقتصار على مطابقة عمود واحد فقط.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>DELETE FROM table_name WHERE col_a = value_a AND col_b &gt; value_b;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — the <code>books</code> table</h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — جدول <code>books</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — delete on one condition</span><span class="i18n-ar" dir="rtl">مثال ١ — الحذف بشرط واحد</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"sql":"DELETE FROM books WHERE in_stock = false;\nSELECT * FROM books;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — two conditions with AND</span><span class="i18n-ar" dir="rtl">مثال ٢ — شرطان مع AND</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"sql":"DELETE FROM books WHERE price > 20 AND published_year < 2018;\nSELECT * FROM books;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the danger case (shown, not run)</span><span class="i18n-ar" dir="rtl">مثال ٣ — حالة الخطر (معروضة، لا تُشغَّل)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","readonly":true,"dataset":{},"sql":"DELETE FROM books WHERE price > 0;"}
+        </script>
+      </div>
+      <div class="callout warn">
+        <p class="i18n-en" style="margin:0">A condition that matches every row (like <code>price &gt; 0</code>, when every book has a positive price) is functionally the same danger as no <code>WHERE</code> at all — read your condition and ask what it actually excludes.</p>
+        <p class="i18n-ar" dir="rtl" style="margin:0">الشرط الذي يطابق كل صف (مثل <code>price &gt; 0</code> عندما يكون سعر كل كتاب موجبًا) يحمل عمليًا نفس خطر غياب <code>WHERE</code> تمامًا — اقرأ شرطك واسأل نفسك: ما الذي يستثنيه فعلًا؟</p>
+      </div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Now try the same patterns against the <strong>Orbit Electronics</strong> <code>products</code> table.</p>
+      <p class="i18n-ar" dir="rtl">جرّب الآن الأنماط نفسها على جدول <code>products</code> في <strong>Orbit Electronics</strong>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1</span><span class="i18n-ar" dir="rtl">مثال ١</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"sql":"DELETE FROM products WHERE stock_qty = 0;\nSELECT * FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2</span><span class="i18n-ar" dir="rtl">مثال ٢</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"sql":"DELETE FROM products WHERE price < 100 AND is_featured = false;\nSELECT * FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the danger case (shown, not run)</span><span class="i18n-ar" dir="rtl">مثال ٣ — حالة الخطر (معروضة، لا تُشغَّل)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","readonly":true,"dataset":{},"sql":"DELETE FROM products WHERE price >= 0;"}
+        </script>
+      </div>
+      <div class="callout warn">
+        <p class="i18n-en" style="margin:0"><code>price &gt;= 0</code> matches every product with a non-negative price — that is all of them — so this would empty the whole table just like a <code>DELETE</code> with no <code>WHERE</code>.</p>
+        <p class="i18n-ar" dir="rtl" style="margin:0">يطابق <code>price &gt;= 0</code> كل منتج سعره غير سالب — وهو جميعها — فيُفرّغ هذا الجدول بالكامل تمامًا كـ<code>DELETE</code> بلا <code>WHERE</code>.</p>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="2" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"DELETE FROM products WHERE price < 50 OR stock_qty = 0; removes a row when:","ar":"العبارة DELETE FROM products WHERE price < 50 OR stock_qty = 0; تحذف الصف عندما:"},
+         "options":[{"en":"Either condition alone is enough","ar":"يكفي أحد الشرطين وحده"},{"en":"Both conditions must hold","ar":"يجب تحقّق كلا الشرطين"},{"en":"Neither condition may hold","ar":"يجب ألّا يتحقّق أيّ من الشرطين"},{"en":"Only when price equals stock_qty","ar":"فقط عندما يساوي price قيمة stock_qty"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="2" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"Combining conditions with AND in a DELETE can only make it remove fewer rows than a single condition would, never more.","ar":"دمج الشروط بـ AND في DELETE لا يمكن إلا أن يجعلها تحذف صفوفًا أقل مما يحذفه شرط واحد، ولا يزيد أبدًا."},
+         "correct":true,
+         "explain":{"en":"AND narrows the match, so it can only remove the same rows or fewer.","ar":"تُضيّق AND المطابقة، فلا تحذف إلا نفس الصفوف أو أقل."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="2" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword (both conditions must hold).","ar":"أكمل الكلمة المفتاحية الناقصة (يجب تحقّق كلا الشرطين)."},
+         "template":"DELETE FROM products WHERE is_featured = false ____ stock_qty < 5;","answers":["AND"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="2" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a statement deleting products priced under 60 that are not featured.","ar":"رتّب الأجزاء لتكوين عبارة تحذف المنتجات التي سعرها أقل من 60 وغير المميّزة."},
+         "items":["DELETE FROM products","WHERE price < 60","AND is_featured = false;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Delete every product where <code>stock_qty</code> is 0 OR <code>price</code> is less than 60.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">احذف كل منتج قيمة <code>stock_qty</code> فيه 0 أو <code>price</code> أقل من 60.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="2" data-lesson="6">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":2,"placeholder":"DELETE FROM products WHERE ...","grade":{"mode":"state","check":"SELECT * FROM products","expected":"SELECT * FROM products WHERE NOT (stock_qty = 0 OR price < 60)"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>courses</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدولها <code>courses</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="2" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which clause combination removes only inactive undergraduate courses?","ar":"أي تركيب من الشروط يحذف المقرّرات الجامعية غير النشطة فقط؟"},
+         "options":[{"en":"WHERE active = false AND level = 'undergrad'","ar":"WHERE active = false AND level = 'undergrad'"},{"en":"WHERE active = false OR level = 'undergrad'","ar":"WHERE active = false OR level = 'undergrad'"},{"en":"WHERE active = true AND level = 'undergrad'","ar":"WHERE active = true AND level = 'undergrad'"},{"en":"WHERE active <> true OR level <> 'undergrad'","ar":"WHERE active <> true OR level <> 'undergrad'"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="2" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"DELETE FROM courses WHERE credits > 0; is dangerous if every course has a positive credits value.","ar":"العبارة DELETE FROM courses WHERE credits > 0; خطِرة إذا كان لكل مقرّر قيمة credits موجبة."},
+         "correct":true,
+         "explain":{"en":"If the condition matches every row, it empties the table like a WHERE-less DELETE.","ar":"إذا طابق الشرط كل صف، فإنه يُفرّغ الجدول كـ DELETE بلا WHERE."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="2" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword (both conditions must hold).","ar":"أكمل الكلمة المفتاحية الناقصة (يجب تحقّق كلا الشرطين)."},
+         "template":"DELETE FROM courses WHERE active = false ____ credits < 3;","answers":["AND"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="2" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each condition to what it selects.","ar":"طابِق كل شرط بما يختاره."},
+         "left":[{"en":"WHERE active = false","ar":"WHERE active = false"},{"en":"WHERE active = false AND credits < 3","ar":"WHERE active = false AND credits < 3"},{"en":"WHERE active = false OR credits < 3","ar":"WHERE active = false OR credits < 3"}],
+         "right":[{"en":"Every inactive course, regardless of credits","ar":"كل مقرّر غير نشط، بغضّ النظر عن الساعات المعتمدة"},{"en":"Only inactive courses that are also low-credit","ar":"فقط المقرّرات غير النشطة والقليلة الساعات معًا"},{"en":"Any course that's inactive, low-credit, or both","ar":"أي مقرّر غير نشط أو قليل الساعات أو كليهما"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="2" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a statement deleting inactive courses worth fewer than 3 credits.","ar":"رتّب الأجزاء لتكوين عبارة تحذف المقرّرات غير النشطة التي تقلّ ساعاتها المعتمدة عن 3."},
+         "items":["DELETE FROM courses","WHERE active = false","AND credits < 3;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Delete every course where <code>active</code> is false OR <code>credits</code> is less than 3.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">احذف كل مقرّر تكون فيه <code>active</code> قيمتها false أو <code>credits</code> أقل من 3.</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="2" data-lesson="6">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":2,"placeholder":"DELETE FROM courses WHERE ...","grade":{"mode":"state","check":"SELECT * FROM courses","expected":"SELECT * FROM courses WHERE NOT (active = false OR credits < 3)"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="2" data-lesson="6"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

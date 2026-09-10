@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 3 · Lesson 4 — Cross-table UPDATE · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="3" data-lesson="4">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="3" data-lesson="4"></nav>
+
+    <h1 class="i18n-en">Lesson 4 — Cross-table UPDATE</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٤ — التحديث عبر الجداول</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">Sometimes which rows to update depends on data that lives in a <em>different</em> table. You can't put a <code>JOIN</code> directly inside a simple <code>UPDATE</code> the way you can in a <code>SELECT</code>, but you can use a lookup into another table: <code>WHERE foreign_key_column IN (SELECT id FROM other_table WHERE ...)</code> first finds the matching parent ids, then updates every child row that points at one of them.</p>
+      <p class="i18n-ar" dir="rtl">أحيانًا يعتمد تحديد الصفوف التي ستُحدَّث على بيانات موجودة في جدول <em>آخر</em>. لا يمكنك وضع <code>JOIN</code> مباشرةً داخل عبارة <code>UPDATE</code> بسيطة كما تفعل في <code>SELECT</code>، لكن يمكنك البحث في جدول آخر: فجملة <code>WHERE foreign_key_column IN (SELECT id FROM other_table WHERE ...)</code> تجد أولًا معرّفات الأب المطابقة، ثم تُحدِّث كل صف ابن يشير إلى أحدها.</p>
+      <p class="i18n-en">You'll go much deeper on this pattern — called a <em>subquery</em> — in chapter 4; for now, read it as "a condition that looks something up in another table."</p>
+      <p class="i18n-ar" dir="rtl">ستتعمّق في هذا النمط — الذي يُسمّى الاستعلام الفرعي (<em>subquery</em>) — في الفصل الرابع؛ أما الآن فاقرأه على أنه "شرط يبحث عن شيء في جدول آخر".</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>UPDATE child_table
+SET col = new_value
+WHERE parent_id_col IN (SELECT id FROM parent_table WHERE condition);</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code> and <code>authors</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code> و<code>authors</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — 10% off every book by one author</span><span class="i18n-ar" dir="rtl">مثال ١ — خصم ١٠٪ على كل كتب مؤلف واحد</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":3,"sql":"UPDATE books SET price = price * 0.9 WHERE author_id IN (SELECT id FROM authors WHERE name = 'Laila Hammoud');\nSELECT * FROM books WHERE author_id = 1;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — mark another author's books in stock</span><span class="i18n-ar" dir="rtl">مثال ٢ — وسم كتب مؤلف آخر بأنها متوفّرة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":3,"sql":"UPDATE books SET in_stock = true WHERE author_id IN (SELECT id FROM authors WHERE name = 'Tom Whitfield');\nSELECT * FROM books WHERE author_id = 6;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — apply the discount, then read it back with a JOIN</span><span class="i18n-ar" dir="rtl">مثال ٣ — تطبيق الخصم ثم قراءته عبر JOIN</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":3,"sql":"UPDATE books SET price = price * 0.9 WHERE author_id IN (SELECT id FROM authors WHERE name = 'Laila Hammoud');\nSELECT b.title, a.name, b.price FROM books b JOIN authors a ON b.author_id = a.id WHERE a.name = 'Laila Hammoud';"}
+        </script>
+      </div>
+      <p class="caption i18n-en">The inner <code>SELECT</code> finds Laila Hammoud's id; the outer <code>UPDATE</code> then touches every book pointing at that id — none of the books mention her name directly, the connection is entirely through <code>author_id</code>.</p>
+      <p class="caption i18n-ar" dir="rtl">يعثر الاستعلام الداخلي <code>SELECT</code> على معرّف Laila Hammoud؛ ثم يطال <code>UPDATE</code> الخارجي كل كتاب يشير إلى ذلك المعرّف — لا يذكر أيٌّ من الكتب اسمها مباشرةً، فالصلة تمرّ بالكامل عبر <code>author_id</code>.</p>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Now the same pattern against <strong>Orbit Electronics</strong> — the <code>products</code> and <code>categories</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">الآن النمط نفسه على <strong>Orbit Electronics</strong> — جدولا <code>products</code> و<code>categories</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — 15% off every Audio product</span><span class="i18n-ar" dir="rtl">مثال ١ — خصم ١٥٪ على كل منتجات فئة Audio</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":3,"sql":"UPDATE products SET price = price * 0.85 WHERE category_id IN (SELECT id FROM categories WHERE name = 'Audio');\nSELECT * FROM products WHERE category_id IN (SELECT id FROM categories WHERE name = 'Audio');"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — feature every Wearables product</span><span class="i18n-ar" dir="rtl">مثال ٢ — إبراز كل منتجات فئة Wearables</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":3,"sql":"UPDATE products SET is_featured = true WHERE category_id IN (SELECT id FROM categories WHERE name = 'Wearables');\nSELECT * FROM products WHERE category_id IN (SELECT id FROM categories WHERE name = 'Wearables');"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — discount, then read it back with a JOIN</span><span class="i18n-ar" dir="rtl">مثال ٣ — تطبيق الخصم ثم قراءته عبر JOIN</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":3,"sql":"UPDATE products SET price = price * 0.85 WHERE category_id IN (SELECT id FROM categories WHERE name = 'Audio');\nSELECT p.name, c.name, p.price FROM products p JOIN categories c ON p.category_id = c.id WHERE c.name = 'Audio';"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="3" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"WHERE category_id IN (SELECT id FROM categories WHERE name = 'Laptops') matches products where:","ar":"تطابق WHERE category_id IN (SELECT id FROM categories WHERE name = 'Laptops') المنتجات التي:"},
+         "options":[{"en":"category_id equals the id of the 'Laptops' category","ar":"يساوي فيها category_id معرّف فئة 'Laptops'"},{"en":"category_id equals the text 'Laptops'","ar":"يساوي فيها category_id النص 'Laptops'"},{"en":"The product's name is 'Laptops'","ar":"يكون فيها اسم المنتج 'Laptops'"},{"en":"Nothing — this syntax is invalid","ar":"لا شيء — هذه الصياغة غير صحيحة"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="3" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"This UPDATE pattern changes rows in the categories table.","ar":"يُغيّر هذا النمط من UPDATE صفوفًا في جدول categories."},
+         "correct":false,
+         "explain":{"en":"It only changes products; categories is only read from.","ar":"إنه يُغيّر جدول products فقط؛ أما categories فيُقرأ منه فحسب."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="3" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"UPDATE products SET stock_qty = 0 WHERE category_id ____ (SELECT id FROM categories WHERE name = 'Gaming');","answers":["IN"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="3" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a statement giving every Wearables product a 20% discount.","ar":"رتّب الأجزاء لتكوين عبارة تمنح كل منتج في فئة Wearables خصمًا بنسبة ٢٠٪."},
+         "items":["UPDATE products","SET price = price * 0.8","WHERE category_id IN (SELECT id FROM categories WHERE name = 'Wearables');"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Set <code>is_featured</code> to <code>true</code> for every product in the <code>'Accessories'</code> category.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اضبط <code>is_featured</code> على <code>true</code> لكل منتج في فئة <code>'Accessories'</code>.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="3" data-lesson="4">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":3,"placeholder":"UPDATE products SET ... WHERE ... IN (SELECT ...)","grade":{"mode":"state","check":"SELECT * FROM products WHERE category_id IN (SELECT id FROM categories WHERE name = 'Accessories') AND is_featured <> true","expectEmpty":true}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> — the <code>courses</code> and <code>departments</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> — جدولا <code>courses</code> و<code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="3" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which pattern updates courses belonging to the Mathematics department?","ar":"أي نمط يُحدِّث المقررات التابعة لقسم Mathematics؟"},
+         "options":[{"en":"WHERE department_id IN (SELECT id FROM departments WHERE name = 'Mathematics')","ar":"WHERE department_id IN (SELECT id FROM departments WHERE name = 'Mathematics')"},{"en":"WHERE department_id = 'Mathematics'","ar":"WHERE department_id = 'Mathematics'"},{"en":"WHERE department_name = 'Mathematics'","ar":"WHERE department_name = 'Mathematics'"},{"en":"JOIN departments ON name = 'Mathematics'","ar":"JOIN departments ON name = 'Mathematics'"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="3" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"The inner SELECT in this pattern can return more than one id, and the UPDATE will match rows pointing at any of them.","ar":"يمكن للاستعلام الداخلي SELECT في هذا النمط أن يُرجع أكثر من معرّف، وسيُطابق UPDATE الصفوف التي تشير إلى أيٍّ منها."},
+         "correct":true,
+         "explain":{"en":"IN matches against every id the subquery returns.","ar":"تُطابق IN كل معرّف يُرجعه الاستعلام الفرعي."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="3" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"UPDATE courses SET active = false WHERE department_id ____ (SELECT id FROM departments WHERE name = 'Fine Arts');","answers":["IN"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="3" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each part of the statement to its role.","ar":"طابِق كل جزء من العبارة بدوره."},
+         "left":[{"en":"UPDATE courses SET active = false","ar":"UPDATE courses SET active = false"},{"en":"WHERE department_id IN (...)","ar":"WHERE department_id IN (...)"},{"en":"SELECT id FROM departments WHERE name = 'Fine Arts'","ar":"SELECT id FROM departments WHERE name = 'Fine Arts'"}],
+         "right":[{"en":"What changes, and to what","ar":"ما الذي يتغيّر، وإلى ماذا"},{"en":"Limits which courses are touched","ar":"يُقيّد أي المقررات يجري تعديلها"},{"en":"Looks up the matching department's id","ar":"يبحث عن معرّف القسم المطابق"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="3" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a statement adding one credit to every Computer Science course.","ar":"رتّب الأجزاء لتكوين عبارة تضيف ساعة معتمدة واحدة إلى كل مقرر في قسم Computer Science."},
+         "items":["UPDATE courses","SET credits = credits + 1","WHERE department_id IN (SELECT id FROM departments WHERE name = 'Computer Science');"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Set <code>active</code> to <code>true</code> for every course in the <code>'Business Administration'</code> department.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اضبط <code>active</code> على <code>true</code> لكل مقرر في قسم <code>'Business Administration'</code>.</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="3" data-lesson="4">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":3,"setup":["INSERT INTO courses (id, title, credits, level, active, department_id) VALUES (7, 'Intro to Marketing', 3, 'undergrad', false, 5)"],"placeholder":"UPDATE courses SET ... WHERE ... IN (SELECT ...)","grade":{"mode":"state","check":"SELECT id, active FROM courses","expected":[{"id":1,"active":true},{"id":2,"active":true},{"id":3,"active":true},{"id":4,"active":false},{"id":5,"active":true},{"id":6,"active":true},{"id":7,"active":true}]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="3" data-lesson="4"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

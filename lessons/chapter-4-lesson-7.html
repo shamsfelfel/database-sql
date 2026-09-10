@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 4 · Lesson 7 — Scalar Subquery in SELECT · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="4" data-lesson="7">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="4" data-lesson="7"></nav>
+
+    <h1 class="i18n-en">Lesson 7 — Scalar Subquery in SELECT</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٧ — استعلام فرعي قياسي في SELECT</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">A scalar subquery can also sit in the <code>SELECT</code> list, adding a computed column alongside each row's own columns. It must still return exactly one value per row — one row, one column.</p>
+      <p class="i18n-ar" dir="rtl">يمكن أن يوضَع الاستعلام الفرعي القياسي أيضًا داخل قائمة <code>SELECT</code>، فيضيف عمودًا محسوبًا إلى جانب أعمدة كل صف. ويجب أن يعيد قيمة واحدة بالضبط لكل صف — صف واحد وعمود واحد.</p>
+      <p class="i18n-en">If the subquery is correlated (it references the outer row), that computed value differs from row to row. Never alias such a column <code>avg</code>, <code>max</code>, or <code>min</code> — those are reserved words and will cause a parse error; use descriptive names like <code>overall_avg_price</code>.</p>
+      <p class="i18n-ar" dir="rtl">وإذا كان الاستعلام الفرعي مترابطًا (يشير إلى الصف الخارجي)، فإن القيمة المحسوبة تختلف من صف إلى آخر. ولا تُسمِّ مثل هذا العمود <code>avg</code> أو <code>max</code> أو <code>min</code> اختصارًا — فهي كلمات محجوزة تسبّب خطأ في التحليل؛ استخدم أسماء واضحة مثل <code>overall_avg_price</code>.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>SELECT title, price,
+  (SELECT AVG(price) FROM books) AS overall_avg_price
+FROM books;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — a computed column from <code>books</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — عمود محسوب من <code>books</code></h2>
+      <p class="i18n-en">These read from the chapter-4 snapshot of <code>books</code> and <code>authors</code>.</p>
+      <p class="i18n-ar" dir="rtl">تقرأ هذه الأمثلة من لقطة الفصل الرابع لجدولَي <code>books</code> و<code>authors</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — attach the overall average price to every row</span><span class="i18n-ar" dir="rtl">مثال ١ — إرفاق متوسّط السعر العام بكل صف</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT title, price, (SELECT AVG(price) FROM books) AS overall_avg_price FROM books;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">The subquery runs once; the same overall average is repeated next to every book.</p>
+      <p class="caption i18n-ar" dir="rtl">يُنفَّذ الاستعلام الفرعي مرة واحدة؛ ويتكرّر المتوسّط العام نفسه بجانب كل كتاب.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — each book's distance from the average</span><span class="i18n-ar" dir="rtl">مثال ٢ — بُعد كل كتاب عن المتوسّط</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT title, price, price - (SELECT AVG(price) FROM books) AS price_vs_avg FROM books;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">You can compute with the returned value — here the row's own <code>price</code> minus the overall average.</p>
+      <p class="caption i18n-ar" dir="rtl">يمكنك إجراء حساب على القيمة المُعادة — هنا سعر الصف نفسه <code>price</code> مطروحًا منه المتوسّط العام.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — a correlated column: distance from the genre's average</span><span class="i18n-ar" dir="rtl">مثال ٣ — عمود مترابط: البُعد عن متوسّط النوع</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT b1.title, b1.genre, b1.price, b1.price - (SELECT AVG(b2.price) FROM books b2 WHERE b2.genre = b1.genre) AS price_vs_genre_avg FROM books b1;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">Because the subquery references <code>b1.genre</code>, it re-runs per row and the computed column differs for each genre.</p>
+      <p class="caption i18n-ar" dir="rtl">ولأن الاستعلام الفرعي يشير إلى <code>b1.genre</code>، فإنه يُعاد تنفيذه لكل صف ويختلف العمود المحسوب باختلاف النوع.</p>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Now add computed columns to <strong>Orbit Electronics</strong>' <code>products</code>.</p>
+      <p class="i18n-ar" dir="rtl">الآن أضِف أعمدة محسوبة إلى جدول <code>products</code> في <strong>Orbit Electronics</strong>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1</span><span class="i18n-ar" dir="rtl">مثال ١</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT name, price, (SELECT AVG(price) FROM products) AS overall_avg_price FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2</span><span class="i18n-ar" dir="rtl">مثال ٢</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT name, price, price - (SELECT AVG(price) FROM products) AS price_vs_avg FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3</span><span class="i18n-ar" dir="rtl">مثال ٣</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT p1.name, p1.category_id, p1.price, p1.price - (SELECT AVG(p2.price) FROM products p2 WHERE p2.category_id = p1.category_id) AS price_vs_category_avg FROM products p1;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="4" data-lesson="7">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"A scalar subquery in the SELECT list:","ar":"الاستعلام الفرعي القياسي في قائمة SELECT:"},
+         "options":[{"en":"adds a computed column","ar":"يضيف عمودًا محسوبًا"},{"en":"filters rows","ar":"يُرشِّح الصفوف"},{"en":"sorts the result","ar":"يفرز النتيجة"},{"en":"replaces the FROM clause","ar":"يحلّ محلّ جملة FROM"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="4" data-lesson="7">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A scalar subquery in SELECT must still return exactly one value per outer row.","ar":"يجب أن يظلّ الاستعلام الفرعي القياسي في SELECT يعيد قيمة واحدة بالضبط لكل صف خارجي."},
+         "correct":true,
+         "explain":{"en":"It produces one column value for each row; returning more than one value where a single one is expected is invalid.","ar":"فهو ينتج قيمة عمود واحدة لكل صف؛ وإعادة أكثر من قيمة في موضع يُتوقّع فيه قيمة واحدة غير صالح."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="4" data-lesson="7">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete to compare each product to the overall average.","ar":"أكمل لمقارنة كل منتج بالمتوسّط العام."},
+         "template":"SELECT name, price - (SELECT ____(price) FROM products) AS price_vs_avg FROM products;","answers":["AVG"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="lab-q4" data-chapter="4" data-lesson="7">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each placement to its effect.","ar":"طابِق كل موضع بأثره."},
+         "left":[{"en":"scalar subquery in WHERE","ar":"استعلام فرعي قياسي في WHERE"},{"en":"scalar subquery in SELECT","ar":"استعلام فرعي قياسي في SELECT"},{"en":"correlated scalar subquery in SELECT","ar":"استعلام فرعي قياسي مترابط في SELECT"}],
+         "right":[{"en":"filters which rows appear","ar":"يُرشِّح أي الصفوف تظهر"},{"en":"adds a value to every row","ar":"يضيف قيمة إلى كل صف"},{"en":"the added value differs per row","ar":"القيمة المضافة تختلف لكل صف"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">For each product show <code>name</code>, <code>price</code>, and a column <code>cheapest_price</code> holding the lowest price in the whole table.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">لكل منتج اعرض <code>name</code> و<code>price</code> وعمودًا باسم <code>cheapest_price</code> يحمل أدنى سعر في الجدول كله.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="4" data-lesson="7">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":4,"placeholder":"SELECT name, price, (SELECT ... ) AS cheapest_price FROM products;","grade":{"mode":"result","expected":"SELECT name, price, (SELECT MIN(price) FROM products) AS cheapest_price FROM products"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>courses</code> / <code>departments</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدوليها <code>courses</code> و<code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="4" data-lesson="7">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"A scalar subquery in the SELECT list:","ar":"الاستعلام الفرعي القياسي في قائمة SELECT:"},
+         "options":[{"en":"filters rows","ar":"يُرشِّح الصفوف"},{"en":"adds a computed column","ar":"يضيف عمودًا محسوبًا"},{"en":"sorts the result","ar":"يفرز النتيجة"},{"en":"replaces the FROM clause","ar":"يحلّ محلّ جملة FROM"}],
+         "correctIndex":1}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="4" data-lesson="7">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A scalar subquery in SELECT must return exactly one value per outer row.","ar":"يجب أن يعيد الاستعلام الفرعي القياسي في SELECT قيمة واحدة بالضبط لكل صف خارجي."},
+         "correct":true,
+         "explain":{"en":"Each output row gets a single value from the subquery; more than one value would be invalid where a scalar is expected.","ar":"يحصل كل صف من المخرجات على قيمة واحدة من الاستعلام الفرعي؛ وأكثر من قيمة يكون غير صالح في موضع يُتوقّع فيه قيمة قياسية."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="4" data-lesson="7">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete to compare against the average.","ar":"أكمل للمقارنة بالمتوسّط."},
+         "template":"SELECT title, credits - (SELECT ____(credits) FROM courses) AS vs_avg FROM courses;","answers":["AVG"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">For each course show <code>title</code>, <code>credits</code>, and a column <code>max_credits</code> holding the maximum credits across all courses.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">لكل مقرّر اعرض <code>title</code> و<code>credits</code> وعمودًا باسم <code>max_credits</code> يحمل أعلى عدد ساعات معتمدة بين كل المقرّرات.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="4" data-lesson="7">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":4,"placeholder":"SELECT title, credits, (SELECT ... ) AS max_credits FROM courses;","grade":{"mode":"result","expected":"SELECT title, credits, (SELECT MAX(credits) FROM courses) AS max_credits FROM courses"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="4" data-lesson="7">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Order what happens.","ar":"رتّب ما يحدث."},
+         "items":["For each outer row the scalar subquery runs","Its single value is placed in the output row as a new column","The row (its original columns plus the new one) is returned"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t6" data-chapter="4" data-lesson="7">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Match each to its effect.","ar":"طابِق كلًّا بأثره."},
+         "left":[{"en":"scalar subquery in WHERE","ar":"استعلام فرعي قياسي في WHERE"},{"en":"scalar subquery in SELECT","ar":"استعلام فرعي قياسي في SELECT"},{"en":"correlated scalar subquery in SELECT","ar":"استعلام فرعي قياسي مترابط في SELECT"}],
+         "right":[{"en":"filters which rows appear","ar":"يُرشِّح أي الصفوف تظهر"},{"en":"adds a value to every row","ar":"يضيف قيمة إلى كل صف"},{"en":"value differs per outer row","ar":"القيمة تختلف لكل صف خارجي"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="4" data-lesson="7"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

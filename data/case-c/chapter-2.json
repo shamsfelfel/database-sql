@@ -1,0 +1,20 @@
+{
+  "tables": {
+    "departments": [
+      { "id": 1, "name": "Computer Science" },
+      { "id": 2, "name": "Mathematics" },
+      { "id": 3, "name": "Physics" },
+      { "id": 4, "name": "Biology" },
+      { "id": 5, "name": "Business Administration" },
+      { "id": 6, "name": "Fine Arts" }
+    ],
+    "courses": [
+      { "id": 1, "title": "Intro to Algorithms", "credits": 4, "level": "undergrad", "active": true },
+      { "id": 2, "title": "Linear Algebra", "credits": 3, "level": "undergrad", "active": true },
+      { "id": 3, "title": "Distributed Systems", "credits": 4, "level": "graduate", "active": true },
+      { "id": 4, "title": "Classical Mechanics", "credits": 3, "level": "undergrad", "active": false },
+      { "id": 5, "title": "Cell Biology", "credits": 3, "level": "undergrad", "active": true },
+      { "id": 6, "title": "Advanced Statistics", "credits": 4, "level": "graduate", "active": true }
+    ]
+  }
+}

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 1 · Lesson 2 — INSERT · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="1" data-lesson="2">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="1" data-lesson="2"></nav>
+
+    <h1 class="i18n-en">Lesson 2 — INSERT</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٢ — الإدراج (INSERT)</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">Once a table exists, <code>INSERT</code> adds rows to it. You state the table, the columns you're supplying values for (in parentheses), and the values themselves in the same order, wrapped in <code>VALUES(...)</code>. Writing the column list explicitly — rather than relying on column order — is the safer habit: it keeps working even if the table's column order ever changes, and it makes the statement self-documenting. You can insert several rows in one statement by listing multiple <code>VALUES</code> groups separated by commas.</p>
+      <p class="i18n-ar" dir="rtl">بعد أن يصبح الجدول موجودًا، تُضيف <code>INSERT</code> صفوفًا إليه. تذكر اسم الجدول، ثم الأعمدة التي ستزوّدها بقيم (بين قوسين)، ثم القيم نفسها بالترتيب ذاته داخل <code>VALUES(...)</code>. وكتابة قائمة الأعمدة صراحةً — بدل الاعتماد على ترتيب الأعمدة — هي العادة الأكثر أمانًا: فهي تظل تعمل حتى لو تغيّر ترتيب أعمدة الجدول لاحقًا، وتجعل العبارة موثِّقة لنفسها. ويمكنك إدراج عدة صفوف في عبارة واحدة بسرد مجموعات <code>VALUES</code> متعددة مفصولة بفواصل.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>INSERT INTO table_name (id, name) VALUES (1, 'Some Name');</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — the <code>authors</code> table</h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — جدول <code>authors</code></h2>
+      <p class="i18n-en">Each example starts from an empty <code>authors</code> table. Watch the <strong>Database</strong> panel: the row count climbs as you insert.</p>
+      <p class="i18n-ar" dir="rtl">يبدأ كل مثال من جدول <code>authors</code> فارغ. راقب لوحة <strong>قاعدة البيانات</strong>: يرتفع عدد الصفوف كلما أدرجت.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — a single insert, explicit columns</span><span class="i18n-ar" dir="rtl">مثال ١ — إدراج واحد بأعمدة صريحة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE authors (id INTEGER PRIMARY KEY, name TEXT)"],"sql":"INSERT INTO authors (id, name) VALUES (1, 'Laila Hammoud');\nSELECT * FROM authors;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">Naming the columns you're inserting into is the safe default.</p>
+      <p class="caption i18n-ar" dir="rtl">تسمية الأعمدة التي تُدرج فيها هي الخيار الآمن الافتراضي.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — inserting without naming columns</span><span class="i18n-ar" dir="rtl">مثال ٢ — الإدراج دون تسمية الأعمدة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE authors (id INTEGER PRIMARY KEY, name TEXT)"],"sql":"INSERT INTO authors VALUES (2, 'Marcus Reyes');\nSELECT * FROM authors;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">This works, but only because the values happen to match the table's column order exactly (<code>id</code>, then <code>name</code>). Prefer naming columns.</p>
+      <p class="caption i18n-ar" dir="rtl">هذا ينجح، لكن فقط لأن القيم تطابق ترتيب أعمدة الجدول تمامًا (<code>id</code> ثم <code>name</code>). يُفضَّل تسمية الأعمدة.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — multiple rows in one statement</span><span class="i18n-ar" dir="rtl">مثال ٣ — عدة صفوف في عبارة واحدة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE authors (id INTEGER PRIMARY KEY, name TEXT)"],"sql":"INSERT INTO authors (id, name) VALUES (3, 'Aiko Tanaka'), (4, 'Daniel Kessler');\nSELECT * FROM authors;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">One <code>INSERT</code> statement can add several rows at once.</p>
+      <p class="caption i18n-ar" dir="rtl">يمكن لعبارة <code>INSERT</code> واحدة أن تضيف عدة صفوف دفعة واحدة.</p>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Now the <strong>Orbit Electronics</strong> <code>categories</code> table, also starting empty.</p>
+      <p class="i18n-ar" dir="rtl">الآن جدول <code>categories</code> في <strong>Orbit Electronics</strong>، ويبدأ فارغًا أيضًا.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1</span><span class="i18n-ar" dir="rtl">مثال ١</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE categories (id INTEGER PRIMARY KEY, name TEXT)"],"sql":"INSERT INTO categories (id, name) VALUES (1, 'Laptops');\nSELECT * FROM categories;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2</span><span class="i18n-ar" dir="rtl">مثال ٢</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE categories (id INTEGER PRIMARY KEY, name TEXT)"],"sql":"INSERT INTO categories VALUES (2, 'Smartphones');\nSELECT * FROM categories;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3</span><span class="i18n-ar" dir="rtl">مثال ٣</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE categories (id INTEGER PRIMARY KEY, name TEXT)"],"sql":"INSERT INTO categories (id, name) VALUES (3, 'Audio'), (4, 'Wearables');\nSELECT * FROM categories;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="1" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"In INSERT INTO categories (id, name) VALUES (5, 'Gaming'); — what is (id, name) for?","ar":"في العبارة INSERT INTO categories (id, name) VALUES (5, 'Gaming'); — ما وظيفة (id, name)؟"},
+         "options":[{"en":"It names which columns the values below correspond to","ar":"تُسمّي الأعمدة التي تقابلها القيم"},{"en":"It's a primary key declaration","ar":"هي إعلان مفتاح أساسي"},{"en":"It's a filter condition","ar":"هي شرط تصفية"},{"en":"It renames the table","ar":"تُعيد تسمية الجدول"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="1" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A single INSERT statement can only add one row at a time.","ar":"لا يمكن لعبارة INSERT واحدة أن تضيف إلا صفًا واحدًا في كل مرة."},
+         "correct":false,
+         "explain":{"en":"One INSERT can list several VALUES groups and add many rows at once.","ar":"يمكن لعبارة INSERT واحدة سرد عدة مجموعات VALUES وإضافة صفوف كثيرة دفعة واحدة."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="1" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"INSERT ____ categories (id, name) VALUES (6, 'Accessories');","answers":["INTO"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="1" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a valid multi-row INSERT for categories.","ar":"رتّب الأجزاء لتكوين عبارة INSERT متعددة الصفوف صحيحة لجدول categories."},
+         "items":["INSERT INTO categories (id, name)","VALUES","(7, 'Cables'),","(8, 'Chargers');"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Insert two rows into <code>categories</code>: <code>(9, 'Networking')</code> and <code>(10, 'Storage')</code>, in a single statement.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أدرج صفّين في <code>categories</code>: <code>(9, 'Networking')</code> و<code>(10, 'Storage')</code>، في عبارة واحدة.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="1" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"dataset":{},"setup":["CREATE TABLE categories (id INTEGER PRIMARY KEY, name TEXT)"],"placeholder":"INSERT INTO categories ...","grade":{"mode":"state","check":"SELECT * FROM categories WHERE id IN (9,10)","expected":[{"id":9,"name":"Networking"},{"id":10,"name":"Storage"}]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>departments</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدولها <code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="1" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which of these is the safest INSERT form?","ar":"أيٌّ من هذه أكثر صيغ INSERT أمانًا؟"},
+         "options":[{"en":"Naming columns explicitly","ar":"تسمية الأعمدة صراحةً"},{"en":"Relying on column order","ar":"الاعتماد على ترتيب الأعمدة"},{"en":"Neither is safer","ar":"لا فرق في الأمان"},{"en":"Only multi-row inserts are safe","ar":"الإدراج متعدد الصفوف فقط هو الآمن"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="1" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"You must always supply a value for every column when inserting a row.","ar":"يجب دائمًا تزويد قيمة لكل عمود عند إدراج صف."},
+         "correct":true,
+         "explain":{"en":"In the tables you've seen so far, yes — every column has always been given a value. You'll meet optional / default columns later.","ar":"في الجداول التي رأيتها حتى الآن، نعم — أُعطي كل عمود قيمة دائمًا. ستقابل الأعمدة الاختيارية أو ذات القيم الافتراضية لاحقًا."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="1" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"INSERT INTO departments (id, name) ____ (7, 'Chemistry');","answers":["VALUES"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="1" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each fragment to its role.","ar":"طابِق كل جزء بدوره."},
+         "left":[{"en":"INSERT INTO","ar":"INSERT INTO"},{"en":"(id, name)","ar":"(id, name)"},{"en":"VALUES","ar":"VALUES"},{"en":"(7, 'Chemistry')","ar":"(7, 'Chemistry')"}],
+         "right":[{"en":"Starts the statement and names the target table","ar":"تبدأ العبارة وتُسمّي الجدول الهدف"},{"en":"Lists which columns are being supplied","ar":"تسرد الأعمدة التي يجري تزويدها"},{"en":"Introduces the row(s) to add","ar":"تُقدِّم الصف/الصفوف المراد إضافتها"},{"en":"The actual values for one row, in column order","ar":"القيم الفعلية لصف واحد، بترتيب الأعمدة"}],
+         "correctPairs":[[0,0],[1,1],[2,2],[3,3]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="1" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a valid INSERT for departments.","ar":"رتّب الأجزاء لتكوين عبارة INSERT صحيحة لجدول departments."},
+         "items":["INSERT INTO departments (id, name)","VALUES","(7, 'Chemistry');"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Insert a new department: <code>(7, 'Chemistry')</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أدرج قسمًا جديدًا: <code>(7, 'Chemistry')</code>.</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="1" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":1,"placeholder":"INSERT INTO departments ...","grade":{"mode":"state","check":"SELECT * FROM departments WHERE id = 7","expected":[{"id":7,"name":"Chemistry"}]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="1" data-lesson="2"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

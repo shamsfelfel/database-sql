@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 2 · Lesson 4 — Filtering (AND / OR) · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="2" data-lesson="4">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="2" data-lesson="4"></nav>
+
+    <h1 class="i18n-en">Lesson 4 — Filtering (AND / OR)</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٤ — التصفية (AND / OR)</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en"><code>WHERE</code> isn't limited to one condition or to <code>=</code>. Comparison operators like <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, and <code>&lt;&gt;</code> (not equal) work on numbers, and you can combine multiple conditions with <code>AND</code> (both must be true) and <code>OR</code> (at least one must be true) — including conditions on different columns.</p>
+      <p class="i18n-ar" dir="rtl">لا تقتصر <code>WHERE</code> على شرط واحد ولا على <code>=</code>. فمعاملات المقارنة مثل <code>&gt;</code> و<code>&lt;</code> و<code>&gt;=</code> و<code>&lt;=</code> و<code>&lt;&gt;</code> (لا يساوي) تعمل على الأرقام، ويمكنك دمج عدة شروط باستخدام <code>AND</code> (يجب تحقّق كليهما) و<code>OR</code> (يكفي تحقّق أحدهما على الأقل) — بما في ذلك شروط على أعمدة مختلفة.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>SELECT * FROM table_name WHERE col_a &gt; 10 AND col_b = 'X';
+SELECT * FROM table_name WHERE col_a &lt; 5 OR col_c = true;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — the <code>books</code> table</h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — جدول <code>books</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — a single comparison</span><span class="i18n-ar" dir="rtl">مثال ١ — مقارنة واحدة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"sql":"SELECT * FROM books WHERE price > 15;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — two conditions with AND</span><span class="i18n-ar" dir="rtl">مثال ٢ — شرطان مع AND</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"sql":"SELECT * FROM books WHERE price > 15 AND in_stock = true;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — two conditions with OR</span><span class="i18n-ar" dir="rtl">مثال ٣ — شرطان مع OR</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"sql":"SELECT * FROM books WHERE published_year < 2018 OR in_stock = false;"}
+        </script>
+      </div>
+      <p class="caption i18n-en"><code>AND</code> narrows the results; <code>OR</code> widens them. Mixing columns in one <code>WHERE</code> is exactly this pattern.</p>
+      <p class="caption i18n-ar" dir="rtl"><code>AND</code> تُضيّق النتائج، و<code>OR</code> تُوسّعها. ودمج أعمدة مختلفة في جملة <code>WHERE</code> واحدة هو تمامًا هذا النمط.</p>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Now try the same patterns against the <strong>Orbit Electronics</strong> <code>products</code> table.</p>
+      <p class="i18n-ar" dir="rtl">جرّب الآن الأنماط نفسها على جدول <code>products</code> في <strong>Orbit Electronics</strong>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1</span><span class="i18n-ar" dir="rtl">مثال ١</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"sql":"SELECT * FROM products WHERE stock_qty > 20;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2</span><span class="i18n-ar" dir="rtl">مثال ٢</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"sql":"SELECT * FROM products WHERE stock_qty > 20 AND is_featured = true;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3</span><span class="i18n-ar" dir="rtl">مثال ٣</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"sql":"SELECT * FROM products WHERE price < 100 OR stock_qty = 0;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="2" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"In WHERE price < 100 AND stock_qty > 10, when does a row qualify?","ar":"في WHERE price < 100 AND stock_qty > 10، متى يتأهّل الصف؟"},
+         "options":[{"en":"Only when both conditions are true","ar":"فقط عندما يكون كلا الشرطين صحيحًا"},{"en":"When either condition is true","ar":"عندما يكون أحد الشرطين صحيحًا"},{"en":"When neither condition is true","ar":"عندما لا يتحقّق أيّ من الشرطين"},{"en":"Only when price equals stock_qty","ar":"فقط عندما يساوي price قيمة stock_qty"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="2" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"<> means 'not equal to'.","ar":"العلامة <> تعني 'لا يساوي'."},
+         "correct":true,
+         "explain":{"en":"<> is the not-equal comparison operator.","ar":"العلامة <> هي معامل المقارنة 'لا يساوي'."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="2" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword (both conditions must hold).","ar":"أكمل الكلمة المفتاحية الناقصة (يجب تحقّق كلا الشرطين)."},
+         "template":"SELECT * FROM products WHERE price > 200 ____ is_featured = true;","answers":["AND"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="2" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a statement selecting products priced under 100 OR out of stock (stock_qty = 0).","ar":"رتّب الأجزاء لتكوين عبارة تختار المنتجات التي سعرها أقل من 100 أو نفدت من المخزون (stock_qty = 0)."},
+         "items":["SELECT * FROM products","WHERE price < 100","OR stock_qty = 0;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Select every product that is featured (<code>is_featured = true</code>) AND has <code>stock_qty</code> greater than 10.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اختر كل منتج مميّز (<code>is_featured = true</code>) وله <code>stock_qty</code> أكبر من 10.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="2" data-lesson="4">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":2,"placeholder":"SELECT * FROM products WHERE ...","grade":{"mode":"result","expected":"SELECT * FROM products WHERE is_featured = true AND stock_qty > 10"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>courses</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدولها <code>courses</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="2" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which operator means 'greater than or equal to'?","ar":"أي معامل يعني 'أكبر من أو يساوي'؟"},
+         "options":[{"en":">=","ar":">="},{"en":"=>","ar":"=>"},{"en":">","ar":">"},{"en":"><","ar":"><"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="2" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"WHERE credits >= 3 OR level = 'graduate' requires both conditions to be true.","ar":"العبارة WHERE credits >= 3 OR level = 'graduate' تتطلّب تحقّق كلا الشرطين معًا."},
+         "correct":false,
+         "explain":{"en":"OR needs only one of the conditions to be true.","ar":"تحتاج OR إلى تحقّق أحد الشرطين فقط."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="2" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing operator (at least 4 credits).","ar":"أكمل المعامل الناقص (4 ساعات معتمدة على الأقل)."},
+         "template":"SELECT * FROM courses WHERE credits ____ 4 AND active = true;","answers":[">="]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="2" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each operator to its meaning.","ar":"طابِق كل معامل بمعناه."},
+         "left":[{"en":">","ar":">"},{"en":"<=","ar":"<="},{"en":"<>","ar":"<>"},{"en":"=","ar":"="}],
+         "right":[{"en":"Greater than","ar":"أكبر من"},{"en":"Less than or equal to","ar":"أصغر من أو يساوي"},{"en":"Not equal to","ar":"لا يساوي"},{"en":"Equal to","ar":"يساوي"}],
+         "correctPairs":[[0,0],[1,1],[2,2],[3,3]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="2" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a statement selecting active, graduate-level courses.","ar":"رتّب الأجزاء لتكوين عبارة تختار المقرّرات النشطة من مستوى الدراسات العليا."},
+         "items":["SELECT * FROM courses","WHERE active = true","AND level = 'graduate';"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Select every course with <code>credits</code> greater than 3 OR <code>level</code> equal to <code>'graduate'</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اختر كل مقرّر عدد <code>credits</code> فيه أكبر من 3 أو <code>level</code> يساوي <code>'graduate'</code>.</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="2" data-lesson="4">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":2,"placeholder":"SELECT * FROM courses WHERE ...","grade":{"mode":"result","expected":"SELECT * FROM courses WHERE credits > 3 OR level = 'graduate'"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="2" data-lesson="4"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 4 · Lesson 2 — Scalar Subquery in WHERE · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="4" data-lesson="2">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="4" data-lesson="2"></nav>
+
+    <h1 class="i18n-en">Lesson 2 — Scalar Subquery in WHERE</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٢ — استعلام فرعي قياسي في WHERE</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">A <em>scalar</em> subquery returns exactly one row and one column — a single value — usable anywhere a literal could go (<code>=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>&lt;&gt;</code>).</p>
+      <p class="i18n-ar" dir="rtl">الاستعلام الفرعي <em>القياسي</em> يُرجع صفًّا واحدًا وعمودًا واحدًا بالضبط — قيمة مفردة — يمكن استخدامها في أي موضع تصلح فيه قيمة حرفية (<code>=</code> و<code>&gt;</code> و<code>&lt;</code> و<code>&gt;=</code> و<code>&lt;=</code> و<code>&lt;&gt;</code>).</p>
+      <p class="i18n-en">In a standard database, if it ever returns more than one row the query errors at runtime. Note that this course's in-browser engine is lenient and won't raise that error, but the shape is still wrong — keep scalar subqueries returning one value.</p>
+      <p class="i18n-ar" dir="rtl">في قاعدة بيانات قياسية، إذا أرجع أكثر من صف واحد فسيُخفق الاستعلام أثناء التنفيذ. لاحظ أن محرّك هذه الدورة داخل المتصفح متساهل ولن يُطلق ذلك الخطأ، لكن الصياغة تظل خاطئة — أبقِ الاستعلامات الفرعية القياسية تُرجع قيمة واحدة.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>SELECT title, price FROM books WHERE price = (SELECT MAX(price) FROM books);</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code> and <code>authors</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code> و<code>authors</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — above the average</span><span class="i18n-ar" dir="rtl">مثال ١ — أعلى من المتوسط</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT title, price FROM books WHERE price > (SELECT AVG(price) FROM books);"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — equal to the single maximum</span><span class="i18n-ar" dir="rtl">مثال ٢ — يساوي القيمة القصوى المفردة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT title, price FROM books WHERE price = (SELECT MAX(price) FROM books);"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — a valid query returning zero rows</span><span class="i18n-ar" dir="rtl">مثال ٣ — استعلام صحيح يُرجع صفر صفوف</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":4,"sql":"SELECT title FROM books WHERE published_year < (SELECT MIN(birth_year) FROM authors);"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">A valid query that returns 0 rows — no book predates the oldest author's birth.</span><span class="i18n-ar" dir="rtl">استعلام صحيح يُرجع صفر صفوف — فلا يوجد كتاب أقدم من ميلاد أكبر المؤلفين سنًّا.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">The same idea against <strong>Orbit Electronics</strong> — the <code>products</code> and <code>categories</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">الفكرة نفسها على <strong>Orbit Electronics</strong> — جدولا <code>products</code> و<code>categories</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — below the average</span><span class="i18n-ar" dir="rtl">مثال ١ — أقل من المتوسط</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT name, price FROM products WHERE price < (SELECT AVG(price) FROM products);"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — equal to the single minimum stock</span><span class="i18n-ar" dir="rtl">مثال ٢ — يساوي أدنى مخزون مفرد</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":4,"sql":"SELECT name FROM products WHERE stock_qty = (SELECT MIN(stock_qty) FROM products);"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the danger case (shown, not run)</span><span class="i18n-ar" dir="rtl">مثال ٣ — حالة الخطر (معروضة، لا تُشغَّل)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","readonly":true,"dataset":{},"sql":"SELECT name FROM products WHERE price = (SELECT AVG(price) FROM products GROUP BY category_id);"}
+        </script>
+      </div>
+      <div class="callout warn">
+        <p class="i18n-en" style="margin:0"><code>GROUP BY</code> makes this subquery return one row per category — more than one value. In a standard database a scalar <code>=</code> rejects that with an error; drop the <code>GROUP BY</code> to compare against the single overall average.</p>
+        <p class="i18n-ar" dir="rtl" style="margin:0">تجعل <code>GROUP BY</code> هذا الاستعلام الفرعي يُرجع صفًّا لكل فئة — أي أكثر من قيمة واحدة. في قاعدة بيانات قياسية يرفض المعامل القياسي <code>=</code> ذلك بخطأ؛ احذف <code>GROUP BY</code> للمقارنة مع المتوسط الإجمالي الواحد.</p>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="4" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"A scalar subquery must return:","ar":"يجب أن يُرجع الاستعلام الفرعي القياسي:"},
+         "options":[{"en":"exactly one row and one column","ar":"صفًّا واحدًا وعمودًا واحدًا بالضبط"},{"en":"one column, any number of rows","ar":"عمودًا واحدًا وأي عدد من الصفوف"},{"en":"one row, any number of columns","ar":"صفًّا واحدًا وأي عدد من الأعمدة"},{"en":"a whole table","ar":"جدولًا كاملًا"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="4" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"WHERE price = (SELECT AVG(price) FROM products) is guaranteed to return at least one row.","ar":"العبارة WHERE price = (SELECT AVG(price) FROM products) مضمونٌ أن تُرجع صفًّا واحدًا على الأقل."},
+         "correct":false,
+         "explain":{"en":"No product may sit exactly at the average.","ar":"قد لا يوجد أي منتج سعره مساوٍ للمتوسط تمامًا."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="4" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the filter for the single most expensive product.","ar":"أكمل التصفية للحصول على المنتج الأغلى ثمنًا الواحد."},
+         "template":"SELECT name FROM products WHERE price = (SELECT ____(price) FROM products);","answers":["MAX"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="lab-q4" data-chapter="4" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each expression to what it yields.","ar":"طابِق كل تعبير بما يُنتجه."},
+         "left":[{"en":"MAX(price)","ar":"MAX(price)"},{"en":"AVG(price)","ar":"AVG(price)"},{"en":"GROUP BY category_id","ar":"GROUP BY category_id"}],
+         "right":[{"en":"the single highest value","ar":"القيمة الأعلى المفردة"},{"en":"the single mean value","ar":"قيمة المتوسط المفردة"},{"en":"one row per group (unsafe for a scalar)","ar":"صف لكل مجموعة (غير آمن لاستعلام قياسي)"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return the <code>name</code> of the product(s) with the lowest price.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أرجِع <code>name</code> المنتج (أو المنتجات) صاحب أدنى سعر.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="4" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":4,"placeholder":"SELECT name FROM products WHERE price = (SELECT ...)","grade":{"mode":"result","expected":"SELECT name FROM products WHERE price = (SELECT MIN(price) FROM products)"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> — the <code>courses</code> and <code>departments</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> — جدولا <code>courses</code> و<code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="4" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"A scalar subquery must return:","ar":"يجب أن يُرجع الاستعلام الفرعي القياسي:"},
+         "options":[{"en":"one column, any number of rows","ar":"عمودًا واحدًا وأي عدد من الصفوف"},{"en":"one row, any number of columns","ar":"صفًّا واحدًا وأي عدد من الأعمدة"},{"en":"exactly one row and one column","ar":"صفًّا واحدًا وعمودًا واحدًا بالضبط"},{"en":"a whole table","ar":"جدولًا كاملًا"}],
+         "correctIndex":2}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="4" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"WHERE credits = (SELECT AVG(credits) FROM courses) is guaranteed to return at least one row.","ar":"العبارة WHERE credits = (SELECT AVG(credits) FROM courses) مضمونٌ أن تُرجع صفًّا واحدًا على الأقل."},
+         "correct":false}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="4" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in: a subquery returning many rows where a scalar is expected causes a ____ at runtime in a standard database.","ar":"أكمل: استعلام فرعي يُرجع صفوفًا كثيرة في موضع يُتوقَّع فيه استعلام قياسي يُسبِّب ____ أثناء التنفيذ في قاعدة بيانات قياسية."},
+         "template":"A scalar subquery that returns many rows causes a ____ at runtime.","answers":["error"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return the <code>id</code> of the department with the highest <code>budget</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أرجِع <code>id</code> القسم صاحب أعلى <code>budget</code>.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="4" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":4,"placeholder":"SELECT id FROM departments WHERE budget = (SELECT ...)","grade":{"mode":"result","expected":"SELECT id FROM departments WHERE budget = (SELECT MAX(budget) FROM departments)"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="4" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Order the execution.","ar":"رتّب خطوات التنفيذ."},
+         "items":[{"en":"The inner SELECT runs and returns one value","ar":"يُنفَّذ الاستعلام الداخلي SELECT ويُرجع قيمة واحدة"},{"en":"Each outer row is compared against that value","ar":"يُقارَن كل صف خارجي بتلك القيمة"},{"en":"The matching outer rows are returned","ar":"تُرجَع الصفوف الخارجية المطابقة"}]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t6" data-chapter="4" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Match each aggregate to its result.","ar":"طابِق كل دالة تجميعية بنتيجتها."},
+         "left":[{"en":"MAX(budget)","ar":"MAX(budget)"},{"en":"AVG(budget)","ar":"AVG(budget)"},{"en":"MIN(budget)","ar":"MIN(budget)"}],
+         "right":[{"en":"single highest value","ar":"القيمة الأعلى المفردة"},{"en":"single mean value","ar":"قيمة المتوسط المفردة"},{"en":"single lowest value","ar":"القيمة الأدنى المفردة"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="4" data-lesson="2"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

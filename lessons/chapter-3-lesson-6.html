@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 3 · Lesson 6 — Changing Relationships · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="3" data-lesson="6">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="3" data-lesson="6"></nav>
+
+    <h1 class="i18n-en">Lesson 6 — Changing Relationships</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٦ — تغيير العلاقات</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">A relationship isn't permanent either. Re-pointing a child row at a different parent is just an ordinary <code>UPDATE</code> on its foreign-key column — the same skills from chapters 1 and 2.</p>
+      <p class="i18n-ar" dir="rtl">العلاقة ليست دائمة كذلك. إعادة توجيه صف ابن إلى أبٍ مختلف ما هي إلا عبارة <code>UPDATE</code> عادية على عمود المفتاح الأجنبي — المهارات نفسها من الفصلين الأول والثاني.</p>
+      <p class="i18n-en">Removing the relationship entirely means dropping the foreign-key column itself with <code>ALTER TABLE ... DROP COLUMN</code>. After that, there's no way left to tell which parent a row used to belong to — so treat it with the same care as any other <code>DROP COLUMN</code>.</p>
+      <p class="i18n-ar" dir="rtl">أما إزالة العلاقة كليًّا فتعني حذف عمود المفتاح الأجنبي نفسه بـ<code>ALTER TABLE ... DROP COLUMN</code>. وبعد ذلك لا تبقى وسيلة لمعرفة الأب الذي كان الصف ينتمي إليه — فتعامل معها بالحذر نفسه المتّبع مع أي <code>DROP COLUMN</code>.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>UPDATE child_table SET parent_id_col = &lt;different parent id&gt; WHERE id = &lt;child id&gt;;   -- re-point
+ALTER TABLE child_table DROP COLUMN parent_id_col;                              -- remove entirely</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code> and <code>authors</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code> و<code>authors</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — re-point a book, confirmed via JOIN</span><span class="i18n-ar" dir="rtl">مثال ١ — إعادة توجيه كتاب، مؤكَّدة عبر JOIN</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":3,"sql":"UPDATE books SET author_id = 3 WHERE id = 6;\nSELECT b.title, a.name FROM books b JOIN authors a ON b.author_id = a.id WHERE b.id = 6;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — an unset foreign key reads as NULL</span><span class="i18n-ar" dir="rtl">مثال ٢ — مفتاح أجنبي غير مضبوط يُقرأ NULL</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{"books":[{"id":1,"title":"The Glass Bridge","author_id":2},{"id":2,"title":"Coastal Winters","author_id":null},{"id":3,"title":"A Quiet Machine","author_id":1}]},"sql":"SELECT title FROM books WHERE author_id IS NULL;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">A foreign key with no value yet (or no longer pointing anywhere) is simply <code>NULL</code> — "no relationship set", not a broken one.</p>
+      <p class="caption i18n-ar" dir="rtl">المفتاح الأجنبي الذي لا قيمة له بعد (أو لم يعد يشير إلى أي شيء) هو ببساطة <code>NULL</code> — "لا علاقة مضبوطة"، لا علاقة معطوبة.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — remove the relationship entirely</span><span class="i18n-ar" dir="rtl">مثال ٣ — إزالة العلاقة كليًّا</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":3,"sql":"ALTER TABLE books DROP COLUMN author_id;\nSELECT * FROM books;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">This is the full removal — after this, there is no link left between <code>books</code> and <code>authors</code> until the column is added back.</p>
+      <p class="caption i18n-ar" dir="rtl">هذه هي الإزالة الكاملة — بعدها لا تبقى أي صلة بين <code>books</code> و<code>authors</code> حتى يُعاد إضافة العمود.</p>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">The same operations against <strong>Orbit Electronics</strong> — the <code>products</code> and <code>categories</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">العمليات نفسها على <strong>Orbit Electronics</strong> — جدولا <code>products</code> و<code>categories</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — re-point a product, confirmed via JOIN</span><span class="i18n-ar" dir="rtl">مثال ١ — إعادة توجيه منتج، مؤكَّدة عبر JOIN</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":3,"sql":"UPDATE products SET category_id = 5 WHERE id = 4;\nSELECT p.name, c.name FROM products p JOIN categories c ON p.category_id = c.id WHERE p.id = 4;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — an unset foreign key reads as NULL</span><span class="i18n-ar" dir="rtl">مثال ٢ — مفتاح أجنبي غير مضبوط يُقرأ NULL</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"dataset":{"products":[{"id":1,"name":"Voyager 14 Laptop","category_id":1},{"id":2,"name":"Pulse Buds","category_id":null},{"id":3,"name":"Nimbus Phone S","category_id":2}]},"sql":"SELECT name FROM products WHERE category_id IS NULL;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — remove the relationship entirely</span><span class="i18n-ar" dir="rtl">مثال ٣ — إزالة العلاقة كليًّا</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":3,"sql":"ALTER TABLE products DROP COLUMN category_id;\nSELECT * FROM products;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="3" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"How do you change which category a product belongs to?","ar":"كيف تُغيّر الفئة التي ينتمي إليها منتج؟"},
+         "options":[{"en":"UPDATE its category_id column to the new category's id","ar":"تُحدِّث عمود category_id فيه إلى معرّف الفئة الجديدة"},{"en":"DELETE and re-INSERT the product","ar":"تحذف المنتج ثم تُعيد إدراجه"},{"en":"ALTER TABLE the category","ar":"تُجري ALTER TABLE على الفئة"},{"en":"You can't change it once set","ar":"لا يمكن تغييرها بعد ضبطها"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="3" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A NULL foreign key value means the row is broken and can't be queried.","ar":"قيمة NULL في المفتاح الأجنبي تعني أن الصف معطوب ولا يمكن الاستعلام عنه."},
+         "correct":false,
+         "explain":{"en":"NULL just means no relationship is set; the row is queried normally.","ar":"NULL تعني فقط عدم ضبط علاقة؛ ويُستعلَم عن الصف بشكل طبيعي."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="3" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"ALTER TABLE products DROP ____ category_id;","answers":["COLUMN"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="3" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a statement re-pointing product id 2 at category id 5.","ar":"رتّب الأجزاء لتكوين عبارة تُعيد توجيه المنتج ذي المعرّف 2 إلى الفئة ذات المعرّف 5."},
+         "items":["UPDATE products","SET category_id = 5","WHERE id = 2;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Re-point the product with <code>id</code> 7 at the category with <code>id</code> 5 (Gaming).</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد توجيه المنتج ذي <code>id</code> 7 إلى الفئة ذات <code>id</code> 5 (Gaming).</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="3" data-lesson="6">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":3,"placeholder":"UPDATE products SET ... WHERE ...","grade":{"mode":"state","check":"SELECT category_id FROM products WHERE id = 7","expected":[{"category_id":5}]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> — the <code>courses</code> and <code>departments</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> — جدولا <code>courses</code> و<code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="3" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which statement removes the relationship between courses and departments entirely, for every course at once?","ar":"أي عبارة تُزيل العلاقة بين courses وdepartments كليًّا، لكل المقررات دفعةً واحدة؟"},
+         "options":[{"en":"ALTER TABLE courses DROP COLUMN department_id;","ar":"ALTER TABLE courses DROP COLUMN department_id;"},{"en":"DELETE FROM courses;","ar":"DELETE FROM courses;"},{"en":"UPDATE courses SET department_id = NULL;","ar":"UPDATE courses SET department_id = NULL;"},{"en":"DROP TABLE departments;","ar":"DROP TABLE departments;"}],
+         "correctIndex":0,
+         "explain":{"en":"UPDATE ... SET department_id = NULL; would clear every row's link, but the column — and the ability to set it again later — would still exist; DROP COLUMN removes the column itself.","ar":"عبارة UPDATE ... SET department_id = NULL; تمسح رابط كل صف، لكن العمود — وإمكانية ضبطه لاحقًا — يبقى موجودًا؛ أما DROP COLUMN فيحذف العمود نفسه."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="3" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"Re-pointing a course to a different department uses the same UPDATE syntax as any other column change.","ar":"إعادة توجيه مقرر إلى قسم مختلف تستخدم صياغة UPDATE نفسها المستخدمة في أي تغيير آخر لعمود."},
+         "correct":true,
+         "explain":{"en":"A foreign-key column is updated just like any ordinary column.","ar":"يُحدَّث عمود المفتاح الأجنبي تمامًا كأي عمود عادي."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="3" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"UPDATE courses SET department_id = 3 ____ id = 6;","answers":["WHERE"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="3" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each action to the statement that performs it.","ar":"طابِق كل إجراء بالعبارة التي تنفّذه."},
+         "left":[{"en":"Re-point one course to a new department","ar":"إعادة توجيه مقرر واحد إلى قسم جديد"},{"en":"Clear one course's department link","ar":"مسح رابط القسم لمقرر واحد"},{"en":"Remove the relationship for every course at once","ar":"إزالة العلاقة لكل المقررات دفعةً واحدة"}],
+         "right":[{"en":"UPDATE courses SET department_id = <new id> WHERE id = <course id>;","ar":"UPDATE courses SET department_id = <new id> WHERE id = <course id>;"},{"en":"UPDATE courses SET department_id = NULL WHERE id = <course id>;","ar":"UPDATE courses SET department_id = NULL WHERE id = <course id>;"},{"en":"ALTER TABLE courses DROP COLUMN department_id;","ar":"ALTER TABLE courses DROP COLUMN department_id;"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="3" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a statement re-pointing course id 4 at department id 3.","ar":"رتّب الأجزاء لتكوين عبارة تُعيد توجيه المقرر ذي المعرّف 4 إلى القسم ذي المعرّف 3."},
+         "items":["UPDATE courses","SET department_id = 3","WHERE id = 4;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Re-point the course with <code>id</code> 6 at the department with <code>id</code> 1.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد توجيه المقرر ذي <code>id</code> 6 إلى القسم ذي <code>id</code> 1.</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="3" data-lesson="6">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":3,"placeholder":"UPDATE courses SET ... WHERE ...","grade":{"mode":"state","check":"SELECT department_id FROM courses WHERE id = 6","expected":[{"department_id":1}]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="3" data-lesson="6"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

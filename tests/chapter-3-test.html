@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 3 test · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="3">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs">
+      <a href="../index.html" data-i18n="nav_home">Home</a>
+      <span class="sep">›</span>
+      <a href="../chapters/chapter-3.html"><span data-i18n="nav_chapter">Chapter</span> 3</a>
+      <span class="sep">›</span>
+      <span aria-current="page" data-i18n="chapter_test">Chapter test</span>
+    </nav>
+
+    <h1 class="i18n-en">Chapter 3 test</h1>
+    <h1 class="i18n-ar" dir="rtl">اختبار الفصل الثالث</h1>
+    <p class="lead i18n-en">Twenty questions across all six lessons. This test builds two related tables as you go — <code>advisors</code> and <code>students</code> (with an <code>advisor_id</code> foreign key) — then joins, updates, and deletes across them. Each write-statement question is graded as if the earlier ones were answered correctly, so answer them in order.</p>
+    <p class="lead i18n-ar" dir="rtl">عشرون سؤالًا تغطي الدروس الستة جميعها. يبني هذا الاختبار جدولين مترابطين أثناء تقدّمك — <code>advisors</code> و<code>students</code> (بمفتاح أجنبي <code>advisor_id</code>) — ثم يربط بينهما ويحدّث ويحذف عبرهما. ويُصحَّح كل سؤال كتابة عبارة كأن الأسئلة السابقة أُجيبت بشكل صحيح، لذا أجِبها بالترتيب.</p>
+
+    <!-- 1 CREATE advisors -->
+    <div class="question" data-qid="t1">
+      <div class="q-head"><span class="q-num">1</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Create a table named <code>advisors</code> with: <code>id</code> (integer primary key), <code>name</code> (text).</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أنشئ جدولًا اسمه <code>advisors</code> يحتوي: <code>id</code> (مفتاح أساسي صحيح)، <code>name</code> (نص).</p>
+      <div class="qb-widget" data-qid="t1" data-chapter="3" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":3,"placeholder":"CREATE TABLE advisors ( ... );","grade":{"mode":"structural","table":"advisors","columns":["id","name"]}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 2 INSERT advisors -->
+    <div class="question" data-qid="t2">
+      <div class="q-head"><span class="q-num">2</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Insert three advisors into <code>advisors</code>: <code>(1, 'Dr. Nour Aziz')</code>, <code>(2, 'Dr. Peter Lindqvist')</code>, <code>(3, 'Dr. Sana Okafor')</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أدرج ثلاثة مرشدين في <code>advisors</code>: <code>(1, 'Dr. Nour Aziz')</code> و<code>(2, 'Dr. Peter Lindqvist')</code> و<code>(3, 'Dr. Sana Okafor')</code>.</p>
+      <div class="qb-widget" data-qid="t2" data-chapter="3" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":3,"setup":["CREATE TABLE advisors (id INTEGER PRIMARY KEY, name TEXT)"],"placeholder":"INSERT INTO advisors ...","grade":{"mode":"state","check":"SELECT * FROM advisors","expected":[{"id":1,"name":"Dr. Nour Aziz"},{"id":2,"name":"Dr. Peter Lindqvist"},{"id":3,"name":"Dr. Sana Okafor"}]}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 3 MCQ -->
+    <div class="question" data-qtype="mcq" data-qid="t3" data-chapter="3" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":3,"prompt":{"en":"What is a foreign key?","ar":"ما هو المفتاح الأجنبي؟"},
+       "options":[{"en":"A column storing another table's primary-key value","ar":"عمود يخزّن قيمة المفتاح الأساسي لجدول آخر"},{"en":"A second primary key on the same table","ar":"مفتاح أساسي ثانٍ على الجدول نفسه"},{"en":"A column that must always be unique","ar":"عمود يجب أن يكون فريدًا دائمًا"},{"en":"A type of index","ar":"نوع من الفهارس"}],"correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 4 T/F -->
+    <div class="question" data-qtype="tf" data-qid="t4" data-chapter="3" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":4,"prompt":{"en":"One advisor can be assigned to many students.","ar":"يمكن تعيين مرشد واحد لعدة طلاب."},"correct":true}
+      </script>
+    </div>
+
+    <!-- 5 CREATE students -->
+    <div class="question" data-qid="t5">
+      <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Create a table named <code>students</code> with: <code>id</code> (integer primary key), <code>name</code> (text), <code>gpa</code> (real), <code>advisor_id</code> (integer).</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أنشئ جدولًا اسمه <code>students</code> يحتوي: <code>id</code> (مفتاح أساسي صحيح)، <code>name</code> (نص)، <code>gpa</code> (عدد حقيقي)، <code>advisor_id</code> (عدد صحيح).</p>
+      <div class="qb-widget" data-qid="t5" data-chapter="3" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":3,"setup":["CREATE TABLE advisors (id INTEGER PRIMARY KEY, name TEXT)","INSERT INTO advisors (id, name) VALUES (1, 'Dr. Nour Aziz'), (2, 'Dr. Peter Lindqvist'), (3, 'Dr. Sana Okafor')"],"placeholder":"CREATE TABLE students ( ... );","grade":{"mode":"structural","table":"students","columns":["id","name","gpa","advisor_id"]}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 6 INSERT students -->
+    <div class="question" data-qid="t6">
+      <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Insert four students into <code>students</code>: <code>(1, 'Yara Haddad', 3.7, 1)</code>, <code>(2, 'Ben Torres', 3.2, 1)</code>, <code>(3, 'Mei Lin', 3.9, 2)</code>, <code>(4, 'Omar Farouk', 3.4, 3)</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أدرج أربعة طلاب في <code>students</code>: <code>(1, 'Yara Haddad', 3.7, 1)</code> و<code>(2, 'Ben Torres', 3.2, 1)</code> و<code>(3, 'Mei Lin', 3.9, 2)</code> و<code>(4, 'Omar Farouk', 3.4, 3)</code>.</p>
+      <div class="qb-widget" data-qid="t6" data-chapter="3" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":3,"setup":["CREATE TABLE advisors (id INTEGER PRIMARY KEY, name TEXT)","INSERT INTO advisors (id, name) VALUES (1, 'Dr. Nour Aziz'), (2, 'Dr. Peter Lindqvist'), (3, 'Dr. Sana Okafor')","CREATE TABLE students (id INTEGER PRIMARY KEY, name TEXT, gpa REAL, advisor_id INTEGER)"],"placeholder":"INSERT INTO students ...","grade":{"mode":"state","check":"SELECT * FROM students","expected":[{"id":1,"name":"Yara Haddad","gpa":3.7,"advisor_id":1},{"id":2,"name":"Ben Torres","gpa":3.2,"advisor_id":1},{"id":3,"name":"Mei Lin","gpa":3.9,"advisor_id":2},{"id":4,"name":"Omar Farouk","gpa":3.4,"advisor_id":3}]}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 7 MCQ -->
+    <div class="question" data-qtype="mcq" data-qid="t7" data-chapter="3" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":7,"prompt":{"en":"Which clause in a JOIN says how the two tables match up?","ar":"أي جملة في JOIN تحدّد كيف يتطابق الجدولان؟"},
+       "options":[{"en":"ON","ar":"ON"},{"en":"WHERE","ar":"WHERE"},{"en":"SET","ar":"SET"},{"en":"GROUP","ar":"GROUP"}],"correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 8 JOIN -->
+    <div class="question" data-qid="t8">
+      <div class="q-head"><span class="q-num">8</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Select each student's <code>name</code> and their advisor's <code>name</code> (aliased as <code>advisor_name</code>), joining <code>students</code> to <code>advisors</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">اختر <code>name</code> كل طالب و<code>name</code> مرشده (باسم مستعار <code>advisor_name</code>)، بربط <code>students</code> بـ <code>advisors</code>.</p>
+      <div class="qb-widget" data-qid="t8" data-chapter="3" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":3,"setup":["CREATE TABLE advisors (id INTEGER PRIMARY KEY, name TEXT)","INSERT INTO advisors (id, name) VALUES (1, 'Dr. Nour Aziz'), (2, 'Dr. Peter Lindqvist'), (3, 'Dr. Sana Okafor')","CREATE TABLE students (id INTEGER PRIMARY KEY, name TEXT, gpa REAL, advisor_id INTEGER)","INSERT INTO students (id, name, gpa, advisor_id) VALUES (1, 'Yara Haddad', 3.7, 1), (2, 'Ben Torres', 3.2, 1), (3, 'Mei Lin', 3.9, 2), (4, 'Omar Farouk', 3.4, 3)"],"placeholder":"SELECT s.name, a.name AS advisor_name FROM students s JOIN advisors a ON ...","grade":{"mode":"result","expected":"SELECT s.name, a.name AS advisor_name FROM students s JOIN advisors a ON s.advisor_id = a.id"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 9 T/F -->
+    <div class="question" data-qtype="tf" data-qid="t9" data-chapter="3" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":9,"prompt":{"en":"students s JOIN advisors a ON s.advisor_id = a.id only returns students who have a matching advisor row.","ar":"العبارة students s JOIN advisors a ON s.advisor_id = a.id تُعيد فقط الطلاب الذين لهم صف مرشد مطابق."},"correct":true}
+      </script>
+    </div>
+
+    <!-- 10 Fill -->
+    <div class="question" data-qtype="fill" data-qid="t10" data-chapter="3" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":10,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+       "template":"SELECT s.name, a.name FROM students s JOIN advisors a ____ s.advisor_id = a.id;","answers":["ON"]}
+      </script>
+    </div>
+
+    <!-- 11 JOIN + filter -->
+    <div class="question" data-qid="t11">
+      <div class="q-head"><span class="q-num">11</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Select the <code>name</code> of every student whose <code>gpa</code> is greater than 3.5, along with their advisor's <code>name</code> (aliased as <code>advisor_name</code>).</p>
+      <p class="q-prompt i18n-ar" dir="rtl">اختر <code>name</code> كل طالب <code>gpa</code>ه أكبر من 3.5، مع <code>name</code> مرشده (باسم مستعار <code>advisor_name</code>).</p>
+      <div class="qb-widget" data-qid="t11" data-chapter="3" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":3,"setup":["CREATE TABLE advisors (id INTEGER PRIMARY KEY, name TEXT)","INSERT INTO advisors (id, name) VALUES (1, 'Dr. Nour Aziz'), (2, 'Dr. Peter Lindqvist'), (3, 'Dr. Sana Okafor')","CREATE TABLE students (id INTEGER PRIMARY KEY, name TEXT, gpa REAL, advisor_id INTEGER)","INSERT INTO students (id, name, gpa, advisor_id) VALUES (1, 'Yara Haddad', 3.7, 1), (2, 'Ben Torres', 3.2, 1), (3, 'Mei Lin', 3.9, 2), (4, 'Omar Farouk', 3.4, 3)"],"placeholder":"SELECT s.name, a.name AS advisor_name FROM students s JOIN advisors a ON ... WHERE ...","grade":{"mode":"result","expected":"SELECT s.name, a.name AS advisor_name FROM students s JOIN advisors a ON s.advisor_id = a.id WHERE s.gpa > 3.5"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 12 MCQ -->
+    <div class="question" data-qtype="mcq" data-qid="t12" data-chapter="3" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":12,"prompt":{"en":"Which pattern updates every student advised by Dr. Nour Aziz?","ar":"أي نمط يحدّث كل طالب يرشده Dr. Nour Aziz؟"},
+       "options":[{"en":"WHERE advisor_id IN (SELECT id FROM advisors WHERE name = 'Dr. Nour Aziz')","ar":"WHERE advisor_id IN (SELECT id FROM advisors WHERE name = 'Dr. Nour Aziz')"},{"en":"WHERE advisor_id = 'Dr. Nour Aziz'","ar":"WHERE advisor_id = 'Dr. Nour Aziz'"},{"en":"JOIN advisors WHERE name = 'Dr. Nour Aziz'","ar":"JOIN advisors WHERE name = 'Dr. Nour Aziz'"},{"en":"WHERE advisor_name = 'Dr. Nour Aziz'","ar":"WHERE advisor_name = 'Dr. Nour Aziz'"}],"correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 13 UPDATE via subquery -->
+    <div class="question" data-qid="t13">
+      <div class="q-head"><span class="q-num">13</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Add 0.1 to the <code>gpa</code> of every student advised by <code>'Dr. Peter Lindqvist'</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أضِف 0.1 إلى <code>gpa</code> كل طالب يرشده <code>'Dr. Peter Lindqvist'</code>.</p>
+      <div class="qb-widget" data-qid="t13" data-chapter="3" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":3,"setup":["CREATE TABLE advisors (id INTEGER PRIMARY KEY, name TEXT)","INSERT INTO advisors (id, name) VALUES (1, 'Dr. Nour Aziz'), (2, 'Dr. Peter Lindqvist'), (3, 'Dr. Sana Okafor')","CREATE TABLE students (id INTEGER PRIMARY KEY, name TEXT, gpa REAL, advisor_id INTEGER)","INSERT INTO students (id, name, gpa, advisor_id) VALUES (1, 'Yara Haddad', 3.7, 1), (2, 'Ben Torres', 3.2, 1), (3, 'Mei Lin', 3.9, 2), (4, 'Omar Farouk', 3.4, 3)"],"placeholder":"UPDATE students SET gpa = ... WHERE advisor_id IN (SELECT ...)","grade":{"mode":"state","check":"SELECT id, gpa FROM students","expected":[{"id":1,"gpa":3.7},{"id":2,"gpa":3.2},{"id":3,"gpa":4},{"id":4,"gpa":3.4}]}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 14 T/F -->
+    <div class="question" data-qtype="tf" data-qid="t14" data-chapter="3" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":14,"prompt":{"en":"That UPDATE also changes something in the advisors table.","ar":"ذلك التحديث يغيّر أيضًا شيئًا في جدول advisors."},"correct":false,
+       "explain":{"en":"It only changes students; advisors is only read from by the subquery.","ar":"يغيّر students فقط؛ أما advisors فيُقرأ منه الاستعلام الفرعي لا أكثر."}}
+      </script>
+    </div>
+
+    <!-- 15 Order -->
+    <div class="question" data-qtype="order" data-qid="t15" data-chapter="3" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":15,"prompt":{"en":"Arrange the fragments into a statement deleting students advised by 'Dr. Sana Okafor' with gpa below 3.5.","ar":"رتّب الأجزاء لتكوين عبارة تحذف الطلاب الذين يرشدهم 'Dr. Sana Okafor' ومعدّلهم أقل من 3.5."},
+       "items":["DELETE FROM students","WHERE advisor_id IN (SELECT id FROM advisors WHERE name = 'Dr. Sana Okafor')","AND gpa < 3.5;"]}
+      </script>
+    </div>
+
+    <!-- 16 DELETE via subquery -->
+    <div class="question" data-qid="t16">
+      <div class="q-head"><span class="q-num">16</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Delete every student advised by <code>'Dr. Sana Okafor'</code> with <code>gpa</code> below 3.5.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">احذف كل طالب يرشده <code>'Dr. Sana Okafor'</code> ومعدّله <code>gpa</code> أقل من 3.5.</p>
+      <div class="qb-widget" data-qid="t16" data-chapter="3" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":3,"setup":["CREATE TABLE advisors (id INTEGER PRIMARY KEY, name TEXT)","INSERT INTO advisors (id, name) VALUES (1, 'Dr. Nour Aziz'), (2, 'Dr. Peter Lindqvist'), (3, 'Dr. Sana Okafor')","CREATE TABLE students (id INTEGER PRIMARY KEY, name TEXT, gpa REAL, advisor_id INTEGER)","INSERT INTO students (id, name, gpa, advisor_id) VALUES (1, 'Yara Haddad', 3.7, 1), (2, 'Ben Torres', 3.2, 1), (3, 'Mei Lin', 3.9, 2), (4, 'Omar Farouk', 3.4, 3)","UPDATE students SET gpa = gpa + 0.1 WHERE advisor_id IN (SELECT id FROM advisors WHERE name = 'Dr. Peter Lindqvist')"],"placeholder":"DELETE FROM students WHERE advisor_id IN (SELECT ...) AND ...","grade":{"mode":"state","check":"SELECT * FROM students","expected":"SELECT * FROM students WHERE NOT (advisor_id IN (SELECT id FROM advisors WHERE name = 'Dr. Sana Okafor') AND gpa < 3.5)"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 17 re-point UPDATE -->
+    <div class="question" data-qid="t17">
+      <div class="q-head"><span class="q-num">17</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Re-point the student with <code>id</code> 2 to advisor <code>id</code> 3.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أعِد توجيه الطالب ذي <code>id</code> 2 إلى المرشد ذي <code>id</code> 3.</p>
+      <div class="qb-widget" data-qid="t17" data-chapter="3" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":3,"setup":["CREATE TABLE advisors (id INTEGER PRIMARY KEY, name TEXT)","INSERT INTO advisors (id, name) VALUES (1, 'Dr. Nour Aziz'), (2, 'Dr. Peter Lindqvist'), (3, 'Dr. Sana Okafor')","CREATE TABLE students (id INTEGER PRIMARY KEY, name TEXT, gpa REAL, advisor_id INTEGER)","INSERT INTO students (id, name, gpa, advisor_id) VALUES (1, 'Yara Haddad', 3.7, 1), (2, 'Ben Torres', 3.2, 1), (3, 'Mei Lin', 3.9, 2), (4, 'Omar Farouk', 3.4, 3)","UPDATE students SET gpa = gpa + 0.1 WHERE advisor_id IN (SELECT id FROM advisors WHERE name = 'Dr. Peter Lindqvist')","DELETE FROM students WHERE advisor_id IN (SELECT id FROM advisors WHERE name = 'Dr. Sana Okafor') AND gpa < 3.5"],"placeholder":"UPDATE students SET advisor_id = ... WHERE ...","grade":{"mode":"state","check":"SELECT advisor_id FROM students WHERE id = 2","expected":[{"advisor_id":3}]}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 18 MCQ -->
+    <div class="question" data-qtype="mcq" data-qid="t18" data-chapter="3" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":18,"prompt":{"en":"Which statement removes the advisor_id column — and the relationship — from students entirely?","ar":"أي عبارة تزيل عمود advisor_id — والعلاقة — من students بالكامل؟"},
+       "options":[{"en":"ALTER TABLE students DROP COLUMN advisor_id;","ar":"ALTER TABLE students DROP COLUMN advisor_id;"},{"en":"DELETE FROM students;","ar":"DELETE FROM students;"},{"en":"UPDATE students SET advisor_id = NULL;","ar":"UPDATE students SET advisor_id = NULL;"},{"en":"DROP TABLE advisors;","ar":"DROP TABLE advisors;"}],"correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 19 T/F -->
+    <div class="question" data-qtype="tf" data-qid="t19" data-chapter="3" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":19,"prompt":{"en":"This engine (alasql) rejects an INSERT whose foreign-key value doesn't match any parent row.","ar":"هذا المحرك (alasql) يرفض عبارة INSERT إذا كانت قيمة مفتاحها الأجنبي لا تطابق أي صف أب."},"correct":false,
+       "explain":{"en":"As Lesson 1 noted, this engine doesn't enforce foreign keys — the relationship here is pedagogical.","ar":"كما أشار الدرس الأول، لا يفرض هذا المحرك المفاتيح الأجنبية — العلاقة هنا لأغراض تعليمية."}}
+      </script>
+    </div>
+
+    <!-- 20 DROP COLUMN -->
+    <div class="question" data-qid="t20">
+      <div class="q-head"><span class="q-num">20</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Remove the <code>advisor_id</code> column from <code>students</code> entirely.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أزِل عمود <code>advisor_id</code> من <code>students</code> بالكامل.</p>
+      <div class="qb-widget" data-qid="t20" data-chapter="3" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":3,"setup":["CREATE TABLE advisors (id INTEGER PRIMARY KEY, name TEXT)","INSERT INTO advisors (id, name) VALUES (1, 'Dr. Nour Aziz'), (2, 'Dr. Peter Lindqvist'), (3, 'Dr. Sana Okafor')","CREATE TABLE students (id INTEGER PRIMARY KEY, name TEXT, gpa REAL, advisor_id INTEGER)","INSERT INTO students (id, name, gpa, advisor_id) VALUES (1, 'Yara Haddad', 3.7, 1), (2, 'Ben Torres', 3.2, 1), (3, 'Mei Lin', 3.9, 2), (4, 'Omar Farouk', 3.4, 3)","UPDATE students SET gpa = gpa + 0.1 WHERE advisor_id IN (SELECT id FROM advisors WHERE name = 'Dr. Peter Lindqvist')","DELETE FROM students WHERE advisor_id IN (SELECT id FROM advisors WHERE name = 'Dr. Sana Okafor') AND gpa < 3.5","UPDATE students SET advisor_id = 3 WHERE id = 2"],"placeholder":"ALTER TABLE students ...","grade":{"mode":"structural","table":"students","absent":["advisor_id"]}}
+        </script>
+      </div>
+    </div>
+
+    <div class="card" id="score-card" style="margin-top:var(--sp-6); text-align:center;">
+      <button class="btn btn-primary" id="score-btn" data-i18n="score">Score</button>
+      <h2 id="score-line" hidden style="margin-top:var(--sp-4)"></h2>
+      <div class="progress-bar" id="score-bar" hidden style="max-width:360px;margin:var(--sp-3) auto 0;"><span></span></div>
+    </div>
+
+    <nav class="footer-nav" style="justify-content:center;">
+      <a class="btn btn-secondary" href="../chapters/chapter-3.html"><span data-i18n="back_to_chapter">Back to chapter</span></a>
+    </nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script>
+    window.PageInit = function () {
+      var QIDS = []; for (var i = 1; i <= 20; i++) QIDS.push('t' + i);
+      function t(k) { return window.I18N ? window.I18N.t(k) : k; }
+      function tally() { var p = 0; QIDS.forEach(function (q) { if (window.Progress.questionResult('3', 'test', q) === true) p++; }); return p; }
+      function show() {
+        var passed = tally(), total = QIDS.length;
+        var line = document.getElementById('score-line'), bar = document.getElementById('score-bar');
+        line.hidden = false; bar.hidden = false;
+        line.textContent = t('test_score') + ' ' + passed + ' ' + t('test_of') + ' ' + total;
+        bar.querySelector('span').style.width = (passed / total * 100) + '%';
+      }
+      document.getElementById('score-btn').addEventListener('click', show);
+      document.addEventListener('progress:change', function () { if (!document.getElementById('score-line').hidden) show(); });
+    };
+  </script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

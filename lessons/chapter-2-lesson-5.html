@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 2 · Lesson 5 — Updating Many Columns · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="2" data-lesson="5">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="2" data-lesson="5"></nav>
+
+    <h1 class="i18n-en">Lesson 5 — Updating Many Columns</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٥ — تحديث أعمدة متعددة</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">A single <code>UPDATE</code> can change several columns in the same statement — list each <code>column = new_value</code> pair after <code>SET</code>, separated by commas. The <code>WHERE</code> clause still works exactly as in chapter 1: it decides which row(s) are touched, and omitting it updates every row.</p>
+      <p class="i18n-ar" dir="rtl">يمكن لعبارة <code>UPDATE</code> واحدة أن تُغيّر عدة أعمدة في العبارة نفسها — اسرد كل زوج <code>column = new_value</code> بعد <code>SET</code> مفصولًا بفواصل. وتبقى جملة <code>WHERE</code> تعمل تمامًا كما في الفصل الأول: فهي تُحدِّد الصف/الصفوف المتأثرة، وحذفها يُحدِّث كل صف.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>UPDATE table_name SET col_a = value_a, col_b = value_b WHERE condition;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — the <code>books</code> table</h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — جدول <code>books</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — set two columns on one row</span><span class="i18n-ar" dir="rtl">مثال ١ — ضبط عمودين في صف واحد</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"sql":"UPDATE books SET price = 16.50, in_stock = true WHERE id = 3;\nSELECT * FROM books WHERE id = 3;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — a computed new value</span><span class="i18n-ar" dir="rtl">مثال ٢ — قيمة جديدة محسوبة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"sql":"UPDATE books SET price = price - 2.00 WHERE published_year < 2018;\nSELECT * FROM books WHERE published_year < 2018;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">The new value can be an expression built from the row's own current values, not just a literal.</p>
+      <p class="caption i18n-ar" dir="rtl">يمكن أن تكون القيمة الجديدة تعبيرًا مبنيًا على القيم الحالية للصف نفسه، لا مجرد قيمة ثابتة.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the danger case (shown, not run)</span><span class="i18n-ar" dir="rtl">مثال ٣ — حالة الخطر (معروضة، لا تُشغَّل)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","readonly":true,"dataset":{},"sql":"UPDATE books SET in_stock = false, price = 0;"}
+        </script>
+      </div>
+      <div class="callout warn">
+        <p class="i18n-en" style="margin:0">Still true with multiple columns: no <code>WHERE</code> means <em>every</em> row, and <em>every</em> listed column, changes.</p>
+        <p class="i18n-ar" dir="rtl" style="margin:0">لا يزال الأمر صحيحًا مع الأعمدة المتعددة: غياب <code>WHERE</code> يعني تغيّر <em>كل</em> صف، و<em>كل</em> عمود مذكور.</p>
+      </div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Now try the same patterns against the <strong>Orbit Electronics</strong> <code>products</code> table.</p>
+      <p class="i18n-ar" dir="rtl">جرّب الآن الأنماط نفسها على جدول <code>products</code> في <strong>Orbit Electronics</strong>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1</span><span class="i18n-ar" dir="rtl">مثال ١</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"sql":"UPDATE products SET price = 74.99, is_featured = true WHERE id = 2;\nSELECT * FROM products WHERE id = 2;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2</span><span class="i18n-ar" dir="rtl">مثال ٢</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"sql":"UPDATE products SET stock_qty = stock_qty + 10 WHERE stock_qty = 0;\nSELECT * FROM products WHERE id = 6;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the danger case (shown, not run)</span><span class="i18n-ar" dir="rtl">مثال ٣ — حالة الخطر (معروضة، لا تُشغَّل)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","readonly":true,"dataset":{},"sql":"UPDATE products SET price = 0, stock_qty = 0;"}
+        </script>
+      </div>
+      <div class="callout warn">
+        <p class="i18n-en" style="margin:0">No <code>WHERE</code> here would zero out <em>every</em> product's price and stock at once. Always check the <code>WHERE</code> before running an <code>UPDATE</code>.</p>
+        <p class="i18n-ar" dir="rtl" style="margin:0">غياب <code>WHERE</code> هنا سيُصفّر سعر ومخزون <em>كل</em> منتج دفعة واحدة. تحقّق دائمًا من <code>WHERE</code> قبل تشغيل <code>UPDATE</code>.</p>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="2" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"How do you update more than one column in a single UPDATE statement?","ar":"كيف تُحدِّث أكثر من عمود في عبارة UPDATE واحدة؟"},
+         "options":[{"en":"List multiple column = value pairs after SET, separated by commas","ar":"اسرد عدة أزواج column = value بعد SET مفصولة بفواصل"},{"en":"Write separate SET clauses","ar":"اكتب جُملَ SET منفصلة"},{"en":"Use UPDATE ... AND ...","ar":"استخدم UPDATE ... AND ..."},{"en":"It isn't possible","ar":"هذا غير ممكن"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="2" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"SET price = price - 2.00 is invalid because a column can't reference itself.","ar":"العبارة SET price = price - 2.00 غير صالحة لأن العمود لا يمكنه أن يشير إلى نفسه."},
+         "correct":false,
+         "explain":{"en":"A column can reference its own current value in the new expression.","ar":"يمكن للعمود أن يشير إلى قيمته الحالية داخل التعبير الجديد."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="2" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"UPDATE products SET price = 99.00, is_featured = true ____ id = 5;","answers":["WHERE"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="2" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a statement that sets both price and stock_qty for product id 7.","ar":"رتّب الأجزاء لتكوين عبارة تضبط price و stock_qty معًا للمنتج ذي المعرّف 7."},
+         "items":["UPDATE products","SET price = 49.00, stock_qty = 80","WHERE id = 7;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">For the product with <code>id</code> 6, set <code>price</code> to <code>299.00</code> and <code>is_featured</code> to <code>true</code>, in one statement.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">للمنتج ذي <code>id</code> 6، اضبط <code>price</code> على <code>299.00</code> و<code>is_featured</code> على <code>true</code>، في عبارة واحدة.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="2" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":2,"placeholder":"UPDATE products SET ... WHERE ...","grade":{"mode":"state","check":"SELECT price, is_featured FROM products WHERE id = 6","expected":[{"price":299.00,"is_featured":true}]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>courses</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدولها <code>courses</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="2" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"In SET credits = 4, active = true, how many columns are being changed?","ar":"في SET credits = 4, active = true، كم عمودًا يجري تغييره؟"},
+         "options":[{"en":"Two","ar":"عمودان"},{"en":"One","ar":"عمود واحد"},{"en":"Zero","ar":"لا شيء"},{"en":"It depends on WHERE","ar":"يعتمد على WHERE"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="2" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A single UPDATE statement can only set one column, no matter how many rows it touches.","ar":"عبارة UPDATE واحدة لا يمكنها ضبط سوى عمود واحد، مهما بلغ عدد الصفوف التي تمسّها."},
+         "correct":false,
+         "explain":{"en":"One UPDATE can set many columns at once via a comma-separated SET list.","ar":"يمكن لعبارة UPDATE واحدة ضبط عدة أعمدة معًا عبر قائمة SET مفصولة بفواصل."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="2" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"UPDATE courses SET credits = 4, level = 'graduate' ____ id = 2;","answers":["WHERE"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="2" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each SET clause to what it does.","ar":"طابِق كل جملة SET بما تفعله."},
+         "left":[{"en":"SET active = false","ar":"SET active = false"},{"en":"SET credits = credits + 1","ar":"SET credits = credits + 1"},{"en":"SET title = 'New Title', active = true","ar":"SET title = 'New Title', active = true"}],
+         "right":[{"en":"Sets one column to a fixed value","ar":"يضبط عمودًا واحدًا على قيمة ثابتة"},{"en":"Sets one column based on its own current value","ar":"يضبط عمودًا واحدًا بناءً على قيمته الحالية"},{"en":"Sets two columns at once","ar":"يضبط عمودين معًا"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="2" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a statement that sets both credits and active for course id 4.","ar":"رتّب الأجزاء لتكوين عبارة تضبط credits و active معًا للمقرّر ذي المعرّف 4."},
+         "items":["UPDATE courses","SET credits = 3, active = true","WHERE id = 4;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">For the course with <code>id</code> 4, set <code>credits</code> to <code>3</code> and <code>active</code> to <code>true</code>, in one statement.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">للمقرّر ذي <code>id</code> 4، اضبط <code>credits</code> على <code>3</code> و<code>active</code> على <code>true</code>، في عبارة واحدة.</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="2" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":2,"placeholder":"UPDATE courses SET ... WHERE ...","grade":{"mode":"state","check":"SELECT credits, active FROM courses WHERE id = 4","expected":[{"credits":3,"active":true}]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="2" data-lesson="5"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

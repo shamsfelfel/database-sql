@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 1 test · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="1">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs">
+      <a href="../index.html" data-i18n="nav_home">Home</a>
+      <span class="sep">›</span>
+      <a href="../chapters/chapter-1.html"><span data-i18n="nav_chapter">Chapter</span> 1</a>
+      <span class="sep">›</span>
+      <span aria-current="page" data-i18n="chapter_test">Chapter test</span>
+    </nav>
+
+    <h1 class="i18n-en">Chapter 1 test</h1>
+    <h1 class="i18n-ar" dir="rtl">اختبار الفصل الأول</h1>
+    <p class="lead i18n-en">Twenty questions across all five statements. Most of this test builds up a brand-new <code>clubs</code> table as you go — each write-statement question is graded as if the earlier ones were answered correctly, so answer them in order. The <strong>Database</strong> panel shows <code>clubs</code> taking shape.</p>
+    <p class="lead i18n-ar" dir="rtl">عشرون سؤالًا تغطي العبارات الخمس جميعها. يبني معظم هذا الاختبار جدولًا جديدًا اسمه <code>clubs</code> أثناء تقدّمك — ويُصحَّح كل سؤال كتابة عبارة كأن الأسئلة السابقة أُجيبت بشكل صحيح، لذا أجِبها بالترتيب. وتُظهر لوحة <strong>قاعدة البيانات</strong> جدول <code>clubs</code> وهو يتشكّل.</p>
+
+    <!-- 1 -->
+    <div class="question" data-qid="t1">
+      <div class="q-head"><span class="q-num">1</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Create a table named <code>clubs</code> with an integer primary key <code>id</code> and a text column <code>name</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أنشئ جدولًا اسمه <code>clubs</code> بمفتاح أساسي صحيح <code>id</code> وعمود نصّي <code>name</code>.</p>
+      <div class="qb-widget" data-qid="t1" data-chapter="1" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":1,"placeholder":"CREATE TABLE clubs ( ... );","grade":{"mode":"structural","table":"clubs","columns":["id","name"]}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="question" data-qtype="mcq" data-qid="t2" data-chapter="1" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":2,"prompt":{"en":"Which keyword guarantees a CREATE TABLE won't error if the table already exists?","ar":"أي كلمة مفتاحية تضمن ألا تُخطئ CREATE TABLE إذا كان الجدول موجودًا بالفعل؟"},
+       "options":[{"en":"IF NOT EXISTS","ar":"IF NOT EXISTS"},{"en":"IF EXISTS","ar":"IF EXISTS"},{"en":"ON CONFLICT","ar":"ON CONFLICT"},{"en":"SAFE CREATE","ar":"SAFE CREATE"}],
+       "correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 3 -->
+    <div class="question" data-qtype="tf" data-qid="t3" data-chapter="1" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":3,"prompt":{"en":"A table's primary key column may contain duplicate values.","ar":"قد يحتوي عمود المفتاح الأساسي على قيم مكرّرة."},"correct":false,
+       "explain":{"en":"A primary key is unique by definition.","ar":"المفتاح الأساسي فريد بحكم تعريفه."}}
+      </script>
+    </div>
+
+    <!-- 4 -->
+    <div class="question" data-qtype="fill" data-qid="t4" data-chapter="1" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":4,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+       "template":"CREATE TABLE clubs (id INTEGER ____ KEY, name TEXT);","answers":["PRIMARY"]}
+      </script>
+    </div>
+
+    <!-- 5 -->
+    <div class="question" data-qid="t5">
+      <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Insert three clubs into <code>clubs</code>: <code>(1, 'Chess Club')</code>, <code>(2, 'Robotics Club')</code>, <code>(3, 'Debate Club')</code>, in one statement.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أدرج ثلاثة نوادٍ في <code>clubs</code>: <code>(1, 'Chess Club')</code> و<code>(2, 'Robotics Club')</code> و<code>(3, 'Debate Club')</code>، في عبارة واحدة.</p>
+      <div class="qb-widget" data-qid="t5" data-chapter="1" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":1,"setup":["CREATE TABLE clubs (id INTEGER PRIMARY KEY, name TEXT)"],"placeholder":"INSERT INTO clubs ...","grade":{"mode":"state","check":"SELECT * FROM clubs","expected":[{"id":1,"name":"Chess Club"},{"id":2,"name":"Robotics Club"},{"id":3,"name":"Debate Club"}]}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="question" data-qtype="mcq" data-qid="t6" data-chapter="1" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":6,"prompt":{"en":"Why is it safer to name columns explicitly in an INSERT?","ar":"لماذا يكون تسمية الأعمدة صراحةً في INSERT أكثر أمانًا؟"},
+       "options":[{"en":"It keeps working even if column order changes later","ar":"يظل يعمل حتى لو تغيّر ترتيب الأعمدة لاحقًا"},{"en":"It runs faster","ar":"يعمل أسرع"},{"en":"It's required by SQL","ar":"إلزامي في SQL"},{"en":"It prevents duplicate rows","ar":"يمنع الصفوف المكرّرة"}],
+       "correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 7 -->
+    <div class="question" data-qtype="tf" data-qid="t7" data-chapter="1" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":7,"prompt":{"en":"One INSERT statement can add multiple rows at once.","ar":"يمكن لعبارة INSERT واحدة أن تضيف عدة صفوف دفعة واحدة."},"correct":true}
+      </script>
+    </div>
+
+    <!-- 8 -->
+    <div class="question" data-qtype="order" data-qid="t8" data-chapter="1" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":8,"prompt":{"en":"Arrange the fragments into a valid multi-row INSERT for clubs.","ar":"رتّب الأجزاء لتكوين عبارة INSERT متعددة الصفوف صحيحة لجدول clubs."},
+       "items":["INSERT INTO clubs (id, name)","VALUES","(4, 'Photography Club'),","(5, 'Coding Club');"]}
+      </script>
+    </div>
+
+    <!-- 9 -->
+    <div class="question" data-qid="t9">
+      <div class="q-head"><span class="q-num">9</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Select every row from <code>clubs</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">اختر كل صف من <code>clubs</code>.</p>
+      <div class="qb-widget" data-qid="t9" data-chapter="1" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":1,"setup":["CREATE TABLE clubs (id INTEGER PRIMARY KEY, name TEXT)","INSERT INTO clubs (id, name) VALUES (1, 'Chess Club'), (2, 'Robotics Club'), (3, 'Debate Club')"],"placeholder":"SELECT ... FROM clubs;","grade":{"mode":"result","expected":"SELECT * FROM clubs"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="question" data-qid="t10">
+      <div class="q-head"><span class="q-num">10</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Select just the <code>name</code> column from <code>clubs</code>, for the club with <code>id</code> 2.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">اختر عمود <code>name</code> فقط من <code>clubs</code>، للنادي ذي <code>id</code> 2.</p>
+      <div class="qb-widget" data-qid="t10" data-chapter="1" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":1,"setup":["CREATE TABLE clubs (id INTEGER PRIMARY KEY, name TEXT)","INSERT INTO clubs (id, name) VALUES (1, 'Chess Club'), (2, 'Robotics Club'), (3, 'Debate Club')"],"placeholder":"SELECT name FROM clubs WHERE ...","grade":{"mode":"result","expected":"SELECT name FROM clubs WHERE id = 2"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="question" data-qtype="mcq" data-qid="t11" data-chapter="1" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":11,"prompt":{"en":"SELECT * FROM clubs WHERE id = 10; where no club has id 10 — what happens?","ar":"العبارة SELECT * FROM clubs WHERE id = 10; حيث لا نادي له المعرّف 10 — ماذا يحدث؟"},
+       "options":[{"en":"Returns 0 rows, no error","ar":"تُعيد 0 صف، دون خطأ"},{"en":"Raises an error","ar":"تُطلق خطأً"},{"en":"Returns all rows","ar":"تُعيد كل الصفوف"},{"en":"Returns NULL","ar":"تُعيد NULL"}],
+       "correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 12 -->
+    <div class="question" data-qtype="fill" data-qid="t12" data-chapter="1" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":12,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+       "template":"SELECT * FROM clubs ____ name = 'Chess Club';","answers":["WHERE"]}
+      </script>
+    </div>
+
+    <!-- 13 -->
+    <div class="question" data-qtype="match" data-qid="t13" data-chapter="1" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":13,"prompt":{"en":"Match each clause to its purpose.","ar":"طابِق كل جملة بغرضها."},
+       "left":[{"en":"SELECT","ar":"SELECT"},{"en":"FROM","ar":"FROM"},{"en":"WHERE","ar":"WHERE"}],
+       "right":[{"en":"Chooses which columns to return","ar":"تختار الأعمدة التي تُعاد"},{"en":"Names the table to read from","ar":"تُسمّي الجدول الذي يُقرأ منه"},{"en":"Filters which rows are included","ar":"تُصفّي الصفوف المشمولة"}],
+       "correctPairs":[[0,0],[1,1],[2,2]]}
+      </script>
+    </div>
+
+    <!-- 14 -->
+    <div class="question" data-qid="t14">
+      <div class="q-head"><span class="q-num">14</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Rename the club with <code>id</code> 3 to <code>'Debate &amp; Public Speaking Club'</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أعِد تسمية النادي ذي <code>id</code> 3 إلى <code>'Debate &amp; Public Speaking Club'</code>.</p>
+      <div class="qb-widget" data-qid="t14" data-chapter="1" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":1,"setup":["CREATE TABLE clubs (id INTEGER PRIMARY KEY, name TEXT)","INSERT INTO clubs (id, name) VALUES (1, 'Chess Club'), (2, 'Robotics Club'), (3, 'Debate Club')"],"placeholder":"UPDATE clubs SET ... WHERE ...","grade":{"mode":"state","check":"SELECT * FROM clubs WHERE id = 3","expected":[{"id":3,"name":"Debate & Public Speaking Club"}]}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 15 -->
+    <div class="question" data-qtype="tf" data-qid="t15" data-chapter="1" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":15,"prompt":{"en":"An UPDATE statement with no WHERE clause changes every row in the table.","ar":"عبارة UPDATE بلا جملة WHERE تُغيّر كل صف في الجدول."},"correct":true}
+      </script>
+    </div>
+
+    <!-- 16 -->
+    <div class="question" data-qtype="mcq" data-qid="t16" data-chapter="1" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":16,"prompt":{"en":"Which clause specifies the new value in an UPDATE?","ar":"أي جملة تُحدِّد القيمة الجديدة في UPDATE؟"},
+       "options":[{"en":"SET","ar":"SET"},{"en":"WHERE","ar":"WHERE"},{"en":"VALUES","ar":"VALUES"},{"en":"INTO","ar":"INTO"}],
+       "correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 17 -->
+    <div class="question" data-qtype="order" data-qid="t17" data-chapter="1" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":17,"prompt":{"en":"Arrange the fragments into a statement renaming the club with id 5 to 'Programming Club'.","ar":"رتّب الأجزاء لتكوين عبارة تُعيد تسمية النادي ذي المعرّف 5 إلى 'Programming Club'."},
+       "items":["UPDATE clubs","SET name = 'Programming Club'","WHERE id = 5;"]}
+      </script>
+    </div>
+
+    <!-- 18 -->
+    <div class="question" data-qid="t18">
+      <div class="q-head"><span class="q-num">18</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Delete the club with <code>id</code> 1.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">احذف النادي ذا <code>id</code> 1.</p>
+      <div class="qb-widget" data-qid="t18" data-chapter="1" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":1,"setup":["CREATE TABLE clubs (id INTEGER PRIMARY KEY, name TEXT)","INSERT INTO clubs (id, name) VALUES (1, 'Chess Club'), (2, 'Robotics Club'), (3, 'Debate Club')","UPDATE clubs SET name = 'Debate & Public Speaking Club' WHERE id = 3"],"placeholder":"DELETE FROM clubs WHERE ...","grade":{"mode":"state","check":"SELECT * FROM clubs WHERE id = 1","expectEmpty":true}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 19 -->
+    <div class="question" data-qtype="tf" data-qid="t19" data-chapter="1" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":19,"prompt":{"en":"DELETE FROM clubs; (no WHERE) removes the clubs table itself.","ar":"العبارة DELETE FROM clubs; (بلا WHERE) تُزيل جدول clubs نفسه."},"correct":false,
+       "explain":{"en":"It empties the table; the table still exists. DROP TABLE removes the table itself.","ar":"تُفرِغ الجدول؛ لكن الجدول يبقى. أما DROP TABLE فتُزيل الجدول نفسه."}}
+      </script>
+    </div>
+
+    <!-- 20 -->
+    <div class="question" data-qtype="mcq" data-qid="t20" data-chapter="1" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":20,"prompt":{"en":"Put these in the order you'd typically perform them on a brand-new table: (a) SELECT to check the result, (b) INSERT some rows, (c) CREATE the table.","ar":"رتّب هذه بالترتيب الذي تنفّذه به عادةً على جدول جديد تمامًا: (أ) SELECT للتحقق من النتيجة، (ب) INSERT لبعض الصفوف، (ج) CREATE للجدول."},
+       "options":[{"en":"c, b, a","ar":"ج، ب، أ"},{"en":"a, b, c","ar":"أ، ب، ج"},{"en":"b, c, a","ar":"ب، ج، أ"},{"en":"c, a, b","ar":"ج، أ، ب"}],
+       "correctIndex":0}
+      </script>
+    </div>
+
+    <!-- ===== score summary ===== -->
+    <div class="card" id="score-card" style="margin-top:var(--sp-6); text-align:center;">
+      <button class="btn btn-primary" id="score-btn" data-i18n="score">Score</button>
+      <h2 id="score-line" hidden style="margin-top:var(--sp-4)"></h2>
+      <div class="progress-bar" id="score-bar" hidden style="max-width:360px;margin:var(--sp-3) auto 0;"><span></span></div>
+    </div>
+
+    <nav class="footer-nav" style="justify-content:center;">
+      <a class="btn btn-secondary" href="../chapters/chapter-1.html"><span data-i18n="back_to_chapter">Back to chapter</span></a>
+    </nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script>
+    window.PageInit = function () {
+      var QIDS = [];
+      for (var i = 1; i <= 20; i++) QIDS.push('t' + i);
+      function t(k) { return window.I18N ? window.I18N.t(k) : k; }
+      function tally() {
+        var passed = 0;
+        QIDS.forEach(function (q) { if (window.Progress.questionResult('1', 'test', q) === true) passed++; });
+        return passed;
+      }
+      function show() {
+        var passed = tally(), total = QIDS.length;
+        var line = document.getElementById('score-line');
+        var bar = document.getElementById('score-bar');
+        line.hidden = false; bar.hidden = false;
+        line.textContent = t('test_score') + ' ' + passed + ' ' + t('test_of') + ' ' + total;
+        bar.querySelector('span').style.width = (passed / total * 100) + '%';
+      }
+      document.getElementById('score-btn').addEventListener('click', show);
+      document.addEventListener('progress:change', function () {
+        if (!document.getElementById('score-line').hidden) show();
+      });
+    };
+  </script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "tables": {
+    "categories": [
+      { "id": 1, "name": "Laptops", "department": "Electronics" },
+      { "id": 2, "name": "Smartphones", "department": "Electronics" },
+      { "id": 3, "name": "Audio", "department": "Home" },
+      { "id": 4, "name": "Wearables", "department": "Electronics" },
+      { "id": 5, "name": "Gaming", "department": "Home" },
+      { "id": 6, "name": "Accessories", "department": "Office" }
+    ],
+    "products": [
+      { "id": 1, "name": "Voyager 14 Laptop", "price": 1299.00, "stock_qty": 8, "is_featured": true, "category_id": 1, "brand": "Voyager" },
+      { "id": 2, "name": "Pulse Buds", "price": 89.99, "stock_qty": 40, "is_featured": false, "category_id": 3, "brand": "Pulse" },
+      { "id": 3, "name": "Nimbus Phone S", "price": 799.00, "stock_qty": 15, "is_featured": true, "category_id": 2, "brand": "Nimbus" },
+      { "id": 4, "name": "TrailCam Mini", "price": 149.50, "stock_qty": 22, "is_featured": false, "category_id": 6, "brand": "Trailon" },
+      { "id": 5, "name": "Aria Smartwatch", "price": 229.00, "stock_qty": 12, "is_featured": true, "category_id": 4, "brand": "Aria" },
+      { "id": 6, "name": "FlexPad Tablet", "price": 349.00, "stock_qty": 0, "is_featured": false, "category_id": 1, "brand": "Voyager" },
+      { "id": 7, "name": "GridKey Mechanical", "price": 59.00, "stock_qty": 65, "is_featured": false, "category_id": 6, "brand": "GridKey" }
+    ]
+  }
+}

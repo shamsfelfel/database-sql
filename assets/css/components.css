@@ -1,0 +1,120 @@
+/* Buttons, cards, tabs, chips, tables — carried over from the POC. */
+
+/* ---- Buttons ---- */
+.btn {
+  --btn-bg: var(--surface);
+  --btn-fg: var(--text);
+  --btn-bd: var(--border);
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  font: inherit; font-weight: 500; line-height: 1;
+  padding: .55em .95em; border-radius: var(--radius-sm);
+  background: var(--btn-bg); color: var(--btn-fg);
+  border: 1px solid var(--btn-bd); cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, transform .06s ease, box-shadow .15s ease;
+}
+.btn:hover { border-color: var(--accent); }
+.btn:active { transform: translateY(1px); }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+.btn-primary { --btn-bg: var(--accent); --btn-fg: #fff; --btn-bd: var(--accent); }
+:root[data-theme="dark"] .btn-primary,
+:root:not([data-theme="light"]) .btn-primary { --btn-fg: #06231f; }
+.btn-primary:hover { --btn-bg: var(--accent-strong); }
+.btn-secondary { --btn-bg: var(--surface-2); }
+.btn-ghost { --btn-bg: transparent; --btn-bd: transparent; }
+.btn-ghost:hover { --btn-bg: var(--surface-2); border-color: var(--border); }
+.btn-sm { padding: .4em .7em; font-size: .85rem; }
+
+.icon-btn {
+  width: 38px; height: 34px; padding: 0;
+  display: inline-grid; place-items: center;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface); color: var(--text); cursor: pointer;
+  font-size: .8rem; font-weight: 600;
+  transition: border-color .15s ease, background .15s ease;
+}
+.icon-btn:hover { border-color: var(--accent); }
+.icon-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---- Cards ---- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--sp-5);
+}
+.card h3 { margin-top: 0; }
+
+.card-link {
+  display: block; text-decoration: none; color: inherit;
+  transition: border-color .15s ease, transform .1s ease, box-shadow .15s ease;
+}
+.card-link:hover { border-color: var(--accent); text-decoration: none; transform: translateY(-2px); }
+
+/* ---- Chapter list ---- */
+.chapter-list { display: grid; gap: var(--sp-3); grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); list-style: none; padding: 0; margin: 0; }
+.chapter-item .num { font-family: var(--font-mono); color: var(--accent); font-size: .8rem; letter-spacing: .05em; }
+.chapter-item h3 { font-size: 1.05rem; margin: var(--sp-1) 0 var(--sp-2); }
+.chapter-item .meta { color: var(--text-dim); font-size: .85rem; }
+.chapter-item.soon { opacity: .6; }
+.chapter-item.soon:hover { transform: none; border-color: var(--border); }
+
+/* ---- Progress bar ---- */
+.progress-bar { height: 6px; background: var(--surface-3); border-radius: 999px; overflow: hidden; margin-top: var(--sp-2); }
+.progress-bar > span { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .4s ease; }
+
+/* ---- Chips ---- */
+.chip {
+  display: inline-flex; align-items: center; gap: var(--sp-1);
+  font-family: var(--font-mono); font-size: .78rem;
+  padding: .25em .6em; border-radius: 999px;
+  background: var(--surface-2); border: 1px solid var(--border); color: var(--text-dim);
+  cursor: pointer; transition: border-color .15s ease, color .15s ease;
+}
+.chip:hover { border-color: var(--accent); color: var(--text); }
+.chip[data-static] { cursor: default; }
+
+/* ---- Tabs (POC Query/Data pattern) ---- */
+.tabs { display: flex; gap: var(--sp-1); border-bottom: 1px solid var(--border); margin-bottom: var(--sp-4); flex-wrap: wrap; }
+.tab {
+  appearance: none; background: transparent; border: none; cursor: pointer;
+  font: inherit; font-weight: 500; color: var(--text-dim);
+  padding: .6em .9em; border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.tab:hover { color: var(--text); }
+.tab[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+.tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.tabpanel { animation: panel-in .25s ease; }
+.tabpanel[hidden] { display: none; }
+
+/* ---- Tables (generic) ---- */
+table.data { border-collapse: collapse; width: 100%; font-family: var(--font-mono); font-size: .88rem; }
+table.data th, table.data td { border: 1px solid var(--border); padding: .4em .6em; text-align: start; }
+table.data th { background: var(--surface-2); font-weight: 600; color: var(--text-dim); }
+
+/* ---- Callout / caption ---- */
+.callout {
+  border-inline-start: 3px solid var(--accent);
+  background: var(--accent-soft);
+  padding: var(--sp-3) var(--sp-4); border-radius: var(--radius-sm);
+  color: var(--text); font-size: .95rem;
+}
+.callout.warn { border-inline-start-color: var(--danger); background: var(--danger-soft); }
+.caption { color: var(--text-dim); font-size: .9rem; font-style: italic; margin-top: var(--sp-2); }
+
+/* ---- Example / section headings ---- */
+.example-label {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  font-family: var(--font-mono); font-size: .78rem; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--accent-strong); margin-bottom: var(--sp-2);
+}
+
+@keyframes panel-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .tabpanel { animation: none; }
+  .btn:active { transform: none; }
+  .card-link:hover { transform: none; }
+}

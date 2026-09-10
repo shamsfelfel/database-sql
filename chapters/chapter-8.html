@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 8 · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="8">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+  <main class="page stack">
+    <nav class="breadcrumbs" data-auto data-chapter="8"></nav>
+    <section>
+      <span class="example-label"><span data-i18n="nav_chapter">Chapter</span> 8</span>
+      <h1 id="ch-title">—</h1>
+      <p class="lead i18n-en">This chapter hasn't been built yet. It ships with its own chapter-content pass, reusing the shared engines already in place.</p>
+      <p class="lead i18n-ar" dir="rtl">لم يُبنَ هذا الفصل بعد. سيصدر في تمريرة محتوى الفصل الخاصة به، مع إعادة استخدام المحرّكات المشتركة الموجودة بالفعل.</p>
+      <p><a class="btn btn-secondary" href="../index.html" data-i18n="nav_home">Home</a></p>
+    </section>
+  </main>
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script>
+    window.PageInit = function () {
+      function set() {
+        var c = window.COURSE.chapters.filter(function (x) { return x.num === 8; })[0];
+        var lang = window.I18N ? window.I18N.lang : 'en';
+        document.getElementById('ch-title').textContent = c ? (c.title[lang] || c.title.en) : 'Chapter 8';
+      }
+      set(); document.addEventListener('i18n:change', set);
+    };
+  </script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

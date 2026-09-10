@@ -1,0 +1,12 @@
+{
+  "tables": {
+    "categories": [
+      { "id": 1, "name": "Laptops" },
+      { "id": 2, "name": "Smartphones" },
+      { "id": 3, "name": "Audio" },
+      { "id": 4, "name": "Wearables" },
+      { "id": 5, "name": "Gaming" },
+      { "id": 6, "name": "Accessories" }
+    ]
+  }
+}

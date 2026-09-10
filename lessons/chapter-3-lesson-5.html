@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 3 · Lesson 5 — Cross-table DELETE · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="3" data-lesson="5">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="3" data-lesson="5"></nav>
+
+    <h1 class="i18n-en">Lesson 5 — Cross-table DELETE</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٥ — الحذف عبر الجداول</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">The same lookup pattern from lesson 4 works for <code>DELETE</code>: find the matching parent id(s) with a subquery into another table, then delete every child row that points at one of them.</p>
+      <p class="i18n-ar" dir="rtl">نمط البحث نفسه من الدرس الرابع يعمل مع <code>DELETE</code>: اعثر على معرّف/معرّفات الأب المطابقة باستعلام فرعي يبحث في جدول آخر، ثم احذف كل صف ابن يشير إلى أحدها.</p>
+      <p class="i18n-en">The same caution from earlier chapters still applies — always read the <code>WHERE</code> (subquery included) and be sure of what it actually matches before running the <code>DELETE</code>.</p>
+      <p class="i18n-ar" dir="rtl">ويبقى التحذير نفسه من الفصول السابقة قائمًا — اقرأ دائمًا جملة <code>WHERE</code> (بما فيها الاستعلام الفرعي) وتأكّد ممّا تُطابقه فعليًّا قبل تشغيل <code>DELETE</code>.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>DELETE FROM child_table
+WHERE parent_id_col IN (SELECT id FROM parent_table WHERE condition);</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code> and <code>authors</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code> و<code>authors</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — remove one author's books</span><span class="i18n-ar" dir="rtl">مثال ١ — حذف كتب مؤلف واحد</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":3,"sql":"DELETE FROM books WHERE author_id IN (SELECT id FROM authors WHERE name = 'Tom Whitfield');\nSELECT * FROM books;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — combine the lookup with an ordinary condition</span><span class="i18n-ar" dir="rtl">مثال ٢ — الجمع بين البحث وشرط عادي</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":3,"sql":"DELETE FROM books WHERE author_id IN (SELECT id FROM authors WHERE name = 'Marcus Reyes') AND in_stock = false;\nSELECT * FROM books;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the danger case (shown, not run)</span><span class="i18n-ar" dir="rtl">مثال ٣ — حالة الخطر (معروضة، لا تُشغَّل)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","readonly":true,"dataset":{},"sql":"DELETE FROM books WHERE author_id IN (SELECT id FROM authors);"}
+        </script>
+      </div>
+      <div class="callout warn">
+        <p class="i18n-en" style="margin:0">The inner <code>SELECT</code> here returns <em>every</em> author's id — so the outer <code>DELETE</code> matches every book. A subquery that's too broad is exactly as dangerous as a missing <code>WHERE</code>.</p>
+        <p class="i18n-ar" dir="rtl" style="margin:0">يُرجع الاستعلام الداخلي <code>SELECT</code> هنا معرّف <em>كل</em> مؤلف — فيُطابق <code>DELETE</code> الخارجي كل كتاب. استعلامٌ فرعيٌّ واسعٌ أكثر من اللازم خطيرٌ تمامًا كجملة <code>WHERE</code> مفقودة.</p>
+      </div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">The same pattern against <strong>Orbit Electronics</strong> — the <code>products</code> and <code>categories</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">النمط نفسه على <strong>Orbit Electronics</strong> — جدولا <code>products</code> و<code>categories</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — delete overstocked Accessories</span><span class="i18n-ar" dir="rtl">مثال ١ — حذف منتجات Accessories ذات المخزون المرتفع</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":3,"sql":"DELETE FROM products WHERE category_id IN (SELECT id FROM categories WHERE name = 'Accessories') AND stock_qty > 50;\nSELECT * FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — delete every Gaming product</span><span class="i18n-ar" dir="rtl">مثال ٢ — حذف كل منتجات فئة Gaming</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":3,"sql":"DELETE FROM products WHERE category_id IN (SELECT id FROM categories WHERE name = 'Gaming');\nSELECT * FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the danger case (shown, not run)</span><span class="i18n-ar" dir="rtl">مثال ٣ — حالة الخطر (معروضة، لا تُشغَّل)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","readonly":true,"dataset":{},"sql":"DELETE FROM products WHERE category_id IN (SELECT id FROM categories);"}
+        </script>
+      </div>
+      <div class="callout warn">
+        <p class="i18n-en" style="margin:0">The inner <code>SELECT</code> returns <em>every</em> category's id — so this <code>DELETE</code> removes every product that has any category at all. Always check the subquery's scope before running it.</p>
+        <p class="i18n-ar" dir="rtl" style="margin:0">يُرجع الاستعلام الداخلي <code>SELECT</code> معرّف <em>كل</em> فئة — فيحذف هذا <code>DELETE</code> كل منتج له فئة أصلًا. تحقّق دائمًا من نطاق الاستعلام الفرعي قبل تشغيله.</p>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="3" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"What must be true for this DELETE pattern to remove zero rows safely (no error)?","ar":"ما الذي يجب أن يتحقّق كي يحذف هذا النمط من DELETE صفرَ صفوفٍ بأمان (دون خطأ)؟"},
+         "options":[{"en":"No product's category_id matches any id the subquery returns","ar":"ألّا يُطابق category_id لأي منتج أيَّ معرّف يُرجعه الاستعلام الفرعي"},{"en":"The subquery must return exactly one row","ar":"أن يُرجع الاستعلام الفرعي صفًّا واحدًا بالضبط"},{"en":"The category name must not exist as text","ar":"ألّا يوجد اسم الفئة كنصّ"},{"en":"It's never safe to return zero rows","ar":"لا يكون إرجاع صفر صفوف آمنًا أبدًا"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="3" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"DELETE FROM products WHERE category_id IN (SELECT id FROM categories); deletes every product, if every product has a category_id.","ar":"تحذف العبارة DELETE FROM products WHERE category_id IN (SELECT id FROM categories); كل منتج، إذا كان لكل منتج قيمة category_id."},
+         "correct":true,
+         "explain":{"en":"The subquery returns every category id, so every product with a category matches.","ar":"يُرجع الاستعلام الفرعي كل معرّفات الفئات، فيُطابق كل منتج له فئة."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="3" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"DELETE FROM products WHERE category_id ____ (SELECT id FROM categories WHERE name = 'Audio');","answers":["IN"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="3" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a statement deleting Audio-category products with zero stock.","ar":"رتّب الأجزاء لتكوين عبارة تحذف منتجات فئة Audio ذات المخزون الصفري."},
+         "items":["DELETE FROM products","WHERE category_id IN (SELECT id FROM categories WHERE name = 'Audio')","AND stock_qty = 0;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Delete every product in the <code>'Wearables'</code> category that is not featured (<code>is_featured = false</code>).</p>
+        <p class="q-prompt i18n-ar" dir="rtl">احذف كل منتج في فئة <code>'Wearables'</code> غير المُبرَز (<code>is_featured = false</code>).</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="3" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":3,"placeholder":"DELETE FROM products WHERE ... IN (SELECT ...)","grade":{"mode":"state","check":"SELECT * FROM products","expected":"SELECT * FROM products WHERE NOT (category_id IN (SELECT id FROM categories WHERE name = 'Wearables') AND is_featured = false)"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> — the <code>courses</code> and <code>departments</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> — جدولا <code>courses</code> و<code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="3" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which statement deletes every inactive course in the Physics department?","ar":"أي عبارة تحذف كل مقرر غير نشط في قسم Physics؟"},
+         "options":[{"en":"DELETE FROM courses WHERE department_id IN (SELECT id FROM departments WHERE name = 'Physics') AND active = false;","ar":"DELETE FROM courses WHERE department_id IN (SELECT id FROM departments WHERE name = 'Physics') AND active = false;"},{"en":"DELETE FROM departments WHERE name = 'Physics';","ar":"DELETE FROM departments WHERE name = 'Physics';"},{"en":"DELETE FROM courses WHERE department_id = 'Physics' AND active = false;","ar":"DELETE FROM courses WHERE department_id = 'Physics' AND active = false;"},{"en":"DELETE FROM courses JOIN departments WHERE name = 'Physics';","ar":"DELETE FROM courses JOIN departments WHERE name = 'Physics';"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="3" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"Deleting rows from courses this way also deletes the matching row from departments.","ar":"حذف صفوف من courses بهذه الطريقة يحذف أيضًا الصف المطابق من departments."},
+         "correct":false,
+         "explain":{"en":"The subquery only reads departments; DELETE only removes rows from courses.","ar":"يقرأ الاستعلام الفرعي جدول departments فقط؛ ولا يحذف DELETE إلا صفوفًا من courses."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="3" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"DELETE FROM courses WHERE department_id IN (SELECT id FROM departments WHERE name = 'Fine Arts') ____ credits < 3;","answers":["AND"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="3" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each statement to what it does.","ar":"طابِق كل عبارة بما تفعله."},
+         "left":[{"en":"DELETE FROM courses WHERE department_id IN (SELECT id FROM departments WHERE name = 'Physics');","ar":"DELETE FROM courses WHERE department_id IN (SELECT id FROM departments WHERE name = 'Physics');"},{"en":"DELETE FROM departments WHERE name = 'Physics';","ar":"DELETE FROM departments WHERE name = 'Physics';"},{"en":"DELETE FROM courses WHERE department_id IN (SELECT id FROM departments);","ar":"DELETE FROM courses WHERE department_id IN (SELECT id FROM departments);"}],
+         "right":[{"en":"Removes every Physics course","ar":"يحذف كل مقررات قسم Physics"},{"en":"Removes the Physics department row itself","ar":"يحذف صفَّ قسم Physics نفسه"},{"en":"Removes every course that has any department at all","ar":"يحذف كل مقرر له قسم أصلًا"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="3" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a statement deleting undergraduate courses in the Biology department.","ar":"رتّب الأجزاء لتكوين عبارة تحذف مقررات المرحلة الجامعية الأولى في قسم Biology."},
+         "items":["DELETE FROM courses","WHERE department_id IN (SELECT id FROM departments WHERE name = 'Biology')","AND level = 'undergrad';"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Delete every course in the <code>'Fine Arts'</code> department with fewer than 3 credits.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">احذف كل مقرر في قسم <code>'Fine Arts'</code> بأقل من ٣ ساعات معتمدة.</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="3" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":3,"setup":["INSERT INTO courses (id, title, credits, level, active, department_id) VALUES (7, 'Sketch I', 2, 'undergrad', true, 6)"],"placeholder":"DELETE FROM courses WHERE ... IN (SELECT ...)","grade":{"mode":"state","check":"SELECT * FROM courses","expected":"SELECT * FROM courses WHERE NOT (department_id IN (SELECT id FROM departments WHERE name = 'Fine Arts') AND credits < 3)"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="3" data-lesson="5"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

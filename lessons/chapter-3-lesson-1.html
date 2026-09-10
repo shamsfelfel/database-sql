@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 3 · Lesson 1 — Keys & Relationships · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="3" data-lesson="1">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="3" data-lesson="1"></nav>
+
+    <h1 class="i18n-en">Lesson 1 — Keys & Relationships</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ١ — المفاتيح والعلاقات</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">A <strong>foreign key</strong> is a column in one table that holds the primary-key value of a row in another table — it's how one row "points to" another. When <code>books.author_id</code> holds the value <code>2</code>, it means "this book belongs to the author whose <code>id</code> is 2" in the <code>authors</code> table. This is what lets two tables that model different things — authors, and the books they wrote — stay connected without repeating an author's whole name on every one of their books. One author can be pointed to by many books; this shape is called a <strong>one-to-many relationship</strong>.</p>
+      <p class="i18n-ar" dir="rtl">المفتاح الأجنبي (<strong>foreign key</strong>) هو عمود في جدول يحمل قيمة المفتاح الأساسي لصفٍّ في جدول آخر — وهو الطريقة التي "يشير" بها صف إلى صف آخر. فحين يحمل <code>books.author_id</code> القيمة <code>2</code>، فهذا يعني "هذا الكتاب يخص المؤلف الذي رقم <code>id</code> له هو 2" في جدول <code>authors</code>. هذا ما يتيح لجدولين يمثّلان أشياء مختلفة — المؤلفين، والكتب التي كتبوها — أن يبقيا مترابطين دون تكرار اسم المؤلف كاملًا في كل كتاب من كتبه. ويمكن لمؤلف واحد أن تشير إليه كتب كثيرة؛ وتُسمّى هذه الصورة <strong>علاقة واحد-إلى-متعدد (one-to-many)</strong>.</p>
+
+      <div class="callout warn">
+        <div class="i18n-en"><strong>Important — this engine does not enforce foreign keys.</strong> The in-browser engine (alasql) that powers this course's widgets does <strong>not</strong> strictly enforce <code>FOREIGN KEY</code> constraints the way a production database would — it will <strong>not</strong> reject an <code>INSERT</code> whose reference is bad. We still declare and use foreign keys here because the concept, and the query patterns they enable — especially <code>JOIN</code> — are what matter pedagogically.</div>
+        <div class="i18n-ar" dir="rtl"><strong>مهم — هذا المحرّك لا يفرض المفاتيح الأجنبية.</strong> المحرّك العامل داخل المتصفّح (alasql) الذي يشغّل أدوات هذا المساق <strong>لا</strong> يفرض قيود <code>FOREIGN KEY</code> بصرامة كما تفعل قاعدة بيانات إنتاجية — فهو <strong>لن</strong> يرفض عبارة <code>INSERT</code> ذات مرجع خاطئ. ومع ذلك نُعلن المفاتيح الأجنبية ونستخدمها هنا لأن المفهوم، وأنماط الاستعلام التي يُتيحها — وخاصةً <code>JOIN</code> — هي ما يهمّنا تعليميًا.</div>
+      </div>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong> — adding a relationship to an existing table (reusing <code>ALTER TABLE</code> from chapter 2)</div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong> — إضافة علاقة إلى جدول موجود (بإعادة استخدام <code>ALTER TABLE</code> من الفصل الثاني)</div>
+        <pre><code>ALTER TABLE child_table ADD COLUMN parent_id_col INTEGER;
+UPDATE child_table SET parent_id_col = &lt;parent's id&gt; WHERE id = &lt;child's id&gt;;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code> and <code>authors</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code> و<code>authors</code></h2>
+      <p class="i18n-en">We add an <code>author_id</code> column to <code>books</code>, point one book at an author, then look up what that value actually refers to.</p>
+      <p class="i18n-ar" dir="rtl">نُضيف عمود <code>author_id</code> إلى <code>books</code>، ونُوجّه أحد الكتب إلى مؤلف، ثم نبحث عمّا تشير إليه تلك القيمة فعليًا.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — add the foreign-key column</span><span class="i18n-ar" dir="rtl">مثال ١ — إضافة عمود المفتاح الأجنبي</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"sql":"ALTER TABLE books ADD COLUMN author_id INTEGER;\nSELECT * FROM books;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">The new <code>author_id</code> column exists but is empty on every row until we set it.</p>
+      <p class="caption i18n-ar" dir="rtl">العمود الجديد <code>author_id</code> موجود لكنه فارغ في كل صف إلى أن نُعطيه قيمة.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — point book 1 at author 2</span><span class="i18n-ar" dir="rtl">مثال ٢ — توجيه الكتاب 1 إلى المؤلف 2</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"setup":["ALTER TABLE books ADD COLUMN author_id INTEGER"],"sql":"UPDATE books SET author_id = 2 WHERE id = 1;\nSELECT * FROM books WHERE id = 1;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">Book 1 now points at author id 2 (Marcus Reyes).</p>
+      <p class="caption i18n-ar" dir="rtl">الكتاب 1 الآن يشير إلى المؤلف رقم 2 (Marcus Reyes).</p>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — what does that id refer to?</span><span class="i18n-ar" dir="rtl">مثال ٣ — إلى ماذا يشير ذلك الرقم؟</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":2,"sql":"SELECT * FROM authors WHERE id = 2;"}
+        </script>
+      </div>
+      <p class="caption i18n-en"><code>author_id</code> doesn't store the author's name — it stores their id, and you look the rest up in <code>authors</code> when you need it. That lookup is what <code>JOIN</code> (lesson 3) automates.</p>
+      <p class="caption i18n-ar" dir="rtl">لا يخزّن <code>author_id</code> اسم المؤلف — بل يخزّن رقمه، وتبحث عن الباقي في جدول <code>authors</code> عند الحاجة. وهذا البحث هو ما يُؤتمته <code>JOIN</code> (الدرس الثالث).</p>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Now the same idea on <strong>Orbit Electronics</strong>: we add a <code>category_id</code> column to <code>products</code> and point a product at its category.</p>
+      <p class="i18n-ar" dir="rtl">الآن الفكرة نفسها على <strong>Orbit Electronics</strong>: نُضيف عمود <code>category_id</code> إلى <code>products</code> ونُوجّه منتجًا إلى فئته.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1</span><span class="i18n-ar" dir="rtl">مثال ١</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"sql":"ALTER TABLE products ADD COLUMN category_id INTEGER;\nSELECT * FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2</span><span class="i18n-ar" dir="rtl">مثال ٢</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"setup":["ALTER TABLE products ADD COLUMN category_id INTEGER"],"sql":"UPDATE products SET category_id = 3 WHERE id = 2;\nSELECT * FROM products WHERE id = 2;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3</span><span class="i18n-ar" dir="rtl">مثال ٣</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":2,"sql":"SELECT * FROM categories WHERE id = 3;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="3" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"What does a foreign key column actually store?","ar":"ما الذي يخزّنه عمود المفتاح الأجنبي فعليًا؟"},
+         "options":[{"en":"The primary-key value of a row in another table","ar":"قيمة المفتاح الأساسي لصفٍّ في جدول آخر"},{"en":"A copy of the related row's every column","ar":"نسخة من كل أعمدة الصف المرتبط"},{"en":"A text description of the relationship","ar":"وصف نصّي للعلاقة"},{"en":"Nothing, it's just a label","ar":"لا شيء، إنه مجرد تسمية"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="3" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"One category can be referenced by many products.","ar":"يمكن أن تشير إلى الفئة الواحدة منتجات كثيرة."},
+         "correct":true,
+         "explain":{"en":"That's exactly a one-to-many relationship: one parent (category) row, many child (product) rows pointing at it.","ar":"هذا بالضبط معنى علاقة واحد-إلى-متعدد: صف أب واحد (فئة)، وصفوف أبناء كثيرة (منتجات) تشير إليه."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="3" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"ALTER TABLE products ADD ____ category_id INTEGER;","answers":["COLUMN"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="3" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a statement that points product id 4 at category id 6.","ar":"رتّب الأجزاء لتكوين عبارة تُوجّه المنتج رقم 4 إلى الفئة رقم 6."},
+         "items":["UPDATE products","SET category_id = 6","WHERE id = 4;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Point the product with <code>id</code> 6 at the category with <code>id</code> 1.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">وجّه المنتج ذا <code>id</code> يساوي 6 إلى الفئة ذات <code>id</code> يساوي 1.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="3" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":2,"setup":["ALTER TABLE products ADD COLUMN category_id INTEGER"],"placeholder":"UPDATE products SET ... WHERE ...","grade":{"mode":"state","check":"SELECT category_id FROM products WHERE id = 6","expected":[{"category_id":1}]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>courses</code> / <code>departments</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدوليها <code>courses</code> و<code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="3" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"`courses.department_id` pointing to `departments.id` is an example of:","ar":"إشارة `courses.department_id` إلى `departments.id` هي مثال على:"},
+         "options":[{"en":"A one-to-many relationship","ar":"علاقة واحد-إلى-متعدد"},{"en":"A duplicate column","ar":"عمود مكرّر"},{"en":"A primary key","ar":"مفتاح أساسي"},{"en":"An index","ar":"فهرس (index)"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="3" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A foreign key column must have the exact same name as the primary key column it points to.","ar":"يجب أن يحمل عمود المفتاح الأجنبي الاسم نفسه تمامًا لعمود المفتاح الأساسي الذي يشير إليه."},
+         "correct":false,
+         "explain":{"en":"The name is up to you — `author_id` points at `authors.id` by the value it stores, not by matching names.","ar":"الاسم من اختيارك — فـ`author_id` يشير إلى `authors.id` بالقيمة التي يخزّنها، لا بتطابق الأسماء."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="3" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the type for an id reference.","ar":"أكمل النوع المناسب لمرجع رقم id."},
+         "template":"ALTER TABLE courses ADD COLUMN department_id ____;","answers":["INTEGER"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="3" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each term to its meaning.","ar":"طابِق كل مصطلح بمعناه."},
+         "left":[{"en":"Primary key","ar":"المفتاح الأساسي"},{"en":"Foreign key","ar":"المفتاح الأجنبي"},{"en":"One-to-many relationship","ar":"علاقة واحد-إلى-متعدد"}],
+         "right":[{"en":"Uniquely identifies a row in its own table","ar":"يُعرّف صفًا تعريفًا فريدًا داخل جدوله"},{"en":"Stores another table's primary-key value","ar":"يخزّن قيمة المفتاح الأساسي لجدول آخر"},{"en":"One parent row, many child rows pointing to it","ar":"صف أب واحد، وصفوف أبناء كثيرة تشير إليه"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="3" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a statement pointing course id 4 at department id 3.","ar":"رتّب الأجزاء لتكوين عبارة تُوجّه المقرّر رقم 4 إلى القسم رقم 3."},
+         "items":["UPDATE courses","SET department_id = 3","WHERE id = 4;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Point the course with <code>id</code> 5 at the department with <code>id</code> 4.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">وجّه المقرّر ذا <code>id</code> يساوي 5 إلى القسم ذي <code>id</code> يساوي 4.</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="3" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":2,"setup":["ALTER TABLE courses ADD COLUMN department_id INTEGER"],"placeholder":"UPDATE courses SET ... WHERE ...","grade":{"mode":"state","check":"SELECT department_id FROM courses WHERE id = 5","expected":[{"department_id":4}]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="3" data-lesson="1"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

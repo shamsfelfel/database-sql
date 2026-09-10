@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 3 — Relationships · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="3">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page stack">
+    <nav class="breadcrumbs" data-auto data-chapter="3"></nav>
+
+    <section>
+      <span class="example-label"><span data-i18n="nav_chapter">Chapter</span> 3</span>
+      <h1 class="i18n-en">Relationships</h1>
+      <h1 class="i18n-ar" dir="rtl">العلاقات</h1>
+      <p class="lead i18n-en">Connect two tables. Learn primary and foreign keys, insert rows that reference another table, read matched data across tables with <code>JOIN</code>, and update or delete rows based on a condition that lives in a different table.</p>
+      <p class="lead i18n-ar" dir="rtl">اربط جدولين معًا. تعرّف على المفاتيح الأساسية والأجنبية، وأدرج صفوفًا تشير إلى جدول آخر، واقرأ البيانات المتطابقة عبر الجداول باستخدام <code>JOIN</code>، وحدِّث الصفوف أو احذفها بناءً على شرط موجود في جدول مختلف.</p>
+    </section>
+
+    <section>
+      <h2 data-i18n="lesson">Lessons</h2>
+      <ul class="chapter-list" id="lesson-list"></ul>
+    </section>
+
+    <section>
+      <a class="card card-link" href="../tests/chapter-3-test.html">
+        <span class="example-label" data-i18n="chapter_test">Chapter test</span>
+        <h3 class="i18n-en">Chapter 3 test — advisors &amp; students</h3>
+        <h3 class="i18n-ar" dir="rtl">اختبار الفصل الثالث — المرشدون والطلاب</h3>
+        <div class="meta i18n-en">20 questions, building related <code>advisors</code> and <code>students</code> tables as you go.</div>
+        <div class="meta i18n-ar" dir="rtl">٢٠ سؤالًا، تبني جدولَي <code>advisors</code> و<code>students</code> المترابطَين أثناء تقدّمك.</div>
+      </a>
+    </section>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script>
+    window.PageInit = function () {
+      function L(v) { var lang = window.I18N ? window.I18N.lang : 'en'; return (v && typeof v === 'object') ? (v[lang] != null ? v[lang] : v.en) : v; }
+      function t(k) { return window.I18N ? window.I18N.t(k) : k; }
+      function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+      function render() {
+        var c = window.COURSE.chapters.filter(function (x) { return x.num === 3; })[0];
+        var ul = document.getElementById('lesson-list'); ul.innerHTML = '';
+        c.lessons.forEach(function (l) {
+          var sc = window.Progress.lessonScore(3, l.n);
+          var li = document.createElement('li'); li.className = 'chapter-item';
+          var a = document.createElement('a'); a.className = 'card card-link';
+          a.href = '../lessons/chapter-3-lesson-' + l.n + '.html';
+          var done = sc.total > 0 ? (' · ' + sc.passed + '/' + sc.total + ' ' + t('progress_done')) : '';
+          a.innerHTML = '<span class="num">' + esc(t('lesson').toUpperCase() + ' ' + l.n) + '</span>' +
+                        '<h3>' + esc(L(l.title)) + '</h3>' +
+                        '<div class="meta">' + esc(t('start') + done) + '</div>';
+          li.appendChild(a); ul.appendChild(li);
+        });
+      }
+      render();
+      document.addEventListener('i18n:change', render);
+      document.addEventListener('progress:change', render);
+    };
+  </script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

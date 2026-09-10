@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 1 · Lesson 5 — DELETE · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="1" data-lesson="5">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="1" data-lesson="5"></nav>
+
+    <h1 class="i18n-en">Lesson 5 — DELETE</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٥ — الحذف (DELETE)</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en"><code>DELETE</code> removes rows from a table. You state the table and a <code>WHERE</code> clause identifying which row(s) to remove. Just like <code>UPDATE</code>, a <code>DELETE</code> with no <code>WHERE</code> clause removes <em>every</em> row in the table — there's no separate "delete all" statement, so an accidentally-omitted <code>WHERE</code> is the single most common way to lose data by mistake. Always double-check the <code>WHERE</code> before running a <code>DELETE</code>.</p>
+      <p class="i18n-ar" dir="rtl">تُزيل <code>DELETE</code> صفوفًا من الجدول. تذكر اسم الجدول وجملة <code>WHERE</code> تُحدِّد أي صف/صفوف تُزيلها. وتمامًا مثل <code>UPDATE</code>، فإن <code>DELETE</code> بلا <code>WHERE</code> تُزيل <em>كل</em> صف في الجدول — ولا توجد عبارة منفصلة لـ«حذف الكل»، لذا فإن نسيان <code>WHERE</code> سهوًا هو الطريقة الأكثر شيوعًا لفقدان البيانات بالخطأ. تحقّق دائمًا من <code>WHERE</code> قبل تشغيل <code>DELETE</code>.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>DELETE FROM table_name WHERE id = 1;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — the <code>authors</code> table</h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — جدول <code>authors</code></h2>
+      <p class="i18n-en">Watch the row count drop in the <strong>Database</strong> panel as rows are removed.</p>
+      <p class="i18n-ar" dir="rtl">راقب انخفاض عدد الصفوف في لوحة <strong>قاعدة البيانات</strong> كلما أُزيلت صفوف.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — delete by id</span><span class="i18n-ar" dir="rtl">مثال ١ — الحذف حسب المعرّف</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":1,"sql":"DELETE FROM authors WHERE id = 6;\nSELECT * FROM authors;"}
+        </script>
+      </div>
+      <p class="caption i18n-en">Five rows remain — Tom Whitfield (id 6) is gone.</p>
+      <p class="caption i18n-ar" dir="rtl">تبقى خمسة صفوف — اختفى Tom Whitfield (المعرّف 6).</p>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — delete by matching a value</span><span class="i18n-ar" dir="rtl">مثال ٢ — الحذف بمطابقة قيمة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":1,"sql":"DELETE FROM authors WHERE name = 'Daniel Kessler';\nSELECT * FROM authors;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the danger case (shown, not run)</span><span class="i18n-ar" dir="rtl">مثال ٣ — حالة الخطر (معروضة، لا تُشغَّل)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","readonly":true,"dataset":{},"sql":"DELETE FROM authors;"}
+        </script>
+      </div>
+      <div class="callout warn">
+        <p class="i18n-en" style="margin:0">No <code>WHERE</code> clause means every row matches — this empties the entire table. There is no undo.</p>
+        <p class="i18n-ar" dir="rtl" style="margin:0">غياب جملة <code>WHERE</code> يعني أن كل صف يطابق — وهذا يُفرِغ الجدول بأكمله. ولا تراجُع عن ذلك.</p>
+      </div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">The <strong>Orbit Electronics</strong> <code>categories</code> table.</p>
+      <p class="i18n-ar" dir="rtl">جدول <code>categories</code> في <strong>Orbit Electronics</strong>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1</span><span class="i18n-ar" dir="rtl">مثال ١</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":1,"sql":"DELETE FROM categories WHERE id = 6;\nSELECT * FROM categories;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2</span><span class="i18n-ar" dir="rtl">مثال ٢</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":1,"sql":"DELETE FROM categories WHERE name = 'Gaming';\nSELECT * FROM categories;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the danger case (shown, not run)</span><span class="i18n-ar" dir="rtl">مثال ٣ — حالة الخطر (معروضة، لا تُشغَّل)</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","readonly":true,"dataset":{},"sql":"DELETE FROM categories;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="1" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"What happens if a DELETE statement has no WHERE clause?","ar":"ماذا يحدث إذا لم تحتوِ عبارة DELETE على جملة WHERE؟"},
+         "options":[{"en":"Every row in the table is removed","ar":"يُزال كل صف في الجدول"},{"en":"The statement is rejected","ar":"تُرفض العبارة"},{"en":"Only the first row is removed","ar":"يُزال الصف الأول فقط"},{"en":"Nothing happens","ar":"لا يحدث شيء"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="1" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"DELETE removes the table itself, not just its rows.","ar":"تُزيل DELETE الجدول نفسه، لا صفوفه فقط."},
+         "correct":false,
+         "explain":{"en":"That's DROP TABLE. DELETE only removes rows; the table stays.","ar":"ذاك هو DROP TABLE. أما DELETE فتُزيل الصفوف فقط، ويبقى الجدول."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="1" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"DELETE ____ categories WHERE id = 5;","answers":["FROM"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="lab-q4" data-chapter="1" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Arrange the fragments into a valid DELETE removing the category with id 4.","ar":"رتّب الأجزاء لتكوين عبارة DELETE صحيحة تُزيل الفئة ذات المعرّف 4."},
+         "items":["DELETE","FROM categories","WHERE id = 4;"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Delete the category named <code>'Accessories'</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">احذف الفئة المسمّاة <code>'Accessories'</code>.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="1" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":1,"placeholder":"DELETE FROM categories WHERE ...","grade":{"mode":"state","check":"SELECT * FROM categories WHERE name = 'Accessories'","expectEmpty":true}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> and its <code>departments</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> وجدولها <code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="1" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which statement permanently removes the entire departments table, structure included?","ar":"أي عبارة تُزيل جدول departments بأكمله نهائيًا، بما في ذلك بنيته؟"},
+         "options":[{"en":"DROP TABLE departments;","ar":"DROP TABLE departments;"},{"en":"DELETE FROM departments;","ar":"DELETE FROM departments;"},{"en":"DELETE departments;","ar":"DELETE departments;"},{"en":"REMOVE TABLE departments;","ar":"REMOVE TABLE departments;"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="1" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"DELETE FROM departments WHERE id = 99; (an id that doesn't exist) raises an error.","ar":"العبارة DELETE FROM departments WHERE id = 99; (معرّف غير موجود) تُطلق خطأً."},
+         "correct":false,
+         "explain":{"en":"It succeeds and simply removes 0 rows.","ar":"تنجح وتُزيل ببساطة 0 صف."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="1" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Fill in the missing keyword.","ar":"أكمل الكلمة المفتاحية الناقصة."},
+         "template":"DELETE FROM departments ____ name = 'Fine Arts';","answers":["WHERE"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t4" data-chapter="1" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"Match each statement shape to what it does.","ar":"طابِق كل شكل عبارة بما يفعله."},
+         "left":[{"en":"DELETE FROM departments WHERE id = 6;","ar":"DELETE FROM departments WHERE id = 6;"},{"en":"DELETE FROM departments;","ar":"DELETE FROM departments;"},{"en":"DROP TABLE departments;","ar":"DROP TABLE departments;"}],
+         "right":[{"en":"Removes one specific row","ar":"يُزيل صفًا واحدًا محددًا"},{"en":"Removes every row, table still exists","ar":"يُزيل كل صف، ويبقى الجدول"},{"en":"Removes the table itself entirely","ar":"يُزيل الجدول نفسه بالكامل"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t5" data-chapter="1" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":5,"prompt":{"en":"Arrange the fragments into a statement deleting the department named 'Fine Arts'.","ar":"رتّب الأجزاء لتكوين عبارة تحذف القسم المسمّى 'Fine Arts'."},
+         "items":["DELETE","FROM departments","WHERE name = 'Fine Arts';"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t6">
+        <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Delete the department with <code>id</code> 6.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">احذف القسم ذا <code>id</code> 6.</p>
+        <div class="qb-widget" data-qid="test-t6" data-chapter="1" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":1,"placeholder":"DELETE FROM departments WHERE ...","grade":{"mode":"state","check":"SELECT * FROM departments WHERE id = 6","expectEmpty":true}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="1" data-lesson="5"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>
