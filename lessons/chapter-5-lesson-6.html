@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 5 · Lesson 6 — Aggregation with JOIN · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="5" data-lesson="6">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="5" data-lesson="6"></nav>
+
+    <h1 class="i18n-en">Lesson 6 — Aggregation with JOIN</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٦ — التجميع مع JOIN</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">Grouping by an id like <code>author_id</code> works, but the result reads as numbers. <code>JOIN</code> the other table first and group by a <strong>readable</strong> column — the author's <code>name</code>, the category's <code>department</code> — and each summary row carries a label instead of a key.</p>
+      <p class="i18n-ar" dir="rtl">التجميع حسب معرِّف مثل <code>author_id</code> يعمل، لكن الناتج يُقرأ أرقامًا. اربِط الجدول الآخر أوّلًا بـ<code>JOIN</code> وجمِّع حسب عمود <strong>مقروء</strong> — اسم المؤلف <code>name</code>، أو قسم الفئة <code>department</code> — فيحمل كل صفّ ملخّص عنوانًا بدل مفتاح.</p>
+      <p class="i18n-en">This is the whole chapter combined: <code>JOIN</code> two tables, keep some rows with <code>WHERE</code>, form groups with <code>GROUP BY</code>, summarize each with an aggregate, filter the groups with <code>HAVING</code>, and rank them with <code>ORDER BY</code>.</p>
+      <p class="i18n-ar" dir="rtl">هذا هو الفصل كلّه مجتمعًا: اربِط جدولين بـ<code>JOIN</code>، وأبقِ بعض الصفوف بـ<code>WHERE</code>، وكوّن المجموعات بـ<code>GROUP BY</code>، ولخّص كلًّا منها بدالة تجميعية، وصفِّ المجموعات بـ<code>HAVING</code>، ورتّبها بـ<code>ORDER BY</code>.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>SELECT a.name AS author, COUNT(*) AS book_count
+FROM authors a
+JOIN books b ON b.author_id = a.id
+GROUP BY a.name
+ORDER BY book_count DESC;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code> and <code>authors</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code> و<code>authors</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — books per author, by name</span><span class="i18n-ar" dir="rtl">مثال ١ — الكتب لكل مؤلف، بالاسم</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":5,"sql":"SELECT a.name AS author, COUNT(*) AS book_count FROM authors a JOIN books b ON b.author_id = a.id GROUP BY a.name ORDER BY book_count DESC, author ASC;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">The count is grouped by the author's name, pulled in from the joined table.</span><span class="i18n-ar" dir="rtl">العدّ مُجمَّع حسب اسم المؤلف المأخوذ من الجدول المضموم.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — catalog value per country</span><span class="i18n-ar" dir="rtl">مثال ٢ — قيمة الفهرس لكل بلد</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":5,"sql":"SELECT a.country AS country, ROUND(SUM(b.price), 2) AS catalog_value FROM authors a JOIN books b ON b.author_id = a.id GROUP BY a.country ORDER BY catalog_value DESC;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Group by any column of the joined table — here, the author's country.</span><span class="i18n-ar" dir="rtl">جمِّع حسب أيّ عمود من الجدول المضموم — هنا بلد المؤلف.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — authors with two or more books</span><span class="i18n-ar" dir="rtl">مثال ٣ — المؤلفون بكتابين أو أكثر</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":5,"sql":"SELECT a.name AS author, COUNT(*) AS book_count FROM authors a JOIN books b ON b.author_id = a.id GROUP BY a.name HAVING COUNT(*) >= 2 ORDER BY book_count DESC, author ASC;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Join, group, then <code>HAVING</code> filters on the group's count — all in one query.</span><span class="i18n-ar" dir="rtl">اربِط ثم جمِّع، ثم تُصفّي <code>HAVING</code> على عدّ المجموعة — كل ذلك في استعلام واحد.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">The same ideas against <strong>Orbit Electronics</strong> — <code>products</code> joined to <code>categories</code>.</p>
+      <p class="i18n-ar" dir="rtl">الأفكار نفسها على <strong>Orbit Electronics</strong> — <code>products</code> مضمومًا إلى <code>categories</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — products per department</span><span class="i18n-ar" dir="rtl">مثال ١ — المنتجات لكل قسم</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":5,"sql":"SELECT c.department AS department, COUNT(*) AS product_count FROM products p JOIN categories c ON p.category_id = c.id GROUP BY c.department ORDER BY product_count DESC, department ASC;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — average price per department</span><span class="i18n-ar" dir="rtl">مثال ٢ — متوسّط السعر لكل قسم</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":5,"sql":"SELECT c.department AS department, ROUND(AVG(p.price), 2) AS avg_price FROM products p JOIN categories c ON p.category_id = c.id GROUP BY c.department ORDER BY department ASC;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — categories holding more than one product</span><span class="i18n-ar" dir="rtl">مثال ٣ — الفئات التي تضمّ أكثر من منتج</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":5,"sql":"SELECT c.name AS category_name, COUNT(*) AS product_count FROM products p JOIN categories c ON p.category_id = c.id GROUP BY c.name HAVING COUNT(*) > 1 ORDER BY product_count DESC, category_name ASC;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="5" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Why GROUP BY a joined column such as c.department?","ar":"لماذا نُجمِّع حسب عمود مضموم مثل c.department؟"},
+         "options":[{"en":"To label each group with a readable value instead of an id","ar":"لعنونة كل مجموعة بقيمة مقروءة بدل معرِّف"},{"en":"Because ids cannot be grouped","ar":"لأن المعرِّفات لا يمكن تجميعها"},{"en":"To avoid using COUNT","ar":"لتجنّب استخدام COUNT"},{"en":"To sort the rows","ar":"لترتيب الصفوف"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="5" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A query can JOIN, then GROUP BY, then HAVING, then ORDER BY together.","ar":"يمكن للاستعلام أن يجمع JOIN ثم GROUP BY ثم HAVING ثم ORDER BY معًا."},
+         "correct":true}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="5" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the join condition.","ar":"أكمل شرط الضمّ."},
+         "template":"FROM products p JOIN categories c ____ p.category_id = c.id","answers":["ON"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Join <code>products</code> to <code>categories</code> and, for each <code>department</code>, return the department and how many products it holds. Use the columns <code>department</code> and <code>product_count</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اربِط <code>products</code> بـ<code>categories</code>، ولكل <code>department</code> أعِد القسم وعدد المنتجات فيه. استخدم العمودين <code>department</code> و<code>product_count</code>.</p>
+        <div class="qb-widget" data-qid="lab-q4" data-chapter="5" data-lesson="6">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":5,"placeholder":"SELECT c.department AS department, COUNT(*) AS product_count FROM products p JOIN categories c ON ... GROUP BY c.department","grade":{"mode":"result","expected":"SELECT c.department AS department, COUNT(*) AS product_count FROM products p JOIN categories c ON p.category_id = c.id GROUP BY c.department"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Join <code>products</code> to <code>categories</code> and return each category (by <code>name</code>) that holds 2 or more products, with its product count. Use the columns <code>category_name</code> and <code>product_count</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اربِط <code>products</code> بـ<code>categories</code> وأعِد كل فئة (بـ<code>name</code>) تضمّ منتجين أو أكثر، مع عدد منتجاتها. استخدم العمودين <code>category_name</code> و<code>product_count</code>.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="5" data-lesson="6">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":5,"placeholder":"SELECT c.name AS category_name, COUNT(*) AS product_count FROM products p JOIN categories c ON ... GROUP BY c.name HAVING ...","grade":{"mode":"result","expected":"SELECT c.name AS category_name, COUNT(*) AS product_count FROM products p JOIN categories c ON p.category_id = c.id GROUP BY c.name HAVING COUNT(*) >= 2"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> — <code>courses</code> joined to <code>departments</code>.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> — <code>courses</code> مضمومًا إلى <code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="5" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"To count courses per department by the department's name, you first:","ar":"لعدّ المقررات لكل قسم حسب اسم القسم، عليك أوّلًا:"},
+         "options":[{"en":"JOIN courses to departments","ar":"ربط courses بـ departments"},{"en":"Drop the GROUP BY","ar":"حذف GROUP BY"},{"en":"Use HAVING instead of COUNT","ar":"استخدام HAVING بدل COUNT"},{"en":"Remove the aggregate","ar":"إزالة الدالة التجميعية"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="5" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"You can group by a column that comes from the joined table.","ar":"يمكنك التجميع حسب عمود آتٍ من الجدول المضموم."},
+         "correct":true}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="5" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete: group by the department name.","ar":"أكمل: جمِّع حسب اسم القسم."},
+         "template":"... JOIN departments d ON c.department_id = d.id GROUP ____ d.name;","answers":["BY"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Join <code>courses</code> to <code>departments</code> and, for each department <code>name</code>, return the department and how many courses it has. Use the columns <code>department</code> and <code>course_count</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اربِط <code>courses</code> بـ<code>departments</code>، ولكل <code>name</code> قسم أعِد القسم وعدد مقرّراته. استخدم العمودين <code>department</code> و<code>course_count</code>.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="5" data-lesson="6">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":5,"placeholder":"SELECT d.name AS department, COUNT(*) AS course_count FROM courses c JOIN departments d ON ... GROUP BY d.name","grade":{"mode":"result","expected":"SELECT d.name AS department, COUNT(*) AS course_count FROM courses c JOIN departments d ON c.department_id = d.id GROUP BY d.name"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Join <code>courses</code> to <code>departments</code> and return each department (by <code>name</code>) whose total <code>enrollment_cap</code> is greater than 200, with that total. Use the columns <code>department</code> and <code>total_cap</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اربِط <code>courses</code> بـ<code>departments</code> وأعِد كل قسم (بـ<code>name</code>) يتجاوز إجمالي <code>enrollment_cap</code> فيه ٢٠٠، مع ذلك الإجمالي. استخدم العمودين <code>department</code> و<code>total_cap</code>.</p>
+        <div class="qb-widget" data-qid="test-t5" data-chapter="5" data-lesson="6">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":5,"placeholder":"SELECT d.name AS department, SUM(c.enrollment_cap) AS total_cap FROM courses c JOIN departments d ON ... GROUP BY d.name HAVING ...","grade":{"mode":"result","expected":"SELECT d.name AS department, SUM(c.enrollment_cap) AS total_cap FROM courses c JOIN departments d ON c.department_id = d.id GROUP BY d.name HAVING SUM(c.enrollment_cap) > 200"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t6" data-chapter="5" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Order how a JOIN + GROUP BY + HAVING query runs.","ar":"رتّب كيفية تنفيذ استعلام JOIN + GROUP BY + HAVING."},
+         "items":[{"en":"The two tables are joined into combined rows","ar":"يُضَمّ الجدولان إلى صفوف مدموجة"},{"en":"The combined rows are grouped and aggregated","ar":"تُجمَّع الصفوف المدموجة وتُلخَّص"},{"en":"HAVING keeps only the qualifying groups","ar":"تُبقي HAVING المجموعات المؤهَّلة فقط"}]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="5" data-lesson="6"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

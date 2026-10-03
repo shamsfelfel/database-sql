@@ -14,10 +14,13 @@ your browser. There is **no server, no database, and no build step**.
 
 ```
 index.html              course landing page (chapter index + continue link)
+manifest.webmanifest    PWA manifest (name, icons, colors) — linked from every page
+sw.js                   service worker: precaches the whole site for offline / install
 /assets
   /css                  tokens, base, components, widget, questions, rtl
   /js                   i18n, theme, progress, widget, questions, nav, app,
                         data (all case snapshots embedded — see below)
+  /icons                PWA app icons (192/512/maskable) + apple-touch + favicon
   /vendor/alasql        vendored alasql.min.js (v4.19.0) — do not edit
   /vendor/fonts         self-hosted IBM Plex woff2 files + fonts.css
 /data/case-a|b|c        the three case databases, one JSON snapshot per chapter
@@ -88,6 +91,39 @@ grep -ri "cdn\|googleapis\|jsdelivr\|unpkg" --include=*.html --include=*.css --i
 
 (Matches should only ever appear in this README, never in a served page or asset.)
 
+## Install as an app (PWA)
+
+When the site is served over **https (or `http://localhost`)** it registers a service
+worker (`sw.js`) that precaches every page, script, style, font, icon, and the
+embedded data bundle. After the first visit the whole course works with the network
+fully off, and the browser offers to **install** it — an "Install" button also appears
+in the header (Chrome/Edge/Android). On iOS use **Share → Add to Home Screen**. Once
+installed it opens in its own standalone window and runs entirely offline on Windows,
+Android, and iOS.
+
+Two independent offline stories, on purpose:
+
+- **`file://` (just open `index.html`)** — no service worker (browsers don't allow one
+  on `file://`), but every widget still works because the data is embedded in `data.js`.
+- **served over http(s)** — the service worker makes the site *installable* and caches
+  it so even navigations work offline, exactly like a native app.
+
+Service workers require a secure context, so the install/offline layer activates only
+over https or localhost — GitHub Pages serves https, so it works there out of the box.
+To verify: open DevTools → **Application** → *Service Workers* (should show `sw.js`
+activated) and *Manifest* (no errors), then tick **Offline** and reload — the page still
+loads.
+
+`sw.js` holds an explicit precache list; **regenerate it whenever pages or assets are
+added or removed** (bumps the cache version so clients update):
+
+```bash
+node scripts/build-sw.js   # scans the site and rewrites sw.js
+```
+
+(The generator walks the html / assets / data / icons and writes the list into `sw.js`
+with a fresh dated cache name, so installed clients re-download the changed files.)
+
 ## Features
 
 - **Bilingual, in-page toggle.** One button flips the whole UI and lesson prose
@@ -137,7 +173,7 @@ rows), so `ALTER TABLE` works on them and the sidebar shows real column metadata
 Chapters are authored one at a time with the chapter prompt
 (`02-chapter-prompt-template.md`) plus that chapter's content file
 (`03-chapter-N-content.txt`), reusing the shared engines in `/assets` unchanged.
-**Chapters 1–4 are complete:**
+**Chapters 1–5 are complete:**
 
 1. **First Steps** — CREATE / INSERT / SELECT / UPDATE / DELETE (5 lessons).
 2. **Multiple Columns** — column types, `ALTER TABLE`, selecting/filtering/updating/
@@ -146,13 +182,36 @@ Chapters are authored one at a time with the chapter prompt
    update/delete via a subquery lookup (6 lessons).
 4. **Subqueries** — scalar / `IN` / correlated / `EXISTS` / derived tables / scalar-in-SELECT,
    and a subquery-vs-JOIN consolidation (8 lessons).
+5. **Aggregation** — `COUNT` / `SUM` / `AVG` / `MIN` / `MAX`, `GROUP BY`, `HAVING`, `ORDER BY`
+   with aggregates, and aggregation over a `JOIN` (6 lessons).
 
 Chapters 1–3 end with a 20-question test that builds a fresh table (or pair of related tables)
-across the questions, graded apply-in-order; Chapter 4's test is 20 independent questions across
-all three databases, each write-statement graded on the rows it returns. Chapters 5–8 are built
-on the same scaffold. Each case grows one table per chapter; `/data/case-*/chapter-N.json` holds
-the cumulative snapshot.
+across the questions, graded apply-in-order; Chapter 4's and Chapter 5's tests are 20 independent
+questions across all three databases, each write-statement graded on the rows it returns.
+Chapters 6–8 are built on the same scaffold. Each case grows one table per chapter;
+`/data/case-*/chapter-N.json` holds the cumulative snapshot.
 
 Chapter 4 also **adds descriptive columns** to the case tables it needs for subquery examples
 (`books.genre`, `authors.country`/`birth_year`, `categories.department`, `products.brand`,
 `departments.building`/`budget`, `courses.enrollment_cap`) — see `data/case-*/chapter-4.json`.
+
+### Chapter-6 handoff — final schema after Chapter 5
+
+Chapter 5 kept every Chapter-4 column and table and only **added rows** (aggregation needs no new
+columns). Row counts grew so `GROUP BY` yields distinctive, non-empty groups. The cumulative schema
+in `data/case-*/chapter-5.json` (unchanged from Chapter 4) is:
+
+- **Case A** — `authors(id, name, country, birth_year)` · 6 rows;
+  `books(id, title, price, published_year, in_stock, author_id, genre)` · 10 rows,
+  genres Fiction(4)/Science Fiction(3)/Fantasy(2)/Mystery(1).
+- **Case B** — `categories(id, name, department)` · 6 rows;
+  `products(id, name, price, stock_qty, is_featured, category_id, brand)` · 12 rows,
+  departments Electronics(6)/Home(4)/Office(2).
+- **Case C** — `departments(id, name, building, budget)` · 6 rows (Fine Arts has no courses);
+  `courses(id, title, credits, level, active, department_id, enrollment_cap)` · 10 rows,
+  5 undergrad / 5 graduate.
+
+alasql quirks Chapter 5 works around (verified): `HAVING` must repeat the aggregate (a SELECT alias
+in `HAVING` matches nothing); the reserved words `count`/`sum`/`avg`/`total`/`value` (and others)
+cannot be used as column aliases — every aggregate is named descriptively (`book_count`, `avg_price`,
+`total_stock`, …). Graded write-statement questions specify the exact output aliases the answer must use.

@@ -65,7 +65,18 @@
           { n: 8, title: { en: 'Subquery vs. JOIN', ar: 'الاستعلام الفرعي مقابل JOIN' } }
         ]
       },
-      { num: 5, published: false, title: { en: 'Aggregation', ar: 'التجميع' }, lessons: [] },
+      {
+        num: 5, published: true,
+        title: { en: 'Aggregation', ar: 'التجميع' },
+        lessons: [
+          { n: 1, title: { en: 'Counting Rows — COUNT', ar: 'عدّ الصفوف — COUNT' } },
+          { n: 2, title: { en: 'Totals & Averages — SUM, AVG', ar: 'المجاميع والمتوسّطات — SUM و AVG' } },
+          { n: 3, title: { en: 'Extremes — MIN, MAX', ar: 'الطرفان — MIN و MAX' } },
+          { n: 4, title: { en: 'Grouping Rows — GROUP BY', ar: 'تجميع الصفوف — GROUP BY' } },
+          { n: 5, title: { en: 'Filtering Groups — HAVING', ar: 'تصفية المجموعات — HAVING' } },
+          { n: 6, title: { en: 'Aggregation with JOIN', ar: 'التجميع مع JOIN' } }
+        ]
+      },
       { num: 6, published: false, title: { en: 'Views', ar: 'العروض' }, lessons: [] },
       { num: 7, published: false, title: { en: 'OUTPUT & Temp Tables', ar: 'الإخراج والجداول المؤقتة' }, lessons: [] },
       { num: 8, published: false, title: { en: 'CSV & Bulk Operations', ar: 'CSV والعمليات المجمّعة' }, lessons: [] }

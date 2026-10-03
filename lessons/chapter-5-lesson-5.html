@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 5 · Lesson 5 — Filtering Groups (HAVING) · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="5" data-lesson="5">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="5" data-lesson="5"></nav>
+
+    <h1 class="i18n-en">Lesson 5 — Filtering Groups (HAVING)</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٥ — تصفية المجموعات (HAVING)</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en"><code>WHERE</code> filters <em>rows</em> — and it runs <strong>before</strong> grouping, so it can't see a group's count or sum yet. To filter on the aggregate itself — "only groups with more than one book" — use <code>HAVING</code>, which runs <strong>after</strong> the groups are formed.</p>
+      <p class="i18n-ar" dir="rtl"><code>WHERE</code> تُصفّي <em>الصفوف</em> — وتُنفَّذ <strong>قبل</strong> التجميع، فلا ترى بعدُ عدَّ المجموعة أو مجموعها. وللتصفية على قيمة التجميع نفسها — «المجموعات التي فيها أكثر من كتاب فقط» — استعمل <code>HAVING</code> التي تُنفَّذ <strong>بعد</strong> تكوين المجموعات.</p>
+      <p class="i18n-en">A query can use both: <code>WHERE</code> trims the rows first, then <code>GROUP BY</code> forms groups, then <code>HAVING</code> keeps the groups you want, then <code>ORDER BY</code> ranks them. In <code>HAVING</code> you repeat the aggregate — <code>HAVING COUNT(*) &gt; 1</code>, not the alias.</p>
+      <p class="i18n-ar" dir="rtl">يمكن للاستعلام أن يستخدم الاثنين: تقلّم <code>WHERE</code> الصفوف أوّلًا، ثم تكوّن <code>GROUP BY</code> المجموعات، ثم تُبقي <code>HAVING</code> المجموعات المطلوبة، ثم ترتّبها <code>ORDER BY</code>. وفي <code>HAVING</code> تُكرّر الدالة التجميعية — <code>HAVING COUNT(*) &gt; 1</code>، لا الاسم المستعار.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>SELECT genre, COUNT(*) AS book_count
+FROM books
+GROUP BY genre
+HAVING COUNT(*) &gt; 1;</code></pre>
+      </div>
+
+      <div class="callout warn">
+        <p class="i18n-en" style="margin:0"><strong>WHERE vs HAVING.</strong> <code>WHERE</code> = a condition on each row, before grouping. <code>HAVING</code> = a condition on each group, after aggregating. Row conditions belong in <code>WHERE</code>; aggregate conditions belong in <code>HAVING</code>.</p>
+        <p class="i18n-ar" dir="rtl" style="margin:0"><strong>WHERE مقابل HAVING.</strong> <code>WHERE</code> = شرط على كل صف، قبل التجميع. <code>HAVING</code> = شرط على كل مجموعة، بعد التجميع. شروط الصفوف مكانها <code>WHERE</code>، وشروط التجميع مكانها <code>HAVING</code>.</p>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — genres with more than one book</span><span class="i18n-ar" dir="rtl">مثال ١ — الأنواع التي فيها أكثر من كتاب</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":5,"sql":"SELECT genre, COUNT(*) AS book_count FROM books GROUP BY genre HAVING COUNT(*) > 1;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Mystery (one book) is dropped — <code>HAVING</code> tests the group's count.</span><span class="i18n-ar" dir="rtl">يُستبعَد Mystery (كتاب واحد) — تختبر <code>HAVING</code> عدّ المجموعة.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — WHERE and HAVING together</span><span class="i18n-ar" dir="rtl">مثال ٢ — WHERE و HAVING معًا</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":5,"sql":"SELECT genre, COUNT(*) AS in_stock_count FROM books WHERE in_stock = true GROUP BY genre HAVING COUNT(*) >= 2;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en"><code>WHERE</code> keeps only in-stock rows; then <code>HAVING</code> keeps only groups of two or more.</span><span class="i18n-ar" dir="rtl">تُبقي <code>WHERE</code> الصفوف المتوفّرة فقط، ثم تُبقي <code>HAVING</code> المجموعات ذات العنصرين فأكثر فقط.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — genres whose total price exceeds 40</span><span class="i18n-ar" dir="rtl">مثال ٣ — الأنواع التي يتجاوز مجموع سعرها ٤٠</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":5,"sql":"SELECT genre, ROUND(SUM(price), 2) AS total_price FROM books GROUP BY genre HAVING SUM(price) > 40 ORDER BY total_price DESC;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en"><code>HAVING</code> can test any aggregate, not just <code>COUNT</code>.</span><span class="i18n-ar" dir="rtl">تستطيع <code>HAVING</code> اختبار أيّ دالة تجميعية، لا <code>COUNT</code> وحدها.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">The same ideas against <strong>Orbit Electronics</strong> — the <code>products</code> table.</p>
+      <p class="i18n-ar" dir="rtl">الأفكار نفسها على <strong>Orbit Electronics</strong> — جدول <code>products</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — brands with more than one product</span><span class="i18n-ar" dir="rtl">مثال ١ — العلامات التجارية التي لها أكثر من منتج</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":5,"sql":"SELECT brand, COUNT(*) AS product_count FROM products GROUP BY brand HAVING COUNT(*) > 1;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — categories whose total stock exceeds 50</span><span class="i18n-ar" dir="rtl">مثال ٢ — الفئات التي يتجاوز إجمالي مخزونها ٥٠</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":5,"sql":"SELECT category_id, SUM(stock_qty) AS total_stock FROM products GROUP BY category_id HAVING SUM(stock_qty) > 50 ORDER BY total_stock DESC;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — WHERE and HAVING together</span><span class="i18n-ar" dir="rtl">مثال ٣ — WHERE و HAVING معًا</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":5,"sql":"SELECT category_id, COUNT(*) AS product_count FROM products WHERE price < 500 GROUP BY category_id HAVING COUNT(*) >= 2;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="5" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"HAVING filters:","ar":"HAVING تُصفّي:"},
+         "options":[{"en":"Groups, after aggregation","ar":"المجموعات، بعد التجميع"},{"en":"Individual rows, before grouping","ar":"الصفوف المفردة، قبل التجميع"},{"en":"Columns","ar":"الأعمدة"},{"en":"Nothing — it only sorts","ar":"لا شيء — إنّما ترتّب فقط"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="5" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"WHERE filters individual rows before they are grouped.","ar":"تُصفّي WHERE الصفوف المفردة قبل تجميعها."},
+         "correct":true}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="5" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete: keep only brands with more than one product.","ar":"أكمل: أبقِ فقط العلامات التي لها أكثر من منتج."},
+         "template":"SELECT brand, COUNT(*) AS product_count FROM products GROUP BY brand ____ COUNT(*) > 1;","answers":["HAVING"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return each <code>brand</code> that has more than one product, with its product count. Use the columns <code>brand</code> and <code>product_count</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد كل <code>brand</code> له أكثر من منتج واحد، مع عدد منتجاته. استخدم العمودين <code>brand</code> و<code>product_count</code>.</p>
+        <div class="qb-widget" data-qid="lab-q4" data-chapter="5" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":5,"placeholder":"SELECT brand, COUNT(*) AS product_count FROM products GROUP BY brand HAVING ...","grade":{"mode":"result","expected":"SELECT brand, COUNT(*) AS product_count FROM products GROUP BY brand HAVING COUNT(*) > 1"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return each <code>category_id</code> whose total <code>stock_qty</code> is greater than 50, with that total. Use the columns <code>category_id</code> and <code>total_stock</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد كل <code>category_id</code> يتجاوز إجمالي <code>stock_qty</code> فيه ٥٠، مع ذلك الإجمالي. استخدم العمودين <code>category_id</code> و<code>total_stock</code>.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="5" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":5,"placeholder":"SELECT category_id, SUM(stock_qty) AS total_stock FROM products GROUP BY category_id HAVING ...","grade":{"mode":"result","expected":"SELECT category_id, SUM(stock_qty) AS total_stock FROM products GROUP BY category_id HAVING SUM(stock_qty) > 50"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> — the <code>courses</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> — جدول <code>courses</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="5" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which clause filters on an aggregate like COUNT(*)?","ar":"أيّ جملة تُصفّي على قيمة تجميعية مثل COUNT(*)؟"},
+         "options":[{"en":"HAVING","ar":"HAVING"},{"en":"WHERE","ar":"WHERE"},{"en":"ORDER BY","ar":"ORDER BY"},{"en":"GROUP BY","ar":"GROUP BY"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="5" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"HAVING is applied before the rows are grouped.","ar":"تُطبَّق HAVING قبل تجميع الصفوف."},
+         "correct":false,
+         "explain":{"en":"HAVING runs after grouping and aggregation; WHERE runs before.","ar":"تُنفَّذ HAVING بعد التجميع والدالة التجميعية، أمّا WHERE فقبلهما."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="5" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete: keep only departments with 2 or more courses.","ar":"أكمل: أبقِ فقط الأقسام التي لها مقرّران أو أكثر."},
+         "template":"SELECT department_id, COUNT(*) AS course_count FROM courses GROUP BY department_id ____ COUNT(*) >= 2;","answers":["HAVING"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return each <code>department_id</code> that has 2 or more courses, with its course count. Use the columns <code>department_id</code> and <code>course_count</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد كل <code>department_id</code> له مقرّران أو أكثر، مع عدد مقرّراته. استخدم العمودين <code>department_id</code> و<code>course_count</code>.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="5" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":5,"placeholder":"SELECT department_id, COUNT(*) AS course_count FROM courses GROUP BY department_id HAVING ...","grade":{"mode":"result","expected":"SELECT department_id, COUNT(*) AS course_count FROM courses GROUP BY department_id HAVING COUNT(*) >= 2"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return each <code>level</code> whose average <code>enrollment_cap</code> is greater than 80, with that average rounded to 2 decimals. Use the columns <code>level</code> and <code>avg_cap</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد كل <code>level</code> يتجاوز متوسّط <code>enrollment_cap</code> فيه ٨٠، مع ذلك المتوسّط مقرّبًا إلى منزلتين. استخدم العمودين <code>level</code> و<code>avg_cap</code>.</p>
+        <div class="qb-widget" data-qid="test-t5" data-chapter="5" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":5,"placeholder":"SELECT level, ROUND(AVG(enrollment_cap), 2) AS avg_cap FROM courses GROUP BY level HAVING ...","grade":{"mode":"result","expected":"SELECT level, ROUND(AVG(enrollment_cap), 2) AS avg_cap FROM courses GROUP BY level HAVING AVG(enrollment_cap) > 80"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t6" data-chapter="5" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Match each clause to what it does.","ar":"طابِق كل جملة بما تفعله."},
+         "left":[{"en":"WHERE","ar":"WHERE"},{"en":"HAVING","ar":"HAVING"},{"en":"ORDER BY","ar":"ORDER BY"}],
+         "right":[{"en":"Filters rows before grouping","ar":"تُصفّي الصفوف قبل التجميع"},{"en":"Filters groups after aggregation","ar":"تُصفّي المجموعات بعد التجميع"},{"en":"Sorts the result rows","ar":"ترتّب صفوف الناتج"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="5" data-lesson="5"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

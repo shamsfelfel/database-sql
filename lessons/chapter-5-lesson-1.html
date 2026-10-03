@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 5 · Lesson 1 — Counting Rows (COUNT) · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="5" data-lesson="1">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="5" data-lesson="1"></nav>
+
+    <h1 class="i18n-en">Lesson 1 — Counting Rows (COUNT)</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ١ — عدّ الصفوف (COUNT)</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">Every query so far returned rows one by one. An <em>aggregate function</em> collapses many rows into a single summary value. The simplest is <code>COUNT</code> — it answers "how many?".</p>
+      <p class="i18n-ar" dir="rtl">كان كل استعلام حتى الآن يُعيد الصفوف صفًّا صفًّا. أمّا <em>الدالة التجميعية</em> فتطوي صفوفًا كثيرة في قيمة ملخِّصة واحدة. وأبسطها <code>COUNT</code> — تُجيب عن سؤال «كم العدد؟».</p>
+      <p class="i18n-en"><code>COUNT(*)</code> counts <strong>rows</strong>. <code>COUNT(column)</code> counts rows where that column is not <code>NULL</code>. <code>COUNT(DISTINCT column)</code> counts the <strong>distinct</strong> non-null values. Because the result is one value, always give it a name with <code>AS</code>.</p>
+      <p class="i18n-ar" dir="rtl"><code>COUNT(*)</code> تَعُدّ <strong>الصفوف</strong>. و<code>COUNT(column)</code> تَعُدّ الصفوف التي لا تكون فيها قيمة العمود <code>NULL</code>. و<code>COUNT(DISTINCT column)</code> تَعُدّ القيم <strong>المميّزة</strong> غير الفارغة. وبما أنّ الناتج قيمة واحدة، فامنحها اسمًا دائمًا بـ<code>AS</code>.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>SELECT COUNT(*) AS book_count FROM books;
+SELECT COUNT(DISTINCT genre) AS genre_count FROM books;</code></pre>
+      </div>
+
+      <div class="callout warn">
+        <p class="i18n-en" style="margin:0">Don't name an aggregate result <code>count</code>, <code>sum</code>, <code>avg</code>, <code>min</code> or <code>max</code> — these are reserved words and the editor will reject the alias. Use a descriptive name like <code>book_count</code>.</p>
+        <p class="i18n-ar" dir="rtl" style="margin:0">لا تُسمِّ ناتج التجميع <code>count</code> أو <code>sum</code> أو <code>avg</code> أو <code>min</code> أو <code>max</code> — فهذه كلمات محجوزة سيرفضها المحرّر كاسم مستعار. استعمل اسمًا واصفًا مثل <code>book_count</code>.</p>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — how many books in all</span><span class="i18n-ar" dir="rtl">مثال ١ — كم عدد الكتب إجمالًا</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":5,"sql":"SELECT COUNT(*) AS book_count FROM books;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">One row, one column — the whole table folded into a single number.</span><span class="i18n-ar" dir="rtl">صفٌّ واحد وعمود واحد — الجدول كلّه مطويٌّ في رقم واحد.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — count only the rows that match a filter</span><span class="i18n-ar" dir="rtl">مثال ٢ — عُدَّ الصفوف المطابقة للتصفية فقط</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":5,"sql":"SELECT COUNT(*) AS in_stock_count FROM books WHERE in_stock = true;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en"><code>WHERE</code> runs first and narrows the rows; <code>COUNT</code> then counts what's left.</span><span class="i18n-ar" dir="rtl">تُنفَّذ <code>WHERE</code> أوّلًا فتضيّق الصفوف، ثم تَعُدّ <code>COUNT</code> ما تبقّى.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — how many <em>distinct</em> genres</span><span class="i18n-ar" dir="rtl">مثال ٣ — كم عدد الأنواع <em>المميّزة</em></span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":5,"sql":"SELECT COUNT(DISTINCT genre) AS genre_count FROM books;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Ten books, but only four different genres. <code>DISTINCT</code> removes the repeats before counting.</span><span class="i18n-ar" dir="rtl">عشرة كتب، لكن أربعة أنواع مختلفة فقط. تُزيل <code>DISTINCT</code> المكرّرات قبل العدّ.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">The same ideas against <strong>Orbit Electronics</strong> — the <code>products</code> and <code>categories</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">الأفكار نفسها على <strong>Orbit Electronics</strong> — جدولا <code>products</code> و<code>categories</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — total number of products</span><span class="i18n-ar" dir="rtl">مثال ١ — إجمالي عدد المنتجات</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":5,"sql":"SELECT COUNT(*) AS product_count FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — how many featured products</span><span class="i18n-ar" dir="rtl">مثال ٢ — كم عدد المنتجات المميّزة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":5,"sql":"SELECT COUNT(*) AS featured_count FROM products WHERE is_featured = true;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — how many distinct brands</span><span class="i18n-ar" dir="rtl">مثال ٣ — كم عدد العلامات التجارية المميّزة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":5,"sql":"SELECT COUNT(DISTINCT brand) AS brand_count FROM products;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="5" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"What does COUNT(*) return?","ar":"ماذا تُعيد COUNT(*)؟"},
+         "options":[{"en":"The number of rows","ar":"عدد الصفوف"},{"en":"The sum of a column","ar":"مجموع عمود"},{"en":"The list of all rows","ar":"قائمة بكل الصفوف"},{"en":"The number of columns","ar":"عدد الأعمدة"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="5" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"COUNT(DISTINCT brand) counts how many different brand values appear.","ar":"COUNT(DISTINCT brand) تَعُدّ كم قيمة علامة تجارية مختلفة تظهر."},
+         "correct":true,
+         "explain":{"en":"DISTINCT removes duplicate brand values before counting.","ar":"تُزيل DISTINCT قيم العلامات المكرّرة قبل العدّ."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="5" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the query that counts all products.","ar":"أكمل الاستعلام الذي يَعُدّ كل المنتجات."},
+         "template":"SELECT ____(*) AS product_count FROM products;","answers":["COUNT"]}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q4" data-chapter="5" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":4,"prompt":{"en":"An aggregate result may be aliased AS count without any problem.","ar":"يمكن تسمية ناتج التجميع AS count دون أيّ مشكلة."},
+         "correct":false,
+         "explain":{"en":"count is a reserved word here — use a name like product_count instead.","ar":"count كلمة محجوزة هنا — استعمل اسمًا مثل product_count بدلًا منها."}}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Count how many products are out of stock (<code>stock_qty = 0</code>). Return the single number as a column named <code>out_of_stock</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">عُدَّ كم منتجًا نفد من المخزون (<code>stock_qty = 0</code>). أعِد الرقم الواحد في عمود اسمه <code>out_of_stock</code>.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="5" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":5,"placeholder":"SELECT COUNT(*) AS out_of_stock FROM products WHERE ...","grade":{"mode":"result","expected":"SELECT COUNT(*) AS out_of_stock FROM products WHERE stock_qty = 0"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> — the <code>courses</code> and <code>departments</code> tables.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> — جدولا <code>courses</code> و<code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="5" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"How does COUNT(active) differ from COUNT(*)?","ar":"بمَ تختلف COUNT(active) عن COUNT(*)؟"},
+         "options":[{"en":"COUNT(active) skips rows where active is NULL","ar":"COUNT(active) تتجاوز الصفوف التي تكون فيها active قيمتها NULL"},{"en":"They are always identical","ar":"هما متطابقتان دائمًا"},{"en":"COUNT(active) counts columns","ar":"COUNT(active) تَعُدّ الأعمدة"},{"en":"COUNT(*) ignores NULLs","ar":"COUNT(*) تتجاهل قيم NULL"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="5" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"COUNT collapses many rows into a single value.","ar":"تطوي COUNT صفوفًا كثيرة في قيمة واحدة."},
+         "correct":true}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="5" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete: count the distinct levels among courses.","ar":"أكمل: عُدَّ المستويات المميّزة بين المقررات."},
+         "template":"SELECT COUNT(____ level) AS level_count FROM courses;","answers":["DISTINCT"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Count how many courses are currently active (<code>active = true</code>). Return it as a column named <code>active_count</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">عُدَّ كم مقرّرًا نشطًا حاليًّا (<code>active = true</code>). أعِده في عمود اسمه <code>active_count</code>.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="5" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":5,"placeholder":"SELECT COUNT(*) AS active_count FROM courses WHERE ...","grade":{"mode":"result","expected":"SELECT COUNT(*) AS active_count FROM courses WHERE active = true"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">How many <em>distinct</em> departments have at least one course? Count the distinct <code>department_id</code> values in <code>courses</code> as a column named <code>department_count</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">كم قسمًا <em>مميّزًا</em> له مقرّر واحد على الأقل؟ عُدَّ قيم <code>department_id</code> المميّزة في <code>courses</code> في عمود اسمه <code>department_count</code>.</p>
+        <div class="qb-widget" data-qid="test-t5" data-chapter="5" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":5,"placeholder":"SELECT COUNT(DISTINCT ...) AS department_count FROM courses","grade":{"mode":"result","expected":"SELECT COUNT(DISTINCT department_id) AS department_count FROM courses"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t6" data-chapter="5" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Order how COUNT(*) with a WHERE runs.","ar":"رتّب كيفية تنفيذ COUNT(*) مع WHERE."},
+         "items":[{"en":"WHERE narrows the rows","ar":"تُضيّق WHERE الصفوف"},{"en":"COUNT counts the surviving rows","ar":"تَعُدّ COUNT الصفوف الباقية"},{"en":"The single number is returned","ar":"يُعاد الرقم الواحد"}]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="5" data-lesson="1"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

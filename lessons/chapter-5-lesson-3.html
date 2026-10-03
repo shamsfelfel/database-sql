@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 5 · Lesson 3 — Extremes (MIN, MAX) · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="5" data-lesson="3">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="5" data-lesson="3"></nav>
+
+    <h1 class="i18n-en">Lesson 3 — Extremes (MIN, MAX)</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٣ — الطرفان (MIN و MAX)</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en"><code>MIN(column)</code> returns the smallest value in a column and <code>MAX(column)</code> the largest. On numbers that's the lowest and highest; on text it's alphabetical order. Like the others, each returns one value and should be named with <code>AS</code>.</p>
+      <p class="i18n-ar" dir="rtl"><code>MIN(column)</code> تُعيد أصغر قيمة في العمود، و<code>MAX(column)</code> أكبرها. على الأرقام هما الأدنى والأعلى، وعلى النصوص هما الترتيب الأبجدي. وكغيرهما، تُعيد كلٌّ منهما قيمة واحدة وينبغي تسميتها بـ<code>AS</code>.</p>
+      <p class="i18n-en">Several aggregates can share one <code>SELECT</code>. A single query can report the count, the average, the minimum and the maximum together — a compact "summary row" of a whole table.</p>
+      <p class="i18n-ar" dir="rtl">يمكن لعدّة دوال تجميعية أن تتشارك في <code>SELECT</code> واحدة. فيستطيع استعلام واحد أن يذكر العدد والمتوسّط والحدّ الأدنى والحدّ الأعلى معًا — «صفّ ملخّص» مُوجَز للجدول كلّه.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>SELECT MIN(price) AS min_price, MAX(price) AS max_price FROM books;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — cheapest and most expensive</span><span class="i18n-ar" dir="rtl">مثال ١ — الأرخص والأغلى</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":5,"sql":"SELECT MIN(price) AS min_price, MAX(price) AS max_price FROM books;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Two aggregates, one row — the price range at a glance.</span><span class="i18n-ar" dir="rtl">دالتان تجميعيتان في صفٍّ واحد — مدى السعر بنظرة.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — a full summary row</span><span class="i18n-ar" dir="rtl">مثال ٢ — صفّ ملخّص كامل</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":5,"sql":"SELECT COUNT(*) AS book_count, ROUND(AVG(price), 2) AS avg_price, MIN(price) AS min_price, MAX(price) AS max_price FROM books;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Count, average, minimum and maximum — all in one pass over the table.</span><span class="i18n-ar" dir="rtl">العدد والمتوسّط والأدنى والأعلى — كلّها في مرور واحد على الجدول.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the extreme within a filter</span><span class="i18n-ar" dir="rtl">مثال ٣ — الطرف داخل تصفية</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":5,"sql":"SELECT MAX(price) AS max_fiction FROM books WHERE genre = 'Fiction';"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">The most expensive book — but only among the Fiction rows.</span><span class="i18n-ar" dir="rtl">أغلى كتاب — لكن ضمن صفوف Fiction فقط.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">The same ideas against <strong>Orbit Electronics</strong> — the <code>products</code> table.</p>
+      <p class="i18n-ar" dir="rtl">الأفكار نفسها على <strong>Orbit Electronics</strong> — جدول <code>products</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — cheapest and most expensive</span><span class="i18n-ar" dir="rtl">مثال ١ — الأرخص والأغلى</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":5,"sql":"SELECT MIN(price) AS min_price, MAX(price) AS max_price FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — a stock summary</span><span class="i18n-ar" dir="rtl">مثال ٢ — ملخّص المخزون</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":5,"sql":"SELECT COUNT(*) AS product_count, MIN(stock_qty) AS min_stock, MAX(stock_qty) AS max_stock FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the priciest of one brand</span><span class="i18n-ar" dir="rtl">مثال ٣ — الأغلى من علامة واحدة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":5,"sql":"SELECT MAX(price) AS max_price FROM products WHERE brand = 'Voyager';"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="5" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"MIN(price) returns:","ar":"MIN(price) تُعيد:"},
+         "options":[{"en":"The smallest price","ar":"أصغر سعر"},{"en":"The number of prices","ar":"عدد الأسعار"},{"en":"The average price","ar":"متوسّط السعر"},{"en":"The largest price","ar":"أكبر سعر"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="5" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A single SELECT can return MIN, MAX, COUNT and AVG together.","ar":"يمكن لجملة SELECT واحدة أن تُعيد MIN و MAX و COUNT و AVG معًا."},
+         "correct":true}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="5" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the query for the highest price.","ar":"أكمل الاستعلام لأعلى سعر."},
+         "template":"SELECT ____(price) AS max_price FROM products;","answers":["MAX"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">In one query, return the lowest and highest product price as columns named <code>min_price</code> and <code>max_price</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">في استعلام واحد، أعِد أدنى وأعلى سعر منتج في عمودين اسمهما <code>min_price</code> و<code>max_price</code>.</p>
+        <div class="qb-widget" data-qid="lab-q4" data-chapter="5" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":5,"placeholder":"SELECT MIN(price) AS min_price, MAX(price) AS max_price FROM products","grade":{"mode":"result","expected":"SELECT MIN(price) AS min_price, MAX(price) AS max_price FROM products"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return the price of the most expensive <strong>Vortex</strong> product as a column named <code>max_price</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد سعر أغلى منتج من <strong>Vortex</strong> في عمود اسمه <code>max_price</code>.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="5" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":5,"placeholder":"SELECT MAX(price) AS max_price FROM products WHERE ...","grade":{"mode":"result","expected":"SELECT MAX(price) AS max_price FROM products WHERE brand = 'Vortex'"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> — the <code>courses</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> — جدول <code>courses</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="5" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which function returns the largest value in a column?","ar":"أيّ دالة تُعيد أكبر قيمة في العمود؟"},
+         "options":[{"en":"MAX","ar":"MAX"},{"en":"MIN","ar":"MIN"},{"en":"SUM","ar":"SUM"},{"en":"COUNT","ar":"COUNT"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="5" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"MIN and MAX work only on numeric columns.","ar":"تعمل MIN و MAX على الأعمدة العددية فقط."},
+         "correct":false,
+         "explain":{"en":"On text columns they return the alphabetically first and last values.","ar":"على الأعمدة النصية تُعيدان القيمة الأولى والأخيرة أبجديًّا."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="5" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the query for the lowest number of credits.","ar":"أكمل الاستعلام لأقلّ عدد ساعات."},
+         "template":"SELECT ____(credits) AS min_credits FROM courses;","answers":["MIN"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return the highest <code>enrollment_cap</code> across all courses as a column named <code>max_cap</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد أعلى <code>enrollment_cap</code> عبر كل المقررات في عمود اسمه <code>max_cap</code>.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="5" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":5,"placeholder":"SELECT MAX(...) AS max_cap FROM courses","grade":{"mode":"result","expected":"SELECT MAX(enrollment_cap) AS max_cap FROM courses"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Among the <strong>graduate</strong> courses, return the lowest number of <code>credits</code> as a column named <code>min_credits</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">بين مقررات <strong>graduate</strong>، أعِد أقلّ عدد <code>credits</code> في عمود اسمه <code>min_credits</code>.</p>
+        <div class="qb-widget" data-qid="test-t5" data-chapter="5" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":5,"placeholder":"SELECT MIN(credits) AS min_credits FROM courses WHERE ...","grade":{"mode":"result","expected":"SELECT MIN(credits) AS min_credits FROM courses WHERE level = 'graduate'"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t6" data-chapter="5" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Match each aggregate to its result.","ar":"طابِق كل دالة تجميعية بنتيجتها."},
+         "left":[{"en":"MAX(enrollment_cap)","ar":"MAX(enrollment_cap)"},{"en":"MIN(enrollment_cap)","ar":"MIN(enrollment_cap)"},{"en":"AVG(enrollment_cap)","ar":"AVG(enrollment_cap)"}],
+         "right":[{"en":"The largest cap","ar":"أكبر سعة"},{"en":"The smallest cap","ar":"أصغر سعة"},{"en":"The mean cap","ar":"متوسّط السعة"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="5" data-lesson="3"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 5 test · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="5">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs">
+      <a href="../index.html" data-i18n="nav_home">Home</a>
+      <span class="sep">›</span>
+      <a href="../chapters/chapter-5.html"><span data-i18n="nav_chapter">Chapter</span> 5</a>
+      <span class="sep">›</span>
+      <span aria-current="page" data-i18n="chapter_test">Chapter test</span>
+    </nav>
+
+    <h1 class="i18n-en">Chapter 5 test</h1>
+    <h1 class="i18n-ar" dir="rtl">اختبار الفصل الخامس</h1>
+    <p class="lead i18n-en">Twenty independent questions across all three databases — <code>COUNT</code>, <code>SUM</code>, <code>AVG</code>, <code>MIN</code>, <code>MAX</code>, <code>GROUP BY</code>, <code>HAVING</code>, and aggregation over a <code>JOIN</code>. Each write-statement question is graded on the rows it returns, so any correct query passes. Use the exact column names each prompt asks for.</p>
+    <p class="lead i18n-ar" dir="rtl">عشرون سؤالًا مستقلًّا عبر القواعد الثلاث جميعها — <code>COUNT</code> و<code>SUM</code> و<code>AVG</code> و<code>MIN</code> و<code>MAX</code> و<code>GROUP BY</code> و<code>HAVING</code> والتجميع عبر <code>JOIN</code>. ويُصحَّح كل سؤال كتابة عبارة بناءً على الصفوف التي يُعيدها، فأيّ استعلام صحيح ينجح. استعمل أسماء الأعمدة التي يطلبها كل سؤال بالضبط.</p>
+
+    <!-- 1 MCQ -->
+    <div class="question" data-qtype="mcq" data-qid="t1" data-chapter="5" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":1,"prompt":{"en":"What does COUNT(*) return?","ar":"ماذا تُعيد COUNT(*)؟"},
+       "options":[{"en":"The number of rows","ar":"عدد الصفوف"},{"en":"The sum of a column","ar":"مجموع عمود"},{"en":"The largest value","ar":"أكبر قيمة"},{"en":"The number of columns","ar":"عدد الأعمدة"}],"correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 2 WRITE (a) -->
+    <div class="question" data-qid="t2">
+      <div class="q-head"><span class="q-num">2</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Count how many books there are in total. Return it as a column named <code>book_count</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">عُدَّ كم كتابًا يوجد إجمالًا. أعِده في عمود اسمه <code>book_count</code>.</p>
+      <div class="qb-widget" data-qid="t2" data-chapter="5" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"a","chapter":5,"placeholder":"SELECT COUNT(*) AS book_count FROM books","grade":{"mode":"result","expected":"SELECT COUNT(*) AS book_count FROM books"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 3 TF -->
+    <div class="question" data-qtype="tf" data-qid="t3" data-chapter="5" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":3,"prompt":{"en":"SUM and AVG both ignore NULL values.","ar":"كلٌّ من SUM و AVG يتجاهل قيم NULL."},"correct":true}
+      </script>
+    </div>
+
+    <!-- 4 WRITE (b) -->
+    <div class="question" data-qid="t4">
+      <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Add up the <code>stock_qty</code> of every product. Return the total as a column named <code>total_stock</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">اجمع <code>stock_qty</code> لكل منتج. أعِد المجموع في عمود اسمه <code>total_stock</code>.</p>
+      <div class="qb-widget" data-qid="t4" data-chapter="5" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"b","chapter":5,"placeholder":"SELECT SUM(...) AS total_stock FROM products","grade":{"mode":"result","expected":"SELECT SUM(stock_qty) AS total_stock FROM products"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 5 FILL -->
+    <div class="question" data-qtype="fill" data-qid="t5" data-chapter="5" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":5,"prompt":{"en":"Complete: keep the average to two decimal places.","ar":"أكمل: أبقِ المتوسّط بمنزلتين عشريتين."},
+       "template":"SELECT ____(AVG(price), 2) AS avg_price FROM products;","answers":["ROUND"]}
+      </script>
+    </div>
+
+    <!-- 6 WRITE (c) -->
+    <div class="question" data-qid="t6">
+      <div class="q-head"><span class="q-num">6</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Return the average <code>credits</code> across all courses, rounded to 2 decimals, as a column named <code>avg_credits</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أعِد متوسّط <code>credits</code> عبر كل المقررات، مقرّبًا إلى منزلتين، في عمود اسمه <code>avg_credits</code>.</p>
+      <div class="qb-widget" data-qid="t6" data-chapter="5" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":5,"placeholder":"SELECT ROUND(AVG(...), 2) AS avg_credits FROM courses","grade":{"mode":"result","expected":"SELECT ROUND(AVG(credits), 2) AS avg_credits FROM courses"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 7 WRITE (a) -->
+    <div class="question" data-qid="t7">
+      <div class="q-head"><span class="q-num">7</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">In one query, return the lowest and highest book price as columns named <code>min_price</code> and <code>max_price</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">في استعلام واحد، أعِد أدنى وأعلى سعر كتاب في عمودين اسمهما <code>min_price</code> و<code>max_price</code>.</p>
+      <div class="qb-widget" data-qid="t7" data-chapter="5" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"a","chapter":5,"placeholder":"SELECT MIN(price) AS min_price, MAX(price) AS max_price FROM books","grade":{"mode":"result","expected":"SELECT MIN(price) AS min_price, MAX(price) AS max_price FROM books"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 8 MCQ -->
+    <div class="question" data-qtype="mcq" data-qid="t8" data-chapter="5" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":8,"prompt":{"en":"Which clause filters groups after aggregation?","ar":"أيّ جملة تُصفّي المجموعات بعد التجميع؟"},
+       "options":[{"en":"HAVING","ar":"HAVING"},{"en":"WHERE","ar":"WHERE"},{"en":"GROUP BY","ar":"GROUP BY"},{"en":"ORDER BY","ar":"ORDER BY"}],"correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 9 WRITE (b) -->
+    <div class="question" data-qid="t9">
+      <div class="q-head"><span class="q-num">9</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">For each <code>category_id</code>, return the category id and how many products it has. Use the columns <code>category_id</code> and <code>product_count</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">لكل <code>category_id</code>، أعِد رقم الفئة وعدد منتجاتها. استخدم العمودين <code>category_id</code> و<code>product_count</code>.</p>
+      <div class="qb-widget" data-qid="t9" data-chapter="5" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"b","chapter":5,"placeholder":"SELECT category_id, COUNT(*) AS product_count FROM products GROUP BY ...","grade":{"mode":"result","expected":"SELECT category_id, COUNT(*) AS product_count FROM products GROUP BY category_id"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 10 WRITE (c) -->
+    <div class="question" data-qid="t10">
+      <div class="q-head"><span class="q-num">10</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">For each <code>level</code>, return the level and how many courses have it. Use the columns <code>level</code> and <code>course_count</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">لكل <code>level</code>، أعِد المستوى وعدد المقررات فيه. استخدم العمودين <code>level</code> و<code>course_count</code>.</p>
+      <div class="qb-widget" data-qid="t10" data-chapter="5" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":5,"placeholder":"SELECT level, COUNT(*) AS course_count FROM courses GROUP BY ...","grade":{"mode":"result","expected":"SELECT level, COUNT(*) AS course_count FROM courses GROUP BY level"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 11 FILL -->
+    <div class="question" data-qtype="fill" data-qid="t11" data-chapter="5" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":11,"prompt":{"en":"Complete the grouping clause.","ar":"أكمل جملة التجميع."},
+       "template":"SELECT genre, COUNT(*) AS book_count FROM books GROUP ____ genre;","answers":["BY"]}
+      </script>
+    </div>
+
+    <!-- 12 WRITE (a) -->
+    <div class="question" data-qid="t12">
+      <div class="q-head"><span class="q-num">12</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Return each <code>genre</code> that has more than one book, with its book count. Use the columns <code>genre</code> and <code>book_count</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أعِد كل <code>genre</code> فيه أكثر من كتاب، مع عدد كتبه. استخدم العمودين <code>genre</code> و<code>book_count</code>.</p>
+      <div class="qb-widget" data-qid="t12" data-chapter="5" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"a","chapter":5,"placeholder":"SELECT genre, COUNT(*) AS book_count FROM books GROUP BY genre HAVING ...","grade":{"mode":"result","expected":"SELECT genre, COUNT(*) AS book_count FROM books GROUP BY genre HAVING COUNT(*) > 1"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 13 TF -->
+    <div class="question" data-qtype="tf" data-qid="t13" data-chapter="5" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":13,"prompt":{"en":"WHERE is applied before the rows are grouped.","ar":"تُطبَّق WHERE قبل تجميع الصفوف."},"correct":true}
+      </script>
+    </div>
+
+    <!-- 14 WRITE (b) -->
+    <div class="question" data-qid="t14">
+      <div class="q-head"><span class="q-num">14</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Return each <code>brand</code> that has 2 or more products, with its product count. Use the columns <code>brand</code> and <code>product_count</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أعِد كل <code>brand</code> له منتجان أو أكثر، مع عدد منتجاته. استخدم العمودين <code>brand</code> و<code>product_count</code>.</p>
+      <div class="qb-widget" data-qid="t14" data-chapter="5" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"b","chapter":5,"placeholder":"SELECT brand, COUNT(*) AS product_count FROM products GROUP BY brand HAVING ...","grade":{"mode":"result","expected":"SELECT brand, COUNT(*) AS product_count FROM products GROUP BY brand HAVING COUNT(*) >= 2"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 15 WRITE (c) -->
+    <div class="question" data-qid="t15">
+      <div class="q-head"><span class="q-num">15</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Join <code>courses</code> to <code>departments</code> and, for each department <code>name</code>, return the department and its course count. Use the columns <code>department</code> and <code>course_count</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">اربِط <code>courses</code> بـ<code>departments</code>، ولكل <code>name</code> قسم أعِد القسم وعدد مقرّراته. استخدم العمودين <code>department</code> و<code>course_count</code>.</p>
+      <div class="qb-widget" data-qid="t15" data-chapter="5" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":5,"placeholder":"SELECT d.name AS department, COUNT(*) AS course_count FROM courses c JOIN departments d ON ... GROUP BY d.name","grade":{"mode":"result","expected":"SELECT d.name AS department, COUNT(*) AS course_count FROM courses c JOIN departments d ON c.department_id = d.id GROUP BY d.name"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 16 MATCH -->
+    <div class="question" data-qtype="match" data-qid="t16" data-chapter="5" data-lesson="test">
+      <script type="application/json" class="q-config">
+      {"num":16,"prompt":{"en":"Match each clause to what it does.","ar":"طابِق كل جملة بما تفعله."},
+       "left":[{"en":"GROUP BY","ar":"GROUP BY"},{"en":"WHERE","ar":"WHERE"},{"en":"HAVING","ar":"HAVING"}],
+       "right":[{"en":"Forms one group per distinct value","ar":"يكوّن مجموعة لكل قيمة مميّزة"},{"en":"Filters rows before grouping","ar":"يُصفّي الصفوف قبل التجميع"},{"en":"Filters groups after aggregation","ar":"يُصفّي المجموعات بعد التجميع"}],
+       "correctPairs":[[0,0],[1,1],[2,2]]}
+      </script>
+    </div>
+
+    <!-- 17 WRITE (a) -->
+    <div class="question" data-qid="t17">
+      <div class="q-head"><span class="q-num">17</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Join <code>books</code> to <code>authors</code> and, for each author <code>name</code>, return the author and how many books they wrote. Use the columns <code>author</code> and <code>book_count</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">اربِط <code>books</code> بـ<code>authors</code>، ولكل <code>name</code> مؤلف أعِد المؤلف وعدد كتبه. استخدم العمودين <code>author</code> و<code>book_count</code>.</p>
+      <div class="qb-widget" data-qid="t17" data-chapter="5" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"a","chapter":5,"placeholder":"SELECT a.name AS author, COUNT(*) AS book_count FROM authors a JOIN books b ON ... GROUP BY a.name","grade":{"mode":"result","expected":"SELECT a.name AS author, COUNT(*) AS book_count FROM authors a JOIN books b ON b.author_id = a.id GROUP BY a.name"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 18 WRITE (b) -->
+    <div class="question" data-qid="t18">
+      <div class="q-head"><span class="q-num">18</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Join <code>products</code> to <code>categories</code> and, for each <code>department</code>, return the department and its average product price rounded to 2 decimals. Use the columns <code>department</code> and <code>avg_price</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">اربِط <code>products</code> بـ<code>categories</code>، ولكل <code>department</code> أعِد القسم ومتوسّط سعر منتجاته مقرّبًا إلى منزلتين. استخدم العمودين <code>department</code> و<code>avg_price</code>.</p>
+      <div class="qb-widget" data-qid="t18" data-chapter="5" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"b","chapter":5,"placeholder":"SELECT c.department AS department, ROUND(AVG(p.price), 2) AS avg_price FROM products p JOIN categories c ON ... GROUP BY c.department","grade":{"mode":"result","expected":"SELECT c.department AS department, ROUND(AVG(p.price), 2) AS avg_price FROM products p JOIN categories c ON p.category_id = c.id GROUP BY c.department"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 19 WRITE (c) -->
+    <div class="question" data-qid="t19">
+      <div class="q-head"><span class="q-num">19</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Return the single highest <code>enrollment_cap</code> across all courses as a column named <code>max_cap</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أعِد أعلى <code>enrollment_cap</code> واحد عبر كل المقررات في عمود اسمه <code>max_cap</code>.</p>
+      <div class="qb-widget" data-qid="t19" data-chapter="5" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"c","chapter":5,"placeholder":"SELECT MAX(...) AS max_cap FROM courses","grade":{"mode":"result","expected":"SELECT MAX(enrollment_cap) AS max_cap FROM courses"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 20 WRITE (b) — hardest, combined -->
+    <div class="question" data-qid="t20">
+      <div class="q-head"><span class="q-num">20</span><span class="q-type">write statement</span></div>
+      <p class="q-prompt i18n-en">Combining a <code>JOIN</code>, a <code>WHERE</code>, a <code>GROUP BY</code> and a <code>HAVING</code>: among <strong>featured</strong> products only, join <code>products</code> to <code>categories</code> and return each <code>department</code> that has 2 or more featured products, with that count. Use the columns <code>department</code> and <code>featured_count</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">بجمع <code>JOIN</code> و<code>WHERE</code> و<code>GROUP BY</code> و<code>HAVING</code>: بين المنتجات <strong>المميّزة</strong> فقط، اربِط <code>products</code> بـ<code>categories</code> وأعِد كل <code>department</code> له منتجان مميّزان أو أكثر، مع ذلك العدد. استخدم العمودين <code>department</code> و<code>featured_count</code>.</p>
+      <div class="qb-widget" data-qid="t20" data-chapter="5" data-lesson="test">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"b","chapter":5,"placeholder":"SELECT c.department AS department, COUNT(*) AS featured_count FROM products p JOIN categories c ON ... WHERE p.is_featured = true GROUP BY c.department HAVING ...","grade":{"mode":"result","expected":"SELECT c.department AS department, COUNT(*) AS featured_count FROM products p JOIN categories c ON p.category_id = c.id WHERE p.is_featured = true GROUP BY c.department HAVING COUNT(*) >= 2"}}
+        </script>
+      </div>
+    </div>
+
+    <div class="card" id="score-card" style="margin-top:var(--sp-6); text-align:center;">
+      <button class="btn btn-primary" id="score-btn" data-i18n="score">Score</button>
+      <h2 id="score-line" hidden style="margin-top:var(--sp-4)"></h2>
+      <div class="progress-bar" id="score-bar" hidden style="max-width:360px;margin:var(--sp-3) auto 0;"><span></span></div>
+    </div>
+
+    <nav class="footer-nav" style="justify-content:center;">
+      <a class="btn btn-secondary" href="../chapters/chapter-5.html"><span data-i18n="back_to_chapter">Back to chapter</span></a>
+    </nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script>
+    window.PageInit = function () {
+      var QIDS = []; for (var i = 1; i <= 20; i++) QIDS.push('t' + i);
+      function t(k) { return window.I18N ? window.I18N.t(k) : k; }
+      function tally() { var p = 0; QIDS.forEach(function (q) { if (window.Progress.questionResult('5', 'test', q) === true) p++; }); return p; }
+      function show() {
+        var passed = tally(), total = QIDS.length;
+        var line = document.getElementById('score-line'), bar = document.getElementById('score-bar');
+        line.hidden = false; bar.hidden = false;
+        line.textContent = t('test_score') + ' ' + passed + ' ' + t('test_of') + ' ' + total;
+        bar.querySelector('span').style.width = (passed / total * 100) + '%';
+      }
+      document.getElementById('score-btn').addEventListener('click', show);
+      document.addEventListener('progress:change', function () { if (!document.getElementById('score-line').hidden) show(); });
+    };
+  </script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

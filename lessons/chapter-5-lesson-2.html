@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 5 · Lesson 2 — Totals & Averages (SUM, AVG) · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="5" data-lesson="2">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="5" data-lesson="2"></nav>
+
+    <h1 class="i18n-en">Lesson 2 — Totals & Averages (SUM, AVG)</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٢ — المجاميع والمتوسّطات (SUM و AVG)</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en"><code>SUM(column)</code> adds up the values in a numeric column; <code>AVG(column)</code> returns their mean. Both ignore <code>NULL</code> values and both return a single number, so — like <code>COUNT</code> — give the result a name with <code>AS</code>.</p>
+      <p class="i18n-ar" dir="rtl"><code>SUM(column)</code> تجمع القيم في عمود عددي، و<code>AVG(column)</code> تُعيد متوسّطها. وكلاهما يتجاهل قيم <code>NULL</code>، وكلاهما يُعيد رقمًا واحدًا — فامنح الناتج اسمًا بـ<code>AS</code> كما في <code>COUNT</code>.</p>
+      <p class="i18n-en">An average often comes back with a long tail of decimals. Wrap it in <code>ROUND(value, 2)</code> to keep two decimal places — cleaner to read, and it makes the answer exact and predictable.</p>
+      <p class="i18n-ar" dir="rtl">كثيرًا ما يعود المتوسّط بسلسلة طويلة من الكسور العشرية. لُفَّه بـ<code>ROUND(value, 2)</code> للإبقاء على منزلتين عشريتين — أوضح للقراءة، ويجعل الجواب دقيقًا ومتوقَّعًا.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>SELECT SUM(price) AS catalog_value FROM books;
+SELECT ROUND(AVG(price), 2) AS avg_price FROM books;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — total value of the catalog</span><span class="i18n-ar" dir="rtl">مثال ١ — القيمة الإجمالية للفهرس</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":5,"sql":"SELECT ROUND(SUM(price), 2) AS catalog_value FROM books;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en"><code>SUM</code> adds every book's price into one total.</span><span class="i18n-ar" dir="rtl">تجمع <code>SUM</code> سعر كل كتاب في مجموع واحد.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — the average price</span><span class="i18n-ar" dir="rtl">مثال ٢ — متوسّط السعر</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":5,"sql":"SELECT ROUND(AVG(price), 2) AS avg_price FROM books;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Without <code>ROUND</code> this trails off in decimals; two places is plenty.</span><span class="i18n-ar" dir="rtl">دون <code>ROUND</code> يمتدّ هذا في كسور عشرية؛ ومنزلتان تكفيان.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — a total over a filtered subset</span><span class="i18n-ar" dir="rtl">مثال ٣ — مجموع على مجموعة مُصفّاة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":5,"sql":"SELECT ROUND(SUM(price), 2) AS in_stock_value FROM books WHERE in_stock = true;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en"><code>WHERE</code> chooses the rows first; <code>SUM</code> totals only those.</span><span class="i18n-ar" dir="rtl">تختار <code>WHERE</code> الصفوف أوّلًا، ثم تجمع <code>SUM</code> تلك فقط.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">The same ideas against <strong>Orbit Electronics</strong> — the <code>products</code> table.</p>
+      <p class="i18n-ar" dir="rtl">الأفكار نفسها على <strong>Orbit Electronics</strong> — جدول <code>products</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — total units in stock</span><span class="i18n-ar" dir="rtl">مثال ١ — إجمالي الوحدات في المخزون</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":5,"sql":"SELECT SUM(stock_qty) AS total_stock FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — the average product price</span><span class="i18n-ar" dir="rtl">مثال ٢ — متوسّط سعر المنتج</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":5,"sql":"SELECT ROUND(AVG(price), 2) AS avg_price FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — total value of featured products</span><span class="i18n-ar" dir="rtl">مثال ٣ — القيمة الإجمالية للمنتجات المميّزة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":5,"sql":"SELECT ROUND(SUM(price), 2) AS featured_value FROM products WHERE is_featured = true;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="5" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"AVG(price) returns:","ar":"AVG(price) تُعيد:"},
+         "options":[{"en":"The mean of the price column","ar":"متوسّط عمود السعر"},{"en":"The number of prices","ar":"عدد الأسعار"},{"en":"The largest price","ar":"أكبر سعر"},{"en":"The prices, listed","ar":"الأسعار مسرودةً"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="5" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"ROUND(AVG(price), 2) keeps the average to two decimal places.","ar":"ROUND(AVG(price), 2) تُبقي المتوسّط بمنزلتين عشريتين."},
+         "correct":true}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="5" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the query for the average price.","ar":"أكمل الاستعلام لمتوسّط السعر."},
+         "template":"SELECT ____(price) AS avg_price FROM products;","answers":["AVG"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Add up the <code>stock_qty</code> of every product and return the total as a column named <code>total_stock</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اجمع <code>stock_qty</code> لكل منتج وأعِد المجموع في عمود اسمه <code>total_stock</code>.</p>
+        <div class="qb-widget" data-qid="lab-q4" data-chapter="5" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":5,"placeholder":"SELECT SUM(...) AS total_stock FROM products","grade":{"mode":"result","expected":"SELECT SUM(stock_qty) AS total_stock FROM products"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return the average price of the <strong>featured</strong> products, rounded to 2 decimal places, as a column named <code>avg_price</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد متوسّط سعر المنتجات <strong>المميّزة</strong>، مقرّبًا إلى منزلتين عشريتين، في عمود اسمه <code>avg_price</code>.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="5" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":5,"placeholder":"SELECT ROUND(AVG(price), 2) AS avg_price FROM products WHERE ...","grade":{"mode":"result","expected":"SELECT ROUND(AVG(price), 2) AS avg_price FROM products WHERE is_featured = true"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> — the <code>courses</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> — جدول <code>courses</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="5" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which function totals a numeric column?","ar":"أيّ دالة تجمع عمودًا عدديًّا؟"},
+         "options":[{"en":"SUM","ar":"SUM"},{"en":"COUNT","ar":"COUNT"},{"en":"AVG","ar":"AVG"},{"en":"MAX","ar":"MAX"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="5" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"SUM and AVG both skip NULL values.","ar":"كلٌّ من SUM و AVG يتجاوز قيم NULL."},
+         "correct":true}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="5" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete: keep the average to two decimals.","ar":"أكمل: أبقِ المتوسّط بمنزلتين عشريتين."},
+         "template":"SELECT ____(AVG(credits), 2) AS avg_credits FROM courses;","answers":["ROUND"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Add up the <code>enrollment_cap</code> of every <strong>graduate</strong> course and return the total as a column named <code>total_cap</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اجمع <code>enrollment_cap</code> لكل مقرّر <strong>graduate</strong> وأعِد المجموع في عمود اسمه <code>total_cap</code>.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="5" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":5,"placeholder":"SELECT SUM(...) AS total_cap FROM courses WHERE ...","grade":{"mode":"result","expected":"SELECT SUM(enrollment_cap) AS total_cap FROM courses WHERE level = 'graduate'"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return the average <code>credits</code> across all courses, rounded to 2 decimal places, as a column named <code>avg_credits</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد متوسّط <code>credits</code> عبر كل المقررات، مقرّبًا إلى منزلتين عشريتين، في عمود اسمه <code>avg_credits</code>.</p>
+        <div class="qb-widget" data-qid="test-t5" data-chapter="5" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":5,"placeholder":"SELECT ROUND(AVG(...), 2) AS avg_credits FROM courses","grade":{"mode":"result","expected":"SELECT ROUND(AVG(credits), 2) AS avg_credits FROM courses"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t6" data-chapter="5" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Match each function to what it returns.","ar":"طابِق كل دالة بما تُعيده."},
+         "left":[{"en":"COUNT(*)","ar":"COUNT(*)"},{"en":"SUM(credits)","ar":"SUM(credits)"},{"en":"AVG(credits)","ar":"AVG(credits)"}],
+         "right":[{"en":"How many rows","ar":"كم عدد الصفوف"},{"en":"The total of the column","ar":"مجموع العمود"},{"en":"The mean of the column","ar":"متوسّط العمود"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="5" data-lesson="2"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

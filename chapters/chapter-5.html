@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Chapter 5 · SQL Lab</title>
+  <title>Chapter 5 — Aggregation · SQL Lab</title>
   <script>
     (function () {
       try {
@@ -14,6 +14,14 @@
       window.SQLLAB_BASE = '../';
     })();
   </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
   <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
   <link rel="stylesheet" href="../assets/css/tokens.css">
   <link rel="stylesheet" href="../assets/css/base.css">
@@ -27,29 +35,63 @@
     <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
     <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
   </header>
+
   <main class="page stack">
     <nav class="breadcrumbs" data-auto data-chapter="5"></nav>
+
     <section>
       <span class="example-label"><span data-i18n="nav_chapter">Chapter</span> 5</span>
-      <h1 id="ch-title">—</h1>
-      <p class="lead i18n-en">This chapter hasn't been built yet. It ships with its own chapter-content pass, reusing the shared engines already in place.</p>
-      <p class="lead i18n-ar" dir="rtl">لم يُبنَ هذا الفصل بعد. سيصدر في تمريرة محتوى الفصل الخاصة به، مع إعادة استخدام المحرّكات المشتركة الموجودة بالفعل.</p>
-      <p><a class="btn btn-secondary" href="../index.html" data-i18n="nav_home">Home</a></p>
+      <h1 class="i18n-en">Aggregation</h1>
+      <h1 class="i18n-ar" dir="rtl">التجميع</h1>
+      <p class="lead i18n-en">So far every query returned rows as they are. Aggregation <em>summarizes</em> them: count the rows, add up or average a column, find the smallest and largest. Then <code>GROUP BY</code> computes one summary <em>per group</em>, <code>HAVING</code> filters those groups, and <code>ORDER BY</code> ranks them — all combining cleanly with the <code>WHERE</code>, <code>JOIN</code>, and subquery skills from Chapters 1–4.</p>
+      <p class="lead i18n-ar" dir="rtl">حتى الآن كان كل استعلام يُعيد الصفوف كما هي. أمّا التجميع فيُلخِّصها: عُدَّ الصفوف، أو اجمع عمودًا أو خذ متوسّطه، أو جِد الأصغر والأكبر. ثم تحسب <code>GROUP BY</code> ملخّصًا واحدًا <em>لكل مجموعة</em>، وتُصفّي <code>HAVING</code> تلك المجموعات، وتُرتّبها <code>ORDER BY</code> — وكل ذلك يتكامل بسلاسة مع مهارات <code>WHERE</code> و<code>JOIN</code> والاستعلامات الفرعية من الفصول ١–٤.</p>
+    </section>
+
+    <section>
+      <h2 data-i18n="lesson">Lessons</h2>
+      <ul class="chapter-list" id="lesson-list"></ul>
+    </section>
+
+    <section>
+      <a class="card card-link" href="../tests/chapter-5-test.html">
+        <span class="example-label" data-i18n="chapter_test">Chapter test</span>
+        <h3 class="i18n-en">Chapter 5 test — aggregation across all three databases</h3>
+        <h3 class="i18n-ar" dir="rtl">اختبار الفصل الخامس — التجميع عبر القواعد الثلاث</h3>
+        <div class="meta i18n-en">20 independent questions — COUNT, SUM, AVG, MIN, MAX, GROUP BY, HAVING, and aggregation over a JOIN.</div>
+        <div class="meta i18n-ar" dir="rtl">٢٠ سؤالًا مستقلًّا — COUNT و SUM و AVG و MIN و MAX و GROUP BY و HAVING والتجميع عبر JOIN.</div>
+      </a>
     </section>
   </main>
+
   <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
   <script src="../assets/js/i18n.js"></script>
   <script src="../assets/js/theme.js"></script>
   <script src="../assets/js/progress.js"></script>
   <script src="../assets/js/nav.js"></script>
   <script>
     window.PageInit = function () {
-      function set() {
+      function L(v) { var lang = window.I18N ? window.I18N.lang : 'en'; return (v && typeof v === 'object') ? (v[lang] != null ? v[lang] : v.en) : v; }
+      function t(k) { return window.I18N ? window.I18N.t(k) : k; }
+      function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+      function render() {
         var c = window.COURSE.chapters.filter(function (x) { return x.num === 5; })[0];
-        var lang = window.I18N ? window.I18N.lang : 'en';
-        document.getElementById('ch-title').textContent = c ? (c.title[lang] || c.title.en) : 'Chapter 5';
+        var ul = document.getElementById('lesson-list'); ul.innerHTML = '';
+        c.lessons.forEach(function (l) {
+          var sc = window.Progress.lessonScore(5, l.n);
+          var li = document.createElement('li'); li.className = 'chapter-item';
+          var a = document.createElement('a'); a.className = 'card card-link';
+          a.href = '../lessons/chapter-5-lesson-' + l.n + '.html';
+          var done = sc.total > 0 ? (' · ' + sc.passed + '/' + sc.total + ' ' + t('progress_done')) : '';
+          a.innerHTML = '<span class="num">' + esc(t('lesson').toUpperCase() + ' ' + l.n) + '</span>' +
+                        '<h3>' + esc(L(l.title)) + '</h3>' +
+                        '<div class="meta">' + esc(t('start') + done) + '</div>';
+          li.appendChild(a); ul.appendChild(li);
+        });
       }
-      set(); document.addEventListener('i18n:change', set);
+      render();
+      document.addEventListener('i18n:change', render);
+      document.addEventListener('progress:change', render);
     };
   </script>
   <script src="../assets/js/app.js"></script>

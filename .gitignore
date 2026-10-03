@@ -1,0 +1,9 @@
+# Course authoring sources (prompts + raw chapter content) — kept local, not shipped
+/[0-9][0-9]-*.md
+/[0-9][0-9]-*.txt
+/chapter[0-9]*-*.md
+
+# OS / editor cruft
+Thumbs.db
+.DS_Store
+*~

@@ -55,6 +55,49 @@
     });
   }
 
+  /* PWA: register the service worker so the whole site works offline and is
+     installable. Service workers need http(s); silently skip on file://. Paths
+     are resolved from SQLLAB_BASE so it works at a domain root or a Pages subpath. */
+  function registerSW() {
+    if (!('serviceWorker' in navigator)) return;
+    if (location.protocol === 'file:') return;
+    var base = window.SQLLAB_BASE || '';
+    try {
+      navigator.serviceWorker.register(base + 'sw.js', { scope: base || './' })['catch'](function () {});
+    } catch (e) {}
+  }
+
+  /* PWA install affordance: when the browser offers installation, add an "Install"
+     button to the header (bilingual via the existing .i18n-en/.i18n-ar CSS toggle).
+     Removed once installed or on browsers that don't fire the event (iOS: use the
+     Share → Add to Home Screen flow instead). */
+  function setupInstall() {
+    var deferred = null;
+    window.addEventListener('beforeinstallprompt', function (e) {
+      e.preventDefault();
+      deferred = e;
+      var header = document.querySelector('.site-header');
+      if (!header || header.querySelector('[data-action="install-app"]')) return;
+      var btn = document.createElement('button');
+      btn.className = 'icon-btn';
+      btn.setAttribute('data-action', 'install-app');
+      btn.setAttribute('aria-label', 'Install SQL Lab');
+      btn.innerHTML = '<span class="i18n-en">Install</span><span class="i18n-ar" dir="rtl">تثبيت</span>';
+      btn.addEventListener('click', function () {
+        if (!deferred) return;
+        deferred.prompt();
+        deferred.userChoice.then(function () { deferred = null; btn.remove(); });
+      });
+      var spacer = header.querySelector('.spacer');
+      if (spacer && spacer.nextSibling) header.insertBefore(btn, spacer.nextSibling);
+      else header.appendChild(btn);
+    });
+    window.addEventListener('appinstalled', function () {
+      var b = document.querySelector('[data-action="install-app"]');
+      if (b) b.remove();
+    });
+  }
+
   function boot() {
     if (window.I18N) window.I18N.init();
     if (window.THEME) window.THEME.init();
@@ -65,6 +108,8 @@
     if (window.Nav) window.Nav.init();
     if (window.Index && window.Index.init) window.Index.init();
     if (typeof window.PageInit === 'function') window.PageInit();
+    registerSW();
+    setupInstall();
     document.body.setAttribute('data-booted', '1');
   }
 
