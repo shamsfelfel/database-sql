@@ -284,6 +284,10 @@
     status.className = 'status';
     footer.appendChild(status);
     this.status = status;
+    var maxBtn = button('btn btn-ghost btn-sm wd-max-btn', 'maximize');
+    maxBtn.addEventListener('click', function () { self.setMaximized(!self.maximized); });
+    footer.appendChild(maxBtn);
+    this.maxBtn = maxBtn;
     editorCol.appendChild(footer);
 
     var err = div('error-banner'); err.hidden = true; editorCol.appendChild(err); this.errEl = err;
@@ -487,6 +491,34 @@
   SqlWidget.prototype.clearError = function () { this.errEl.hidden = true; this.errEl.textContent = ''; };
   SqlWidget.prototype.clearGrade = function () { this.gradeEl.hidden = true; this.gradeEl.className = 'grade-banner'; };
 
+  /* Full-screen mode: the widget fills the viewport with a taller editor and a
+     scrolling results area. One widget at a time; Esc restores it. While
+     maximized the widget is moved to <body>, because an ancestor with a
+     transform (the tab panel's entry animation) would otherwise pin
+     position:fixed to that ancestor instead of the viewport. */
+  SqlWidget.prototype.setMaximized = function (on) {
+    if (!!on === !!this.maximized) return;
+    if (on) instances.forEach(function (w) { if (w !== this && w.maximized) w.setMaximized(false); }, this);
+    if (on) {
+      this._placeholder = document.createComment('sql-widget');
+      this.el.parentNode.insertBefore(this._placeholder, this.el);
+      document.body.appendChild(this.el);
+    } else if (this._placeholder) {
+      this._placeholder.parentNode.insertBefore(this.el, this._placeholder);
+      this._placeholder.parentNode.removeChild(this._placeholder);
+      this._placeholder = null;
+    }
+    this.maximized = on;
+    this.el.classList.toggle('maximized', on);
+    document.body.classList.toggle('wd-max-open', on);
+    var key = on ? 'restore_size' : 'maximize';
+    this.maxBtn.setAttribute('data-i18n', key);
+    this.maxBtn.textContent = this.t(key);
+    this.maxBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    if (on) this.editor.focus();
+    else this.el.scrollIntoView({ block: 'nearest' });
+  };
+
   SqlWidget.prototype.pulse = function () {
     var el = this.el;
     el.classList.remove('running'); void el.offsetWidth; el.classList.add('running');
@@ -687,6 +719,10 @@
       el.__sqlwidget = w; instances.push(w);
     });
   }
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    instances.forEach(function (w) { if (w.maximized) w.setMaximized(false); });
+  });
   // relabel the objects panel (row words) on language change, without flashing
   document.addEventListener('i18n:change', function () {
     instances.forEach(function (w) { if (w.showObjects && w._objList) w.paintObjects(w._objList, false); });
