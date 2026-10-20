@@ -67,6 +67,7 @@
   display: flex; align-items: center; gap: var(--sp-2);
   padding: var(--sp-2) var(--sp-3);
   background: var(--surface-2); border-top: 1px solid var(--border);
+  flex-wrap: wrap;
 }
 .qb-widget .editor-footer .status {
   margin-inline-start: auto; font-size: .8rem; color: var(--text-dim);
@@ -77,6 +78,11 @@
 .qb-widget .example-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: var(--sp-2) var(--sp-3) 0; }
 
 .qb-widget .run-hint { font-size: .72rem; color: var(--text-faint); }
+.qb-widget .keep-toggle {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: .75rem; color: var(--text-dim); cursor: pointer; user-select: none;
+}
+.qb-widget .keep-toggle input { margin: 0; accent-color: var(--accent); cursor: pointer; }
 
 .qb-widget .error-banner {
   padding: var(--sp-3) var(--sp-4);

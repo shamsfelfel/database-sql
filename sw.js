@@ -5,7 +5,7 @@
    updates, while offline still serves the cached page). Bump CACHE to invalidate. */
 'use strict';
 
-var CACHE = 'sqllab-20261020-5b03e283f3';
+var CACHE = 'sqllab-20261020-03bf9cef35';
 
 /* Everything is listed relative to the service worker's own location (the site
    root), so it resolves correctly whether the site is served from a domain root

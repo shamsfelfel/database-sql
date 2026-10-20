@@ -1,7 +1,11 @@
 /* widget.js — the reusable SQL widget, adapted from the "Query Bench" POC.
-   Generalized to a per-container factory so many widgets can share the one
-   global alasql engine: each widget reloads ITS OWN dataset into alasql.tables
-   immediately before every run, so instances never interfere.
+   Generalized to a per-container factory: each widget owns a private alasql
+   Database (its "session"), so instances never interfere. The session is
+   STATEFUL — a CREATE TABLE in one Run is still there for the next INSERT or
+   SELECT — until the page is reloaded or the student presses Reset DB.
+   Ticking "Keep after refresh" stores the session's change log in localStorage
+   and replays it on load. Grading always runs on a separate fresh copy, so
+   Check answer is deterministic and never disturbs the session.
 
    Modes (container data-mode / config.mode):
      demo     — prefilled query, Run only, no grading.
@@ -112,6 +116,36 @@
     }
   }
 
+  /* ---------- per-widget databases ---------- */
+
+  // Each widget's session lives in its own alasql Database; grading uses one
+  // shared scratch database that is re-primed before every use.
+  var GRADE_DB = 'wd_grade';
+  var dbSeq = 0;
+  function useDb(id) {
+    if (!alasql.databases[id]) new alasql.Database(id);
+    alasql.use(id);
+  }
+
+  // True when a script can change the database (anything but plain SELECTs).
+  // Only such scripts go into the session log that is replayed on restore.
+  // A script that fails to parse ran nothing, so it is not logged either.
+  function mutates(sql) {
+    var ast;
+    try { ast = alasql.parse(sql); } catch (e) { return false; }
+    return (ast.statements || []).some(function (s) {
+      return !(s instanceof alasql.yy.Select) || !!s.into;
+    });
+  }
+
+  var STORE_PREFIX = 'sqllab.db:';
+  function readStore(key) {
+    try {
+      var saved = JSON.parse(localStorage.getItem(key) || 'null');
+      return (saved && Array.isArray(saved.log)) ? saved : null;
+    } catch (e) { return null; }
+  }
+
   /* ---------- dataset resolution ---------- */
 
   var dataCache = {};
@@ -153,7 +187,16 @@
     this.showObjects = (this.mode === 'explore') || !!cfg.objects;
     this.dataset = null;       // resolved rows-by-table object
     this._objSig = null;       // last-rendered signature, to flash changes
+    this.dbid = 'wd' + (dbSeq++);  // this widget's private session database
+    this.live = false;         // session primed yet?
+    this.log = [];             // mutating scripts run since the last reset
+    this.storeKey = STORE_PREFIX + location.pathname + '#' +
+      (el.getAttribute('data-qid') || (dbSeq - 1)) + ':' + (cfg.case || '') + (cfg.chapter || '');
+    var saved = readStore(this.storeKey);
+    this.persist = !!saved;    // "Keep after refresh" ticked
+    if (saved) this.log = saved.log;
     this.build();
+    if (saved && typeof saved.sql === 'string') this.editor.value = saved.sql;
     this.resolveDataset();
   }
 
@@ -209,15 +252,33 @@
         self.editor.value = cfg.sql || '';
         self.clearGrade(); self.clearError();
         self.resultsEl.innerHTML = ''; self.setStatus('');
-        if (self.showObjects) { self._objSig = null; self.renderObjects(self.dataset, false); }
+        self.resetSession();
       });
       footer.appendChild(resetBtn);
     }
     if (!readonly) {
+      if (!exercise) {
+        var resetDbBtn = button('btn btn-ghost btn-sm', 'reset_db');
+        resetDbBtn.addEventListener('click', function () {
+          self.clearGrade(); self.clearError();
+          self.resultsEl.innerHTML = ''; self.setStatus('');
+          self.resetSession();
+        });
+        footer.appendChild(resetDbBtn);
+      }
       var hint = document.createElement('span');
       hint.className = 'run-hint'; hint.setAttribute('data-i18n', 'run_hint');
       hint.textContent = this.t('run_hint');
       footer.appendChild(hint);
+      var keep = document.createElement('label');
+      keep.className = 'keep-toggle';
+      var keepBox = document.createElement('input');
+      keepBox.type = 'checkbox'; keepBox.checked = this.persist;
+      keepBox.addEventListener('change', function () { self.setPersist(keepBox.checked); });
+      var keepText = document.createElement('span');
+      keepText.setAttribute('data-i18n', 'keep_db'); keepText.textContent = this.t('keep_db');
+      keep.appendChild(keepBox); keep.appendChild(keepText);
+      footer.appendChild(keep);
     }
     var status = document.createElement('span');
     status.className = 'status';
@@ -275,18 +336,54 @@
     this.onDataReady();
   };
 
-  /* Load this widget's dataset into the shared engine, then run any `setup`
-     statements. Setup runs LIVE (not snapshotted) so CREATE TABLE keeps its
-     column metadata — required for positional INSERTs and structural checks.
-     Used to (a) prepare a fresh table for "start empty" INSERT demos, and
-     (b) replay prior correct answers for the chapter test's running story. */
-  SqlWidget.prototype.primeEngine = function () {
+  /* Switch the engine to database `dbid` (default: this widget's session), load
+     a fresh copy of the dataset into it, then run any `setup` statements. Setup
+     runs LIVE (not snapshotted) so CREATE TABLE keeps its column metadata —
+     required for positional INSERTs and structural checks. Used to (a) prepare
+     a fresh table for "start empty" INSERT demos, and (b) replay prior correct
+     answers for the chapter test's running story. */
+  SqlWidget.prototype.primeEngine = function (dbid) {
+    useDb(dbid || this.dbid);
     loadTables(this.dataset || {});
+    // Compiled queries are cached per database; drop them so a query cached
+    // against a table that no longer exists reports "Table does not exist".
+    alasql.databases[alasql.useid].resetSqlCache();
     var setup = this.cfg.setup;
     if (setup && setup.length) setup.forEach(function (s) { alasql(s); });
   };
 
-  /* Execute one SQL string against the already-primed engine (no reload). */
+  /* Make this widget's session the active database, priming it on first use
+     and replaying the change log (a session restored from localStorage). A
+     replayed script that fails fails the same way it did originally, leaving
+     the same partial effect, so errors are ignored here. */
+  SqlWidget.prototype.ensureSession = function () {
+    if (this.live) { useDb(this.dbid); return; }
+    this.primeEngine();
+    this.log.forEach(function (s) { try { alasql(s); } catch (e) {} });
+    this.live = true;
+  };
+
+  /* Back to the starting dataset (+setup); the saved copy, if kept, follows. */
+  SqlWidget.prototype.resetSession = function () {
+    this.log = [];
+    this.primeEngine();
+    this.live = true;
+    this.saveState();
+    if (this.showObjects) { this._objSig = null; this.renderObjects('live', false); }
+  };
+
+  SqlWidget.prototype.saveState = function () {
+    if (!this.persist) return;
+    try { localStorage.setItem(this.storeKey, JSON.stringify({ log: this.log, sql: this.editor.value })); } catch (e) {}
+  };
+
+  SqlWidget.prototype.setPersist = function (on) {
+    this.persist = on;
+    if (on) this.saveState();
+    else { try { localStorage.removeItem(this.storeKey); } catch (e) {} }
+  };
+
+  /* Execute one SQL string against the active database (no reload). */
   SqlWidget.prototype.exec = function (sql) {
     var start = performance.now();
     try {
@@ -303,8 +400,12 @@
 
   SqlWidget.prototype.onDataReady = function () {
     if (!this.showObjects) return;
-    // Reflect the true starting state, including any setup-created tables.
-    try { this.primeEngine(); this.renderObjects('live', false); }
+    // Reflect the true starting state, including any setup-created tables and
+    // a session restored from a saved copy.
+    try {
+      this.ensureSession(); this.renderObjects('live', false);
+      if (this.persist && this.log.length) this.setStatus(this.t('db_restored'), 'ok');
+    }
     catch (e) { this.renderObjects(this.dataset, false); }
   };
 
@@ -339,6 +440,7 @@
   }
   SqlWidget.prototype.renderObjects = function (source, flash) {
     if (!this.objBody) return;
+    if (source === 'live') useDb(this.dbid);
     var list = (source === 'live') ? liveObjects() : datasetObjects(source);
     this._objList = list;
     this.paintObjects(list, flash);
@@ -391,13 +493,17 @@
     setTimeout(function () { el.classList.remove('running'); }, 550);
   };
 
-  /* Run the editor's SQL against a fresh copy of this widget's dataset (+setup). */
+  /* Run the editor's SQL against this widget's session — whatever earlier runs
+     left behind is still there. */
   SqlWidget.prototype.run = function () {
     if (!this.dataset) { this.showError('Dataset still loading…'); return null; }
     this.clearError(); this.clearGrade();
     this.pulse();
-    this.primeEngine();
-    var res = this.exec(this.editor.value);
+    this.ensureSession();
+    var sql = this.editor.value;
+    var res = this.exec(sql);
+    if (mutates(sql)) this.log.push(sql);
+    this.saveState();
     if (res.error) { this.showError(res.error); if (this.showObjects) this.renderObjects('live', true); return res; }
     this.renderResults(res);
     if (this.showObjects) this.renderObjects('live', true);
@@ -471,7 +577,7 @@
        ADD     — { table, columns:[...], probe:false }   an ALTER … ADD COLUMN; column now declared
        DROP    — { table, absent:[...] }          an ALTER … DROP COLUMN; column gone */
   SqlWidget.prototype.gradeStructural = function (g) {
-    this.primeEngine();
+    this.primeEngine(GRADE_DB);
     var r = this.exec(this.editor.value);                // runs student stmt on primed engine
     if (r.error) return { pass: false, error: r.error };
     var table = g.table;
@@ -497,20 +603,23 @@
   };
 
   SqlWidget.prototype.gradeResult = function (g) {
-    var r = this.run();                              // runs + renders student's query
-    if (!r || r.error) return { pass: false, error: r && r.error };
-    var actual = r.rows || [];
+    if (!this.dataset) return { pass: false, error: 'Dataset still loading…' };
+    this.clearError(); this.pulse();
     var expected = this.computeExpected(g.expected);
-    return { pass: compareResultSets(actual, expected, { orderMatters: !!g.orderMatters }) };
+    // the student's query, on its own fresh copy — never the stateful session
+    this.primeEngine(GRADE_DB);
+    var r = this.exec(this.editor.value);
+    if (r.error) { this.showError(r.error); return { pass: false, error: r.error }; }
+    this.renderResults(r);
+    return { pass: compareResultSets(r.rows || [], expected, { orderMatters: !!g.orderMatters }) };
   };
 
   SqlWidget.prototype.gradeState = function (g) {
-    // 1. compute expected on a clean engine FIRST (computeExpected re-primes),
-    //    so the student's mutation below is the last thing to touch the engine —
-    //    that leaves the objects sidebar showing the student's real result.
+    // 1. compute expected on a clean grading engine FIRST (computeExpected
+    //    re-primes), then run the student's mutation on another fresh copy.
     var expected = g.expectEmpty ? [] : this.computeExpected(g.expected);
     // 2. run the student's mutation against a freshly primed engine
-    this.primeEngine();
+    this.primeEngine(GRADE_DB);
     var r = this.exec(this.editor.value);
     if (r.error) { this.showError(r.error); return { pass: false, error: r.error }; }
     this.clearError();
@@ -530,7 +639,7 @@
   SqlWidget.prototype.computeExpected = function (expected) {
     if (Array.isArray(expected)) return expected;
     if (typeof expected === 'string') {
-      this.primeEngine();
+      this.primeEngine(GRADE_DB);
       var r = this.exec(expected);
       return r.rows || [];
     }
