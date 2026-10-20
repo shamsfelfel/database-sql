@@ -1,0 +1,432 @@
+{
+  "tables": {
+    "categories": [
+      {
+        "id": 1,
+        "name": "Laptops",
+        "department": "Electronics"
+      },
+      {
+        "id": 2,
+        "name": "Smartphones",
+        "department": "Electronics"
+      },
+      {
+        "id": 3,
+        "name": "Audio",
+        "department": "Home"
+      },
+      {
+        "id": 4,
+        "name": "Wearables",
+        "department": "Electronics"
+      },
+      {
+        "id": 5,
+        "name": "Gaming",
+        "department": "Home"
+      },
+      {
+        "id": 6,
+        "name": "Accessories",
+        "department": "Office"
+      },
+      {
+        "id": 7,
+        "name": "Cameras",
+        "department": "Electronics"
+      }
+    ],
+    "products": [
+      {
+        "id": 1,
+        "name": "Voyager 14 Laptop",
+        "price": 1299,
+        "stock_qty": 8,
+        "is_featured": true,
+        "category_id": 1,
+        "brand": "Voyager"
+      },
+      {
+        "id": 2,
+        "name": "Pulse Buds",
+        "price": 89.99,
+        "stock_qty": 40,
+        "is_featured": false,
+        "category_id": 3,
+        "brand": "Pulse"
+      },
+      {
+        "id": 3,
+        "name": "Nimbus Phone S",
+        "price": 799,
+        "stock_qty": 15,
+        "is_featured": true,
+        "category_id": 2,
+        "brand": "Nimbus"
+      },
+      {
+        "id": 4,
+        "name": "TrailCam Mini",
+        "price": 149.5,
+        "stock_qty": 22,
+        "is_featured": false,
+        "category_id": 6,
+        "brand": "Trailon"
+      },
+      {
+        "id": 5,
+        "name": "Aria Smartwatch",
+        "price": 229,
+        "stock_qty": 12,
+        "is_featured": true,
+        "category_id": 4,
+        "brand": "Aria"
+      },
+      {
+        "id": 6,
+        "name": "FlexPad Tablet",
+        "price": 349,
+        "stock_qty": 0,
+        "is_featured": false,
+        "category_id": 1,
+        "brand": "Voyager"
+      },
+      {
+        "id": 7,
+        "name": "GridKey Mechanical",
+        "price": 59,
+        "stock_qty": 65,
+        "is_featured": false,
+        "category_id": 6,
+        "brand": "GridKey"
+      },
+      {
+        "id": 8,
+        "name": "Voyager 15 Pro Laptop",
+        "price": 1499,
+        "stock_qty": 5,
+        "is_featured": true,
+        "category_id": 1,
+        "brand": "Voyager"
+      },
+      {
+        "id": 9,
+        "name": "Nimbus Phone Lite",
+        "price": 499,
+        "stock_qty": 30,
+        "is_featured": false,
+        "category_id": 2,
+        "brand": "Nimbus"
+      },
+      {
+        "id": 10,
+        "name": "Pulse Studio Headphones",
+        "price": 199,
+        "stock_qty": 18,
+        "is_featured": true,
+        "category_id": 3,
+        "brand": "Pulse"
+      },
+      {
+        "id": 11,
+        "name": "Vortex Console X",
+        "price": 449,
+        "stock_qty": 10,
+        "is_featured": true,
+        "category_id": 5,
+        "brand": "Vortex"
+      },
+      {
+        "id": 12,
+        "name": "Vortex Controller",
+        "price": 69,
+        "stock_qty": 50,
+        "is_featured": false,
+        "category_id": 5,
+        "brand": "Vortex"
+      },
+      {
+        "id": 13,
+        "name": "Aria Fit Band",
+        "price": 129,
+        "stock_qty": 26,
+        "is_featured": false,
+        "category_id": 4,
+        "brand": "Aria"
+      },
+      {
+        "id": 14,
+        "name": "GridKey Desk Hub",
+        "price": 39.5,
+        "stock_qty": 0,
+        "is_featured": false,
+        "category_id": 6,
+        "brand": "GridKey"
+      }
+    ],
+    "orders_flat": [
+      {
+        "order_id": 5001,
+        "customer_name": "Hani Zorob",
+        "customer_contacts": "hani@mail.ps, 0599-776655",
+        "customer_city": "Gaza",
+        "item_1": "Pulse Buds",
+        "item_2": "GridKey Desk Hub",
+        "item_3": null,
+        "categories": "Audio, Accessories",
+        "category_depts": "Home, Office",
+        "brand_names": "Pulse, GridKey",
+        "brand_countries": "Denmark, Taiwan",
+        "order_date": "2026-04-02"
+      },
+      {
+        "order_id": 5002,
+        "customer_name": "Rana Abed",
+        "customer_contacts": "rana@mail.ps",
+        "customer_city": "Deir al-Balah",
+        "item_1": "GridKey Mechanical",
+        "item_2": null,
+        "item_3": null,
+        "categories": "Accessories",
+        "category_depts": "Office",
+        "brand_names": "GridKey",
+        "brand_countries": "Taiwan",
+        "order_date": "2026-04-04"
+      },
+      {
+        "order_id": 5003,
+        "customer_name": "Hani Zorob",
+        "customer_contacts": "hani@mail.ps, 0599-776655",
+        "customer_city": "Gaza",
+        "item_1": "Pulse Buds",
+        "item_2": "Pulse Studio Headphones",
+        "item_3": "GridKey Mechanical",
+        "categories": "Audio, Audio, Accessories",
+        "category_depts": "Home, Home, Office",
+        "brand_names": "Pulse, Pulse, GridKey",
+        "brand_countries": "Denmark, Denmark, Taiwan",
+        "order_date": "2026-04-05"
+      },
+      {
+        "order_id": 5004,
+        "customer_name": "Samir Hajjaj",
+        "customer_contacts": "samir@mail.ps",
+        "customer_city": "Jabalia",
+        "item_1": "Pulse Studio Headphones",
+        "item_2": null,
+        "item_3": null,
+        "categories": "Audio",
+        "category_depts": "Home",
+        "brand_names": "Pulse",
+        "brand_countries": "Denmark",
+        "order_date": "2026-04-08"
+      }
+    ],
+    "orders_1nf": [
+      {
+        "order_id": 5001,
+        "product_name": "Pulse Buds",
+        "category_name": "Audio",
+        "category_dept": "Home",
+        "brand_name": "Pulse",
+        "brand_country": "Denmark",
+        "customer_name": "Hani Zorob",
+        "customer_email": "hani@mail.ps",
+        "customer_phone": "0599-776655",
+        "customer_city": "Gaza",
+        "order_date": "2026-04-02"
+      },
+      {
+        "order_id": 5001,
+        "product_name": "GridKey Desk Hub",
+        "category_name": "Accessories",
+        "category_dept": "Office",
+        "brand_name": "GridKey",
+        "brand_country": "Taiwan",
+        "customer_name": "Hani Zorob",
+        "customer_email": "hani@mail.ps",
+        "customer_phone": "0599-776655",
+        "customer_city": "Gaza",
+        "order_date": "2026-04-02"
+      },
+      {
+        "order_id": 5002,
+        "product_name": "GridKey Mechanical",
+        "category_name": "Accessories",
+        "category_dept": "Office",
+        "brand_name": "GridKey",
+        "brand_country": "Taiwan",
+        "customer_name": "Rana Abed",
+        "customer_email": "rana@mail.ps",
+        "customer_phone": null,
+        "customer_city": "Deir al-Balah",
+        "order_date": "2026-04-04"
+      },
+      {
+        "order_id": 5003,
+        "product_name": "Pulse Buds",
+        "category_name": "Audio",
+        "category_dept": "Home",
+        "brand_name": "Pulse",
+        "brand_country": "Denmark",
+        "customer_name": "Hani Zorob",
+        "customer_email": "hani@mail.ps",
+        "customer_phone": "0599-776655",
+        "customer_city": "Gaza",
+        "order_date": "2026-04-05"
+      },
+      {
+        "order_id": 5003,
+        "product_name": "Pulse Studio Headphones",
+        "category_name": "Audio",
+        "category_dept": "Home",
+        "brand_name": "Pulse",
+        "brand_country": "Denmark",
+        "customer_name": "Hani Zorob",
+        "customer_email": "hani@mail.ps",
+        "customer_phone": "0599-776655",
+        "customer_city": "Gaza",
+        "order_date": "2026-04-05"
+      },
+      {
+        "order_id": 5003,
+        "product_name": "GridKey Mechanical",
+        "category_name": "Accessories",
+        "category_dept": "Office",
+        "brand_name": "GridKey",
+        "brand_country": "Taiwan",
+        "customer_name": "Hani Zorob",
+        "customer_email": "hani@mail.ps",
+        "customer_phone": "0599-776655",
+        "customer_city": "Gaza",
+        "order_date": "2026-04-05"
+      },
+      {
+        "order_id": 5004,
+        "product_name": "Pulse Studio Headphones",
+        "category_name": "Audio",
+        "category_dept": "Home",
+        "brand_name": "Pulse",
+        "brand_country": "Denmark",
+        "customer_name": "Samir Hajjaj",
+        "customer_email": "samir@mail.ps",
+        "customer_phone": null,
+        "customer_city": "Jabalia",
+        "order_date": "2026-04-08"
+      }
+    ],
+    "brands": [
+      {
+        "id": 1,
+        "name": "Voyager",
+        "country": "United States"
+      },
+      {
+        "id": 2,
+        "name": "Pulse",
+        "country": "Denmark"
+      },
+      {
+        "id": 3,
+        "name": "Nimbus",
+        "country": "South Korea"
+      },
+      {
+        "id": 4,
+        "name": "Trailon",
+        "country": "Germany"
+      },
+      {
+        "id": 5,
+        "name": "Aria",
+        "country": "Japan"
+      },
+      {
+        "id": 6,
+        "name": "GridKey",
+        "country": "Taiwan"
+      },
+      {
+        "id": 7,
+        "name": "Vortex",
+        "country": "Japan"
+      }
+    ],
+    "customers": [
+      {
+        "id": 1,
+        "name": "Hani Zorob",
+        "email": "hani@mail.ps",
+        "phone": "0599-776655",
+        "city": "Gaza"
+      },
+      {
+        "id": 2,
+        "name": "Rana Abed",
+        "email": "rana@mail.ps",
+        "phone": null,
+        "city": "Deir al-Balah"
+      },
+      {
+        "id": 3,
+        "name": "Samir Hajjaj",
+        "email": "samir@mail.ps",
+        "phone": null,
+        "city": "Jabalia"
+      }
+    ],
+    "orders": [
+      {
+        "id": 5001,
+        "customer_id": 1,
+        "order_date": "2026-04-02"
+      },
+      {
+        "id": 5002,
+        "customer_id": 2,
+        "order_date": "2026-04-04"
+      },
+      {
+        "id": 5003,
+        "customer_id": 1,
+        "order_date": "2026-04-05"
+      },
+      {
+        "id": 5004,
+        "customer_id": 3,
+        "order_date": "2026-04-08"
+      }
+    ],
+    "order_items": [
+      {
+        "order_id": 5001,
+        "product_id": 2
+      },
+      {
+        "order_id": 5001,
+        "product_id": 14
+      },
+      {
+        "order_id": 5002,
+        "product_id": 7
+      },
+      {
+        "order_id": 5003,
+        "product_id": 2
+      },
+      {
+        "order_id": 5003,
+        "product_id": 10
+      },
+      {
+        "order_id": 5003,
+        "product_id": 7
+      },
+      {
+        "order_id": 5004,
+        "product_id": 10
+      }
+    ]
+  }
+}

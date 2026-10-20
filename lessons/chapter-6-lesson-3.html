@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 6 · Lesson 3 — Views over a JOIN · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="6" data-lesson="3">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="6" data-lesson="3"></nav>
+
+    <h1 class="i18n-en">Lesson 3 — Views over a JOIN</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٣ — العروض على JOIN</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">This is where views start to earn their keep. A <code>JOIN</code> is the query people get wrong: the wrong key, a missing <code>ON</code>, the same column name coming from two tables. Write it <em>once</em>, inside a view, and from then on everybody reads a single flat thing with sensible column names.</p>
+      <p class="i18n-ar" dir="rtl">هنا يبدأ العرض في إثبات جدواه. فـ<code>JOIN</code> هو الاستعلام الذي يخطئ فيه الناس: المفتاح الخطأ، أو <code>ON</code> ناقصة، أو اسم العمود نفسه قادمًا من جدولين. اكتبه <em>مرّة واحدة</em> داخل عرض، ومن ثمّ يقرأ الجميع شيئًا واحدًا مسطّحًا بأسماء أعمدة معقولة.</p>
+      <p class="i18n-en">One rule matters more here than anywhere else: <strong>give every column in a joined view its own name</strong>. <code>books</code> has an <code>id</code> and so does <code>authors</code>; both tables could have a <code>name</code>. Inside the view, <code>AS</code> settles it — <code>b.id AS book_id</code>, <code>a.name AS author_name</code> — and the reader is never confused about which is which.</p>
+      <p class="i18n-ar" dir="rtl">وقاعدة واحدة تهمّ هنا أكثر من أي مكان آخر: <strong>امنح كل عمود في العرض المربوط اسمًا خاصًّا به</strong>. فلـ<code>books</code> عمود <code>id</code> ولـ<code>authors</code> كذلك؛ وقد يكون في الجدولين عمود <code>name</code>. وداخل العرض تحسم <code>AS</code> الأمر — <code>b.id AS book_id</code> و<code>a.name AS author_name</code> — فلا يلتبس على القارئ أيّهما.</p>
+      <p class="i18n-en">Remember what an inner <code>JOIN</code> does to unmatched rows: it drops them. An author with no books is not in the joined view at all. That is often exactly what you want from a catalog view — but it is a decision the view makes on the reader's behalf, so make it knowingly.</p>
+      <p class="i18n-ar" dir="rtl">وتذكّر ما يفعله <code>JOIN</code> الداخلي بالصفوف غير المتطابقة: يُسقطها. فالمؤلّف الذي لا كتب له ليس في العرض المربوط إطلاقًا. وهذا غالبًا ما تريده تمامًا من عرض فهرسيّ — لكنه قرار يتّخذه العرض بالنيابة عن القارئ، فاتّخِذه بوعي.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>CREATE VIEW book_authors AS
+SELECT b.id AS book_id, b.title AS title,
+       a.name AS author_name, a.country AS country
+FROM books b
+JOIN authors a ON b.author_id = a.id;
+
+SELECT title, author_name FROM book_authors;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code> + <code>authors</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code> + <code>authors</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — save the join</span><span class="i18n-ar" dir="rtl">مثال ١ — احفظ الربط</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":6,"sql":"CREATE VIEW book_authors AS SELECT b.id AS book_id, b.title AS title, a.name AS author_name, a.country AS country FROM books b JOIN authors a ON b.author_id = a.id;\nSELECT * FROM book_authors;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Twelve rows, one per book, each carrying its author. Note what is missing: the seventh author has no books, so the inner join leaves them out.</span><span class="i18n-ar" dir="rtl">اثنا عشر صفًّا، صفٌّ لكل كتاب، يحمل كلٌّ منها مؤلّفه. ولاحِظ الناقص: المؤلّف السابع لا كتب له، فيستثنيه الربط الداخلي.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — the reader writes no JOIN</span><span class="i18n-ar" dir="rtl">مثال ٢ — القارئ لا يكتب JOIN</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":6,"setup":["CREATE VIEW book_authors AS SELECT b.id AS book_id, b.title AS title, a.name AS author_name, a.country AS country FROM books b JOIN authors a ON b.author_id = a.id"],"sql":"SELECT title, author_name FROM book_authors WHERE country = 'Canada';"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">A question that needed two tables and an <code>ON</code> clause is now a plain one-table <code>SELECT</code>.</span><span class="i18n-ar" dir="rtl">سؤال كان يحتاج جدولين وجملة <code>ON</code> صار الآن <code>SELECT</code> بسيطًا على جدول واحد.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — aggregate the joined view</span><span class="i18n-ar" dir="rtl">مثال ٣ — جمِّع العرض المربوط</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":6,"setup":["CREATE VIEW book_authors AS SELECT b.id AS book_id, b.title AS title, a.name AS author_name, a.country AS country FROM books b JOIN authors a ON b.author_id = a.id"],"sql":"SELECT country, COUNT(*) AS book_count FROM book_authors GROUP BY country ORDER BY book_count DESC, country ASC;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Books per author country — a two-table aggregation written as if there were only one table.</span><span class="i18n-ar" dir="rtl">عدد الكتب حسب بلد المؤلّف — تجميع على جدولين مكتوبٌ كأنّ هناك جدولًا واحدًا فقط.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Joining <code>products</code> to <code>categories</code> in <strong>Orbit Electronics</strong>, once and for all.</p>
+      <p class="i18n-ar" dir="rtl">ربط <code>products</code> بـ<code>categories</code> في <strong>Orbit Electronics</strong>، مرّة واحدة ونهائية.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — the joined catalog view</span><span class="i18n-ar" dir="rtl">مثال ١ — عرض الفهرس المربوط</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":6,"sql":"CREATE VIEW product_categories AS SELECT p.id AS product_id, p.name AS product_name, p.price AS price, c.name AS category_name, c.department AS department FROM products p JOIN categories c ON p.category_id = c.id;\nSELECT * FROM product_categories;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — filter by a column from the other table</span><span class="i18n-ar" dir="rtl">مثال ٢ — صفِّ بعمود من الجدول الآخر</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":6,"setup":["CREATE VIEW product_categories AS SELECT p.id AS product_id, p.name AS product_name, p.price AS price, c.name AS category_name, c.department AS department FROM products p JOIN categories c ON p.category_id = c.id"],"sql":"SELECT product_name, category_name FROM product_categories WHERE department = 'Office';"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — a per-department summary</span><span class="i18n-ar" dir="rtl">مثال ٣ — ملخّص لكل قسم</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":6,"setup":["CREATE VIEW product_categories AS SELECT p.id AS product_id, p.name AS product_name, p.price AS price, c.name AS category_name, c.department AS department FROM products p JOIN categories c ON p.category_id = c.id"],"sql":"SELECT department, COUNT(*) AS product_count, ROUND(AVG(price), 2) AS avg_price FROM product_categories GROUP BY department ORDER BY department;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="6" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Both products and categories have a column called name. Inside a view that joins them, what do you do?","ar":"كلٌّ من products و categories فيه عمود اسمه name. فماذا تفعل داخل عرض يربطهما؟"},
+         "options":[{"en":"Alias them apart: p.name AS product_name, c.name AS category_name","ar":"فرِّق بينهما باسم مستعار: p.name AS product_name و c.name AS category_name"},{"en":"Nothing — the view keeps both as name","ar":"لا شيء — فالعرض يُبقي الاسمين كما هما name"},{"en":"Drop one of the two tables","ar":"استبعِد أحد الجدولين"},{"en":"Views cannot select a name column","ar":"العروض لا تستطيع تحديد عمود name"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="6" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"Someone reading a joined view has to repeat the ON condition in their own query.","ar":"من يقرأ عرضًا مربوطًا عليه أن يُعيد شرط ON في استعلامه."},
+         "correct":false,
+         "explain":{"en":"The ON clause lives inside the view. Readers just name the view in FROM.","ar":"جملة ON تسكن داخل العرض. والقرّاء يذكرون اسم العرض في FROM فقط."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="6" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the join inside the view definition.","ar":"أكمل الربط داخل تعريف العرض."},
+         "template":"CREATE VIEW pc AS SELECT p.name AS product_name, c.name AS category_name FROM products p ____ categories c ____ p.category_id = c.id;","answers":[["JOIN","INNER JOIN"],["ON"]]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Create a view named <code>brand_departments</code> that joins <code>products</code> to <code>categories</code> on the category key and exposes exactly three columns: <code>product_name</code> (the product's name), <code>brand</code>, and <code>department</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أنشئ عرضًا باسم <code>brand_departments</code> يربط <code>products</code> بـ<code>categories</code> على مفتاح الفئة ويكشف ثلاثة أعمدة بالضبط: <code>product_name</code> (اسم المنتج) و<code>brand</code> و<code>department</code>.</p>
+        <div class="qb-widget" data-qid="lab-q4" data-chapter="6" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":6,"placeholder":"CREATE VIEW brand_departments AS SELECT p.name AS product_name, ... FROM products p JOIN categories c ON ...","answer":"CREATE VIEW brand_departments AS SELECT p.name AS product_name, p.brand AS brand, c.department AS department FROM products p JOIN categories c ON p.category_id = c.id","grade":{"mode":"state","check":"SELECT * FROM brand_departments","expected":"SELECT p.name AS product_name, p.brand AS brand, c.department AS department FROM products p JOIN categories c ON p.category_id = c.id"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">The joined view <code>product_categories</code> (<code>product_id</code>, <code>product_name</code>, <code>price</code>, <code>category_name</code>, <code>department</code>) already exists. Return the <code>product_name</code> of every product in the <code>Home</code> department priced below 200.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">العرض المربوط <code>product_categories</code> (<code>product_id</code> و<code>product_name</code> و<code>price</code> و<code>category_name</code> و<code>department</code>) موجود مسبقًا. أعِد <code>product_name</code> لكل منتج في قسم <code>Home</code> سعره أقل من ٢٠٠.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="6" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":6,"setup":["CREATE VIEW product_categories AS SELECT p.id AS product_id, p.name AS product_name, p.price AS price, c.name AS category_name, c.department AS department FROM products p JOIN categories c ON p.category_id = c.id"],"placeholder":"SELECT product_name FROM product_categories WHERE ...","grade":{"mode":"result","expected":"SELECT product_name FROM product_categories WHERE department = 'Home' AND price < 200"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> — <code>courses</code> and <code>departments</code>.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> — <code>courses</code> و<code>departments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="6" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"What does a view over a JOIN spare its readers?","ar":"ماذا يُجنِّب العرض المبنيّ على JOIN قرّاءه؟"},
+         "options":[{"en":"Knowing the keys and repeating the join condition","ar":"معرفة المفاتيح وإعادة كتابة شرط الربط"},{"en":"Writing any WHERE clause at all","ar":"كتابة أي جملة WHERE على الإطلاق"},{"en":"Reading more than one row","ar":"قراءة أكثر من صفّ واحد"},{"en":"Using ORDER BY","ar":"استخدام ORDER BY"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="6" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A department with no courses will not appear in a view built on courses JOIN departments.","ar":"القسم الذي لا مقرّرات له لن يظهر في عرض مبنيّ على courses JOIN departments."},
+         "correct":true,
+         "explain":{"en":"An inner join keeps only matched pairs, so an empty department drops out.","ar":"الربط الداخلي يُبقي الأزواج المتطابقة فقط، فيسقط القسم الفارغ."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="6" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the key comparison inside the view.","ar":"أكمل مقارنة المفتاح داخل العرض."},
+         "template":"CREATE VIEW cd AS SELECT c.title AS title, d.name AS department_name FROM courses c JOIN departments d ON c.____ = d.id;","answers":["department_id"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Create a view named <code>course_departments</code> joining <code>courses</code> to <code>departments</code>, with exactly three columns: <code>title</code>, <code>department_name</code> (the department's name), and <code>building</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أنشئ عرضًا باسم <code>course_departments</code> يربط <code>courses</code> بـ<code>departments</code>، بثلاثة أعمدة بالضبط: <code>title</code> و<code>department_name</code> (اسم القسم) و<code>building</code>.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="6" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":6,"placeholder":"CREATE VIEW course_departments AS SELECT c.title AS title, d.name AS department_name, ... FROM courses c JOIN departments d ON ...","answer":"CREATE VIEW course_departments AS SELECT c.title AS title, d.name AS department_name, d.building AS building FROM courses c JOIN departments d ON c.department_id = d.id","grade":{"mode":"state","check":"SELECT * FROM course_departments","expected":"SELECT c.title AS title, d.name AS department_name, d.building AS building FROM courses c JOIN departments d ON c.department_id = d.id"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">The view <code>course_info</code> (<code>title</code>, <code>credits</code>, <code>department_name</code>, <code>building</code>) already exists. Return the <code>title</code> of every 4-credit course taught in <code>Sciences Hall</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">العرض <code>course_info</code> (<code>title</code> و<code>credits</code> و<code>department_name</code> و<code>building</code>) موجود مسبقًا. أعِد <code>title</code> لكل مقرّر بوزن ٤ ساعات يُدرَّس في <code>Sciences Hall</code>.</p>
+        <div class="qb-widget" data-qid="test-t5" data-chapter="6" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":6,"setup":["CREATE VIEW course_info AS SELECT c.title AS title, c.credits AS credits, d.name AS department_name, d.building AS building FROM courses c JOIN departments d ON c.department_id = d.id"],"placeholder":"SELECT title FROM course_info WHERE ...","grade":{"mode":"result","expected":"SELECT title FROM course_info WHERE credits = 4 AND building = 'Sciences Hall'"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t6" data-chapter="6" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Order the steps of building a joined view.","ar":"رتّب خطوات بناء عرض مربوط."},
+         "items":[{"en":"Decide which two tables answer the question","ar":"حدّد أي جدولين يجيبان السؤال"},{"en":"Join them on the foreign key with ON","ar":"اربطهما على المفتاح الأجنبي بـON"},{"en":"Give every selected column a distinct name with AS","ar":"امنح كل عمود محدَّد اسمًا مميّزًا بـAS"},{"en":"Save it with CREATE VIEW and read it like a table","ar":"احفظه بـCREATE VIEW واقرأه كجدول"}]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="6" data-lesson="3"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

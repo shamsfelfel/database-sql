@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exam 1 — Clinic and League, end to end · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/erd.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs">
+      <a href="../index.html" data-i18n="nav_home">Home</a>
+      <span class="sep">›</span>
+      <span aria-current="page"><span data-i18n="exam">Exam</span> 1</span>
+    </nav>
+
+    <span class="example-label"><span data-i18n="exam">Exam</span> 1</span>
+    <h1 class="i18n-en">Clinic and League, end to end</h1>
+    <h1 class="i18n-ar" dir="rtl">العيادة والدوري، من الألف إلى الياء</h1>
+    <p class="lead i18n-en">The first of three complete exams. It walks the whole course in order — tables and rows, relationships, subqueries, aggregation, views — over two databases you are meeting for the first time: a clinic and a sports league.</p>
+    <p class="lead i18n-ar" dir="rtl">الأول من ثلاثة اختبارات كاملة. يسير في الدورة كلّها بالترتيب — الجداول والصفوف، والعلاقات، والاستعلامات الفرعية، والتجميع، والعروض — على قاعدتَي بيانات تلتقي بهما للمرّة الأولى: عيادة ودوري رياضي.</p>
+
+    <div class="callout">
+      <div class="i18n-en"><strong>How this exam works.</strong> 20 questions in five parts, covering Chapters 1–6 end to end. Each write-statement question is graded on what your statement actually produces, so any correct answer passes — but use the exact table, view and column names the prompt asks for. Press <em>Score</em> at the bottom whenever you want your total.</div>
+      <div class="i18n-ar" dir="rtl"><strong>كيف يعمل هذا الاختبار.</strong> 20 سؤالًا في خمسة أقسام، تغطّي الفصول ١–٦ من أوّلها إلى آخرها. ويُصحَّح كل سؤال كتابة عبارة بناءً على ما تُنتجه عبارتك فعلًا، فأيّ إجابة صحيحة تنجح — لكن استعمل أسماء الجداول والعروض والأعمدة التي يطلبها السؤال بالضبط. واضغط <em>النتيجة</em> في الأسفل متى شئت لمعرفة مجموعك.</div>
+    </div>
+
+    <section>
+      <h2 class="i18n-en">The exam databases</h2>
+      <h2 class="i18n-ar" dir="rtl">قواعد بيانات الاختبار</h2>
+      <p class="i18n-en">This exam uses <strong>two</strong> databases you have not seen in the chapters. Read both diagrams before you start: every question says which database it is about, and the column names below are the ones the questions use.</p>
+      <p class="i18n-ar" dir="rtl">يستخدم هذا الاختبار قاعدتَي بيانات <strong>اثنتين</strong> لم تريهما في الفصول. اقرأ المخطّطين قبل أن تبدأ: فكل سؤال يذكر قاعدة البيانات التي يتعلّق بها، وأسماء الأعمدة أدناه هي التي تستعملها الأسئلة.</p>
+
+      <div class="example-label"><span class="i18n-en">Database 1 — Cedar Clinic</span><span class="i18n-ar" dir="rtl">قاعدة البيانات ١ — عيادة الأرز (Cedar Clinic)</span></div>
+      <figure class="erd-figure">
+    <svg class="erd" viewBox="0 0 820 365" role="img" aria-label="Cedar Clinic ERD: patients and doctors each have many visits">
+      <rect class="erd-box" x="20" y="18" width="240" height="114" rx="8"/>
+      <path class="erd-head" d="M20 44 V26 A8 8 0 0 1 28 18 H252 A8 8 0 0 1 260 26 V44 Z"/>
+      <text class="erd-title" x="32" y="36">patients</text>
+      <text class="erd-key" x="30" y="63">PK</text>
+      <text class="erd-col" x="58" y="63">id</text>
+      <text class="erd-type" x="248" y="63" text-anchor="end">INT</text>
+      <text class="erd-col" x="58" y="82">full_name</text>
+      <text class="erd-type" x="248" y="82" text-anchor="end">TEXT</text>
+      <text class="erd-col" x="58" y="101">city</text>
+      <text class="erd-type" x="248" y="101" text-anchor="end">TEXT</text>
+      <text class="erd-col" x="58" y="120">birth_year</text>
+      <text class="erd-type" x="248" y="120" text-anchor="end">INT</text>
+      <rect class="erd-box" x="560" y="18" width="240" height="133" rx="8"/>
+      <path class="erd-head" d="M560 44 V26 A8 8 0 0 1 568 18 H792 A8 8 0 0 1 800 26 V44 Z"/>
+      <text class="erd-title" x="572" y="36">doctors</text>
+      <text class="erd-key" x="570" y="63">PK</text>
+      <text class="erd-col" x="598" y="63">id</text>
+      <text class="erd-type" x="788" y="63" text-anchor="end">INT</text>
+      <text class="erd-col" x="598" y="82">full_name</text>
+      <text class="erd-type" x="788" y="82" text-anchor="end">TEXT</text>
+      <text class="erd-col" x="598" y="101">specialty</text>
+      <text class="erd-type" x="788" y="101" text-anchor="end">TEXT</text>
+      <text class="erd-col" x="598" y="120">visit_fee</text>
+      <text class="erd-type" x="788" y="120" text-anchor="end">REAL</text>
+      <text class="erd-col" x="598" y="139">is_senior</text>
+      <text class="erd-type" x="788" y="139" text-anchor="end">BOOLEAN</text>
+      <rect class="erd-box" x="290" y="185" width="240" height="152" rx="8"/>
+      <path class="erd-head" d="M290 211 V193 A8 8 0 0 1 298 185 H522 A8 8 0 0 1 530 193 V211 Z"/>
+      <text class="erd-title" x="302" y="203">visits</text>
+      <text class="erd-key" x="300" y="230">PK</text>
+      <text class="erd-col" x="328" y="230">id</text>
+      <text class="erd-type" x="518" y="230" text-anchor="end">INT</text>
+      <text class="erd-fk" x="300" y="249">FK</text>
+      <text class="erd-col" x="328" y="249">patient_id</text>
+      <text class="erd-type" x="518" y="249" text-anchor="end">INT</text>
+      <text class="erd-fk" x="300" y="268">FK</text>
+      <text class="erd-col" x="328" y="268">doctor_id</text>
+      <text class="erd-type" x="518" y="268" text-anchor="end">INT</text>
+      <text class="erd-col" x="328" y="287">visit_year</text>
+      <text class="erd-type" x="518" y="287" text-anchor="end">INT</text>
+      <text class="erd-col" x="328" y="306">charge</text>
+      <text class="erd-type" x="518" y="306" text-anchor="end">REAL</text>
+      <text class="erd-col" x="328" y="325">paid</text>
+      <text class="erd-type" x="518" y="325" text-anchor="end">BOOLEAN</text>
+      <path class="erd-line" d="M140 132 V160 H340 V185"/>
+      <text class="erd-card" x="152" y="150" text-anchor="middle">1</text>
+      <text class="erd-card" x="352" y="180" text-anchor="middle">*</text>
+      <path class="erd-line" d="M680 151 V160 H480 V185"/>
+      <text class="erd-card" x="692" y="158" text-anchor="middle">1</text>
+      <text class="erd-card" x="468" y="180" text-anchor="middle">*</text>
+      <text class="erd-note" x="410" y="353" text-anchor="middle">patients.id &#8592; visits.patient_id &#160;&#183;&#160; doctors.id &#8592; visits.doctor_id</text>
+    </svg>
+        <figcaption class="erd-caption i18n-en">Three tables. <code>visits</code> is the child of both parents: <code>visits.patient_id</code> references <code>patients.id</code> and <code>visits.doctor_id</code> references <code>doctors.id</code>. 10 patients, 6 doctors, 16 visits. <code>PK</code> marks a primary key, <code>FK</code> a foreign key, and <code>1</code> / <code>*</code> read as “one … has many …”.</figcaption>
+        <figcaption class="erd-caption i18n-ar" dir="rtl">ثلاثة جداول. و<code>visits</code> هو الابن لكلا الأبوين: <code>visits.patient_id</code> يشير إلى <code>patients.id</code>، و<code>visits.doctor_id</code> يشير إلى <code>doctors.id</code>. عشرة مرضى، وستة أطبّاء، وستة عشر زيارة. ويشير <code>PK</code> إلى المفتاح الأساسي، و<code>FK</code> إلى المفتاح الأجنبي، ويُقرأ <code>1</code> / <code>*</code> هكذا: «الواحد … له كثير من …».</figcaption>
+      </figure>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"explore","case":"d","chapter":"exam","examples":[{"label":"patients","sql":"SELECT * FROM patients;"},{"label":"doctors","sql":"SELECT * FROM doctors;"},{"label":"visits","sql":"SELECT * FROM visits;"},{"label":"visits + names","sql":"SELECT p.full_name AS patient_name, d.full_name AS doctor_name, v.visit_year AS visit_year, v.charge AS charge, v.paid AS paid FROM visits v JOIN patients p ON v.patient_id = p.id JOIN doctors d ON v.doctor_id = d.id;"}]}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">A sandbox on Cedar Clinic — click a chip or type your own query. Nothing here is graded.</span><span class="i18n-ar" dir="rtl">ساحة تجريب على Cedar Clinic — اضغط زرًّا أو اكتب استعلامك. ولا شيء هنا يُصحَّح.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Database 2 — Summit Sports League</span><span class="i18n-ar" dir="rtl">قاعدة البيانات ٢ — دوري القمّة (Summit Sports League)</span></div>
+      <figure class="erd-figure">
+    <svg class="erd" viewBox="0 0 820 230" role="img" aria-label="Summit Sports League ERD: one team has many players">
+      <rect class="erd-box" x="30" y="18" width="250" height="133" rx="8"/>
+      <path class="erd-head" d="M30 44 V26 A8 8 0 0 1 38 18 H272 A8 8 0 0 1 280 26 V44 Z"/>
+      <text class="erd-title" x="42" y="36">teams</text>
+      <text class="erd-key" x="40" y="63">PK</text>
+      <text class="erd-col" x="68" y="63">id</text>
+      <text class="erd-type" x="268" y="63" text-anchor="end">INT</text>
+      <text class="erd-col" x="68" y="82">name</text>
+      <text class="erd-type" x="268" y="82" text-anchor="end">TEXT</text>
+      <text class="erd-col" x="68" y="101">city</text>
+      <text class="erd-type" x="268" y="101" text-anchor="end">TEXT</text>
+      <text class="erd-col" x="68" y="120">founded_year</text>
+      <text class="erd-type" x="268" y="120" text-anchor="end">INT</text>
+      <text class="erd-col" x="68" y="139">budget</text>
+      <text class="erd-type" x="268" y="139" text-anchor="end">INT</text>
+      <rect class="erd-box" x="500" y="18" width="290" height="171" rx="8"/>
+      <path class="erd-head" d="M500 44 V26 A8 8 0 0 1 508 18 H782 A8 8 0 0 1 790 26 V44 Z"/>
+      <text class="erd-title" x="512" y="36">players</text>
+      <text class="erd-key" x="510" y="63">PK</text>
+      <text class="erd-col" x="538" y="63">id</text>
+      <text class="erd-type" x="778" y="63" text-anchor="end">INT</text>
+      <text class="erd-col" x="538" y="82">full_name</text>
+      <text class="erd-type" x="778" y="82" text-anchor="end">TEXT</text>
+      <text class="erd-fk" x="510" y="101">FK</text>
+      <text class="erd-col" x="538" y="101">team_id</text>
+      <text class="erd-type" x="778" y="101" text-anchor="end">INT</text>
+      <text class="erd-col" x="538" y="120">position</text>
+      <text class="erd-type" x="778" y="120" text-anchor="end">TEXT</text>
+      <text class="erd-col" x="538" y="139">goals</text>
+      <text class="erd-type" x="778" y="139" text-anchor="end">INT</text>
+      <text class="erd-col" x="538" y="158">salary</text>
+      <text class="erd-type" x="778" y="158" text-anchor="end">INT</text>
+      <text class="erd-col" x="538" y="177">is_captain</text>
+      <text class="erd-type" x="778" y="177" text-anchor="end">BOOLEAN</text>
+      <path class="erd-line" d="M280 84.5 H390 V103.5 H500"/>
+      <text class="erd-card" x="296" y="76.5" text-anchor="middle">1</text>
+      <text class="erd-card" x="484" y="95.5" text-anchor="middle">*</text>
+      <text class="erd-note" x="410" y="218" text-anchor="middle">teams.id &#8592; players.team_id</text>
+    </svg>
+        <figcaption class="erd-caption i18n-en">Two tables in a plain one-to-many relationship: <code>players.team_id</code> references <code>teams.id</code>. 6 teams, 14 players. One team has no players at all — worth remembering when a question asks about an inner <code>JOIN</code>.</figcaption>
+        <figcaption class="erd-caption i18n-ar" dir="rtl">جدولان في علاقة بسيطة واحد-إلى-كثير: <code>players.team_id</code> يشير إلى <code>teams.id</code>. ستة فرق، وأربعة عشر لاعبًا. وفريقٌ واحد بلا لاعبين إطلاقًا — وهذا جديرٌ بالتذكّر عندما يسأل سؤال عن <code>JOIN</code> داخلي.</figcaption>
+      </figure>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"explore","case":"e","chapter":"exam","examples":[{"label":"teams","sql":"SELECT * FROM teams;"},{"label":"players","sql":"SELECT * FROM players;"},{"label":"players + team","sql":"SELECT p.full_name AS player_name, p.position AS position, p.goals AS goals, t.name AS team_name FROM players p JOIN teams t ON p.team_id = t.id;"}]}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">A sandbox on Summit Sports League. Explore freely, then start the exam below.</span><span class="i18n-ar" dir="rtl">ساحة تجريب على Summit Sports League. استكشِف بحرّية، ثم ابدأ الاختبار أدناه.</span></div>
+    </section>
+
+    <div class="exam-part">
+      <h2 class="i18n-en">Part A — Tables &amp; rows</h2>
+      <h2 class="i18n-ar" dir="rtl">القسم A — الجداول والصفوف</h2>
+      <div class="meta i18n-en">Chapters 1–2 · Cedar Clinic — CREATE TABLE, INSERT, SELECT with conditions, UPDATE.</div>
+      <div class="meta i18n-ar" dir="rtl">الفصلان ١–٢ · عيادة الأرز — CREATE TABLE و INSERT و SELECT بالشروط و UPDATE.</div>
+    </div>
+
+    <!-- 1 CREATE TABLE -->
+    <div class="question" data-qid="t1">
+      <div class="q-head"><span class="q-num">1</span><span class="q-type">write statement · Cedar Clinic</span></div>
+      <p class="q-prompt i18n-en">The clinic wants to track its consultation rooms. Create a table named <code>rooms</code> with three columns: <code>id</code> (whole number), <code>label</code> (text) and <code>floor</code> (whole number).</p>
+      <p class="q-prompt i18n-ar" dir="rtl">تريد العيادة تتبّع غرف الاستشارة. أنشئ جدولًا باسم <code>rooms</code> بثلاثة أعمدة: <code>id</code> (عدد صحيح) و<code>label</code> (نص) و<code>floor</code> (عدد صحيح).</p>
+      <div class="qb-widget" data-qid="t1" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"d","chapter":"exam","placeholder":"CREATE TABLE rooms (...)","answer":"CREATE TABLE rooms (id INT, label TEXT, floor INT)","grade":{"mode":"structural","table":"rooms","columns":["id","label","floor"]}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 2 INSERT -->
+    <div class="question" data-qid="t2">
+      <div class="q-head"><span class="q-num">2</span><span class="q-type">write statement · Cedar Clinic</span></div>
+      <p class="q-prompt i18n-en">A new patient registers. Insert one row into <code>patients</code>: <code>id</code> 11, <code>full_name</code> <code>Omar Zein</code>, <code>city</code> <code>Beirut</code>, <code>birth_year</code> 1999.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">يسجّل مريض جديد. أدرِج صفًّا واحدًا في <code>patients</code>: <code>id</code> يساوي ١١، و<code>full_name</code> هو <code>Omar Zein</code>، و<code>city</code> هي <code>Beirut</code>، و<code>birth_year</code> هو ١٩٩٩.</p>
+      <div class="qb-widget" data-qid="t2" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"d","chapter":"exam","placeholder":"INSERT INTO patients (id, full_name, city, birth_year) VALUES (...)","answer":"INSERT INTO patients (id, full_name, city, birth_year) VALUES (11, 'Omar Zein', 'Beirut', 1999)","grade":{"mode":"state","check":"SELECT id, full_name, city, birth_year FROM patients WHERE id >= 11","expected":[{"id":11,"full_name":"Omar Zein","city":"Beirut","birth_year":1999}]}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 3 MCQ — types -->
+    <div class="question" data-qtype="mcq" data-qid="t3" data-chapter="exam" data-lesson="1">
+      <script type="application/json" class="q-config">
+      {"num":3,"prompt":{"en":"In Cedar Clinic, visits.paid records whether a visit was settled. Which column type fits it?","ar":"في عيادة الأرز، يسجّل visits.paid ما إذا سُدِّدت الزيارة. فأي نوع عمود يناسبه؟"},
+       "options":[{"en":"BOOLEAN — it is true or false","ar":"BOOLEAN — فهو صحيح أو خطأ"},{"en":"TEXT — store the words yes and no","ar":"TEXT — نخزّن كلمتَي yes و no"},{"en":"REAL — a payment is a decimal","ar":"REAL — فالدفع عدد عشري"},{"en":"INT — store 1 or 2","ar":"INT — نخزّن ١ أو ٢"}],"correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 4 SELECT with AND -->
+    <div class="question" data-qid="t4">
+      <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement · Cedar Clinic</span></div>
+      <p class="q-prompt i18n-en">Return the <code>full_name</code> of every patient who lives in <code>Beirut</code> <strong>and</strong> was born after 1990.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أعِد <code>full_name</code> لكل مريض يسكن في <code>Beirut</code> <strong>و</strong>مولود بعد عام ١٩٩٠.</p>
+      <div class="qb-widget" data-qid="t4" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"d","chapter":"exam","placeholder":"SELECT full_name FROM patients WHERE ...","grade":{"mode":"result","expected":"SELECT full_name FROM patients WHERE city = 'Beirut' AND birth_year > 1990"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 5 UPDATE two columns -->
+    <div class="question" data-qid="t5">
+      <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement · Cedar Clinic</span></div>
+      <p class="q-prompt i18n-en">Dr. Karim Haddad (<code>id</code> 6) has been promoted. In <strong>one</strong> statement, set his <code>is_senior</code> to true and his <code>visit_fee</code> to 125 — and change nobody else.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">تمّت ترقية الطبيب Karim Haddad (<code>id</code> ٦). في عبارة <strong>واحدة</strong>، اجعل <code>is_senior</code> له true و<code>visit_fee</code> يساوي ١٢٥ — ولا تغيّر أحدًا غيره.</p>
+      <div class="qb-widget" data-qid="t5" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"d","chapter":"exam","placeholder":"UPDATE doctors SET ... WHERE ...","answer":"UPDATE doctors SET is_senior = true, visit_fee = 125 WHERE id = 6","grade":{"mode":"state","check":"SELECT id, visit_fee, is_senior FROM doctors","expected":[{"id":1,"visit_fee":120,"is_senior":true},{"id":2,"visit_fee":80,"is_senior":false},{"id":3,"visit_fee":95,"is_senior":true},{"id":4,"visit_fee":140,"is_senior":true},{"id":5,"visit_fee":75,"is_senior":false},{"id":6,"visit_fee":125,"is_senior":true}]}}
+        </script>
+      </div>
+    </div>
+    <div class="exam-part">
+      <h2 class="i18n-en">Part B — Relationships &amp; joins</h2>
+      <h2 class="i18n-ar" dir="rtl">القسم B — العلاقات والربط</h2>
+      <div class="meta i18n-en">Chapter 3 · both databases — foreign keys, JOIN, and a cross-table DELETE.</div>
+      <div class="meta i18n-ar" dir="rtl">الفصل ٣ · القاعدتان — المفاتيح الأجنبية و JOIN وحذف عبر الجداول.</div>
+    </div>
+
+    <!-- 6 MCQ — the FK -->
+    <div class="question" data-qtype="mcq" data-qid="t6" data-chapter="exam" data-lesson="1">
+      <script type="application/json" class="q-config">
+      {"num":6,"prompt":{"en":"In the Summit Sports League diagram, which column makes players the child table?","ar":"في مخطّط دوري القمّة، أي عمود يجعل players الجدول الابن؟"},
+       "options":[{"en":"players.team_id — it references teams.id","ar":"players.team_id — فهو يشير إلى teams.id"},{"en":"players.id — every child needs its own id","ar":"players.id — فكل ابن يحتاج معرّفه الخاص"},{"en":"teams.id — the parent column is the foreign key","ar":"teams.id — فعمود الأب هو المفتاح الأجنبي"},{"en":"players.position — it groups players under a team","ar":"players.position — فهو يجمّع اللاعبين تحت الفريق"}],"correctIndex":0}
+      </script>
+    </div>
+
+    <!-- 7 JOIN (E) -->
+    <div class="question" data-qid="t7">
+      <div class="q-head"><span class="q-num">7</span><span class="q-type">write statement · Summit Sports League</span></div>
+      <p class="q-prompt i18n-en">Join <code>players</code> to <code>teams</code> and return <code>player_name</code> and <code>team_name</code> for every player with 15 goals or more. Use exactly those two column names.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">اربِط <code>players</code> بـ<code>teams</code> وأعِد <code>player_name</code> و<code>team_name</code> لكل لاعب أحرز ١٥ هدفًا أو أكثر. استخدم هذين الاسمين بالضبط.</p>
+      <div class="qb-widget" data-qid="t7" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"e","chapter":"exam","placeholder":"SELECT p.full_name AS player_name, t.name AS team_name FROM players p JOIN teams t ON ... WHERE ...","grade":{"mode":"result","expected":"SELECT p.full_name AS player_name, t.name AS team_name FROM players p JOIN teams t ON p.team_id = t.id WHERE p.goals >= 15"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 8 JOIN (D) -->
+    <div class="question" data-qid="t8">
+      <div class="q-head"><span class="q-num">8</span><span class="q-type">write statement · Cedar Clinic</span></div>
+      <p class="q-prompt i18n-en">Join <code>visits</code> to <code>patients</code> and return <code>patient_name</code> and <code>charge</code> for every visit that took place in 2024. Use exactly those two column names.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">اربِط <code>visits</code> بـ<code>patients</code> وأعِد <code>patient_name</code> و<code>charge</code> لكل زيارة حدثت في عام ٢٠٢٤. استخدم هذين الاسمين بالضبط.</p>
+      <div class="qb-widget" data-qid="t8" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"d","chapter":"exam","placeholder":"SELECT p.full_name AS patient_name, v.charge AS charge FROM visits v JOIN patients p ON ... WHERE ...","grade":{"mode":"result","expected":"SELECT p.full_name AS patient_name, v.charge AS charge FROM visits v JOIN patients p ON v.patient_id = p.id WHERE v.visit_year = 2024"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 9 cross-table DELETE -->
+    <div class="question" data-qid="t9">
+      <div class="q-head"><span class="q-num">9</span><span class="q-type">write statement · Summit Sports League</span></div>
+      <p class="q-prompt i18n-en">The league drops every team based in <code>Tunis</code>. Delete the <strong>players</strong> belonging to teams in that city — look the team up by city rather than hard-coding its id, and leave every other player untouched.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">يستبعد الدوري كل فريق مقرّه <code>Tunis</code>. احذف <strong>اللاعبين</strong> التابعين لفرق تلك المدينة — وابحث عن الفريق بالمدينة لا بترميز معرّفه مباشرة، ولا تمسّ أي لاعب آخر.</p>
+      <div class="qb-widget" data-qid="t9" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"e","chapter":"exam","placeholder":"DELETE FROM players WHERE team_id IN (SELECT ... FROM teams WHERE ...)","answer":"DELETE FROM players WHERE team_id IN (SELECT id FROM teams WHERE city = 'Tunis')","grade":{"mode":"state","check":"SELECT id FROM players","expected":"SELECT id FROM players WHERE NOT (team_id IN (SELECT id FROM teams WHERE city = 'Tunis'))"}}
+        </script>
+      </div>
+    </div>
+    <div class="exam-part">
+      <h2 class="i18n-en">Part C — Subqueries</h2>
+      <h2 class="i18n-ar" dir="rtl">القسم C — الاستعلامات الفرعية</h2>
+      <div class="meta i18n-en">Chapter 4 · both databases — a scalar subquery, IN, and NOT EXISTS.</div>
+      <div class="meta i18n-ar" dir="rtl">الفصل ٤ · القاعدتان — استعلام فرعي قياسي و IN و NOT EXISTS.</div>
+    </div>
+
+    <!-- 10 scalar subquery -->
+    <div class="question" data-qid="t10">
+      <div class="q-head"><span class="q-num">10</span><span class="q-type">write statement · Summit Sports League</span></div>
+      <p class="q-prompt i18n-en">Return the <code>full_name</code> of every player paid more than the league's average salary. Compute the average inside the query — do not type a number.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أعِد <code>full_name</code> لكل لاعب راتبه أعلى من متوسّط رواتب الدوري. واحسب المتوسّط داخل الاستعلام — لا تكتب رقمًا.</p>
+      <div class="qb-widget" data-qid="t10" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"e","chapter":"exam","placeholder":"SELECT full_name FROM players WHERE salary > (SELECT ... FROM players)","grade":{"mode":"result","expected":"SELECT full_name FROM players WHERE salary > (SELECT AVG(salary) FROM players)"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 11 IN subquery -->
+    <div class="question" data-qid="t11">
+      <div class="q-head"><span class="q-num">11</span><span class="q-type">write statement · Cedar Clinic</span></div>
+      <p class="q-prompt i18n-en">Return the <code>full_name</code> of every patient who has at least one <strong>unpaid</strong> visit (<code>paid = false</code>), using a subquery over <code>visits</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أعِد <code>full_name</code> لكل مريض له زيارة <strong>غير مسدَّدة</strong> واحدة على الأقل (<code>paid = false</code>)، باستخدام استعلام فرعي على <code>visits</code>.</p>
+      <div class="qb-widget" data-qid="t11" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"d","chapter":"exam","placeholder":"SELECT full_name FROM patients WHERE id IN (SELECT ... FROM visits WHERE ...)","grade":{"mode":"result","expected":"SELECT full_name FROM patients WHERE id IN (SELECT patient_id FROM visits WHERE paid = false)"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 12 NOT EXISTS -->
+    <div class="question" data-qid="t12">
+      <div class="q-head"><span class="q-num">12</span><span class="q-type">write statement · Summit Sports League</span></div>
+      <p class="q-prompt i18n-en">Return the <code>name</code> of every team with no players at all. Use <code>NOT EXISTS</code> with a correlated subquery.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أعِد <code>name</code> لكل فريق لا لاعبين له إطلاقًا. استخدم <code>NOT EXISTS</code> مع استعلام فرعي مترابط.</p>
+      <div class="qb-widget" data-qid="t12" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"e","chapter":"exam","placeholder":"SELECT name FROM teams t WHERE NOT EXISTS (SELECT * FROM players p WHERE ...)","grade":{"mode":"result","expected":"SELECT name FROM teams t WHERE NOT EXISTS (SELECT * FROM players p WHERE p.team_id = t.id)"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 13 FILL -->
+    <div class="question" data-qtype="fill" data-qid="t13" data-chapter="exam" data-lesson="1">
+      <script type="application/json" class="q-config">
+      {"num":13,"prompt":{"en":"Complete: players paid above the league average.","ar":"أكمل: اللاعبون الذين تتجاوز رواتبهم متوسّط الدوري."},
+       "template":"SELECT full_name FROM players WHERE salary > (SELECT ____(salary) FROM players);","answers":["AVG"]}
+      </script>
+    </div>
+    <div class="exam-part">
+      <h2 class="i18n-en">Part D — Aggregation</h2>
+      <h2 class="i18n-ar" dir="rtl">القسم D — التجميع</h2>
+      <div class="meta i18n-en">Chapter 5 · both databases — COUNT, AVG, GROUP BY, and HAVING over a JOIN.</div>
+      <div class="meta i18n-ar" dir="rtl">الفصل ٥ · القاعدتان — COUNT و AVG و GROUP BY و HAVING عبر JOIN.</div>
+    </div>
+
+    <!-- 14 COUNT + GROUP BY -->
+    <div class="question" data-qid="t14">
+      <div class="q-head"><span class="q-num">14</span><span class="q-type">write statement · Cedar Clinic</span></div>
+      <p class="q-prompt i18n-en">For each <code>specialty</code>, return the specialty and how many doctors practise it. Use the columns <code>specialty</code> and <code>doctor_count</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">لكل <code>specialty</code>، أعِد التخصّص وعدد الأطبّاء الذين يمارسونه. استخدم العمودين <code>specialty</code> و<code>doctor_count</code>.</p>
+      <div class="qb-widget" data-qid="t14" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"d","chapter":"exam","placeholder":"SELECT specialty, COUNT(*) AS doctor_count FROM doctors GROUP BY ...","grade":{"mode":"result","expected":"SELECT specialty, COUNT(*) AS doctor_count FROM doctors GROUP BY specialty"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 15 GROUP BY with two measures -->
+    <div class="question" data-qid="t15">
+      <div class="q-head"><span class="q-num">15</span><span class="q-type">write statement · Summit Sports League</span></div>
+      <p class="q-prompt i18n-en">For each <code>position</code>, return the position, how many players hold it, and their average goals rounded to 2 decimals. Use the columns <code>position</code>, <code>player_count</code> and <code>avg_goals</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">لكل <code>position</code>، أعِد المركز وعدد اللاعبين فيه ومتوسّط أهدافهم مقرّبًا إلى منزلتين. استخدم الأعمدة <code>position</code> و<code>player_count</code> و<code>avg_goals</code>.</p>
+      <div class="qb-widget" data-qid="t15" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"e","chapter":"exam","placeholder":"SELECT position, COUNT(*) AS player_count, ROUND(AVG(goals), 2) AS avg_goals FROM players GROUP BY ...","grade":{"mode":"result","expected":"SELECT position, COUNT(*) AS player_count, ROUND(AVG(goals), 2) AS avg_goals FROM players GROUP BY position"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 16 aggregation over JOIN + HAVING -->
+    <div class="question" data-qid="t16">
+      <div class="q-head"><span class="q-num">16</span><span class="q-type">write statement · Cedar Clinic</span></div>
+      <p class="q-prompt i18n-en">Join <code>visits</code> to <code>doctors</code> and return every doctor who has seen patients 3 or more times, with that count. Use the columns <code>doctor_name</code> and <code>visit_count</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">اربِط <code>visits</code> بـ<code>doctors</code> وأعِد كل طبيب استقبل مرضى ٣ مرّات أو أكثر، مع ذلك العدد. استخدم العمودين <code>doctor_name</code> و<code>visit_count</code>.</p>
+      <div class="qb-widget" data-qid="t16" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"d","chapter":"exam","placeholder":"SELECT d.full_name AS doctor_name, COUNT(*) AS visit_count FROM visits v JOIN doctors d ON ... GROUP BY ... HAVING ...","grade":{"mode":"result","expected":"SELECT d.full_name AS doctor_name, COUNT(*) AS visit_count FROM visits v JOIN doctors d ON v.doctor_id = d.id GROUP BY d.full_name HAVING COUNT(*) >= 3"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 17 TF -->
+    <div class="question" data-qtype="tf" data-qid="t17" data-chapter="exam" data-lesson="1">
+      <script type="application/json" class="q-config">
+      {"num":17,"prompt":{"en":"WHERE filters rows before they are grouped; HAVING filters the groups after the aggregate is computed.","ar":"تُصفّي WHERE الصفوف قبل تجميعها؛ وتُصفّي HAVING المجموعات بعد حساب الدالة التجميعية."},"correct":true}
+      </script>
+    </div>
+    <div class="exam-part">
+      <h2 class="i18n-en">Part E — Views</h2>
+      <h2 class="i18n-ar" dir="rtl">القسم E — العروض</h2>
+      <div class="meta i18n-en">Chapter 6 · both databases — CREATE VIEW, a view over a JOIN, and a view over a summary.</div>
+      <div class="meta i18n-ar" dir="rtl">الفصل ٦ · القاعدتان — CREATE VIEW وعرض على JOIN وعرض على ملخّص.</div>
+    </div>
+
+    <!-- 18 CREATE VIEW -->
+    <div class="question" data-qid="t18">
+      <div class="q-head"><span class="q-num">18</span><span class="q-type">write statement · Cedar Clinic</span></div>
+      <p class="q-prompt i18n-en">Create a view named <code>unpaid_visits</code> with the columns <code>id</code>, <code>patient_id</code> and <code>charge</code>, covering the visits that have not been paid.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أنشئ عرضًا باسم <code>unpaid_visits</code> بالأعمدة <code>id</code> و<code>patient_id</code> و<code>charge</code>، يغطّي الزيارات التي لم تُسدَّد.</p>
+      <div class="qb-widget" data-qid="t18" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"d","chapter":"exam","placeholder":"CREATE VIEW unpaid_visits AS SELECT ... FROM visits WHERE ...","answer":"CREATE VIEW unpaid_visits AS SELECT id, patient_id, charge FROM visits WHERE paid = false","grade":{"mode":"state","check":"SELECT * FROM unpaid_visits","expected":"SELECT id, patient_id, charge FROM visits WHERE paid = false"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 19 view over a JOIN -->
+    <div class="question" data-qid="t19">
+      <div class="q-head"><span class="q-num">19</span><span class="q-type">write statement · Summit Sports League</span></div>
+      <p class="q-prompt i18n-en">Create a view named <code>team_roster</code> that joins <code>players</code> to <code>teams</code> and exposes exactly three columns: <code>player_name</code>, <code>team_name</code> and <code>position</code>.</p>
+      <p class="q-prompt i18n-ar" dir="rtl">أنشئ عرضًا باسم <code>team_roster</code> يربط <code>players</code> بـ<code>teams</code> ويكشف ثلاثة أعمدة بالضبط: <code>player_name</code> و<code>team_name</code> و<code>position</code>.</p>
+      <div class="qb-widget" data-qid="t19" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"e","chapter":"exam","placeholder":"CREATE VIEW team_roster AS SELECT p.full_name AS player_name, ... FROM players p JOIN teams t ON ...","answer":"CREATE VIEW team_roster AS SELECT p.full_name AS player_name, t.name AS team_name, p.position AS position FROM players p JOIN teams t ON p.team_id = t.id","grade":{"mode":"state","check":"SELECT * FROM team_roster","expected":"SELECT p.full_name AS player_name, t.name AS team_name, p.position AS position FROM players p JOIN teams t ON p.team_id = t.id"}}
+        </script>
+      </div>
+    </div>
+
+    <!-- 20 view over JOIN + GROUP BY -->
+    <div class="question" data-qid="t20">
+      <div class="q-head"><span class="q-num">20</span><span class="q-type">write statement · Cedar Clinic</span></div>
+      <p class="q-prompt i18n-en">The last one pulls everything together. Create a view named <code>specialty_revenue</code> that joins <code>visits</code> to <code>doctors</code> and returns one row per <code>specialty</code> with three columns: <code>specialty</code>, <code>visit_count</code>, and <code>total_charge</code> (the charges added up).</p>
+      <p class="q-prompt i18n-ar" dir="rtl">السؤال الأخير يجمع كل شيء. أنشئ عرضًا باسم <code>specialty_revenue</code> يربط <code>visits</code> بـ<code>doctors</code> ويُعيد صفًّا واحدًا لكل <code>specialty</code> بثلاثة أعمدة: <code>specialty</code> و<code>visit_count</code> و<code>total_charge</code> (مجموع المبالغ).</p>
+      <div class="qb-widget" data-qid="t20" data-chapter="exam" data-lesson="1">
+        <script type="application/json" class="wd-config">
+        {"mode":"exercise","objects":true,"case":"d","chapter":"exam","placeholder":"CREATE VIEW specialty_revenue AS SELECT d.specialty AS specialty, COUNT(*) AS visit_count, SUM(v.charge) AS total_charge FROM visits v JOIN doctors d ON ... GROUP BY ...","answer":"CREATE VIEW specialty_revenue AS SELECT d.specialty AS specialty, COUNT(*) AS visit_count, SUM(v.charge) AS total_charge FROM visits v JOIN doctors d ON v.doctor_id = d.id GROUP BY d.specialty","grade":{"mode":"state","check":"SELECT * FROM specialty_revenue","expected":"SELECT d.specialty AS specialty, COUNT(*) AS visit_count, SUM(v.charge) AS total_charge FROM visits v JOIN doctors d ON v.doctor_id = d.id GROUP BY d.specialty"}}
+        </script>
+      </div>
+    </div>
+
+    <div class="card" id="score-card" style="margin-top:var(--sp-6); text-align:center;">
+      <button class="btn btn-primary" id="score-btn" data-i18n="score">Score</button>
+      <h2 id="score-line" hidden style="margin-top:var(--sp-4)"></h2>
+      <div class="progress-bar" id="score-bar" hidden style="max-width:360px;margin:var(--sp-3) auto 0;"><span></span></div>
+      <div class="meta i18n-en" style="margin-top:var(--sp-3)">Your answers are remembered in this browser only — nothing is uploaded.</div>
+      <div class="meta i18n-ar" dir="rtl" style="margin-top:var(--sp-3)">تُحفَظ إجاباتك في هذا المتصفّح فقط — ولا يُرسَل شيء إلى أي مكان.</div>
+    </div>
+
+    <nav class="footer-nav" style="justify-content:center; gap:var(--sp-3)">
+      <a class="btn btn-secondary" href="../index.html"><span data-i18n="nav_home">Home</span></a>
+      <a class="btn btn-ghost" href="exam-2.html"><span data-i18n="exam">Exam</span> 2</a>
+      <a class="btn btn-ghost" href="exam-3.html"><span data-i18n="exam">Exam</span> 3</a>
+    </nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script>
+    window.PageInit = function () {
+      var QIDS = []; for (var i = 1; i <= 20; i++) QIDS.push('t' + i);
+      function t(k) { return window.I18N ? window.I18N.t(k) : k; }
+      function tally() { var p = 0; QIDS.forEach(function (q) { if (window.Progress.questionResult('exam', '1', q) === true) p++; }); return p; }
+      function show() {
+        var passed = tally(), total = QIDS.length;
+        var line = document.getElementById('score-line'), bar = document.getElementById('score-bar');
+        line.hidden = false; bar.hidden = false;
+        line.textContent = t('test_score') + ' ' + passed + ' ' + t('test_of') + ' ' + total;
+        bar.querySelector('span').style.width = (passed / total * 100) + '%';
+      }
+      document.getElementById('score-btn').addEventListener('click', show);
+      document.addEventListener('progress:change', function () { if (!document.getElementById('score-line').hidden) show(); });
+    };
+  </script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

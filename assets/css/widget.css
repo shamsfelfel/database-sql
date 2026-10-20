@@ -34,6 +34,12 @@
 .qb-widget .schema-table .tname-row { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
 .qb-widget .schema-table .tname { font-family: var(--font-mono); font-weight: 600; color: var(--accent); font-size: .85rem; direction: ltr; }
 .qb-widget .schema-table .row-count { font-size: .68rem; color: var(--text-faint); font-family: var(--font-mono); white-space: nowrap; }
+/* "VIEW" tag on a saved query in the Database panel (Chapter 6 onward). */
+.qb-widget .schema-table .obj-badge {
+  font-family: var(--font-mono); font-size: .6rem; letter-spacing: .06em; font-weight: 600;
+  padding: 1px 5px; border-radius: 999px; direction: ltr; margin-inline-end: auto;
+  background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent-soft);
+}
 .qb-widget .schema-cols { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
 .qb-widget .schema-col { font-family: var(--font-mono); font-size: .72rem; padding: 1px 6px; border-radius: 999px; background: var(--surface-3); color: var(--text-dim); direction: ltr; }
 .qb-widget .schema-panel .empty-note { padding: var(--sp-2) 0; color: var(--text-faint); font-size: .8rem; }

@@ -77,9 +77,31 @@
           { n: 6, title: { en: 'Aggregation with JOIN', ar: 'التجميع مع JOIN' } }
         ]
       },
-      { num: 6, published: false, title: { en: 'Views', ar: 'العروض' }, lessons: [] },
-      { num: 7, published: false, title: { en: 'OUTPUT & Temp Tables', ar: 'الإخراج والجداول المؤقتة' }, lessons: [] },
-      { num: 8, published: false, title: { en: 'CSV & Bulk Operations', ar: 'CSV والعمليات المجمّعة' }, lessons: [] }
+      {
+        num: 6, published: true,
+        title: { en: 'Views', ar: 'العروض' },
+        lessons: [
+          { n: 1, title: { en: 'What a View Is — CREATE VIEW', ar: 'ما هو العرض — CREATE VIEW' } },
+          { n: 2, title: { en: 'Choosing Columns & Rows', ar: 'اختيار الأعمدة والصفوف' } },
+          { n: 3, title: { en: 'Views over a JOIN', ar: 'العروض على JOIN' } },
+          { n: 4, title: { en: 'Views over Aggregation', ar: 'العروض على التجميع' } },
+          { n: 5, title: { en: 'Building on Views', ar: 'البناء على العروض' } },
+          { n: 6, title: { en: 'Managing Views', ar: 'إدارة العروض' } }
+        ]
+      },
+      {
+        num: 7, published: true,
+        title: { en: 'Normalization', ar: 'التطبيع' },
+        lessons: [
+          { n: 1, title: { en: 'Why Normalize — Anomalies', ar: 'لماذا نُطبِّع — الشذوذ' } },
+          { n: 2, title: { en: 'First Normal Form — 1NF', ar: 'النموذج الأول — 1NF' } },
+          { n: 3, title: { en: 'Functional Dependency & 2NF', ar: 'الاعتماد الوظيفي و2NF' } },
+          { n: 4, title: { en: 'Third Normal Form — 3NF', ar: 'النموذج الثالث — 3NF' } },
+          { n: 5, title: { en: 'Diagnosing Real Designs', ar: 'تشخيص تصاميم حقيقية' } }
+        ]
+      },
+      { num: 8, published: false, title: { en: 'OUTPUT & Temp Tables', ar: 'الإخراج والجداول المؤقتة' }, lessons: [] },
+      { num: 9, published: false, title: { en: 'CSV & Bulk Operations', ar: 'CSV والعمليات المجمّعة' }, lessons: [] }
     ]
   };
 

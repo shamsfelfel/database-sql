@@ -137,7 +137,8 @@
   Question.prototype.render_fill = function (box) {
     var cfg = this.cfg;
     var line = el('div', 'fill-line');
-    var parts = String(cfg.template || '').split('____');
+    // template may be one string (SQL, language-neutral) or an { en, ar } pair (prose)
+    var parts = String(L(cfg.template) || '').split('____');
     this.inputs = [];
     var self = this;
     parts.forEach(function (p, i) {

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 6 · Lesson 1 — What a View Is — CREATE VIEW · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="6" data-lesson="1">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="6" data-lesson="1"></nav>
+
+    <h1 class="i18n-en">Lesson 1 — What a View Is — CREATE VIEW</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ١ — ما هو العرض — CREATE VIEW</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">Some queries are worth keeping. You work out the right <code>SELECT</code> — the columns that matter, the <code>WHERE</code> that filters the noise — and then you need it again tomorrow, and in three other reports. A <strong>view</strong> is how SQL lets you keep it: you give the query a name, and the database remembers it.</p>
+      <p class="i18n-ar" dir="rtl">بعض الاستعلامات تستحقّ الحفظ. تصل إلى الـ<code>SELECT</code> الصحيح — الأعمدة المهمّة، و<code>WHERE</code> التي تُصفّي الضجيج — ثم تحتاجه غدًا مرّة أخرى، وفي ثلاثة تقارير أخرى. و<strong>العرض</strong> (View) هو الطريقة التي تتيحها لك SQL لحفظه: تمنح الاستعلام اسمًا، فتتذكّره قاعدة البيانات.</p>
+      <p class="i18n-en">The crucial thing to understand: a view stores <strong>the query, not the rows</strong>. Nothing is copied. Every time you read the view, the database runs the stored <code>SELECT</code> again against the current data — so a view is always up to date, and it costs no storage.</p>
+      <p class="i18n-ar" dir="rtl">والأمر الجوهري الذي ينبغي فهمه: العرض يخزّن <strong>الاستعلام لا الصفوف</strong>. لا يُنسَخ شيء. في كل مرّة تقرأ من العرض تُعيد قاعدة البيانات تنفيذ <code>SELECT</code> المخزّن على البيانات الحالية — فالعرض محدَّث دائمًا، ولا يستهلك مساحة تخزين.</p>
+      <p class="i18n-en">Once the view exists you read it <em>exactly</em> like a table: <code>SELECT * FROM cheap_books</code>, or with your own <code>WHERE</code> and <code>ORDER BY</code> on top. Whoever reads the view does not need to know what is inside it.</p>
+      <p class="i18n-ar" dir="rtl">وبعد وجود العرض تقرأ منه <em>تمامًا</em> كما تقرأ من جدول: <code>SELECT * FROM cheap_books</code>، أو مع <code>WHERE</code> و<code>ORDER BY</code> خاصّين بك فوقه. ومن يقرأ العرض لا يحتاج أن يعرف ما داخله.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>CREATE VIEW cheap_books AS
+SELECT id, title, price
+FROM books
+WHERE price &lt; 16;
+
+SELECT * FROM cheap_books;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — create a view, then read it</span><span class="i18n-ar" dir="rtl">مثال ١ — أنشئ عرضًا ثم اقرأ منه</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":6,"sql":"CREATE VIEW cheap_books AS SELECT id, title, price FROM books WHERE price < 16;\nSELECT * FROM cheap_books;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Two statements: the <code>CREATE VIEW</code> saves the query, the <code>SELECT</code> reads it. Watch the Database panel — <code>cheap_books</code> appears, tagged <code>VIEW</code>.</span><span class="i18n-ar" dir="rtl">عبارتان: <code>CREATE VIEW</code> تحفظ الاستعلام، و<code>SELECT</code> تقرأ منه. راقب لوحة قاعدة البيانات — يظهر <code>cheap_books</code> موسومًا بـ<code>VIEW</code>.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — filter on top of a view</span><span class="i18n-ar" dir="rtl">مثال ٢ — صفِّ فوق العرض</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":6,"setup":["CREATE VIEW cheap_books AS SELECT id, title, price FROM books WHERE price < 16"],"sql":"SELECT title, price FROM cheap_books WHERE price > 12 ORDER BY price;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">The view already exists here. It behaves like any table: add your own <code>WHERE</code> and <code>ORDER BY</code>.</span><span class="i18n-ar" dir="rtl">العرض موجود هنا مسبقًا. ويتصرّف كأي جدول: أضِف <code>WHERE</code> و<code>ORDER BY</code> خاصّيك.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — a view is always live</span><span class="i18n-ar" dir="rtl">مثال ٣ — العرض حيّ دائمًا</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":6,"setup":["CREATE VIEW cheap_books AS SELECT id, title, price FROM books WHERE price < 16"],"sql":"UPDATE books SET price = 9.50 WHERE id = 1;\nSELECT * FROM cheap_books;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Book 1 cost 18.50, outside the view. Drop its price and it is inside — the view was never a copy, so it needs no refreshing.</span><span class="i18n-ar" dir="rtl">كان سعر الكتاب ١ هو ١٨٫٥٠ فكان خارج العرض. أنزِل سعره فيصبح داخله — فالعرض لم يكن نسخة يومًا، ولذلك لا يحتاج تحديثًا.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">The same moves against <strong>Orbit Electronics</strong> — the <code>products</code> table.</p>
+      <p class="i18n-ar" dir="rtl">الخطوات نفسها على <strong>Orbit Electronics</strong> — جدول <code>products</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — name the featured-products query</span><span class="i18n-ar" dir="rtl">مثال ١ — سمِّ استعلام المنتجات المميّزة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":6,"sql":"CREATE VIEW featured_products AS SELECT id, name, price FROM products WHERE is_featured = true;\nSELECT * FROM featured_products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — read the view with a condition</span><span class="i18n-ar" dir="rtl">مثال ٢ — اقرأ العرض بشرط</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":6,"setup":["CREATE VIEW featured_products AS SELECT id, name, price FROM products WHERE is_featured = true"],"sql":"SELECT name FROM featured_products WHERE price < 500;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — aggregate a view</span><span class="i18n-ar" dir="rtl">مثال ٣ — جمِّع العرض</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":6,"setup":["CREATE VIEW featured_products AS SELECT id, name, price FROM products WHERE is_featured = true"],"sql":"SELECT COUNT(*) AS featured_count, ROUND(AVG(price), 2) AS avg_price FROM featured_products;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="6" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"What does CREATE VIEW actually store?","ar":"ما الذي تخزّنه CREATE VIEW فعليًا؟"},
+         "options":[{"en":"The SELECT statement, which runs again on every read","ar":"عبارة SELECT، وتُنفَّذ من جديد عند كل قراءة"},{"en":"A copy of the rows at the moment it was created","ar":"نسخة من الصفوف في لحظة إنشائه"},{"en":"Nothing — it only renames a table","ar":"لا شيء — إنه يعيد تسمية جدول فقط"},{"en":"An index that speeds up the table","ar":"فهرسًا يُسرّع الجدول"}],
+         "correctIndex":0,
+         "explain":{"en":"A view is a stored query. Reading it re-runs that query against current data.","ar":"العرض استعلام مخزَّن. والقراءة منه تُعيد تنفيذ ذلك الاستعلام على البيانات الحالية."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="6" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"You can put a WHERE clause on a view, just as you would on a table.","ar":"يمكنك وضع جملة WHERE على العرض، كما تفعل مع الجدول."},
+         "correct":true,
+         "explain":{"en":"Anywhere a table name is allowed in a FROM clause, a view name works too.","ar":"في كل موضع يُسمح فيه باسم جدول في جملة FROM، يصلح اسم العرض أيضًا."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="6" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete: save this query under the name in_stock_products.","ar":"أكمل: احفظ هذا الاستعلام باسم in_stock_products."},
+         "template":"CREATE ____ in_stock_products ____ SELECT id, name FROM products WHERE stock_qty > 0;","answers":[["VIEW"],["AS"]]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Create a view named <code>low_stock</code> that returns <code>id</code>, <code>name</code> and <code>stock_qty</code> for every product with <code>stock_qty</code> below 20.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أنشئ عرضًا باسم <code>low_stock</code> يُعيد <code>id</code> و<code>name</code> و<code>stock_qty</code> لكل منتج مخزونه <code>stock_qty</code> أقل من ٢٠.</p>
+        <div class="qb-widget" data-qid="lab-q4" data-chapter="6" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":6,"placeholder":"CREATE VIEW low_stock AS SELECT ... FROM products WHERE ...","answer":"CREATE VIEW low_stock AS SELECT id, name, stock_qty FROM products WHERE stock_qty < 20","grade":{"mode":"state","check":"SELECT * FROM low_stock","expected":"SELECT id, name, stock_qty FROM products WHERE stock_qty < 20"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">The view <code>featured_products</code> (<code>id</code>, <code>name</code>, <code>price</code>) already exists here. Read <strong>from the view</strong> and return the <code>name</code> of every featured product priced above 400.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">العرض <code>featured_products</code> (<code>id</code> و<code>name</code> و<code>price</code>) موجود هنا مسبقًا. اقرأ <strong>من العرض</strong> وأعِد <code>name</code> لكل منتج مميّز سعره أعلى من ٤٠٠.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="6" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":6,"setup":["CREATE VIEW featured_products AS SELECT id, name, price FROM products WHERE is_featured = true"],"placeholder":"SELECT name FROM featured_products WHERE ...","grade":{"mode":"result","expected":"SELECT name FROM featured_products WHERE price > 400"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> — the <code>courses</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> — جدول <code>courses</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="6" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which statement about views is true?","ar":"أيّ العبارات التالية عن العروض صحيحة؟"},
+         "options":[{"en":"A view takes no storage for rows and is always current","ar":"العرض لا يستهلك مساحة للصفوف وهو محدَّث دائمًا"},{"en":"A view must be refreshed after every INSERT","ar":"يجب تحديث العرض بعد كل INSERT"},{"en":"A view can only select whole tables","ar":"العرض يستطيع تحديد جداول كاملة فقط"},{"en":"A view can be read only once","ar":"لا يمكن قراءة العرض إلا مرّة واحدة"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="6" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"Creating a view copies the selected rows into a new table.","ar":"إنشاء العرض ينسخ الصفوف المحدَّدة إلى جدول جديد."},
+         "correct":false,
+         "explain":{"en":"No rows are copied — only the query text is saved.","ar":"لا تُنسَخ أي صفوف — يُحفَظ نصّ الاستعلام فقط."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="6" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the keyword that introduces a view's query.","ar":"أكمل الكلمة المفتاحية التي تسبق استعلام العرض."},
+         "template":"CREATE VIEW active_courses ____ SELECT * FROM courses WHERE active = true;","answers":["AS"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Create a view named <code>grad_courses</code> that returns <code>id</code>, <code>title</code> and <code>credits</code> for every course whose <code>level</code> is <code>graduate</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أنشئ عرضًا باسم <code>grad_courses</code> يُعيد <code>id</code> و<code>title</code> و<code>credits</code> لكل مقرّر مستواه <code>level</code> هو <code>graduate</code>.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="6" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":6,"placeholder":"CREATE VIEW grad_courses AS SELECT ... FROM courses WHERE ...","answer":"CREATE VIEW grad_courses AS SELECT id, title, credits FROM courses WHERE level = 'graduate'","grade":{"mode":"state","check":"SELECT * FROM grad_courses","expected":"SELECT id, title, credits FROM courses WHERE level = 'graduate'"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">The view <code>active_courses</code> (<code>id</code>, <code>title</code>, <code>credits</code>, <code>level</code>) already exists. Read from it and return the <code>title</code> of every active course worth 4 credits.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">العرض <code>active_courses</code> (<code>id</code> و<code>title</code> و<code>credits</code> و<code>level</code>) موجود مسبقًا. اقرأ منه وأعِد <code>title</code> لكل مقرّر نشِط بوزن ٤ ساعات.</p>
+        <div class="qb-widget" data-qid="test-t5" data-chapter="6" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":6,"setup":["CREATE VIEW active_courses AS SELECT id, title, credits, level FROM courses WHERE active = true"],"placeholder":"SELECT title FROM active_courses WHERE ...","grade":{"mode":"result","expected":"SELECT title FROM active_courses WHERE credits = 4"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t6" data-chapter="6" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Order the steps of putting a view to work.","ar":"رتّب خطوات تشغيل العرض."},
+         "items":[{"en":"Write the SELECT that answers the question","ar":"اكتب SELECT الذي يجيب السؤال"},{"en":"Save it under a name with CREATE VIEW … AS","ar":"احفظه باسم عبر CREATE VIEW … AS"},{"en":"Read the view by name, like a table","ar":"اقرأ العرض بالاسم، كما تقرأ جدولًا"},{"en":"Add your own WHERE or ORDER BY on top of it","ar":"أضِف WHERE أو ORDER BY خاصّيك فوقه"}]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="6" data-lesson="1"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

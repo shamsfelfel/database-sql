@@ -312,10 +312,24 @@
   function liveObjects() {
     return Object.keys(alasql.tables || {}).map(function (name) {
       var t = alasql.tables[name];
+      // A view keeps no rows of its own, so reading t.data would report it as
+      // empty and column-less. Evaluate it instead: the panel then shows what
+      // the view currently yields, which is the whole point of a view.
+      if (t && t.view) {
+        var vrows = [];
+        try { vrows = alasql('SELECT * FROM ' + name) || []; } catch (e) { vrows = []; }
+        return { name: name, columns: vrows.length ? Object.keys(vrows[0]) : viewColumns(t), rows: vrows.length, view: true };
+      }
       var cols = (t.columns && t.columns.length) ? t.columns.map(function (c) { return c.columnid; })
         : (t.data && t.data.length ? Object.keys(t.data[0]) : []);
       return { name: name, columns: cols, rows: (t.data ? t.data.length : 0) };
     });
+  }
+  /* Column names a view declares, for the case where it yields no rows. */
+  function viewColumns(t) {
+    return ((t.viewSelect && t.viewSelect.columns) || []).map(function (c) {
+      return c.as || c.columnid || '';
+    }).filter(Boolean);
   }
   function datasetObjects(data) {
     return Object.keys(data || {}).map(function (name) {
@@ -345,7 +359,9 @@
       var tn = document.createElement('span'); tn.className = 'tname'; tn.textContent = o.name;
       var rc = document.createElement('span'); rc.className = 'row-count';
       rc.textContent = o.rows + ' ' + (o.rows === 1 ? self.t('row_word') : self.t('rows_word'));
-      head.appendChild(tn); head.appendChild(rc);
+      head.appendChild(tn);
+      if (o.view) { var vb = document.createElement('span'); vb.className = 'obj-badge'; vb.textContent = 'VIEW'; head.appendChild(vb); }
+      head.appendChild(rc);
       wrap.appendChild(head);
       var cols = div('schema-cols');
       o.columns.forEach(function (c) { var chip = document.createElement('span'); chip.className = 'schema-col'; chip.textContent = c; cols.appendChild(chip); });
@@ -499,7 +515,12 @@
     if (r.error) { this.showError(r.error); return { pass: false, error: r.error }; }
     this.clearError();
     // 3. inspect the resulting state with the check query (no reload)
-    var actual = alasql(g.check) || [];
+    // The check query can itself fail when the student's statement did not create
+    // what was asked for (a view under another name, say). That is a plain
+    // "incorrect", not an engine error worth showing.
+    var cr = this.exec(g.check);
+    if (cr.error) return { pass: false };
+    var actual = cr.rows || [];
     this.renderResults({ rows: actual, ms: r.ms });
     return { pass: compareResultSets(actual, expected, { orderMatters: !!g.orderMatters }) };
   };

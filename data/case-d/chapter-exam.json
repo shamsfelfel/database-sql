@@ -1,0 +1,42 @@
+{
+  "tables": {
+    "doctors": [
+      { "id": 1, "full_name": "Hala Mansour", "specialty": "Cardiology", "visit_fee": 120.00, "is_senior": true },
+      { "id": 2, "full_name": "Omar Khalil", "specialty": "Pediatrics", "visit_fee": 80.00, "is_senior": false },
+      { "id": 3, "full_name": "Sara Nassar", "specialty": "Dermatology", "visit_fee": 95.00, "is_senior": true },
+      { "id": 4, "full_name": "Ziad Farah", "specialty": "Cardiology", "visit_fee": 140.00, "is_senior": true },
+      { "id": 5, "full_name": "Rana Daher", "specialty": "Pediatrics", "visit_fee": 75.00, "is_senior": false },
+      { "id": 6, "full_name": "Karim Haddad", "specialty": "Orthopedics", "visit_fee": 110.00, "is_senior": false }
+    ],
+    "patients": [
+      { "id": 1, "full_name": "Maya Saad", "city": "Beirut", "birth_year": 1990 },
+      { "id": 2, "full_name": "Jad Rizk", "city": "Tripoli", "birth_year": 1985 },
+      { "id": 3, "full_name": "Lina Aoun", "city": "Beirut", "birth_year": 2002 },
+      { "id": 4, "full_name": "Samir Hage", "city": "Sidon", "birth_year": 1978 },
+      { "id": 5, "full_name": "Nour Chalhoub", "city": "Beirut", "birth_year": 1995 },
+      { "id": 6, "full_name": "Rami Khoury", "city": "Zahle", "birth_year": 1969 },
+      { "id": 7, "full_name": "Dalia Sfeir", "city": "Tripoli", "birth_year": 2010 },
+      { "id": 8, "full_name": "Fady Btaddini", "city": "Sidon", "birth_year": 1988 },
+      { "id": 9, "full_name": "Hiba Mroue", "city": "Beirut", "birth_year": 2005 },
+      { "id": 10, "full_name": "Elie Semaan", "city": "Jounieh", "birth_year": 1972 }
+    ],
+    "visits": [
+      { "id": 1, "patient_id": 1, "doctor_id": 1, "visit_year": 2023, "charge": 120.00, "paid": true },
+      { "id": 2, "patient_id": 1, "doctor_id": 3, "visit_year": 2024, "charge": 95.00, "paid": true },
+      { "id": 3, "patient_id": 2, "doctor_id": 2, "visit_year": 2023, "charge": 80.00, "paid": false },
+      { "id": 4, "patient_id": 3, "doctor_id": 1, "visit_year": 2024, "charge": 150.00, "paid": true },
+      { "id": 5, "patient_id": 3, "doctor_id": 1, "visit_year": 2024, "charge": 120.00, "paid": false },
+      { "id": 6, "patient_id": 4, "doctor_id": 4, "visit_year": 2022, "charge": 140.00, "paid": true },
+      { "id": 7, "patient_id": 4, "doctor_id": 4, "visit_year": 2023, "charge": 160.00, "paid": true },
+      { "id": 8, "patient_id": 5, "doctor_id": 5, "visit_year": 2024, "charge": 75.00, "paid": true },
+      { "id": 9, "patient_id": 6, "doctor_id": 3, "visit_year": 2023, "charge": 95.00, "paid": false },
+      { "id": 10, "patient_id": 7, "doctor_id": 2, "visit_year": 2024, "charge": 80.00, "paid": true },
+      { "id": 11, "patient_id": 7, "doctor_id": 5, "visit_year": 2024, "charge": 90.00, "paid": false },
+      { "id": 12, "patient_id": 8, "doctor_id": 1, "visit_year": 2022, "charge": 110.00, "paid": true },
+      { "id": 13, "patient_id": 9, "doctor_id": 2, "visit_year": 2024, "charge": 85.00, "paid": true },
+      { "id": 14, "patient_id": 2, "doctor_id": 4, "visit_year": 2024, "charge": 170.00, "paid": true },
+      { "id": 15, "patient_id": 5, "doctor_id": 1, "visit_year": 2023, "charge": 120.00, "paid": false },
+      { "id": 16, "patient_id": 9, "doctor_id": 3, "visit_year": 2025, "charge": 100.00, "paid": true }
+    ]
+  }
+}

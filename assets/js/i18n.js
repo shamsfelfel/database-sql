@@ -52,7 +52,10 @@
       row_word: 'row',
       test_score: 'You scored',
       test_of: 'of',
-      retake: 'Retake test'
+      retake: 'Retake test',
+      exams: 'Final exams',
+      exam: 'Exam',
+      exam_db: 'Exam databases'
     },
     ar: {
       brand: 'مختبر SQL',
@@ -99,7 +102,10 @@
       row_word: 'صف',
       test_score: 'نتيجتك',
       test_of: 'من',
-      retake: 'إعادة الاختبار'
+      retake: 'إعادة الاختبار',
+      exams: 'الاختبارات النهائية',
+      exam: 'اختبار',
+      exam_db: 'قواعد بيانات الاختبار'
     }
   };
 

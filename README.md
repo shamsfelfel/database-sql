@@ -2,8 +2,8 @@
 
 A self-contained, static, **bilingual (English / Arabic)** interactive SQL course
 for students who already know programming and data-analysis basics. It teaches SQL
-from first statements through joins, subqueries, aggregation, views, and bulk
-operations across 8 chapters. Every lesson has three parts — **Explanation**,
+from first statements through joins, subqueries, aggregation, views, normalization
+(database design), and bulk operations across 9 chapters. Every lesson has three parts — **Explanation**,
 **Lab**, **Test** — and everywhere SQL appears, you can type a query and run it
 live against a real (small, in-browser) database through a reusable SQL widget.
 
@@ -56,12 +56,13 @@ change them, regenerate the bundle**:
 ```bash
 node -e '
 const fs=require("fs"),out={};
-["a","b","c"].forEach(cs=>{out[cs]={};for(let ch=1;ch<=8;ch++){const p="data/case-"+cs+"/chapter-"+ch+".json";if(fs.existsSync(p))out[cs][ch]=JSON.parse(fs.readFileSync(p,"utf8"));}});
+["a","b","c"].forEach(cs=>{out[cs]={};for(let ch=1;ch<=9;ch++){const p="data/case-"+cs+"/chapter-"+ch+".json";if(fs.existsSync(p))out[cs][ch]=JSON.parse(fs.readFileSync(p,"utf8"));}});
 fs.writeFileSync("assets/js/data.js","window.SQLLAB_DATA = "+JSON.stringify(out,null,2)+";\n");
 '
 ```
 
 (New chapters just extend the loop bound; the JSON files stay authoritative.)
+`node scripts/build-data.js` does the same and also bundles the exam databases (cases `d`/`e`).
 
 ## Deploying to GitHub Pages
 
@@ -122,7 +123,10 @@ node scripts/build-sw.js   # scans the site and rewrites sw.js
 ```
 
 (The generator walks the html / assets / data / icons and writes the list into `sw.js`
-with a fresh dated cache name, so installed clients re-download the changed files.)
+with a cache name built from the date plus a hash of every precached file's contents. Any
+edit to any shipped file therefore changes `sw.js`, which is what makes browsers install the
+new worker; it activates immediately, deletes the old cache, and installed apps pick up the
+new files on their next load. Run it last, after `node scripts/build-data.js`.)
 
 ## Features
 
@@ -173,7 +177,7 @@ rows), so `ALTER TABLE` works on them and the sidebar shows real column metadata
 Chapters are authored one at a time with the chapter prompt
 (`02-chapter-prompt-template.md`) plus that chapter's content file
 (`03-chapter-N-content.txt`), reusing the shared engines in `/assets` unchanged.
-**Chapters 1–5 are complete:**
+**Chapters 1–7 are complete:**
 
 1. **First Steps** — CREATE / INSERT / SELECT / UPDATE / DELETE (5 lessons).
 2. **Multiple Columns** — column types, `ALTER TABLE`, selecting/filtering/updating/
@@ -184,11 +188,16 @@ Chapters are authored one at a time with the chapter prompt
    and a subquery-vs-JOIN consolidation (8 lessons).
 5. **Aggregation** — `COUNT` / `SUM` / `AVG` / `MIN` / `MAX`, `GROUP BY`, `HAVING`, `ORDER BY`
    with aggregates, and aggregation over a `JOIN` (6 lessons).
+6. **Views** — `CREATE VIEW`, choosing columns and rows, views over `JOIN` and aggregation,
+   views built on views, and managing views (6 lessons).
+7. **Normalization** — anomalies, 1NF, functional dependencies and 2NF, 3NF, and diagnosing real
+   designs; SQL is used throughout to expose anomalies, test dependencies and reassemble the
+   normalized tables with `JOIN` (5 lessons).
 
 Chapters 1–3 end with a 20-question test that builds a fresh table (or pair of related tables)
 across the questions, graded apply-in-order; Chapter 4's and Chapter 5's tests are 20 independent
 questions across all three databases, each write-statement graded on the rows it returns.
-Chapters 6–8 are built on the same scaffold. Each case grows one table per chapter;
+Chapters 6–7 are built on the same scaffold, and so will Chapters 8–9 be. Each case grows one table per chapter;
 `/data/case-*/chapter-N.json` holds the cumulative snapshot.
 
 Chapter 4 also **adds descriptive columns** to the case tables it needs for subquery examples
@@ -215,3 +224,27 @@ alasql quirks Chapter 5 works around (verified): `HAVING` must repeat the aggreg
 in `HAVING` matches nothing); the reserved words `count`/`sum`/`avg`/`total`/`value` (and others)
 cannot be used as column aliases — every aggregate is named descriptively (`book_count`, `avg_price`,
 `total_stock`, …). Graded write-statement questions specify the exact output aliases the answer must use.
+
+### Chapter-8 handoff — final schema after Chapter 7
+
+Chapter 7 (Normalization) keeps every Chapter-6 table, column and row unchanged and only **adds
+tables** — the un-normalized "sheet" each case started from, its 1NF form, and the 3NF tables the
+decomposition produces. The added tables in `data/case-*/chapter-7.json` are:
+
+- **Case A** — `library_flat` (4 loans, multi-valued cells + `book_1..book_3`), `library_1nf`
+  (7 rows, key `(loan_id, book_title)`), and the 3NF result `members(id, name, mobile, home_phone,
+  city)` · 3, `loans(id, member_id, loan_date)` · 4 (ids 101–104), `loan_items(loan_id, book_id)` · 7 —
+  which reference the existing `books` / `authors`.
+- **Case B** — `orders_flat` (4 orders), `orders_1nf` (7 rows, key `(order_id, product_name)`),
+  `brands(id, name, country)` · 7, `customers(id, name, email, phone, city)` · 3,
+  `orders(id, customer_id, order_date)` · 4 (ids 5001–5004), `order_items(order_id, product_id)` · 7.
+  `products.brand` stays a text column (joins as `products.brand = brands.name`); the lesson
+  discusses replacing it with a `brand_id`.
+- **Case C** — `enrollments_flat` (8 rows, 1NF with key `(student_id, course_id)`, repeating the
+  student, course, department name and building), `students(id, name, study_year)` · 4,
+  `enrollments(student_id, course_id, term, grade)` · 8.
+
+Chapter 7 also adds `assets/css/normalize.css` (normal-form chips, stage boxes, rule boxes,
+click-to-reveal solutions, dependency diagrams). alasql quirk found: a correlated subquery in
+`UPDATE … SET col = (SELECT …)` fails, so cross-table updates keep the Chapter 3 form
+`WHERE … IN (SELECT …)`.

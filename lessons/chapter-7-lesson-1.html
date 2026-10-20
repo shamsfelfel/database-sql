@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 7 · Lesson 1 — Why Normalize — Anomalies · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/normalize.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="7" data-lesson="1">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="7" data-lesson="1"></nav>
+
+    <h1 class="i18n-en">Lesson 1 — Why Normalize — Anomalies</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ١ — لماذا نُطبِّع — الشذوذ</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">Chapter 1 taught you to create a table and insert, update and delete rows. Chapter 2 widened tables with more columns and types; Chapter 3 linked them with primary and foreign keys and joined them; Chapters 4–6 queried them with subqueries, aggregates and views. All of that answered one question: <strong>how</strong> to work with tables. This chapter answers a different one: <strong>where did those tables come from — and why are they split exactly that way?</strong></p>
+      <p class="i18n-ar" dir="rtl">علّمك الفصل الأول أن تُنشئ جدولًا وتُدرج صفوفه وتعدّلها وتحذفها. ووسّع الفصل الثاني الجداول بأعمدة وأنواع بيانات، وربطها الفصل الثالث بمفاتيح أساسية وأجنبية وجمعها بـ JOIN، ثم استعلمتَ منها في الفصول ٤–٦ بالاستعلامات الفرعية والتجميع والعروض. كل ذلك أجاب عن سؤال واحد: <strong>كيف</strong> نتعامل مع الجداول. أما هذا الفصل فيجيب عن سؤال مختلف تمامًا: <strong>من أين جاءت هذه الجداول أصلًا؟ ولماذا هي مقسّمة هكذا بالذات لا بشكل آخر؟</strong></p>
+      <p class="i18n-en">The answer is <strong>normalization</strong>: a systematic process that starts from one "flat" table cramming everything into one place, then breaks it apart step by step, following explicit rules, until you reach a clean set of tables. Each step is called a <strong>normal form</strong>. This chapter covers the first three — 1NF, 2NF and 3NF — which in practice are enough for most designs.</p>
+      <p class="i18n-ar" dir="rtl">الجواب هو <strong>التطبيع</strong> (Normalization): عملية منهجية تبدأ من جدول واحد «مسطّح» يحشر كل شيء في مكان واحد، ثم تُفكّكه خطوة بخطوة وفق قواعد محدّدة حتى نصل إلى مجموعة جداول نظيفة. وكل خطوة من هذه الخطوات تُسمّى <strong>نموذجًا</strong> (Normal Form). ويغطّي هذا الفصل النماذج الثلاثة الأولى — 1NF و2NF و3NF — وهي التي تكفي عمليًا لمعظم التصاميم.</p>
+
+      <div class="callout note">
+        <div class="i18n-en"><strong>The whole idea in one sentence.</strong> Every fact in the database should be written in <strong>exactly one place</strong>. Everything in this chapter is hunting down facts written in more than one place and moving them to where they belong.</div>
+        <div class="i18n-ar" dir="rtl"><strong>الفكرة كلها في جملة واحدة.</strong> كل حقيقة في قاعدة البيانات يجب أن تُكتب في <strong>مكان واحد فقط</strong>. وكل ما سنفعله في هذا الفصل هو مطاردة الحقائق المكتوبة في أكثر من مكان، ونقلها إلى مكانها الصحيح.</div>
+      </div>
+
+      <h2 class="i18n-en">What goes wrong without it — anomalies</h2>
+      <h2 class="i18n-ar" dir="rtl">ما الذي يحدث حين لا نُطبِّع؟ — الشذوذ</h2>
+      <p class="i18n-en">A bad design doesn't collapse at once; it decays through three kinds of problem called <strong>anomalies</strong>. Learn their names now — every lesson in this chapter refers back to them.</p>
+      <p class="i18n-ar" dir="rtl">التصميم السيّئ لا ينهار فورًا؛ بل يتآكل ببطء عبر ثلاثة أنواع من المشاكل تُسمّى <strong>الشذوذ</strong> (Anomalies). احفظ أسماءها الآن، فكل درس في هذا الفصل يعود إليها.</p>
+      <ul class="problem-list">
+        <li>
+          <span class="pt"><span class="i18n-en">Insertion anomaly</span><span class="i18n-ar" dir="rtl">شذوذ الإضافة — Insertion anomaly</span></span>
+          <span class="i18n-en">You cannot record a fact because an unrelated fact doesn't exist yet — for example, you cannot record a new book until somebody borrows it.</span>
+          <span class="i18n-ar" dir="rtl">لا تستطيع تسجيل حقيقة لأن حقيقة أخرى لا علاقة لها بها غير موجودة بعد — مثلًا: لا تستطيع تسجيل كتاب جديد قبل أن يستعيره أحد.</span>
+        </li>
+        <li>
+          <span class="pt"><span class="i18n-en">Update anomaly</span><span class="i18n-ar" dir="rtl">شذوذ التعديل — Update anomaly</span></span>
+          <span class="i18n-en">Changing one fact means editing many rows. Miss a single row and the database now says two contradictory things at once.</span>
+          <span class="i18n-ar" dir="rtl">تغيير حقيقة واحدة يتطلّب تعديل صفوف كثيرة. ولو فاتك صفّ واحد صارت قاعدة البيانات تقول شيئين متناقضين في آنٍ واحد.</span>
+        </li>
+        <li>
+          <span class="pt"><span class="i18n-en">Deletion anomaly</span><span class="i18n-ar" dir="rtl">شذوذ الحذف — Deletion anomaly</span></span>
+          <span class="i18n-en">Deleting one row destroys facts you never meant to delete — cancel a member's only loan and the member vanishes from the database.</span>
+          <span class="i18n-ar" dir="rtl">حذف صفّ واحد يُفقدك حقائق لم تقصد حذفها — ألغِ الإعارة الوحيدة لعضو، فيختفي العضو نفسه من قاعدة البيانات.</span>
+        </li>
+      </ul>
+
+      <h2 class="i18n-en">Terms we'll use throughout</h2>
+      <h2 class="i18n-ar" dir="rtl">مصطلحات سنستعملها طوال الفصل</h2>
+      <div class="tbl-scroll cmp-wrap">
+        <table class="cmp">
+          <thead>
+            <tr><th><span class="i18n-en">Term</span><span class="i18n-ar" dir="rtl">المصطلح</span></th><th><span class="i18n-en">Meaning</span><span class="i18n-ar" dir="rtl">المعنى</span></th></tr>
+          </thead>
+          <tbody>
+            <tr><th><span class="i18n-en">Atomic value</span><span class="i18n-ar" dir="rtl">قيمة ذرّية (Atomic value)</span></th>
+              <td><span class="i18n-en">A single value you never need to split apart to use. <code>'Gaza'</code> is atomic; <code>'Fiction, Science Fiction'</code> is not.</span><span class="i18n-ar" dir="rtl">قيمة واحدة لا نحتاج تجزئتها لاستعمالها. <code>'Gaza'</code> ذرّية؛ أما <code>'Fiction, Science Fiction'</code> فليست كذلك.</span></td></tr>
+            <tr><th><span class="i18n-en">Repeating group</span><span class="i18n-ar" dir="rtl">مجموعة مكرّرة (Repeating group)</span></th>
+              <td><span class="i18n-en">Look-alike numbered columns used to store a list: <code>book_1, book_2, book_3</code>.</span><span class="i18n-ar" dir="rtl">أعمدة متشابهة مرقّمة لتخزين قائمة: <code>book_1, book_2, book_3</code>.</span></td></tr>
+            <tr><th><span class="i18n-en">Functional dependency</span><span class="i18n-ar" dir="rtl">اعتماد وظيفي (Functional dependency)</span></th>
+              <td><span class="i18n-en">Written <code>A → B</code>, read "A determines B": each value of A goes with exactly one value of B.</span><span class="i18n-ar" dir="rtl">نكتبه <code>A → B</code> ونقرؤه «A يحدّد B»: لكل قيمة من A قيمةٌ واحدة فقط من B.</span></td></tr>
+            <tr><th><span class="i18n-en">Composite key</span><span class="i18n-ar" dir="rtl">مفتاح مركّب (Composite key)</span></th>
+              <td><span class="i18n-en">A primary key made of more than one column, because no single column identifies a row.</span><span class="i18n-ar" dir="rtl">مفتاح أساسي مكوَّن من أكثر من عمود، لأن عمودًا واحدًا لا يكفي لتمييز الصف.</span></td></tr>
+            <tr><th><span class="i18n-en">Partial dependency</span><span class="i18n-ar" dir="rtl">اعتماد جزئي (Partial dependency)</span></th>
+              <td><span class="i18n-en">A non-key column that depends on <strong>part</strong> of a composite key rather than all of it — the 2NF problem.</span><span class="i18n-ar" dir="rtl">عمود غير مفتاحي يعتمد على <strong>جزء</strong> من المفتاح المركّب لا على كامله — وهي مشكلة 2NF.</span></td></tr>
+            <tr><th><span class="i18n-en">Transitive dependency</span><span class="i18n-ar" dir="rtl">اعتماد عابر (Transitive dependency)</span></th>
+              <td><span class="i18n-en">A non-key column that depends on another non-key column: <code>A → B → C</code> — the 3NF problem.</span><span class="i18n-ar" dir="rtl">عمود غير مفتاحي يعتمد على عمود غير مفتاحي آخر: <code>A → B → C</code> — وهي مشكلة 3NF.</span></td></tr>
+            <tr><th><span class="i18n-en">Surrogate key</span><span class="i18n-ar" dir="rtl">مفتاح صناعي (Surrogate key)</span></th>
+              <td><span class="i18n-en">A key with no real-world meaning (<code>id</code>) used instead of a natural key that may change or repeat (<code>title</code>).</span><span class="i18n-ar" dir="rtl">مفتاح بلا معنى في الواقع (<code>id</code>) نستعمله بدل مفتاح طبيعي قد يتغيّر أو يتكرّر (<code>title</code>).</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="i18n-en">The starting point — Bright Books' loan sheet</h2>
+      <h2 class="i18n-ar" dir="rtl">نقطة البداية — سجلّ إعارات Bright Books</h2>
+      <p class="i18n-en">Before the library had a database, the librarian kept loans in one sheet, exactly as you would in a spreadsheet. It is in your database now as <code>library_flat</code>. The table "works" — you can put data in and read it back. The trouble is that it falls apart at the first real change.</p>
+      <p class="i18n-ar" dir="rtl">قبل أن تملك المكتبة قاعدة بيانات، كان أمين المكتبة يسجّل الإعارات في ورقة واحدة، تمامًا كما تفعل في جدول إلكتروني. وهي الآن في قاعدة بياناتك باسم <code>library_flat</code>. هذا الجدول «يشتغل» — تستطيع إدخال البيانات فيه وقراءتها. المشكلة أنه سينهار مع أول تغيير حقيقي.</p>
+
+      <div class="nf-stage s0">
+        <div class="nf-stage-h"><span class="nf-chip nf-0"><span class="i18n-en">Un-normalized</span><span class="i18n-ar" dir="rtl">غير مُطبَّع</span></span><span class="i18n-en">The flat table</span><span class="i18n-ar" dir="rtl">الجدول المسطَّح</span></div>
+        <div class="nf-stage-b">
+          <div class="tbl-cap">library_flat</div>
+          <div class="tbl-scroll">
+            <table class="data">
+              <thead><tr><th>loan_id</th><th>member_name</th><th>member_phones</th><th>member_city</th><th>book_1</th><th>book_2</th><th>book_3</th><th>genres</th><th>author_name</th><th>author_country</th><th>loan_date</th></tr></thead>
+              <tbody>
+                <tr><td>101</td><td>Sara Hamdan</td><td class="bad">0599-111222, 08-2834567</td><td>Gaza</td><td class="warn">Coastal Winters</td><td class="warn">A Quiet Machine</td><td class="nul">NULL</td><td class="bad">Fiction, Science Fiction</td><td class="bad">Fatima Zahra, Laila Hammoud</td><td class="bad">Morocco, Lebanon</td><td>2026-03-01</td></tr>
+                <tr><td>102</td><td>Omar Nassar</td><td>0599-333444</td><td>Rafah</td><td class="warn">Coastal Winters</td><td class="nul">NULL</td><td class="nul">NULL</td><td>Fiction</td><td>Fatima Zahra</td><td>Morocco</td><td>2026-03-03</td></tr>
+                <tr><td>103</td><td>Sara Hamdan</td><td class="bad">0599-111222, 08-2834567</td><td>Gaza</td><td class="warn">Paper Kingdoms</td><td class="warn">A Quiet Machine</td><td class="warn">The Ninth Cipher</td><td class="bad">Fantasy, Science Fiction, Mystery</td><td class="bad">Aiko Tanaka, Laila Hammoud, Laila Hammoud</td><td class="bad">Japan, Lebanon, Lebanon</td><td>2026-03-07</td></tr>
+                <tr><td>104</td><td>Dina Qasem</td><td>0597-888999</td><td>Khan Younis</td><td class="warn">The Ninth Cipher</td><td class="nul">NULL</td><td class="nul">NULL</td><td>Mystery</td><td>Laila Hammoud</td><td>Lebanon</td><td>2026-03-09</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="tbl-legend"><span class="i18n-en">Red = a cell holding more than one value · Amber = the columns of a repeating group</span><span class="i18n-ar" dir="rtl">الأحمر = خلية تحمل أكثر من قيمة · البرتقالي = أعمدة مجموعة مكرّرة</span></p>
+
+          <h3 class="i18n-en">Let's name the problems</h3>
+          <h3 class="i18n-ar" dir="rtl">لنُسمِّ المشاكل بأسمائها</h3>
+          <ul class="problem-list">
+            <li>
+              <span class="pt"><span class="i18n-en">① A repeating group: <code>book_1, book_2, book_3</code></span><span class="i18n-ar" dir="rtl">① مجموعة مكرّرة: <code>book_1, book_2, book_3</code></span></span>
+              <span class="i18n-en">We invented a ceiling of three books. What if someone borrows four? <code>ALTER TABLE</code>… then five? Worse, a trivial question like "who borrowed <em>A Quiet Machine</em>?" needs three OR'd conditions — and silently becomes wrong the moment <code>book_4</code> is added. Note too how many wasted <code>NULL</code> cells there are.</span>
+              <span class="i18n-ar" dir="rtl">وضعنا سقفًا صناعيًا عند ثلاثة كتب. ماذا لو استعار عضوٌ أربعة؟ <code>ALTER TABLE</code>… ثم خمسة؟ والأسوأ أن سؤالًا بسيطًا مثل «من استعار <em>A Quiet Machine</em>؟» يحتاج ثلاثة شروط مربوطة بـ OR — ويصير خطأً صامتًا لحظة إضافة <code>book_4</code>. ولاحظ أيضًا كم خلية <code>NULL</code> ضائعة.</span>
+            </li>
+            <li>
+              <span class="pt"><span class="i18n-en">② Multi-valued cells: <code>member_phones</code>, <code>genres</code>, <code>author_name</code>, <code>author_country</code></span><span class="i18n-ar" dir="rtl">② خلايا بقيم متعدّدة: <code>member_phones</code> و<code>genres</code> و<code>author_name</code> و<code>author_country</code></span></span>
+              <span class="i18n-en">The database doesn't see a list — it sees one long string. <code>WHERE genres = 'Fiction'</code> misses loan 101 even though it contains a Fiction book, and the fallback <code>LIKE '%Fiction%'</code> wrongly matches loan 103, whose only "Fiction" is inside <em>Science</em> Fiction. You will run both below.</span>
+              <span class="i18n-ar" dir="rtl">قاعدة البيانات لا ترى قائمة — بل ترى نصًّا واحدًا طويلًا. <code>WHERE genres = 'Fiction'</code> لا يُرجع الإعارة ١٠١ رغم أن فيها كتابًا من نوع Fiction، والبديل <code>LIKE '%Fiction%'</code> يُرجع خطأً الإعارة ١٠٣ التي لا تحوي «Fiction» إلا داخل <em>Science</em> Fiction. ستشغّل الاستعلامين بنفسك أدناه.</span>
+            </li>
+            <li>
+              <span class="pt"><span class="i18n-en">③ A fragile implicit ordering</span><span class="i18n-ar" dir="rtl">③ ترتيب ضِمني هشّ</span></span>
+              <span class="i18n-en">In loan 103, how do we know <code>Fantasy</code> belongs to <em>Paper Kingdoms</em> and not to <em>A Quiet Machine</em>? Only because the positions line up — a promise between humans, not a constraint the database enforces. The first person to edit one column and not the other breaks it.</span>
+              <span class="i18n-ar" dir="rtl">في الإعارة ١٠٣، كيف نعرف أن <code>Fantasy</code> تخصّ <em>Paper Kingdoms</em> لا <em>A Quiet Machine</em>؟ فقط لأن المواضع متطابقة — وهذا عهدٌ بين البشر، لا قيدٌ تفرضه قاعدة البيانات. وأول من يعدّل عمودًا دون الآخر سيكسره.</span>
+            </li>
+            <li>
+              <span class="pt"><span class="i18n-en">④ Four things in one row</span><span class="i18n-ar" dir="rtl">④ أربعة كيانات في صفّ واحد</span></span>
+              <span class="i18n-en">A single row talks about a <strong>loan</strong>, a <strong>member</strong>, several <strong>books</strong> and their <strong>authors</strong> all at once (Figure 1). That is the real source of every anomaly.</span>
+              <span class="i18n-ar" dir="rtl">الصفّ الواحد يحكي عن <strong>إعارة</strong> و<strong>عضو</strong> وعدّة <strong>كتب</strong> و<strong>مؤلفيها</strong> في وقت واحد (الشكل ١). وهذا هو المصدر الحقيقي لكل شذوذ.</span>
+            </li>
+            <li>
+              <span class="pt"><span class="i18n-en">⑤ The three anomalies, concretely</span><span class="i18n-ar" dir="rtl">⑤ الشذوذ الثلاثة، بالأرقام</span></span>
+              <span class="i18n-en"><strong>Insert:</strong> <em>Static Gardens</em> arrives and nobody has borrowed it yet — this sheet has nowhere to record it. <strong>Update:</strong> Sara changes her mobile number — you must edit both loans 101 and 103; miss one and Sara has two contradictory numbers. <strong>Delete:</strong> cancel loan 104 and Dina Qasem — her phone, her city, the very fact that she is a member — vanishes with it. (<em>The Ninth Cipher</em> survives only because loan 103 happens to mention it too.)</span>
+              <span class="i18n-ar" dir="rtl"><strong>الإضافة:</strong> وصل الكتاب <em>Static Gardens</em> ولم يستعره أحد بعد — لا مكان لتسجيله في هذه الورقة. <strong>التعديل:</strong> سارة غيّرت رقم جوّالها — عليك تعديل الإعارتين ١٠١ و١٠٣ معًا؛ ولو نسيت إحداهما صار لسارة رقمان متناقضان. <strong>الحذف:</strong> ألغِ الإعارة ١٠٤ فتختفي معها دينا قاسم — رقمها ومدينتها، بل حقيقة أنها عضوة أصلًا. (وينجو <em>The Ninth Cipher</em> فقط لأن الإعارة ١٠٣ تذكره أيضًا.)</span>
+            </li>
+          </ul>
+
+          <figure class="nf-figure">
+            <svg class="dg" viewBox="0 0 520 300" role="img" aria-label="One row of library_flat holds four entities: a loan, a member, three books, and their authors">
+              <text class="dg-title i18n-en" x="260" y="22" text-anchor="middle">One row of library_flat = four things crammed together</text>
+              <text class="dg-title i18n-ar" x="260" y="22" text-anchor="middle" direction="rtl">صفٌّ واحد في library_flat = أربعة كيانات محشورة معًا</text>
+              <rect class="dg-box b0" x="20" y="36" width="480" height="46" rx="7"/>
+              <text class="dg-label i18n-en" x="260" y="55" text-anchor="middle">① The loan</text>
+              <text class="dg-label i18n-ar" x="260" y="55" text-anchor="middle" direction="rtl">① الإعارة</text>
+              <text class="dg-mono" x="260" y="73" text-anchor="middle">loan_id · loan_date</text>
+              <rect class="dg-box b1" x="20" y="90" width="480" height="46" rx="7"/>
+              <text class="dg-label i18n-en" x="260" y="109" text-anchor="middle">② The member</text>
+              <text class="dg-label i18n-ar" x="260" y="109" text-anchor="middle" direction="rtl">② العضو</text>
+              <text class="dg-mono" x="260" y="127" text-anchor="middle">member_name · member_phones · member_city</text>
+              <rect class="dg-box b2" x="20" y="144" width="480" height="58" rx="7"/>
+              <text class="dg-label i18n-en" x="260" y="163" text-anchor="middle">③ The book — up to three times!</text>
+              <text class="dg-label i18n-ar" x="260" y="163" text-anchor="middle" direction="rtl">③ الكتاب — حتى ثلاث مرات!</text>
+              <text class="dg-mono" x="260" y="180" text-anchor="middle">book_1 · book_2 · book_3</text>
+              <text class="dg-mono" x="260" y="195" text-anchor="middle">genres</text>
+              <rect class="dg-box b3" x="20" y="210" width="480" height="46" rx="7"/>
+              <text class="dg-label i18n-en" x="260" y="229" text-anchor="middle">④ The author</text>
+              <text class="dg-label i18n-ar" x="260" y="229" text-anchor="middle" direction="rtl">④ المؤلف</text>
+              <text class="dg-mono" x="260" y="247" text-anchor="middle">author_name · author_country</text>
+              <path class="dg-line" d="M260 262 V276"/>
+              <path class="dg-head" d="M255 274 L260 282 L265 274 Z"/>
+              <text class="dg-small i18n-en" x="260" y="296" text-anchor="middle">Each one deserves its own table — which is exactly where this chapter ends up</text>
+              <text class="dg-small i18n-ar" x="260" y="296" text-anchor="middle" direction="rtl">كل كيان يستحق جدولًا خاصًا به — وهذا بالضبط ما سينتهي إليه الفصل</text>
+            </svg>
+            <figcaption class="nf-caption"><span class="i18n-en">Figure 1 — Diagnosing the flat table before changing anything.</span><span class="i18n-ar" dir="rtl">الشكل ١ — تشخيص الجدول المسطّح قبل أي تعديل.</span></figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>library_flat</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>library_flat</code></h2>
+      <p class="i18n-en">SQL is the quickest way to <em>feel</em> a bad design. Each example below runs against the real sheet; edit and re-run as you like — every run starts from a fresh copy.</p>
+      <p class="i18n-ar" dir="rtl">SQL أسرع طريقة لكي <em>تشعر</em> بالتصميم السيّئ. كل مثال أدناه يعمل على الورقة الحقيقية؛ عدّل وأعِد التشغيل كما تشاء — فكل تشغيل يبدأ من نسخة جديدة.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — a repeating group makes a simple question long</span><span class="i18n-ar" dir="rtl">مثال ١ — المجموعة المكرّرة تُطيل السؤال البسيط</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"SELECT loan_id, member_name\nFROM library_flat\nWHERE book_1 = 'A Quiet Machine'\n   OR book_2 = 'A Quiet Machine'\n   OR book_3 = 'A Quiet Machine';"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">"Who borrowed <em>A Quiet Machine</em>?" needs one condition per numbered column. The day someone adds <code>book_4</code>, this query keeps running without an error — and quietly starts missing loans.</span><span class="i18n-ar" dir="rtl">سؤال «من استعار <em>A Quiet Machine</em>؟» يحتاج شرطًا لكل عمود مرقّم. ويوم يُضيف أحدهم <code>book_4</code> سيبقى هذا الاستعلام يعمل دون أي خطأ — وسيبدأ بصمت في إغفال إعارات.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — a multi-valued cell defeats WHERE</span><span class="i18n-ar" dir="rtl">مثال ٢ — الخلية المتعدّدة القيم تهزم WHERE</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"SELECT loan_id, genres FROM library_flat WHERE genres = 'Fiction';\n\n-- now try the \"fix\" instead:\n-- SELECT loan_id, genres FROM library_flat WHERE genres LIKE '%Fiction%';"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">The <code>=</code> version returns only loan 102 — loan 101 has a Fiction book too. Uncomment the <code>LIKE</code> version: now loan 103 sneaks in, because <code>'Science Fiction'</code> contains the letters <code>Fiction</code>. Neither query is right, because the cell is not one value.</span><span class="i18n-ar" dir="rtl">نسخة <code>=</code> تُرجع الإعارة ١٠٢ فقط — مع أن في الإعارة ١٠١ كتابًا من نوع Fiction أيضًا. أزِل التعليق عن نسخة <code>LIKE</code>: الآن تتسلّل الإعارة ١٠٣، لأن <code>'Science Fiction'</code> تحتوي الحروف <code>Fiction</code>. لا الاستعلام الأول صحيح ولا الثاني، لأن الخلية ليست قيمة واحدة.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the update anomaly, live</span><span class="i18n-ar" dir="rtl">مثال ٣ — شذوذ التعديل، حيًّا</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"UPDATE library_flat\nSET member_phones = '0599-555000, 08-2834567'\nWHERE loan_id = 101;\n\nSELECT loan_id, member_name, member_phones\nFROM library_flat\nWHERE member_name = 'Sara Hamdan';"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Sara's new mobile was saved on loan 101 only. Which number is hers now? The database holds both and cannot tell you — her phone is stored once <em>per loan</em> instead of once per member.</span><span class="i18n-ar" dir="rtl">حُفظ جوّال سارة الجديد على الإعارة ١٠١ فقط. فأيّ الرقمين رقمها الآن؟ قاعدة البيانات تحمل الاثنين ولا تستطيع أن تخبرك — لأن هاتفها مخزّن مرة <em>لكل إعارة</em> بدل مرة واحدة لكل عضو.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">An electronics shop — <strong>Orbit Electronics</strong> — kept its orders in one flat sheet too: <code>orders_flat</code>. The journey is the same as the library's, but this time <strong>you</strong> walk it. Try each task before opening its answer — the attempt is where the learning is.</p>
+      <p class="i18n-ar" dir="rtl">متجر الإلكترونيات <strong>Orbit Electronics</strong> كان يسجّل طلباته أيضًا في ورقة مسطّحة واحدة: <code>orders_flat</code>. الرحلة هي نفسها رحلة المكتبة، لكن <strong>أنت</strong> من يمشيها هذه المرة. حاول في كل مهمّة قبل أن تفتح جوابها — فالتعلّم كلّه في المحاولة.</p>
+
+      <div class="tbl-cap">orders_flat</div>
+      <div class="tbl-scroll">
+        <table class="data">
+          <thead><tr><th>order_id</th><th>customer_name</th><th>customer_contacts</th><th>customer_city</th><th>item_1</th><th>item_2</th><th>item_3</th><th>categories</th><th>category_depts</th><th>brand_names</th><th>brand_countries</th><th>order_date</th></tr></thead>
+          <tbody>
+            <tr><td>5001</td><td>Hani Zorob</td><td class="bad">hani@mail.ps, 0599-776655</td><td>Gaza</td><td class="warn">Pulse Buds</td><td class="warn">GridKey Desk Hub</td><td class="nul">NULL</td><td class="bad">Audio, Accessories</td><td class="bad">Home, Office</td><td class="bad">Pulse, GridKey</td><td class="bad">Denmark, Taiwan</td><td>2026-04-02</td></tr>
+            <tr><td>5002</td><td>Rana Abed</td><td>rana@mail.ps</td><td>Deir al-Balah</td><td class="warn">GridKey Mechanical</td><td class="nul">NULL</td><td class="nul">NULL</td><td>Accessories</td><td>Office</td><td>GridKey</td><td>Taiwan</td><td>2026-04-04</td></tr>
+            <tr><td>5003</td><td>Hani Zorob</td><td class="bad">hani@mail.ps, 0599-776655</td><td>Gaza</td><td class="warn">Pulse Buds</td><td class="warn">Pulse Studio Headphones</td><td class="warn">GridKey Mechanical</td><td class="bad">Audio, Audio, Accessories</td><td class="bad">Home, Home, Office</td><td class="bad">Pulse, Pulse, GridKey</td><td class="bad">Denmark, Denmark, Taiwan</td><td>2026-04-05</td></tr>
+            <tr><td>5004</td><td>Samir Hajjaj</td><td>samir@mail.ps</td><td>Jabalia</td><td class="warn">Pulse Studio Headphones</td><td class="nul">NULL</td><td class="nul">NULL</td><td>Audio</td><td>Home</td><td>Pulse</td><td>Denmark</td><td>2026-04-08</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="task">
+        <div class="task-h"><span class="task-num">1</span><span class="i18n-en">List <strong>three</strong> problems that keep this table out of first normal form, and give each its technical name.</span><span class="i18n-ar" dir="rtl">عدِّد <strong>ثلاث</strong> مشاكل تمنع هذا الجدول من أن يكون في النموذج الأول، وسمِّ كل مشكلة باسمها الاصطلاحي.</span></div>
+        <details class="reveal"><summary><span class="i18n-en">Show the answer</span><span class="i18n-ar" dir="rtl">اعرض الحل</span></summary>
+          <div class="reveal-body">
+            <ul class="problem-list">
+              <li><span class="pt"><span class="i18n-en">Repeating group</span><span class="i18n-ar" dir="rtl">مجموعة مكرّرة</span></span><span class="i18n-en"><code>item_1, item_2, item_3</code> — an artificial ceiling of three products, and finding one product needs three OR'd conditions.</span><span class="i18n-ar" dir="rtl"><code>item_1, item_2, item_3</code> — سقف صناعي عند ثلاثة منتجات، والبحث عن منتج واحد يحتاج ثلاثة شروط مربوطة بـ OR.</span></li>
+              <li><span class="pt"><span class="i18n-en">Multi-valued cells</span><span class="i18n-ar" dir="rtl">خلايا بقيم متعدّدة</span></span><span class="i18n-en"><code>customer_contacts</code> (an email and a phone in one cell), plus <code>categories</code>, <code>category_depts</code>, <code>brand_names</code> and <code>brand_countries</code> — five columns, not one.</span><span class="i18n-ar" dir="rtl"><code>customer_contacts</code> (بريد وهاتف في خلية واحدة)، ومعها <code>categories</code> و<code>category_depts</code> و<code>brand_names</code> و<code>brand_countries</code> — خمسة أعمدة لا عمود واحد.</span></li>
+              <li><span class="pt"><span class="i18n-en">No real key + a fragile implicit ordering</span><span class="i18n-ar" dir="rtl">لا مفتاح حقيقي + ترتيب ضمني هشّ</span></span><span class="i18n-en"><code>order_id</code> looks like a key, but each row describes several products at once. And in order 5003, nothing ties the first <code>Pulse</code> to <em>Pulse Buds</em> except matching positions — a human convention, not a database constraint.</span><span class="i18n-ar" dir="rtl"><code>order_id</code> يبدو مفتاحًا، لكن كل صفّ يصف عدّة منتجات دفعةً واحدة. وفي الطلب ٥٠٠٣ لا شيء يربط أول <code>Pulse</code> بـ<em>Pulse Buds</em> إلا تطابق المواضع — وهو اتفاق بشري لا قيد في قاعدة البيانات.</span></li>
+            </ul>
+            <p class="i18n-en">A fourth worth noticing: <code>category_depts</code> is a fact about neither the order nor the product, but about the <strong>category</strong>. You will come back to it in Lesson 4.</p>
+            <p class="i18n-ar" dir="rtl">ومشكلة رابعة تستحق الانتباه: <code>category_depts</code> ليست حقيقة عن الطلب ولا عن المنتج، بل عن <strong>الفئة</strong>. ستعود إليها في الدرس الرابع.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="task">
+        <div class="task-h"><span class="task-num">2</span><span class="i18n-en">Customer Samir Hajjaj cancels order 5004 and the row is deleted. What did the shop lose without meaning to? Which anomaly is this? Then give an example of an <em>insertion</em> anomaly in this table.</span><span class="i18n-ar" dir="rtl">الزبون سمير حجاج ألغى طلبه ٥٠٠٤ فحُذف الصف. ما الذي فقده المتجر دون قصد؟ وما اسم هذا النوع من الشذوذ؟ ثم اذكر مثالًا على شذوذ <em>الإضافة</em> في هذا الجدول.</span></div>
+        <details class="reveal"><summary><span class="i18n-en">Show the answer</span><span class="i18n-ar" dir="rtl">اعرض الحل</span></summary>
+          <div class="reveal-body">
+            <p class="i18n-en"><strong>Deletion anomaly.</strong> The shop lost the facts that Samir Hajjaj is a customer, lives in Jabalia and has the email <code>samir@mail.ps</code> — the whole customer vanished. <em>Pulse Studio Headphones</em> survived only by luck, because order 5003 mentions it too; otherwise the product, its category and its brand would have gone as well. "Surviving by luck" is not a design. Example 3 below shows it happening.</p>
+            <p class="i18n-ar" dir="rtl"><strong>شذوذ الحذف.</strong> فقد المتجر حقيقة أن سمير حجاج زبون لديه، وأنه يسكن جباليا، وأن بريده <code>samir@mail.ps</code> — اختفى الزبون كلّه. أما <em>Pulse Studio Headphones</em> فنجا بالصدفة فقط لأن الطلب ٥٠٠٣ يذكره أيضًا؛ ولولا ذلك لاختفى المنتج وفئته وماركته معه. و«النجاة بالصدفة» ليست تصميمًا. المثال ٣ أدناه يُريك ذلك يحدث.</p>
+            <p class="i18n-en"><strong>Insertion anomaly.</strong> A shipment of <em>Voyager 14 Laptop</em> arrives. Where do you record it? Nowhere — this sheet only knows about orders, so a product cannot exist until somebody buys it. Likewise, a customer who signed up but hasn't ordered yet cannot be recorded.</p>
+            <p class="i18n-ar" dir="rtl"><strong>شذوذ الإضافة.</strong> وصلت شحنة من <em>Voyager 14 Laptop</em>. أين تسجّلها؟ لا مكان — فهذه الورقة لا تعرف إلا الطلبات، ولا يمكن أن يوجد منتج قبل أن يشتريه أحد. وكذلك لا يمكن تسجيل زبون سجّل في الموقع ولم يطلب بعد.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — look at the sheet</span><span class="i18n-ar" dir="rtl">مثال ١ — انظر إلى الورقة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":7,"sql":"SELECT order_id, customer_name, item_1, item_2, item_3, brand_names\nFROM orders_flat;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — how many rows repeat each customer?</span><span class="i18n-ar" dir="rtl">مثال ٢ — كم صفًّا يكرّر بيانات كل زبون؟</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":7,"sql":"SELECT customer_name, customer_contacts, COUNT(*) AS copies\nFROM orders_flat\nGROUP BY customer_name, customer_contacts;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Hani's contacts are stored twice. If he changes his email, two rows must change together — that is the update anomaly waiting to happen.</span><span class="i18n-ar" dir="rtl">بيانات اتصال هاني مخزّنة مرتين. فإن غيّر بريده وجب تعديل صفّين معًا — وهذا شذوذ التعديل ينتظر أن يقع.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the deletion anomaly, live</span><span class="i18n-ar" dir="rtl">مثال ٣ — شذوذ الحذف، حيًّا</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":7,"sql":"DELETE FROM orders_flat WHERE order_id = 5004;\n\nSELECT order_id, customer_name, customer_city\nFROM orders_flat\nWHERE customer_name = 'Samir Hajjaj';"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Zero rows: cancelling one order erased a customer. Watch the Database panel — <code>orders_flat</code> drops to 3 rows.</span><span class="i18n-ar" dir="rtl">صفر صفوف: إلغاء طلب واحد محا زبونًا. راقب لوحة قاعدة البيانات — ينخفض <code>orders_flat</code> إلى ٣ صفوف.</span></div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="7" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"In orders_flat, the cell 'hani@mail.ps, 0599-776655' in customer_contacts is an example of:","ar":"في orders_flat، الخلية 'hani@mail.ps, 0599-776655' في العمود customer_contacts مثال على:"},
+         "options":[{"en":"A multi-valued cell","ar":"خلية بقيم متعدّدة"},{"en":"A repeating group","ar":"مجموعة مكرّرة"},{"en":"A composite key","ar":"مفتاح مركّب"},{"en":"A foreign key","ar":"مفتاح أجنبي"}],
+         "correctIndex":0,
+         "explain":{"en":"Two values (an email and a phone) live inside one cell. A repeating group spreads a list across numbered columns instead.","ar":"قيمتان (بريد وهاتف) تسكنان خلية واحدة. أما المجموعة المكرّرة فتوزّع القائمة على أعمدة مرقّمة."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="7" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"Deleting order 5004 from orders_flat also deletes everything the shop knows about Samir Hajjaj.","ar":"حذف الطلب ٥٠٠٤ من orders_flat يحذف أيضًا كل ما يعرفه المتجر عن سمير حجاج."},
+         "correct":true,
+         "explain":{"en":"Order 5004 is Samir's only row, so his name, email and city go with it — a deletion anomaly.","ar":"الطلب ٥٠٠٤ هو الصف الوحيد لسمير، فيذهب معه اسمه وبريده ومدينته — وهذا شذوذ الحذف."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="lab-q3" data-chapter="7" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Match each anomaly to what it looks like in orders_flat.","ar":"صِل كل نوع من الشذوذ بصورته في orders_flat."},
+         "left":[{"en":"Insertion anomaly","ar":"شذوذ الإضافة"},{"en":"Update anomaly","ar":"شذوذ التعديل"},{"en":"Deletion anomaly","ar":"شذوذ الحذف"}],
+         "right":[{"en":"A new product can't be recorded until someone orders it","ar":"لا يمكن تسجيل منتج جديد قبل أن يطلبه أحد"},{"en":"Hani changes his email and two rows must be edited","ar":"يغيّر هاني بريده فيجب تعديل صفّين"},{"en":"Cancelling order 5004 erases the customer Samir","ar":"إلغاء الطلب ٥٠٠٤ يمحو الزبون سمير"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return the <code>order_id</code> of every order in <code>orders_flat</code> that contains <code>GridKey Mechanical</code> — in any of the three item columns.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد <code>order_id</code> لكل طلب في <code>orders_flat</code> يحتوي <code>GridKey Mechanical</code> — في أيٍّ من أعمدة المنتجات الثلاثة.</p>
+        <div class="qb-widget" data-qid="lab-q4" data-chapter="7" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":7,"placeholder":"SELECT order_id FROM orders_flat WHERE item_1 = ... OR ...","grade":{"mode":"result","expected":"SELECT order_id FROM orders_flat WHERE item_1 = 'GridKey Mechanical' OR item_2 = 'GridKey Mechanical' OR item_3 = 'GridKey Mechanical'"},"wrong":"SELECT order_id FROM orders_flat WHERE item_1 = 'GridKey Mechanical'"}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Measure the redundancy: return one row per <code>customer_name</code> with a column <code>row_count</code> — how many rows of <code>orders_flat</code> repeat that customer's details.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">قِس التكرار: أعِد صفًّا واحدًا لكل <code>customer_name</code> مع عمود <code>row_count</code> — عدد صفوف <code>orders_flat</code> التي تكرّر بيانات ذلك الزبون.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="7" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":7,"placeholder":"SELECT customer_name, COUNT(*) AS row_count FROM orders_flat GROUP BY ...","grade":{"mode":"result","expected":"SELECT customer_name, COUNT(*) AS row_count FROM orders_flat GROUP BY customer_name"},"wrong":"SELECT customer_name, COUNT(*) AS row_count FROM orders_flat GROUP BY customer_name, order_id"}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong>. The registrar keeps one wide sheet, <code>enrollments_flat</code>, with a row per student per course — and every row repeats the student's details, the course's details, and the department's building.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong>. يحتفظ المسجّل بورقة عريضة واحدة، <code>enrollments_flat</code>، فيها صفّ لكل طالب في كل مقرّر — وكل صفّ يكرّر بيانات الطالب وبيانات المقرّر ومبنى القسم.</p>
+
+      <div class="tbl-cap">enrollments_flat</div>
+      <div class="tbl-scroll">
+        <table class="data">
+          <thead><tr><th>student_id</th><th>course_id</th><th>student_name</th><th>study_year</th><th>course_title</th><th>credits</th><th>department_name</th><th>building</th><th>term</th><th>grade</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>1</td><td>Maha Dahlan</td><td>2</td><td>Intro to Algorithms</td><td>4</td><td>Computer Science</td><td>Sciences Hall</td><td>2026-F</td><td>88</td></tr>
+            <tr><td>1</td><td>2</td><td>Maha Dahlan</td><td>2</td><td>Linear Algebra</td><td>3</td><td>Mathematics</td><td>Sciences Hall</td><td>2026-F</td><td>74</td></tr>
+            <tr><td>2</td><td>1</td><td>Tareq Isleem</td><td>3</td><td>Intro to Algorithms</td><td>4</td><td>Computer Science</td><td>Sciences Hall</td><td>2026-F</td><td>91</td></tr>
+            <tr><td>2</td><td>7</td><td>Tareq Isleem</td><td>3</td><td>Machine Learning</td><td>3</td><td>Computer Science</td><td>Sciences Hall</td><td>2026-F</td><td>85</td></tr>
+            <tr><td>3</td><td>5</td><td>Hiba Nofal</td><td>1</td><td>Cell Biology</td><td>3</td><td>Biology</td><td>Life Sciences</td><td>2026-F</td><td>79</td></tr>
+            <tr><td>3</td><td>9</td><td>Hiba Nofal</td><td>1</td><td>Principles of Marketing</td><td>3</td><td>Business Administration</td><td>Commerce</td><td>2026-F</td><td>93</td></tr>
+            <tr><td>4</td><td>2</td><td>Yazan Ayyad</td><td>2</td><td>Linear Algebra</td><td>3</td><td>Mathematics</td><td>Sciences Hall</td><td>2026-F</td><td>68</td></tr>
+            <tr><td>4</td><td>5</td><td>Yazan Ayyad</td><td>2</td><td>Cell Biology</td><td>3</td><td>Biology</td><td>Life Sciences</td><td>2026-F</td><td>82</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="7" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"The registrar cannot record the new course 'Data Ethics' in enrollments_flat until some student enrolls in it. This is:","ar":"لا يستطيع المسجّل تسجيل المقرّر الجديد 'Data Ethics' في enrollments_flat قبل أن يسجّل فيه طالبٌ ما. هذا:"},
+         "options":[{"en":"An update anomaly","ar":"شذوذ تعديل"},{"en":"An insertion anomaly","ar":"شذوذ إضافة"},{"en":"A deletion anomaly","ar":"شذوذ حذف"},{"en":"A foreign-key violation","ar":"خرق للمفتاح الأجنبي"}],
+         "correctIndex":1}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="7" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"In enrollments_flat, moving Computer Science to a new building means editing exactly one row.","ar":"في enrollments_flat، نقل قسم Computer Science إلى مبنى جديد يعني تعديل صفّ واحد بالضبط."},
+         "correct":false,
+         "explain":{"en":"The building is repeated on every Computer Science enrollment — three rows here, and more with every new enrollment.","ar":"المبنى مكرّر على كل تسجيل في Computer Science — ثلاثة صفوف هنا، وتزيد مع كل تسجيل جديد."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="7" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the central idea of normalization.","ar":"أكمل الفكرة المركزية للتطبيع."},
+         "template":{"en":"Every fact should be stored in exactly ____ place.","ar":"يجب أن تُخزَّن كل حقيقة في مكان ____ فقط."},"answers":["one","1","a single","single","واحد"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">How many rows would a building change touch? Return one row per <code>department_name</code> with a column <code>row_count</code> — how many rows of <code>enrollments_flat</code> repeat that department's building.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">كم صفًّا سيمسّه تغيير المبنى؟ أعِد صفًّا واحدًا لكل <code>department_name</code> مع عمود <code>row_count</code> — عدد صفوف <code>enrollments_flat</code> التي تكرّر مبنى ذلك القسم.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="7" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":7,"placeholder":"SELECT department_name, COUNT(*) AS row_count FROM enrollments_flat GROUP BY ...","grade":{"mode":"result","expected":"SELECT department_name, COUNT(*) AS row_count FROM enrollments_flat GROUP BY department_name"},"wrong":"SELECT department_name, COUNT(*) AS row_count FROM enrollments_flat GROUP BY department_name, building, course_id"}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Computer Science moves to <code>'Innovation Hub'</code>. Write <strong>one</strong> <code>UPDATE</code> that changes the <code>building</code> on <em>every</em> row of <code>enrollments_flat</code> that stores it — and on no other row.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">انتقل قسم Computer Science إلى <code>'Innovation Hub'</code>. اكتب عبارة <code>UPDATE</code> <strong>واحدة</strong> تغيّر <code>building</code> في <em>كل</em> صفّ من <code>enrollments_flat</code> يخزّنه — ولا تمسّ أيّ صفّ آخر.</p>
+        <div class="qb-widget" data-qid="test-t5" data-chapter="7" data-lesson="1">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":7,"placeholder":"UPDATE enrollments_flat SET building = ... WHERE ...","answer":"UPDATE enrollments_flat SET building = 'Innovation Hub' WHERE department_name = 'Computer Science'","wrong":"UPDATE enrollments_flat SET building = 'Innovation Hub' WHERE course_id = 1","grade":{"mode":"state","check":"SELECT department_name, building FROM enrollments_flat GROUP BY department_name, building","expected":[{"department_name":"Computer Science","building":"Innovation Hub"},{"department_name":"Mathematics","building":"Sciences Hall"},{"department_name":"Biology","building":"Life Sciences"},{"department_name":"Business Administration","building":"Commerce"}]}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t6" data-chapter="7" data-lesson="1">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Match each term to its definition.","ar":"صِل كل مصطلح بتعريفه."},
+         "left":[{"en":"Atomic value","ar":"قيمة ذرّية"},{"en":"Repeating group","ar":"مجموعة مكرّرة"},{"en":"Composite key","ar":"مفتاح مركّب"},{"en":"Surrogate key","ar":"مفتاح صناعي"}],
+         "right":[{"en":"One value you never need to split to use","ar":"قيمة واحدة لا نحتاج تجزئتها لاستعمالها"},{"en":"Numbered look-alike columns storing a list","ar":"أعمدة متشابهة مرقّمة تخزّن قائمة"},{"en":"A primary key made of several columns","ar":"مفتاح أساسي من أكثر من عمود"},{"en":"An invented key with no real-world meaning","ar":"مفتاح مُختلَق بلا معنى في الواقع"}],
+         "correctPairs":[[0,0],[1,1],[2,2],[3,3]]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="7" data-lesson="1"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

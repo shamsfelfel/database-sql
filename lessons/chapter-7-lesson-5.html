@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 7 · Lesson 5 — Diagnosing Real Designs · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/normalize.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="7" data-lesson="5">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="7" data-lesson="5"></nav>
+
+    <h1 class="i18n-en">Lesson 5 — Diagnosing Real Designs</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٥ — تشخيص تصاميم حقيقية</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">In Lessons 1–4 you walked one table, step by step, from flat to 3NF. Real life is less tidy: nobody hands you a table labelled "this one is in 1NF". You find an existing design — a spreadsheet someone imported, a table that grew a column at a time — and you have to <strong>diagnose</strong> it. This lesson gives you the whole method on one page, then six designs from six sectors, each stopped at a different stage.</p>
+      <p class="i18n-ar" dir="rtl">في الدروس ١–٤ مشيتَ بجدول واحد، خطوة بخطوة، من المسطّح إلى 3NF. أما الواقع فأقلّ ترتيبًا: لن يسلّمك أحد جدولًا مكتوبًا عليه «هذا في النموذج الأول». ستجد تصميمًا قائمًا — جدولًا إلكترونيًا استورده أحدهم، أو جدولًا نما عمودًا بعد عمود — وعليك أن <strong>تُشخّصه</strong>. هذا الدرس يجمع لك الطريقة كلها في صفحة واحدة، ثم يعرض ستة تصاميم من ستة قطاعات، كلٌّ منها واقف عند مرحلة مختلفة.</p>
+
+      <div class="callout note">
+        <div class="i18n-en"><strong>The standing question.</strong> For every design, answer three things: ① Which normal form is it in <em>right now</em>? ② What is the evidence — name the exact column and the exact dependency. ③ Which steps bring it to 3NF?</div>
+        <div class="i18n-ar" dir="rtl"><strong>السؤال الموحَّد.</strong> أجب عن ثلاثة أمور في كل تصميم: ① في أيّ نموذج هو <em>الآن</em>؟ ② ما الدليل — سمِّ العمود بعينه والاعتماد بعينه. ③ ما الخطوات التي توصله إلى 3NF؟</div>
+      </div>
+
+      <h2 class="i18n-en">The three forms side by side</h2>
+      <h2 class="i18n-ar" dir="rtl">النماذج الثلاثة جنبًا إلى جنب</h2>
+      <div class="tbl-scroll cmp-wrap">
+        <table class="cmp">
+          <thead>
+            <tr><th></th><th><span class="nf-chip nf-1">1NF</span></th><th><span class="nf-chip nf-2">2NF</span></th><th><span class="nf-chip nf-3">3NF</span></th></tr>
+          </thead>
+          <tbody>
+            <tr><th><span class="i18n-en">Forbids</span><span class="i18n-ar" dir="rtl">يمنع</span></th>
+              <td><span class="i18n-en">multi-valued cells &amp; repeating groups</span><span class="i18n-ar" dir="rtl">القيم المتعدّدة والمجموعات المكرّرة</span></td>
+              <td><span class="i18n-en">partial dependency</span><span class="i18n-ar" dir="rtl">الاعتماد الجزئي</span></td>
+              <td><span class="i18n-en">transitive dependency</span><span class="i18n-ar" dir="rtl">الاعتماد العابر</span></td></tr>
+            <tr><th><span class="i18n-en">The rule in a line</span><span class="i18n-ar" dir="rtl">القاعدة في سطر</span></th>
+              <td><span class="i18n-en">one cell = one value, and every row has a key</span><span class="i18n-ar" dir="rtl">خلية واحدة = قيمة واحدة، ولكل صفّ مفتاح</span></td>
+              <td><span class="i18n-en">every column depends on the <em>whole</em> key</span><span class="i18n-ar" dir="rtl">كل عمود يعتمد على المفتاح <em>كلّه</em></span></td>
+              <td><span class="i18n-en">… and on <em>nothing but</em> the key</span><span class="i18n-ar" dir="rtl">… و<em>لا شيء غير</em> المفتاح</span></td></tr>
+            <tr><th><span class="i18n-en">Quick check</span><span class="i18n-ar" dir="rtl">الفحص السريع</span></th>
+              <td><span class="i18n-en">any commas in a cell? any <code>x_1, x_2, x_3</code>?</span><span class="i18n-ar" dir="rtl">هل في خلية فاصلة؟ هل ترى <code>x_1, x_2, x_3</code>؟</span></td>
+              <td><span class="i18n-en">is the key composite? does part of it suffice for some column?</span><span class="i18n-ar" dir="rtl">هل المفتاح مركّب؟ وهل يكفي جزءٌ منه لعمودٍ ما؟</span></td>
+              <td><span class="i18n-en">does a non-key column determine another non-key column?</span><span class="i18n-ar" dir="rtl">هل يحدّد عمودٌ غير مفتاحي عمودًا غير مفتاحي آخر؟</span></td></tr>
+            <tr><th><span class="i18n-en">Tool</span><span class="i18n-ar" dir="rtl">الأداة</span></th>
+              <td><span class="i18n-en">unrolling lists into rows</span><span class="i18n-ar" dir="rtl">تفكيك القوائم إلى صفوف</span></td>
+              <td><span class="i18n-en">functional dependency</span><span class="i18n-ar" dir="rtl">الاعتماد الوظيفي</span></td>
+              <td><span class="i18n-en">functional dependency</span><span class="i18n-ar" dir="rtl">الاعتماد الوظيفي</span></td></tr>
+            <tr><th><span class="i18n-en">Free when…</span><span class="i18n-ar" dir="rtl">يتحقّق مجانًا إذا…</span></th>
+              <td>—</td>
+              <td><span class="i18n-en">the primary key is a single column</span><span class="i18n-ar" dir="rtl">كان المفتاح الأساسي عمودًا واحدًا</span></td>
+              <td><span class="i18n-en">only columns describing the key itself remain</span><span class="i18n-ar" dir="rtl">لم يبقَ إلا أعمدة تصف المفتاح نفسه</span></td></tr>
+            <tr><th><span class="i18n-en">The human-language test</span><span class="i18n-ar" dir="rtl">السؤال البشري المكافئ</span></th>
+              <td><span class="i18n-en">"is this one box or a list?"</span><span class="i18n-ar" dir="rtl">«هل هذه خانة واحدة أم قائمة؟»</span></td>
+              <td><span class="i18n-en">"do I need only half the key to know this?"</span><span class="i18n-ar" dir="rtl">«هل يكفيني نصف المفتاح لأعرف هذا؟»</span></td>
+              <td><span class="i18n-en">"this is a fact about <em>what</em>?"</span><span class="i18n-ar" dir="rtl">«هذه الحقيقة عن <em>ماذا</em>؟»</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <figure class="nf-figure">
+        <svg class="dg" viewBox="0 0 520 404" role="img" aria-label="Decision map: three yes/no questions take any table to third normal form">
+          <text class="dg-title i18n-en" x="260" y="22" text-anchor="middle">Decision map — diagnose any table in three questions</text>
+          <text class="dg-title i18n-ar" x="260" y="22" text-anchor="middle" direction="rtl">خريطة القرار — شخّص أيّ جدول بثلاثة أسئلة</text>
+
+          <rect class="dg-box b1" x="20" y="36" width="480" height="74" rx="7"/>
+          <text class="dg-label i18n-en" x="260" y="56" text-anchor="middle">① Any cell with several values, or x_1, x_2 columns?</text>
+          <text class="dg-label i18n-ar" x="260" y="56" text-anchor="middle" direction="rtl">① هل في خلية أكثر من قيمة، أو أعمدة مكرّرة x_1, x_2؟</text>
+          <text class="dg-small i18n-en" x="260" y="76" text-anchor="middle">Yes ⇒ un-normalized: unroll the list into rows, then set the key</text>
+          <text class="dg-small i18n-ar" x="260" y="76" text-anchor="middle" direction="rtl">نعم ⇒ غير مُطبَّع: فكّك القائمة إلى صفوف، ثم عيّن المفتاح</text>
+          <text class="dg-small i18n-en" x="260" y="96" text-anchor="middle">(two independent multi-valued attributes ⇒ two tables, not one)</text>
+          <text class="dg-small i18n-ar" x="260" y="96" text-anchor="middle" direction="rtl">(سمتان متعدّدتان مستقلّتان ⇒ جدولان لا جدول واحد)</text>
+
+          <path class="dg-line" d="M260 110 V126"/>
+          <path class="dg-head" d="M255 124 L260 132 L265 124 Z"/>
+          <text class="dg-small i18n-en" x="290" y="126" text-anchor="middle">No</text>
+          <text class="dg-small i18n-ar" x="290" y="126" text-anchor="middle" direction="rtl">لا</text>
+
+          <rect class="dg-box b2" x="20" y="134" width="480" height="74" rx="7"/>
+          <text class="dg-label i18n-en" x="260" y="154" text-anchor="middle">② Is the key composite, and does part of it suffice for some column?</text>
+          <text class="dg-label i18n-ar" x="260" y="154" text-anchor="middle" direction="rtl">② هل المفتاح مركّب، ويكفي جزءٌ منه لعمودٍ ما؟</text>
+          <text class="dg-small i18n-en" x="260" y="174" text-anchor="middle">Yes ⇒ you are in 1NF: move each group to a table keyed by that part</text>
+          <text class="dg-small i18n-ar" x="260" y="174" text-anchor="middle" direction="rtl">نعم ⇒ أنت في 1NF: انقل كل مجموعة إلى جدول مفتاحه ذلك الجزء</text>
+          <text class="dg-small i18n-en" x="260" y="194" text-anchor="middle">(single-column key? skip this question — 2NF holds automatically)</text>
+          <text class="dg-small i18n-ar" x="260" y="194" text-anchor="middle" direction="rtl">(مفتاح من عمود واحد؟ تخطَّ هذا السؤال — 2NF محقّق تلقائيًا)</text>
+
+          <path class="dg-line" d="M260 208 V224"/>
+          <path class="dg-head" d="M255 222 L260 230 L265 222 Z"/>
+          <text class="dg-small i18n-en" x="290" y="224" text-anchor="middle">No</text>
+          <text class="dg-small i18n-ar" x="290" y="224" text-anchor="middle" direction="rtl">لا</text>
+
+          <rect class="dg-box b0" x="20" y="232" width="480" height="74" rx="7"/>
+          <text class="dg-label i18n-en" x="260" y="252" text-anchor="middle">③ Does a non-key column determine another non-key column?</text>
+          <text class="dg-label i18n-ar" x="260" y="252" text-anchor="middle" direction="rtl">③ هل يحدّد عمودٌ غير مفتاحي عمودًا غير مفتاحي آخر؟</text>
+          <text class="dg-small i18n-en" x="260" y="272" text-anchor="middle">Yes ⇒ you are in 2NF: extract the whole chain into its own table</text>
+          <text class="dg-small i18n-ar" x="260" y="272" text-anchor="middle" direction="rtl">نعم ⇒ أنت في 2NF: استخرج السلسلة كاملة إلى جدولها الخاص</text>
+          <text class="dg-small i18n-en" x="260" y="292" text-anchor="middle">(ask of every column: this is a fact about what?)</text>
+          <text class="dg-small i18n-ar" x="260" y="292" text-anchor="middle" direction="rtl">(اسأل عن كل عمود: هذه الحقيقة عن ماذا؟)</text>
+
+          <path class="dg-line" d="M260 306 V322"/>
+          <path class="dg-head" d="M255 320 L260 328 L265 320 Z"/>
+          <text class="dg-small i18n-en" x="290" y="322" text-anchor="middle">No</text>
+          <text class="dg-small i18n-ar" x="290" y="322" text-anchor="middle" direction="rtl">لا</text>
+
+          <rect class="dg-box b3" x="20" y="330" width="480" height="48" rx="7"/>
+          <text class="dg-label i18n-en" x="260" y="350" text-anchor="middle">✓ The table is in third normal form (3NF)</text>
+          <text class="dg-label i18n-ar" x="260" y="350" text-anchor="middle" direction="rtl">✓ الجدول في النموذج الثالث (3NF)</text>
+          <text class="dg-small i18n-en" x="260" y="368" text-anchor="middle">Re-run all three questions on every new table you produce</text>
+          <text class="dg-small i18n-ar" x="260" y="368" text-anchor="middle" direction="rtl">أعِد الأسئلة الثلاثة على كل جدول جديد تُنتجه</text>
+
+          <text class="dg-small dg-bad i18n-en" x="260" y="396" text-anchor="middle">Don't skip a step — problems surface layer by layer</text>
+          <text class="dg-small dg-bad i18n-ar" x="260" y="396" text-anchor="middle" direction="rtl">لا تقفز خطوة — المشاكل تتكشّف طبقةً بعد طبقة</text>
+        </svg>
+        <figcaption class="nf-caption"><span class="i18n-en">Figure 6 — The chapter's complete decision map.</span><span class="i18n-ar" dir="rtl">الشكل ٦ — خريطة القرار الكاملة للفصل.</span></figcaption>
+      </figure>
+
+      <h2 class="i18n-en">Three worked diagnoses</h2>
+      <h2 class="i18n-ar" dir="rtl">ثلاثة تشخيصات محلولة</h2>
+      <p class="i18n-en">Each design below is stopped at a different stage. Try the standing question on each one before opening its diagnosis.</p>
+      <p class="i18n-ar" dir="rtl">كل تصميم أدناه واقف عند مرحلة مختلفة. جرّب السؤال الموحَّد على كلٍّ منها قبل أن تفتح تشخيصه.</p>
+
+      <!-- 3.1 healthcare -->
+      <div class="nf-stage">
+        <div class="nf-stage-h"><span class="i18n-en">1 — Healthcare: a clinic</span><span class="i18n-ar" dir="rtl">١ — قطاع الصحة: عيادة</span></div>
+        <div class="nf-stage-b">
+          <div class="tbl-cap">clinic_visits</div>
+          <div class="tbl-scroll">
+            <table class="data">
+              <thead><tr><th>visit_id</th><th>patient_name</th><th>patient_phone</th><th>symptoms</th><th>doctor_name</th><th>doctor_specialty</th><th>doctor_room</th><th>room_floor</th><th>prescribed_drugs</th><th>visit_date</th></tr></thead>
+              <tbody>
+                <tr><td>9001</td><td>Lina Abu Saif</td><td>0599-221133</td><td>Fever, Cough</td><td>Dr. Nabil Hams</td><td>Internal Medicine</td><td>R-204</td><td>2</td><td>Paracetamol; Amoxicillin</td><td>2026-05-02</td></tr>
+                <tr><td>9002</td><td>Yousef Barak</td><td>0597-445566</td><td>Headache</td><td>Dr. Rania Shaath</td><td>Neurology</td><td>R-311</td><td>3</td><td>Ibuprofen</td><td>2026-05-02</td></tr>
+                <tr><td>9003</td><td>Lina Abu Saif</td><td>0599-221133</td><td>Sore throat, Fever</td><td>Dr. Nabil Hams</td><td>Internal Medicine</td><td>R-204</td><td>2</td><td>Azithromycin</td><td>2026-05-09</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <details class="reveal"><summary><span class="i18n-en">Diagnosis &amp; solution</span><span class="i18n-ar" dir="rtl">التشخيص والحل</span></summary>
+            <div class="reveal-body">
+              <p><span class="nf-chip nf-0"><span class="i18n-en">Un-normalized — not even 1NF</span><span class="i18n-ar" dir="rtl">غير مُطبَّع — ليس حتى في 1NF</span></span></p>
+              <p class="i18n-en"><strong>Evidence:</strong> two multi-valued columns — <code>symptoms</code> and <code>prescribed_drugs</code>. The commas and semicolons give it away.</p>
+              <p class="i18n-ar" dir="rtl"><strong>الدليل:</strong> عمودان بقيم متعدّدة — <code>symptoms</code> و<code>prescribed_drugs</code>. الفواصل والفواصل المنقوطة دليل قاطع.</p>
+              <p class="i18n-en"><strong>Step 1 (to 1NF) — with a trap in it:</strong> do not put symptoms and drugs in the same table! They are <strong>independent of each other</strong>: one row per (visit, symptom, drug) would multiply 2 symptoms × 2 drugs = 4 invented rows, implying a link between a symptom and a drug that nobody recorded. The right move is <strong>two separate tables</strong> — <code>visit_symptoms(visit_id, symptom)</code> and <code>visit_prescriptions(visit_id, drug_name)</code>.</p>
+              <p class="i18n-ar" dir="rtl"><strong>الخطوة ١ (إلى 1NF) — وفيها فخّ:</strong> لا تضع الأعراض والأدوية في جدول واحد! فهما <strong>مستقلّان عن بعضهما</strong>: صفٌّ لكل (زيارة، عَرَض، دواء) سيضرب ٢ عَرَض × ٢ دواء = ٤ صفوف مُختلَقة توحي بارتباط بين عَرَض ودواء لم يسجّله أحد. الصحيح هو <strong>جدولان منفصلان</strong> — <code>visit_symptoms(visit_id, symptom)</code> و<code>visit_prescriptions(visit_id, drug_name)</code>.</p>
+              <p class="i18n-en"><strong>Step 2 (to 2NF):</strong> free. <code>visits</code> keeps the single key <code>visit_id</code>, and the two new tables have no non-key columns at all.</p>
+              <p class="i18n-ar" dir="rtl"><strong>الخطوة ٢ (إلى 2NF):</strong> مجانًا. يبقى لجدول <code>visits</code> المفتاح المفرد <code>visit_id</code>، والجدولان الجديدان ليس فيهما أعمدة غير مفتاحية أصلًا.</p>
+              <p class="i18n-en"><strong>Step 3 (to 3NF) — three transitive chains:</strong> <code>patient_name → patient_phone</code> ⇒ a <code>patients</code> table; <code>doctor_name → doctor_specialty, doctor_room</code> ⇒ a <code>doctors</code> table; <code>doctor_room → room_floor</code> ⇒ a <code>rooms</code> table (the floor is a fact about the room — not the doctor, not the visit). <strong>Result:</strong> <code>patients · doctors · rooms · visits · visit_symptoms · visit_prescriptions</code>.</p>
+              <p class="i18n-ar" dir="rtl"><strong>الخطوة ٣ (إلى 3NF) — ثلاث سلاسل عابرة:</strong> <code>patient_name → patient_phone</code> ⇒ جدول <code>patients</code>؛ و<code>doctor_name → doctor_specialty, doctor_room</code> ⇒ جدول <code>doctors</code>؛ و<code>doctor_room → room_floor</code> ⇒ جدول <code>rooms</code> (فالطابق حقيقة عن الغرفة — لا عن الطبيب ولا عن الزيارة). <strong>الناتج:</strong> <code>patients · doctors · rooms · visits · visit_symptoms · visit_prescriptions</code>.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 3.2 education -->
+      <div class="nf-stage">
+        <div class="nf-stage-h"><span class="i18n-en">2 — Education: course enrolment</span><span class="i18n-ar" dir="rtl">٢ — قطاع التعليم: تسجيل المساقات</span></div>
+        <div class="nf-stage-b">
+          <div class="tbl-cap">enrollments — PK (student_id, course_code)</div>
+          <div class="tbl-scroll">
+            <table class="data">
+              <thead><tr><th class="k">student_id</th><th class="k">course_code</th><th>student_name</th><th>student_level</th><th>course_title</th><th>course_credits</th><th>teacher_name</th><th>teacher_email</th><th>term</th><th>grade</th></tr></thead>
+              <tbody>
+                <tr><td class="k">S-11</td><td class="k">CS210</td><td>Maha Dahlan</td><td>2</td><td>Databases</td><td>3</td><td>A. Sawalha</td><td>sawalha@gfu.edu</td><td>2026-F</td><td>88</td></tr>
+                <tr><td class="k">S-11</td><td class="k">CS240</td><td>Maha Dahlan</td><td>2</td><td>Networks</td><td>3</td><td>M. Qudaih</td><td>qudaih@gfu.edu</td><td>2026-F</td><td>74</td></tr>
+                <tr><td class="k">S-12</td><td class="k">CS210</td><td>Tareq Isleem</td><td>3</td><td>Databases</td><td>3</td><td>A. Sawalha</td><td>sawalha@gfu.edu</td><td>2026-F</td><td>91</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <details class="reveal"><summary><span class="i18n-en">Diagnosis &amp; solution</span><span class="i18n-ar" dir="rtl">التشخيص والحل</span></summary>
+            <div class="reveal-body">
+              <p><span class="nf-chip nf-1"><span class="i18n-en">In 1NF only</span><span class="i18n-ar" dir="rtl">في 1NF فقط</span></span></p>
+              <p class="i18n-en"><strong>Why 1NF:</strong> every cell is atomic, there are no repeating groups, and the key is defined (and composite).</p>
+              <p class="i18n-ar" dir="rtl"><strong>لماذا 1NF:</strong> كل خلية ذرّية، ولا مجموعات مكرّرة، والمفتاح معرَّف (ومركّب).</p>
+              <p class="i18n-en"><strong>Why not 2NF — the evidence:</strong> <code>student_id → student_name, student_level</code> and <code>course_code → course_title, course_credits, teacher_name, teacher_email</code>. Both depend on <strong>part</strong> of the key. The only innocent columns are <code>term</code> and <code>grade</code>: a student's mark in a particular course genuinely needs both halves.</p>
+              <p class="i18n-ar" dir="rtl"><strong>لماذا ليس 2NF — الدليل:</strong> <code>student_id → student_name, student_level</code> و<code>course_code → course_title, course_credits, teacher_name, teacher_email</code>. كلاهما اعتماد على <strong>جزء</strong> من المفتاح. والعمودان البريئان الوحيدان هما <code>term</code> و<code>grade</code>: فعلامة الطالب في مساق بعينه تحتاج النصفين معًا.</p>
+              <p class="i18n-en"><strong>Steps:</strong> ① to 2NF: <code>students(student_id, name, level)</code> + <code>courses(course_code, title, credits, teacher_name, teacher_email)</code> + <code>enrollments(student_id, course_code, term, grade)</code>. ② to 3NF: inside <code>courses</code>, <code>teacher_name → teacher_email</code> is transitive ⇒ <code>teachers(teacher_id, name, email)</code>, with <code>courses</code> keeping a <code>teacher_id</code> foreign key. <strong>Result:</strong> <code>students · teachers · courses · enrollments</code>.</p>
+              <p class="i18n-ar" dir="rtl"><strong>الخطوات:</strong> ① إلى 2NF: <code>students(student_id, name, level)</code> + <code>courses(course_code, title, credits, teacher_name, teacher_email)</code> + <code>enrollments(student_id, course_code, term, grade)</code>. ② إلى 3NF: داخل <code>courses</code> نجد <code>teacher_name → teacher_email</code> اعتمادًا عابرًا ⇒ <code>teachers(teacher_id, name, email)</code>، ويبقى في <code>courses</code> العمود <code>teacher_id</code> مفتاحًا أجنبيًا. <strong>الناتج:</strong> <code>students · teachers · courses · enrollments</code>.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 3.3 logistics -->
+      <div class="nf-stage">
+        <div class="nf-stage-h"><span class="i18n-en">3 — Logistics: shipments</span><span class="i18n-ar" dir="rtl">٣ — قطاع النقل واللوجستيات: الشحنات</span></div>
+        <div class="nf-stage-b">
+          <div class="tbl-cap">shipments — PK shipment_id</div>
+          <div class="tbl-scroll">
+            <table class="data">
+              <thead><tr><th class="k">shipment_id</th><th>order_ref</th><th>courier_id</th><th>courier_name</th><th>courier_phone</th><th>destination_city</th><th>city_zone</th><th>zone_delivery_fee</th><th>shipped_date</th></tr></thead>
+              <tbody>
+                <tr><td class="k">SH-1</td><td>5001</td><td>C-3</td><td>Fast Track</td><td>08-2800111</td><td>Gaza</td><td>North</td><td>15</td><td>2026-04-03</td></tr>
+                <tr><td class="k">SH-2</td><td>5002</td><td>C-7</td><td>Sahel Express</td><td>08-2833444</td><td>Deir al-Balah</td><td>Middle</td><td>20</td><td>2026-04-05</td></tr>
+                <tr><td class="k">SH-3</td><td>5003</td><td>C-3</td><td>Fast Track</td><td>08-2800111</td><td>Gaza</td><td>North</td><td>15</td><td>2026-04-06</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <details class="reveal"><summary><span class="i18n-en">Diagnosis &amp; solution</span><span class="i18n-ar" dir="rtl">التشخيص والحل</span></summary>
+            <div class="reveal-body">
+              <p><span class="nf-chip nf-2"><span class="i18n-en">In 2NF</span><span class="i18n-ar" dir="rtl">في 2NF</span></span></p>
+              <p class="i18n-en"><strong>Why 2NF for free:</strong> the key <code>shipment_id</code> is a <strong>single</strong> column, so there is no "part" of the key and a partial dependency is impossible. It is the fastest inference in the chapter — learn to spot it instantly.</p>
+              <p class="i18n-ar" dir="rtl"><strong>لماذا 2NF مجانًا:</strong> المفتاح <code>shipment_id</code> عمود <strong>واحد</strong>، فلا «جزء» للمفتاح أصلًا، ويستحيل الاعتماد الجزئي. هذا أسرع استنتاج في الفصل كله — تعلّم أن تلتقطه فورًا.</p>
+              <p class="i18n-en"><strong>Why not 3NF — including a two-link chain:</strong> <code>courier_id → courier_name, courier_phone</code> is transitive; and <code>destination_city → city_zone → zone_delivery_fee</code> is a <strong>double chain</strong>: the zone is a fact about the city, and the fee is a fact about the zone. Neither is a fact about the shipment.</p>
+              <p class="i18n-ar" dir="rtl"><strong>لماذا ليس 3NF — وفيه سلسلة من حلقتين:</strong> <code>courier_id → courier_name, courier_phone</code> اعتماد عابر؛ و<code>destination_city → city_zone → zone_delivery_fee</code> <strong>سلسلة مزدوجة</strong>: المنطقة حقيقة عن المدينة، والرسوم حقيقة عن المنطقة. ولا واحدة منهما حقيقة عن الشحنة.</p>
+              <p class="i18n-en"><strong>Steps:</strong> no 1NF or 2NF work needed — go straight to 3NF. Extract <code>couriers(courier_id, name, phone)</code>, <code>zones(zone_id, zone_name, delivery_fee)</code> and <code>cities(city_id, city_name, zone_id → FK)</code>, leaving <code>shipments(shipment_id, order_ref, courier_id → FK, city_id → FK, shipped_date)</code>. <strong>The payoff:</strong> changing the North zone's fee becomes a one-row <code>UPDATE</code> instead of touching thousands of shipment rows.</p>
+              <p class="i18n-ar" dir="rtl"><strong>الخطوات:</strong> لا عمل لـ1NF ولا لـ2NF — انتقل مباشرة إلى 3NF. استخرج <code>couriers(courier_id, name, phone)</code> و<code>zones(zone_id, zone_name, delivery_fee)</code> و<code>cities(city_id, city_name, zone_id → FK)</code>، ويبقى <code>shipments(shipment_id, order_ref, courier_id → FK, city_id → FK, shipped_date)</code>. <strong>الفائدة:</strong> تعديل رسوم منطقة الشمال يصير <code>UPDATE</code> على صفّ واحد بدل آلاف صفوف الشحنات.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="i18n-en"><strong>Three common mistakes to avoid.</strong> ① <strong>Jumping straight to 3NF.</strong> A transitive dependency often hides behind a partial one and only shows itself after the 2NF step. ② <strong>Normalizing from the visible data.</strong> Dependencies come from the <em>rules of the domain</em>, not from the sample rows: the rows can <em>disprove</em> a dependency, never prove one. If every author in your sample happens to live in a different country, that does not make <code>country → author</code> a rule. ③ <strong>Confusing "repeated" with "violating".</strong> Repeating foreign-key values is normal and necessary — the violation is repeating the <em>fact</em>, not repeating the <em>reference</em> to it.</div>
+        <div class="i18n-ar" dir="rtl"><strong>ثلاثة أخطاء شائعة احذرها.</strong> ① <strong>القفز إلى 3NF مباشرة.</strong> كثيرًا ما يختبئ الاعتماد العابر خلف اعتماد جزئي ولا يظهر إلا بعد خطوة 2NF. ② <strong>التطبيع اعتمادًا على البيانات الظاهرة.</strong> الاعتمادات تأتي من <em>قواعد المجال</em> لا من صفوف العيّنة: الصفوف تستطيع أن <em>تنقض</em> اعتمادًا، لكنها لا تثبته أبدًا. فلو صادف أن كل مؤلف في عيّنتك من بلد مختلف، فهذا لا يجعل <code>country → author</code> قاعدة. ③ <strong>الخلط بين «متكرّر» و«مخالف».</strong> تكرار قيم المفاتيح الأجنبية طبيعي وضروري — المخالفة هي تكرار <em>الحقيقة</em>، لا تكرار <em>الإشارة إليها</em>.</div>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — mistakes ② and ③ in SQL</h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — الخطأان ② و③ بلغة SQL</h2>
+      <p class="i18n-en">You can't read a domain rule out of a table — but you can use <code>GROUP BY</code> with <code>COUNT(DISTINCT …)</code> to test whether the data <em>contradicts</em> a dependency you suspect. A count above 1 kills the dependency; a count of 1 everywhere only means "not contradicted yet".</p>
+      <p class="i18n-ar" dir="rtl">لا تستطيع أن تقرأ قاعدة المجال من جدول — لكنك تستطيع أن تستعمل <code>GROUP BY</code> مع <code>COUNT(DISTINCT …)</code> لتختبر هل <em>تنقض</em> البيانات اعتمادًا تشكّ فيه. عددٌ أكبر من ١ يُسقط الاعتماد؛ أما العدد ١ في كل مكان فلا يعني إلا «لم يُنقَض بعد».</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — the data can disprove a dependency</span><span class="i18n-ar" dir="rtl">مثال ١ — البيانات تستطيع نقض الاعتماد</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"-- Does an author determine a genre? (author_id -> genre)\nSELECT author_id, COUNT(DISTINCT genre) AS genre_count\nFROM books\nGROUP BY author_id;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Authors 1 and 5 each write in two genres, so <code>author_id → genre</code> is false — and that is why <code>genre</code> lives in <code>books</code>, not in <code>authors</code>. One counter-example is enough.</span><span class="i18n-ar" dir="rtl">المؤلفان ١ و٥ يكتب كلٌّ منهما في نوعين، إذن <code>author_id → genre</code> غير صحيح — ولهذا يسكن <code>genre</code> في <code>books</code> لا في <code>authors</code>. ومثالٌ مضادّ واحد يكفي.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — the data cannot prove one</span><span class="i18n-ar" dir="rtl">مثال ٢ — البيانات لا تستطيع إثبات الاعتماد</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"-- Does a city determine the member? (city -> name)\nSELECT city, COUNT(DISTINCT name) AS member_count\nFROM members\nGROUP BY city;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Every count is 1: in this sample each city has exactly one member. Does that make <code>city → name</code> a rule? Obviously not — the next person from Gaza who joins breaks it. A pattern that happens to hold in today's rows is not a rule of the library, so you would never split <code>members</code> on it.</span><span class="i18n-ar" dir="rtl">كل الأعداد ١: في هذه العيّنة لكل مدينة عضو واحد بالضبط. فهل يجعل ذلك <code>city → name</code> قاعدة؟ قطعًا لا — أول شخص آخر من غزة ينضمّ سيكسرها. والنمط الذي يصدق في صفوف اليوم مصادفةً ليس قاعدة من قواعد المكتبة، فلن تقسّم <code>members</code> بناءً عليه أبدًا.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — a repeated reference is not a repeated fact</span><span class="i18n-ar" dir="rtl">مثال ٣ — تكرار الإشارة ليس تكرارًا للحقيقة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"SELECT author_id, COUNT(*) AS book_count\nFROM books\nGROUP BY author_id;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en"><code>author_id = 1</code> appears on three books, and that is exactly right. The <em>facts</em> about Laila Hammoud — her name, her country — are stored once, in <code>authors</code>; <code>books</code> only repeats the pointer to them. Changing her country is still a one-row <code>UPDATE</code>.</span><span class="i18n-ar" dir="rtl">تظهر <code>author_id = 1</code> على ثلاثة كتب، وهذا صحيح تمامًا. فـ<em>الحقائق</em> عن ليلى حمّود — اسمها وبلدها — مخزّنة مرة واحدة في <code>authors</code>؛ أما <code>books</code> فلا يكرّر إلا الإشارة إليها. وتغيير بلدها ما زال <code>UPDATE</code> على صفّ واحد.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Three more designs from three more sectors — your turn to run the standing question. The last one is the hardest: it contains both kinds of dependency at once. After the tasks, three short demos on <strong>Orbit Electronics</strong> connect the lessons to SQL.</p>
+      <p class="i18n-ar" dir="rtl">ثلاثة تصاميم أخرى من ثلاثة قطاعات أخرى — دورك الآن لتطبّق السؤال الموحَّد. والأخير أصعبها: فيه النوعان من الاعتماد معًا. وبعد المهام، ثلاثة أمثلة قصيرة على <strong>Orbit Electronics</strong> تربط الدروس بـSQL.</p>
+
+      <!-- 3.4 hospitality -->
+      <div class="task">
+        <div class="task-h"><span class="task-num">1</span><span class="i18n-en">Hospitality — a restaurant with <strong>two</strong> flat tables. Diagnose each one separately.</span><span class="i18n-ar" dir="rtl">قطاع الضيافة — مطعم فيه <strong>جدولان</strong> مسطّحان. شخّص كلًّا منهما على حدة.</span></div>
+        <div class="tbl-cap">(a) restaurant_orders</div>
+        <div class="tbl-scroll">
+          <table class="data">
+            <thead><tr><th>order_no</th><th>table_no</th><th>waiter_name</th><th>waiter_shift</th><th>dishes</th><th>dish_prices</th><th>total</th><th>order_time</th></tr></thead>
+            <tbody>
+              <tr><td>T-77</td><td>4</td><td>Khaled Abed</td><td>Evening</td><td>Maqluba, Fattoush</td><td>35, 12</td><td>47</td><td>2026-06-01 19:20</td></tr>
+              <tr><td>T-78</td><td>9</td><td>Nour Sabbah</td><td>Evening</td><td>Musakhan</td><td>40</td><td>40</td><td>2026-06-01 19:45</td></tr>
+              <tr><td>T-79</td><td>4</td><td>Khaled Abed</td><td>Evening</td><td>Fattoush, Lentil Soup, Maqluba</td><td>12, 10, 35</td><td>57</td><td>2026-06-01 20:05</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tbl-cap">(b) supply_deliveries</div>
+        <div class="tbl-scroll">
+          <table class="data">
+            <thead><tr><th>supply_id</th><th>supplier_name</th><th>supplier_phones</th><th>item_1</th><th>item_1_qty</th><th>item_2</th><th>item_2_qty</th><th>item_3</th><th>item_3_qty</th><th>delivery_date</th></tr></thead>
+            <tbody>
+              <tr><td>D-30</td><td>Al-Bayader Farms</td><td>0599-100200, 08-2811000</td><td>Rice</td><td>50</td><td>Olive Oil</td><td>20</td><td class="nul">NULL</td><td class="nul">NULL</td><td>2026-05-28</td></tr>
+              <tr><td>D-31</td><td>Gaza Poultry</td><td>0598-300400</td><td>Chicken</td><td>80</td><td class="nul">NULL</td><td class="nul">NULL</td><td class="nul">NULL</td><td class="nul">NULL</td><td>2026-05-30</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <details class="reveal"><summary><span class="i18n-en">Diagnosis &amp; solution</span><span class="i18n-ar" dir="rtl">التشخيص والحل</span></summary>
+          <div class="reveal-body">
+            <p><span class="nf-chip nf-0"><span class="i18n-en">Both un-normalized</span><span class="i18n-ar" dir="rtl">كلاهما غير مُطبَّع</span></span></p>
+            <p class="i18n-en"><strong>(a) Evidence:</strong> <code>dishes</code> and <code>dish_prices</code> are multi-valued and run in parallel on a fragile implicit ordering. To 1NF: one row per (order, dish) ⇒ composite key <code>(order_no, dish_name)</code>. To 2NF: <code>dish_name → dish_price</code> is partial ⇒ a <code>dishes</code> table; <code>order_no → table_no, waiter_name, waiter_shift, order_time</code> is partial ⇒ an <code>orders</code> table; what remains is <code>order_dishes(order_no, dish_id, quantity)</code>. To 3NF: <code>waiter_name → waiter_shift</code> is transitive ⇒ a <code>waiters</code> table.</p>
+            <p class="i18n-ar" dir="rtl"><strong>(أ) الدليل:</strong> <code>dishes</code> و<code>dish_prices</code> متعدّدتا القيم، وتسيران متوازيتين على ترتيب ضمني هشّ. إلى 1NF: صفّ لكل (طلب، طبق) ⇒ مفتاح مركّب <code>(order_no, dish_name)</code>. إلى 2NF: <code>dish_name → dish_price</code> اعتماد جزئي ⇒ جدول <code>dishes</code>؛ و<code>order_no → table_no, waiter_name, waiter_shift, order_time</code> جزئي ⇒ جدول <code>orders</code>؛ ويبقى <code>order_dishes(order_no, dish_id, quantity)</code>. إلى 3NF: <code>waiter_name → waiter_shift</code> عابر ⇒ جدول <code>waiters</code>.</p>
+            <div class="callout note">
+              <div class="i18n-en"><strong>A bonus issue in (a) — the derived column.</strong> <code>total</code> is not an independent fact; it is the <strong>sum</strong> of the dish prices. Storing it is not literally a 3NF violation (it doesn't depend on another non-key column inside the table), but it is another kind of redundancy — a <strong>derived column</strong> — with the same danger: change a dish price without recomputing <code>total</code> and the database contradicts itself. Compute it at read time instead (Example 1 below) — unless freezing it is intentional, such as the price at the moment of sale, in which case say so explicitly.</div>
+              <div class="i18n-ar" dir="rtl"><strong>مسألة إضافية في (أ) — العمود المشتقّ.</strong> العمود <code>total</code> ليس حقيقة مستقلة؛ إنه <strong>مجموع</strong> أسعار الأطباق. تخزينه ليس مخالفة لـ3NF بالمعنى الحرفي (فهو لا يعتمد على عمود غير مفتاحي آخر داخل الجدول)، لكنه نوع آخر من التكرار — <strong>العمود المشتقّ</strong> — يحمل الخطر نفسه: عدّل سعر طبق دون إعادة حساب <code>total</code> فتتناقض قاعدة البيانات مع نفسها. احسبه عند القراءة بدلًا من ذلك (المثال ١ أدناه) — إلا إن كان تجميده مقصودًا، كسعر لحظة البيع، وعندها صرّح بذلك.</div>
+            </div>
+            <p class="i18n-en"><strong>(b) Evidence — a harder shape of repeating group:</strong> the group comes in <strong>pairs</strong> — <code>(item_1, item_1_qty)</code>, <code>(item_2, item_2_qty)</code>, <code>(item_3, item_3_qty)</code>. A repeating group isn't always one numbered column; it can be a set of columns that travel together. On top of that, <code>supplier_phones</code> is multi-valued. <strong>Steps:</strong> ① to 1NF: one row per (delivery, item) ⇒ <code>supply_items(supply_id, item_name, quantity)</code>, and the phones into <code>supplier_phones(supplier_id, phone)</code> because their count is open-ended. ② 2NF holds once split. ③ to 3NF: the supplier's details are facts about the supplier ⇒ <code>suppliers(supplier_id, name)</code>, leaving <code>supplies(supply_id, supplier_id → FK, delivery_date)</code>.</p>
+            <p class="i18n-ar" dir="rtl"><strong>(ب) الدليل — وفيه شكل أصعب من المجموعة المكرّرة:</strong> المجموعة هنا <strong>زوجية</strong> — <code>(item_1, item_1_qty)</code> و<code>(item_2, item_2_qty)</code> و<code>(item_3, item_3_qty)</code>. فالمجموعة المكرّرة ليست دائمًا عمودًا واحدًا مرقّمًا؛ قد تكون مجموعة أعمدة تسير معًا. ويُضاف إلى ذلك <code>supplier_phones</code> متعدّد القيم. <strong>الخطوات:</strong> ① إلى 1NF: صفّ لكل (توريد، صنف) ⇒ <code>supply_items(supply_id, item_name, quantity)</code>، والهواتف إلى <code>supplier_phones(supplier_id, phone)</code> لأن عددها مفتوح. ② 2NF محقّق بعد الفصل. ③ إلى 3NF: بيانات المورّد حقائق عن المورّد ⇒ <code>suppliers(supplier_id, name)</code>، ويبقى <code>supplies(supply_id, supplier_id → FK, delivery_date)</code>.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- 3.5 HR -->
+      <div class="task">
+        <div class="task-h"><span class="task-num">2</span><span class="i18n-en">Human resources — payroll. Which normal form, and why?</span><span class="i18n-ar" dir="rtl">الموارد البشرية — كشوف الرواتب. في أيّ نموذج، ولماذا؟</span></div>
+        <div class="tbl-cap">payslips — PK payslip_id</div>
+        <div class="tbl-scroll">
+          <table class="data">
+            <thead><tr><th class="k">payslip_id</th><th>employee_id</th><th>employee_name</th><th>department_id</th><th>department_name</th><th>department_head</th><th>grade_code</th><th>grade_base_salary</th><th>pay_month</th><th>net_pay</th></tr></thead>
+            <tbody>
+              <tr><td class="k">P-501</td><td>E-20</td><td>Suha Kurd</td><td>D-2</td><td>Finance</td><td>N. Mansour</td><td>G4</td><td>2400</td><td>2026-05</td><td>2610</td></tr>
+              <tr><td class="k">P-502</td><td>E-21</td><td>Bilal Ashour</td><td>D-2</td><td>Finance</td><td>N. Mansour</td><td>G3</td><td>2000</td><td>2026-05</td><td>2000</td></tr>
+              <tr><td class="k">P-503</td><td>E-20</td><td>Suha Kurd</td><td>D-2</td><td>Finance</td><td>N. Mansour</td><td>G4</td><td>2400</td><td>2026-06</td><td>2400</td></tr>
+              <tr><td class="k">P-504</td><td>E-22</td><td>Rami Hilles</td><td>D-5</td><td>Operations</td><td>S. Zaqout</td><td>G5</td><td>2900</td><td>2026-06</td><td>3050</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <details class="reveal"><summary><span class="i18n-en">Diagnosis &amp; solution</span><span class="i18n-ar" dir="rtl">التشخيص والحل</span></summary>
+          <div class="reveal-body">
+            <p><span class="nf-chip nf-2"><span class="i18n-en">In 2NF</span><span class="i18n-ar" dir="rtl">في 2NF</span></span></p>
+            <p class="i18n-en"><strong>Why 2NF:</strong> the key <code>payslip_id</code> is a single column ⇒ no partial dependency is possible. Watch the trap: you may be tempted to say "the real key is <code>(employee_id, pay_month)</code>". That pair is indeed a <strong>candidate key</strong> — it could have been chosen — but the declared primary key here is single, and the analysis runs against the declared key.</p>
+            <p class="i18n-ar" dir="rtl"><strong>لماذا 2NF:</strong> المفتاح <code>payslip_id</code> عمود واحد ⇒ لا اعتماد جزئي ممكن. وانتبه للفخّ: قد يُغريك أن تقول «المفتاح الحقيقي هو <code>(employee_id, pay_month)</code>». هذا الزوج فعلًا <strong>مفتاح مرشّح</strong> — كان يمكن اختياره — لكن المفتاح الأساسي المُعلَن هنا مفرد، والتحليل يجري على المفتاح المُعلَن.</p>
+            <p class="i18n-en"><strong>Why not 3NF — three chains:</strong> <code>employee_id → employee_name, department_id, grade_code</code>; <code>department_id → department_name, department_head</code>; <code>grade_code → grade_base_salary</code>. The first branches into the other two: <code>payslip_id → employee_id → department_id → department_name</code> — three hops, all through non-key columns.</p>
+            <p class="i18n-ar" dir="rtl"><strong>لماذا ليس 3NF — ثلاث سلاسل:</strong> <code>employee_id → employee_name, department_id, grade_code</code>؛ و<code>department_id → department_name, department_head</code>؛ و<code>grade_code → grade_base_salary</code>. والأولى تتفرّع إلى الأخريين: <code>payslip_id → employee_id → department_id → department_name</code> — ثلاث قفزات، كلها عبر أعمدة غير مفتاحية.</p>
+            <p class="i18n-en"><strong>Result:</strong> <code>departments(department_id, name, head)</code> · <code>grades(grade_code, base_salary)</code> · <code>employees(employee_id, name, department_id → FK, grade_code → FK)</code> · <code>payslips(payslip_id, employee_id → FK, pay_month, net_pay)</code>. Note that <code>net_pay</code> earned its place: it is a fact about <strong>this payslip</strong> (it differs between May and June for the same employee), not about the employee or the grade.</p>
+            <p class="i18n-ar" dir="rtl"><strong>الناتج:</strong> <code>departments(department_id, name, head)</code> · <code>grades(grade_code, base_salary)</code> · <code>employees(employee_id, name, department_id → FK, grade_code → FK)</code> · <code>payslips(payslip_id, employee_id → FK, pay_month, net_pay)</code>. ولاحظ أن <code>net_pay</code> بقي في مكانه عن جدارة: فهو حقيقة عن <strong>هذا الكشف بالذات</strong> (يختلف بين أيار وحزيران للموظف نفسه)، لا عن الموظف ولا عن الدرجة.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- 3.6 agriculture -->
+      <div class="task">
+        <div class="task-h"><span class="task-num">3</span><span class="i18n-en">Agriculture — a harvest log. The hardest one: both kinds of problem at once.</span><span class="i18n-ar" dir="rtl">القطاع الزراعي — سجلّ المحاصيل. أصعبها: فيه النوعان من المشاكل معًا.</span></div>
+        <div class="tbl-cap">harvest_log — PK (farm_id, crop_code)</div>
+        <div class="tbl-scroll">
+          <table class="data">
+            <thead><tr><th class="k">farm_id</th><th class="k">crop_code</th><th>farm_name</th><th>farm_region</th><th>region_climate</th><th>crop_name</th><th>crop_unit</th><th>season</th><th>quantity</th></tr></thead>
+            <tbody>
+              <tr><td class="k">F-1</td><td class="k">CR-9</td><td>Beit Lahia Fields</td><td>North</td><td>Coastal</td><td>Strawberry</td><td>kg</td><td>2026-W</td><td>4200</td></tr>
+              <tr><td class="k">F-1</td><td class="k">CR-4</td><td>Beit Lahia Fields</td><td>North</td><td>Coastal</td><td>Olives</td><td>kg</td><td>2026-A</td><td>1850</td></tr>
+              <tr><td class="k">F-2</td><td class="k">CR-4</td><td>Wadi Salqa Grove</td><td>Middle</td><td>Semi-arid</td><td>Olives</td><td>kg</td><td>2026-A</td><td>2300</td></tr>
+              <tr><td class="k">F-3</td><td class="k">CR-9</td><td>Khuzaa Plots</td><td>South</td><td>Semi-arid</td><td>Strawberry</td><td>kg</td><td>2026-W</td><td>3100</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <details class="reveal"><summary><span class="i18n-en">Diagnosis &amp; solution</span><span class="i18n-ar" dir="rtl">التشخيص والحل</span></summary>
+          <div class="reveal-body">
+            <p><span class="nf-chip nf-1"><span class="i18n-en">In 1NF only</span><span class="i18n-ar" dir="rtl">في 1NF فقط</span></span></p>
+            <p class="i18n-en"><strong>Problem one — partial dependency (blocks 2NF):</strong> <code>farm_id → farm_name, farm_region, region_climate</code> and <code>crop_code → crop_name, crop_unit</code>. The only innocents are <code>season</code> and <code>quantity</code>: the yield belongs to this farm <em>and</em> this crop together.</p>
+            <p class="i18n-ar" dir="rtl"><strong>المشكلة الأولى — اعتماد جزئي (يمنع 2NF):</strong> <code>farm_id → farm_name, farm_region, region_climate</code> و<code>crop_code → crop_name, crop_unit</code>. والبريئان الوحيدان <code>season</code> و<code>quantity</code>: فالمحصول يخصّ هذه المزرعة <em>وهذا</em> المحصول معًا.</p>
+            <p class="i18n-en"><strong>Problem two — transitive dependency (blocks 3NF, hiding behind the first):</strong> <code>farm_region → region_climate</code>. The climate is a fact about the <strong>region</strong>, not the farm. You only see it clearly after the 2NF step — problems surface layer by layer, so never try to jump from a composite-key table straight to 3NF.</p>
+            <p class="i18n-ar" dir="rtl"><strong>المشكلة الثانية — اعتماد عابر (يمنع 3NF، مختبئ خلف الأولى):</strong> <code>farm_region → region_climate</code>. المناخ حقيقة عن <strong>المنطقة</strong> لا عن المزرعة. ولن تراه بوضوح إلا بعد خطوة 2NF — فالمشاكل تتكشّف طبقةً بعد طبقة، فلا تحاول القفز من جدول مركّب المفتاح إلى 3NF مباشرة.</p>
+            <p class="i18n-en"><strong>Steps:</strong> ① to 2NF: <code>farms(farm_id, farm_name, farm_region, region_climate)</code> · <code>crops(crop_code, crop_name, crop_unit)</code> · <code>harvest_log(farm_id, crop_code, season, quantity)</code>. ② to 3NF: <code>regions(region_id, region_name, climate)</code>, with <code>farms</code> keeping a <code>region_id</code> foreign key. <strong>Final result:</strong> <code>regions · farms · crops · harvest_log</code>.</p>
+            <p class="i18n-ar" dir="rtl"><strong>الخطوات:</strong> ① إلى 2NF: <code>farms(farm_id, farm_name, farm_region, region_climate)</code> · <code>crops(crop_code, crop_name, crop_unit)</code> · <code>harvest_log(farm_id, crop_code, season, quantity)</code>. ② إلى 3NF: <code>regions(region_id, region_name, climate)</code>، ويبقى في <code>farms</code> العمود <code>region_id</code> مفتاحًا أجنبيًا. <strong>الناتج النهائي:</strong> <code>regions · farms · crops · harvest_log</code>.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — compute a total, don't store it</span><span class="i18n-ar" dir="rtl">مثال ١ — احسب المجموع ولا تخزّنه</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":7,"sql":"SELECT o.id AS order_id, SUM(p.price) AS order_total\nFROM orders o\nJOIN order_items oi ON oi.order_id = o.id\nJOIN products p ON oi.product_id = p.id\nGROUP BY o.id;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">The restaurant's <code>total</code> column, done right: Orbit's orders store no total at all — it is computed from the current prices every time you ask, so it can never disagree with them.</span><span class="i18n-ar" dir="rtl">عمود <code>total</code> في المطعم، لكن بالطريقة الصحيحة: طلبات Orbit لا تخزّن أيّ مجموع — بل يُحسب من الأسعار الحالية كلما سألت، فلا يمكن أن يخالفها أبدًا.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — the sample illusion</span><span class="i18n-ar" dir="rtl">مثال ٢ — وهم العيّنة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":7,"sql":"-- Does a brand determine the category? (brand -> category_id)\nSELECT brand, COUNT(DISTINCT category_id) AS category_count\nFROM products\nGROUP BY brand;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Every brand happens to sit in exactly one category today. Yet "a brand belongs to one category" is not a rule of the shop — Pulse could launch a smartwatch tomorrow. Moving <code>category_id</code> into a brand table because of this pattern would be mistake ②.</span><span class="i18n-ar" dir="rtl">كل ماركة تقع اليوم مصادفةً في فئة واحدة بالضبط. ومع ذلك فـ«الماركة تنتمي إلى فئة واحدة» ليست قاعدة من قواعد المتجر — فقد تُطلق Pulse ساعة ذكية غدًا. ونقل <code>category_id</code> إلى جدول الماركات بسبب هذا النمط سيكون هو الخطأ ②.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — repeating foreign keys is normal</span><span class="i18n-ar" dir="rtl">مثال ٣ — تكرار المفاتيح الأجنبية طبيعي</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":7,"sql":"SELECT product_id, COUNT(*) AS times_ordered\nFROM order_items\nGROUP BY product_id;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Products 2, 7 and 10 each appear in two orders. That is not redundancy: <code>order_items</code> repeats only the <em>reference</em>; the product's name, price and brand are stored once, in <code>products</code>.</span><span class="i18n-ar" dir="rtl">المنتجات ٢ و٧ و١٠ يظهر كلٌّ منها في طلبين. وهذا ليس تكرارًا: فـ<code>order_items</code> لا يكرّر إلا <em>الإشارة</em>؛ أما اسم المنتج وسعره وماركته فمخزّنة مرة واحدة في <code>products</code>.</span></div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="7" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"payslips has the single-column primary key payslip_id and contains department_id → department_name. Which normal form is it in?","ar":"للجدول payslips مفتاح أساسي من عمود واحد هو payslip_id، وفيه department_id → department_name. في أيّ نموذج هو؟"},
+         "options":[{"en":"2NF — but not 3NF","ar":"2NF — لكن ليس 3NF"},{"en":"1NF only, because of a partial dependency","ar":"1NF فقط، بسبب اعتماد جزئي"},{"en":"3NF","ar":"3NF"},{"en":"Un-normalized","ar":"غير مُطبَّع"}],
+         "correctIndex":0,
+         "explain":{"en":"A single-column key makes 2NF automatic; department_id → department_name is a non-key column determining another, so 3NF fails.","ar":"المفتاح المفرد يجعل 2NF تلقائيًا؛ و department_id → department_name عمود غير مفتاحي يحدّد آخر، فيسقط 3NF."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="7" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A stored total that is the sum of other rows' prices is a derived column: it can drift out of step with the prices it was computed from.","ar":"المجموع المخزَّن الذي هو جمع أسعار صفوف أخرى عمودٌ مشتقّ: قد يخرج عن التوافق مع الأسعار التي حُسب منها."},
+         "correct":true,
+         "explain":{"en":"Change a price without recomputing the total and the two disagree — compute it at read time instead.","ar":"عدّل سعرًا دون إعادة حساب المجموع فيتعارضان — احسبه عند القراءة بدلًا من ذلك."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="lab-q3" data-chapter="7" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Match each design to its diagnosis.","ar":"صِل كل تصميم بتشخيصه."},
+         "left":[{"en":"clinic_visits (symptoms 'Fever, Cough')","ar":"clinic_visits (الأعراض 'Fever, Cough')"},{"en":"harvest_log (key farm_id + crop_code, farm_id → farm_name)","ar":"harvest_log (المفتاح farm_id + crop_code، و farm_id → farm_name)"},{"en":"shipments (key shipment_id, city → zone → fee)","ar":"shipments (المفتاح shipment_id، و city → zone → fee)"}],
+         "right":[{"en":"Un-normalized: multi-valued cells","ar":"غير مُطبَّع: خلايا متعدّدة القيم"},{"en":"1NF only: a partial dependency","ar":"1NF فقط: اعتماد جزئي"},{"en":"2NF: a transitive chain","ar":"2NF: سلسلة عابرة"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Compute each order's total at read time: join <code>orders</code>, <code>order_items</code> and <code>products</code>, and return one row per order with the columns <code>order_id</code> and <code>order_total</code> (the sum of its products' prices).</p>
+        <p class="q-prompt i18n-ar" dir="rtl">احسب مجموع كل طلب عند القراءة: اربط <code>orders</code> و<code>order_items</code> و<code>products</code>، وأعِد صفًّا واحدًا لكل طلب بالعمودين <code>order_id</code> و<code>order_total</code> (مجموع أسعار منتجاته).</p>
+        <div class="qb-widget" data-qid="lab-q4" data-chapter="7" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":7,"placeholder":"SELECT o.id AS order_id, SUM(p.price) AS order_total FROM orders o JOIN order_items oi ON ... JOIN products p ON ... GROUP BY ...","grade":{"mode":"result","expected":"SELECT o.id AS order_id, SUM(p.price) AS order_total FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN products p ON oi.product_id = p.id GROUP BY o.id"},"wrong":"SELECT o.id AS order_id, MAX(p.price) AS order_total FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN products p ON oi.product_id = p.id GROUP BY o.id"}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Test the dependency <code>customer_name → customer_city</code> against <code>orders_1nf</code>: return one row per <code>customer_name</code> with a column <code>city_versions</code> — how many <em>different</em> cities are stored for that customer.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اختبر الاعتماد <code>customer_name → customer_city</code> على <code>orders_1nf</code>: أعِد صفًّا واحدًا لكل <code>customer_name</code> مع عمود <code>city_versions</code> — عدد المدن <em>المختلفة</em> المخزّنة لذلك الزبون.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="7" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":7,"placeholder":"SELECT customer_name, COUNT(DISTINCT ...) AS city_versions FROM orders_1nf GROUP BY ...","grade":{"mode":"result","expected":"SELECT customer_name, COUNT(DISTINCT customer_city) AS city_versions FROM orders_1nf GROUP BY customer_name"},"wrong":"SELECT customer_name, COUNT(*) AS city_versions FROM orders_1nf GROUP BY customer_name"}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> — <code>departments</code>, <code>courses</code> and the registrar's sheet <code>enrollments_flat</code>.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> — <code>departments</code> و<code>courses</code> وورقة المسجّل <code>enrollments_flat</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="7" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"GreenField keeps advisors(advisor_id PK, advisor_name, office, office_phone), where each office has one phone line. Diagnose it.","ar":"تحتفظ GreenField بالجدول advisors(advisor_id PK, advisor_name, office, office_phone)، ولكل مكتب خطّ هاتف واحد. شخّصه."},
+         "options":[{"en":"In 2NF, not 3NF — office → office_phone is transitive","ar":"في 2NF لا 3NF — office → office_phone اعتماد عابر"},{"en":"In 1NF only — a partial dependency on advisor_id","ar":"في 1NF فقط — اعتماد جزئي على advisor_id"},{"en":"Already in 3NF","ar":"في 3NF أصلًا"},{"en":"Un-normalized — office_phone is multi-valued","ar":"غير مُطبَّع — office_phone متعدّد القيم"}],
+         "correctIndex":0,
+         "explain":{"en":"A single-column key rules out partial dependencies; the phone is a fact about the office, not the advisor.","ar":"المفتاح المفرد يستبعد الاعتماد الجزئي؛ والهاتف حقيقة عن المكتب لا عن المرشد."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="7" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"When a table has a single-column declared primary key, the 2NF check runs against that declared key — even if a two-column candidate key also exists.","ar":"إذا كان للجدول مفتاح أساسي مُعلَن من عمود واحد، فإن فحص 2NF يجري على ذلك المفتاح المُعلَن — حتى لو وُجد أيضًا مفتاح مرشّح من عمودين."},
+         "correct":true,
+         "explain":{"en":"That is the payslips trap: (employee_id, pay_month) is a candidate key, but the analysis uses payslip_id.","ar":"هذا هو فخّ payslips: الزوج (employee_id, pay_month) مفتاح مرشّح، لكن التحليل يستعمل payslip_id."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="7" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete: what sample rows can do to a functional dependency.","ar":"أكمل: ما الذي تستطيع صفوف العيّنة فعله بالاعتماد الوظيفي."},
+         "template":{"en":"Sample rows can only ____ a dependency, never prove it.","ar":"صفوف العيّنة لا تستطيع إلا ____ الاعتماد، ولا تُثبته أبدًا."},"answers":["disprove","refute","contradict","break","تنفي","نفي","تدحض","دحض"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Does a building determine the department? Return one row per <code>building</code> in <code>departments</code> with a column <code>department_count</code> — how many <em>different</em> department names share that building.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">هل يحدّد المبنى القسم؟ أعِد صفًّا واحدًا لكل <code>building</code> في <code>departments</code> مع عمود <code>department_count</code> — عدد أسماء الأقسام <em>المختلفة</em> التي تشترك في ذلك المبنى.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="7" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":7,"placeholder":"SELECT building, COUNT(DISTINCT ...) AS department_count FROM departments GROUP BY ...","grade":{"mode":"result","expected":"SELECT building, COUNT(DISTINCT name) AS department_count FROM departments GROUP BY building"},"wrong":"SELECT building, COUNT(DISTINCT budget) AS department_count FROM departments GROUP BY building, name"}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Check that the sheet does not contradict <code>course_id → credits</code>: from <code>enrollments_flat</code>, return one row per <code>course_id</code> with a column <code>credit_versions</code> — how many <em>different</em> credit values are stored for that course.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">تحقّق أن الورقة لا تنقض <code>course_id → credits</code>: من <code>enrollments_flat</code> أعِد صفًّا واحدًا لكل <code>course_id</code> مع عمود <code>credit_versions</code> — عدد قيم الساعات <em>المختلفة</em> المخزّنة لذلك المقرّر.</p>
+        <div class="qb-widget" data-qid="test-t5" data-chapter="7" data-lesson="5">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":7,"placeholder":"SELECT course_id, COUNT(DISTINCT ...) AS credit_versions FROM enrollments_flat GROUP BY ...","grade":{"mode":"result","expected":"SELECT course_id, COUNT(DISTINCT credits) AS credit_versions FROM enrollments_flat GROUP BY course_id"},"wrong":"SELECT course_id, COUNT(*) AS credit_versions FROM enrollments_flat GROUP BY course_id"}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t6" data-chapter="7" data-lesson="5">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Put the decision-map questions in the order you ask them.","ar":"رتّب أسئلة خريطة القرار بالترتيب الذي تطرحها به."},
+         "items":[{"en":"Any multi-valued cell or numbered x_1, x_2 columns?","ar":"هل توجد خلية متعدّدة القيم أو أعمدة مرقّمة x_1, x_2؟"},{"en":"Is the key composite, and does part of it suffice for some column?","ar":"هل المفتاح مركّب، ويكفي جزءٌ منه لعمودٍ ما؟"},{"en":"Does a non-key column determine another non-key column?","ar":"هل يحدّد عمودٌ غير مفتاحي عمودًا غير مفتاحي آخر؟"},{"en":"Re-run all three questions on every new table","ar":"أعِد الأسئلة الثلاثة على كل جدول جديد"}]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="7" data-lesson="5"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

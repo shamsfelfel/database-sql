@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 6 · Lesson 4 — Views over Aggregation · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="6" data-lesson="4">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="6" data-lesson="4"></nav>
+
+    <h1 class="i18n-en">Lesson 4 — Views over Aggregation</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٤ — العروض على التجميع</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">Chapter 5 turned rows into summaries: one row per genre, per category, per level. Those summaries are usually what a report wants — and a report query gets rewritten over and over. Put the <code>GROUP BY</code> inside a view and the summary becomes a thing with a name, shaped like a small table: one row per group, one column per measure.</p>
+      <p class="i18n-ar" dir="rtl">حوّل الفصل الخامس الصفوف إلى ملخّصات: صفٌّ لكل نوع، أو لكل فئة، أو لكل مستوى. وهذه الملخّصات هي عادةً ما يريده التقرير — واستعلام التقرير يُعاد كتابته مرّة بعد مرّة. ضَعِ <code>GROUP BY</code> داخل عرض فيصبح الملخّص شيئًا له اسم، بهيئة جدول صغير: صفّ لكل مجموعة، وعمود لكل مقياس.</p>
+      <p class="i18n-en">There is a quiet bonus here. Inside the view, <code>COUNT(*) AS book_count</code> is an aggregate and needs <code>HAVING</code> to be filtered. <em>Outside</em> the view, <code>book_count</code> is just a column — so you filter it with an ordinary <code>WHERE</code>, sort it, even aggregate it again.</p>
+      <p class="i18n-ar" dir="rtl">وهناك مكافأة هادئة هنا. فداخل العرض تكون <code>COUNT(*) AS book_count</code> دالّة تجميعية وتحتاج <code>HAVING</code> لتصفيتها. أمّا <em>خارج</em> العرض فإن <code>book_count</code> مجرّد عمود — فتُصفّيه بـ<code>WHERE</code> عاديّة، وترتّبه، بل وتُجمّعه مرّة أخرى.</p>
+      <p class="i18n-en">Give every measure a descriptive name: <code>book_count</code>, <code>avg_price</code>, <code>total_stock</code>. The name is the view's interface — and unlike a bare <code>COUNT(*)</code>, it says what the number means.</p>
+      <p class="i18n-ar" dir="rtl">وامنح كل مقياس اسمًا واصفًا: <code>book_count</code> و<code>avg_price</code> و<code>total_stock</code>. فالاسم هو واجهة العرض — وبخلاف <code>COUNT(*)</code> المجرّدة، يقول ماذا يعني الرقم.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>CREATE VIEW genre_stats AS
+SELECT genre,
+       COUNT(*) AS book_count,
+       ROUND(AVG(price), 2) AS avg_price
+FROM books
+GROUP BY genre;
+
+SELECT genre, book_count FROM genre_stats WHERE book_count &gt;= 2;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — a summary view</span><span class="i18n-ar" dir="rtl">مثال ١ — عرض ملخّص</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":6,"sql":"CREATE VIEW genre_stats AS SELECT genre, COUNT(*) AS book_count, ROUND(AVG(price), 2) AS avg_price FROM books GROUP BY genre;\nSELECT * FROM genre_stats ORDER BY book_count DESC, genre ASC;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Four groups, four rows. The Database panel shows <code>genre_stats</code> with the columns <code>genre</code>, <code>book_count</code>, <code>avg_price</code> — it reads like a table of its own.</span><span class="i18n-ar" dir="rtl">أربع مجموعات، أربعة صفوف. وتُظهر لوحة قاعدة البيانات <code>genre_stats</code> بالأعمدة <code>genre</code> و<code>book_count</code> و<code>avg_price</code> — فيُقرأ كجدول قائم بذاته.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — WHERE on a summary column</span><span class="i18n-ar" dir="rtl">مثال ٢ — WHERE على عمود ملخّص</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":6,"setup":["CREATE VIEW genre_stats AS SELECT genre, COUNT(*) AS book_count, ROUND(AVG(price), 2) AS avg_price FROM books GROUP BY genre"],"sql":"SELECT genre, book_count FROM genre_stats WHERE book_count >= 2;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Inside the view this needed <code>HAVING COUNT(*) &gt;= 2</code>. Outside it, <code>book_count</code> is an ordinary column and a plain <code>WHERE</code> does the job.</span><span class="i18n-ar" dir="rtl">داخل العرض كان هذا يحتاج <code>HAVING COUNT(*) &gt;= 2</code>. وخارجه يكون <code>book_count</code> عمودًا عاديًّا فتكفي <code>WHERE</code> بسيطة.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — summarize the summary</span><span class="i18n-ar" dir="rtl">مثال ٣ — لخِّص الملخّص</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":6,"setup":["CREATE VIEW genre_stats AS SELECT genre, COUNT(*) AS book_count, ROUND(AVG(price), 2) AS avg_price FROM books GROUP BY genre"],"sql":"SELECT COUNT(*) AS genre_count, MAX(avg_price) AS highest_avg FROM genre_stats;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">How many genres are there, and which group has the dearest average — a second-level summary, trivial once the first one has a name.</span><span class="i18n-ar" dir="rtl">كم نوعًا هناك، وأي مجموعة لها أعلى متوسّط — ملخّص من الدرجة الثانية، يصبح بسيطًا متى صار للأول اسم.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Summary views over <strong>Orbit Electronics</strong> — the <code>products</code> table.</p>
+      <p class="i18n-ar" dir="rtl">عروض ملخّصة على <strong>Orbit Electronics</strong> — جدول <code>products</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — per-brand summary</span><span class="i18n-ar" dir="rtl">مثال ١ — ملخّص لكل علامة تجارية</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":6,"sql":"CREATE VIEW brand_stats AS SELECT brand, COUNT(*) AS product_count, SUM(stock_qty) AS total_stock FROM products GROUP BY brand;\nSELECT * FROM brand_stats ORDER BY total_stock DESC;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — filter the groups from outside</span><span class="i18n-ar" dir="rtl">مثال ٢ — صفِّ المجموعات من الخارج</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":6,"setup":["CREATE VIEW brand_stats AS SELECT brand, COUNT(*) AS product_count, SUM(stock_qty) AS total_stock FROM products GROUP BY brand"],"sql":"SELECT brand, product_count FROM brand_stats WHERE product_count >= 2 ORDER BY brand;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — an average of totals</span><span class="i18n-ar" dir="rtl">مثال ٣ — متوسّط المجاميع</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":6,"setup":["CREATE VIEW brand_stats AS SELECT brand, COUNT(*) AS product_count, SUM(stock_qty) AS total_stock FROM products GROUP BY brand"],"sql":"SELECT ROUND(AVG(total_stock), 2) AS avg_stock_per_brand FROM brand_stats;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="6" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"A view selects COUNT(*) AS product_count. From outside the view, how do you keep only groups above 2?","ar":"عرضٌ يحدّد COUNT(*) AS product_count. فمن خارج العرض، كيف تُبقي المجموعات التي تفوق ٢ فقط؟"},
+         "options":[{"en":"WHERE product_count > 2 — it is an ordinary column now","ar":"WHERE product_count > 2 — فهو عمود عاديّ الآن"},{"en":"HAVING COUNT(*) > 2 — aggregates always need HAVING","ar":"HAVING COUNT(*) > 2 — فالتجميعات تحتاج HAVING دائمًا"},{"en":"You cannot filter a summary view","ar":"لا يمكن تصفية عرض ملخّص"},{"en":"GROUP BY product_count","ar":"GROUP BY product_count"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="6" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A view whose query groups by brand returns one row per brand.","ar":"العرض الذي يجمّع استعلامه حسب brand يُعيد صفًّا واحدًا لكل علامة تجارية."},
+         "correct":true}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="6" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete: one summary row per brand.","ar":"أكمل: صفّ ملخّص واحد لكل علامة تجارية."},
+         "template":"CREATE VIEW brand_stats AS SELECT brand, COUNT(*) AS product_count FROM products ____ ____ brand;","answers":[["GROUP"],["BY"]]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Create a view named <code>category_totals</code> with one row per <code>category_id</code> and three columns: <code>category_id</code>, <code>product_count</code> (how many products), and <code>total_stock</code> (their <code>stock_qty</code> added up).</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أنشئ عرضًا باسم <code>category_totals</code> بصفّ واحد لكل <code>category_id</code> وثلاثة أعمدة: <code>category_id</code> و<code>product_count</code> (عدد المنتجات) و<code>total_stock</code> (مجموع <code>stock_qty</code> لها).</p>
+        <div class="qb-widget" data-qid="lab-q4" data-chapter="6" data-lesson="4">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":6,"placeholder":"CREATE VIEW category_totals AS SELECT category_id, COUNT(*) AS product_count, SUM(...) AS total_stock FROM products GROUP BY ...","answer":"CREATE VIEW category_totals AS SELECT category_id, COUNT(*) AS product_count, SUM(stock_qty) AS total_stock FROM products GROUP BY category_id","grade":{"mode":"state","check":"SELECT * FROM category_totals","expected":"SELECT category_id, COUNT(*) AS product_count, SUM(stock_qty) AS total_stock FROM products GROUP BY category_id"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">The summary view <code>brand_stats</code> (<code>brand</code>, <code>product_count</code>, <code>total_stock</code>) already exists. Return the <code>brand</code> of every brand holding more than 50 units in stock.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">العرض الملخّص <code>brand_stats</code> (<code>brand</code> و<code>product_count</code> و<code>total_stock</code>) موجود مسبقًا. أعِد <code>brand</code> لكل علامة تجارية لديها أكثر من ٥٠ وحدة في المخزون.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="6" data-lesson="4">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":6,"setup":["CREATE VIEW brand_stats AS SELECT brand, COUNT(*) AS product_count, SUM(stock_qty) AS total_stock FROM products GROUP BY brand"],"placeholder":"SELECT brand FROM brand_stats WHERE ...","grade":{"mode":"result","expected":"SELECT brand FROM brand_stats WHERE total_stock > 50"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> — the <code>courses</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> — جدول <code>courses</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="6" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Inside a summary view, which clause decides what the groups are?","ar":"داخل العرض الملخّص، أي جملة تحدّد ما هي المجموعات؟"},
+         "options":[{"en":"GROUP BY","ar":"GROUP BY"},{"en":"ORDER BY","ar":"ORDER BY"},{"en":"WHERE","ar":"WHERE"},{"en":"CREATE VIEW","ar":"CREATE VIEW"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="6" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"Once a count lives in a view as a named column, an outside query can filter it with WHERE.","ar":"متى سكن العدد في عرضٍ كعمود مُسمّى، استطاع استعلامٌ خارجيّ تصفيته بـWHERE."},
+         "correct":true}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="6" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete: the mean number of credits per level.","ar":"أكمل: متوسّط عدد الساعات لكل مستوى."},
+         "template":"CREATE VIEW level_credits AS SELECT level, ROUND(____(credits), 2) AS avg_credits FROM courses GROUP BY level;","answers":["AVG"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Create a view named <code>level_stats</code> with one row per <code>level</code> and three columns: <code>level</code>, <code>course_count</code>, and <code>avg_cap</code> — the average <code>enrollment_cap</code> rounded to 2 decimals.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أنشئ عرضًا باسم <code>level_stats</code> بصفّ واحد لكل <code>level</code> وثلاثة أعمدة: <code>level</code> و<code>course_count</code> و<code>avg_cap</code> — متوسّط <code>enrollment_cap</code> مقرّبًا إلى منزلتين.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="6" data-lesson="4">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":6,"placeholder":"CREATE VIEW level_stats AS SELECT level, COUNT(*) AS course_count, ROUND(AVG(...), 2) AS avg_cap FROM courses GROUP BY ...","answer":"CREATE VIEW level_stats AS SELECT level, COUNT(*) AS course_count, ROUND(AVG(enrollment_cap), 2) AS avg_cap FROM courses GROUP BY level","grade":{"mode":"state","check":"SELECT * FROM level_stats","expected":"SELECT level, COUNT(*) AS course_count, ROUND(AVG(enrollment_cap), 2) AS avg_cap FROM courses GROUP BY level"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">The summary view <code>dept_stats</code> (<code>department_id</code>, <code>course_count</code>, <code>total_cap</code>) already exists. Return the <code>department_id</code> of every department running 3 or more courses.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">العرض الملخّص <code>dept_stats</code> (<code>department_id</code> و<code>course_count</code> و<code>total_cap</code>) موجود مسبقًا. أعِد <code>department_id</code> لكل قسم يُدير ٣ مقرّرات أو أكثر.</p>
+        <div class="qb-widget" data-qid="test-t5" data-chapter="6" data-lesson="4">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":6,"setup":["CREATE VIEW dept_stats AS SELECT department_id, COUNT(*) AS course_count, SUM(enrollment_cap) AS total_cap FROM courses GROUP BY department_id"],"placeholder":"SELECT department_id FROM dept_stats WHERE ...","grade":{"mode":"result","expected":"SELECT department_id FROM dept_stats WHERE course_count >= 3"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t6" data-chapter="6" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Match each measure in a summary view to what it reports.","ar":"طابِق كل مقياس في العرض الملخّص بما يُفيده."},
+         "left":[{"en":"COUNT(*)","ar":"COUNT(*)"},{"en":"SUM(enrollment_cap)","ar":"SUM(enrollment_cap)"},{"en":"ROUND(AVG(credits), 2)","ar":"ROUND(AVG(credits), 2)"},{"en":"MAX(credits)","ar":"MAX(credits)"}],
+         "right":[{"en":"How many rows the group holds","ar":"عدد الصفوف في المجموعة"},{"en":"The group's seats added together","ar":"مجموع مقاعد المجموعة"},{"en":"The group's mean credit load, to 2 decimals","ar":"متوسّط ساعات المجموعة بمنزلتين"},{"en":"The largest credit value in the group","ar":"أكبر قيمة ساعات في المجموعة"}],
+         "correctPairs":[[0,0],[1,1],[2,2],[3,3]]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="6" data-lesson="4"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Chapter 7 · SQL Lab</title>
+  <title>Chapter 7 — Normalization · SQL Lab</title>
   <script>
     (function () {
       try {
@@ -35,29 +35,63 @@
     <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
     <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
   </header>
+
   <main class="page stack">
     <nav class="breadcrumbs" data-auto data-chapter="7"></nav>
+
     <section>
       <span class="example-label"><span data-i18n="nav_chapter">Chapter</span> 7</span>
-      <h1 id="ch-title">—</h1>
-      <p class="lead i18n-en">This chapter hasn't been built yet. It ships with its own chapter-content pass, reusing the shared engines already in place.</p>
-      <p class="lead i18n-ar" dir="rtl">لم يُبنَ هذا الفصل بعد. سيصدر في تمريرة محتوى الفصل الخاصة به، مع إعادة استخدام المحرّكات المشتركة الموجودة بالفعل.</p>
-      <p><a class="btn btn-secondary" href="../index.html" data-i18n="nav_home">Home</a></p>
+      <h1 class="i18n-en">Normalization</h1>
+      <h1 class="i18n-ar" dir="rtl">التطبيع</h1>
+      <p class="lead i18n-en">Chapters 1–6 taught you <strong>how</strong> to work with tables. This chapter asks where those tables came from — and why they are split exactly the way they are. <strong>Normalization</strong> starts from one flat, spreadsheet-style table and takes it apart, rule by rule, through the first three <strong>normal forms</strong> (1NF, 2NF, 3NF), until every fact is written in exactly one place. You will watch the Bright Books loan sheet turn into the very <code>authors</code> and <code>books</code> tables you have queried all along — and use the SQL you already know to find the anomalies, test dependencies, and rebuild the full picture with a <code>JOIN</code>.</p>
+      <p class="lead i18n-ar" dir="rtl">علّمتك الفصول ١–٦ <strong>كيف</strong> تتعامل مع الجداول. وهذا الفصل يسأل: من أين جاءت هذه الجداول أصلًا؟ ولماذا هي مقسّمة هكذا بالذات؟ يبدأ <strong>التطبيع</strong> (Normalization) من جدول واحد مسطّح على طريقة الجداول الإلكترونية، ثم يفكّكه قاعدةً بعد قاعدة عبر <strong>النماذج</strong> الثلاثة الأولى (1NF و2NF و3NF)، حتى تُكتب كل حقيقة في مكان واحد فقط. وسترى سجلّ إعارات Bright Books يتحوّل إلى جدولَي <code>authors</code> و<code>books</code> نفسيهما اللذين استعلمتَ منهما طوال الدورة — وستستعمل SQL التي تعرفها لكشف الشذوذ، واختبار الاعتمادات، وإعادة بناء الصورة الكاملة بـ<code>JOIN</code>.</p>
+    </section>
+
+    <section>
+      <h2 data-i18n="lesson">Lessons</h2>
+      <ul class="chapter-list" id="lesson-list"></ul>
+    </section>
+
+    <section>
+      <a class="card card-link" href="../tests/chapter-7-test.html">
+        <span class="example-label" data-i18n="chapter_test">Chapter test</span>
+        <h3 class="i18n-en">Chapter 7 test — normalization across all three databases</h3>
+        <h3 class="i18n-ar" dir="rtl">اختبار الفصل السابع — التطبيع عبر القواعد الثلاث</h3>
+        <div class="meta i18n-en">20 independent questions — anomalies, 1NF, functional dependencies and 2NF, 3NF, and diagnosing a design — including SQL you write to expose a dependency or reassemble normalized tables.</div>
+        <div class="meta i18n-ar" dir="rtl">٢٠ سؤالًا مستقلًّا — الشذوذ، و1NF، والاعتمادات الوظيفية و2NF، و3NF، وتشخيص التصميم — ومنها عبارات SQL تكتبها لكشف اعتماد أو لإعادة تجميع الجداول المُطبَّعة.</div>
+      </a>
     </section>
   </main>
+
   <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
   <script src="../assets/js/i18n.js"></script>
   <script src="../assets/js/theme.js"></script>
   <script src="../assets/js/progress.js"></script>
   <script src="../assets/js/nav.js"></script>
   <script>
     window.PageInit = function () {
-      function set() {
+      function L(v) { var lang = window.I18N ? window.I18N.lang : 'en'; return (v && typeof v === 'object') ? (v[lang] != null ? v[lang] : v.en) : v; }
+      function t(k) { return window.I18N ? window.I18N.t(k) : k; }
+      function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
+      function render() {
         var c = window.COURSE.chapters.filter(function (x) { return x.num === 7; })[0];
-        var lang = window.I18N ? window.I18N.lang : 'en';
-        document.getElementById('ch-title').textContent = c ? (c.title[lang] || c.title.en) : 'Chapter 7';
+        var ul = document.getElementById('lesson-list'); ul.innerHTML = '';
+        c.lessons.forEach(function (l) {
+          var sc = window.Progress.lessonScore(7, l.n);
+          var li = document.createElement('li'); li.className = 'chapter-item';
+          var a = document.createElement('a'); a.className = 'card card-link';
+          a.href = '../lessons/chapter-7-lesson-' + l.n + '.html';
+          var done = sc.total > 0 ? (' · ' + sc.passed + '/' + sc.total + ' ' + t('progress_done')) : '';
+          a.innerHTML = '<span class="num">' + esc(t('lesson').toUpperCase() + ' ' + l.n) + '</span>' +
+                        '<h3>' + esc(L(l.title)) + '</h3>' +
+                        '<div class="meta">' + esc(t('start') + done) + '</div>';
+          li.appendChild(a); ul.appendChild(li);
+        });
       }
-      set(); document.addEventListener('i18n:change', set);
+      render();
+      document.addEventListener('i18n:change', render);
+      document.addEventListener('progress:change', render);
     };
   </script>
   <script src="../assets/js/app.js"></script>

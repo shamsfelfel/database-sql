@@ -5,7 +5,7 @@
    updates, while offline still serves the cached page). Bump CACHE to invalidate. */
 'use strict';
 
-var CACHE = 'sqllab-20260929-1';
+var CACHE = 'sqllab-20261020-5b03e283f3';
 
 /* Everything is listed relative to the service worker's own location (the site
    root), so it resolves correctly whether the site is served from a domain root
@@ -14,6 +14,8 @@ var PRECACHE = [
   "./",
   "assets/css/base.css",
   "assets/css/components.css",
+  "assets/css/erd.css",
+  "assets/css/normalize.css",
   "assets/css/questions.css",
   "assets/css/rtl.css",
   "assets/css/tokens.css",
@@ -52,6 +54,10 @@ var PRECACHE = [
   "chapters/chapter-6.html",
   "chapters/chapter-7.html",
   "chapters/chapter-8.html",
+  "chapters/chapter-9.html",
+  "exams/exam-1.html",
+  "exams/exam-2.html",
+  "exams/exam-3.html",
   "index.html",
   "lessons/chapter-1-lesson-1.html",
   "lessons/chapter-1-lesson-2.html",
@@ -84,12 +90,25 @@ var PRECACHE = [
   "lessons/chapter-5-lesson-4.html",
   "lessons/chapter-5-lesson-5.html",
   "lessons/chapter-5-lesson-6.html",
+  "lessons/chapter-6-lesson-1.html",
+  "lessons/chapter-6-lesson-2.html",
+  "lessons/chapter-6-lesson-3.html",
+  "lessons/chapter-6-lesson-4.html",
+  "lessons/chapter-6-lesson-5.html",
+  "lessons/chapter-6-lesson-6.html",
+  "lessons/chapter-7-lesson-1.html",
+  "lessons/chapter-7-lesson-2.html",
+  "lessons/chapter-7-lesson-3.html",
+  "lessons/chapter-7-lesson-4.html",
+  "lessons/chapter-7-lesson-5.html",
   "manifest.webmanifest",
   "tests/chapter-1-test.html",
   "tests/chapter-2-test.html",
   "tests/chapter-3-test.html",
   "tests/chapter-4-test.html",
-  "tests/chapter-5-test.html"
+  "tests/chapter-5-test.html",
+  "tests/chapter-6-test.html",
+  "tests/chapter-7-test.html"
 ];
 
 self.addEventListener('install', function (event) {

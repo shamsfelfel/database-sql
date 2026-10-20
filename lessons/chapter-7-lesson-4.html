@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 7 · Lesson 4 — Third Normal Form — 3NF · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/normalize.css">
+  <link rel="stylesheet" href="../assets/css/erd.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="7" data-lesson="4">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="7" data-lesson="4"></nav>
+
+    <h1 class="i18n-en">Lesson 4 — Third Normal Form — 3NF</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٤ — النموذج الثالث — 3NF</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">Lesson 3 left us with three 2NF tables — <code>books_2nf</code>, <code>loans_2nf</code> and the junction <code>loan_items</code> — and a warning: <em>Laila Hammoud / Lebanon</em> is still written twice in <code>books_2nf</code>, and Sara's details twice in <code>loans_2nf</code>. The redundancy shrank, but it did not vanish — and its cause is now completely different. Removing it is the job of the third normal form.</p>
+      <p class="i18n-ar" dir="rtl">ترك لنا الدرس الثالث ثلاثة جداول في 2NF — <code>books_2nf</code> و<code>loans_2nf</code> وجدول الربط <code>loan_items</code> — ومعها تنبيه: ما زال <em>Laila Hammoud / Lebanon</em> مكتوبًا مرتين في <code>books_2nf</code>، وبيانات سارة مرتين في <code>loans_2nf</code>. قلّ التكرار لكنه لم يَزُل — وسببه الآن مختلف تمامًا. وإزالته هي مهمّة النموذج الثالث.</p>
+
+      <div class="nf-stage s3">
+        <div class="nf-stage-h"><span class="nf-chip nf-3">3NF</span><span class="i18n-en">Third Normal Form</span><span class="i18n-ar" dir="rtl">النموذج الثالث</span></div>
+        <div class="nf-stage-b">
+          <h3 class="i18n-en">First, a prerequisite: transitive dependency</h3>
+          <h3 class="i18n-ar" dir="rtl">قبل القانون: الاعتماد العابر</h3>
+          <p class="i18n-en">Look at <code>books_2nf</code> and follow the chain: <code>book_title</code> (the key) determines <code>author_name</code>, and <code>author_name</code> in turn determines <code>author_country</code>. So the key determines <code>author_country</code> — but only <strong>indirectly</strong>, through a column that is not a key. That is a <strong>transitive dependency</strong>.</p>
+          <p class="i18n-ar" dir="rtl">انظر إلى <code>books_2nf</code> وتتبّع السلسلة: <code>book_title</code> (المفتاح) يحدّد <code>author_name</code>، و<code>author_name</code> بدوره يحدّد <code>author_country</code>. إذن المفتاح يحدّد <code>author_country</code> — لكنه يحدّدها <strong>بالواسطة</strong>، عبر عمود ليس مفتاحًا. وهذا هو <strong>الاعتماد العابر</strong> (Transitive dependency).</p>
+
+          <figure class="nf-figure">
+            <svg class="dg" viewBox="0 0 420 262" role="img" aria-label="The transitive chain inside books_2nf: book_title determines author_name, which determines author_country">
+              <rect class="dg-box b3" x="70" y="14" width="280" height="42" rx="7"/>
+              <text class="dg-mono" x="210" y="33" text-anchor="middle">book_title</text>
+              <text class="dg-small i18n-en" x="210" y="49" text-anchor="middle">the primary key</text>
+              <text class="dg-small i18n-ar" x="210" y="49" text-anchor="middle" direction="rtl">المفتاح الأساسي</text>
+              <path class="dg-line bad" d="M210 58 V80"/>
+              <path class="dg-head bad" d="M205 78 L210 86 L215 78 Z"/>
+              <rect class="dg-box b1" x="70" y="90" width="280" height="42" rx="7"/>
+              <text class="dg-mono" x="210" y="109" text-anchor="middle">author_name</text>
+              <text class="dg-small i18n-en" x="210" y="125" text-anchor="middle">a non-key column — the problem</text>
+              <text class="dg-small i18n-ar" x="210" y="125" text-anchor="middle" direction="rtl">عمود غير مفتاحي — هنا المشكلة</text>
+              <path class="dg-line bad" d="M210 134 V156"/>
+              <path class="dg-head bad" d="M205 154 L210 162 L215 154 Z"/>
+              <rect class="dg-box b0" x="70" y="166" width="280" height="42" rx="7"/>
+              <text class="dg-mono" x="210" y="185" text-anchor="middle">author_country</text>
+              <text class="dg-small i18n-en" x="210" y="201" text-anchor="middle">a non-key column</text>
+              <text class="dg-small i18n-ar" x="210" y="201" text-anchor="middle" direction="rtl">عمود غير مفتاحي</text>
+              <text class="dg-small dg-bad i18n-en" x="210" y="230" text-anchor="middle">non-key → non-key = a transitive dependency ✗</text>
+              <text class="dg-small dg-bad i18n-ar" x="210" y="230" text-anchor="middle" direction="rtl">غير مفتاحي ← غير مفتاحي = اعتماد عابر ✗</text>
+              <text class="dg-small i18n-en" x="210" y="250" text-anchor="middle">The tell: the country is a fact about the author, not the book</text>
+              <text class="dg-small i18n-ar" x="210" y="250" text-anchor="middle" direction="rtl">الدليل: البلد حقيقة عن المؤلف، لا عن الكتاب</text>
+            </svg>
+            <figcaption class="nf-caption"><span class="i18n-en">Figure 3 — The transitive chain inside <code>books_2nf</code>.</span><span class="i18n-ar" dir="rtl">الشكل ٣ — سلسلة الاعتماد العابر داخل <code>books_2nf</code>.</span></figcaption>
+          </figure>
+
+          <div class="rule-box">
+            <span class="rule-label"><span class="i18n-en">The rule</span><span class="i18n-ar" dir="rtl">نصّ القانون</span></span>
+            <p class="i18n-en">A table is in <strong>Third Normal Form (3NF)</strong> when:</p>
+            <p class="i18n-ar" dir="rtl">يكون الجدول في <strong>النموذج الثالث (3NF)</strong> إذا كان:</p>
+            <ol class="i18n-en">
+              <li>it is in 2NF, <strong>and</strong></li>
+              <li>no non-key column depends on another non-key column — there is no <strong>transitive dependency</strong>.</li>
+            </ol>
+            <ol class="i18n-ar" dir="rtl">
+              <li>في النموذج الثاني (2NF)، <strong>و</strong></li>
+              <li>لا يعتمد أيّ عمود غير مفتاحي على عمود غير مفتاحي آخر — أي لا يوجد <strong>اعتماد عابر</strong>.</li>
+            </ol>
+            <p class="i18n-en">The famous one-liner packs all three forms together: <em>"every column depends on <strong>the key</strong>, <strong>the whole key</strong>, and <strong>nothing but the key</strong>."</em> The first clause is 1NF, the second 2NF, the third 3NF.</p>
+            <p class="i18n-ar" dir="rtl">والصياغة المشهورة التي تجمع النماذج الثلاثة في سطر واحد: <em>«كل عمود يعتمد على <strong>المفتاح</strong>، وعلى <strong>كلّ المفتاح</strong>، وعلى <strong>لا شيء غير المفتاح</strong>.»</em> الجزء الأول هو 1NF، والثاني 2NF، والثالث 3NF.</p>
+          </div>
+
+          <h3 class="i18n-en">Applying the rule — in two places</h3>
+          <h3 class="i18n-ar" dir="rtl">تطبيق القانون — في موضعين</h3>
+          <p class="i18n-en"><strong>In <code>books_2nf</code>:</strong> extract the author into a table of its own. And since we are creating new tables anyway, we take the chance to replace the natural key <code>book_title</code> with a surrogate <code>id</code>: two books can share a title, a title can be corrected for spelling, and a key should never change and drag everything that references it along.</p>
+          <p class="i18n-ar" dir="rtl"><strong>في <code>books_2nf</code>:</strong> نستخرج المؤلف إلى جدول مستقل. وبما أننا نُنشئ جداول جديدة على أيّ حال، نغتنم الفرصة ونستبدل المفتاح الطبيعي <code>book_title</code> بمفتاح صناعي <code>id</code>: فقد يتشارك كتابان العنوان نفسه، وقد يُصحَّح العنوان إملائيًا، ولا يصحّ أن يتغيّر مفتاح فيجرّ معه كل ما يشير إليه.</p>
+          <p class="i18n-en"><strong>In <code>loans_2nf</code>:</strong> exactly the same story — <code>loan_id → member_name → member_mobile, member_home_phone, member_city</code>. Every member column is a fact about the <strong>member</strong>, not about the <strong>loan</strong>. Extract them into <code>members</code>, and leave in <code>loans</code> only what truly belongs to a loan: its date, and who made it (<code>member_id</code>).</p>
+          <p class="i18n-ar" dir="rtl"><strong>في <code>loans_2nf</code>:</strong> القصة نفسها بالضبط — <code>loan_id → member_name → member_mobile, member_home_phone, member_city</code>. كل أعمدة العضو حقائق عن <strong>العضو</strong>، لا عن <strong>الإعارة</strong>. نستخرجها إلى <code>members</code>، ونترك في <code>loans</code> ما يخصّ الإعارة فعلًا: تاريخها، ومن قام بها (<code>member_id</code>).</p>
+
+          <div class="callout note">
+            <div class="i18n-en"><strong>The quick practical test.</strong> Stop at each column and ask: "this is a fact about <em>what</em>?" If the answer isn't the thing the table's key names, the column is in the wrong place. <code>author_country</code> is a fact about an author, and its table is about books ⇒ move it.</div>
+            <div class="i18n-ar" dir="rtl"><strong>الاختبار العملي السريع.</strong> قِف عند كل عمود واسأل: «هذه الحقيقة عن <em>ماذا</em>؟» إن كان الجواب شيئًا غير الذي يسمّيه مفتاح الجدول، فالعمود في المكان الخطأ. <code>author_country</code> حقيقة عن مؤلف، وجدولها عن الكتب ⇒ انقلها.</div>
+          </div>
+
+          <h3 class="i18n-en">The final result — five tables in 3NF</h3>
+          <h3 class="i18n-ar" dir="rtl">النتيجة النهائية — خمسة جداول في 3NF</h3>
+          <p class="i18n-en">These are the real tables in your database. <code>authors</code> and <code>books</code> hold more rows and columns than shown — only the rows this loan sheet touches appear here.</p>
+          <p class="i18n-ar" dir="rtl">هذه هي الجداول الحقيقية في قاعدة بياناتك. ويحوي <code>authors</code> و<code>books</code> صفوفًا وأعمدة أكثر ممّا يظهر — فلا يظهر هنا إلا ما تمسّه ورقة الإعارات.</p>
+
+          <div class="tbl-cap">authors <span class="i18n-en">— 3 of 7 rows</span><span class="i18n-ar" dir="rtl">— ٣ من ٧ صفوف</span></div>
+          <div class="tbl-scroll">
+            <table class="data">
+              <thead><tr><th class="k">id</th><th>name</th><th>country</th></tr></thead>
+              <tbody>
+                <tr><td class="k">1</td><td class="good">Laila Hammoud</td><td class="good">Lebanon</td></tr>
+                <tr><td class="k">3</td><td>Aiko Tanaka</td><td>Japan</td></tr>
+                <tr><td class="k">5</td><td>Fatima Zahra</td><td>Morocco</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tbl-cap">books <span class="i18n-en">— 4 of 12 rows</span><span class="i18n-ar" dir="rtl">— ٤ من ١٢ صفًّا</span></div>
+          <div class="tbl-scroll">
+            <table class="data">
+              <thead><tr><th class="k">id</th><th>title</th><th>genre</th><th>author_id</th></tr></thead>
+              <tbody>
+                <tr><td class="k">2</td><td>Coastal Winters</td><td>Fiction</td><td>5</td></tr>
+                <tr><td class="k">3</td><td>A Quiet Machine</td><td>Science Fiction</td><td>1</td></tr>
+                <tr><td class="k">4</td><td>Paper Kingdoms</td><td>Fantasy</td><td>3</td></tr>
+                <tr><td class="k">10</td><td>The Ninth Cipher</td><td>Mystery</td><td>1</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tbl-cap">members</div>
+          <div class="tbl-scroll">
+            <table class="data">
+              <thead><tr><th class="k">id</th><th>name</th><th>mobile</th><th>home_phone</th><th>city</th></tr></thead>
+              <tbody>
+                <tr><td class="k">1</td><td class="good">Sara Hamdan</td><td class="good">0599-111222</td><td class="good">08-2834567</td><td class="good">Gaza</td></tr>
+                <tr><td class="k">2</td><td>Omar Nassar</td><td>0599-333444</td><td class="nul">NULL</td><td>Rafah</td></tr>
+                <tr><td class="k">3</td><td>Dina Qasem</td><td>0597-888999</td><td class="nul">NULL</td><td>Khan Younis</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tbl-cap">loans</div>
+          <div class="tbl-scroll">
+            <table class="data">
+              <thead><tr><th class="k">id</th><th>member_id</th><th>loan_date</th></tr></thead>
+              <tbody>
+                <tr><td class="k">101</td><td>1</td><td>2026-03-01</td></tr>
+                <tr><td class="k">102</td><td>2</td><td>2026-03-03</td></tr>
+                <tr><td class="k">103</td><td>1</td><td>2026-03-07</td></tr>
+                <tr><td class="k">104</td><td>3</td><td>2026-03-09</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tbl-cap">loan_items</div>
+          <div class="tbl-scroll">
+            <table class="data">
+              <thead><tr><th class="k">loan_id</th><th class="k">book_id</th></tr></thead>
+              <tbody>
+                <tr><td class="k">101</td><td class="k">2</td></tr>
+                <tr><td class="k">101</td><td class="k">3</td></tr>
+                <tr><td class="k">102</td><td class="k">2</td></tr>
+                <tr><td class="k">103</td><td class="k">4</td></tr>
+                <tr><td class="k">103</td><td class="k">3</td></tr>
+                <tr><td class="k">103</td><td class="k">10</td></tr>
+                <tr><td class="k">104</td><td class="k">10</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="i18n-en">The green cells are the whole point: <em>Laila Hammoud / Lebanon</em> is now written <strong>exactly once</strong> in the entire database, and so are Sara's details. Changing an author's country is a one-row <code>UPDATE</code>, and the database cannot contradict itself, because there is no second copy to contradict.</p>
+          <p class="i18n-ar" dir="rtl">الخلايا الخضراء هي بيت القصيد: <em>Laila Hammoud / Lebanon</em> مكتوب الآن <strong>مرة واحدة فقط</strong> في قاعدة البيانات كلها، وكذلك بيانات سارة. تغيير بلد المؤلف صار <code>UPDATE</code> على صفّ واحد، ولا يمكن أن تتناقض قاعدة البيانات مع نفسها، لأنها لا تملك نسخة ثانية تتناقض معها.</p>
+
+          <figure class="erd-figure">
+            <svg class="erd" viewBox="0 0 820 365" role="img" aria-label="Bright Books 3NF schema: one author has many books, one member has many loans, and loan_items links loans and books">
+              <rect class="erd-box" x="20" y="18" width="230" height="114" rx="8"/>
+              <path class="erd-head" d="M20 44 V26 A8 8 0 0 1 28 18 H242 A8 8 0 0 1 250 26 V44 Z"/>
+              <text class="erd-title" x="32" y="36">authors</text>
+              <text class="erd-key" x="30" y="63">PK</text>
+              <text class="erd-col" x="58" y="63">id</text>
+              <text class="erd-type" x="238" y="63" text-anchor="end">INT</text>
+              <text class="erd-col" x="58" y="82">name</text>
+              <text class="erd-type" x="238" y="82" text-anchor="end">TEXT</text>
+              <text class="erd-col" x="58" y="101">country</text>
+              <text class="erd-type" x="238" y="101" text-anchor="end">TEXT</text>
+              <text class="erd-col" x="58" y="120">birth_year</text>
+              <text class="erd-type" x="238" y="120" text-anchor="end">INT</text>
+
+              <rect class="erd-box" x="20" y="190" width="230" height="133" rx="8"/>
+              <path class="erd-head" d="M20 216 V198 A8 8 0 0 1 28 190 H242 A8 8 0 0 1 250 198 V216 Z"/>
+              <text class="erd-title" x="32" y="208">books</text>
+              <text class="erd-key" x="30" y="235">PK</text>
+              <text class="erd-col" x="58" y="235">id</text>
+              <text class="erd-type" x="238" y="235" text-anchor="end">INT</text>
+              <text class="erd-col" x="58" y="254">title</text>
+              <text class="erd-type" x="238" y="254" text-anchor="end">TEXT</text>
+              <text class="erd-col" x="58" y="273">genre</text>
+              <text class="erd-type" x="238" y="273" text-anchor="end">TEXT</text>
+              <text class="erd-col" x="58" y="292">price · …</text>
+              <text class="erd-type" x="238" y="292" text-anchor="end">REAL</text>
+              <text class="erd-fk" x="30" y="311">FK</text>
+              <text class="erd-col" x="58" y="311">author_id</text>
+              <text class="erd-type" x="238" y="311" text-anchor="end">INT</text>
+
+              <rect class="erd-box" x="570" y="18" width="230" height="133" rx="8"/>
+              <path class="erd-head" d="M570 44 V26 A8 8 0 0 1 578 18 H792 A8 8 0 0 1 800 26 V44 Z"/>
+              <text class="erd-title" x="582" y="36">members</text>
+              <text class="erd-key" x="580" y="63">PK</text>
+              <text class="erd-col" x="608" y="63">id</text>
+              <text class="erd-type" x="788" y="63" text-anchor="end">INT</text>
+              <text class="erd-col" x="608" y="82">name</text>
+              <text class="erd-type" x="788" y="82" text-anchor="end">TEXT</text>
+              <text class="erd-col" x="608" y="101">mobile</text>
+              <text class="erd-type" x="788" y="101" text-anchor="end">TEXT</text>
+              <text class="erd-col" x="608" y="120">home_phone</text>
+              <text class="erd-type" x="788" y="120" text-anchor="end">TEXT</text>
+              <text class="erd-col" x="608" y="139">city</text>
+              <text class="erd-type" x="788" y="139" text-anchor="end">TEXT</text>
+
+              <rect class="erd-box" x="570" y="190" width="230" height="95" rx="8"/>
+              <path class="erd-head" d="M570 216 V198 A8 8 0 0 1 578 190 H792 A8 8 0 0 1 800 198 V216 Z"/>
+              <text class="erd-title" x="582" y="208">loans</text>
+              <text class="erd-key" x="580" y="235">PK</text>
+              <text class="erd-col" x="608" y="235">id</text>
+              <text class="erd-type" x="788" y="235" text-anchor="end">INT</text>
+              <text class="erd-fk" x="580" y="254">FK</text>
+              <text class="erd-col" x="608" y="254">member_id</text>
+              <text class="erd-type" x="788" y="254" text-anchor="end">INT</text>
+              <text class="erd-col" x="608" y="273">loan_date</text>
+              <text class="erd-type" x="788" y="273" text-anchor="end">TEXT</text>
+
+              <rect class="erd-box" x="295" y="225" width="230" height="76" rx="8"/>
+              <path class="erd-head" d="M295 251 V233 A8 8 0 0 1 303 225 H517 A8 8 0 0 1 525 233 V251 Z"/>
+              <text class="erd-title" x="307" y="243">loan_items</text>
+              <text class="erd-key" x="305" y="270">PK</text>
+              <text class="erd-fk" x="327" y="270">FK</text>
+              <text class="erd-col" x="353" y="270">loan_id</text>
+              <text class="erd-type" x="513" y="270" text-anchor="end">INT</text>
+              <text class="erd-key" x="305" y="289">PK</text>
+              <text class="erd-fk" x="327" y="289">FK</text>
+              <text class="erd-col" x="353" y="289">book_id</text>
+              <text class="erd-type" x="513" y="289" text-anchor="end">INT</text>
+
+              <path class="erd-line" d="M135 132 V190"/>
+              <text class="erd-card" x="147" y="150" text-anchor="middle">1</text>
+              <text class="erd-card" x="147" y="184" text-anchor="middle">*</text>
+              <path class="erd-line" d="M685 151 V190"/>
+              <text class="erd-card" x="697" y="168" text-anchor="middle">1</text>
+              <text class="erd-card" x="697" y="186" text-anchor="middle">*</text>
+              <path class="erd-line" d="M250 280 H295"/>
+              <text class="erd-card" x="260" y="274" text-anchor="middle">1</text>
+              <text class="erd-card" x="287" y="274" text-anchor="middle">*</text>
+              <path class="erd-line" d="M570 262 H525"/>
+              <text class="erd-card" x="560" y="256" text-anchor="middle">1</text>
+              <text class="erd-card" x="533" y="256" text-anchor="middle">*</text>
+              <text class="erd-note" x="410" y="350" text-anchor="middle">authors.id &#8592; books.author_id &#160;&#183;&#160; members.id &#8592; loans.member_id &#160;&#183;&#160; loans.id, books.id &#8592; loan_items</text>
+            </svg>
+            <figcaption class="erd-caption i18n-en">Figure 4 — Five tables, every fact in exactly one place. <code>loan_items</code> is the junction table carrying the many-to-many between loans and books; its primary key is the pair <code>(loan_id, book_id)</code>, and each half is also a foreign key. <code>PK</code> marks a primary key, <code>FK</code> a foreign key, and <code>1</code> / <code>*</code> read as "one … has many …".</figcaption>
+            <figcaption class="erd-caption i18n-ar" dir="rtl">الشكل ٤ — خمسة جداول، وكل حقيقة في مكان واحد فقط. <code>loan_items</code> هو جدول الربط الذي يحمل علاقة many-to-many بين الإعارات والكتب؛ ومفتاحه الأساسي هو الزوج <code>(loan_id, book_id)</code>، وكل نصف منه مفتاح أجنبي أيضًا. ويشير <code>PK</code> إلى المفتاح الأساسي، و<code>FK</code> إلى المفتاح الأجنبي، ويُقرأ <code>1</code> / <code>*</code> هكذا: «الواحد … له كثير من …».</figcaption>
+          </figure>
+
+          <p class="i18n-en"><code>authors</code> and <code>books</code> already exist, so only three new tables need creating:</p>
+          <p class="i18n-ar" dir="rtl">الجدولان <code>authors</code> و<code>books</code> موجودان مسبقًا، فلا نحتاج إلا إلى إنشاء ثلاثة جداول جديدة:</p>
+          <pre><code>CREATE TABLE members (
+    id          INT PRIMARY KEY,
+    name        TEXT NOT NULL,
+    mobile      TEXT,
+    home_phone  TEXT,
+    city        TEXT
+);
+
+CREATE TABLE loans (
+    id          INT PRIMARY KEY,
+    member_id   INT NOT NULL,
+    loan_date   TEXT,
+    FOREIGN KEY (member_id) REFERENCES members(id)
+);
+
+CREATE TABLE loan_items (
+    loan_id     INT NOT NULL,
+    book_id     INT NOT NULL,
+    PRIMARY KEY (loan_id, book_id),
+    FOREIGN KEY (loan_id) REFERENCES loans(id),
+    FOREIGN KEY (book_id) REFERENCES books(id)
+);</code></pre>
+
+          <div class="callout ok">
+            <div class="i18n-en"><strong>Pause — where did Chapter 3's tables come from?</strong> Look at <code>authors</code> and <code>books</code> above. They are <em>exactly</em> the two tables you have used since Chapter 3 to learn keys and <code>JOIN</code> — handed to you ready-made, without explanation. Now you know they were never arbitrary: they are the <strong>output</strong> of applying these three rules to a real library's loan sheet.</div>
+            <div class="i18n-ar" dir="rtl"><strong>وقفة — من أين جاء جدولا الفصل الثالث؟</strong> انظر إلى <code>authors</code> و<code>books</code> أعلاه. إنهما <em>بالضبط</em> الجدولان اللذان استعملتهما منذ الفصل الثالث لتعلّم المفاتيح و<code>JOIN</code> — وقد سُلّما إليك جاهزَين دون تفسير. والآن تعرف أنهما لم يكونا اعتباطًا قط: إنهما <strong>نتيجة</strong> تطبيق هذه القوانين الثلاثة على ورقة إعارات مكتبة حقيقية.</div>
+          </div>
+
+          <h3 class="i18n-en">Before and after</h3>
+          <h3 class="i18n-ar" dir="rtl">قبل وبعد</h3>
+          <div class="tbl-scroll cmp-wrap">
+            <table class="cmp">
+              <thead><tr><th></th><th><span class="nf-chip nf-0"><span class="i18n-en">Flat</span><span class="i18n-ar" dir="rtl">مسطَّح</span></span></th><th><span class="nf-chip nf-3">3NF</span></th></tr></thead>
+              <tbody>
+                <tr><th><span class="i18n-en">Tables</span><span class="i18n-ar" dir="rtl">عدد الجداول</span></th><td>1</td><td>5</td></tr>
+                <tr><th><span class="i18n-en">Copies of "Laila Hammoud / Lebanon"</span><span class="i18n-ar" dir="rtl">نُسخ «Laila Hammoud / Lebanon»</span></th><td>4</td><td class="good">1</td></tr>
+                <tr><th><span class="i18n-en">Record a book nobody has borrowed</span><span class="i18n-ar" dir="rtl">تسجيل كتاب لم يستعره أحد</span></th><td><span class="i18n-en">impossible</span><span class="i18n-ar" dir="rtl">مستحيل</span></td><td class="good"><span class="i18n-en">one row (8 of the 12 books, e.g. <em>Static Gardens</em>, have never been borrowed)</span><span class="i18n-ar" dir="rtl">صفّ واحد (٨ من الكتب الاثني عشر، مثل <em>Static Gardens</em>، لم تُستعَر قط)</span></td></tr>
+                <tr><th><span class="i18n-en">Change a member's phone</span><span class="i18n-ar" dir="rtl">تغيير رقم عضو</span></th><td><span class="i18n-en">many rows, risk of contradiction</span><span class="i18n-ar" dir="rtl">صفوف كثيرة، وخطر التناقض</span></td><td class="good"><code>UPDATE</code> ×1</td></tr>
+                <tr><th><span class="i18n-en">"Who borrowed <em>A Quiet Machine</em>?"</span><span class="i18n-ar" dir="rtl">«من استعار <em>A Quiet Machine</em>؟»</span></th><td><span class="i18n-en">3 OR'd conditions that break later</span><span class="i18n-ar" dir="rtl">٣ شروط OR تنكسر لاحقًا</span></td><td class="good"><span class="i18n-en">a clear, stable JOIN</span><span class="i18n-ar" dir="rtl">JOIN واضح ومستقر</span></td></tr>
+                <tr><th><span class="i18n-en">The cost</span><span class="i18n-ar" dir="rtl">الثمن</span></th><td><span class="i18n-en">no JOINs</span><span class="i18n-ar" dir="rtl">لا JOIN</span></td><td class="warn"><span class="i18n-en">JOINs needed to reassemble the picture</span><span class="i18n-ar" dir="rtl">نحتاج JOIN لإعادة تجميع الصورة</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout note">
+            <div class="i18n-en"><strong>In fairness — denormalization.</strong> Normalization isn't free: the more you split, the more <code>JOIN</code>s you need when reading. In large reporting systems designers sometimes deliberately walk one rule back to speed up reads — that is <strong>denormalization</strong>. The professional rule is clear: <em>normalize to 3NF first, then back off one specific step deliberately, for a measured reason</em> — never start from a messy design and call it performance tuning. And remember Chapter 6: a <strong>view</strong> over the <code>JOIN</code> gives readers the flat picture back <em>without storing any fact twice</em> — normalized storage, comfortable reading (Example 3 below).</div>
+            <div class="i18n-ar" dir="rtl"><strong>كلمة إنصاف — إلغاء التطبيع.</strong> التطبيع ليس مجانيًا: كلما قسّمت أكثر احتجت <code>JOIN</code> أكثر عند القراءة. وفي أنظمة التقارير الضخمة يتعمّد المصمّمون أحيانًا التراجع عن قاعدة بعينها لتسريع القراءة — وهذا هو <strong>إلغاء التطبيع</strong> (Denormalization). لكن القاعدة المهنية واضحة: <em>طبّع أولًا حتى 3NF، ثم تراجع عن خطوة بعينها بوعي، ولسبب مَقيس</em> — لا أن تبدأ بتصميم فوضوي وتسمّيه تحسينًا للأداء. وتذكّر الفصل السادس: <strong>العرض</strong> (View) فوق <code>JOIN</code> يُعيد للقرّاء الصورة المسطّحة <em>دون تخزين أيّ حقيقة مرتين</em> — تخزين مُطبَّع، وقراءة مريحة (المثال ٣ أدناه).</div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — the 3NF library</h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — المكتبة في 3NF</h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — reassemble the loan sheet with a JOIN</span><span class="i18n-ar" dir="rtl">مثال ١ — أعِد تجميع ورقة الإعارات بـ JOIN</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"SELECT l.id AS loan_id, b.title AS book_title, b.genre AS genre,\n       a.name AS author_name, a.country AS author_country,\n       m.name AS member_name, l.loan_date AS loan_date\nFROM loans l\nJOIN members m     ON l.member_id = m.id\nJOIN loan_items li ON li.loan_id = l.id\nJOIN books b       ON li.book_id = b.id\nJOIN authors a     ON b.author_id = a.id;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Seven rows — the same facts as <code>library_1nf</code>. Splitting the tables lost nothing: a <code>JOIN</code> puts the picture back together whenever you need it.</span><span class="i18n-ar" dir="rtl">سبعة صفوف — الحقائق نفسها التي في <code>library_1nf</code>. لم يُفقِدنا التقسيم شيئًا: فـ<code>JOIN</code> يُعيد تجميع الصورة متى احتجت إليها.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — one UPDATE, no contradiction</span><span class="i18n-ar" dir="rtl">مثال ٢ — UPDATE واحد، بلا تناقض</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"UPDATE members SET mobile = '0599-555000' WHERE id = 1;\n\nSELECT l.id AS loan_id, m.name AS member_name, m.mobile AS mobile\nFROM loans l\nJOIN members m ON l.member_id = m.id\nWHERE m.id = 1;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Compare Lesson 1, Example 3. There, the same change left Sara with two numbers. Here it touches one row, and both of her loans see the new number — because the number is stored once.</span><span class="i18n-ar" dir="rtl">قارن بالمثال ٣ من الدرس الأول. هناك ترك التغيير نفسه لسارة رقمين. أما هنا فيمسّ صفًّا واحدًا، وتَرى إعارتاها كلتاهما الرقم الجديد — لأن الرقم مخزَّن مرة واحدة.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — a view gives readers the flat picture</span><span class="i18n-ar" dir="rtl">مثال ٣ — العرض يُعطي القرّاء الصورة المسطّحة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"CREATE VIEW loan_sheet AS\nSELECT l.id AS loan_id, b.title AS book_title, m.name AS member_name, l.loan_date AS loan_date\nFROM loans l\nJOIN members m     ON l.member_id = m.id\nJOIN loan_items li ON li.loan_id = l.id\nJOIN books b       ON li.book_id = b.id;\n\nSELECT * FROM loan_sheet WHERE member_name = 'Sara Hamdan';\n\n-- the insertion anomaly is gone too — books nobody has borrowed:\n-- SELECT title FROM books b WHERE NOT EXISTS (SELECT 1 FROM loan_items li WHERE li.book_id = b.id);"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en"><code>loan_sheet</code> reads like the old flat table, yet stores nothing — every fact still lives in one place. Uncomment the last query: eight books, <em>Static Gardens</em> among them, exist with no loan at all.</span><span class="i18n-ar" dir="rtl"><code>loan_sheet</code> يُقرأ كالجدول المسطّح القديم، لكنه لا يخزّن شيئًا — فكل حقيقة ما زالت في مكان واحد. أزِل التعليق عن الاستعلام الأخير: ثمانية كتب، منها <em>Static Gardens</em>، موجودة دون أيّ إعارة.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Back to <strong>Orbit Electronics</strong>. In Lesson 3 you split <code>orders_1nf</code> into three 2NF tables: <code>products_2nf(product_name, category_name, category_dept, brand_name, brand_country)</code>, <code>orders_2nf(order_id, customer_name, customer_email, customer_phone, customer_city, order_date)</code> and the junction <code>order_items</code>. Now finish the job.</p>
+      <p class="i18n-ar" dir="rtl">نعود إلى <strong>Orbit Electronics</strong>. في الدرس الثالث قسّمتَ <code>orders_1nf</code> إلى ثلاثة جداول في 2NF: <code>products_2nf(product_name, category_name, category_dept, brand_name, brand_country)</code> و<code>orders_2nf(order_id, customer_name, customer_email, customer_phone, customer_city, order_date)</code> وجدول الربط <code>order_items</code>. والآن أكمل المهمّة.</p>
+
+      <div class="task">
+        <div class="task-h"><span class="task-num">7</span><span class="i18n-en">Find <strong>every</strong> transitive chain in the three 2NF tables (there are three — one is longer than anything in the library), then write the final 3NF schema.</span><span class="i18n-ar" dir="rtl">اعثر على <strong>كل</strong> سلسلة اعتماد عابر في جداول 2NF الثلاثة (هي ثلاث سلاسل — إحداها أطول من أيّ شيء في المكتبة)، ثم اكتب المخطّط النهائي في 3NF.</span></div>
+        <details class="reveal"><summary><span class="i18n-en">Show the answer</span><span class="i18n-ar" dir="rtl">اعرض الحل</span></summary>
+          <div class="reveal-body">
+            <pre class="fd">-- in products_2nf
+product_name → brand_name    → brand_country                              -- transitive
+product_name → category_name → category_dept                              -- transitive
+-- in orders_2nf
+order_id     → customer_name → customer_email, customer_phone, customer_city   -- transitive</pre>
+            <p class="i18n-en">Each chain spawns a new table: <code>brands</code>, <code>categories</code> and <code>customers</code>. Swap natural keys for surrogate <code>id</code>s, as in the library, and the result is <strong>six tables</strong>:</p>
+            <p class="i18n-ar" dir="rtl">كل سلسلة تُنتج جدولًا جديدًا: <code>brands</code> و<code>categories</code> و<code>customers</code>. ونستبدل المفاتيح الطبيعية بمفاتيح صناعية <code>id</code> كما فعلنا في المكتبة، فتكون النتيجة <strong>ستة جداول</strong>:</p>
+            <figure class="erd-figure">
+              <svg class="erd" viewBox="0 0 820 375" role="img" aria-label="Orbit Electronics 3NF schema: brands and categories each have many products, customers have many orders, and order_items links orders and products">
+                <rect class="erd-box" x="20" y="18" width="230" height="95" rx="8"/>
+                <path class="erd-head" d="M20 44 V26 A8 8 0 0 1 28 18 H242 A8 8 0 0 1 250 26 V44 Z"/>
+                <text class="erd-title" x="32" y="36">brands</text>
+                <text class="erd-key" x="30" y="63">PK</text>
+                <text class="erd-col" x="58" y="63">id</text>
+                <text class="erd-type" x="238" y="63" text-anchor="end">INT</text>
+                <text class="erd-col" x="58" y="82">name</text>
+                <text class="erd-type" x="238" y="82" text-anchor="end">TEXT</text>
+                <text class="erd-col" x="58" y="101">country</text>
+                <text class="erd-type" x="238" y="101" text-anchor="end">TEXT</text>
+
+                <rect class="erd-box" x="295" y="18" width="230" height="95" rx="8"/>
+                <path class="erd-head" d="M295 44 V26 A8 8 0 0 1 303 18 H517 A8 8 0 0 1 525 26 V44 Z"/>
+                <text class="erd-title" x="307" y="36">categories</text>
+                <text class="erd-key" x="305" y="63">PK</text>
+                <text class="erd-col" x="333" y="63">id</text>
+                <text class="erd-type" x="513" y="63" text-anchor="end">INT</text>
+                <text class="erd-col" x="333" y="82">name</text>
+                <text class="erd-type" x="513" y="82" text-anchor="end">TEXT</text>
+                <text class="erd-col" x="333" y="101">department</text>
+                <text class="erd-type" x="513" y="101" text-anchor="end">TEXT</text>
+
+                <rect class="erd-box" x="570" y="18" width="230" height="133" rx="8"/>
+                <path class="erd-head" d="M570 44 V26 A8 8 0 0 1 578 18 H792 A8 8 0 0 1 800 26 V44 Z"/>
+                <text class="erd-title" x="582" y="36">customers</text>
+                <text class="erd-key" x="580" y="63">PK</text>
+                <text class="erd-col" x="608" y="63">id</text>
+                <text class="erd-type" x="788" y="63" text-anchor="end">INT</text>
+                <text class="erd-col" x="608" y="82">name</text>
+                <text class="erd-type" x="788" y="82" text-anchor="end">TEXT</text>
+                <text class="erd-col" x="608" y="101">email</text>
+                <text class="erd-type" x="788" y="101" text-anchor="end">TEXT</text>
+                <text class="erd-col" x="608" y="120">phone</text>
+                <text class="erd-type" x="788" y="120" text-anchor="end">TEXT</text>
+                <text class="erd-col" x="608" y="139">city</text>
+                <text class="erd-type" x="788" y="139" text-anchor="end">TEXT</text>
+
+                <rect class="erd-box" x="20" y="170" width="250" height="133" rx="8"/>
+                <path class="erd-head" d="M20 196 V178 A8 8 0 0 1 28 170 H262 A8 8 0 0 1 270 178 V196 Z"/>
+                <text class="erd-title" x="32" y="188">products</text>
+                <text class="erd-key" x="30" y="215">PK</text>
+                <text class="erd-col" x="58" y="215">id</text>
+                <text class="erd-type" x="258" y="215" text-anchor="end">INT</text>
+                <text class="erd-col" x="58" y="234">name</text>
+                <text class="erd-type" x="258" y="234" text-anchor="end">TEXT</text>
+                <text class="erd-col" x="58" y="253">price · …</text>
+                <text class="erd-type" x="258" y="253" text-anchor="end">REAL</text>
+                <text class="erd-fk" x="30" y="272">FK</text>
+                <text class="erd-col" x="58" y="272">category_id</text>
+                <text class="erd-type" x="258" y="272" text-anchor="end">INT</text>
+                <text class="erd-fk" x="30" y="291">FK</text>
+                <text class="erd-col" x="58" y="291">brand_id</text>
+                <text class="erd-type" x="258" y="291" text-anchor="end">INT</text>
+
+                <rect class="erd-box" x="570" y="190" width="230" height="95" rx="8"/>
+                <path class="erd-head" d="M570 216 V198 A8 8 0 0 1 578 190 H792 A8 8 0 0 1 800 198 V216 Z"/>
+                <text class="erd-title" x="582" y="208">orders</text>
+                <text class="erd-key" x="580" y="235">PK</text>
+                <text class="erd-col" x="608" y="235">id</text>
+                <text class="erd-type" x="788" y="235" text-anchor="end">INT</text>
+                <text class="erd-fk" x="580" y="254">FK</text>
+                <text class="erd-col" x="608" y="254">customer_id</text>
+                <text class="erd-type" x="788" y="254" text-anchor="end">INT</text>
+                <text class="erd-col" x="608" y="273">order_date</text>
+                <text class="erd-type" x="788" y="273" text-anchor="end">TEXT</text>
+
+                <rect class="erd-box" x="310" y="250" width="215" height="76" rx="8"/>
+                <path class="erd-head" d="M310 276 V258 A8 8 0 0 1 318 250 H517 A8 8 0 0 1 525 258 V276 Z"/>
+                <text class="erd-title" x="322" y="268">order_items</text>
+                <text class="erd-key" x="320" y="295">PK</text>
+                <text class="erd-fk" x="342" y="295">FK</text>
+                <text class="erd-col" x="368" y="295">order_id</text>
+                <text class="erd-type" x="513" y="295" text-anchor="end">INT</text>
+                <text class="erd-key" x="320" y="314">PK</text>
+                <text class="erd-fk" x="342" y="314">FK</text>
+                <text class="erd-col" x="368" y="314">product_id</text>
+                <text class="erd-type" x="513" y="314" text-anchor="end">INT</text>
+
+                <path class="erd-line" d="M135 113 V170"/>
+                <text class="erd-card" x="147" y="130" text-anchor="middle">1</text>
+                <text class="erd-card" x="147" y="164" text-anchor="middle">*</text>
+                <path class="erd-line" d="M410 113 V140 H230 V170"/>
+                <text class="erd-card" x="422" y="130" text-anchor="middle">1</text>
+                <text class="erd-card" x="242" y="164" text-anchor="middle">*</text>
+                <path class="erd-line" d="M685 151 V190"/>
+                <text class="erd-card" x="697" y="168" text-anchor="middle">1</text>
+                <text class="erd-card" x="697" y="186" text-anchor="middle">*</text>
+                <path class="erd-line" d="M270 300 H310"/>
+                <text class="erd-card" x="280" y="294" text-anchor="middle">1</text>
+                <text class="erd-card" x="302" y="294" text-anchor="middle">*</text>
+                <path class="erd-line" d="M570 270 H545 V290 H525"/>
+                <text class="erd-card" x="560" y="264" text-anchor="middle">1</text>
+                <text class="erd-card" x="533" y="284" text-anchor="middle">*</text>
+                <text class="erd-note" x="410" y="358" text-anchor="middle">brands.id &#8592; products.brand_id &#160;&#183;&#160; categories.id &#8592; products.category_id &#160;&#183;&#160; customers.id &#8592; orders.customer_id</text>
+              </svg>
+              <figcaption class="erd-caption i18n-en">Figure 5 — The final Orbit Electronics design: six tables, every fact written once. In the course database the products → brands link is still made by name (<code>products.brand = brands.name</code>) — see the note below.</figcaption>
+              <figcaption class="erd-caption i18n-ar" dir="rtl">الشكل ٥ — التصميم النهائي لـ Orbit Electronics: ستة جداول، وكل حقيقة مكتوبة مرة واحدة. وفي قاعدة بيانات الدورة ما زال الربط بين products وbrands يتمّ بالاسم (<code>products.brand = brands.name</code>) — انظر الملاحظة أدناه.</figcaption>
+            </figure>
+          </div>
+        </details>
+      </div>
+
+      <div class="callout ok">
+        <div class="i18n-en"><strong>A second pause — you know these two as well.</strong> <code>categories(id, name, department)</code> and <code>products</code> are the Orbit tables you have queried since Chapters 2–4. An honest note: in our database <code>products.brand</code> is still a plain text column — a fine teaching simplification while a brand had no attributes of its own. The moment <code>brand_country</code> appears, that text column becomes the start of a transitive chain and earns its own <code>brands</code> table, which is now in the database. Joining <code>products.brand = brands.name</code> works today; a full migration would add a <code>products.brand_id</code> foreign key. This is no accident: <strong>normalization is a decision you revisit every time you add a column.</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>وقفة ثانية — وهذان أيضًا جدولان تعرفهما.</strong> <code>categories(id, name, department)</code> و<code>products</code> هما جدولا Orbit اللذان استعلمتَ منهما منذ الفصول ٢–٤. وملاحظة أمينة: في قاعدة بياناتنا ما زال <code>products.brand</code> عمودًا نصّيًا بسيطًا — وهو تبسيط تعليمي مقبول ما دامت الماركة بلا خصائص خاصة بها. لكن لحظة ظهور <code>brand_country</code> يصير ذلك العمود النصّي بداية سلسلة عابرة، ويستحق جدول <code>brands</code> مستقلًا، وهو الآن في قاعدة البيانات. والربط <code>products.brand = brands.name</code> يعمل اليوم؛ أما الترحيل الكامل فيُضيف مفتاحًا أجنبيًا <code>products.brand_id</code>. وليس هذا مصادفة: <strong>التطبيع قرار تُراجعه كلما أضفت عمودًا جديدًا.</strong></div>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — rebuild orders_1nf from six tables</span><span class="i18n-ar" dir="rtl">مثال ١ — أعِد بناء orders_1nf من ستة جداول</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":7,"sql":"SELECT o.id AS order_id, p.name AS product_name,\n       c.name AS category_name, c.department AS category_dept,\n       br.name AS brand_name, br.country AS brand_country,\n       cu.name AS customer_name, o.order_date AS order_date\nFROM orders o\nJOIN customers cu   ON o.customer_id = cu.id\nJOIN order_items oi ON oi.order_id = o.id\nJOIN products p     ON oi.product_id = p.id\nJOIN categories c   ON p.category_id = c.id\nJOIN brands br      ON p.brand = br.name;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Seven rows, the same facts as <code>orders_1nf</code> — assembled from tables in which each fact appears once.</span><span class="i18n-ar" dir="rtl">سبعة صفوف، الحقائق نفسها التي في <code>orders_1nf</code> — مجمّعة من جداول تظهر فيها كل حقيقة مرة واحدة.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — each product with its brand's country</span><span class="i18n-ar" dir="rtl">مثال ٢ — كل منتج مع بلد ماركته</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":7,"sql":"SELECT p.name AS product_name, p.brand AS brand, b.country AS brand_country\nFROM products p\nJOIN brands b ON p.brand = b.name;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">"Denmark" is stored once, in <code>brands</code>; both Pulse products read it through the join.</span><span class="i18n-ar" dir="rtl">«Denmark» مخزّنة مرة واحدة في <code>brands</code>؛ ويقرؤها منتجا Pulse كلاهما عبر الربط.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — one UPDATE reaches every order</span><span class="i18n-ar" dir="rtl">مثال ٣ — UPDATE واحد يصل إلى كل الطلبات</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":7,"sql":"UPDATE customers SET email = 'hani.zorob@mail.ps' WHERE id = 1;\n\nSELECT o.id AS order_id, c.name AS customer_name, c.email AS email\nFROM orders o\nJOIN customers c ON o.customer_id = c.id\nWHERE c.id = 1;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">In <code>orders_flat</code> this change meant editing two rows. Now it is one row, and both of Hani's orders see it.</span><span class="i18n-ar" dir="rtl">في <code>orders_flat</code> كان هذا التغيير يعني تعديل صفّين. أما الآن فهو صفّ واحد، وتَراه طلبات هاني كلاهما.</span></div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="7" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"products_2nf(product_name PK, category_name, category_dept, brand_name, brand_country) is in 2NF but not 3NF because:","ar":"الجدول products_2nf(product_name PK, category_name, category_dept, brand_name, brand_country) في 2NF لكنه ليس في 3NF لأن:"},
+         "options":[{"en":"brand_name, a non-key column, determines brand_country","ar":"brand_name، وهو عمود غير مفتاحي، يحدّد brand_country"},{"en":"its primary key is composite","ar":"مفتاحه الأساسي مركّب"},{"en":"some of its cells hold several values","ar":"بعض خلاياه تحمل عدّة قيم"},{"en":"it has no foreign key","ar":"ليس فيه مفتاح أجنبي"}],
+         "correctIndex":0,
+         "explain":{"en":"Non-key → non-key is a transitive dependency. The key is a single column, so 2NF already holds.","ar":"غير مفتاحي ← غير مفتاحي هو اعتماد عابر. والمفتاح عمود واحد، فـ 2NF متحقّقة أصلًا."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="7" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"3NF guarantees that no value is ever repeated anywhere in the database.","ar":"يضمن 3NF ألّا تتكرّر أيّ قيمة في أيّ مكان من قاعدة البيانات."},
+         "correct":false,
+         "explain":{"en":"Foreign-key values repeat by design — customer_id 1 appears on two orders. Repeating a reference to a fact is normal; repeating the fact itself is the violation.","ar":"قيم المفاتيح الأجنبية تتكرّر عن قصد — فـ customer_id 1 يظهر في طلبين. تكرار الإشارة إلى الحقيقة أمر طبيعي؛ أما المخالفة فهي تكرار الحقيقة نفسها."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="lab-q3" data-chapter="7" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Match each transitive chain to the table it spawns.","ar":"صِل كل سلسلة عابرة بالجدول الذي تُنتجه."},
+         "left":[{"en":"product_name → brand_name → brand_country","ar":"product_name → brand_name → brand_country"},{"en":"product_name → category_name → category_dept","ar":"product_name → category_name → category_dept"},{"en":"order_id → customer_name → customer_email, customer_city","ar":"order_id → customer_name → customer_email, customer_city"}],
+         "right":[{"en":"brands","ar":"brands"},{"en":"categories","ar":"categories"},{"en":"customers","ar":"customers"}],
+         "correctPairs":[[0,0],[1,1],[2,2]]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">The customer's city now lives only in <code>customers</code>. Join <code>orders</code> to <code>customers</code> and return two columns for every order: <code>order_id</code> and <code>customer_city</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">مدينة الزبون صارت في <code>customers</code> وحده. اربط <code>orders</code> بـ<code>customers</code> وأعِد عمودين لكل طلب: <code>order_id</code> و<code>customer_city</code>.</p>
+        <div class="qb-widget" data-qid="lab-q4" data-chapter="7" data-lesson="4">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":7,"placeholder":"SELECT o.id AS order_id, c.city AS customer_city FROM orders o JOIN customers c ON ...","grade":{"mode":"result","expected":"SELECT o.id AS order_id, c.city AS customer_city FROM orders o JOIN customers c ON o.customer_id = c.id"},"wrong":"SELECT o.id AS order_id, c.city AS customer_city FROM orders o JOIN customers c ON o.id = c.id"}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return <code>product_name</code> and <code>brand_country</code> for every product whose brand is from <code>Japan</code> — join <code>products</code> to <code>brands</code> on the brand name.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد <code>product_name</code> و<code>brand_country</code> لكل منتج ماركته من <code>Japan</code> — اربط <code>products</code> بـ<code>brands</code> عبر اسم الماركة.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="7" data-lesson="4">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":7,"placeholder":"SELECT p.name AS product_name, b.country AS brand_country FROM products p JOIN brands b ON p.brand = b.name WHERE ...","grade":{"mode":"result","expected":"SELECT p.name AS product_name, b.country AS brand_country FROM products p JOIN brands b ON p.brand = b.name WHERE b.country = 'Japan'"},"wrong":"SELECT p.name AS product_name, b.country AS brand_country FROM products p JOIN brands b ON p.brand = b.name"}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong>. The courses part of <code>enrollments_flat</code> — <code>courses_2nf(course_id, course_title, credits, department_name, building)</code> — hides a chain: <code>course_id → department_name → building</code>. The building is a fact about the <strong>department</strong>, which is exactly why the real <code>departments</code> table carries <code>building</code> and <code>courses</code> carries only <code>department_id</code>. The 3NF tables are all in your database: <code>departments</code>, <code>courses</code>, <code>students</code> and <code>enrollments</code>.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong>. جزء المقرّرات من <code>enrollments_flat</code> — أي <code>courses_2nf(course_id, course_title, credits, department_name, building)</code> — يُخفي سلسلة: <code>course_id → department_name → building</code>. فالمبنى حقيقة عن <strong>القسم</strong>، ولهذا بالضبط يحمل جدول <code>departments</code> الحقيقي العمود <code>building</code>، ولا يحمل <code>courses</code> إلا <code>department_id</code>. وجداول 3NF كلها في قاعدة بياناتك: <code>departments</code> و<code>courses</code> و<code>students</code> و<code>enrollments</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="7" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"In courses_2nf(course_id PK, course_title, credits, department_name, building), which dependency breaks 3NF?","ar":"في courses_2nf(course_id PK, course_title, credits, department_name, building)، أيّ اعتماد يخالف 3NF؟"},
+         "options":[{"en":"department_name → building","ar":"department_name → building"},{"en":"course_id → course_title","ar":"course_id → course_title"},{"en":"course_id → credits","ar":"course_id → credits"},{"en":"(student_id, course_id) → grade","ar":"(student_id, course_id) → grade"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="7" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A table whose primary key is a single column can still violate 3NF.","ar":"الجدول الذي مفتاحه الأساسي عمود واحد قد يخالف 3NF مع ذلك."},
+         "correct":true,
+         "explain":{"en":"A single-column key makes 2NF automatic, not 3NF: courses_2nf has a single key and still hides department_name → building.","ar":"المفتاح المفرد يجعل 2NF تلقائية، لا 3NF: فـ courses_2nf مفتاحه مفرد ومع ذلك يُخفي department_name → building."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="7" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the one-line summary of the three normal forms.","ar":"أكمل الصياغة التي تلخّص النماذج الثلاثة في سطر."},
+         "template":{"en":"Every column depends on the key, the whole key, and nothing but the ____.","ar":"كل عمود يعتمد على المفتاح، وعلى كلّ المفتاح، وعلى لا شيء غير ____."},"answers":["key","the key","المفتاح","مفتاح"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Rebuild the registrar's sheet from the 3NF tables: join <code>enrollments</code>, <code>students</code>, <code>courses</code> and <code>departments</code>, and return four columns for every enrollment — <code>student_name</code>, <code>course_title</code>, <code>building</code> and <code>grade</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد بناء ورقة المسجّل من جداول 3NF: اربط <code>enrollments</code> و<code>students</code> و<code>courses</code> و<code>departments</code>، وأعِد أربعة أعمدة لكل تسجيل — <code>student_name</code> و<code>course_title</code> و<code>building</code> و<code>grade</code>.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="7" data-lesson="4">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":7,"placeholder":"SELECT s.name AS student_name, c.title AS course_title, d.building AS building, e.grade AS grade FROM enrollments e JOIN students s ON ... JOIN courses c ON ... JOIN departments d ON ...","grade":{"mode":"result","expected":"SELECT s.name AS student_name, c.title AS course_title, d.building AS building, e.grade AS grade FROM enrollments e JOIN students s ON e.student_id = s.id JOIN courses c ON e.course_id = c.id JOIN departments d ON c.department_id = d.id"},"wrong":"SELECT s.name AS student_name, c.title AS course_title, d.building AS building, e.grade AS grade FROM enrollments e JOIN students s ON e.student_id = s.id JOIN courses c ON e.course_id = c.id JOIN departments d ON d.id = c.id"}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Computer Science (department <code>id</code> 1) moves to <code>'Innovation Hub'</code>. In Lesson 1 this took an <code>UPDATE</code> across many rows of <code>enrollments_flat</code>. Now write the one-row <code>UPDATE</code> on <code>departments</code> — changing no other department.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">انتقل قسم Computer Science (القسم ذو <code>id</code> ١) إلى <code>'Innovation Hub'</code>. في الدرس الأول احتاج ذلك <code>UPDATE</code> على صفوف كثيرة من <code>enrollments_flat</code>. اكتب الآن عبارة <code>UPDATE</code> على صفّ واحد من <code>departments</code> — دون أن تغيّر أيّ قسم آخر.</p>
+        <div class="qb-widget" data-qid="test-t5" data-chapter="7" data-lesson="4">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":7,"placeholder":"UPDATE departments SET building = ... WHERE ...","answer":"UPDATE departments SET building = 'Innovation Hub' WHERE id = 1","wrong":"UPDATE departments SET building = 'Innovation Hub' WHERE building = 'Sciences Hall'","grade":{"mode":"state","check":"SELECT id, building FROM departments","expected":[{"id":1,"building":"Innovation Hub"},{"id":2,"building":"Sciences Hall"},{"id":3,"building":"Sciences Hall"},{"id":4,"building":"Life Sciences"},{"id":5,"building":"Commerce"},{"id":6,"building":"Arts Center"},{"id":7,"building":"Engineering Hall"}]}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t6" data-chapter="7" data-lesson="4">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Order the chain hidden in courses_2nf, from the key to the last link.","ar":"رتّب السلسلة المختبئة في courses_2nf، من المفتاح إلى آخر حلقة."},
+         "items":[{"en":"course_id (the key)","ar":"course_id (المفتاح)"},{"en":"department_name","ar":"department_name"},{"en":"building","ar":"building"}]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="7" data-lesson="4"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

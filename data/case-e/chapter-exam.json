@@ -1,0 +1,28 @@
+{
+  "tables": {
+    "teams": [
+      { "id": 1, "name": "Atlas FC", "city": "Amman", "founded_year": 1998, "budget": 2500000 },
+      { "id": 2, "name": "Riverside United", "city": "Cairo", "founded_year": 1975, "budget": 4100000 },
+      { "id": 3, "name": "Northgate SC", "city": "Tunis", "founded_year": 2005, "budget": 1800000 },
+      { "id": 4, "name": "Harbor Rangers", "city": "Alexandria", "founded_year": 1962, "budget": 3600000 },
+      { "id": 5, "name": "Desert Falcons", "city": "Doha", "founded_year": 2011, "budget": 5200000 },
+      { "id": 6, "name": "Cedar Rovers", "city": "Beirut", "founded_year": 1989, "budget": 1500000 }
+    ],
+    "players": [
+      { "id": 1, "full_name": "Yusuf Barakat", "team_id": 1, "position": "Forward", "goals": 14, "salary": 90000, "is_captain": true },
+      { "id": 2, "full_name": "Omar Sleiman", "team_id": 1, "position": "Midfielder", "goals": 5, "salary": 65000, "is_captain": false },
+      { "id": 3, "full_name": "Adam Zayed", "team_id": 1, "position": "Defender", "goals": 1, "salary": 58000, "is_captain": false },
+      { "id": 4, "full_name": "Karim Nabil", "team_id": 2, "position": "Forward", "goals": 21, "salary": 150000, "is_captain": true },
+      { "id": 5, "full_name": "Tarek Fahmy", "team_id": 2, "position": "Goalkeeper", "goals": 0, "salary": 72000, "is_captain": false },
+      { "id": 6, "full_name": "Hadi Mourad", "team_id": 2, "position": "Midfielder", "goals": 9, "salary": 88000, "is_captain": false },
+      { "id": 7, "full_name": "Sami Ghanem", "team_id": 3, "position": "Forward", "goals": 7, "salary": 46000, "is_captain": true },
+      { "id": 8, "full_name": "Rayan Toufic", "team_id": 3, "position": "Defender", "goals": 2, "salary": 39000, "is_captain": false },
+      { "id": 9, "full_name": "Jamil Arkan", "team_id": 4, "position": "Midfielder", "goals": 11, "salary": 95000, "is_captain": true },
+      { "id": 10, "full_name": "Nader Qasim", "team_id": 4, "position": "Forward", "goals": 18, "salary": 120000, "is_captain": false },
+      { "id": 11, "full_name": "Fares Dib", "team_id": 4, "position": "Goalkeeper", "goals": 0, "salary": 60000, "is_captain": false },
+      { "id": 12, "full_name": "Bilal Hanna", "team_id": 5, "position": "Forward", "goals": 25, "salary": 210000, "is_captain": true },
+      { "id": 13, "full_name": "Ziyad Marei", "team_id": 5, "position": "Midfielder", "goals": 13, "salary": 140000, "is_captain": false },
+      { "id": 14, "full_name": "Amir Zaher", "team_id": 5, "position": "Defender", "goals": 3, "salary": 85000, "is_captain": false }
+    ]
+  }
+}

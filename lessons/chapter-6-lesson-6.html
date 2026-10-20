@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 6 · Lesson 6 — Managing Views · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="6" data-lesson="6">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="6" data-lesson="6"></nav>
+
+    <h1 class="i18n-en">Lesson 6 — Managing Views</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٦ — إدارة العروض</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">Views accumulate. Definitions change, reports get retired, and someone eventually asks the frightening question: <em>can I delete this?</em> With a view the answer is reassuring — <code>DROP VIEW</code> throws away a saved query and nothing else. Every row still sits in its table, untouched.</p>
+      <p class="i18n-ar" dir="rtl">العروض تتراكم. فالتعريفات تتغيّر، والتقارير تُحال إلى التقاعد، ويسأل أحدهم في النهاية السؤال المخيف: <em>هل أستطيع حذف هذا؟</em> ومع العرض يكون الجواب مُطمئنًا — فـ<code>DROP VIEW</code> تتخلّص من استعلام محفوظ ولا شيء غير ذلك. وكل صفّ يبقى في جدوله كما هو.</p>
+      <p class="i18n-en">That is the sharp line to keep in mind: <code>DROP TABLE</code> destroys data; <code>DROP VIEW</code> destroys a shortcut. Treat them with very different levels of fear.</p>
+      <p class="i18n-ar" dir="rtl">وهذا هو الخطّ الحادّ الذي ينبغي تذكّره: <code>DROP TABLE</code> تُهلك بيانات؛ و<code>DROP VIEW</code> تُهلك اختصارًا. فتعامَل معهما بدرجتَي خوف مختلفتين جدًّا.</p>
+      <p class="i18n-en">Changing a view is a two-step move here: <code>DROP VIEW</code> it, then <code>CREATE VIEW</code> it again with the new query. (Several database engines offer <code>CREATE OR REPLACE VIEW</code> as a one-liner; the engine behind this course does not, so get used to the two steps — they work everywhere.)</p>
+      <p class="i18n-ar" dir="rtl">وتغيير العرض هنا حركة من خطوتين: <code>DROP VIEW</code> له، ثم <code>CREATE VIEW</code> من جديد بالاستعلام الجديد. (تُوفّر عدّة محرّكات قواعد بيانات الصيغة <code>CREATE OR REPLACE VIEW</code> في سطر واحد؛ والمحرّك الذي يقف خلف هذه الدورة لا يُوفّرها، فاعتَد الخطوتين — فهما تعملان في كل مكان.)</p>
+      <p class="i18n-en">Two guards make scripts safe to re-run: <code>CREATE VIEW IF NOT EXISTS</code> creates the view only when it is missing — if it already exists, the old definition is kept and no error is raised — and <code>DROP VIEW IF EXISTS</code> removes it when present and stays quiet when not. Without the guards, creating a view twice is an error, and so is dropping one that was never there.</p>
+      <p class="i18n-ar" dir="rtl">وحارسان يجعلان السكربتات آمنة لإعادة التشغيل: <code>CREATE VIEW IF NOT EXISTS</code> تُنشئ العرض فقط إذا كان مفقودًا — وإن كان موجودًا بقي التعريف القديم دون خطأ — و<code>DROP VIEW IF EXISTS</code> تحذفه إن وُجد وتسكت إن لم يوجد. ودون الحارسين يكون إنشاء العرض مرّتين خطأً، وكذلك حذف عرض لم يوجد يومًا.</p>
+      <p class="i18n-en">Last thing to know: views depend on what they read. Drop a table or a view that another view is built on, and the view above it breaks the next time anyone reads it. Before you drop, ask what is standing on top.</p>
+      <p class="i18n-ar" dir="rtl">وآخر ما ينبغي معرفته: العروض تعتمد على ما تقرأ منه. فإذا حذفت جدولًا أو عرضًا بُني عليه عرضٌ آخر، انكسر العرض الذي فوقه في أول قراءة تالية. فقبل الحذف اسأل: ماذا يقف فوقه؟</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>DROP VIEW IF EXISTS cheap_books;
+
+CREATE VIEW cheap_books AS
+SELECT id, title, price
+FROM books
+WHERE price &lt; 20;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — dropping a view keeps the data</span><span class="i18n-ar" dir="rtl">مثال ١ — حذف العرض يُبقي البيانات</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":6,"setup":["CREATE VIEW cheap_books AS SELECT id, title, price FROM books WHERE price < 16"],"sql":"DROP VIEW cheap_books;\nSELECT COUNT(*) AS books_still_here FROM books;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">The view disappears from the Database panel; all twelve books are still there. Nothing but the shortcut was lost.</span><span class="i18n-ar" dir="rtl">يختفي العرض من لوحة قاعدة البيانات؛ والكتب الاثنا عشر كلّها باقية. ولم يُفقَد شيء سوى الاختصار.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — redefine in two steps</span><span class="i18n-ar" dir="rtl">مثال ٢ — أعِد التعريف في خطوتين</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":6,"setup":["CREATE VIEW cheap_books AS SELECT id, title, price FROM books WHERE price < 16"],"sql":"DROP VIEW IF EXISTS cheap_books;\nCREATE VIEW cheap_books AS SELECT id, title, price FROM books WHERE price < 20;\nSELECT * FROM cheap_books ORDER BY price;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">The threshold moved from 16 to 20 and more books qualify. Leading with <code>DROP VIEW IF EXISTS</code> makes the script safe to run twice.</span><span class="i18n-ar" dir="rtl">انتقل الحدّ من ١٦ إلى ٢٠ فصارت كتب أكثر مؤهّلة. والبدء بـ<code>DROP VIEW IF EXISTS</code> يجعل السكربت آمنًا للتشغيل مرّتين.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — IF NOT EXISTS protects the old definition</span><span class="i18n-ar" dir="rtl">مثال ٣ — IF NOT EXISTS يحمي التعريف القديم</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":6,"setup":["CREATE VIEW cheap_books AS SELECT id, title, price FROM books WHERE price < 16"],"sql":"CREATE VIEW IF NOT EXISTS cheap_books AS SELECT id FROM books;\nSELECT * FROM cheap_books;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">No error — and the result still has <code>title</code> and <code>price</code>. The guard skipped the creation entirely rather than overwriting the existing view.</span><span class="i18n-ar" dir="rtl">لا خطأ — ولا تزال النتيجة تحتوي <code>title</code> و<code>price</code>. فالحارس تجاوز الإنشاء تمامًا بدل أن يطمس العرض القائم.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Housekeeping on <strong>Orbit Electronics</strong>.</p>
+      <p class="i18n-ar" dir="rtl">أعمال الصيانة على <strong>Orbit Electronics</strong>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — retire a view</span><span class="i18n-ar" dir="rtl">مثال ١ — أحِل عرضًا إلى التقاعد</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":6,"setup":["CREATE VIEW featured_products AS SELECT id, name, price FROM products WHERE is_featured = true"],"sql":"DROP VIEW featured_products;\nSELECT COUNT(*) AS products_still_here FROM products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — a re-runnable redefinition</span><span class="i18n-ar" dir="rtl">مثال ٢ — إعادة تعريف قابلة لإعادة التشغيل</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":6,"setup":["CREATE VIEW featured_products AS SELECT id, name, price FROM products WHERE is_featured = true"],"sql":"DROP VIEW IF EXISTS featured_products;\nCREATE VIEW featured_products AS SELECT id, name, price, brand FROM products WHERE is_featured = true;\nSELECT * FROM featured_products;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — creating twice, safely</span><span class="i18n-ar" dir="rtl">مثال ٣ — الإنشاء مرّتين بأمان</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":6,"sql":"CREATE VIEW IF NOT EXISTS office_products AS SELECT id, name, price FROM products WHERE category_id = 6;\nCREATE VIEW IF NOT EXISTS office_products AS SELECT id, name, price FROM products WHERE category_id = 6;\nSELECT * FROM office_products;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="6" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"What does DROP VIEW product_catalog remove?","ar":"ماذا تحذف DROP VIEW product_catalog؟"},
+         "options":[{"en":"The saved query only — the rows stay in their tables","ar":"الاستعلام المحفوظ فقط — وتبقى الصفوف في جداولها"},{"en":"The query and the rows it returned","ar":"الاستعلام والصفوف التي أعادها"},{"en":"The products table","ar":"جدول products"},{"en":"Nothing until the table is dropped too","ar":"لا شيء حتى يُحذَف الجدول أيضًا"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="6" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"Creating a view whose name is already taken raises an error unless you write IF NOT EXISTS.","ar":"إنشاء عرض باسم مأخوذ مسبقًا يُسبّب خطأً إلّا إذا كتبت IF NOT EXISTS."},
+         "correct":true,
+         "explain":{"en":"With the guard the statement is skipped and the existing definition is kept.","ar":"مع الحارس تُتجاوَز العبارة ويبقى التعريف القائم."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="6" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete: drop the view, but do not fail if it is already gone.","ar":"أكمل: احذف العرض، دون أن تفشل إن كان قد زال أصلًا."},
+         "template":"DROP VIEW ____ ____ old_report;","answers":[["IF"],["EXISTS"]]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">A view <code>low_stock</code> (<code>id</code>, <code>name</code>, <code>stock_qty</code>) already exists, and it uses the threshold <code>stock_qty &lt; 20</code>. Redefine it — same name, same three columns — so the threshold becomes <code>stock_qty &lt; 10</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">يوجد عرض <code>low_stock</code> (<code>id</code> و<code>name</code> و<code>stock_qty</code>) ويستخدم الحدّ <code>stock_qty &lt; 20</code>. أعِد تعريفه — بالاسم نفسه والأعمدة الثلاثة نفسها — ليصبح الحدّ <code>stock_qty &lt; 10</code>.</p>
+        <div class="qb-widget" data-qid="lab-q4" data-chapter="6" data-lesson="6">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":6,"setup":["CREATE VIEW low_stock AS SELECT id, name, stock_qty FROM products WHERE stock_qty < 20"],"placeholder":"DROP VIEW low_stock;\nCREATE VIEW low_stock AS SELECT ... WHERE ...","answer":"DROP VIEW low_stock;\nCREATE VIEW low_stock AS SELECT id, name, stock_qty FROM products WHERE stock_qty < 10","grade":{"mode":"state","check":"SELECT * FROM low_stock","expected":"SELECT id, name, stock_qty FROM products WHERE stock_qty < 10"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">A throwaway view <code>scratch_report</code> is cluttering the database. Remove it, leaving <code>products</code> and <code>categories</code> as the only objects.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">عرضٌ مؤقّت باسم <code>scratch_report</code> يُشوّش قاعدة البيانات. احذفه، بحيث يبقى <code>products</code> و<code>categories</code> وحدهما.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="6" data-lesson="6">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":6,"setup":["CREATE VIEW scratch_report AS SELECT id, name FROM products"],"placeholder":"DROP VIEW ...","answer":"DROP VIEW scratch_report","grade":{"mode":"state","check":"SHOW TABLES","expected":[{"tableid":"categories"},{"tableid":"products"}]}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong>.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="6" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which pair of statements changes a view's definition in this engine?","ar":"أي زوج من العبارات يغيّر تعريف العرض في هذا المحرّك؟"},
+         "options":[{"en":"DROP VIEW, then CREATE VIEW again","ar":"DROP VIEW ثم CREATE VIEW من جديد"},{"en":"ALTER VIEW, then COMMIT","ar":"ALTER VIEW ثم COMMIT"},{"en":"UPDATE VIEW SET query = …","ar":"UPDATE VIEW SET query = …"},{"en":"DROP TABLE, then CREATE VIEW","ar":"DROP TABLE ثم CREATE VIEW"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="6" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"DROP VIEW IF EXISTS fails when the view is not there.","ar":"تفشل DROP VIEW IF EXISTS إذا لم يكن العرض موجودًا."},
+         "correct":false,
+         "explain":{"en":"That is exactly what the guard prevents — it simply does nothing.","ar":"هذا بالضبط ما يمنعه الحارس — فهو لا يفعل شيئًا ببساطة."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="6" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete: create the view only if it is missing.","ar":"أكمل: أنشئ العرض فقط إذا كان مفقودًا."},
+         "template":"CREATE VIEW ____ ____ EXISTS level_list AS SELECT level FROM courses GROUP BY level;","answers":[["IF"],["NOT"]]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">The view <code>old_report</code> is no longer used. Remove it, leaving <code>departments</code> and <code>courses</code> as the only objects in the database.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">العرض <code>old_report</code> لم يعد مُستخدَمًا. احذفه، بحيث يبقى <code>departments</code> و<code>courses</code> وحدهما في قاعدة البيانات.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="6" data-lesson="6">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":6,"setup":["CREATE VIEW old_report AS SELECT id, title FROM courses"],"placeholder":"DROP VIEW ...","answer":"DROP VIEW old_report","grade":{"mode":"state","check":"SHOW TABLES","expected":[{"tableid":"departments"},{"tableid":"courses"}]}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">The view <code>grad_courses</code> (<code>id</code>, <code>title</code>, <code>credits</code>) currently holds every graduate course. Redefine it — same name, same columns — so it holds only the graduate courses that are also <strong>active</strong>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">العرض <code>grad_courses</code> (<code>id</code> و<code>title</code> و<code>credits</code>) يحتوي حاليًا كل مقرّرات الدراسات العليا. أعِد تعريفه — بالاسم نفسه والأعمدة نفسها — ليحتوي مقرّرات الدراسات العليا <strong>النشِطة</strong> فقط.</p>
+        <div class="qb-widget" data-qid="test-t5" data-chapter="6" data-lesson="6">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":6,"setup":["CREATE VIEW grad_courses AS SELECT id, title, credits FROM courses WHERE level = 'graduate'"],"placeholder":"DROP VIEW grad_courses;\nCREATE VIEW grad_courses AS SELECT ... WHERE ...","answer":"DROP VIEW grad_courses;\nCREATE VIEW grad_courses AS SELECT id, title, credits FROM courses WHERE level = 'graduate' AND active = true","grade":{"mode":"state","check":"SELECT * FROM grad_courses","expected":"SELECT id, title, credits FROM courses WHERE level = 'graduate' AND active = true"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t6" data-chapter="6" data-lesson="6">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Match each statement to what it does.","ar":"طابِق كل عبارة بما تفعله."},
+         "left":[{"en":"DROP VIEW v","ar":"DROP VIEW v"},{"en":"DROP TABLE t","ar":"DROP TABLE t"},{"en":"CREATE VIEW IF NOT EXISTS v","ar":"CREATE VIEW IF NOT EXISTS v"},{"en":"DROP VIEW IF EXISTS v","ar":"DROP VIEW IF EXISTS v"}],
+         "right":[{"en":"Forgets a saved query; the rows are untouched","ar":"ينسى استعلامًا محفوظًا؛ والصفوف سليمة"},{"en":"Destroys the rows and the structure","ar":"يُهلك الصفوف والبنية"},{"en":"Creates it only when the name is free","ar":"يُنشئه فقط عندما يكون الاسم متاحًا"},{"en":"Removes it if present, and is quiet otherwise","ar":"يحذفه إن وُجد، ويسكت إن لم يوجد"}],
+         "correctPairs":[[0,0],[1,1],[2,2],[3,3]]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="6" data-lesson="6"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

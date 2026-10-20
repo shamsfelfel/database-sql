@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 6 · Lesson 2 — Choosing Columns &amp; Rows · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="6" data-lesson="2">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="6" data-lesson="2"></nav>
+
+    <h1 class="i18n-en">Lesson 2 — Choosing Columns &amp; Rows</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٢ — اختيار الأعمدة والصفوف</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">A table is shaped for storage: every column anyone might need, every row ever written. A view is shaped for a <em>reader</em>. Inside it you choose which columns to expose, which rows to let through, and what to call them — and that becomes the whole world as far as the reader is concerned.</p>
+      <p class="i18n-ar" dir="rtl">الجدول مُصمَّم للتخزين: كل عمود قد يحتاجه أحد، وكل صفّ كُتِب يومًا. أمّا العرض فمُصمَّم <em>للقارئ</em>. فداخله تختار أي الأعمدة تكشف، وأي الصفوف تمرّ، وبأي أسماء — ويصبح ذلك هو العالم كلّه بالنسبة للقارئ.</p>
+      <p class="i18n-en">Three decisions live inside a view, and they are the three you already know: the <code>SELECT</code> list decides <strong>which columns</strong>, the <code>WHERE</code> decides <strong>which rows</strong>, and <code>AS</code> decides <strong>what each column is called</strong>. A column renamed inside the view is known by that new name everywhere outside it.</p>
+      <p class="i18n-ar" dir="rtl">ثلاثة قرارات تسكن داخل العرض، وهي الثلاثة التي تعرفها سابقًا: قائمة <code>SELECT</code> تحدّد <strong>أي الأعمدة</strong>، و<code>WHERE</code> تحدّد <strong>أي الصفوف</strong>، و<code>AS</code> تحدّد <strong>اسم كل عمود</strong>. والعمود الذي يُعاد تسميته داخل العرض يُعرَف بذلك الاسم الجديد في كل ما هو خارجه.</p>
+      <p class="i18n-en">A view's own <code>WHERE</code> never goes away. When you add a condition of your own on top, the two stack: the view narrows first, your condition narrows what is left. That is exactly why a view is a safe thing to hand someone — rows the view excluded cannot be reached through it.</p>
+      <p class="i18n-ar" dir="rtl">و<code>WHERE</code> الخاصة بالعرض لا تزول أبدًا. فعندما تضيف شرطًا خاصًّا بك فوقها، يتراكم الشرطان: العرض يُضيّق أوّلًا، ثم يُضيّق شرطُك ما تبقّى. ولهذا تحديدًا يكون العرض شيئًا آمنًا تسلّمه لأحد — فالصفوف التي استثناها العرض لا يمكن الوصول إليها عبره.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>Syntax pattern</strong></div>
+        <div class="i18n-ar" dir="rtl"><strong>نمط الصياغة</strong></div>
+        <pre><code>CREATE VIEW book_labels AS
+SELECT title AS book_title,
+       ROUND(price * 0.9, 2) AS sale_price
+FROM books
+WHERE in_stock = true;</code></pre>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>books</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>books</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — expose only the public columns</span><span class="i18n-ar" dir="rtl">مثال ١ — اكشف الأعمدة العامّة فقط</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":6,"sql":"CREATE VIEW book_catalog AS SELECT title, genre, price FROM books;\nSELECT * FROM book_catalog;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">No <code>id</code>, no <code>author_id</code>, no <code>in_stock</code> flag. A reader of <code>book_catalog</code> never sees the bookkeeping columns.</span><span class="i18n-ar" dir="rtl">لا <code>id</code>، ولا <code>author_id</code>، ولا راية <code>in_stock</code>. فمن يقرأ <code>book_catalog</code> لا يرى أعمدة الإدارة الداخلية أبدًا.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — rename and compute inside the view</span><span class="i18n-ar" dir="rtl">مثال ٢ — أعِد التسمية واحسب داخل العرض</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":6,"sql":"CREATE VIEW book_labels AS SELECT title AS book_title, ROUND(price * 0.9, 2) AS sale_price FROM books WHERE in_stock = true;\nSELECT * FROM book_labels ORDER BY sale_price;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">The view's columns are <code>book_title</code> and <code>sale_price</code> — the computed discount has a name, and <code>price</code> itself is no longer visible.</span><span class="i18n-ar" dir="rtl">أعمدة العرض هي <code>book_title</code> و<code>sale_price</code> — فالخصم المحسوب له اسم، و<code>price</code> نفسه لم يبقَ مرئيًّا.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — two filters stack</span><span class="i18n-ar" dir="rtl">مثال ٣ — شرطان يتراكمان</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":6,"setup":["CREATE VIEW recent_books AS SELECT id, title, genre, published_year FROM books WHERE published_year >= 2020"],"sql":"SELECT * FROM recent_books WHERE genre = 'Fiction';"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en"><code>recent_books</code> already keeps only 2020 and later. Your <code>WHERE</code> narrows that set further — it cannot widen it.</span><span class="i18n-ar" dir="rtl">يُبقي <code>recent_books</code> أصلًا ما نُشِر عام ٢٠٢٠ وبعده. و<code>WHERE</code> الخاصة بك تُضيّق تلك المجموعة أكثر — ولا تستطيع توسيعها.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Shaping views for readers of <strong>Orbit Electronics</strong> — the <code>products</code> table.</p>
+      <p class="i18n-ar" dir="rtl">تشكيل العروض لقرّاء <strong>Orbit Electronics</strong> — جدول <code>products</code>.</p>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — a catalog without internals</span><span class="i18n-ar" dir="rtl">مثال ١ — فهرس بلا تفاصيل داخلية</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":6,"sql":"CREATE VIEW product_catalog AS SELECT name, brand, price FROM products;\nSELECT * FROM product_catalog;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — renamed and computed columns</span><span class="i18n-ar" dir="rtl">مثال ٢ — أعمدة مُعاد تسميتها ومحسوبة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":6,"sql":"CREATE VIEW price_tags AS SELECT name AS product_name, ROUND(price * 1.15, 2) AS price_with_tax FROM products WHERE stock_qty > 0;\nSELECT * FROM price_tags ORDER BY price_with_tax DESC;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — read a shaped view</span><span class="i18n-ar" dir="rtl">مثال ٣ — اقرأ عرضًا مُشكَّلًا</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":6,"setup":["CREATE VIEW available_products AS SELECT id, name, price, stock_qty FROM products WHERE stock_qty > 0"],"sql":"SELECT name, price FROM available_products WHERE price < 100;"}
+        </script>
+      </div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="6" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"A view selects price AS unit_price. What column name do readers of the view use?","ar":"عرضٌ يحدّد price AS unit_price. فأي اسم عمود يستخدمه قرّاء العرض؟"},
+         "options":[{"en":"unit_price — the alias is the view's column name","ar":"unit_price — فالاسم المستعار هو اسم عمود العرض"},{"en":"price — aliases are ignored in views","ar":"price — فالأسماء المستعارة تُهمَل في العروض"},{"en":"Both names work","ar":"الاسمان كلاهما يعمل"},{"en":"Neither — computed columns have no name","ar":"لا هذا ولا ذاك — فالأعمدة المحسوبة بلا اسم"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="6" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A view can expose fewer columns than the table it reads.","ar":"يستطيع العرض أن يكشف أعمدة أقل من الجدول الذي يقرأ منه."},
+         "correct":true,
+         "explain":{"en":"That is one of its main uses: show the columns a reader needs and nothing else.","ar":"وهذا أحد استخداماته الأساسية: اعرض الأعمدة التي يحتاجها القارئ ولا شيء غيرها."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="6" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete: give the column the name product_name inside the view.","ar":"أكمل: امنح العمود الاسم product_name داخل العرض."},
+         "template":"CREATE VIEW tags AS SELECT name ____ product_name, price FROM products;","answers":["AS"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Create a view named <code>discount_list</code> over the <strong>featured</strong> products only, with exactly two columns: <code>name</code>, and the price cut by 20% — <code>ROUND(price * 0.8, 2)</code> — named <code>sale_price</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أنشئ عرضًا باسم <code>discount_list</code> على المنتجات <strong>المميّزة</strong> فقط، بعمودين بالضبط: <code>name</code>، والسعر منقوصًا ٢٠٪ — <code>ROUND(price * 0.8, 2)</code> — باسم <code>sale_price</code>.</p>
+        <div class="qb-widget" data-qid="lab-q4" data-chapter="6" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":6,"placeholder":"CREATE VIEW discount_list AS SELECT name, ROUND(...) AS sale_price FROM products WHERE ...","answer":"CREATE VIEW discount_list AS SELECT name, ROUND(price * 0.8, 2) AS sale_price FROM products WHERE is_featured = true","grade":{"mode":"state","check":"SELECT * FROM discount_list","expected":"SELECT name, ROUND(price * 0.8, 2) AS sale_price FROM products WHERE is_featured = true"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">The view <code>available_products</code> (<code>id</code>, <code>name</code>, <code>price</code>, <code>stock_qty</code>) holds the products still in stock. Read from it and return <code>name</code> and <code>price</code> for those priced above 1000.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">العرض <code>available_products</code> (<code>id</code> و<code>name</code> و<code>price</code> و<code>stock_qty</code>) يحتوي المنتجات المتوفّرة في المخزون. اقرأ منه وأعِد <code>name</code> و<code>price</code> لما سعره أعلى من ١٠٠٠.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="6" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":6,"setup":["CREATE VIEW available_products AS SELECT id, name, price, stock_qty FROM products WHERE stock_qty > 0"],"placeholder":"SELECT name, price FROM available_products WHERE ...","grade":{"mode":"result","expected":"SELECT name, price FROM available_products WHERE price > 1000"}}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong> — the <code>courses</code> table.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong> — جدول <code>courses</code>.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="6" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Why would you leave columns out of a view?","ar":"لماذا تستبعد أعمدة من العرض؟"},
+         "options":[{"en":"So readers see only what concerns them","ar":"ليرى القرّاء ما يخصّهم فقط"},{"en":"Because a view may hold at most three columns","ar":"لأن العرض لا يحتمل أكثر من ثلاثة أعمدة"},{"en":"To make the underlying table smaller","ar":"لتصغير الجدول الأصلي"},{"en":"Columns left out are deleted from the table","ar":"لأن الأعمدة المستبعدة تُحذف من الجدول"}],
+         "correctIndex":0}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="6" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"Adding your own WHERE when reading a view can bring back rows the view filtered out.","ar":"إضافة WHERE خاصّة بك عند القراءة من العرض قد تُعيد صفوفًا استثناها العرض."},
+         "correct":false,
+         "explain":{"en":"The view's condition applies first; yours can only narrow the result further.","ar":"شرط العرض يُطبَّق أوّلًا؛ وشرطك لا يستطيع إلا تضييق النتيجة أكثر."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="test-t3" data-chapter="6" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete: keep only the active courses inside the view.","ar":"أكمل: أبقِ المقرّرات النشِطة فقط داخل العرض."},
+         "template":"CREATE VIEW course_list AS SELECT title, credits FROM courses WHERE active = ____;","answers":["true","TRUE"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Create a view named <code>undergrad_list</code> with exactly two columns — <code>title</code> and <code>credits</code> — for the courses whose <code>level</code> is <code>undergrad</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أنشئ عرضًا باسم <code>undergrad_list</code> بعمودين بالضبط — <code>title</code> و<code>credits</code> — للمقرّرات التي مستواها <code>level</code> هو <code>undergrad</code>.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="6" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":6,"placeholder":"CREATE VIEW undergrad_list AS SELECT ... FROM courses WHERE ...","answer":"CREATE VIEW undergrad_list AS SELECT title, credits FROM courses WHERE level = 'undergrad'","grade":{"mode":"state","check":"SELECT * FROM undergrad_list","expected":"SELECT title, credits FROM courses WHERE level = 'undergrad'"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Create a view named <code>cap_report</code> with the columns <code>title</code> and <code>half_cap</code>, where <code>half_cap</code> is <code>ROUND(enrollment_cap / 2, 0)</code>, for the <strong>active</strong> courses only.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أنشئ عرضًا باسم <code>cap_report</code> بالعمودين <code>title</code> و<code>half_cap</code>، حيث <code>half_cap</code> هو <code>ROUND(enrollment_cap / 2, 0)</code>، للمقرّرات <strong>النشِطة</strong> فقط.</p>
+        <div class="qb-widget" data-qid="test-t5" data-chapter="6" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":6,"placeholder":"CREATE VIEW cap_report AS SELECT title, ROUND(...) AS half_cap FROM courses WHERE ...","answer":"CREATE VIEW cap_report AS SELECT title, ROUND(enrollment_cap / 2, 0) AS half_cap FROM courses WHERE active = true","grade":{"mode":"state","check":"SELECT * FROM cap_report","expected":"SELECT title, ROUND(enrollment_cap / 2, 0) AS half_cap FROM courses WHERE active = true"}}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="match" data-qid="test-t6" data-chapter="6" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Match each part of a view definition to the decision it makes.","ar":"طابِق كل جزء من تعريف العرض بالقرار الذي يتخذه."},
+         "left":[{"en":"The SELECT list","ar":"قائمة SELECT"},{"en":"The WHERE clause","ar":"جملة WHERE"},{"en":"AS inside the SELECT","ar":"AS داخل SELECT"},{"en":"CREATE VIEW name","ar":"CREATE VIEW name"}],
+         "right":[{"en":"Which columns the reader sees","ar":"أي الأعمدة يراها القارئ"},{"en":"Which rows get through","ar":"أي الصفوف تمرّ"},{"en":"What each column is called","ar":"اسم كل عمود"},{"en":"The name the query is saved under","ar":"الاسم الذي يُحفَظ به الاستعلام"}],
+         "correctPairs":[[0,0],[1,1],[2,2],[3,3]]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="6" data-lesson="2"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

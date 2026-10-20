@@ -1,0 +1,162 @@
+/* normalize.css — the design-chapter pieces used by Chapter 7 (Normalization):
+   normal-form chips and stage boxes, the "rule" box, problem lists, static
+   sample tables with highlighted cells, click-to-reveal solutions, student task
+   boxes, and the dependency diagrams. Everything is drawn from the shared tokens,
+   so it follows light/dark like the rest of the site. Table and column names stay
+   LTR in both UI languages, as identifiers do everywhere in the course. */
+
+/* Normal-form colours: un-normalized → 1NF → 2NF → 3NF. */
+:root {
+  --nf0: var(--danger);
+  --nf0-soft: var(--danger-soft);
+  --nf1: var(--tag-str);
+  --nf1-soft: color-mix(in srgb, var(--tag-str) 16%, transparent);
+  --nf2: var(--tag-num);
+  --nf2-soft: color-mix(in srgb, var(--tag-num) 15%, transparent);
+  --nf3: var(--success);
+  --nf3-soft: var(--success-soft);
+}
+
+/* ---- Chips ---- */
+.nf-chip {
+  display: inline-block; padding: .1em .7em; border-radius: 999px;
+  border: 1px solid currentColor; font-size: .78rem; font-weight: 600;
+  letter-spacing: .02em; white-space: nowrap;
+}
+.nf-chip.nf-0 { color: var(--nf0); background: var(--nf0-soft); }
+.nf-chip.nf-1 { color: var(--nf1); background: var(--nf1-soft); }
+.nf-chip.nf-2 { color: var(--nf2); background: var(--nf2-soft); }
+.nf-chip.nf-3 { color: var(--nf3); background: var(--nf3-soft); }
+
+/* ---- Stage boxes (one per normal form) ---- */
+.nf-stage { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: var(--sp-5) 0; background: var(--surface); }
+.nf-stage > .nf-stage-h {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4); font-weight: 600; border-bottom: 1px solid var(--border);
+}
+.nf-stage > .nf-stage-b { padding: var(--sp-3) var(--sp-4) var(--sp-4); }
+.nf-stage > .nf-stage-b > :last-child { margin-bottom: 0; }
+.nf-stage.s0 > .nf-stage-h { background: var(--nf0-soft); color: var(--nf0); }
+.nf-stage.s1 > .nf-stage-h { background: var(--nf1-soft); color: var(--nf1); }
+.nf-stage.s2 > .nf-stage-h { background: var(--nf2-soft); color: var(--nf2); }
+.nf-stage.s3 > .nf-stage-h { background: var(--nf3-soft); color: var(--nf3); }
+
+/* ---- "The rule" box ---- */
+.rule-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-inline-start: 4px solid var(--accent); border-radius: var(--radius-sm);
+  padding: var(--sp-3) var(--sp-4); margin: var(--sp-4) 0;
+}
+.rule-box .rule-label {
+  display: block; margin-bottom: var(--sp-1);
+  font-family: var(--font-mono); font-size: .74rem; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--accent-strong);
+}
+:root[dir="rtl"] .rule-box .rule-label { letter-spacing: 0; }
+.rule-box ol { margin: var(--sp-2) 0; }
+.rule-box p:last-child { margin-bottom: 0; }
+
+/* ---- Callout variants (the base .callout and .callout.warn live in components.css) ---- */
+.callout.ok { border-inline-start-color: var(--success); background: var(--success-soft); }
+.callout.note { border-inline-start-color: var(--nf1); background: var(--nf1-soft); }
+.callout > :last-child { margin-bottom: 0; }
+
+/* ---- Problem lists ---- */
+.problem-list { list-style: none; padding: 0; margin: var(--sp-3) 0 var(--sp-4); display: grid; gap: var(--sp-2); }
+.problem-list > li {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: var(--sp-2) var(--sp-3); margin: 0;
+}
+.problem-list .pt { display: block; font-weight: 600; color: var(--danger); margin-bottom: 2px; }
+.problem-list.fixed .pt { color: var(--success); }
+
+/* ---- Static sample tables ---- */
+.tbl-cap { font-family: var(--font-mono); font-size: .82rem; font-weight: 600; color: var(--text-dim); margin: var(--sp-4) 0 var(--sp-1); }
+.tbl-cap .i18n-en, .tbl-cap .i18n-ar { font-family: var(--font-ui); font-weight: 400; }
+.tbl-scroll {
+  overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 0 var(--sp-4);
+  border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface);
+}
+.tbl-scroll table.data { direction: ltr; font-size: .8rem; min-width: max-content; border-style: hidden; }
+.tbl-scroll table.data th, .tbl-scroll table.data td { white-space: nowrap; text-align: left; }
+table.data th.k, table.data td.k { background: var(--accent-soft); }
+table.data th.k::after { content: " PK"; font-size: .72em; color: var(--accent-strong); letter-spacing: .05em; }
+table.data td.bad { background: var(--danger-soft); color: var(--danger); font-weight: 600; }
+table.data td.warn { background: var(--nf1-soft); color: var(--nf1); }
+table.data td.good { background: var(--success-soft); color: var(--success); font-weight: 600; }
+table.data td.nul { color: var(--text-faint); font-style: italic; }
+.tbl-legend { font-size: .82rem; color: var(--text-dim); margin-top: calc(-1 * var(--sp-2)); }
+
+/* Comparison tables (prose, not data) */
+table.cmp { border-collapse: collapse; width: 100%; font-size: .92rem; }
+table.cmp th, table.cmp td { border: 1px solid var(--border); padding: .5em .7em; vertical-align: top; text-align: start; }
+table.cmp thead th { background: var(--surface-2); }
+table.cmp tbody th { background: var(--surface-2); font-weight: 600; }
+table.cmp td.good { color: var(--success); font-weight: 600; }
+table.cmp td.warn { color: var(--nf1); }
+.tbl-scroll.cmp-wrap { border: none; background: transparent; }
+
+/* Dependency notation (A → B) in a plain block */
+pre.fd {
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: var(--sp-3) var(--sp-4); overflow-x: auto; direction: ltr; text-align: left;
+  font-family: var(--font-mono); font-size: .85rem; line-height: 1.7; margin: 0 0 var(--sp-4);
+}
+
+/* ---- Click-to-reveal solutions ---- */
+details.reveal { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); margin: var(--sp-3) 0; overflow: hidden; }
+details.reveal > summary {
+  cursor: pointer; list-style: none; display: flex; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3); font-weight: 600; color: var(--accent-strong); background: var(--surface-2);
+}
+details.reveal > summary::-webkit-details-marker { display: none; }
+details.reveal > summary::before { content: "▸"; color: var(--accent); flex: none; transition: transform .15s ease; }
+:root[dir="rtl"] details.reveal > summary::before { content: "◂"; }
+details.reveal[open] > summary::before { content: "▾"; }
+details.reveal > .reveal-body { padding: var(--sp-3) var(--sp-4); border-top: 1px solid var(--border); }
+details.reveal > .reveal-body > :last-child { margin-bottom: 0; }
+
+/* ---- Student task boxes ---- */
+.task { border: 2px solid var(--accent); border-radius: var(--radius); background: var(--surface); padding: var(--sp-3) var(--sp-4); margin: var(--sp-4) 0; }
+.task > .task-h { display: flex; gap: var(--sp-2); align-items: baseline; font-weight: 600; margin-bottom: var(--sp-2); }
+.task > .task-h .task-num {
+  flex: none; font-family: var(--font-mono); font-size: .75rem; font-weight: 600;
+  color: #fff; background: var(--accent); border-radius: 999px; padding: .1em .6em;
+}
+:root[data-theme="dark"] .task > .task-h .task-num,
+:root:not([data-theme="light"]) .task > .task-h .task-num { color: #06231f; }
+
+/* ---- Dependency diagrams (inline SVG) ---- */
+.nf-figure { margin: var(--sp-4) 0 var(--sp-5); }
+.nf-figure svg.dg {
+  display: block; width: 100%; height: auto; max-width: 640px; margin-inline: auto;
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius);
+  direction: ltr; font-family: var(--font-ui);
+}
+:root[dir="rtl"] .nf-figure svg.dg { font-family: var(--font-ar); }
+.dg .dg-box { fill: var(--surface); stroke: var(--border); stroke-width: 1.4; }
+.dg .dg-box.b0 { fill: var(--nf0-soft); stroke: var(--nf0); }
+.dg .dg-box.b1 { fill: var(--nf1-soft); stroke: var(--nf1); }
+.dg .dg-box.b2 { fill: var(--nf2-soft); stroke: var(--nf2); }
+.dg .dg-box.b3 { fill: var(--nf3-soft); stroke: var(--nf3); }
+.dg .dg-line { stroke: var(--text-faint); stroke-width: 1.6; fill: none; }
+.dg .dg-line.bad { stroke: var(--danger); }
+.dg .dg-line.ok { stroke: var(--success); }
+.dg .dg-head { fill: var(--text-faint); }
+.dg .dg-head.bad { fill: var(--danger); }
+.dg .dg-head.ok { fill: var(--success); }
+.dg text { fill: var(--text); }
+.dg .dg-title { font-size: 13px; font-weight: 600; }
+.dg .dg-label { font-size: 12px; font-weight: 600; }
+.dg .dg-small { font-size: 11px; fill: var(--text-dim); }
+.dg .dg-bad { fill: var(--danger); }
+.dg .dg-mono { font-family: var(--font-mono); font-size: 11px; }
+.nf-caption { color: var(--text-dim); font-size: .85rem; text-align: center; margin-top: var(--sp-2); }
+
+@media (max-width: 780px) {
+  .nf-stage > .nf-stage-b { padding: var(--sp-3); }
+  .tbl-scroll table.data { font-size: .74rem; }
+}
+@media print {
+  details.reveal > .reveal-body { display: block !important; }
+}

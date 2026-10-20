@@ -43,8 +43,8 @@
     <section>
       <h1 class="i18n-en">Learn SQL by running it</h1>
       <h1 class="i18n-ar" dir="rtl">تعلّم SQL بتشغيله فعليًا</h1>
-      <p class="lead i18n-en">A hands-on, bilingual SQL course for people who already code. Every idea comes with a live editor — type a query, run it against a real in-browser database, and see the rows come back. Eight chapters, from your first <code>CREATE TABLE</code> to joins, subqueries, aggregation, and bulk operations.</p>
-      <p class="lead i18n-ar" dir="rtl">دورة عملية ثنائية اللغة في SQL لمن يعرفون البرمجة مسبقًا. كل فكرة مصحوبة بمحرّر حيّ — اكتب استعلامًا، وشغّله على قاعدة بيانات حقيقية داخل المتصفح، وشاهد الصفوف تعود إليك. ثمانية فصول، من أول <code>CREATE TABLE</code> إلى الربط والاستعلامات الفرعية والتجميع والعمليات المجمّعة.</p>
+      <p class="lead i18n-en">A hands-on, bilingual SQL course for people who already code. Every idea comes with a live editor — type a query, run it against a real in-browser database, and see the rows come back. Nine chapters, from your first <code>CREATE TABLE</code> to joins, subqueries, aggregation, views, database design with normalization, and bulk operations.</p>
+      <p class="lead i18n-ar" dir="rtl">دورة عملية ثنائية اللغة في SQL لمن يعرفون البرمجة مسبقًا. كل فكرة مصحوبة بمحرّر حيّ — اكتب استعلامًا، وشغّله على قاعدة بيانات حقيقية داخل المتصفح، وشاهد الصفوف تعود إليك. تسعة فصول، من أول <code>CREATE TABLE</code> إلى الربط والاستعلامات الفرعية والتجميع والعروض وتصميم قواعد البيانات بالتطبيع والعمليات المجمّعة.</p>
     </section>
 
     <section id="continue-box" hidden>
@@ -57,6 +57,13 @@
     <section>
       <h2 data-i18n="chapters">Chapters</h2>
       <ul class="chapter-list" id="chapter-list"></ul>
+    </section>
+
+    <section>
+      <h2 data-i18n="exams">Final exams</h2>
+      <p class="i18n-en">Three complete exams over the whole course, each one opening with the <strong>entity-relationship diagrams</strong> of the two databases it uses — a clinic and a sports league you have not seen in the chapters.</p>
+      <p class="i18n-ar" dir="rtl">ثلاثة اختبارات كاملة على الدورة بأكملها، يبدأ كلٌّ منها بـ<strong>مخطّطات العلاقات</strong> لقاعدتَي البيانات اللتين يستعملهما — عيادة ودوري رياضي لم ترهما في الفصول.</p>
+      <ul class="chapter-list" id="exam-list"></ul>
     </section>
   </main>
 
@@ -109,11 +116,51 @@
         });
       }
 
+      var EXAMS = [
+        { n: 1, title: { en: 'Clinic and League, end to end', ar: 'العيادة والدوري، من الألف إلى الياء' } },
+        { n: 2, title: { en: 'The same ground, different questions', ar: 'الميدان نفسه، أسئلة مختلفة' } },
+        { n: 3, title: { en: 'Everything, one last time', ar: 'كل شيء، مرّة أخيرة' } }
+      ];
+      var EXAM_Q = 20;
+
+      function examHref(n) { return 'exams/exam-' + n + '.html'; }
+
+      function examScore(n) {
+        var passed = 0;
+        for (var i = 1; i <= EXAM_Q; i++) {
+          if (window.Progress.questionResult('exam', String(n), 't' + i) === true) passed++;
+        }
+        return passed;
+      }
+
+      function renderExams() {
+        var ul = document.getElementById('exam-list'); if (!ul) return;
+        ul.innerHTML = '';
+        EXAMS.forEach(function (e) {
+          var passed = examScore(e.n);
+          var li = document.createElement('li'); li.className = 'chapter-item';
+          var a = document.createElement('a'); a.className = 'card card-link'; a.href = examHref(e.n);
+          a.innerHTML =
+            '<span class="num">' + t('exam').toUpperCase() + ' ' + e.n + '</span>' +
+            '<h3>' + escapeHtml(L(e.title)) + '</h3>' +
+            '<div class="meta">' + passed + ' / ' + EXAM_Q + ' ' + escapeHtml(t('progress_done')) + '</div>';
+          var bar = document.createElement('div'); bar.className = 'progress-bar';
+          var span = document.createElement('span'); span.style.width = (passed / EXAM_Q * 100) + '%';
+          bar.appendChild(span); a.appendChild(bar);
+          li.appendChild(a); ul.appendChild(li);
+        });
+      }
+
       function renderContinue() {
         var last = window.Progress.lastLesson();
         var box = document.getElementById('continue-box');
         if (!last) { box.hidden = true; return; }
         var parts = last.split('/'); var ch = parts[0], lesson = parts[1];
+        if (ch === 'exam') {                      // last activity was a final exam
+          document.getElementById('continue-link').href = examHref(lesson);
+          document.getElementById('continue-title').textContent = t('exam') + ' ' + lesson;
+          box.hidden = false; return;
+        }
         var c = window.COURSE.chapters.filter(function (x) { return x.num === +ch; })[0];
         if (!c) { box.hidden = true; return; }
         var ls = c.lessons.filter(function (x) { return x.n === +lesson; })[0];
@@ -125,7 +172,8 @@
 
       function escapeHtml(s) { return String(s).replace(/[&<>"]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]; }); }
 
-      function init() { renderList(); renderContinue(); document.addEventListener('i18n:change', function () { renderList(); renderContinue(); }); document.addEventListener('progress:change', function () { renderList(); renderContinue(); }); }
+      function redraw() { renderList(); renderExams(); renderContinue(); }
+      function init() { redraw(); document.addEventListener('i18n:change', redraw); document.addEventListener('progress:change', redraw); }
       return { init: init };
     })();
   </script>

@@ -1,0 +1,373 @@
+{
+  "tables": {
+    "authors": [
+      {
+        "id": 1,
+        "name": "Laila Hammoud",
+        "country": "Lebanon",
+        "birth_year": 1975
+      },
+      {
+        "id": 2,
+        "name": "Marcus Reyes",
+        "country": "Canada",
+        "birth_year": 1982
+      },
+      {
+        "id": 3,
+        "name": "Aiko Tanaka",
+        "country": "Japan",
+        "birth_year": 1968
+      },
+      {
+        "id": 4,
+        "name": "Daniel Kessler",
+        "country": "Canada",
+        "birth_year": 1990
+      },
+      {
+        "id": 5,
+        "name": "Fatima Zahra",
+        "country": "Morocco",
+        "birth_year": 1979
+      },
+      {
+        "id": 6,
+        "name": "Tom Whitfield",
+        "country": "United Kingdom",
+        "birth_year": 1965
+      },
+      {
+        "id": 7,
+        "name": "Noor Haddad",
+        "country": "Jordan",
+        "birth_year": 1988
+      }
+    ],
+    "books": [
+      {
+        "id": 1,
+        "title": "The Glass Bridge",
+        "price": 18.5,
+        "published_year": 2019,
+        "in_stock": true,
+        "author_id": 2,
+        "genre": "Fiction"
+      },
+      {
+        "id": 2,
+        "title": "Coastal Winters",
+        "price": 12,
+        "published_year": 2021,
+        "in_stock": true,
+        "author_id": 5,
+        "genre": "Fiction"
+      },
+      {
+        "id": 3,
+        "title": "A Quiet Machine",
+        "price": 24.99,
+        "published_year": 2017,
+        "in_stock": false,
+        "author_id": 1,
+        "genre": "Science Fiction"
+      },
+      {
+        "id": 4,
+        "title": "Paper Kingdoms",
+        "price": 15.75,
+        "published_year": 2022,
+        "in_stock": true,
+        "author_id": 3,
+        "genre": "Fantasy"
+      },
+      {
+        "id": 5,
+        "title": "The Long Ledger",
+        "price": 21,
+        "published_year": 2015,
+        "in_stock": false,
+        "author_id": 2,
+        "genre": "Fiction"
+      },
+      {
+        "id": 6,
+        "title": "Nightshift Diaries",
+        "price": 9.99,
+        "published_year": 2023,
+        "in_stock": true,
+        "author_id": 6,
+        "genre": "Science Fiction"
+      },
+      {
+        "id": 7,
+        "title": "Salt and Circuits",
+        "price": 19.25,
+        "published_year": 2020,
+        "in_stock": true,
+        "author_id": 1,
+        "genre": "Science Fiction"
+      },
+      {
+        "id": 8,
+        "title": "The Cedar Door",
+        "price": 16.5,
+        "published_year": 2018,
+        "in_stock": true,
+        "author_id": 5,
+        "genre": "Fiction"
+      },
+      {
+        "id": 9,
+        "title": "Embercourt",
+        "price": 22.4,
+        "published_year": 2021,
+        "in_stock": true,
+        "author_id": 3,
+        "genre": "Fantasy"
+      },
+      {
+        "id": 10,
+        "title": "The Ninth Cipher",
+        "price": 13.25,
+        "published_year": 2016,
+        "in_stock": false,
+        "author_id": 1,
+        "genre": "Mystery"
+      },
+      {
+        "id": 11,
+        "title": "The Olive Archive",
+        "price": 14,
+        "published_year": 2024,
+        "in_stock": true,
+        "author_id": 5,
+        "genre": "Mystery"
+      },
+      {
+        "id": 12,
+        "title": "Static Gardens",
+        "price": 27.5,
+        "published_year": 2023,
+        "in_stock": true,
+        "author_id": 6,
+        "genre": "Science Fiction"
+      }
+    ],
+    "library_flat": [
+      {
+        "loan_id": 101,
+        "member_name": "Sara Hamdan",
+        "member_phones": "0599-111222, 08-2834567",
+        "member_city": "Gaza",
+        "book_1": "Coastal Winters",
+        "book_2": "A Quiet Machine",
+        "book_3": null,
+        "genres": "Fiction, Science Fiction",
+        "author_name": "Fatima Zahra, Laila Hammoud",
+        "author_country": "Morocco, Lebanon",
+        "loan_date": "2026-03-01"
+      },
+      {
+        "loan_id": 102,
+        "member_name": "Omar Nassar",
+        "member_phones": "0599-333444",
+        "member_city": "Rafah",
+        "book_1": "Coastal Winters",
+        "book_2": null,
+        "book_3": null,
+        "genres": "Fiction",
+        "author_name": "Fatima Zahra",
+        "author_country": "Morocco",
+        "loan_date": "2026-03-03"
+      },
+      {
+        "loan_id": 103,
+        "member_name": "Sara Hamdan",
+        "member_phones": "0599-111222, 08-2834567",
+        "member_city": "Gaza",
+        "book_1": "Paper Kingdoms",
+        "book_2": "A Quiet Machine",
+        "book_3": "The Ninth Cipher",
+        "genres": "Fantasy, Science Fiction, Mystery",
+        "author_name": "Aiko Tanaka, Laila Hammoud, Laila Hammoud",
+        "author_country": "Japan, Lebanon, Lebanon",
+        "loan_date": "2026-03-07"
+      },
+      {
+        "loan_id": 104,
+        "member_name": "Dina Qasem",
+        "member_phones": "0597-888999",
+        "member_city": "Khan Younis",
+        "book_1": "The Ninth Cipher",
+        "book_2": null,
+        "book_3": null,
+        "genres": "Mystery",
+        "author_name": "Laila Hammoud",
+        "author_country": "Lebanon",
+        "loan_date": "2026-03-09"
+      }
+    ],
+    "library_1nf": [
+      {
+        "loan_id": 101,
+        "book_title": "Coastal Winters",
+        "genre": "Fiction",
+        "author_name": "Fatima Zahra",
+        "author_country": "Morocco",
+        "member_name": "Sara Hamdan",
+        "member_mobile": "0599-111222",
+        "member_home_phone": "08-2834567",
+        "member_city": "Gaza",
+        "loan_date": "2026-03-01"
+      },
+      {
+        "loan_id": 101,
+        "book_title": "A Quiet Machine",
+        "genre": "Science Fiction",
+        "author_name": "Laila Hammoud",
+        "author_country": "Lebanon",
+        "member_name": "Sara Hamdan",
+        "member_mobile": "0599-111222",
+        "member_home_phone": "08-2834567",
+        "member_city": "Gaza",
+        "loan_date": "2026-03-01"
+      },
+      {
+        "loan_id": 102,
+        "book_title": "Coastal Winters",
+        "genre": "Fiction",
+        "author_name": "Fatima Zahra",
+        "author_country": "Morocco",
+        "member_name": "Omar Nassar",
+        "member_mobile": "0599-333444",
+        "member_home_phone": null,
+        "member_city": "Rafah",
+        "loan_date": "2026-03-03"
+      },
+      {
+        "loan_id": 103,
+        "book_title": "Paper Kingdoms",
+        "genre": "Fantasy",
+        "author_name": "Aiko Tanaka",
+        "author_country": "Japan",
+        "member_name": "Sara Hamdan",
+        "member_mobile": "0599-111222",
+        "member_home_phone": "08-2834567",
+        "member_city": "Gaza",
+        "loan_date": "2026-03-07"
+      },
+      {
+        "loan_id": 103,
+        "book_title": "A Quiet Machine",
+        "genre": "Science Fiction",
+        "author_name": "Laila Hammoud",
+        "author_country": "Lebanon",
+        "member_name": "Sara Hamdan",
+        "member_mobile": "0599-111222",
+        "member_home_phone": "08-2834567",
+        "member_city": "Gaza",
+        "loan_date": "2026-03-07"
+      },
+      {
+        "loan_id": 103,
+        "book_title": "The Ninth Cipher",
+        "genre": "Mystery",
+        "author_name": "Laila Hammoud",
+        "author_country": "Lebanon",
+        "member_name": "Sara Hamdan",
+        "member_mobile": "0599-111222",
+        "member_home_phone": "08-2834567",
+        "member_city": "Gaza",
+        "loan_date": "2026-03-07"
+      },
+      {
+        "loan_id": 104,
+        "book_title": "The Ninth Cipher",
+        "genre": "Mystery",
+        "author_name": "Laila Hammoud",
+        "author_country": "Lebanon",
+        "member_name": "Dina Qasem",
+        "member_mobile": "0597-888999",
+        "member_home_phone": null,
+        "member_city": "Khan Younis",
+        "loan_date": "2026-03-09"
+      }
+    ],
+    "members": [
+      {
+        "id": 1,
+        "name": "Sara Hamdan",
+        "mobile": "0599-111222",
+        "home_phone": "08-2834567",
+        "city": "Gaza"
+      },
+      {
+        "id": 2,
+        "name": "Omar Nassar",
+        "mobile": "0599-333444",
+        "home_phone": null,
+        "city": "Rafah"
+      },
+      {
+        "id": 3,
+        "name": "Dina Qasem",
+        "mobile": "0597-888999",
+        "home_phone": null,
+        "city": "Khan Younis"
+      }
+    ],
+    "loans": [
+      {
+        "id": 101,
+        "member_id": 1,
+        "loan_date": "2026-03-01"
+      },
+      {
+        "id": 102,
+        "member_id": 2,
+        "loan_date": "2026-03-03"
+      },
+      {
+        "id": 103,
+        "member_id": 1,
+        "loan_date": "2026-03-07"
+      },
+      {
+        "id": 104,
+        "member_id": 3,
+        "loan_date": "2026-03-09"
+      }
+    ],
+    "loan_items": [
+      {
+        "loan_id": 101,
+        "book_id": 2
+      },
+      {
+        "loan_id": 101,
+        "book_id": 3
+      },
+      {
+        "loan_id": 102,
+        "book_id": 2
+      },
+      {
+        "loan_id": 103,
+        "book_id": 4
+      },
+      {
+        "loan_id": 103,
+        "book_id": 3
+      },
+      {
+        "loan_id": 103,
+        "book_id": 10
+      },
+      {
+        "loan_id": 104,
+        "book_id": 10
+      }
+    ]
+  }
+}

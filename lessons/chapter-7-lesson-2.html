@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 7 · Lesson 2 — First Normal Form — 1NF · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/normalize.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="7" data-lesson="2">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="7" data-lesson="2"></nav>
+
+    <h1 class="i18n-en">Lesson 2 — First Normal Form — 1NF</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٢ — النموذج الأول — 1NF</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">Lesson 1 diagnosed the librarian's sheet, <code>library_flat</code>: a repeating group, cells holding lists, and a row that describes four things at once. The first normal form fixes the <strong>shape</strong> of the table — before we can reason about which column depends on which, every cell has to hold one value and every row has to be identifiable.</p>
+      <p class="i18n-ar" dir="rtl">شخّص الدرس الأول ورقة أمين المكتبة <code>library_flat</code>: مجموعة مكرّرة، وخلايا تحمل قوائم، وصفّ يصف أربعة كيانات معًا. والنموذج الأول يُصلح <strong>شكل</strong> الجدول — فقبل أن نفكّر في أيّ عمود يعتمد على أيّ عمود، يجب أن تحمل كل خلية قيمة واحدة، وأن يكون كل صفّ قابلًا للتمييز.</p>
+
+      <div class="nf-stage s1">
+        <div class="nf-stage-h"><span class="nf-chip nf-1">1NF</span><span class="i18n-en">First Normal Form</span><span class="i18n-ar" dir="rtl">النموذج الأول</span></div>
+        <div class="nf-stage-b">
+          <div class="rule-box">
+            <span class="rule-label"><span class="i18n-en">The rule</span><span class="i18n-ar" dir="rtl">نصّ القاعدة</span></span>
+            <p class="i18n-en">A table is in <strong>First Normal Form (1NF)</strong> when three conditions hold:</p>
+            <p class="i18n-ar" dir="rtl">يكون الجدول في <strong>النموذج الأول (1NF)</strong> إذا تحقّقت ثلاثة شروط:</p>
+            <ol class="i18n-en">
+              <li>Every cell holds <strong>exactly one atomic value</strong> — no lists, no comma-separated values.</li>
+              <li>There are no <strong>repeating groups</strong> of the <code>x_1, x_2, x_3</code> kind.</li>
+              <li>Every row has a <strong>primary key</strong> that identifies it — possibly a composite one.</li>
+            </ol>
+            <ol class="i18n-ar" dir="rtl">
+              <li>كل خلية تحمل <strong>قيمة ذرّية واحدة</strong> فقط — لا قوائم، ولا قيم مفصولة بفواصل.</li>
+              <li>لا توجد <strong>مجموعات مكرّرة</strong> من نوع <code>x_1, x_2, x_3</code>.</li>
+              <li>لكل صفّ <strong>مفتاح أساسي</strong> يميّزه — وقد يكون مركّبًا من أكثر من عمود.</li>
+            </ol>
+          </div>
+
+          <h3 class="i18n-en">Unpacking the rule</h3>
+          <h3 class="i18n-ar" dir="rtl">شرح القاعدة</h3>
+          <p class="i18n-en">"Atomic" doesn't mean "short"; it means <em>you never have to chop this value up to use it here</em>. <code>'0599-111222'</code> is atomic for a library; <code>'0599-111222, 08-2834567'</code> is not, because any sensible question ("whose number is 08-2834567?") forces you to chop it. Notice that conditions 1 and 2 are the same coin: a multi-valued cell stores a list <em>horizontally inside a cell</em>; a repeating group stores it <em>horizontally across columns</em>. Both have the same fix — store the list <strong>vertically, in rows</strong>.</p>
+          <p class="i18n-ar" dir="rtl">«ذرّية» لا تعني «قصيرة»، بل تعني: <em>لا نحتاج إلى تقطيع هذه القيمة لنستعملها هنا</em>. <code>'0599-111222'</code> قيمة ذرّية في سياق المكتبة؛ أما <code>'0599-111222, 08-2834567'</code> فليست كذلك، لأن أي سؤال معقول («لمن الرقم 08-2834567؟») يفرض تقطيعها. ولاحظ أن الشرطين الأول والثاني وجهان لعملة واحدة: الخلية المتعدّدة القيم تخزّن القائمة <em>أفقيًا داخل خلية</em>، والمجموعة المكرّرة تخزّنها <em>أفقيًا عبر أعمدة</em>. والحلّ في الحالتين واحد — خزّن القائمة <strong>عموديًا، في صفوف</strong>.</p>
+
+          <h3 class="i18n-en">Applying the rule — three steps</h3>
+          <h3 class="i18n-ar" dir="rtl">تطبيق القاعدة — ثلاث خطوات</h3>
+          <ul class="problem-list fixed">
+            <li>
+              <span class="pt"><span class="i18n-en">Step A — unroll the repeating group</span><span class="i18n-ar" dir="rtl">الخطوة أ — فُكّ المجموعة المكرّرة</span></span>
+              <span class="i18n-en">Instead of one row holding three books, write one row per borrowed book. Loan 103 (three books) becomes three rows, and <code>book_1</code>, <code>book_2</code>, <code>book_3</code> collapse into a single <code>book_title</code> column. Four loans become seven rows.</span>
+              <span class="i18n-ar" dir="rtl">بدل صفّ واحد يحمل ثلاثة كتب، اكتب صفًّا لكل كتاب مُستعار. الإعارة ١٠٣ (ثلاثة كتب) تصير ثلاثة صفوف، وتنهار الأعمدة <code>book_1</code> و<code>book_2</code> و<code>book_3</code> إلى عمود واحد <code>book_title</code>. فتصير الإعارات الأربع سبعة صفوف.</span>
+            </li>
+            <li>
+              <span class="pt"><span class="i18n-en">Step B — split the multi-valued cells</span><span class="i18n-ar" dir="rtl">الخطوة ب — فُكّ القيم المتعدّدة</span></span>
+              <span class="i18n-en">Something pleasing happens: once each row is about one book, each row has one genre and one author — so <code>genres</code>, <code>author_name</code> and <code>author_country</code> resolve themselves. That leaves <code>member_phones</code>, which unrolling doesn't fix. Two options: if the count is <strong>fixed</strong> and the values <strong>mean different things</strong> (a mobile and a landline), use two well-named columns, <code>member_mobile</code> and <code>member_home_phone</code> — our choice here. If the count is <strong>open-ended</strong> (a member might have five numbers), use a separate table <code>member_phones(member_id, phone)</code> — the general answer.</span>
+              <span class="i18n-ar" dir="rtl">يحدث هنا شيء جميل: بمجرّد أن صار كل صفّ يخصّ كتابًا واحدًا، صار لكل صفّ نوع واحد ومؤلف واحد — فانحلّت <code>genres</code> و<code>author_name</code> و<code>author_country</code> من تلقاء نفسها. يبقى <code>member_phones</code> الذي لا يحلّه التفكيك، وأمامنا خياران: إذا كان العدد <strong>ثابتًا</strong> والقيم <strong>مختلفة المعنى</strong> (جوّال وأرضي) فعمودان باسمين معبّرين: <code>member_mobile</code> و<code>member_home_phone</code> — وهذا خيارنا هنا. وإذا كان العدد <strong>مفتوحًا</strong> (قد يكون للعضو خمسة أرقام) فجدول منفصل <code>member_phones(member_id, phone)</code> — وهو الحلّ العام.</span>
+            </li>
+            <li>
+              <span class="pt"><span class="i18n-en">Step C — define the key</span><span class="i18n-ar" dir="rtl">الخطوة ج — عيّن المفتاح</span></span>
+              <span class="i18n-en">After step A, <code>loan_id</code> repeats (loan 103 spans three rows), so it no longer identifies a row on its own. What does? <strong>The loan plus the book</strong>. The primary key is therefore <strong>composite</strong>: <code>(loan_id, book_title)</code>. Hold on to that — the whole of 2NF in Lesson 3 rests on it.</span>
+              <span class="i18n-ar" dir="rtl">بعد الخطوة (أ) صار <code>loan_id</code> يتكرّر (الإعارة ١٠٣ في ثلاثة صفوف)، فلم يعد يميّز الصفّ وحده. فما الذي يميّزه؟ <strong>الإعارة مع الكتاب</strong> معًا. إذن المفتاح الأساسي <strong>مركّب</strong>: <code>(loan_id, book_title)</code>. احفظ هذا جيدًا — فالنموذج الثاني كلّه في الدرس الثالث يقوم عليه.</span>
+            </li>
+          </ul>
+
+          <div class="tbl-cap">library_1nf <span class="i18n-en">— composite key shaded</span><span class="i18n-ar" dir="rtl">— المفتاح المركّب مظلَّل</span></div>
+          <div class="tbl-scroll">
+            <table class="data">
+              <thead><tr><th class="k">loan_id</th><th class="k">book_title</th><th>genre</th><th>author_name</th><th>author_country</th><th>member_name</th><th>member_mobile</th><th>member_home_phone</th><th>member_city</th><th>loan_date</th></tr></thead>
+              <tbody>
+                <tr><td class="k">101</td><td class="k">Coastal Winters</td><td>Fiction</td><td>Fatima Zahra</td><td>Morocco</td><td>Sara Hamdan</td><td>0599-111222</td><td>08-2834567</td><td>Gaza</td><td>2026-03-01</td></tr>
+                <tr><td class="k">101</td><td class="k">A Quiet Machine</td><td>Science Fiction</td><td>Laila Hammoud</td><td>Lebanon</td><td>Sara Hamdan</td><td>0599-111222</td><td>08-2834567</td><td>Gaza</td><td>2026-03-01</td></tr>
+                <tr><td class="k">102</td><td class="k">Coastal Winters</td><td>Fiction</td><td>Fatima Zahra</td><td>Morocco</td><td>Omar Nassar</td><td>0599-333444</td><td class="nul">NULL</td><td>Rafah</td><td>2026-03-03</td></tr>
+                <tr><td class="k">103</td><td class="k">Paper Kingdoms</td><td>Fantasy</td><td>Aiko Tanaka</td><td>Japan</td><td>Sara Hamdan</td><td>0599-111222</td><td>08-2834567</td><td>Gaza</td><td>2026-03-07</td></tr>
+                <tr><td class="k">103</td><td class="k">A Quiet Machine</td><td>Science Fiction</td><td>Laila Hammoud</td><td>Lebanon</td><td>Sara Hamdan</td><td>0599-111222</td><td>08-2834567</td><td>Gaza</td><td>2026-03-07</td></tr>
+                <tr><td class="k">103</td><td class="k">The Ninth Cipher</td><td>Mystery</td><td>Laila Hammoud</td><td>Lebanon</td><td>Sara Hamdan</td><td>0599-111222</td><td>08-2834567</td><td>Gaza</td><td>2026-03-07</td></tr>
+                <tr><td class="k">104</td><td class="k">The Ninth Cipher</td><td>Mystery</td><td>Laila Hammoud</td><td>Lebanon</td><td>Dina Qasem</td><td>0597-888999</td><td class="nul">NULL</td><td>Khan Younis</td><td>2026-03-09</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <pre><code>CREATE TABLE library_1nf (
+    loan_id            INT  NOT NULL,
+    book_title         TEXT NOT NULL,
+    genre              TEXT,
+    author_name        TEXT,
+    author_country     TEXT,
+    member_name        TEXT,
+    member_mobile      TEXT,
+    member_home_phone  TEXT,
+    member_city        TEXT,
+    loan_date          TEXT,
+    PRIMARY KEY (loan_id, book_title)
+);</code></pre>
+
+          <div class="callout ok">
+            <div class="i18n-en"><strong>What got better.</strong> Queries behave as expected: <code>WHERE genre = 'Fiction'</code> is now exactly right, and "who borrowed <em>A Quiet Machine</em>?" is one condition, <code>WHERE book_title = 'A Quiet Machine'</code>, instead of three. The artificial ceiling is gone too: a member who borrows twenty books simply has twenty rows — no <code>ALTER TABLE</code>.</div>
+            <div class="i18n-ar" dir="rtl"><strong>ما الذي تحسّن؟</strong> صارت الاستعلامات تعمل كما نتوقّع: <code>WHERE genre = 'Fiction'</code> صحيح الآن تمامًا، و«من استعار <em>A Quiet Machine</em>؟» صار شرطًا واحدًا، <code>WHERE book_title = 'A Quiet Machine'</code>، بدل ثلاثة. وزال السقف الصناعي أيضًا: العضو الذي يستعير عشرين كتابًا له ببساطة عشرون صفًّا — بلا <code>ALTER TABLE</code>.</div>
+          </div>
+          <div class="callout warn">
+            <div class="i18n-en"><strong>What got worse — yes, worse.</strong> Redundancy <strong>increased</strong>. Sara's details were written on 2 rows; now they are on <strong>5</strong>. "Laila Hammoud / Lebanon" now sits on <strong>4</strong> rows. We did not fix the update anomaly — we amplified it. That is not a failure: 1NF <strong>cleans up the shape</strong>; 2NF and 3NF <strong>remove the redundancy</strong>. The order matters, because you cannot analyse dependencies until the table is regular and its key is known.</div>
+            <div class="i18n-ar" dir="rtl"><strong>ما الذي ساء؟ — نعم، ساء.</strong> التكرار <strong>ازداد</strong>. كانت بيانات سارة مكتوبة في صفّين، وصارت الآن في <strong>خمسة</strong>. و«Laila Hammoud / Lebanon» صارت في <strong>أربعة</strong> صفوف. لم نحلّ شذوذ التعديل — بل ضاعفناه. وهذا ليس فشلًا: النموذج الأول <strong>يُنظّف الشكل</strong>، والنموذجان الثاني والثالث <strong>يُزيلان التكرار</strong>. والترتيب مقصود، لأننا لا نستطيع تحليل الاعتمادات أصلًا قبل أن يصير الجدول منتظمًا ومفتاحه معروفًا.</div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>library_1nf</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>library_1nf</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — the sheet, one row per borrowed book</span><span class="i18n-ar" dir="rtl">مثال ١ — الورقة، صفّ لكل كتاب مُستعار</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"SELECT loan_id, book_title, genre, author_name, member_name\nFROM library_1nf;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Seven rows for four loans. Every cell holds one value, and the pair <code>(loan_id, book_title)</code> is different on every row.</span><span class="i18n-ar" dir="rtl">سبعة صفوف لأربع إعارات. كل خلية تحمل قيمة واحدة، والزوج <code>(loan_id, book_title)</code> مختلف في كل صفّ.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — the queries that failed in Lesson 1 now just work</span><span class="i18n-ar" dir="rtl">مثال ٢ — الاستعلامات التي فشلت في الدرس الأول تعمل الآن ببساطة</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"SELECT loan_id, book_title FROM library_1nf WHERE genre = 'Fiction';\n\n-- and \"who borrowed A Quiet Machine?\" is one condition:\n-- SELECT loan_id, member_name FROM library_1nf WHERE book_title = 'A Quiet Machine';"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Loans 101 and 102 — both of them, and nothing else. Loan 103's <em>Science Fiction</em> book no longer sneaks in, because <code>genre</code> is now one value compared with <code>=</code>. Uncomment the second query to see the repeating group gone too.</span><span class="i18n-ar" dir="rtl">الإعارتان ١٠١ و١٠٢ — كلتاهما، ولا شيء غيرهما. لم يعد كتاب <em>Science Fiction</em> في الإعارة ١٠٣ يتسلّل، لأن <code>genre</code> صارت قيمة واحدة تُقارَن بـ<code>=</code>. أزِل التعليق عن الاستعلام الثاني لترى زوال المجموعة المكرّرة أيضًا.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the price: count the copies, and meet the composite key</span><span class="i18n-ar" dir="rtl">مثال ٣ — الثمن: عُدّ النسخ، وتعرّف إلى المفتاح المركّب</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"CREATE TABLE loan_lines (\n  loan_id    INT  NOT NULL,\n  book_title TEXT NOT NULL,\n  PRIMARY KEY (loan_id, book_title)\n);\nINSERT INTO loan_lines VALUES (101, 'Coastal Winters');\nINSERT INTO loan_lines VALUES (101, 'A Quiet Machine');\n-- INSERT INTO loan_lines VALUES (101, 'Coastal Winters');\n\nSELECT member_name, COUNT(*) AS copies\nFROM library_1nf\nGROUP BY member_name;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">The count shows the price of 1NF: Sara's details are now stored 5 times. The <code>loan_lines</code> table shows the composite key at work — the same loan may appear twice with different books. Uncomment the third <code>INSERT</code> and run again: the engine refuses it, because the pair <code>(101, 'Coastal Winters')</code> already exists in the primary key.</span><span class="i18n-ar" dir="rtl">العدّ يُظهر ثمن النموذج الأول: بيانات سارة مخزّنة الآن ٥ مرات. وجدول <code>loan_lines</code> يُريك المفتاح المركّب يعمل — فقد تظهر الإعارة نفسها مرّتين بكتابين مختلفين. أزِل التعليق عن عبارة <code>INSERT</code> الثالثة وأعِد التشغيل: سيرفضها المحرّك، لأن الزوج <code>(101, 'Coastal Winters')</code> موجود مسبقًا في المفتاح الأساسي.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Back to <strong>Orbit Electronics</strong> and its sheet <code>orders_flat</code> from Lesson 1. Now take it to first normal form yourself — then compare with the answer and with the <code>orders_1nf</code> table in your database.</p>
+      <p class="i18n-ar" dir="rtl">عودة إلى <strong>Orbit Electronics</strong> وورقتها <code>orders_flat</code> من الدرس الأول. خذها الآن إلى النموذج الأول بنفسك — ثم قارن بالجواب وبجدول <code>orders_1nf</code> في قاعدة بياناتك.</p>
+
+      <div class="task">
+        <div class="task-h"><span class="task-num">1</span><span class="i18n-en">Apply the three steps (unroll the repeating group · split multi-valued cells · define the key) to <code>orders_flat</code>. How many rows will the result have, and what is its primary key?</span><span class="i18n-ar" dir="rtl">طبّق الخطوات الثلاث (فكّ المجموعة المكرّرة · فكّ القيم المتعدّدة · عيّن المفتاح) على <code>orders_flat</code>. كم صفًّا سيكون في الناتج، وما مفتاحه الأساسي؟</span></div>
+        <details class="reveal"><summary><span class="i18n-en">Show the answer</span><span class="i18n-ar" dir="rtl">اعرض الحل</span></summary>
+          <div class="reveal-body">
+            <p class="i18n-en">One row per (order, product): 2 + 1 + 3 + 1 = <strong>seven rows</strong>. Since <code>order_id</code> now repeats, the key is composite: <code>(order_id, product_name)</code>. <code>customer_contacts</code> splits into <code>customer_email</code> and <code>customer_phone</code> (a fixed count, two different meanings). <code>categories</code>, <code>category_depts</code>, <code>brand_names</code> and <code>brand_countries</code> resolve themselves once each row is about a single product.</p>
+            <p class="i18n-ar" dir="rtl">صفّ لكل (طلب، منتج): ٢ + ١ + ٣ + ١ = <strong>سبعة صفوف</strong>. وبما أن <code>order_id</code> صار يتكرّر، فالمفتاح مركّب: <code>(order_id, product_name)</code>. وتنقسم <code>customer_contacts</code> إلى <code>customer_email</code> و<code>customer_phone</code> (عدد ثابت ومعنيان مختلفان). أما <code>categories</code> و<code>category_depts</code> و<code>brand_names</code> و<code>brand_countries</code> فتنحلّ من تلقاء نفسها حين يصير كل صفّ عن منتج واحد.</p>
+            <div class="tbl-cap">orders_1nf</div>
+            <div class="tbl-scroll">
+              <table class="data">
+                <thead><tr><th class="k">order_id</th><th class="k">product_name</th><th>category_name</th><th>category_dept</th><th>brand_name</th><th>brand_country</th><th>customer_name</th><th>customer_email</th><th>customer_phone</th><th>customer_city</th><th>order_date</th></tr></thead>
+                <tbody>
+                  <tr><td class="k">5001</td><td class="k">Pulse Buds</td><td>Audio</td><td>Home</td><td>Pulse</td><td>Denmark</td><td>Hani Zorob</td><td>hani@mail.ps</td><td>0599-776655</td><td>Gaza</td><td>2026-04-02</td></tr>
+                  <tr><td class="k">5001</td><td class="k">GridKey Desk Hub</td><td>Accessories</td><td>Office</td><td>GridKey</td><td>Taiwan</td><td>Hani Zorob</td><td>hani@mail.ps</td><td>0599-776655</td><td>Gaza</td><td>2026-04-02</td></tr>
+                  <tr><td class="k">5002</td><td class="k">GridKey Mechanical</td><td>Accessories</td><td>Office</td><td>GridKey</td><td>Taiwan</td><td>Rana Abed</td><td>rana@mail.ps</td><td class="nul">NULL</td><td>Deir al-Balah</td><td>2026-04-04</td></tr>
+                  <tr><td class="k">5003</td><td class="k">Pulse Buds</td><td>Audio</td><td>Home</td><td>Pulse</td><td>Denmark</td><td>Hani Zorob</td><td>hani@mail.ps</td><td>0599-776655</td><td>Gaza</td><td>2026-04-05</td></tr>
+                  <tr><td class="k">5003</td><td class="k">Pulse Studio Headphones</td><td>Audio</td><td>Home</td><td>Pulse</td><td>Denmark</td><td>Hani Zorob</td><td>hani@mail.ps</td><td>0599-776655</td><td>Gaza</td><td>2026-04-05</td></tr>
+                  <tr><td class="k">5003</td><td class="k">GridKey Mechanical</td><td>Accessories</td><td>Office</td><td>GridKey</td><td>Taiwan</td><td>Hani Zorob</td><td>hani@mail.ps</td><td>0599-776655</td><td>Gaza</td><td>2026-04-05</td></tr>
+                  <tr><td class="k">5004</td><td class="k">Pulse Studio Headphones</td><td>Audio</td><td>Home</td><td>Pulse</td><td>Denmark</td><td>Samir Hajjaj</td><td>samir@mail.ps</td><td class="nul">NULL</td><td>Jabalia</td><td>2026-04-08</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="i18n-en">Notice the same phenomenon as in the library: queries became correct (<code>WHERE product_name = 'GridKey Mechanical'</code>), but Hani Zorob's details are now written on <strong>five</strong> rows instead of two. 1NF cleaned the shape and multiplied the redundancy — exactly what should happen at this stage.</p>
+            <p class="i18n-ar" dir="rtl">لاحظ الظاهرة نفسها التي رأيناها في المكتبة: صارت الاستعلامات سليمة (<code>WHERE product_name = 'GridKey Mechanical'</code>)، لكن بيانات هاني زعرب صارت مكتوبة في <strong>خمسة</strong> صفوف بدل صفّين. نظّف النموذج الأول الشكل وضاعف التكرار — وهذا بالضبط ما يجب أن يحدث في هذه المرحلة.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — the orders in 1NF</span><span class="i18n-ar" dir="rtl">مثال ١ — الطلبات في النموذج الأول</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":7,"sql":"SELECT order_id, product_name, brand_name, customer_name, customer_email\nFROM orders_1nf;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — one condition finds a product</span><span class="i18n-ar" dir="rtl">مثال ٢ — شرط واحد يجد المنتج</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":7,"sql":"SELECT order_id, customer_name\nFROM orders_1nf\nWHERE product_name = 'GridKey Mechanical';"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">In Lesson 1 this needed <code>item_1 = … OR item_2 = … OR item_3 = …</code>. Here it is one condition, and it stays correct however many products an order has.</span><span class="i18n-ar" dir="rtl">في الدرس الأول احتاج هذا إلى <code>item_1 = … OR item_2 = … OR item_3 = …</code>. وهنا هو شرط واحد، ويبقى صحيحًا مهما كثرت منتجات الطلب.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the price, measured</span><span class="i18n-ar" dir="rtl">مثال ٣ — الثمن، مَقيسًا</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":7,"sql":"SELECT customer_name, COUNT(*) AS copies\nFROM orders_1nf\nGROUP BY customer_name;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Hani: 5 copies of the same email, phone and city. Lessons 3 and 4 bring that back down to one.</span><span class="i18n-ar" dir="rtl">هاني: ٥ نسخ من البريد والهاتف والمدينة نفسها. والدرسان الثالث والرابع يُعيدانها إلى نسخة واحدة.</span></div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="7" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"Which of these tables is NOT in 1NF?","ar":"أيّ هذه الجداول ليس في النموذج الأول؟"},
+         "options":[{"en":"products(id, name, tags) with tags = 'wireless, bluetooth'","ar":"products(id, name, tags) حيث tags = 'wireless, bluetooth'"},{"en":"orders_1nf with key (order_id, product_name)","ar":"orders_1nf بالمفتاح (order_id, product_name)"},{"en":"categories(id, name, department)","ar":"categories(id, name, department)"},{"en":"customers(id, name, email, phone, city)","ar":"customers(id, name, email, phone, city)"}],
+         "correctIndex":0,
+         "explain":{"en":"tags holds a comma-separated list — a multi-valued cell. The others hold one value per cell and have a key.","ar":"العمود tags يحمل قائمة مفصولة بفواصل — خلية متعدّدة القيم. أما البقية فتحمل قيمة واحدة في كل خلية ولها مفتاح."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="7" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"Taking orders_flat to 1NF reduced the number of times Hani Zorob's details are stored.","ar":"نقلُ orders_flat إلى النموذج الأول قلّل عدد مرّات تخزين بيانات هاني زعرب."},
+         "correct":false,
+         "explain":{"en":"It increased it — from 2 rows to 5. 1NF fixes the shape; 2NF and 3NF remove the redundancy.","ar":"بل زادها — من صفّين إلى خمسة. النموذج الأول يُصلح الشكل، والنموذجان الثاني والثالث يُزيلان التكرار."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="7" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete the composite primary key of orders_1nf.","ar":"أكمل المفتاح الأساسي المركّب لـ orders_1nf."},
+         "template":"PRIMARY KEY (order_id, ____)","answers":["product_name"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">From <code>orders_1nf</code>, return the <code>order_id</code> and <code>product_name</code> of every row whose <code>category_name</code> is <code>Audio</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">من <code>orders_1nf</code>، أعِد <code>order_id</code> و<code>product_name</code> لكل صفّ فئته <code>category_name</code> هي <code>Audio</code>.</p>
+        <div class="qb-widget" data-qid="lab-q4" data-chapter="7" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":7,"placeholder":"SELECT order_id, product_name FROM orders_1nf WHERE ...","grade":{"mode":"result","expected":"SELECT order_id, product_name FROM orders_1nf WHERE category_name = 'Audio'"},"wrong":"SELECT order_id, product_name FROM orders_1nf WHERE category_name = 'Accessories'"}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Now that the repeating group is unrolled, counting items is easy. Return one row per <code>order_id</code> with a column <code>item_count</code> — how many products that order contains, counted from <code>orders_1nf</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">بعد فكّ المجموعة المكرّرة صار عدّ المنتجات سهلًا. أعِد صفًّا واحدًا لكل <code>order_id</code> مع عمود <code>item_count</code> — عدد المنتجات في ذلك الطلب، معدودًا من <code>orders_1nf</code>.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="7" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":7,"placeholder":"SELECT order_id, COUNT(*) AS item_count FROM orders_1nf GROUP BY ...","grade":{"mode":"result","expected":"SELECT order_id, COUNT(*) AS item_count FROM orders_1nf GROUP BY order_id"},"wrong":"SELECT order_id, COUNT(*) AS item_count FROM orders_flat GROUP BY order_id"}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong>. The registrar's <code>enrollments_flat</code> (you met it in Lesson 1) is already in 1NF: one value per cell, no numbered columns, and a composite key <code>(student_id, course_id)</code> — one row per student per course.</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong>. جدول المسجّل <code>enrollments_flat</code> (الذي تعرّفت إليه في الدرس الأول) في النموذج الأول مسبقًا: قيمة واحدة في كل خلية، ولا أعمدة مرقّمة، ومفتاح مركّب <code>(student_id, course_id)</code> — صفّ لكل طالب في كل مقرّر.</p>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="7" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"What is the primary key of enrollments_flat?","ar":"ما المفتاح الأساسي لـ enrollments_flat؟"},
+         "options":[{"en":"(student_id, course_id)","ar":"(student_id, course_id)"},{"en":"student_id","ar":"student_id"},{"en":"course_id","ar":"course_id"},{"en":"(student_name, course_title, grade)","ar":"(student_name, course_title, grade)"}],
+         "correctIndex":0,
+         "explain":{"en":"A student appears once per course and a course once per student, so only the pair identifies a row.","ar":"يظهر الطالب مرة لكل مقرّر، ويظهر المقرّر مرة لكل طالب، فلا يميّز الصفّ إلا الزوج معًا."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="7" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"'Atomic' means a value is short — a long course title like 'Principles of Marketing' breaks 1NF.","ar":"«ذرّية» تعني أن القيمة قصيرة — فعنوان مقرّر طويل مثل 'Principles of Marketing' يخالف النموذج الأول."},
+         "correct":false,
+         "explain":{"en":"Atomic means you never need to split the value to use it. A long title is still one value.","ar":"الذرّية تعني أننا لا نحتاج إلى تجزئة القيمة لنستعملها. والعنوان الطويل يبقى قيمة واحدة."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t3" data-chapter="7" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"A student may list any number of phone numbers. Which design keeps the table in 1NF?","ar":"قد يسجّل الطالب أيّ عدد من أرقام الهواتف. أيّ تصميم يُبقي الجدول في النموذج الأول؟"},
+         "options":[{"en":"A separate table student_phones(student_id, phone)","ar":"جدول منفصل student_phones(student_id, phone)"},{"en":"Columns phone_1, phone_2, phone_3","ar":"أعمدة phone_1 و phone_2 و phone_3"},{"en":"One phones column with comma-separated numbers","ar":"عمود phones واحد بأرقام مفصولة بفواصل"},{"en":"A longer TEXT type for the phone column","ar":"نوع TEXT أطول لعمود الهاتف"}],
+         "correctIndex":0,
+         "explain":{"en":"An open-ended list goes vertically, into rows of its own table. Numbered columns are a repeating group; a comma list is a multi-valued cell.","ar":"القائمة المفتوحة تُخزَّن عموديًا، في صفوف جدول خاص بها. الأعمدة المرقّمة مجموعة مكرّرة، والقائمة بالفواصل خلية متعدّدة القيم."}}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return one row per <code>course_id</code> with a column <code>student_count</code> — how many students are enrolled in that course, counted from <code>enrollments_flat</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد صفًّا واحدًا لكل <code>course_id</code> مع عمود <code>student_count</code> — عدد الطلاب المسجّلين في ذلك المقرّر، معدودًا من <code>enrollments_flat</code>.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="7" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":7,"placeholder":"SELECT course_id, COUNT(*) AS student_count FROM enrollments_flat GROUP BY ...","grade":{"mode":"result","expected":"SELECT course_id, COUNT(*) AS student_count FROM enrollments_flat GROUP BY course_id"},"wrong":"SELECT course_id, COUNT(*) AS student_count FROM enrollments_flat GROUP BY course_id, student_id"}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Return the <code>student_name</code> and <code>grade</code> of every enrollment in the course titled <code>Linear Algebra</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أعِد <code>student_name</code> و<code>grade</code> لكل تسجيل في المقرّر الذي عنوانه <code>Linear Algebra</code>.</p>
+        <div class="qb-widget" data-qid="test-t5" data-chapter="7" data-lesson="2">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":7,"placeholder":"SELECT student_name, grade FROM enrollments_flat WHERE ...","grade":{"mode":"result","expected":"SELECT student_name, grade FROM enrollments_flat WHERE course_title = 'Linear Algebra'"},"wrong":"SELECT student_name, grade FROM enrollments_flat WHERE course_id = 1"}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t6" data-chapter="7" data-lesson="2">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Order the three steps that take a flat table to 1NF.","ar":"رتّب الخطوات الثلاث التي تنقل جدولًا مسطّحًا إلى النموذج الأول."},
+         "items":[{"en":"Unroll the repeating group into one row per item","ar":"فكّ المجموعة المكرّرة إلى صفّ لكل عنصر"},{"en":"Split any remaining multi-valued cells","ar":"فكّ ما تبقّى من خلايا متعدّدة القيم"},{"en":"Define the primary key — composite if needed","ar":"عيّن المفتاح الأساسي — مركّبًا إن لزم"}]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="7" data-lesson="2"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

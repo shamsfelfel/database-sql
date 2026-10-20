@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter 7 · Lesson 3 — Functional Dependency &amp; 2NF · SQL Lab</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem('sqllab.lang') || 'en';
+        document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        var t = localStorage.getItem('sqllab.theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+      window.SQLLAB_BASE = '../';
+    })();
+  </script>
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta name="theme-color" content="#0d7d72">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SQL Lab">
+  <link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+  <link rel="stylesheet" href="../assets/css/tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/widget.css">
+  <link rel="stylesheet" href="../assets/css/questions.css">
+  <link rel="stylesheet" href="../assets/css/normalize.css">
+  <link rel="stylesheet" href="../assets/css/rtl.css">
+</head>
+<body data-base="../" data-chapter="7" data-lesson="3">
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="logo">SQL</span><span data-i18n="brand">SQL Lab</span></a>
+    <span class="spacer"></span>
+    <button class="icon-btn" data-action="toggle-lang" data-i18n="lang_toggle">العربية</button>
+    <button class="icon-btn" data-action="toggle-theme"><span class="theme-label" data-i18n="theme_toggle_dark">Dark</span></button>
+  </header>
+
+  <main class="page">
+    <nav class="breadcrumbs" data-auto data-chapter="7" data-lesson="3"></nav>
+
+    <h1 class="i18n-en">Lesson 3 — Functional Dependency &amp; 2NF</h1>
+    <h1 class="i18n-ar" dir="rtl">الدرس ٣ — الاعتماد الوظيفي و2NF</h1>
+
+    <div class="tabs" role="tablist" aria-label="Lesson sections">
+      <button class="tab" role="tab" id="tab-exp" aria-controls="panel-exp" aria-selected="true" data-i18n="tab_explanation">Explanation</button>
+      <button class="tab" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" data-i18n="tab_lab">Lab</button>
+      <button class="tab" role="tab" id="tab-test" aria-controls="panel-test" aria-selected="false" data-i18n="tab_test">Test</button>
+    </div>
+
+    <!-- ================= EXPLANATION ================= -->
+    <section class="tabpanel" id="panel-exp" role="tabpanel" aria-labelledby="tab-exp">
+      <p class="i18n-en">Lesson 2 left us with <code>library_1nf</code>: one row per (loan, book), every cell atomic, and a <strong>composite key</strong> <code>(loan_id, book_title)</code>. The shape is clean — but Sara's details now sit on five rows instead of two. To remove that redundancy we need one new tool, and second normal form is built entirely on it.</p>
+      <p class="i18n-ar" dir="rtl">تركنا الدرس الثاني مع <code>library_1nf</code>: صفّ لكل (إعارة، كتاب)، وكل خلية ذرّية، و<strong>مفتاح مركّب</strong> <code>(loan_id, book_title)</code>. الشكل نظيف — لكن بيانات سارة صارت على خمسة صفوف بدل صفّين. ولإزالة هذا التكرار نحتاج أداة جديدة واحدة، والنموذج الثاني مبنيّ عليها بالكامل.</p>
+
+      <h2 class="i18n-en">First, the tool: functional dependency</h2>
+      <h2 class="i18n-ar" dir="rtl">أولًا، الأداة: الاعتماد الوظيفي</h2>
+      <p class="i18n-en">We write <code>A → B</code> ("A determines B") when every value of <code>A</code> goes with <strong>exactly one</strong> value of <code>B</code>. Read it as: <em>tell me A and I can tell you B without hesitating.</em> Here are the dependencies of <code>library_1nf</code>, read from how a library actually works — not from how this sample happens to look:</p>
+      <p class="i18n-ar" dir="rtl">نكتب <code>A → B</code> («A يحدّد B») حين تقابل كلَّ قيمة من <code>A</code> قيمةٌ <strong>واحدة فقط</strong> من <code>B</code>. اقرأها هكذا: <em>أخبرني بقيمة A أُخبرك بقيمة B بلا تردّد.</em> وهذه اعتمادات <code>library_1nf</code>، مقروءةً من طريقة عمل المكتبة في الواقع — لا من الشكل الذي صادف أن تبدو عليه هذه العيّنة:</p>
+      <pre class="fd">book_title  →  genre, author_name, author_country
+loan_id     →  member_name, member_mobile, member_home_phone, member_city, loan_date</pre>
+      <p class="i18n-en">Take <code>book_title → genre</code>: say <em>A Quiet Machine</em> and anyone can answer <code>Science Fiction</code> at once, without asking which loan you mean. That is precisely the problem — the genre is a fact about the book, yet it is stored once per loan of the book.</p>
+      <p class="i18n-ar" dir="rtl">خُذ <code>book_title → genre</code>: قُل <em>A Quiet Machine</em> فيجيبك أيّ أحد فورًا <code>Science Fiction</code> دون أن يسألك عن أيّ إعارة تقصد. وهذه هي المشكلة بعينها — النوع حقيقة عن الكتاب، ومع ذلك يُخزَّن مرة لكل إعارة له.</p>
+
+      <div class="callout">
+        <div class="i18n-en"><strong>SQL as a dependency detector.</strong> To test <code>A → B</code> against the data, group by <code>A</code> and count the distinct values of <code>B</code>: <code>SELECT A, COUNT(DISTINCT B) … GROUP BY A</code>. A <code>1</code> on every row means the sample is <em>consistent</em> with the dependency; a single <code>2</code> <em>disproves</em> it. Notice the asymmetry: data can disprove a dependency but never prove one — a sample of four loans cannot tell you the rule of the library. Dependencies come from the rules of the domain; SQL only checks that the data doesn't break them. (Lesson 5 returns to this trap.)</div>
+        <div class="i18n-ar" dir="rtl"><strong>SQL كاشفًا للاعتمادات.</strong> لاختبار <code>A → B</code> على البيانات، جمِّع حسب <code>A</code> وعُدّ القيم المختلفة لـ<code>B</code>: <code>SELECT A, COUNT(DISTINCT B) … GROUP BY A</code>. ظهور <code>1</code> في كل صفّ يعني أن العيّنة <em>متّسقة</em> مع الاعتماد؛ وظهور <code>2</code> واحدة <em>ينقضه</em>. ولاحظ عدم التماثل: البيانات تستطيع نقض الاعتماد لكنها لا تستطيع إثباته أبدًا — فعيّنة من أربع إعارات لا تخبرك بقاعدة المكتبة. الاعتمادات تأتي من قواعد المجال، وSQL يتحقّق فقط من أن البيانات لا تكسرها. (يعود الدرس الخامس إلى هذا الفخّ.)</div>
+      </div>
+
+      <div class="nf-stage s2">
+        <div class="nf-stage-h"><span class="nf-chip nf-2">2NF</span><span class="i18n-en">Second normal form</span><span class="i18n-ar" dir="rtl">النموذج الثاني</span></div>
+        <div class="nf-stage-b">
+          <div class="rule-box">
+            <span class="rule-label"><span class="i18n-en">The rule</span><span class="i18n-ar" dir="rtl">نصّ القانون</span></span>
+            <p class="i18n-en">A table is in <strong>second normal form (2NF)</strong> when:</p>
+            <p class="i18n-ar" dir="rtl">يكون الجدول في <strong>النموذج الثاني (2NF)</strong> إذا كان:</p>
+            <ol class="i18n-en">
+              <li>it is in 1NF, <strong>and</strong></li>
+              <li>every non-key column depends on the <strong>whole</strong> primary key, not on <strong>part</strong> of it.</li>
+            </ol>
+            <ol class="i18n-ar" dir="rtl">
+              <li>في النموذج الأول (1NF)، <strong>و</strong></li>
+              <li>كل عمود غير مفتاحي يعتمد على <strong>كامل</strong> المفتاح الأساسي، لا على <strong>جزء</strong> منه.</li>
+            </ol>
+            <p class="i18n-en">Depending on part of the key is called a <strong>partial dependency</strong> — the thing this form forbids.</p>
+            <p class="i18n-ar" dir="rtl">والاعتماد على جزء من المفتاح يُسمّى <strong>اعتمادًا جزئيًا</strong> (Partial Dependency)، وهو ما يحرّمه هذا النموذج.</p>
+          </div>
+
+          <div class="callout note">
+            <div class="i18n-en"><strong>A note that saves half the work.</strong> If the primary key is a <strong>single column</strong>, there is no "part" of the key — so a partial dependency is impossible. Any 1NF table with a single-column key is automatically in 2NF. The problem only arises with <strong>composite keys</strong>, which is why Lesson 2 pinned the key down so carefully.</div>
+            <div class="i18n-ar" dir="rtl"><strong>ملاحظة توفّر عليك نصف الشغل.</strong> إذا كان المفتاح الأساسي <strong>عمودًا واحدًا</strong> فلا يوجد «جزء» من المفتاح أصلًا — فيستحيل وجود اعتماد جزئي. وأيّ جدول في 1NF مفتاحه مفرد هو تلقائيًا في 2NF. المشكلة لا تظهر إلا مع <strong>المفاتيح المركّبة</strong>، ولهذا حرص الدرس الثاني على تعيين المفتاح بدقّة.</div>
+          </div>
+
+          <h3 class="i18n-en">Applying the rule</h3>
+          <h3 class="i18n-ar" dir="rtl">تطبيق القانون</h3>
+          <p class="i18n-en">Our key is <code>(loan_id, book_title)</code>. For each non-key column ask one question: <em>do I need both halves of the key to know its value, or does half suffice?</em> The answer is the same for every column — half is always enough (Figure 2).</p>
+          <p class="i18n-ar" dir="rtl">مفتاحنا هو <code>(loan_id, book_title)</code>. اسأل عن كل عمود غير مفتاحي سؤالًا واحدًا: <em>هل أحتاج نصفَي المفتاح معًا لأعرف قيمته، أم يكفيني نصف؟</em> والجواب واحد لكل الأعمدة — النصف يكفي دائمًا (الشكل ٢).</p>
+
+          <figure class="nf-figure">
+            <svg class="dg" viewBox="0 0 520 350" role="img" aria-label="Partial dependencies in library_1nf: member and loan columns depend on loan_id alone; book columns depend on book_title alone">
+              <rect class="dg-box" x="20" y="30" width="480" height="46" rx="7"/>
+              <rect class="dg-box b2" x="34" y="40" width="202" height="26" rx="5"/>
+              <text class="dg-mono" x="135" y="57" text-anchor="middle">loan_id</text>
+              <rect class="dg-box b2" x="284" y="40" width="202" height="26" rx="5"/>
+              <text class="dg-mono" x="385" y="57" text-anchor="middle">book_title</text>
+              <text class="dg-title i18n-en" x="260" y="20" text-anchor="middle">Every column depends on only half the key</text>
+              <text class="dg-title i18n-ar" x="260" y="20" text-anchor="middle" direction="rtl">كل الأعمدة تعتمد على نصف المفتاح فقط</text>
+              <text class="dg-small i18n-en" x="260" y="92" text-anchor="middle">▲ the composite primary key</text>
+              <text class="dg-small i18n-ar" x="260" y="92" text-anchor="middle" direction="rtl">▲ المفتاح الأساسي المركّب</text>
+              <path class="dg-line bad" d="M135 100 V128"/>
+              <path class="dg-head bad" d="M130 128 L135 136 L140 128 Z"/>
+              <path class="dg-line bad" d="M385 100 V128"/>
+              <path class="dg-head bad" d="M380 128 L385 136 L390 128 Z"/>
+              <text class="dg-small dg-bad i18n-en" x="135" y="150" text-anchor="middle">partial ✗</text>
+              <text class="dg-small dg-bad i18n-ar" x="135" y="150" text-anchor="middle" direction="rtl">جزئي ✗</text>
+              <text class="dg-small dg-bad i18n-en" x="385" y="150" text-anchor="middle">partial ✗</text>
+              <text class="dg-small dg-bad i18n-ar" x="385" y="150" text-anchor="middle" direction="rtl">جزئي ✗</text>
+              <rect class="dg-box b0" x="20" y="160" width="230" height="118" rx="7"/>
+              <text class="dg-label i18n-en" x="135" y="180" text-anchor="middle">loan_id alone is enough</text>
+              <text class="dg-label i18n-ar" x="135" y="180" text-anchor="middle" direction="rtl">يكفيه loan_id وحده</text>
+              <text class="dg-mono" x="135" y="200" text-anchor="middle">member_name</text>
+              <text class="dg-mono" x="135" y="216" text-anchor="middle">member_mobile</text>
+              <text class="dg-mono" x="135" y="232" text-anchor="middle">member_home_phone</text>
+              <text class="dg-mono" x="135" y="248" text-anchor="middle">member_city</text>
+              <text class="dg-mono" x="135" y="264" text-anchor="middle">loan_date</text>
+              <rect class="dg-box b0" x="270" y="160" width="230" height="118" rx="7"/>
+              <text class="dg-label i18n-en" x="385" y="180" text-anchor="middle">book_title alone is enough</text>
+              <text class="dg-label i18n-ar" x="385" y="180" text-anchor="middle" direction="rtl">يكفيه book_title وحده</text>
+              <text class="dg-mono" x="385" y="200" text-anchor="middle">genre</text>
+              <text class="dg-mono" x="385" y="216" text-anchor="middle">author_name</text>
+              <text class="dg-mono" x="385" y="232" text-anchor="middle">author_country</text>
+              <rect class="dg-box" x="20" y="290" width="480" height="50" rx="7"/>
+              <text class="dg-small i18n-en" x="260" y="310" text-anchor="middle">Not one column needs the whole key ⇒ the table is not in 2NF</text>
+              <text class="dg-small i18n-ar" x="260" y="310" text-anchor="middle" direction="rtl">ولا عمود واحد يحتاج المفتاح كاملًا ⇐ الجدول ليس في 2NF</text>
+              <text class="dg-small i18n-en" x="260" y="328" text-anchor="middle">⇒ each part gets its own table; the key alone stays in a junction table</text>
+              <text class="dg-small i18n-ar" x="260" y="328" text-anchor="middle" direction="rtl">⇐ لكل جزءٍ جدوله، ويبقى المفتاح المركّب وحده في جدول ربط</text>
+            </svg>
+            <figcaption class="nf-caption"><span class="i18n-en">Figure 2 — Partial-dependency analysis of <code>library_1nf</code>.</span><span class="i18n-ar" dir="rtl">الشكل ٢ — تحليل الاعتماد الجزئي في <code>library_1nf</code>.</span></figcaption>
+          </figure>
+
+          <p class="i18n-en"><strong>The splitting rule:</strong> every group of columns that depends on one part of the key moves to a new table whose key is that part. What is left of the composite key — plus any column that depends on all of it, if there is one — becomes a <strong>junction table</strong>: the same kind of linking table that connects two tables in a many-to-many relationship, built from the two keys of Chapter 3.</p>
+          <p class="i18n-ar" dir="rtl"><strong>قاعدة التقسيم:</strong> كل مجموعة أعمدة تعتمد على جزء معيّن من المفتاح تنتقل إلى جدول جديد مفتاحه ذلك الجزء. وما يبقى من المفتاح المركّب — مع أيّ عمود يعتمد عليه كاملًا إن وُجد — يصير <strong>جدول ربط</strong> (Junction table): وهو نوع الجدول نفسه الذي يصل جدولين بعلاقة many-to-many، مبنيًّا من مفتاحَي الفصل الثالث.</p>
+
+          <div class="tbl-cap">books_2nf <span class="i18n-en">— key: book_title</span><span class="i18n-ar" dir="rtl">— المفتاح: book_title</span></div>
+          <div class="tbl-scroll">
+            <table class="data">
+              <thead><tr><th class="k">book_title</th><th>genre</th><th>author_name</th><th>author_country</th></tr></thead>
+              <tbody>
+                <tr><td class="k">Coastal Winters</td><td>Fiction</td><td>Fatima Zahra</td><td>Morocco</td></tr>
+                <tr><td class="k">A Quiet Machine</td><td>Science Fiction</td><td class="warn">Laila Hammoud</td><td class="warn">Lebanon</td></tr>
+                <tr><td class="k">Paper Kingdoms</td><td>Fantasy</td><td>Aiko Tanaka</td><td>Japan</td></tr>
+                <tr><td class="k">The Ninth Cipher</td><td>Mystery</td><td class="warn">Laila Hammoud</td><td class="warn">Lebanon</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tbl-cap">loans_2nf <span class="i18n-en">— key: loan_id</span><span class="i18n-ar" dir="rtl">— المفتاح: loan_id</span></div>
+          <div class="tbl-scroll">
+            <table class="data">
+              <thead><tr><th class="k">loan_id</th><th>member_name</th><th>member_mobile</th><th>member_home_phone</th><th>member_city</th><th>loan_date</th></tr></thead>
+              <tbody>
+                <tr><td class="k">101</td><td class="warn">Sara Hamdan</td><td class="warn">0599-111222</td><td class="warn">08-2834567</td><td class="warn">Gaza</td><td>2026-03-01</td></tr>
+                <tr><td class="k">102</td><td>Omar Nassar</td><td>0599-333444</td><td class="nul">NULL</td><td>Rafah</td><td>2026-03-03</td></tr>
+                <tr><td class="k">103</td><td class="warn">Sara Hamdan</td><td class="warn">0599-111222</td><td class="warn">08-2834567</td><td class="warn">Gaza</td><td>2026-03-07</td></tr>
+                <tr><td class="k">104</td><td>Dina Qasem</td><td>0597-888999</td><td class="nul">NULL</td><td>Khan Younis</td><td>2026-03-09</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tbl-cap">loan_items <span class="i18n-en">— the junction table, key: (loan_id, book_title)</span><span class="i18n-ar" dir="rtl">— جدول الربط، المفتاح: (loan_id, book_title)</span></div>
+          <div class="tbl-scroll">
+            <table class="data">
+              <thead><tr><th class="k">loan_id</th><th class="k">book_title</th></tr></thead>
+              <tbody>
+                <tr><td class="k">101</td><td class="k">Coastal Winters</td></tr>
+                <tr><td class="k">101</td><td class="k">A Quiet Machine</td></tr>
+                <tr><td class="k">102</td><td class="k">Coastal Winters</td></tr>
+                <tr><td class="k">103</td><td class="k">Paper Kingdoms</td></tr>
+                <tr><td class="k">103</td><td class="k">A Quiet Machine</td></tr>
+                <tr><td class="k">103</td><td class="k">The Ninth Cipher</td></tr>
+                <tr><td class="k">104</td><td class="k">The Ninth Cipher</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout ok">
+            <div class="i18n-en"><strong>What got better.</strong> Every book-and-loan anomaly is gone. A new book can be registered in <code>books_2nf</code> with nobody borrowing it (the insertion anomaly is solved), and deleting loan 104 no longer erases <em>The Ninth Cipher</em> (the deletion anomaly is solved for books). Sara's details dropped from five copies to two.</div>
+            <div class="i18n-ar" dir="rtl"><strong>ما الذي تحسَّن؟</strong> زال كل شذوذ يخصّ الكتب والإعارات. صار بالإمكان تسجيل كتاب جديد في <code>books_2nf</code> دون أن يستعيره أحد (حُلّ شذوذ الإضافة)، وحذف الإعارة ١٠٤ لم يعد يمحو <em>The Ninth Cipher</em> (حُلّ شذوذ الحذف بالنسبة للكتب). وانخفضت بيانات سارة من خمس نسخ إلى نسختين.</div>
+          </div>
+          <div class="callout note">
+            <div class="i18n-en"><strong>What's left — the amber cells.</strong> <code>Laila Hammoud / Lebanon</code> is still written on two rows of <code>books_2nf</code>, and Sara's details on two rows of <code>loans_2nf</code>. If Laila Hammoud moved country we would be editing two rows again. Redundancy fell but didn't vanish — and its cause is now completely different: it no longer involves the key at all. That is Lesson 4's job (3NF).</div>
+            <div class="i18n-ar" dir="rtl"><strong>ما الذي بقي؟ — الخلايا البرتقالية.</strong> ما زال <code>Laila Hammoud / Lebanon</code> مكتوبًا على صفّين في <code>books_2nf</code>، وبيانات سارة على صفّين في <code>loans_2nf</code>. ولو انتقلت ليلى حمّود إلى بلد آخر لعدنا إلى تعديل صفّين. قلّ التكرار لكنه لم يَزُل — وسببه الآن مختلف تمامًا: لم يعد يتعلّق بالمفتاح أصلًا. وهذا عمل الدرس الرابع (3NF).</div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="i18n-en">Worked examples — <code>library_1nf</code></h2>
+      <h2 class="i18n-ar" dir="rtl">أمثلة محلولة — <code>library_1nf</code></h2>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — test a dependency with SQL</span><span class="i18n-ar" dir="rtl">مثال ١ — اختبر اعتمادًا بـ SQL</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"SELECT book_title, COUNT(DISTINCT genre) AS genre_versions\nFROM library_1nf\nGROUP BY book_title;\n\n-- now test something that is NOT a dependency:\n-- SELECT book_title, COUNT(DISTINCT loan_date) AS date_versions\n-- FROM library_1nf GROUP BY book_title;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Every title has exactly one genre — the data is consistent with <code>book_title → genre</code>. Swap in the commented query: <em>A Quiet Machine</em> shows two loan dates, which disproves <code>book_title → loan_date</code>. The loan date belongs to the loan, not the book.</span><span class="i18n-ar" dir="rtl">لكل عنوان نوعٌ واحد بالضبط — البيانات متّسقة مع <code>book_title → genre</code>. استبدل به الاستعلام المعلَّق: يظهر لـ<em>A Quiet Machine</em> تاريخا إعارة، وهذا ينقض <code>book_title → loan_date</code>. فتاريخ الإعارة يخصّ الإعارة لا الكتاب.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — the books part of the split</span><span class="i18n-ar" dir="rtl">مثال ٢ — جزء الكتب من التقسيم</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"SELECT book_title, genre, author_name, author_country\nFROM library_1nf\nGROUP BY book_title, genre, author_name, author_country;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Seven rows collapse to four — one per book. That is exactly <code>books_2nf</code>: because these columns depend on <code>book_title</code> alone, grouping by them loses nothing.</span><span class="i18n-ar" dir="rtl">سبعة صفوف تنكمش إلى أربعة — صفّ لكل كتاب. وهذا بالضبط <code>books_2nf</code>: فلأن هذه الأعمدة تعتمد على <code>book_title</code> وحده، لا يضيع شيء حين نجمّع حسبها.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the loans part of the split</span><span class="i18n-ar" dir="rtl">مثال ٣ — جزء الإعارات من التقسيم</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"SELECT loan_id, member_name, member_mobile, member_home_phone, member_city, loan_date\nFROM library_1nf\nGROUP BY loan_id, member_name, member_mobile, member_home_phone, member_city, loan_date;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Four rows, one per loan — <code>loans_2nf</code>. The empty home phones group together fine. Notice Sara still appears twice: that is the redundancy 3NF will remove.</span><span class="i18n-ar" dir="rtl">أربعة صفوف، صفّ لكل إعارة — <code>loans_2nf</code>. والهواتف الأرضية الفارغة تتجمّع دون مشكلة. ولاحظ أن سارة ما زالت تظهر مرتين: هذا هو التكرار الذي سيزيله 3NF.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 4 — materialize the split as a real table</span><span class="i18n-ar" dir="rtl">مثال ٤ — حوِّل التقسيم إلى جدول حقيقي</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"a","chapter":7,"sql":"CREATE TABLE books_2nf (book_title TEXT, genre TEXT, author_name TEXT, author_country TEXT);\n\nINSERT INTO books_2nf\nSELECT book_title, genre, author_name, author_country\nFROM library_1nf\nGROUP BY book_title, genre, author_name, author_country;\n\nSELECT * FROM books_2nf;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en"><code>INSERT INTO … SELECT</code> fills a new table straight from a query. Watch the Database panel: <code>books_2nf</code> appears with 4 rows.</span><span class="i18n-ar" dir="rtl"><code>INSERT INTO … SELECT</code> يملأ جدولًا جديدًا مباشرة من استعلام. راقب لوحة قاعدة البيانات: يظهر <code>books_2nf</code> بأربعة صفوف.</span></div>
+    </section>
+
+    <!-- ================= LAB ================= -->
+    <section class="tabpanel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" hidden>
+      <p class="i18n-en">Back to <strong>Orbit Electronics</strong>. Lesson 2 took the order sheet to <code>orders_1nf</code> — one row per (order, product), key <code>(order_id, product_name)</code>. Now take it to 2NF yourself.</p>
+      <p class="i18n-ar" dir="rtl">نعود إلى <strong>Orbit Electronics</strong>. أوصل الدرس الثاني ورقة الطلبات إلى <code>orders_1nf</code> — صفّ لكل (طلب، منتج)، بالمفتاح <code>(order_id, product_name)</code>. والآن أوصِلها أنت إلى 2NF.</p>
+
+      <div class="task">
+        <div class="task-h"><span class="task-num">5</span><span class="i18n-en">Write out the functional dependencies of <code>orders_1nf</code>. Which columns depend on <code>order_id</code> alone? Which on <code>product_name</code> alone? Does any column need the whole key?</span><span class="i18n-ar" dir="rtl">اكتب الاعتمادات الوظيفية في <code>orders_1nf</code>. أيّ الأعمدة تعتمد على <code>order_id</code> وحده؟ وأيّها على <code>product_name</code> وحده؟ وهل يوجد عمود يحتاج المفتاح كاملًا؟</span></div>
+        <details class="reveal"><summary><span class="i18n-en">Show the answer</span><span class="i18n-ar" dir="rtl">اعرض الحل</span></summary>
+          <div class="reveal-body">
+            <pre class="fd">product_name  →  category_name, category_dept, brand_name, brand_country   -- partial
+order_id      →  customer_name, customer_email, customer_phone,
+                 customer_city, order_date                                 -- partial
+(order_id, product_name)  →  —                                             -- nothing!</pre>
+            <p class="i18n-en">Not one column needs the whole key — just like the library — so the table is not in 2NF. Had the sheet carried a <code>quantity</code> column (how many of <em>this</em> product in <em>this</em> order), it would be the one thing depending on the whole key, and precisely the kind of column that earns its place in the junction table.</p>
+            <p class="i18n-ar" dir="rtl">ولا عمود واحد يحتاج المفتاح كاملًا — تمامًا كما في المكتبة — فالجدول ليس في 2NF. ولو حملت الورقة عمود <code>quantity</code> (كم قطعة من <em>هذا</em> المنتج في <em>هذا</em> الطلب) لكان هو الوحيد الذي يعتمد على المفتاح كاملًا، وهو بالضبط نوع العمود الذي يستحق البقاء في جدول الربط.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="task">
+        <div class="task-h"><span class="task-num">6</span><span class="i18n-en">Split <code>orders_1nf</code> into three 2NF tables. Name each one and state its key.</span><span class="i18n-ar" dir="rtl">قسّم <code>orders_1nf</code> إلى ثلاثة جداول في 2NF، وسمِّ كلًّا منها وحدّد مفتاحه.</span></div>
+        <details class="reveal"><summary><span class="i18n-en">Show the answer</span><span class="i18n-ar" dir="rtl">اعرض الحل</span></summary>
+          <div class="reveal-body">
+            <div class="tbl-cap">products_2nf <span class="i18n-en">— key: product_name</span><span class="i18n-ar" dir="rtl">— المفتاح: product_name</span></div>
+            <div class="tbl-scroll">
+              <table class="data">
+                <thead><tr><th class="k">product_name</th><th>category_name</th><th>category_dept</th><th>brand_name</th><th>brand_country</th></tr></thead>
+                <tbody>
+                  <tr><td class="k">Pulse Buds</td><td class="warn">Audio</td><td class="warn">Home</td><td class="warn">Pulse</td><td class="warn">Denmark</td></tr>
+                  <tr><td class="k">GridKey Desk Hub</td><td class="warn">Accessories</td><td class="warn">Office</td><td class="warn">GridKey</td><td class="warn">Taiwan</td></tr>
+                  <tr><td class="k">GridKey Mechanical</td><td class="warn">Accessories</td><td class="warn">Office</td><td class="warn">GridKey</td><td class="warn">Taiwan</td></tr>
+                  <tr><td class="k">Pulse Studio Headphones</td><td class="warn">Audio</td><td class="warn">Home</td><td class="warn">Pulse</td><td class="warn">Denmark</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tbl-cap">orders_2nf <span class="i18n-en">— key: order_id</span><span class="i18n-ar" dir="rtl">— المفتاح: order_id</span></div>
+            <div class="tbl-scroll">
+              <table class="data">
+                <thead><tr><th class="k">order_id</th><th>customer_name</th><th>customer_email</th><th>customer_phone</th><th>customer_city</th><th>order_date</th></tr></thead>
+                <tbody>
+                  <tr><td class="k">5001</td><td class="warn">Hani Zorob</td><td class="warn">hani@mail.ps</td><td class="warn">0599-776655</td><td class="warn">Gaza</td><td>2026-04-02</td></tr>
+                  <tr><td class="k">5002</td><td>Rana Abed</td><td>rana@mail.ps</td><td class="nul">NULL</td><td>Deir al-Balah</td><td>2026-04-04</td></tr>
+                  <tr><td class="k">5003</td><td class="warn">Hani Zorob</td><td class="warn">hani@mail.ps</td><td class="warn">0599-776655</td><td class="warn">Gaza</td><td>2026-04-05</td></tr>
+                  <tr><td class="k">5004</td><td>Samir Hajjaj</td><td>samir@mail.ps</td><td class="nul">NULL</td><td>Jabalia</td><td>2026-04-08</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tbl-cap">order_items <span class="i18n-en">— key: (order_id, product_name)</span><span class="i18n-ar" dir="rtl">— المفتاح: (order_id, product_name)</span></div>
+            <div class="tbl-scroll">
+              <table class="data">
+                <thead><tr><th class="k">order_id</th><th class="k">product_name</th></tr></thead>
+                <tbody>
+                  <tr><td class="k">5001</td><td class="k">Pulse Buds</td></tr>
+                  <tr><td class="k">5001</td><td class="k">GridKey Desk Hub</td></tr>
+                  <tr><td class="k">5002</td><td class="k">GridKey Mechanical</td></tr>
+                  <tr><td class="k">5003</td><td class="k">Pulse Buds</td></tr>
+                  <tr><td class="k">5003</td><td class="k">Pulse Studio Headphones</td></tr>
+                  <tr><td class="k">5003</td><td class="k">GridKey Mechanical</td></tr>
+                  <tr><td class="k">5004</td><td class="k">Pulse Studio Headphones</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="i18n-en">The amber cells flag what is still unsolved: <code>Pulse / Denmark</code> and <code>GridKey / Taiwan</code> each repeat, so do <code>Audio / Home</code> and <code>Accessories / Office</code>, and Hani's details repeat in <code>orders_2nf</code>. Chains of facts waiting for 3NF.</p>
+            <p class="i18n-ar" dir="rtl">الخلايا البرتقالية تنبّهك إلى ما لم يُحلّ بعد: <code>Pulse / Denmark</code> و<code>GridKey / Taiwan</code> يتكرّر كلٌّ منهما، وكذلك <code>Audio / Home</code> و<code>Accessories / Office</code>، وتتكرّر بيانات هاني في <code>orders_2nf</code>. سلاسل من الحقائق تنتظر 3NF.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 1 — is brand_country determined by the product?</span><span class="i18n-ar" dir="rtl">مثال ١ — هل يحدّد المنتجُ brand_country؟</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":7,"sql":"SELECT product_name, COUNT(DISTINCT brand_country) AS country_versions\nFROM orders_1nf\nGROUP BY product_name;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">A <code>1</code> for every product: the data agrees with <code>product_name → brand_country</code>, which depends on half the key only.</span><span class="i18n-ar" dir="rtl"><code>1</code> لكل منتج: البيانات توافق <code>product_name → brand_country</code>، وهو اعتماد على نصف المفتاح فقط.</span></div>
+
+      <div class="example-label"><span class="i18n-en">Example 2 — the products part</span><span class="i18n-ar" dir="rtl">مثال ٢ — جزء المنتجات</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":7,"sql":"SELECT product_name, category_name, category_dept, brand_name, brand_country\nFROM orders_1nf\nGROUP BY product_name, category_name, category_dept, brand_name, brand_country;"}
+        </script>
+      </div>
+
+      <div class="example-label"><span class="i18n-en">Example 3 — the orders part</span><span class="i18n-ar" dir="rtl">مثال ٣ — جزء الطلبات</span></div>
+      <div class="qb-widget">
+        <script type="application/json" class="wd-config">
+        {"mode":"demo","objects":true,"case":"b","chapter":7,"sql":"SELECT order_id, customer_name, customer_email, customer_phone, customer_city, order_date\nFROM orders_1nf\nGROUP BY order_id, customer_name, customer_email, customer_phone, customer_city, order_date;"}
+        </script>
+      </div>
+      <div class="caption"><span class="i18n-en">Seven rows become four products and four orders — <code>products_2nf</code> and <code>orders_2nf</code> from Task 6.</span><span class="i18n-ar" dir="rtl">سبعة صفوف تصير أربعة منتجات وأربعة طلبات — <code>products_2nf</code> و<code>orders_2nf</code> من المهمّة ٦.</span></div>
+
+      <h2 data-i18n="practice">Practice</h2>
+
+      <div class="question" data-qtype="mcq" data-qid="lab-q1" data-chapter="7" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"orders_1nf has the composite key (order_id, product_name). The column brand_country depends on:","ar":"المفتاح المركّب لـ orders_1nf هو (order_id, product_name). العمود brand_country يعتمد على:"},
+         "options":[{"en":"product_name alone — a partial dependency","ar":"product_name وحده — اعتماد جزئي"},{"en":"order_id alone — a partial dependency","ar":"order_id وحده — اعتماد جزئي"},{"en":"The whole key (order_id, product_name)","ar":"المفتاح كاملًا (order_id, product_name)"},{"en":"Nothing — it is a key column","ar":"لا شيء — إنه عمود مفتاحي"}],
+         "correctIndex":0,
+         "explain":{"en":"Name the product and you know its brand's country, whatever the order. Half the key suffices.","ar":"سمِّ المنتج تعرف بلد ماركته، أيًّا كان الطلب. نصف المفتاح يكفي."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="lab-q2" data-chapter="7" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"A 1NF table whose primary key is a single column is automatically in 2NF.","ar":"الجدول الذي في 1NF ومفتاحه الأساسي عمود واحد يكون تلقائيًا في 2NF."},
+         "correct":true,
+         "explain":{"en":"With a single-column key there is no 'part' of the key, so a partial dependency is impossible.","ar":"مع مفتاح من عمود واحد لا يوجد «جزء» من المفتاح، فيستحيل الاعتماد الجزئي."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="fill" data-qid="lab-q3" data-chapter="7" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":3,"prompt":{"en":"Complete how the arrow of a functional dependency is read.","ar":"أكمل طريقة قراءة سهم الاعتماد الوظيفي."},
+         "template":{"en":"product_name → brand_name   is read:   product_name ____ brand_name","ar":"product_name → brand_name   تُقرأ:   product_name ____ brand_name"},"answers":["determines","يحدد","يحدّد"]}
+        </script>
+      </div>
+
+      <div class="question" data-qid="lab-q4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Produce the <strong>products part</strong> of the 2NF split from <code>orders_1nf</code>: one row per product, with exactly the columns <code>product_name</code>, <code>category_name</code>, <code>category_dept</code>, <code>brand_name</code> and <code>brand_country</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أنتج <strong>جزء المنتجات</strong> من تقسيم 2NF انطلاقًا من <code>orders_1nf</code>: صفّ واحد لكل منتج، بالأعمدة <code>product_name</code> و<code>category_name</code> و<code>category_dept</code> و<code>brand_name</code> و<code>brand_country</code> بالضبط.</p>
+        <div class="qb-widget" data-qid="lab-q4" data-chapter="7" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":7,"placeholder":"SELECT product_name, category_name, category_dept, brand_name, brand_country FROM orders_1nf GROUP BY ...","grade":{"mode":"result","expected":"SELECT product_name, category_name, category_dept, brand_name, brand_country FROM orders_1nf GROUP BY product_name, category_name, category_dept, brand_name, brand_country"},"wrong":"SELECT product_name, category_name, category_dept, brand_name, brand_country FROM orders_1nf"}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="lab-q5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Test the dependency <code>product_name → brand_country</code> against the data: return one row per <code>product_name</code> with a column <code>brand_versions</code> — the number of <em>different</em> brand countries recorded for that product in <code>orders_1nf</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اختبر الاعتماد <code>product_name → brand_country</code> على البيانات: أعِد صفًّا واحدًا لكل <code>product_name</code> مع عمود <code>brand_versions</code> — عدد بلدان الماركة <em>المختلفة</em> المسجّلة لذلك المنتج في <code>orders_1nf</code>.</p>
+        <div class="qb-widget" data-qid="lab-q5" data-chapter="7" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"b","chapter":7,"placeholder":"SELECT product_name, COUNT(DISTINCT ...) AS brand_versions FROM orders_1nf GROUP BY ...","grade":{"mode":"result","expected":"SELECT product_name, COUNT(DISTINCT brand_country) AS brand_versions FROM orders_1nf GROUP BY product_name"},"wrong":"SELECT product_name, COUNT(*) AS brand_versions FROM orders_1nf GROUP BY product_name"}
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TEST ================= -->
+    <section class="tabpanel" id="panel-test" role="tabpanel" aria-labelledby="tab-test" hidden>
+      <p class="i18n-en">A short quiz against <strong>GreenField University</strong>. <code>enrollments_flat</code> is already in 1NF: every cell is atomic and its key is the pair <code>(student_id, course_id)</code>. Is it in 2NF?</p>
+      <p class="i18n-ar" dir="rtl">اختبار قصير على <strong>GreenField University</strong>. الجدول <code>enrollments_flat</code> في 1NF أصلًا: كل خلية فيه ذرّية ومفتاحه هو الزوج <code>(student_id, course_id)</code>. فهل هو في 2NF؟</p>
+
+      <div class="tbl-cap">enrollments_flat <span class="i18n-en">— key: (student_id, course_id)</span><span class="i18n-ar" dir="rtl">— المفتاح: (student_id, course_id)</span></div>
+      <div class="tbl-scroll">
+        <table class="data">
+          <thead><tr><th class="k">student_id</th><th class="k">course_id</th><th>student_name</th><th>study_year</th><th>course_title</th><th>credits</th><th>department_name</th><th>building</th><th>term</th><th>grade</th></tr></thead>
+          <tbody>
+            <tr><td class="k">1</td><td class="k">1</td><td>Maha Dahlan</td><td>2</td><td>Intro to Algorithms</td><td>4</td><td>Computer Science</td><td>Sciences Hall</td><td>2026-F</td><td>88</td></tr>
+            <tr><td class="k">1</td><td class="k">2</td><td>Maha Dahlan</td><td>2</td><td>Linear Algebra</td><td>3</td><td>Mathematics</td><td>Sciences Hall</td><td>2026-F</td><td>74</td></tr>
+            <tr><td class="k">2</td><td class="k">1</td><td>Tareq Isleem</td><td>3</td><td>Intro to Algorithms</td><td>4</td><td>Computer Science</td><td>Sciences Hall</td><td>2026-F</td><td>91</td></tr>
+            <tr><td class="k">2</td><td class="k">7</td><td>Tareq Isleem</td><td>3</td><td>Machine Learning</td><td>3</td><td>Computer Science</td><td>Sciences Hall</td><td>2026-F</td><td>85</td></tr>
+            <tr><td class="k">3</td><td class="k">5</td><td>Hiba Nofal</td><td>1</td><td>Cell Biology</td><td>3</td><td>Biology</td><td>Life Sciences</td><td>2026-F</td><td>79</td></tr>
+            <tr><td class="k">3</td><td class="k">9</td><td>Hiba Nofal</td><td>1</td><td>Principles of Marketing</td><td>3</td><td>Business Administration</td><td>Commerce</td><td>2026-F</td><td>93</td></tr>
+            <tr><td class="k">4</td><td class="k">2</td><td>Yazan Ayyad</td><td>2</td><td>Linear Algebra</td><td>3</td><td>Mathematics</td><td>Sciences Hall</td><td>2026-F</td><td>68</td></tr>
+            <tr><td class="k">4</td><td class="k">5</td><td>Yazan Ayyad</td><td>2</td><td>Cell Biology</td><td>3</td><td>Biology</td><td>Life Sciences</td><td>2026-F</td><td>82</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="question" data-qtype="mcq" data-qid="test-t1" data-chapter="7" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":1,"prompt":{"en":"In enrollments_flat, which column depends on the WHOLE key (student_id, course_id)?","ar":"في enrollments_flat، أيّ عمود يعتمد على المفتاح كاملًا (student_id, course_id)؟"},
+         "options":[{"en":"grade","ar":"grade"},{"en":"student_name","ar":"student_name"},{"en":"course_title","ar":"course_title"},{"en":"building","ar":"building"}],
+         "correctIndex":0,
+         "explain":{"en":"A grade belongs to one student in one course — you need both halves of the key. The others need only half.","ar":"العلامة تخصّ طالبًا واحدًا في مقرّر واحد — فتحتاج نصفَي المفتاح معًا. أما البقية فيكفيها نصف."}}
+        </script>
+      </div>
+
+      <div class="question" data-qtype="tf" data-qid="test-t2" data-chapter="7" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":2,"prompt":{"en":"In enrollments_flat, course_title depends on the whole key (student_id, course_id).","ar":"في enrollments_flat، يعتمد course_title على المفتاح كاملًا (student_id, course_id)."},
+         "correct":false,
+         "explain":{"en":"course_id alone determines the title — a partial dependency, which is why the table is not in 2NF.","ar":"course_id وحده يحدّد العنوان — اعتماد جزئي، ولهذا ليس الجدول في 2NF."}}
+        </script>
+      </div>
+
+      <div class="question" data-qid="test-t3">
+        <div class="q-head"><span class="q-num">3</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Produce the <strong>students part</strong> of the 2NF split: one row per student from <code>enrollments_flat</code>, with exactly the columns <code>student_id</code>, <code>student_name</code> and <code>study_year</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">أنتج <strong>جزء الطلاب</strong> من تقسيم 2NF: صفّ واحد لكل طالب من <code>enrollments_flat</code>، بالأعمدة <code>student_id</code> و<code>student_name</code> و<code>study_year</code> بالضبط.</p>
+        <div class="qb-widget" data-qid="test-t3" data-chapter="7" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":7,"placeholder":"SELECT student_id, student_name, study_year FROM enrollments_flat GROUP BY ...","grade":{"mode":"result","expected":"SELECT student_id, student_name, study_year FROM enrollments_flat GROUP BY student_id, student_name, study_year"},"wrong":"SELECT student_id, student_name, study_year FROM enrollments_flat"}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t4">
+        <div class="q-head"><span class="q-num">4</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Now the <strong>courses part</strong>: one row per course in <code>enrollments_flat</code>, with exactly the columns <code>course_id</code>, <code>course_title</code> and <code>credits</code>.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">والآن <strong>جزء المقرّرات</strong>: صفّ واحد لكل مقرّر في <code>enrollments_flat</code>، بالأعمدة <code>course_id</code> و<code>course_title</code> و<code>credits</code> بالضبط.</p>
+        <div class="qb-widget" data-qid="test-t4" data-chapter="7" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":7,"placeholder":"SELECT course_id, course_title, credits FROM enrollments_flat GROUP BY ...","grade":{"mode":"result","expected":"SELECT course_id, course_title, credits FROM enrollments_flat GROUP BY course_id, course_title, credits"},"wrong":"SELECT course_id, course_title, credits FROM enrollments_flat"}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qid="test-t5">
+        <div class="q-head"><span class="q-num">5</span><span class="q-type">write statement</span></div>
+        <p class="q-prompt i18n-en">Test <code>course_id → building</code> against the data: return one row per <code>course_id</code> with a column <code>building_versions</code> — the number of <em>different</em> buildings recorded for that course.</p>
+        <p class="q-prompt i18n-ar" dir="rtl">اختبر <code>course_id → building</code> على البيانات: أعِد صفًّا واحدًا لكل <code>course_id</code> مع عمود <code>building_versions</code> — عدد المباني <em>المختلفة</em> المسجّلة لذلك المقرّر.</p>
+        <div class="qb-widget" data-qid="test-t5" data-chapter="7" data-lesson="3">
+          <script type="application/json" class="wd-config">
+          {"mode":"exercise","objects":true,"case":"c","chapter":7,"placeholder":"SELECT course_id, COUNT(DISTINCT ...) AS building_versions FROM enrollments_flat GROUP BY ...","grade":{"mode":"result","expected":"SELECT course_id, COUNT(DISTINCT building) AS building_versions FROM enrollments_flat GROUP BY course_id"},"wrong":"SELECT course_id, COUNT(*) AS building_versions FROM enrollments_flat GROUP BY course_id"}
+          </script>
+        </div>
+      </div>
+
+      <div class="question" data-qtype="order" data-qid="test-t6" data-chapter="7" data-lesson="3">
+        <script type="application/json" class="q-config">
+        {"num":6,"prompt":{"en":"Order the steps of taking a 1NF table to 2NF.","ar":"رتّب خطوات نقل جدول من 1NF إلى 2NF."},
+         "items":[{"en":"Identify the primary key — is it composite?","ar":"حدّد المفتاح الأساسي — هل هو مركّب؟"},{"en":"For each non-key column, ask whether part of the key suffices","ar":"اسأل عن كل عمود غير مفتاحي: هل يكفيه جزء من المفتاح؟"},{"en":"Move each group of partial dependents into a table keyed by that part","ar":"انقل كل مجموعة تعتمد على جزء إلى جدول مفتاحه ذلك الجزء"},{"en":"Keep the composite key, plus whole-key columns, in a junction table","ar":"أبقِ المفتاح المركّب، مع أعمدة المفتاح الكامل، في جدول ربط"}]}
+        </script>
+      </div>
+    </section>
+
+    <nav class="footer-nav" data-auto data-chapter="7" data-lesson="3"></nav>
+  </main>
+
+  <footer class="site-foot"><span data-i18n="offline_ready">Works fully offline</span> · SQL Lab</footer>
+
+  <script src="../assets/vendor/alasql/alasql.min.js"></script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/progress.js"></script>
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/widget.js"></script>
+  <script src="../assets/js/questions.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>
