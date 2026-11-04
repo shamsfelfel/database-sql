@@ -5,7 +5,15 @@
    updates, while offline still serves the cached page). Bump CACHE to invalidate. */
 'use strict';
 
-var CACHE = 'sqllab-20261020-24faa9cd82';
+var CACHE = 'sqllab-20261104-24faa9cd82';
+
+/* Every cache this course owns is named with this prefix, and the activate
+   handler below deletes nothing else. The site shares an origin with five
+   sibling courses and the hub at shamsfelfel.github.io, and caches.keys()
+   returns all of theirs too -- so clearing everything that is not CACHE,
+   which is what this worker used to do, took every other course offline
+   each time this one was deployed. */
+var PREFIX = 'sqllab-';
 
 /* Everything is listed relative to the service worker's own location (the site
    root), so it resolves correctly whether the site is served from a domain root
@@ -126,7 +134,11 @@ self.addEventListener('activate', function (event) {
   event.waitUntil(
     caches.keys().then(function (keys) {
       return Promise.all(keys.map(function (k) {
-        if (k !== CACHE) return caches.delete(k);
+        /* Only this course's own old caches. A sibling course served from
+           another path of the same origin owns the rest, and deleting them
+           would take it offline. */
+        if (k === CACHE) return null;
+        return k.indexOf(PREFIX) === 0 ? caches.delete(k) : null;
       }));
     }).then(function () { return self.clients.claim(); })
   );
