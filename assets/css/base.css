@@ -99,6 +99,20 @@ img, svg { max-width: 100%; }
   color: var(--text-faint); font-size: .82rem; text-align: center;
 }
 
+/* The author's byline. A flex row, so the portrait leads the name in English
+   and follows it in Arabic with no direction-specific rule. The portrait is
+   32px from a 200x200 source and is never asked to grow. */
+.site-foot .byline {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin: 0 0 var(--sp-3);
+  color: var(--text); font-weight: 600; font-size: .9rem;
+}
+.site-foot .byline-face {
+  flex: none; width: 32px; height: 32px;
+  border-radius: 50%; object-fit: cover;
+  border: 1px solid var(--border);
+}
+
 /* i18n block visibility — one rule, driven by the document language.
    Long-form content is authored inline in both languages; only the active
    language is shown. Short labels use data-i18n text swaps (see i18n.js). */

@@ -5,7 +5,7 @@
    updates, while offline still serves the cached page). Bump CACHE to invalidate. */
 'use strict';
 
-var CACHE = 'sqllab-20261104-24faa9cd82';
+var CACHE = 'sqllab-20261105-525c18850a';
 
 /* Every cache this course owns is named with this prefix, and the activate
    handler below deletes nothing else. The site shares an origin with five
@@ -33,6 +33,7 @@ var PRECACHE = [
   "assets/icons/icon-192.png",
   "assets/icons/icon-512-maskable.png",
   "assets/icons/icon-512.png",
+  "assets/img/shams.jpg",
   "assets/js/app.js",
   "assets/js/data.js",
   "assets/js/i18n.js",

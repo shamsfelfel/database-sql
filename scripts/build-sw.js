@@ -23,7 +23,7 @@ function walk(dir, acc, filter) {
 const files = [];
 walk('', files, r => /\.html$/.test(r) && !r.includes('/')); // root html (index.html)
 ['chapters', 'lessons', 'tests', 'exams'].forEach(d => walk(d, files, r => /\.html$/.test(r)));
-walk('assets', files, r => /\.(css|js|woff2)$/.test(r));
+walk('assets', files, r => /\.(css|js|woff2|png|jpg|jpeg|svg|webp)$/.test(r));   // images too: a picture the pages show must be offline as well
 walk('assets/icons', files, r => /\.png$/.test(r));
 if (fs.existsSync(path.join(ROOT, 'manifest.webmanifest'))) files.push('manifest.webmanifest');
 
