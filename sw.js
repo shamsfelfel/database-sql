@@ -5,7 +5,7 @@
    updates, while offline still serves the cached page). Bump CACHE to invalidate. */
 'use strict';
 
-var CACHE = 'sqllab-20261105-525c18850a';
+var CACHE = 'sqllab-20261105-00e9946f0f';
 
 /* Every cache this course owns is named with this prefix, and the activate
    handler below deletes nothing else. The site shares an origin with five
