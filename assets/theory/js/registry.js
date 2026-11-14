@@ -787,7 +787,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 1 — قابلية النقل"
      },
      "href": "tests/t5-test-01.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t5-lesson-02",
