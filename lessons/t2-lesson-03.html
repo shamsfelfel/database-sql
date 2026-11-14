@@ -39,15 +39,955 @@
 <link rel="stylesheet" href="../assets/theory/css/base.css">
 <link rel="stylesheet" href="../assets/theory/css/chrome.css">
 <link rel="stylesheet" href="../assets/theory/css/components.css">
+<link rel="stylesheet" href="../assets/theory/css/diagram.css">
+<link rel="stylesheet" href="../assets/css/widget.css">
 </head>
 <body data-chapter="t2" data-page="t2-lesson-03" data-kind="lesson" data-path="lessons/t2-lesson-03.html">
 <main>
 <section class="page" id="t2-lesson-03">
 <nav class="crumbs"></nav>
 
-  <span class="kicker">lesson</span>
+
+  <span class="kicker">Lesson 3</span>
   <h1><span class="en">Three Models, One Database</span><span class="ar">ثلاثة نماذج، قاعدة بيانات واحدة</span></h1>
-  <p class="en">Being written.</p><p class="ar">قيد الكتابة.</p>
+  <p class="lede en">By the end of this lesson you will be able to place the conceptual, logical and physical models in the development process, say what each one promises and what each one refuses to say, and explain what "implementation-free" buys a design.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تضع النماذج المفاهيمي والمنطقي والفيزيائي في مكانها من عملية التطوير، وأن تقول ما الذي يَعِد به كلّ منها وما الذي يرفض قوله، وأن تشرح ما الذي يكسبه التصميم حين يكون «مستقلًّا عن التنفيذ».</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> <a href="../lessons/t2-lesson-02.html#t2-lesson-02">Lesson 2</a> gave Matt's tables their keys. But a table is the <em>last</em> thing a design produces. This lesson steps back to the faculty member's first request and follows the library through the three models it passes through before any table exists. Read lessons 1 and 2 first.</p>
+    <p class="ar"><strong>السياق.</strong> أعطى <a href="../lessons/t2-lesson-02.html#t2-lesson-02">الدرس 2</a> جداول مات مفاتيحها. لكنّ الجدول هو <em>آخر</em> ما ينتجه التصميم. يعود هذا الدرس خطوةً إلى طلب عضو هيئة التدريس الأول، ويتتبّع المكتبة عبر النماذج الثلاثة التي تمرّ بها قبل أن يوجد أيّ جدول. اقرأ الدرسين 1 و2 أولًا.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Put the steps of the database development process in order, and say what each phase produces.</li>
+      <li class="ar">ترتيب خطوات عملية تطوير قاعدة البيانات، وقول ما الذي تنتجه كل مرحلة.</li>
+      <li class="en">Say what a conceptual model identifies, and what it leaves out.</li>
+      <li class="ar">قول ما الذي يحدّده النموذج المفاهيمي، وما الذي يتركه.</li>
+      <li class="en">List what a logical model adds, and read <code>#</code>, <code>*</code>, <code>o</code> and <code>U</code> in it.</li>
+      <li class="ar">سرد ما يضيفه النموذج المنطقي، وقراءة <code>#</code> و<code>*</code> و<code>o</code> و<code>U</code> فيه.</li>
+      <li class="en">Turn a logical model into a physical one: entities to tables, relationships to foreign keys, attributes to columns.</li>
+      <li class="ar">تحويل نموذج منطقي إلى نموذج فيزيائي: الكيانات إلى جداول، والعلاقات إلى مفاتيح أجنبية، والخصائص إلى أعمدة.</li>
+      <li class="en">Explain "implementation-free", and why one logical model can have several physical models.</li>
+      <li class="ar">شرح معنى «مستقلّ عن التنفيذ»، ولماذا يمكن أن يكون لنموذج منطقي واحد عدّة نماذج فيزيائية.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t2l3-h1"><span class="en">1 · From a request to a running database</span><span class="ar">١ · من طلبٍ إلى قاعدة بيانات تعمل</span></h2>
+
+  <div class="problem">
+    <p class="en">The faculty member asks for "a simple library database". A classmate of Matt's opens SQL at once and creates <code>books(book_id, title)</code>. A week later the question comes: "Which member has <em>War and Peace</em>?" The table has no place for a member. Nobody asked what the library needed before building it.</p>
+    <p class="ar">يطلب عضو هيئة التدريس «قاعدة بيانات بسيطة للمكتبة». يفتح زميلٌ لمات SQL فورًا وينشئ <code>books(book_id, title)</code>. وبعد أسبوع يأتي السؤال: «أيّ عضو معه <em>War and Peace</em>؟» لا مكان في الجدول للعضو. لم يسأل أحدٌ عمّا تحتاجه المكتبة قبل البناء.</p>
+  </div>
+
+  <p class="en">Oracle describes a fixed path from a request to a database. It starts with the business's information requirements and passes through three phases: <strong>strategy and analysis</strong>, <strong>design</strong> and <strong>build</strong>. Each phase hands a product to the next.</p>
+  <p class="ar">تصف Oracle طريقًا ثابتًا من الطلب إلى قاعدة البيانات. يبدأ بمتطلبات معلومات العمل، ويمرّ بثلاث مراحل: <strong>الاستراتيجية والتحليل</strong> (Strategy and Analysis)، ثم <strong>التصميم</strong> (Design)، ثم <strong>البناء</strong> (Build). وكل مرحلة تسلّم ناتجها للتي بعدها.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="development-process">database development process</span> runs from business information requirements, through strategy and analysis, design and build, to a working database.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="development-process">عملية تطوير قاعدة البيانات</span> (Database Development Process) تمتدّ من متطلبات معلومات العمل، عبر الاستراتيجية والتحليل ثم التصميم ثم البناء، إلى قاعدة بيانات تعمل.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-dev-process">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 230" direction="ltr" role="img" aria-labelledby="t2-dev-process-t">
+<title id="t2-dev-process-t">The database development process / عملية تطوير قاعدة البيانات</title>
+<g class="en"><text x="475" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">From a request to a running database</text></g><g class="ar"><text x="475" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">من طلبٍ إلى قاعدة بيانات تعمل</text></g>
+<rect x="20" y="62" width="160" height="64" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1.5"/>
+<g class="en"><text x="100" y="89" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Business Information</text></g><g class="ar"><text x="100" y="89" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">متطلبات معلومات</text></g>
+<g class="en"><text x="100" y="108" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Requirements</text></g><g class="ar"><text x="100" y="108" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">العمل</text></g>
+<g class="en"><text x="100" y="148" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">what the faculty asks for</text></g><g class="ar"><text x="100" y="148" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">ما يطلبه عضو هيئة التدريس</text></g>
+<path d="M186 102 L255 102" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 102 L255 107 L255 97 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<g class="en"><text x="225" y="78" text-anchor="middle" style="fill:var(--dg-accent, var(--accent));font-family:var(--font, sans-serif);font-size:11.5px;font-weight:600">Strategy and</text></g><g class="ar"><text x="225" y="78" text-anchor="middle" direction="rtl" style="fill:var(--dg-accent, var(--accent));font-family:var(--font-ar, sans-serif);font-size:12.5px;font-weight:600">الاستراتيجية</text></g>
+<g class="en"><text x="225" y="92" text-anchor="middle" style="fill:var(--dg-accent, var(--accent));font-family:var(--font, sans-serif);font-size:11.5px;font-weight:600">Analysis</text></g><g class="ar"><text x="225" y="92" text-anchor="middle" direction="rtl" style="fill:var(--dg-accent, var(--accent));font-family:var(--font-ar, sans-serif);font-size:12.5px;font-weight:600">والتحليل</text></g>
+<rect x="270" y="62" width="160" height="64" rx="6" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<g class="en"><text x="350" y="89" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Conceptual Data</text></g><g class="ar"><text x="350" y="89" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">النمذجة المفاهيمية</text></g>
+<g class="en"><text x="350" y="108" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Modeling</text></g><g class="ar"><text x="350" y="108" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">للبيانات</text></g>
+<g class="en"><text x="350" y="148" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">the conceptual model</text></g><g class="ar"><text x="350" y="148" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">النموذج المفاهيمي</text></g>
+<path d="M436 102 L505 102" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M514 102 L505 107 L505 97 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<g class="en"><text x="475" y="92" text-anchor="middle" style="fill:var(--dg-accent, var(--accent));font-family:var(--font, sans-serif);font-size:11.5px;font-weight:600">Design</text></g><g class="ar"><text x="475" y="92" text-anchor="middle" direction="rtl" style="fill:var(--dg-accent, var(--accent));font-family:var(--font-ar, sans-serif);font-size:12.5px;font-weight:600">التصميم</text></g>
+<rect x="520" y="62" width="160" height="64" rx="6" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<g class="en"><text x="600" y="89" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Database</text></g><g class="ar"><text x="600" y="89" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">تصميم</text></g>
+<g class="en"><text x="600" y="108" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Design</text></g><g class="ar"><text x="600" y="108" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">قاعدة البيانات</text></g>
+<g class="en"><text x="600" y="148" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">logical, then physical model</text></g><g class="ar"><text x="600" y="148" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">المنطقي، ثم الفيزيائي</text></g>
+<path d="M686 102 L755 102" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M764 102 L755 107 L755 97 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<g class="en"><text x="725" y="92" text-anchor="middle" style="fill:var(--dg-accent, var(--accent));font-family:var(--font, sans-serif);font-size:11.5px;font-weight:600">Build</text></g><g class="ar"><text x="725" y="92" text-anchor="middle" direction="rtl" style="fill:var(--dg-accent, var(--accent));font-family:var(--font-ar, sans-serif);font-size:12.5px;font-weight:600">البناء</text></g>
+<rect x="770" y="62" width="160" height="64" rx="6" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<g class="en"><text x="850" y="89" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Database</text></g><g class="ar"><text x="850" y="89" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">بناء</text></g>
+<g class="en"><text x="850" y="108" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Build</text></g><g class="ar"><text x="850" y="108" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">قاعدة البيانات</text></g>
+<g class="en"><text x="850" y="148" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">real tables in an RDBMS</text></g><g class="ar"><text x="850" y="148" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">جداول حقيقية في RDBMS</text></g>
+<path d="M270 172 L270 180 L680 180 L680 172" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<g class="en"><text x="475" y="202" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12.5px;font-weight:600">models on paper — no SQL yet</text></g><g class="ar"><text x="475" y="202" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13.5px;font-weight:600">نماذج على الورق — لا SQL بعد</text></g>
+<path d="M770 172 L770 180 L930 180 L930 172" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<g class="en"><text x="850" y="202" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:12.5px;font-weight:600">CREATE TABLE runs here</text></g><g class="ar"><text x="850" y="202" text-anchor="middle" direction="rtl" style="fill:var(--dg-good, var(--good));font-family:var(--font-ar, sans-serif);font-size:13.5px;font-weight:600">هنا تُنفَّذ CREATE TABLE</text></g>
+</svg>
+<figcaption><span class="en">The process on the slides. Strategy and analysis turn the requirements into a conceptual model; design turns that into the database design &mdash; first logical, then physical; only the build phase writes SQL.</span><span class="ar">العملية كما في الشرائح. تحوّل الاستراتيجية والتحليل المتطلبات إلى نموذج مفاهيمي، ويحوّله التصميم إلى تصميم قاعدة البيانات &mdash; منطقيًّا أولًا ثم فيزيائيًّا، ولا تُكتب SQL إلا في مرحلة البناء.</span></figcaption></figure>
+
+  <p class="en">The classmate skipped two phases out of three. The "missing member" was not a SQL mistake; it was a question nobody asked during strategy and analysis. Models exist so that such questions are asked on paper, where a change costs an eraser.</p>
+  <p class="ar">قفز الزميل عن مرحلتين من ثلاث. ولم يكن «العضو المفقود» خطأً في SQL، بل سؤالًا لم يطرحه أحد أثناء الاستراتيجية والتحليل. وُجدت النماذج لكي تُطرح مثل هذه الأسئلة على الورق، حيث لا يكلّف التغيير أكثر من ممحاة.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Here is the classmate's table, built straight away. Ask it the faculty member's question and see what the database can say:</p>
+    <p class="ar">هذا جدول الزميل، مبنيًّا فورًا. اسأله سؤال عضو هيئة التدريس، وانظر ماذا تستطيع قاعدة البيانات أن تقول:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE books (book_id VARCHAR(5) PRIMARY KEY, title VARCHAR(60))","INSERT INTO books VALUES ('BK001','A Vision'), ('BK002','War and Peace')"],"sql":"SELECT member_id, title\nFROM books;"}
+      </script>
+    </div>
+    <div class="output">
+      <pre class="code" data-lang="text"><code>Column does not exist: member_id</code></pre>
+    </div>
+    <p class="en">No query can fix this; the table itself must change. In the process above, that question belonged to the first box, long before <code>CREATE TABLE</code>.</p>
+    <p class="ar">لا يستطيع أيّ استعلام إصلاح هذا، فالجدول نفسه يجب أن يتغيّر. وفي العملية أعلاه كان هذا السؤال ينتمي إلى الصندوق الأول، قبل <code>CREATE TABLE</code> بكثير.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · the SQL track</span><span class="ar">خيط · مسار SQL</span></h4>
+    <p class="en"><a href="../chapters/chapter-1.html">SQL Chapter 1 &mdash; First Steps</a> starts at the last box: it writes <code>CREATE TABLE</code> for a table someone already designed. This lesson is about the boxes before it, where the table's shape is decided.</p>
+    <p class="ar">يبدأ <a href="../chapters/chapter-1.html">الفصل 1 من مسار SQL &mdash; الخطوات الأولى</a> من الصندوق الأخير: يكتب <code>CREATE TABLE</code> لجدول صمّمه أحدٌ مسبقًا. أمّا هذا الدرس فعن الصناديق التي قبله، حيث يُقرَّر شكل الجدول.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which phase of the development process produces the conceptual model?</p>
+    <p class="q ar">أيّ مرحلة من عملية التطوير تنتج النموذج المفاهيمي؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">Strategy and analysis</span><span class="ar">الاستراتيجية والتحليل</span></button></li>
+      <li><button class="opt"><span class="en">Design</span><span class="ar">التصميم</span></button></li>
+      <li><button class="opt"><span class="en">Build</span><span class="ar">البناء</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Strategy and analysis take the business requirements and produce the conceptual data model. Design turns that into the database design; build turns the design into a database.</p>
+      <p class="ar">تأخذ الاستراتيجية والتحليل متطلبات العمل وتنتج نموذج البيانات المفاهيمي. ثم يحوّله التصميم إلى تصميم قاعدة البيانات، ويحوّل البناء التصميمَ إلى قاعدة بيانات.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t2l3-h2"><span class="en">2 · The conceptual model: what the business needs</span><span class="ar">٢ · النموذج المفاهيمي: ما الذي يحتاجه العمل</span></h2>
+
+  <div class="problem">
+    <p class="en">Matt brings the faculty member a page of table names and <code>VARCHAR2(15)</code>s. The faculty member reads it twice and asks: "Fine &mdash; but can members borrow books here?" The page is full of detail, and the one thing the client needed to check is not on it.</p>
+    <p class="ar">يحمل مات إلى عضو هيئة التدريس صفحةً من أسماء الجداول و<code>VARCHAR2(15)</code>. يقرؤها مرّتين ثم يسأل: «حسنًا &mdash; لكن هل يستطيع الأعضاء استعارة الكتب هنا؟» الصفحة مليئة بالتفاصيل، والشيء الوحيد الذي احتاج العميل أن يتحقّق منه ليس فيها.</p>
+  </div>
+
+  <p class="en">The first model talks to the client in the client's words. It captures the functional and informational needs of the business. It is based on current needs, but may reflect future ones. And it addresses what is conceptually ideal, not what is physically possible.</p>
+  <p class="ar">يكلّم النموذج الأول العميلَ بلغة العميل. فهو يلتقط الاحتياجات الوظيفية والمعلوماتية للعمل، ويقوم على الاحتياجات الحالية وقد يعكس احتياجات مستقبلية، ويعالج ما هو مثالي من حيث المفهوم، لا ما هو ممكن من حيث التنفيذ.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="conceptual-model">conceptual model</span> captures the needs of a business as its important entities and the relationships among them, without addressing implementation.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="conceptual-model">النموذج المفاهيمي</span> (Conceptual Model) يلتقط احتياجات العمل في صورة كياناته المهمّة والعلاقات بينها، دون أن يعالج التنفيذ.</p>
+  </div>
+
+  <h3 id="t2l3-s1"><span class="en">What it identifies, and what it leaves out</span><span class="ar">ما الذي يحدّده، وما الذي يتركه</span></h3>
+
+  <p class="en">The slides are exact about the boundary. An <em>entity</em> is an object that will become a table; an <em>attribute</em> is one that will become a column; a <em>unique identifier</em> becomes the primary key. Lessons 4&ndash;6 define each one properly. For now, note which side of the line each falls on:</p>
+  <p class="ar">الشرائح دقيقة في رسم الحدّ. <em>الكيان</em> (Entity) شيء سيصبح جدولًا، و<em>الخاصية</em> (Attribute) شيء سيصبح عمودًا، و<em>المعرّف الفريد</em> (UID) يصبح المفتاح الأساسي. تعرّف الدروس 4&ndash;6 كلًّا منها كما يجب. أمّا الآن فلاحظ على أيّ جانب من الحدّ يقع كلّ منها:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">A conceptual model identifies</th><th class="ar">النموذج المفاهيمي يحدّد</th><th class="en">It does not specify</th><th class="ar">ولا يحدّد</th></tr></thead>
+      <tbody>
+        <tr><td class="en">important entities &mdash; <code>MEMBER</code>, <code>BOOK</code></td><td class="ar">الكيانات المهمّة &mdash; <code>MEMBER</code> و<code>BOOK</code></td><td class="en">attributes &mdash; a member's city, a book's title</td><td class="ar">الخصائص &mdash; مدينة العضو، وعنوان الكتاب</td></tr>
+        <tr><td class="en">relationships among entities &mdash; a member borrows books</td><td class="ar">العلاقات بين الكيانات &mdash; العضو يستعير الكتب</td><td class="en">unique identifiers &mdash; what tells two members apart</td><td class="ar">المعرّفات الفريدة &mdash; ما الذي يميّز عضوًا من آخر</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="evolve" id="t2l3-e1">
+    <div class="ver" data-title-en="Version 1 — Matt's first page: tables and types" data-title-ar="النسخة 1 — صفحة مات الأولى: جداول وأنواع">
+      <pre class="code" data-lang="text"><code>MEMBERS   Id NUMBER, First_Name VARCHAR2, City VARCHAR2 ...
+BOOKS     Id VARCHAR2(15), Title VARCHAR2(50) ...
+AUTHORS   Id NUMBER, Name VARCHAR2(30)</code></pre>
+      <p class="en">Defect: it answers questions nobody has asked yet (how long is a title?) and skips the one the client can check: who borrows what, who wrote what. There are no relationships on it at all, and the publisher is simply missing.</p>
+      <p class="ar">العيب: تجيب عن أسئلة لم يطرحها أحد بعد (كم طول العنوان؟) وتتخطّى السؤال الذي يستطيع العميل التحقّق منه: من يستعير ماذا، ومن كتب ماذا. لا علاقات فيها إطلاقًا، والناشر غائب ببساطة.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — the conceptual model" data-title-ar="النسخة 2 — النموذج المفاهيمي">
+      <figure class="diagram" data-diagram="t2-library-conceptual">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" direction="ltr" role="img" aria-labelledby="t2-library-conceptual-t">
+<title id="t2-library-conceptual-t">The library's conceptual model: entities and named relationships only / النموذج المفاهيمي للمكتبة: كيانات وعلاقات مسمّاة فقط</title>
+<g class="en"><text x="450" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Conceptual model — the library</text></g><g class="ar"><text x="450" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">النموذج المفاهيمي — المكتبة</text></g>
+<rect x="30" y="60" width="150" height="56" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="105" y="93" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBER</text>
+<rect x="375" y="60" width="150" height="56" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="450" y="93" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK</text>
+<rect x="720" y="60" width="150" height="56" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="795" y="93" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">AUTHOR</text>
+<rect x="375" y="220" width="150" height="56" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="450" y="253" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PUBLISHER</text>
+<path d="M180 88 L375 88" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M525 88 L720 88" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M450 116 L450 220" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="225" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">borrow</text>
+<text x="325" y="106" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">borrowed by</text>
+<text x="575" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">written by</text>
+<text x="675" y="106" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">writer of</text>
+<text x="462" y="140" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">published by</text>
+<text x="462" y="210" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">publish</text>
+<g class="en"><text x="450" y="306" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">no attributes · no unique identifiers · no data types</text></g><g class="ar"><text x="450" y="306" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">لا خصائص · لا معرّفات فريدة · لا أنواع بيانات</text></g>
+</svg>
+</figure>
+      <p class="en">Fixed: four entities and three named relationships, and nothing else. The faculty member can read "a member borrows a book" and "a book is published by a publisher", and answer "yes, that is our library". Still open: what to record about each, and how to tell two members apart.</p>
+      <p class="ar">أُصلح: أربعة كيانات وثلاث علاقات مسمّاة، ولا شيء غيرها. يستطيع عضو هيئة التدريس أن يقرأ «العضو يستعير كتابًا» و«الكتاب ينشره ناشر»، ويجيب: «نعم، هذه مكتبتنا». وما زال مفتوحًا: ماذا نسجّل عن كلّ منها، وكيف نميّز عضوًا من آخر.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The conceptual model already fixes the outline of the database. Each entity will become a table &mdash; <code>members</code>, <code>books</code>, <code>authors</code>, <code>publishers</code> &mdash; and each relationship will become a link between two tables, the foreign keys of lesson 2. What it cannot yet give you is a single column: there is no attribute in it to turn into one.</p>
+    <p class="ar">يثبّت النموذج المفاهيمي مخطّط قاعدة البيانات العامّ مسبقًا. فكل كيان سيصبح جدولًا &mdash; <code>members</code> و<code>books</code> و<code>authors</code> و<code>publishers</code> &mdash; وكل علاقة ستصبح رابطًا بين جدولين، أي المفاتيح الأجنبية من الدرس 2. أمّا ما لا يستطيع أن يعطيك إياه بعدُ فهو عمود واحد: لا خاصية فيه لتحوّلها إلى عمود.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which of these belongs in Matt's conceptual model?</p>
+    <p class="q ar">أيّ هذه ينتمي إلى النموذج المفاهيمي لمات؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en"><code>BOOK</code> &mdash; published by &mdash; <code>PUBLISHER</code></span><span class="ar"><code>BOOK</code> &mdash; published by &mdash; <code>PUBLISHER</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>Title VARCHAR2(50)</code></span><span class="ar"><code>Title VARCHAR2(50)</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>Id</code> is the unique identifier of <code>MEMBER</code></span><span class="ar"><code>Id</code> هو المعرّف الفريد لـ <code>MEMBER</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A conceptual model holds entities and relationships. A data type is physical detail, and a unique identifier is specified only in the logical model.</p>
+      <p class="ar">يحمل النموذج المفاهيمي الكيانات والعلاقات. أمّا نوع البيانات فتفصيل فيزيائي، والمعرّف الفريد لا يُحدَّد إلا في النموذج المنطقي.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The faculty member adds: "Next year we may lend DVDs too." Can the conceptual model show that?</p>
+    <p class="q ar">يضيف عضو هيئة التدريس: «قد نُعير أقراص DVD أيضًا في العام القادم». هل يستطيع النموذج المفاهيمي أن يُظهر ذلك؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">No &mdash; it records only what exists today</span><span class="ar">لا &mdash; إنه يسجّل ما هو موجود اليوم فقط</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Yes &mdash; it is based on current needs, but may reflect future ones</span><span class="ar">نعم &mdash; يقوم على الاحتياجات الحالية، وقد يعكس احتياجات مستقبلية</span></button></li>
+      <li><button class="opt"><span class="en">Only after a DVD table has been created</span><span class="ar">فقط بعد إنشاء جدول لأقراص DVD</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">That is one of the three things the slides say about it. A planned need can be drawn now, cheaply, long before any table exists.</p>
+      <p class="ar">هذا أحد الأمور الثلاثة التي تقولها الشرائح عنه. فالحاجة المخطَّط لها يمكن رسمها الآن بتكلفة زهيدة، قبل وجود أيّ جدول بوقت طويل.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t2l3-h3"><span class="en">3 · The logical model: every detail, no product</span><span class="ar">٣ · النموذج المنطقي: كل التفاصيل، بلا منتج</span></h2>
+
+  <div class="problem">
+    <p class="en">The faculty member has approved the conceptual model. Now the librarian asks: "Must a member give a state? How do we tell the two Omar Salehs apart? Can a book have no title?" The conceptual diagram cannot answer a single one of these.</p>
+    <p class="ar">وافق عضو هيئة التدريس على النموذج المفاهيمي. والآن يسأل أمين المكتبة: «هل يجب أن يعطي العضو الولاية؟ كيف نميّز بين عمرَي Omar Saleh؟ هل يمكن أن يكون كتاب بلا عنوان؟» لا يستطيع المخطّط المفاهيمي أن يجيب عن واحد منها.</p>
+  </div>
+
+  <p class="en">The logical model is derived from the conceptual one and describes the data in as much detail as possible, without regard to how it will be physically implemented. It includes all entities and relationships, all attributes and unique identifiers, and decides which attributes and relationships are mandatory.</p>
+  <p class="ar">يُشتقّ النموذج المنطقي من المفاهيمي، ويصف البيانات بأكبر قدر ممكن من التفصيل، دون اعتبار لكيفية تنفيذها فيزيائيًّا. فهو يضمّ كل الكيانات والعلاقات، وكل الخصائص والمعرّفات الفريدة، ويقرّر أيّ الخصائص والعلاقات إلزامية.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="logical-model">logical model</span> specifies every entity, attribute, unique identifier and relationship, with optionality and cardinality, without regard to physical implementation.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="logical-model">النموذج المنطقي</span> (Logical Model) يحدّد كل كيان وخاصية ومعرّف فريد وعلاقة، مع الإلزامية والعدد، دون اعتبار للتنفيذ الفيزيائي.</p>
+  </div>
+
+  <p class="en">The slides give it a second name and a picture. The logical model is called an entity relationship model, and it is illustrated in an entity relationship diagram.</p>
+  <p class="ar">تعطيه الشرائح اسمًا ثانيًا وصورة. فالنموذج المنطقي يُسمّى نموذج الكيانات والعلاقات، ويُرسَم في مخطّط الكيانات والعلاقات.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="entity-relationship-model">entity relationship model (ERM)</span> is a list of all entities, attributes and relationships of importance, with background such as descriptions, data types and constraints.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="entity-relationship-model">نموذج الكيانات والعلاقات</span> (Entity Relationship Model, ERM) قائمة بكل الكيانات والخصائص والعلاقات المهمّة، مع معلومات خلفية كالأوصاف وأنواع البيانات والقيود.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="erd">entity relationship diagram (ERD)</span> is a drawing used to represent a data model.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="erd">مخطّط الكيانات والعلاقات</span> (Entity Relationship Diagram, ERD) رسمٌ يُستعمل لتمثيل نموذج بيانات.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-library-logical">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 440" direction="ltr" role="img" aria-labelledby="t2-library-logical-t">
+<title id="t2-library-logical-t">The library's logical model: every entity, attribute and UID, with optionality and cardinality / النموذج المنطقي للمكتبة: كل كيان وخاصية ومعرّف فريد، مع الإلزامية والعدد</title>
+<g class="en"><text x="550" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Logical model — the library</text></g><g class="ar"><text x="550" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">النموذج المنطقي — المكتبة</text></g>
+<rect x="30" y="60" width="170" height="177" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="115" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBER</text>
+<text x="44" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="44" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First name</text>
+<text x="44" y="142" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last name</text>
+<text x="44" y="161" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Street Address</text>
+<text x="44" y="180" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* City</text>
+<text x="44" y="199" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o State</text>
+<text x="44" y="218" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* ZIP</text>
+<rect x="320" y="60" width="170" height="82" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="405" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK TRANSACTION</text>
+<text x="334" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Tran Date</text>
+<text x="334" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Type</text>
+<rect x="610" y="60" width="170" height="82" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="695" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK</text>
+<text x="624" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="624" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">U * Title</text>
+<rect x="900" y="60" width="170" height="82" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="985" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PUBLISHER</text>
+<text x="914" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="914" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="610" y="300" width="170" height="56" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="695" y="333" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK AUTHOR</text>
+<rect x="900" y="287" width="170" height="82" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="985" y="309" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">AUTHOR</text>
+<text x="914" y="331" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="914" y="350" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M200 101 L260 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M260 101 L320 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M306 101 L320 109" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M306 101 L320 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M306 101 L320 93" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="230" y="93" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">make</text>
+<text x="288" y="119" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">made by</text>
+<path d="M490 101 L550 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M550 101 L610 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M504 101 L490 93" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M504 101 L490 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M504 101 L490 109" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M512 93 L512 109" style="stroke:var(--dg-line, var(--text-soft));fill:none;stroke-width:2"/>
+<text x="548" y="91" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">be included in</text>
+<text x="585" y="119" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">include</text>
+<path d="M780 101 L840 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M840 101 L900 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M794 101 L780 93" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M794 101 L780 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M794 101 L780 109" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="838" y="91" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">published by</text>
+<text x="872" y="119" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">publish</text>
+<path d="M695 142 L695 221" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M695 221 L695 300" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M695 286 L687 300" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M695 286 L695 300" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M695 286 L703 300" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M687 278 L703 278" style="stroke:var(--dg-line, var(--text-soft));fill:none;stroke-width:2"/>
+<text x="705" y="162" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">written by</text>
+<text x="705" y="262" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<path d="M780 328 L840 328" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M840 328 L900 328" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M794 328 L780 320" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M794 328 L780 328" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M794 328 L780 336" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M802 320 L802 336" style="stroke:var(--dg-line, var(--text-soft));fill:none;stroke-width:2"/>
+<text x="822" y="318" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">of</text>
+<text x="870" y="346" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">writer</text>
+<rect x="20" y="260" width="520" height="140" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="282" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">#</text></g><g class="ar"><text x="526" y="282" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">#</text></g>
+<g class="en"><text x="64" y="282" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">unique identifier (UID)</text></g><g class="ar"><text x="500" y="282" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">المعرّف الفريد (UID)</text></g>
+<g class="en"><text x="36" y="304" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">*</text></g><g class="ar"><text x="526" y="304" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">*</text></g>
+<g class="en"><text x="64" y="304" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">mandatory: must have a value</text></g><g class="ar"><text x="500" y="304" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">إلزامية: يجب أن تكون لها قيمة</text></g>
+<g class="en"><text x="36" y="326" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">o</text></g><g class="ar"><text x="526" y="326" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">o</text></g>
+<g class="en"><text x="64" y="326" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">optional: may be left empty</text></g><g class="ar"><text x="500" y="326" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">اختيارية: يجوز أن تبقى فارغة</text></g>
+<g class="en"><text x="36" y="348" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">U</text></g><g class="ar"><text x="526" y="348" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">U</text></g>
+<g class="en"><text x="64" y="348" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">unique: no two instances share the value</text></g><g class="ar"><text x="500" y="348" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">فريدة: لا تتشارك حالتان القيمة نفسها</text></g>
+<g class="en"><text x="36" y="376" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">Line ends (solid / dashed, crow’s foot, bar) record optionality and cardinality — chapter T3.</text></g><g class="ar"><text x="530" y="376" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">نهايات الخطوط (متصل / متقطّع، قدم الغراب، الشَّرطة) تسجّل الإلزامية والعدد — الفصل T3.</text></g>
+</svg>
+<figcaption><span class="en">Matt's logical model, from the slides. Every entity now lists its attributes. <code>MEMBER</code> borrowing a <code>BOOK</code> has become <code>BOOK TRANSACTION</code>, and a new entity, <code>BOOK AUTHOR</code>, sits between <code>BOOK</code> and <code>AUTHOR</code> &mdash; chapter T5 explains why.</span><span class="ar">النموذج المنطقي لمات، من الشرائح. صار كل كيان يسرد خصائصه. واستعارة <code>MEMBER</code> لـ <code>BOOK</code> صارت <code>BOOK TRANSACTION</code>، وكيان جديد، <code>BOOK AUTHOR</code>، يقع بين <code>BOOK</code> و<code>AUTHOR</code> &mdash; ويشرح الفصل T5 السبب.</span></figcaption></figure>
+
+  <h3 id="t2l3-s2"><span class="en">Reading the marks</span><span class="ar">قراءة العلامات</span></h3>
+
+  <p class="en">Each attribute carries a mark in front of it. The model does not need a diagram, but the diagram makes these decisions visible at a glance. Lessons 5 and 6 teach them in depth; the table below is enough to read Matt's model now.</p>
+  <p class="ar">تحمل كل خاصية علامة أمامها. لا يحتاج النموذج إلى مخطّط، لكنّ المخطّط يُظهر هذه القرارات بنظرة واحدة. يعلّمها الدرسان 5 و6 بعمق، والجدول أدناه يكفي لقراءة نموذج مات الآن.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Mark</th><th class="ar">العلامة</th><th class="en">Means</th><th class="ar">معناها</th><th class="en">In Matt's model</th><th class="ar">في نموذج مات</th></tr></thead>
+      <tbody>
+        <tr><td class="en"><code>#</code></td><td class="ar"><code>#</code></td><td class="en">part of the unique identifier</td><td class="ar">جزء من المعرّف الفريد</td><td class="en"><code># * Id</code> on <code>MEMBER</code></td><td class="ar"><code># * Id</code> في <code>MEMBER</code></td></tr>
+        <tr><td class="en"><code>*</code></td><td class="ar"><code>*</code></td><td class="en">mandatory: must have a value</td><td class="ar">إلزامية: يجب أن تكون لها قيمة</td><td class="en"><code>* City</code></td><td class="ar"><code>* City</code></td></tr>
+        <tr><td class="en"><code>o</code></td><td class="ar"><code>o</code></td><td class="en">optional: may be left empty</td><td class="ar">اختيارية: يجوز أن تبقى فارغة</td><td class="en"><code>o State</code></td><td class="ar"><code>o State</code></td></tr>
+        <tr><td class="en"><code>U</code></td><td class="ar"><code>U</code></td><td class="en">unique: no two instances share it</td><td class="ar">فريدة: لا تتشاركها حالتان</td><td class="en"><code>U * Title</code> on <code>BOOK</code></td><td class="ar"><code>U * Title</code> في <code>BOOK</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Every mark is a promise the database will later keep: <code>#</code> becomes <code>PRIMARY KEY</code>, <code>*</code> becomes <code>NOT NULL</code>, <code>o</code> leaves the column nullable, <code>U</code> becomes <code>UNIQUE</code>. Here is <code>MEMBER</code> built that way. Omar is added with no city:</p>
+    <p class="ar">كل علامة وعدٌ ستفي به قاعدة البيانات لاحقًا: <code>#</code> تصبح <code>PRIMARY KEY</code>، و<code>*</code> تصبح <code>NOT NULL</code>، و<code>o</code> تترك العمود قابلًا للفراغ، و<code>U</code> تصبح <code>UNIQUE</code>. هذا <code>MEMBER</code> مبنيًّا على ذلك. يُضاف عمر بلا مدينة:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE members (id NUMBER PRIMARY KEY, first_name VARCHAR2(20) NOT NULL, last_name VARCHAR2(20) NOT NULL, street_address VARCHAR2(40) NOT NULL, city VARCHAR2(20) NOT NULL, state VARCHAR2(20), zip VARCHAR2(10) NOT NULL)","INSERT INTO members VALUES (1, 'Sara', 'Hamdan', 'Omar Al-Mukhtar St', 'Gaza', NULL, '00970')"],"sql":"INSERT INTO members VALUES (2, 'Omar', 'Saleh', 'Jalal St', NULL, NULL, '00970');"}
+      </script>
+    </div>
+    <div class="output">
+      <pre class="code" data-lang="text"><code>Wrong NULL value in NOT NULL column city</code></pre>
+    </div>
+    <p class="en">The <code>*</code> on <code>City</code> refused him. The <code>NULL</code> for <code>State</code> was never the problem, because <code>State</code> is marked <code>o</code>. Replace the first <code>NULL</code> with <code>'Khan Younis'</code>, add <code>SELECT id, first_name, city FROM members;</code>, and run it again: Omar is saved with no state.</p>
+    <p class="ar">رفضته علامة <code>*</code> على <code>City</code>. ولم تكن <code>NULL</code> في <code>State</code> هي المشكلة قطّ، لأن <code>State</code> موسومة بـ <code>o</code>. ضع <code>'Khan Younis'</code> مكان <code>NULL</code> الأولى، وأضف <code>SELECT id, first_name, city FROM members;</code>، وشغّلها من جديد: يُحفظ عمر بلا ولاية.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the logical <code>MEMBER</code>, what does <code>o State</code> say?</p>
+    <p class="q ar">في <code>MEMBER</code> المنطقي، ماذا تقول <code>o State</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>State</code> is the unique identifier</span><span class="ar"><code>State</code> هو المعرّف الفريد</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A member may be recorded without a state</span><span class="ar">يجوز تسجيل العضو بلا ولاية</span></button></li>
+      <li><button class="opt"><span class="en"><code>State</code> is stored as a number</span><span class="ar"><code>State</code> يُخزَّن رقمًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>o</code> marks an optional attribute. The unique identifier is marked <code>#</code>, and a data type is not shown by any of these marks.</p>
+      <p class="ar"><code>o</code> تَسِم الخاصية الاختيارية. أمّا المعرّف الفريد فيوسَم بـ <code>#</code>، ونوع البيانات لا تُظهره أيّ من هذه العلامات.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">What does the logical model add that the conceptual model does not have?</p>
+    <p class="q ar">ما الذي يضيفه النموذج المنطقي ولا يوجد في النموذج المفاهيمي؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Entities and relationships</span><span class="ar">الكيانات والعلاقات</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Attributes and unique identifiers, with optionality and cardinality</span><span class="ar">الخصائص والمعرّفات الفريدة، مع الإلزامية والعدد</span></button></li>
+      <li><button class="opt"><span class="en">Table definitions with data types and precision</span><span class="ar">تعريفات الجداول مع أنواع البيانات ودقّتها</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Entities and relationships were already in the conceptual model. Table definitions with types and precision come one step later, in the physical model.</p>
+      <p class="ar">الكيانات والعلاقات كانت في النموذج المفاهيمي أصلًا. أمّا تعريفات الجداول بأنواعها ودقّتها فتأتي بعد خطوة، في النموذج الفيزيائي.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t2l3-h4"><span class="en">4 · The physical model: one database, one product</span><span class="ar">٤ · النموذج الفيزيائي: قاعدة بيانات واحدة، منتج واحد</span></h2>
+
+  <div class="problem">
+    <p class="en">The faculty member is back: "I want the specifications for all tables and columns." The logical model says <code>U * Title</code>. But how long may a title be? Is a member's <code>Id</code> a number or text? What is the foreign key from <code>BOOK</code> to <code>PUBLISHER</code> called? The logical model refuses to say.</p>
+    <p class="ar">يعود عضو هيئة التدريس: «أريد مواصفات كل الجداول والأعمدة». النموذج المنطقي يقول <code>U * Title</code>. لكن كم يجوز أن يطول العنوان؟ هل <code>Id</code> العضو رقم أم نصّ؟ وما اسم المفتاح الأجنبي من <code>BOOK</code> إلى <code>PUBLISHER</code>؟ النموذج المنطقي يرفض أن يقول.</p>
+  </div>
+
+  <p class="en">The physical model is an extension of the logical one. It defines tables, data types and precision, and identifies views, indexes and other database objects. It shows every table with its columns, primary keys and foreign keys, and it describes how all of this is implemented in one specific database.</p>
+  <p class="ar">النموذج الفيزيائي امتداد للنموذج المنطقي. فهو يعرّف الجداول وأنواع البيانات ودقّتها، ويحدّد العروض والفهارس وغيرها من كائنات قاعدة البيانات. ويُظهر كل جدول بأعمدته ومفاتيحه الأساسية والأجنبية، ويصف كيف يُنفَّذ ذلك كلّه في قاعدة بيانات محدّدة بعينها.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="physical-model">physical model</span> extends a logical model into tables, columns, data types and keys, implemented for one specific database.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="physical-model">النموذج الفيزيائي</span> (Physical Model) يمدّ النموذج المنطقي إلى جداول وأعمدة وأنواع بيانات ومفاتيح، منفَّذةً لقاعدة بيانات محدّدة بعينها.</p>
+  </div>
+
+  <h3 id="t2l3-s3"><span class="en">Four steps</span><span class="ar">أربع خطوات</span></h3>
+
+  <ol>
+    <li class="en">Model entities as tables &mdash; <code>BOOK</code> becomes <code>BOOKS</code>.</li>
+    <li class="ar">نمذجة الكيانات جداولَ &mdash; <code>BOOK</code> يصبح <code>BOOKS</code>.</li>
+    <li class="en">Model relationships as foreign keys &mdash; "published by" becomes <code>BOOKS.PUBLISHERS_Id</code>.</li>
+    <li class="ar">نمذجة العلاقات مفاتيحَ أجنبية &mdash; «published by» تصبح <code>BOOKS.PUBLISHERS_Id</code>.</li>
+    <li class="en">Model attributes as columns &mdash; <code>U * Title</code> becomes <code>Title VARCHAR2(50)</code>, unique and required.</li>
+    <li class="ar">نمذجة الخصائص أعمدةً &mdash; <code>U * Title</code> تصبح <code>Title VARCHAR2(50)</code>، فريدةً ومطلوبة.</li>
+    <li class="en">Modify the model for physical constraints and requirements.</li>
+    <li class="ar">تعديل النموذج بحسب القيود والمتطلبات الفيزيائية.</li>
+  </ol>
+
+  <figure class="diagram" data-diagram="t2-library-physical">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1110 440" direction="ltr" role="img" aria-labelledby="t2-library-physical-t">
+<title id="t2-library-physical-t">The library's physical model for Oracle: tables, columns, data types and keys / النموذج الفيزيائي للمكتبة على Oracle: جداول وأعمدة وأنواع بيانات ومفاتيح</title>
+<g class="en"><text x="555" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Physical model — the library, for Oracle</text></g><g class="ar"><text x="555" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">النموذج الفيزيائي — المكتبة، على Oracle</text></g>
+<rect x="20" y="60" width="230" height="177" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="20" y="60" width="230" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="135" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBERS</text>
+<text x="30" y="106" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">P*</text>
+<text x="62" y="106" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Id</text>
+<text x="240" y="106" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<text x="30" y="125" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">*</text>
+<text x="62" y="125" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">First_Name</text>
+<text x="240" y="125" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2</text>
+<text x="30" y="144" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">*</text>
+<text x="62" y="144" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Last_Name</text>
+<text x="240" y="144" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2</text>
+<text x="30" y="163" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">*</text>
+<text x="62" y="163" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Street_Address</text>
+<text x="240" y="163" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2</text>
+<text x="30" y="182" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">*</text>
+<text x="62" y="182" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">City</text>
+<text x="240" y="182" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2</text>
+<text x="30" y="201" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700"></text>
+<text x="62" y="201" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">State</text>
+<text x="240" y="201" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2</text>
+<text x="30" y="220" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">*</text>
+<text x="62" y="220" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">ZIP</text>
+<text x="240" y="220" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2</text>
+<rect x="300" y="60" width="230" height="120" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="300" y="60" width="230" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="415" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK_TRANSACTIONS</text>
+<text x="310" y="106" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">P*</text>
+<text x="342" y="106" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Tran_Date</text>
+<text x="520" y="106" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">DATE</text>
+<text x="310" y="125" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700"></text>
+<text x="342" y="125" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Type</text>
+<text x="520" y="125" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2</text>
+<text x="310" y="144" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">F*</text>
+<text x="342" y="144" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">MEMBERS_Id</text>
+<text x="520" y="144" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<text x="310" y="163" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">PF*</text>
+<text x="342" y="163" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">BOOKS_Id</text>
+<text x="520" y="163" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(15)</text>
+<rect x="580" y="60" width="230" height="101" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="580" y="60" width="230" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="695" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOKS</text>
+<text x="590" y="106" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">P*</text>
+<text x="622" y="106" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Id</text>
+<text x="800" y="106" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(15)</text>
+<text x="590" y="125" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">U*</text>
+<text x="622" y="125" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Title</text>
+<text x="800" y="125" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(50)</text>
+<text x="590" y="144" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">F</text>
+<text x="622" y="144" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">PUBLISHERS_Id</text>
+<text x="800" y="144" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<rect x="860" y="60" width="230" height="82" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="860" y="60" width="230" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="975" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PUBLISHERS</text>
+<text x="870" y="106" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">P</text>
+<text x="902" y="106" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Id</text>
+<text x="1080" y="106" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<text x="870" y="125" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">*</text>
+<text x="902" y="125" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Name</text>
+<text x="1080" y="125" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(50)</text>
+<rect x="580" y="290" width="230" height="82" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="580" y="290" width="230" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="695" y="308" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK_AUTHORS</text>
+<text x="590" y="336" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">PF*</text>
+<text x="622" y="336" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">BOOKS_Id</text>
+<text x="800" y="336" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(15)</text>
+<text x="590" y="355" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">PF*</text>
+<text x="622" y="355" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">AUTHORS_Id</text>
+<text x="800" y="355" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<rect x="860" y="290" width="230" height="82" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="860" y="290" width="230" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="975" y="308" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">AUTHORS</text>
+<text x="870" y="336" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">P</text>
+<text x="902" y="336" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Id</text>
+<text x="1080" y="336" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<text x="870" y="355" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">*</text>
+<text x="902" y="355" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Name</text>
+<text x="1080" y="355" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(30)</text>
+<path d="M300 100 L259 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M250 100 L259 95 L259 105 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<path d="M530 100 L571 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M580 100 L571 105 L571 95 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<path d="M810 100 L851 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M860 100 L851 105 L851 95 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<path d="M695 290 L695 170" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M695 161 L700 170 L690 170 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<path d="M810 331 L851 331" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M860 331 L851 336 L851 326 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<rect x="20" y="262" width="510" height="140" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="284" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">P</text></g><g class="ar"><text x="516" y="284" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">P</text></g>
+<g class="en"><text x="64" y="284" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">primary key column</text></g><g class="ar"><text x="490" y="284" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">عمود مفتاح أساسي</text></g>
+<g class="en"><text x="36" y="306" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">F</text></g><g class="ar"><text x="516" y="306" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">F</text></g>
+<g class="en"><text x="64" y="306" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">foreign key column (PF: both)</text></g><g class="ar"><text x="490" y="306" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">عمود مفتاح أجنبي (PF: الاثنان معًا)</text></g>
+<g class="en"><text x="36" y="328" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">U</text></g><g class="ar"><text x="516" y="328" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">U</text></g>
+<g class="en"><text x="64" y="328" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">unique key column</text></g><g class="ar"><text x="490" y="328" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">عمود مفتاح فريد</text></g>
+<g class="en"><text x="36" y="350" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">*</text></g><g class="ar"><text x="516" y="350" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">*</text></g>
+<g class="en"><text x="64" y="350" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">NOT NULL: a value is required</text></g><g class="ar"><text x="490" y="350" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">NOT NULL: القيمة مطلوبة</text></g>
+<g class="en"><text x="36" y="378" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">Arrow: from a foreign key to the table it refers to (dashed: the key may be empty).</text></g><g class="ar"><text x="520" y="378" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">السهم: من مفتاح أجنبي إلى الجدول الذي يشير إليه (المتقطّع: يجوز أن يبقى المفتاح فارغًا).</text></g>
+</svg>
+<figcaption><span class="en">Matt's physical model for Oracle, from the slides. Six entities became six tables. Every relationship is now a column: <code>BOOK_TRANSACTIONS</code> carries <code>MEMBERS_Id</code> and <code>BOOKS_Id</code>. Notice the types (<code>VARCHAR2(15)</code>, <code>NUMBER</code>, <code>DATE</code>): the logical model had none.</span><span class="ar">النموذج الفيزيائي لمات على Oracle، من الشرائح. صارت الكيانات الستة ستة جداول. وكل علاقة صارت عمودًا: <code>BOOK_TRANSACTIONS</code> يحمل <code>MEMBERS_Id</code> و<code>BOOKS_Id</code>. لاحظ الأنواع (<code>VARCHAR2(15)</code> و<code>NUMBER</code> و<code>DATE</code>): لم يكن في النموذج المنطقي أيّ منها.</span></figcaption></figure>
+
+  <p class="en">The physical model also names things the logical model never mentioned: the constraints themselves. In Matt's model the books table has <code>BOOKS_PK</code> on <code>Id</code>, <code>BOOKS_Title_UK</code> on <code>Title</code>, and <code>BOOKS_PUBLISHERS_FK</code> on <code>PUBLISHERS_Id</code>.</p>
+  <p class="ar">ويسمّي النموذج الفيزيائي أيضًا أشياء لم يذكرها النموذج المنطقي قطّ: القيود نفسها. ففي نموذج مات يحمل جدول الكتب <code>BOOKS_PK</code> على <code>Id</code>، و<code>BOOKS_Title_UK</code> على <code>Title</code>، و<code>BOOKS_PUBLISHERS_FK</code> على <code>PUBLISHERS_Id</code>.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">A physical model is one step from <code>CREATE TABLE</code>. Here are <code>PUBLISHERS</code> and <code>BOOKS</code> exactly as the diagram gives them, Oracle types included:</p>
+    <p class="ar">النموذج الفيزيائي على بُعد خطوة واحدة من <code>CREATE TABLE</code>. هذان <code>PUBLISHERS</code> و<code>BOOKS</code> كما يعطيهما المخطّط تمامًا، بأنواع Oracle:</p>
+    <pre class="code" data-lang="sql"><code>CREATE TABLE publishers (
+  id   NUMBER       PRIMARY KEY,
+  name VARCHAR2(50) NOT NULL
+);
+
+CREATE TABLE books (
+  id            VARCHAR2(15) PRIMARY KEY,
+  title         VARCHAR2(50) NOT NULL UNIQUE,
+  publishers_id NUMBER       REFERENCES publishers(id)
+);</code></pre>
+    <p class="en">Publishers <code>1</code> and <code>2</code> exist. Add <em>Emma</em> with publisher <code>7</code>:</p>
+    <p class="ar">الناشران <code>1</code> و<code>2</code> موجودان. أضف <em>Emma</em> بالناشر <code>7</code>:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE publishers (id NUMBER PRIMARY KEY, name VARCHAR2(50) NOT NULL)","INSERT INTO publishers VALUES (1, 'Riwaq Press'), (2, 'Al-Manara Books')","CREATE TABLE books (id VARCHAR2(15) PRIMARY KEY, title VARCHAR2(50) NOT NULL UNIQUE, publishers_id NUMBER REFERENCES publishers(id))","INSERT INTO books VALUES ('BK001','A Vision',1), ('BK002','War and Peace',2), ('BK003','Citizen of the World',2), ('BK004','Androcles and the Lion',1)"],"sql":"INSERT INTO books VALUES ('BK005', 'Emma', 7);"}
+      </script>
+    </div>
+    <div class="output">
+      <pre class="code" data-lang="text"><code>Foreign key "7" not found in table "publishers"</code></pre>
+    </div>
+    <p class="en">Now replace <code>7</code> with <code>NULL</code> and add <code>SELECT id, title, publishers_id FROM books ORDER BY id;</code>. The book is saved: <code>PUBLISHERS_Id</code> carries <code>F</code> but no <code>*</code>, so a book may be stored before its publisher is known.</p>
+    <p class="ar">ضع الآن <code>NULL</code> مكان <code>7</code>، وأضف <code>SELECT id, title, publishers_id FROM books ORDER BY id;</code>. يُحفظ الكتاب: فـ <code>PUBLISHERS_Id</code> يحمل <code>F</code> بلا <code>*</code>، فيجوز تخزين الكتاب قبل أن يُعرف ناشره.</p>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>id</code></th><th><code>title</code></th><th><code>publishers_id</code></th></tr></thead>
+          <tbody>
+            <tr><td><code>BK001</code></td><td>A Vision</td><td>1</td></tr>
+            <tr><td><code>BK002</code></td><td>War and Peace</td><td>2</td></tr>
+            <tr><td><code>BK003</code></td><td>Citizen of the World</td><td>2</td></tr>
+            <tr><td><code>BK004</code></td><td>Androcles and the Lion</td><td>1</td></tr>
+            <tr><td><code>BK005</code></td><td>Emma</td><td>&#8709;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the physical model, what did the relationship "<code>BOOK</code> published by <code>PUBLISHER</code>" become?</p>
+    <p class="q ar">في النموذج الفيزيائي، إلامَ تحوّلت العلاقة «<code>BOOK</code> published by <code>PUBLISHER</code>»؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A new table, <code>BOOK_PUBLISHERS</code></span><span class="ar">جدول جديد، <code>BOOK_PUBLISHERS</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A foreign key column, <code>BOOKS.PUBLISHERS_Id</code></span><span class="ar">عمود مفتاح أجنبي، <code>BOOKS.PUBLISHERS_Id</code></span></button></li>
+      <li><button class="opt"><span class="en">Nothing &mdash; relationships exist only on paper</span><span class="ar">لا شيء &mdash; العلاقات موجودة على الورق فقط</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Step 2: relationships are modelled as foreign keys. <code>BOOKS</code> holds the primary key of <code>PUBLISHERS</code>, which is exactly the common field of lesson 2.</p>
+      <p class="ar">الخطوة 2: تُنمذَج العلاقات مفاتيحَ أجنبية. يحمل <code>BOOKS</code> المفتاح الأساسي لـ <code>PUBLISHERS</code>، وهذا بالضبط الحقل المشترك من الدرس 2.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t2l3-h5"><span class="en">5 · One library, drawn three times</span><span class="ar">٥ · مكتبة واحدة، مرسومة ثلاث مرّات</span></h2>
+
+  <div class="problem">
+    <p class="en">Three people ask Matt for "the design" on the same morning: the faculty member, the database administrator and the developer writing the loan screen. He has three models. Handing each person the wrong one wastes a meeting.</p>
+    <p class="ar">ثلاثة أشخاص يطلبون من مات «التصميم» في الصباح نفسه: عضو هيئة التدريس، ومدير قاعدة البيانات، والمطوّر الذي يكتب شاشة الإعارة. لديه ثلاثة نماذج. وإعطاء كلّ منهم النموذج الخطأ يضيّع اجتماعًا.</p>
+  </div>
+
+  <p class="en">The slides compare it to a house. The client describes a dream; the builder needs exact measurements. The conceptual model is the client's dream, and the physical model is the plan that makes it a physical reality.</p>
+  <p class="ar">تشبّه الشرائح ذلك بالبيت. يصف العميل حلمه، ويحتاج البنّاء إلى قياسات دقيقة. النموذج المفاهيمي حلم العميل، والنموذج الفيزيائي هو المخطّط الذي يجعله حقيقة ملموسة.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="data-modeling">Data modeling</span> is the process of capturing the important concepts and rules that shape a business and depicting them visually in a diagram.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="data-modeling">نمذجة البيانات</span> (Data Modeling) هي عملية التقاط المفاهيم والقواعد المهمّة التي تُشكّل العمل، وتمثيلها بصريًّا في مخطّط.</p>
+  </div>
+
+  <p class="en">Follow one entity, <code>BOOK</code>, through all three. Each version answers a question the one before refused:</p>
+  <p class="ar">تتبّع كيانًا واحدًا، <code>BOOK</code>، عبر النماذج الثلاثة. كل نسخة تجيب عن سؤال رفضته التي قبلها:</p>
+
+  <div class="evolve" id="t2l3-e2">
+    <div class="ver" data-title-en="Version 1 — conceptual BOOK" data-title-ar="النسخة 1 — BOOK المفاهيمي">
+      <pre class="code" data-lang="text"><code>BOOK   -- published by / publish --   PUBLISHER
+BOOK   -- written by / writer of --   AUTHOR
+MEMBER -- borrow / borrowed by     -- BOOK</code></pre>
+      <p class="en">What it says: a book exists, with a publisher, authors and borrowers. What it refuses: what is recorded about a book, and how one book is told apart from another. The faculty member can check this version.</p>
+      <p class="ar">ما تقوله: الكتاب موجود، وله ناشر ومؤلفون ومستعيرون. وما ترفضه: ما يُسجَّل عن الكتاب، وكيف يُميَّز كتاب من آخر. هذه النسخة يستطيع عضو هيئة التدريس أن يتحقّق منها.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — logical BOOK" data-title-ar="النسخة 2 — BOOK المنطقي">
+      <pre class="code" data-lang="text"><code>BOOK
+  # * Id
+  U * Title</code></pre>
+      <p class="en">Added: the attributes and the identifier. A book is told apart by <code>Id</code>, must have a title, and no two books share one. Still refused: how long a title may be, or whether <code>Id</code> is text or a number.</p>
+      <p class="ar">أُضيفت: الخصائص والمعرّف. يُميَّز الكتاب بـ <code>Id</code>، ويجب أن يكون له عنوان، ولا يتشارك كتابان عنوانًا. وما زال مرفوضًا: كم يجوز أن يطول العنوان، وهل <code>Id</code> نصّ أم رقم.</p>
+    </div>
+    <div class="ver" data-title-en="Version 3 — physical BOOKS, for Oracle" data-title-ar="النسخة 3 — BOOKS الفيزيائي، على Oracle">
+      <pre class="code" data-lang="text"><code>BOOKS
+  P * Id             VARCHAR2(15)
+  U * Title          VARCHAR2(50)
+  F   PUBLISHERS_Id  NUMBER
+  BOOKS_PK (Id)   BOOKS_Title_UK (Title)   BOOKS_PUBLISHERS_FK (PUBLISHERS_Id)</code></pre>
+      <p class="en">Added: types and precision, the foreign key column that carries "published by", and named constraints. Nothing is left to decide; the DBA can build this. The price: it is written for one product, Oracle.</p>
+      <p class="ar">أُضيفت: الأنواع والدقّة، وعمود المفتاح الأجنبي الذي يحمل «published by»، وقيود مسمّاة. لم يبقَ شيء لتقرّره؛ يستطيع مدير قاعدة البيانات بناء هذا. والثمن: أنه مكتوب لمنتج واحد، Oracle.</p>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">What the model shows</th><th class="ar">ما يُظهره النموذج</th><th class="en">Conceptual</th><th class="ar">المفاهيمي</th><th class="en">Logical</th><th class="ar">المنطقي</th><th class="en">Physical</th><th class="ar">الفيزيائي</th></tr></thead>
+      <tbody>
+        <tr><td class="en">entities and relationships</td><td class="ar">الكيانات والعلاقات</td><td class="en">yes</td><td class="ar">نعم</td><td class="en">yes, all of them</td><td class="ar">نعم، كلّها</td><td class="en">as tables and foreign keys</td><td class="ar">جداولَ ومفاتيحَ أجنبية</td></tr>
+        <tr><td class="en">attributes and UIDs</td><td class="ar">الخصائص والمعرّفات الفريدة</td><td class="en">no</td><td class="ar">لا</td><td class="en">yes</td><td class="ar">نعم</td><td class="en">as columns and primary keys</td><td class="ar">أعمدةً ومفاتيحَ أساسية</td></tr>
+        <tr><td class="en">mandatory or optional</td><td class="ar">إلزامي أم اختياري</td><td class="en">no</td><td class="ar">لا</td><td class="en">yes &mdash; <code>*</code> and <code>o</code></td><td class="ar">نعم &mdash; <code>*</code> و<code>o</code></td><td class="en">as <code>NOT NULL</code></td><td class="ar">في صورة <code>NOT NULL</code></td></tr>
+        <tr><td class="en">product data types and precision</td><td class="ar">أنواع بيانات المنتج ودقّتها</td><td class="en">no</td><td class="ar">لا</td><td class="en">no</td><td class="ar">لا</td><td class="en">yes &mdash; <code>VARCHAR2(50)</code></td><td class="ar">نعم &mdash; <code>VARCHAR2(50)</code></td></tr>
+        <tr><td class="en">written for one product</td><td class="ar">مكتوب لمنتج واحد</td><td class="en">no</td><td class="ar">لا</td><td class="en">no</td><td class="ar">لا</td><td class="en">yes</td><td class="ar">نعم</td></tr>
+        <tr><td class="en">who reads it</td><td class="ar">من يقرؤه</td><td class="en">the client, the whole team</td><td class="ar">العميل، والفريق كلّه</td><td class="en">designers and developers</td><td class="ar">المصمّمون والمطوّرون</td><td class="en">the DBA who builds it</td><td class="ar">مدير قاعدة البيانات الذي يبنيه</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The conceptual sentence "a member borrows a book" did not disappear on the way down. It became <code>BOOK_TRANSACTIONS</code> with two foreign keys. Ask the built tables who borrowed what:</p>
+    <p class="ar">لم تختفِ الجملة المفاهيمية «العضو يستعير كتابًا» في الطريق نزولًا. بل صارت <code>BOOK_TRANSACTIONS</code> بمفتاحين أجنبيين. اسأل الجداول المبنية: من استعار ماذا؟</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE members (id NUMBER PRIMARY KEY, first_name VARCHAR2(20) NOT NULL, last_name VARCHAR2(20) NOT NULL, street_address VARCHAR2(40) NOT NULL, city VARCHAR2(20) NOT NULL, state VARCHAR2(20), zip VARCHAR2(10) NOT NULL)","INSERT INTO members VALUES (1, 'Sara', 'Hamdan', 'Omar Al-Mukhtar St', 'Gaza', NULL, '00970'), (2, 'Omar', 'Saleh', 'Jalal St', 'Khan Younis', NULL, '00970')","CREATE TABLE publishers (id NUMBER PRIMARY KEY, name VARCHAR2(50) NOT NULL)","INSERT INTO publishers VALUES (1, 'Riwaq Press'), (2, 'Al-Manara Books')","CREATE TABLE books (id VARCHAR2(15) PRIMARY KEY, title VARCHAR2(50) NOT NULL UNIQUE, publishers_id NUMBER REFERENCES publishers(id))","INSERT INTO books VALUES ('BK001','A Vision',1), ('BK002','War and Peace',2), ('BK003','Citizen of the World',2), ('BK004','Androcles and the Lion',1)","CREATE TABLE book_transactions (tran_date DATE NOT NULL, type VARCHAR2(10), members_id NUMBER NOT NULL REFERENCES members(id), books_id VARCHAR2(15) NOT NULL REFERENCES books(id), PRIMARY KEY (tran_date, books_id))","INSERT INTO book_transactions VALUES ('2026-03-01','borrow',1,'BK001'), ('2026-03-05','borrow',2,'BK002'), ('2026-03-05','borrow',1,'BK003')"],"sql":"SELECT m.first_name, m.last_name, b.title, t.type\nFROM book_transactions t\nJOIN members m ON t.members_id = m.id\nJOIN books b ON t.books_id = b.id\nORDER BY b.title;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>first_name</code></th><th><code>last_name</code></th><th><code>title</code></th><th><code>type</code></th></tr></thead>
+          <tbody>
+            <tr><td>Sara</td><td>Hamdan</td><td>A Vision</td><td>borrow</td></tr>
+            <tr><td>Sara</td><td>Hamdan</td><td>Citizen of the World</td><td>borrow</td></tr>
+            <tr><td>Omar</td><td>Saleh</td><td>War and Peace</td><td>borrow</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">That is the classmate's question from section 1, answered. The model was right before the table existed, so the table could answer it.</p>
+    <p class="ar">هذا سؤال الزميل من القسم 1، وقد أُجيب. كان النموذج صحيحًا قبل أن يوجد الجدول، فاستطاع الجدول أن يجيب.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The faculty member must confirm that the design matches the library's needs. Which model should Matt bring?</p>
+    <p class="q ar">على عضو هيئة التدريس أن يؤكّد أن التصميم يطابق احتياجات المكتبة. أيّ نموذج يحمل إليه مات؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">The conceptual model</span><span class="ar">النموذج المفاهيمي</span></button></li>
+      <li><button class="opt"><span class="en">The physical model &mdash; it has the most detail</span><span class="ar">النموذج الفيزيائي &mdash; ففيه أكثر التفاصيل</span></button></li>
+      <li><button class="opt"><span class="en">The <code>CREATE TABLE</code> script</span><span class="ar">نصّ <code>CREATE TABLE</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The conceptual model speaks the business's language: entities and relationships, nothing about types. More detail is not more useful to a reader who needs to check the big picture.</p>
+      <p class="ar">النموذج المفاهيمي يتكلّم لغة العمل: كيانات وعلاقات، ولا شيء عن الأنواع. والمزيد من التفاصيل ليس أنفع لقارئ يحتاج إلى التحقّق من الصورة الكبيرة.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The conceptual model has four entities; the physical model has six tables. Where did the extra two come from?</p>
+    <p class="q ar">في النموذج المفاهيمي أربعة كيانات، وفي النموذج الفيزيائي ستة جداول. من أين جاء الاثنان الزائدان؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The DBA added them during the build</span><span class="ar">أضافهما مدير قاعدة البيانات أثناء البناء</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The logical model added <code>BOOK TRANSACTION</code> and <code>BOOK AUTHOR</code> while working out the detail</span><span class="ar">أضاف النموذج المنطقي <code>BOOK TRANSACTION</code> و<code>BOOK AUTHOR</code> أثناء تفصيل البيانات</span></button></li>
+      <li><button class="opt"><span class="en">Every relationship always becomes its own table</span><span class="ar">كل علاقة تصبح دائمًا جدولًا مستقلًّا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Both entities first appear in the logical model; the physical model only turns its six entities into six tables. And not every relationship becomes a table: "published by" became a single column.</p>
+      <p class="ar">يظهر الكيانان أول مرّة في النموذج المنطقي، والنموذج الفيزيائي يحوّل كياناته الستة إلى ستة جداول فقط. وليست كل علاقة تصبح جدولًا: فـ «published by» صارت عمودًا واحدًا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 6 -->
+  <h2 id="t2l3-h6"><span class="en">6 · Implementation-free, and what it buys</span><span class="ar">٦ · الاستقلال عن التنفيذ، وما الذي يكسبه</span></h2>
+
+  <div class="problem">
+    <p class="en">Two years later the department moves the library to a different database product. Matt has three models on file. Which of them has to be redrawn &mdash; all three, or only one?</p>
+    <p class="ar">بعد عامين ينقل القسم المكتبة إلى منتج قواعد بيانات آخر. لدى مات ثلاثة نماذج محفوظة. أيّها يجب أن يُعاد رسمه &mdash; الثلاثة كلّها، أم واحد فقط؟</p>
+  </div>
+
+  <p class="en">The physical model is written for one <span class="term" data-term="rdbms">RDBMS</span>. The two above it are not: they say nothing a different product would read differently. That property has a name.</p>
+  <p class="ar">النموذج الفيزيائي مكتوب من أجل <span class="term" data-term="rdbms">نظام إدارة قواعد بيانات علائقية</span> (RDBMS) واحد. أمّا النموذجان فوقه فلا: لا يقولان شيئًا قد يقرؤه منتج آخر بطريقة مختلفة. ولهذه الخاصية اسم.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="rdbms">RDBMS</span> (relational database management system) is the software that stores data in related tables &mdash; Oracle is one.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="rdbms">نظام إدارة قواعد البيانات العلائقية</span> (Relational Database Management System, RDBMS) هو البرنامج الذي يخزّن البيانات في جداول مترابطة &mdash; وOracle واحد منها.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A model is <span class="term" data-term="implementation-free">implementation-free</span> when it represents the data requirements of a business regardless of the type of database used, and even in the absence of one.</p>
+    <p class="ar"><strong>تعريف.</strong> يكون النموذج <span class="term" data-term="implementation-free">مستقلًّا عن التنفيذ</span> (Implementation-free) حين يمثّل متطلبات بيانات العمل بغضّ النظر عن نوع قاعدة البيانات المستعملة، بل حتى في غياب أيّ قاعدة بيانات.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-implementation-free">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" direction="ltr" role="img" aria-labelledby="t2-implementation-free-t">
+<title id="t2-implementation-free-t">One conceptual BOOK, one logical BOOK, two physical BOOKS tables for two products / BOOK مفاهيمي واحد، وBOOK منطقي واحد، وجدولا BOOKS فيزيائيان لمنتجين</title>
+<g class="en"><text x="450" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">One logical model, one physical model per RDBMS</text></g><g class="ar"><text x="450" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">نموذج منطقي واحد، ونموذج فيزيائي لكل RDBMS</text></g>
+<g class="en"><text x="20" y="82" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--font, sans-serif);font-size:12.5px;font-weight:600">conceptual</text></g><g class="ar"><text x="110" y="82" text-anchor="start" direction="rtl" style="fill:var(--dg-accent, var(--accent));font-family:var(--font-ar, sans-serif);font-size:13.5px;font-weight:600">المفاهيمي</text></g>
+<g class="en"><text x="20" y="175" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--font, sans-serif);font-size:12.5px;font-weight:600">logical</text></g><g class="ar"><text x="110" y="175" text-anchor="start" direction="rtl" style="fill:var(--dg-accent, var(--accent));font-family:var(--font-ar, sans-serif);font-size:13.5px;font-weight:600">المنطقي</text></g>
+<g class="en"><text x="20" y="320" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--font, sans-serif);font-size:12.5px;font-weight:600">physical</text></g><g class="ar"><text x="110" y="320" text-anchor="start" direction="rtl" style="fill:var(--dg-accent, var(--accent));font-family:var(--font-ar, sans-serif);font-size:13.5px;font-weight:600">الفيزيائي</text></g>
+<rect x="400" y="58" width="150" height="40" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="475" y="83" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK</text>
+<rect x="390" y="132" width="170" height="82" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="475" y="154" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK</text>
+<text x="404" y="176" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="404" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">U * Title</text>
+<path d="M475 98 L475 121" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M475 130 L470 121 L480 121 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<path d="M130 240 L880 240" style="stroke:var(--dg-warn, var(--warn));stroke-width:1.5;stroke-dasharray:3 4;fill:none"/>
+<g class="en"><text x="875" y="232" text-anchor="end" style="fill:var(--dg-warn, var(--warn));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">implementation-free ↑</text></g><g class="ar"><text x="875" y="232" text-anchor="start" direction="rtl" style="fill:var(--dg-warn, var(--warn));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">↑ مستقلّ عن التنفيذ</text></g>
+<g class="en"><text x="875" y="256" text-anchor="end" style="fill:var(--dg-warn, var(--warn));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">tied to one product ↓</text></g><g class="ar"><text x="875" y="256" text-anchor="start" direction="rtl" style="fill:var(--dg-warn, var(--warn));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">↓ مرتبط بمنتج واحد</text></g>
+<rect x="170" y="290" width="250" height="82" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="170" y="290" width="250" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="295" y="308" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOKS</text>
+<text x="180" y="336" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">P*</text>
+<text x="212" y="336" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Id</text>
+<text x="410" y="336" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(15)</text>
+<text x="180" y="355" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">U*</text>
+<text x="212" y="355" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Title</text>
+<text x="410" y="355" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(50)</text>
+<rect x="530" y="290" width="250" height="82" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="530" y="290" width="250" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="655" y="308" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOKS</text>
+<text x="540" y="336" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">P*</text>
+<text x="572" y="336" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">id</text>
+<text x="770" y="336" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR(15)</text>
+<text x="540" y="355" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">U*</text>
+<text x="572" y="355" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">title</text>
+<text x="770" y="355" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR(50)</text>
+<g class="en"><text x="295" y="282" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">for Oracle</text></g><g class="ar"><text x="295" y="282" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">لـ Oracle</text></g>
+<g class="en"><text x="655" y="282" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">for this site’s in-browser SQL engine</text></g><g class="ar"><text x="655" y="282" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">لمحرّك SQL داخل المتصفح في هذا الموقع</text></g>
+<path d="M450 214 L308.504 263.052" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M300 266 L306.866 258.328 L310.141 267.776 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<path d="M500 214 L641.496 263.052" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M650 266 L639.859 267.776 L643.134 258.328 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+</svg>
+<figcaption><span class="en">Above the dashed line, nothing depends on a product: one conceptual <code>BOOK</code>, one logical <code>BOOK</code>. Below it, one physical model per RDBMS. The two <code>BOOKS</code> tables differ only in how each product spells its types.</span><span class="ar">فوق الخطّ المتقطّع لا شيء يعتمد على منتج: <code>BOOK</code> مفاهيمي واحد، و<code>BOOK</code> منطقي واحد. وتحته نموذج فيزيائي لكل RDBMS. والجدولان <code>BOOKS</code> لا يختلفان إلا في طريقة كتابة كل منتج لأنواعه.</span></figcaption></figure>
+
+  <h3 id="t2l3-s4"><span class="en">What it buys</span><span class="ar">ما الذي يكسبه</span></h3>
+
+  <p class="en">The slides say each relational model can have one or more physical models, one for each RDBMS you deploy to. So moving products means writing one new physical model. The conceptual and logical models &mdash; the hard part, agreed with the client &mdash; are untouched.</p>
+  <p class="ar">تقول الشرائح إن لكل نموذج علائقي نموذجًا فيزيائيًّا واحدًا أو أكثر، واحدًا لكل RDBMS تنشر عليه. فالانتقال إلى منتج آخر يعني كتابة نموذج فيزيائي جديد واحد. أمّا النموذجان المفاهيمي والمنطقي &mdash; الجزء الصعب، المتّفق عليه مع العميل &mdash; فلا يُمسّان.</p>
+  <p class="en">And because an ERD needs no database at all, it can be drawn, argued over and corrected before anyone has chosen a product. A logical model may still say a title is a character string; it never says <code>VARCHAR2(50)</code>.</p>
+  <p class="ar">ولأن مخطّط الكيانات والعلاقات لا يحتاج إلى قاعدة بيانات أصلًا، يمكن رسمه ومناقشته وتصحيحه قبل أن يختار أحدٌ منتجًا. وقد يقول النموذج المنطقي إن العنوان سلسلة محارف، لكنه لا يقول أبدًا <code>VARCHAR2(50)</code>.</p>
+
+  <div class="evolve" id="t2l3-e3">
+    <div class="ver" data-title-en="Version 1 — Oracle types inside the logical model" data-title-ar="النسخة 1 — أنواع Oracle داخل النموذج المنطقي">
+      <pre class="code" data-lang="text"><code>BOOK                       (logical model)
+  # * Id      VARCHAR2(15)
+  U * Title   VARCHAR2(50)</code></pre>
+      <p class="en">Defect: the logical model is tied to Oracle. When the department moves products, this model is wrong too, and two models must be redrawn instead of one. The faculty member also now reviews types they cannot judge.</p>
+      <p class="ar">العيب: صار النموذج المنطقي مربوطًا بـ Oracle. فحين ينتقل القسم إلى منتج آخر يصبح هذا النموذج خاطئًا أيضًا، ويجب إعادة رسم نموذجين بدل واحد. كما صار عضو هيئة التدريس يراجع أنواعًا لا يستطيع الحكم عليها.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — implementation-free logical, one physical per RDBMS" data-title-ar="النسخة 2 — منطقي مستقلّ عن التنفيذ، وفيزيائي لكل RDBMS">
+      <pre class="code" data-lang="text"><code>BOOK                       (logical model, any product)
+  # * Id
+  U * Title
+
+BOOKS (physical, Oracle)        BOOKS (physical, another RDBMS)
+  Id    VARCHAR2(15)              id    VARCHAR(15)
+  Title VARCHAR2(50)              title VARCHAR(50)</code></pre>
+      <p class="en">Fixed: the product's spelling lives only in the physical models. Moving products adds one physical model and leaves the logical model exactly as the client approved it.</p>
+      <p class="ar">أُصلح: طريقة كتابة المنتج لا تعيش إلا في النماذج الفيزيائية. والانتقال إلى منتج آخر يضيف نموذجًا فيزيائيًّا واحدًا، ويترك النموذج المنطقي كما وافق عليه العميل تمامًا.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The SQL track's examples write <code>VARCHAR</code>, not Oracle's <code>VARCHAR2</code>. That is a second physical model of the same logical <code>BOOK</code>. Build it and add a duplicate title:</p>
+    <p class="ar">تكتب أمثلة مسار SQL <code>VARCHAR</code>، لا <code>VARCHAR2</code> الخاصة بـ Oracle. وهذا نموذج فيزيائي ثانٍ للـ <code>BOOK</code> المنطقي نفسه. ابنِه وأضف عنوانًا مكرّرًا:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE books (id VARCHAR(15) PRIMARY KEY, title VARCHAR(50) NOT NULL UNIQUE)","INSERT INTO books VALUES ('BK001', 'A Vision'), ('BK002', 'War and Peace')"],"sql":"INSERT INTO books VALUES ('BK003', 'War and Peace');"}
+      </script>
+    </div>
+    <div class="output">
+      <pre class="code" data-lang="text"><code>Cannot insert record, because it already exists in unique index</code></pre>
+    </div>
+    <p class="en">Different spelling, same promise. The <code>U</code> on <code>Title</code> was decided once, in the logical model, and both physical models keep it.</p>
+    <p class="ar">كتابة مختلفة، والوعد نفسه. فعلامة <code>U</code> على <code>Title</code> قُرّرت مرّة واحدة في النموذج المنطقي، والنموذجان الفيزيائيان كلاهما يحافظ عليها.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · the SQL track</span><span class="ar">خيط · مسار SQL</span></h4>
+    <p class="en"><a href="../chapters/chapter-2.html">SQL Chapter 2 &mdash; Multiple Columns</a> gives each column a data type. That is physical-model work. What the SQL chapter takes as given &mdash; which columns, and which must be filled &mdash; was decided one model higher.</p>
+    <p class="ar">يعطي <a href="../chapters/chapter-2.html">الفصل 2 من مسار SQL &mdash; أعمدة متعدّدة</a> كل عمود نوع بياناته. وهذا عمل النموذج الفيزيائي. أمّا ما يأخذه فصل SQL مسلَّمًا &mdash; أيّ الأعمدة، وأيّها يجب أن يُملأ &mdash; فقد قُرّر في نموذج أعلى.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The department moves the library to a different RDBMS. Which of Matt's models must change?</p>
+    <p class="q ar">ينقل القسم المكتبة إلى RDBMS آخر. أيّ نماذج مات يجب أن يتغيّر؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">All three</span><span class="ar">الثلاثة كلّها</span></button></li>
+      <li><button class="opt"><span class="en">The logical and the physical</span><span class="ar">المنطقي والفيزيائي</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Only the physical: a new one is written for the new product</span><span class="ar">الفيزيائي فقط: يُكتب نموذج جديد للمنتج الجديد</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The conceptual and logical models are implementation-free, so a change of product does not touch them. Each RDBMS gets its own physical model.</p>
+      <p class="ar">النموذجان المفاهيمي والمنطقي مستقلّان عن التنفيذ، فتغيير المنتج لا يمسّهما. ولكل RDBMS نموذجه الفيزيائي الخاص.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The library has not chosen any database product yet. Can Matt still draw its ERD?</p>
+    <p class="q ar">لم تختر المكتبة أيّ منتج قواعد بيانات بعد. هل يستطيع مات مع ذلك رسم مخطّط الكيانات والعلاقات لها؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">Yes &mdash; an ERD represents the data requirements even in the absence of a database</span><span class="ar">نعم &mdash; يمثّل المخطّط متطلبات البيانات حتى في غياب قاعدة البيانات</span></button></li>
+      <li><button class="opt"><span class="en">No &mdash; the ERD depends on the product's data types</span><span class="ar">لا &mdash; المخطّط يعتمد على أنواع بيانات المنتج</span></button></li>
+      <li><button class="opt"><span class="en">Only the conceptual part; attributes need a product</span><span class="ar">الجزء المفاهيمي فقط؛ فالخصائص تحتاج إلى منتج</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">That is the slides' own definition of implementation-free. Attributes and UIDs belong to the logical model, which is implementation-free too.</p>
+      <p class="ar">هذا تعريف الشرائح نفسها للاستقلال عن التنفيذ. والخصائص والمعرّفات الفريدة تنتمي إلى النموذج المنطقي، وهو أيضًا مستقلّ عن التنفيذ.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t2l3-h7"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Which model?</span><span class="ar">تمرين 1 · أيّ نموذج؟</span></h4>
+    <p class="en">Name the first model (conceptual, logical or physical) in which each item appears. (a) <code>MEMBER</code> borrows <code>BOOK</code>. (b) <code>o State</code>. (c) <code>Title VARCHAR2(50)</code>. (d) <code># * Id</code> on <code>AUTHOR</code>. (e) <code>BOOKS_PUBLISHERS_FK</code>. (f) <code>BOOK AUTHOR</code>.</p>
+    <p class="ar">سمِّ أوّل نموذج (مفاهيمي أو منطقي أو فيزيائي) يظهر فيه كل بند. (أ) <code>MEMBER</code> يستعير <code>BOOK</code>. (ب) <code>o State</code>. (ج) <code>Title VARCHAR2(50)</code>. (د) <code># * Id</code> في <code>AUTHOR</code>. (هـ) <code>BOOKS_PUBLISHERS_FK</code>. (و) <code>BOOK AUTHOR</code>.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) Conceptual: a relationship. (b) Logical: an optional attribute. (c) Physical: a product data type with precision. (d) Logical: a UID. (e) Physical: a named constraint. (f) Logical: it appears when the detail is worked out.</p>
+      <p class="ar">(أ) مفاهيمي: علاقة. (ب) منطقي: خاصية اختيارية. (ج) فيزيائي: نوع بيانات منتج مع دقّته. (د) منطقي: معرّف فريد. (هـ) فيزيائي: قيد مسمّى. (و) منطقي: يظهر حين تُفصَّل البيانات.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Put the process in order</span><span class="ar">تمرين 2 · رتّب العملية</span></h4>
+    <p class="en">Order these seven steps: Build · Conceptual Data Modeling · Database Build · Business Information Requirements · Design · Database Design · Strategy and Analysis. Then mark which three are phases and which four are what the phases produce.</p>
+    <p class="ar">رتّب هذه الخطوات السبع: Build · Conceptual Data Modeling · Database Build · Business Information Requirements · Design · Database Design · Strategy and Analysis. ثم حدّد أيّ ثلاث منها مراحل، وأيّ أربع هي ما تنتجه المراحل.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Business Information Requirements &rarr; <strong>Strategy and Analysis</strong> &rarr; Conceptual Data Modeling &rarr; <strong>Design</strong> &rarr; Database Design &rarr; <strong>Build</strong> &rarr; Database Build. The three in bold are phases; the other four are what goes in and comes out.</p>
+      <p class="ar"><span dir="ltr">Business Information Requirements &rarr; <strong>Strategy and Analysis</strong> &rarr; Conceptual Data Modeling &rarr; <strong>Design</strong> &rarr; Database Design &rarr; <strong>Build</strong> &rarr; Database Build</span>. الثلاث المكتوبة بالخطّ العريض مراحل، والأربع الأخرى ما يدخل إليها وما يخرج منها.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Too much, too early</span><span class="ar">تمرين 3 · أكثر من اللازم، قبل الأوان</span></h4>
+    <p class="en">A classmate's "conceptual model" shows <code>MEMBER (# * Id, * First name, o State)</code> joined to <code>BOOK</code>, and a note: "<code>Id</code> is <code>NUMBER</code>." Name everything on it that does not belong in a conceptual model, and say which model each item belongs to.</p>
+    <p class="ar">يعرض «النموذج المفاهيمي» لأحد الزملاء <code>MEMBER (# * Id, * First name, o State)</code> مربوطًا بـ <code>BOOK</code>، وملاحظة: «<code>Id</code> من النوع <code>NUMBER</code>». سمِّ كل ما فيه ممّا لا ينتمي إلى نموذج مفاهيمي، وقل إلى أيّ نموذج ينتمي كل بند.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">The attributes (<code>First name</code>, <code>State</code>), their marks <code>*</code> and <code>o</code>, and the UID <code># Id</code> belong to the logical model. "<code>NUMBER</code>" is a product data type and belongs to the physical model. What may stay: the entities <code>MEMBER</code> and <code>BOOK</code> and the relationship between them &mdash; which must be named at both ends.</p>
+      <p class="ar">الخصائص (<code>First name</code> و<code>State</code>) وعلامتاهما <code>*</code> و<code>o</code>، والمعرّف الفريد <code># Id</code> تنتمي إلى النموذج المنطقي. و«<code>NUMBER</code>» نوع بيانات منتج، فينتمي إلى النموذج الفيزيائي. وما يجوز أن يبقى: الكيانان <code>MEMBER</code> و<code>BOOK</code> والعلاقة بينهما &mdash; ويجب أن تُسمّى من طرفيها.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · From logical to physical</span><span class="ar">تمرين 4 · من المنطقي إلى الفيزيائي</span></h4>
+    <p class="en">The logical model has <code>PUBLISHER (# * Id, * Name)</code> and <code>AUTHOR (# * Id, * Name)</code>. Using the four steps and Matt's physical diagram for the types, write both <code>CREATE TABLE</code> statements. Then insert an author with no name and check that the <code>*</code> was kept.</p>
+    <p class="ar">في النموذج المنطقي <code>PUBLISHER (# * Id, * Name)</code> و<code>AUTHOR (# * Id, * Name)</code>. باستعمال الخطوات الأربع، ومخطّط مات الفيزيائي للأنواع، اكتب جملتَي <code>CREATE TABLE</code>. ثم أضف مؤلفًا بلا اسم، وتحقّق من أن علامة <code>*</code> حُفظت.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"explore","objects":true,"dataset":{},"sql":""}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Each entity becomes a table, each attribute a column; <code>#</code> becomes <code>PRIMARY KEY</code> and <code>*</code> becomes <code>NOT NULL</code>. The types come from the physical model.</p>
+      <p class="ar">يصبح كل كيان جدولًا، وكل خاصية عمودًا؛ وتصبح <code>#</code> <code>PRIMARY KEY</code>، و<code>*</code> <code>NOT NULL</code>. أمّا الأنواع فمن النموذج الفيزيائي.</p>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE publishers (
+  id   NUMBER       PRIMARY KEY,
+  name VARCHAR2(50) NOT NULL
+);
+
+CREATE TABLE authors (
+  id   NUMBER       PRIMARY KEY,
+  name VARCHAR2(30) NOT NULL
+);
+
+INSERT INTO publishers VALUES (1, 'Riwaq Press');
+INSERT INTO authors VALUES (1, 'Oscar Wilde');
+INSERT INTO authors VALUES (2, NULL);</code></pre>
+      <div class="output">
+        <pre class="code" data-lang="text"><code>Wrong NULL value in NOT NULL column name</code></pre>
+      </div>
+      <p class="en">The first author is saved; the second is refused. Notice that <code>authors.id</code> is a <code>NUMBER</code> here, while lesson 2 used text ids like <code>AD0001</code>: that is exactly the kind of choice the physical model makes and the logical model leaves open.</p>
+      <p class="ar">يُحفظ المؤلف الأول، ويُرفض الثاني. ولاحظ أن <code>authors.id</code> هنا <code>NUMBER</code>، بينما استعمل الدرس 2 معرّفات نصّية مثل <code>AD0001</code>: وهذا بالضبط نوع الاختيار الذي يتّخذه النموذج الفيزيائي ويتركه النموذج المنطقي مفتوحًا.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Implementation-free?</span><span class="ar">تمرين 5 · مستقلّ عن التنفيذ؟</span></h4>
+    <p class="en">For each statement, say whether it may appear in an implementation-free model, and why. (a) "Each book has exactly one title, and no two books share it." (b) "<code>Title</code> is <code>VARCHAR2(50)</code>." (c) "A member may be recorded without a state." (d) "Create an index on <code>MEMBERS.Last_Name</code>."</p>
+    <p class="ar">لكل عبارة، قل هل يجوز أن تظهر في نموذج مستقلّ عن التنفيذ، ولماذا. (أ) «لكل كتاب عنوان واحد بالضبط، ولا يتشارك كتابان عنوانًا». (ب) «<code>Title</code> من النوع <code>VARCHAR2(50)</code>». (ج) «يجوز تسجيل العضو بلا ولاية». (د) «أنشئ فهرسًا على <code>MEMBERS.Last_Name</code>».</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) Yes: it is <code>U * Title</code>, true in any product. (b) No: <code>VARCHAR2</code> is Oracle's spelling, so it belongs to a physical model. (c) Yes: it is <code>o State</code>. (d) No: the slides list indexes among the physical model's objects.</p>
+      <p class="ar">(أ) نعم: إنها <code>U * Title</code>، صحيحة في أيّ منتج. (ب) لا: <code>VARCHAR2</code> طريقة Oracle في الكتابة، فتنتمي إلى نموذج فيزيائي. (ج) نعم: إنها <code>o State</code>. (د) لا: تذكر الشرائح الفهارس بين كائنات النموذج الفيزيائي.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">The development process: requirements &rarr; strategy and analysis &rarr; conceptual model &rarr; design &rarr; database design &rarr; build &rarr; database. SQL is written only in the last phase.</li>
+      <li class="ar">عملية التطوير: المتطلبات &larr; الاستراتيجية والتحليل &larr; النموذج المفاهيمي &larr; التصميم &larr; تصميم قاعدة البيانات &larr; البناء &larr; قاعدة البيانات. ولا تُكتب SQL إلا في المرحلة الأخيرة.</li>
+      <li class="en">Conceptual: entities and relationships, in the business's words. It refuses attributes and unique identifiers.</li>
+      <li class="ar">المفاهيمي: كيانات وعلاقات بلغة العمل. ويرفض الخصائص والمعرّفات الفريدة.</li>
+      <li class="en">Logical (the ERM, drawn as an ERD): every attribute and UID, with <code>#</code>, <code>*</code>, <code>o</code>, <code>U</code>, optionality and cardinality. It refuses product details.</li>
+      <li class="ar">المنطقي (نموذج الكيانات والعلاقات، مرسومًا في ERD): كل خاصية ومعرّف فريد، مع <code>#</code> و<code>*</code> و<code>o</code> و<code>U</code>، والإلزامية والعدد. ويرفض تفاصيل المنتج.</li>
+      <li class="en">Physical: entities &rarr; tables, relationships &rarr; foreign keys, attributes &rarr; columns, plus types, precision and named constraints, for one RDBMS.</li>
+      <li class="ar">الفيزيائي: الكيانات &larr; جداول، والعلاقات &larr; مفاتيح أجنبية، والخصائص &larr; أعمدة، مع الأنواع والدقّة والقيود المسمّاة، لـ RDBMS واحد.</li>
+      <li class="en">Conceptual and logical models are implementation-free; one logical model can have one physical model per RDBMS.</li>
+      <li class="ar">النموذجان المفاهيمي والمنطقي مستقلّان عن التنفيذ، ويمكن أن يكون للنموذج المنطقي الواحد نموذج فيزيائي لكل RDBMS.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Starting with <code>CREATE TABLE</code> before anyone has agreed what the business needs.</li>
+      <li class="ar">البدء بـ <code>CREATE TABLE</code> قبل أن يتّفق أحد على ما يحتاجه العمل.</li>
+      <li class="en">Putting attributes or UIDs in a conceptual model &mdash; or data types like <code>VARCHAR2(50)</code> in a logical one.</li>
+      <li class="ar">وضع الخصائص أو المعرّفات الفريدة في نموذج مفاهيمي &mdash; أو أنواع بيانات مثل <code>VARCHAR2(50)</code> في نموذج منطقي.</li>
+      <li class="en">Showing the client the physical model because it has "the most detail".</li>
+      <li class="ar">عرض النموذج الفيزيائي على العميل لأنه يحوي «أكثر التفاصيل».</li>
+      <li class="en">Thinking a relationship disappears in the physical model. It becomes a foreign key column.</li>
+      <li class="ar">الظنّ بأن العلاقة تختفي في النموذج الفيزيائي. إنها تصبح عمود مفتاح أجنبي.</li>
+      <li class="en">Redrawing the logical model when only the database product changed.</li>
+      <li class="ar">إعادة رسم النموذج المنطقي حين لم يتغيّر إلا منتج قاعدة البيانات.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="../tests/t2-test-03.html#t2-test-03">Test 3 &mdash; Three Models, One Database</a>. Then <a href="../lessons/t2-lesson-04.html#t2-lesson-04">Lesson 4 &mdash; Entities and Instances</a> opens the conceptual model and looks closely at the first thing in it: the entity.</p>
+    <p class="ar">اختبر نفسك بـ<a href="../tests/t2-test-03.html#t2-test-03">الاختبار 3 &mdash; ثلاثة نماذج، قاعدة بيانات واحدة</a>. ثم يفتح <a href="../lessons/t2-lesson-04.html#t2-lesson-04">الدرس 4 &mdash; الكيانات والنُسخ</a> النموذج المفاهيمي، وينظر عن قرب في أوّل ما فيه: الكيان.</p>
+  </div>
 
 </section>
 <nav class="pager"></nav>
@@ -69,6 +1009,9 @@
 <script src="../assets/theory/js/anchors.js"></script>
 <script src="../assets/theory/js/chrome.js"></script>
 <script src="../assets/theory/js/code.js"></script>
+<script src="../assets/vendor/alasql/alasql.min.js"></script>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/widget.js"></script>
 <script src="../assets/theory/js/app.js"></script>
 </body>
 </html>

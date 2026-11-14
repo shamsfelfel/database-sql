@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" direction="ltr" role="img" aria-labelledby="t2-implementation-free-t">
+<title id="t2-implementation-free-t">One conceptual BOOK, one logical BOOK, two physical BOOKS tables for two products / BOOK مفاهيمي واحد، وBOOK منطقي واحد، وجدولا BOOKS فيزيائيان لمنتجين</title>
+<g class="en"><text x="450" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">One logical model, one physical model per RDBMS</text></g><g class="ar"><text x="450" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">نموذج منطقي واحد، ونموذج فيزيائي لكل RDBMS</text></g>
+<g class="en"><text x="20" y="82" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--font, sans-serif);font-size:12.5px;font-weight:600">conceptual</text></g><g class="ar"><text x="110" y="82" text-anchor="start" direction="rtl" style="fill:var(--dg-accent, var(--accent));font-family:var(--font-ar, sans-serif);font-size:13.5px;font-weight:600">المفاهيمي</text></g>
+<g class="en"><text x="20" y="175" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--font, sans-serif);font-size:12.5px;font-weight:600">logical</text></g><g class="ar"><text x="110" y="175" text-anchor="start" direction="rtl" style="fill:var(--dg-accent, var(--accent));font-family:var(--font-ar, sans-serif);font-size:13.5px;font-weight:600">المنطقي</text></g>
+<g class="en"><text x="20" y="320" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--font, sans-serif);font-size:12.5px;font-weight:600">physical</text></g><g class="ar"><text x="110" y="320" text-anchor="start" direction="rtl" style="fill:var(--dg-accent, var(--accent));font-family:var(--font-ar, sans-serif);font-size:13.5px;font-weight:600">الفيزيائي</text></g>
+<rect x="400" y="58" width="150" height="40" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="475" y="83" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK</text>
+<rect x="390" y="132" width="170" height="82" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="475" y="154" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK</text>
+<text x="404" y="176" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="404" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">U * Title</text>
+<path d="M475 98 L475 121" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M475 130 L470 121 L480 121 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<path d="M130 240 L880 240" style="stroke:var(--dg-warn, var(--warn));stroke-width:1.5;stroke-dasharray:3 4;fill:none"/>
+<g class="en"><text x="875" y="232" text-anchor="end" style="fill:var(--dg-warn, var(--warn));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">implementation-free ↑</text></g><g class="ar"><text x="875" y="232" text-anchor="start" direction="rtl" style="fill:var(--dg-warn, var(--warn));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">↑ مستقلّ عن التنفيذ</text></g>
+<g class="en"><text x="875" y="256" text-anchor="end" style="fill:var(--dg-warn, var(--warn));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">tied to one product ↓</text></g><g class="ar"><text x="875" y="256" text-anchor="start" direction="rtl" style="fill:var(--dg-warn, var(--warn));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">↓ مرتبط بمنتج واحد</text></g>
+<rect x="170" y="290" width="250" height="82" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="170" y="290" width="250" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="295" y="308" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOKS</text>
+<text x="180" y="336" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">P*</text>
+<text x="212" y="336" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Id</text>
+<text x="410" y="336" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(15)</text>
+<text x="180" y="355" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">U*</text>
+<text x="212" y="355" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Title</text>
+<text x="410" y="355" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(50)</text>
+<rect x="530" y="290" width="250" height="82" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="530" y="290" width="250" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="655" y="308" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOKS</text>
+<text x="540" y="336" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">P*</text>
+<text x="572" y="336" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">id</text>
+<text x="770" y="336" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR(15)</text>
+<text x="540" y="355" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">U*</text>
+<text x="572" y="355" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">title</text>
+<text x="770" y="355" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR(50)</text>
+<g class="en"><text x="295" y="282" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">for Oracle</text></g><g class="ar"><text x="295" y="282" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">لـ Oracle</text></g>
+<g class="en"><text x="655" y="282" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">for this site’s in-browser SQL engine</text></g><g class="ar"><text x="655" y="282" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">لمحرّك SQL داخل المتصفح في هذا الموقع</text></g>
+<path d="M450 214 L308.504 263.052" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M300 266 L306.866 258.328 L310.141 267.776 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<path d="M500 214 L641.496 263.052" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M650 266 L639.859 267.776 L643.134 258.328 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+</svg>

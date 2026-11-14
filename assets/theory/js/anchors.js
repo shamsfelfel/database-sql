@@ -56,6 +56,20 @@ window.DBTAnchors = {
 "t2l2-s2": "lessons/t2-lesson-02.html",
 "t2l2-s3": "lessons/t2-lesson-02.html",
 "t2l2-s4": "lessons/t2-lesson-02.html",
+"t2l3-e1": "lessons/t2-lesson-03.html",
+"t2l3-e2": "lessons/t2-lesson-03.html",
+"t2l3-e3": "lessons/t2-lesson-03.html",
+"t2l3-h1": "lessons/t2-lesson-03.html",
+"t2l3-h2": "lessons/t2-lesson-03.html",
+"t2l3-h3": "lessons/t2-lesson-03.html",
+"t2l3-h4": "lessons/t2-lesson-03.html",
+"t2l3-h5": "lessons/t2-lesson-03.html",
+"t2l3-h6": "lessons/t2-lesson-03.html",
+"t2l3-h7": "lessons/t2-lesson-03.html",
+"t2l3-s1": "lessons/t2-lesson-03.html",
+"t2l3-s2": "lessons/t2-lesson-03.html",
+"t2l3-s3": "lessons/t2-lesson-03.html",
+"t2l3-s4": "lessons/t2-lesson-03.html",
 "t3-chapter": "chapters/t3.html",
 "t3-exam-a": "exams/t3-exam-a.html",
 "t3-exam-b": "exams/t3-exam-b.html",
@@ -232,6 +246,50 @@ window.DBTHeadings = {
 "t2l2-s4": {
 "ar": "قيم مفردة، من النوع نفسه",
 "en": "Single values, of the same kind"
+},
+"t2l3-h1": {
+"ar": "١ · من طلبٍ إلى قاعدة بيانات تعمل",
+"en": "1 · From a request to a running database"
+},
+"t2l3-h2": {
+"ar": "٢ · النموذج المفاهيمي: ما الذي يحتاجه العمل",
+"en": "2 · The conceptual model: what the business needs"
+},
+"t2l3-h3": {
+"ar": "٣ · النموذج المنطقي: كل التفاصيل، بلا منتج",
+"en": "3 · The logical model: every detail, no product"
+},
+"t2l3-h4": {
+"ar": "٤ · النموذج الفيزيائي: قاعدة بيانات واحدة، منتج واحد",
+"en": "4 · The physical model: one database, one product"
+},
+"t2l3-h5": {
+"ar": "٥ · مكتبة واحدة، مرسومة ثلاث مرّات",
+"en": "5 · One library, drawn three times"
+},
+"t2l3-h6": {
+"ar": "٦ · الاستقلال عن التنفيذ، وما الذي يكسبه",
+"en": "6 · Implementation-free, and what it buys"
+},
+"t2l3-h7": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t2l3-s1": {
+"ar": "ما الذي يحدّده، وما الذي يتركه",
+"en": "What it identifies, and what it leaves out"
+},
+"t2l3-s2": {
+"ar": "قراءة العلامات",
+"en": "Reading the marks"
+},
+"t2l3-s3": {
+"ar": "أربع خطوات",
+"en": "Four steps"
+},
+"t2l3-s4": {
+"ar": "ما الذي يكسبه",
+"en": "What it buys"
 },
 "t3idx-h1": {
 "ar": "الدروس",

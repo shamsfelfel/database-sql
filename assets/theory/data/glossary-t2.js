@@ -69,6 +69,28 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "conceptual-model",
+  "term": {
+   "en": "Conceptual model",
+   "ar": "النموذج المفاهيمي"
+  },
+  "def": {
+   "en": "A model that captures the needs of a business as its important entities and the relationships among them, without attributes, unique identifiers or implementation.",
+   "ar": "نموذج يلتقط احتياجات العمل في صورة كياناته المهمّة والعلاقات بينها، دون خصائص أو معرّفات فريدة أو تنفيذ."
+  },
+  "cat": {
+   "en": "Data models",
+   "ar": "نماذج البيانات"
+  },
+  "see": [
+   "logical-model",
+   "implementation-free"
+  ],
+  "used": [
+   "t2l3-h2"
+  ]
+ },
+ {
   "id": "data-inconsistency",
   "term": {
    "en": "Data inconsistency",
@@ -88,6 +110,28 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l1-s3"
+  ]
+ },
+ {
+  "id": "data-modeling",
+  "term": {
+   "en": "Data modeling",
+   "ar": "نمذجة البيانات"
+  },
+  "def": {
+   "en": "The process of capturing the important concepts and rules that shape a business and depicting them visually in a diagram.",
+   "ar": "عملية التقاط المفاهيم والقواعد المهمّة التي تُشكّل العمل، وتمثيلها بصريًّا في مخطّط."
+  },
+  "cat": {
+   "en": "Data models",
+   "ar": "نماذج البيانات"
+  },
+  "see": [
+   "erd",
+   "conceptual-model"
+  ],
+  "used": [
+   "t2l3-h5"
   ]
  },
  {
@@ -113,6 +157,28 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "development-process",
+  "term": {
+   "en": "Database development process",
+   "ar": "عملية تطوير قاعدة البيانات"
+  },
+  "def": {
+   "en": "The path from business information requirements, through strategy and analysis, design and build, to a working database.",
+   "ar": "الطريق من متطلبات معلومات العمل، عبر الاستراتيجية والتحليل ثم التصميم ثم البناء، إلى قاعدة بيانات تعمل."
+  },
+  "cat": {
+   "en": "Data models",
+   "ar": "نماذج البيانات"
+  },
+  "see": [
+   "conceptual-model",
+   "physical-model"
+  ],
+  "used": [
+   "t2l3-h1"
+  ]
+ },
+ {
   "id": "delete-anomaly",
   "term": {
    "en": "Delete anomaly",
@@ -132,6 +198,50 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l1-h6"
+  ]
+ },
+ {
+  "id": "erd",
+  "term": {
+   "en": "Entity relationship diagram (ERD)",
+   "ar": "مخطّط الكيانات والعلاقات (ERD)"
+  },
+  "def": {
+   "en": "A drawing used to represent a data model; the model does not require one, but it is a very useful tool.",
+   "ar": "رسمٌ يُستعمل لتمثيل نموذج بيانات؛ لا يشترطه النموذج، لكنه أداة مفيدة جدًّا."
+  },
+  "cat": {
+   "en": "Data models",
+   "ar": "نماذج البيانات"
+  },
+  "see": [
+   "entity-relationship-model",
+   "data-modeling"
+  ],
+  "used": [
+   "t2l3-h3"
+  ]
+ },
+ {
+  "id": "entity-relationship-model",
+  "term": {
+   "en": "Entity relationship model (ERM)",
+   "ar": "نموذج الكيانات والعلاقات (ERM)"
+  },
+  "def": {
+   "en": "A list of all entities, attributes and relationships of importance, with background information such as descriptions, data types and constraints.",
+   "ar": "قائمة بكل الكيانات والخصائص والعلاقات المهمّة، مع معلومات خلفية كالأوصاف وأنواع البيانات والقيود."
+  },
+  "cat": {
+   "en": "Data models",
+   "ar": "نماذج البيانات"
+  },
+  "see": [
+   "erd",
+   "logical-model"
+  ],
+  "used": [
+   "t2l3-h3"
   ]
  },
  {
@@ -201,6 +311,29 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "implementation-free",
+  "term": {
+   "en": "Implementation-free",
+   "ar": "مستقلّ عن التنفيذ"
+  },
+  "def": {
+   "en": "Said of a model that represents the data requirements of a business regardless of the type of database used, and even in the absence of one.",
+   "ar": "وصفٌ لنموذج يمثّل متطلبات بيانات العمل بغضّ النظر عن نوع قاعدة البيانات المستعملة، بل حتى في غياب أيّ قاعدة بيانات."
+  },
+  "cat": {
+   "en": "Data models",
+   "ar": "نماذج البيانات"
+  },
+  "see": [
+   "conceptual-model",
+   "logical-model",
+   "physical-model"
+  ],
+  "used": [
+   "t2l3-h6"
+  ]
+ },
+ {
   "id": "insert-anomaly",
   "term": {
    "en": "Insert anomaly",
@@ -245,6 +378,29 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "logical-model",
+  "term": {
+   "en": "Logical model",
+   "ar": "النموذج المنطقي"
+  },
+  "def": {
+   "en": "A model that specifies every entity, attribute, unique identifier and relationship, with optionality and cardinality, without regard to physical implementation.",
+   "ar": "نموذج يحدّد كل كيان وخاصية ومعرّف فريد وعلاقة، مع الإلزامية والعدد، دون اعتبار للتنفيذ الفيزيائي."
+  },
+  "cat": {
+   "en": "Data models",
+   "ar": "نماذج البيانات"
+  },
+  "see": [
+   "conceptual-model",
+   "physical-model",
+   "entity-relationship-model"
+  ],
+  "used": [
+   "t2l3-h3"
+  ]
+ },
+ {
   "id": "multi-user-access",
   "term": {
    "en": "Multi-user access",
@@ -263,6 +419,30 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l1-s2"
+  ]
+ },
+ {
+  "id": "physical-model",
+  "term": {
+   "en": "Physical model",
+   "ar": "النموذج الفيزيائي"
+  },
+  "def": {
+   "en": "An extension of a logical model into tables, columns, data types, precision and keys, describing how it is implemented in one specific database.",
+   "ar": "امتداد للنموذج المنطقي إلى جداول وأعمدة وأنواع بيانات ودقّة ومفاتيح، يصف كيف يُنفَّذ في قاعدة بيانات محدّدة بعينها."
+  },
+  "cat": {
+   "en": "Data models",
+   "ar": "نماذج البيانات"
+  },
+  "see": [
+   "logical-model",
+   "rdbms",
+   "table",
+   "foreign-key"
+  ],
+  "used": [
+   "t2l3-h4"
   ]
  },
  {
@@ -286,6 +466,28 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l2-h2"
+  ]
+ },
+ {
+  "id": "rdbms",
+  "term": {
+   "en": "RDBMS (relational database management system)",
+   "ar": "نظام إدارة قواعد البيانات العلائقية (RDBMS)"
+  },
+  "def": {
+   "en": "The software that stores data in related tables, such as Oracle; each one may need its own physical model.",
+   "ar": "البرنامج الذي يخزّن البيانات في جداول مترابطة، مثل Oracle؛ وقد يحتاج كلّ منها إلى نموذج فيزيائي خاص به."
+  },
+  "cat": {
+   "en": "Relational tables",
+   "ar": "الجداول العلائقية"
+  },
+  "see": [
+   "relational-database",
+   "physical-model"
+  ],
+  "used": [
+   "t2l3-h6"
   ]
  },
  {

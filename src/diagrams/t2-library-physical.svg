@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1110 440" direction="ltr" role="img" aria-labelledby="t2-library-physical-t">
+<title id="t2-library-physical-t">The library's physical model for Oracle: tables, columns, data types and keys / النموذج الفيزيائي للمكتبة على Oracle: جداول وأعمدة وأنواع بيانات ومفاتيح</title>
+<g class="en"><text x="555" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Physical model — the library, for Oracle</text></g><g class="ar"><text x="555" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">النموذج الفيزيائي — المكتبة، على Oracle</text></g>
+<rect x="20" y="60" width="230" height="177" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="20" y="60" width="230" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="135" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBERS</text>
+<text x="30" y="106" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">P*</text>
+<text x="62" y="106" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Id</text>
+<text x="240" y="106" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<text x="30" y="125" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">*</text>
+<text x="62" y="125" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">First_Name</text>
+<text x="240" y="125" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2</text>
+<text x="30" y="144" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">*</text>
+<text x="62" y="144" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Last_Name</text>
+<text x="240" y="144" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2</text>
+<text x="30" y="163" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">*</text>
+<text x="62" y="163" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Street_Address</text>
+<text x="240" y="163" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2</text>
+<text x="30" y="182" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">*</text>
+<text x="62" y="182" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">City</text>
+<text x="240" y="182" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2</text>
+<text x="30" y="201" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700"></text>
+<text x="62" y="201" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">State</text>
+<text x="240" y="201" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2</text>
+<text x="30" y="220" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">*</text>
+<text x="62" y="220" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">ZIP</text>
+<text x="240" y="220" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2</text>
+<rect x="300" y="60" width="230" height="120" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="300" y="60" width="230" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="415" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK_TRANSACTIONS</text>
+<text x="310" y="106" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">P*</text>
+<text x="342" y="106" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Tran_Date</text>
+<text x="520" y="106" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">DATE</text>
+<text x="310" y="125" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700"></text>
+<text x="342" y="125" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Type</text>
+<text x="520" y="125" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2</text>
+<text x="310" y="144" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">F*</text>
+<text x="342" y="144" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">MEMBERS_Id</text>
+<text x="520" y="144" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<text x="310" y="163" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">PF*</text>
+<text x="342" y="163" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">BOOKS_Id</text>
+<text x="520" y="163" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(15)</text>
+<rect x="580" y="60" width="230" height="101" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="580" y="60" width="230" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="695" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOKS</text>
+<text x="590" y="106" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">P*</text>
+<text x="622" y="106" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Id</text>
+<text x="800" y="106" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(15)</text>
+<text x="590" y="125" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">U*</text>
+<text x="622" y="125" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Title</text>
+<text x="800" y="125" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(50)</text>
+<text x="590" y="144" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">F</text>
+<text x="622" y="144" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">PUBLISHERS_Id</text>
+<text x="800" y="144" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<rect x="860" y="60" width="230" height="82" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="860" y="60" width="230" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="975" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PUBLISHERS</text>
+<text x="870" y="106" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">P</text>
+<text x="902" y="106" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Id</text>
+<text x="1080" y="106" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<text x="870" y="125" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">*</text>
+<text x="902" y="125" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Name</text>
+<text x="1080" y="125" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(50)</text>
+<rect x="580" y="290" width="230" height="82" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="580" y="290" width="230" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="695" y="308" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK_AUTHORS</text>
+<text x="590" y="336" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">PF*</text>
+<text x="622" y="336" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">BOOKS_Id</text>
+<text x="800" y="336" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(15)</text>
+<text x="590" y="355" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">PF*</text>
+<text x="622" y="355" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">AUTHORS_Id</text>
+<text x="800" y="355" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<rect x="860" y="290" width="230" height="82" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<rect x="860" y="290" width="230" height="26" rx="3" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="975" y="308" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">AUTHORS</text>
+<text x="870" y="336" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">P</text>
+<text x="902" y="336" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Id</text>
+<text x="1080" y="336" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<text x="870" y="355" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">*</text>
+<text x="902" y="355" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Name</text>
+<text x="1080" y="355" text-anchor="end" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(30)</text>
+<path d="M300 100 L259 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M250 100 L259 95 L259 105 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<path d="M530 100 L571 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M580 100 L571 105 L571 95 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<path d="M810 100 L851 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M860 100 L851 105 L851 95 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<path d="M695 290 L695 170" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M695 161 L700 170 L690 170 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<path d="M810 331 L851 331" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M860 331 L851 336 L851 326 Z" style="fill:var(--dg-line, var(--text-soft))"/>
+<rect x="20" y="262" width="510" height="140" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="284" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">P</text></g><g class="ar"><text x="516" y="284" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">P</text></g>
+<g class="en"><text x="64" y="284" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">primary key column</text></g><g class="ar"><text x="490" y="284" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">عمود مفتاح أساسي</text></g>
+<g class="en"><text x="36" y="306" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">F</text></g><g class="ar"><text x="516" y="306" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">F</text></g>
+<g class="en"><text x="64" y="306" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">foreign key column (PF: both)</text></g><g class="ar"><text x="490" y="306" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">عمود مفتاح أجنبي (PF: الاثنان معًا)</text></g>
+<g class="en"><text x="36" y="328" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">U</text></g><g class="ar"><text x="516" y="328" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">U</text></g>
+<g class="en"><text x="64" y="328" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">unique key column</text></g><g class="ar"><text x="490" y="328" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">عمود مفتاح فريد</text></g>
+<g class="en"><text x="36" y="350" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">*</text></g><g class="ar"><text x="516" y="350" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:13px;font-weight:700">*</text></g>
+<g class="en"><text x="64" y="350" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">NOT NULL: a value is required</text></g><g class="ar"><text x="490" y="350" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">NOT NULL: القيمة مطلوبة</text></g>
+<g class="en"><text x="36" y="378" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">Arrow: from a foreign key to the table it refers to (dashed: the key may be empty).</text></g><g class="ar"><text x="520" y="378" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">السهم: من مفتاح أجنبي إلى الجدول الذي يشير إليه (المتقطّع: يجوز أن يبقى المفتاح فارغًا).</text></g>
+</svg>
