@@ -708,7 +708,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار الفصل أ — الأساسيات"
      },
      "href": "exams/t4-exam-a.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t4-exam-b",
