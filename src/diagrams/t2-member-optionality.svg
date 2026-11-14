@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" direction="ltr" role="img" aria-labelledby="t2-member-optionality-t">
+<title id="t2-member-optionality-t">MEMBER with mandatory and optional attributes, two instances with null values, and null beside zero and a space / MEMBER بخصائص إلزامية واختيارية، ونسختان فيهما قيم null، والقيمة null إلى جانب الصفر والمسافة</title>
+<g class="en"><text x="450" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Mandatory * and optional o — and what null looks like</text></g><g class="ar"><text x="450" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإلزامية * والاختيارية o — وكيف تبدو القيمة null</text></g>
+<rect x="30" y="56" width="220" height="154" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.4"/>
+<text x="140.0" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBER</text>
+<text x="44" y="100" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="44" y="119" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="44" y="138" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<text x="44" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* City</text>
+<text x="44" y="176" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o State</text>
+<text x="44" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Cell Phone</text>
+<rect x="300" y="56" width="180" height="154" rx="4" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="390" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">Sara</text>
+<text x="314" y="100" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">1</text>
+<text x="314" y="119" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Sara</text>
+<text x="314" y="138" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Hamdan</text>
+<text x="314" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Gaza</text>
+<rect x="312" y="164" width="80" height="15" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4;stroke-dasharray:4 3"/>
+<text x="352" y="175" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:10.5px">null</text>
+<text x="314" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">0599 111 222</text>
+<rect x="500" y="56" width="180" height="154" rx="4" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="590" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">Omar</text>
+<text x="514" y="100" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">2</text>
+<text x="514" y="119" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Omar</text>
+<text x="514" y="138" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Saleh</text>
+<text x="514" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Khan Younis</text>
+<rect x="512" y="164" width="80" height="15" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4;stroke-dasharray:4 3"/>
+<text x="552" y="175" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:10.5px">null</text>
+<rect x="512" y="183" width="80" height="15" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4;stroke-dasharray:4 3"/>
+<text x="552" y="194" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:10.5px">null</text>
+<g class="en"><text x="800" y="70" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">three different things</text></g><g class="ar"><text x="800" y="70" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">ثلاثة أشياء مختلفة</text></g>
+<rect x="720" y="86" width="60" height="28" rx="3" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="750" y="104.5" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">0</text>
+<g class="en"><text x="794" y="104.5" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">zero</text></g><g class="ar"><text x="794" y="104.5" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">صفر</text></g>
+<rect x="720" y="128" width="60" height="28" rx="3" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="750" y="146.5" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">' '</text>
+<g class="en"><text x="794" y="146.5" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">a space</text></g><g class="ar"><text x="794" y="146.5" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">مسافة</text></g>
+<rect x="720" y="170" width="60" height="28" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4;stroke-dasharray:4 3"/>
+<g class="en"><text x="794" y="188.5" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">null</text></g><g class="ar"><text x="794" y="188.5" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">null</text></g>
+<rect x="30" y="230" width="840" height="52" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1.4"/>
+<g class="en"><text x="450" y="252" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px">Every * row is filled in both members. Only o rows may hold null: Sara has no state; Omar has no state and no cell phone.</text></g><g class="ar"><text x="450" y="252" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px">كل صفّ عليه * ممتلئ عند العضوين. والصفوف التي عليها o وحدها يجوز أن تحمل null: لا ولاية لـ Sara، ولا ولاية ولا هاتف لـ Omar.</text></g>
+<g class="en"><text x="450" y="271" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px">Null is unavailable, unassigned, unknown or empty — not a zero and not a space.</text></g><g class="ar"><text x="450" y="271" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px">القيمة null غير متوفّرة أو غير مُسندة أو مجهولة أو فارغة — وليست صفرًا ولا مسافة.</text></g>
+</svg>

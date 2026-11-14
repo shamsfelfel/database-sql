@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" direction="ltr" role="img" aria-labelledby="t2-books-borrowed-t">
+<title id="t2-books-borrowed-t">A multi-valued Books Borrowed attribute in MEMBER, against each borrowing as an instance of BOOK TRANSACTION / خاصية Books Borrowed متعدّدة القيم في MEMBER، مقابل كل استعارة نسخةً من BOOK TRANSACTION</title>
+<g class="en"><text x="450" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Two books in one attribute — and where they belong</text></g><g class="ar"><text x="450" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">كتابان في خاصية واحدة — وأين مكانهما</text></g>
+<g class="en"><text x="200" y="52" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">✗ many values in one attribute</text></g><g class="ar"><text x="200" y="52" text-anchor="middle" direction="rtl" style="fill:var(--dg-bad, var(--bad));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">✗ قيم كثيرة في خاصية واحدة</text></g>
+<rect x="60" y="64" width="280" height="97" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.4"/>
+<text x="200.0" y="86" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBER</text>
+<text x="74" y="108" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="74" y="127" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="74" y="146" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Books Borrowed</text>
+<rect x="60" y="180" width="280" height="52" rx="4" style="fill:var(--dg-bad-soft, var(--bad-soft));stroke:var(--dg-bad, var(--bad));stroke-width:1.4"/>
+<text x="74" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Sara · Books Borrowed =</text>
+<text x="74" y="220" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">'A Vision, Citizen of the World'</text>
+<path d="M200 161 L200 180" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<path d="M450 50 L450 300" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1;fill:none;stroke-dasharray:4 4"/>
+<g class="en"><text x="690" y="52" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">✓ each borrowing is one instance</text></g><g class="ar"><text x="690" y="52" text-anchor="middle" direction="rtl" style="fill:var(--dg-good, var(--good));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">✓ كل استعارة نسخة واحدة</text></g>
+<rect x="470" y="64" width="140" height="78" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.4"/>
+<text x="540.0" y="86" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBER</text>
+<text x="484" y="108" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="484" y="127" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<rect x="725" y="64" width="165" height="78" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.4"/>
+<text x="807.5" y="86" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK TRANSACTION</text>
+<text x="739" y="108" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Tran Date</text>
+<text x="739" y="127" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Type</text>
+<path d="M610 101 L667 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M667 101 L725 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M711 101 L725 93" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M711 101 L725 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M711 101 L725 109" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="638" y="93" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">make</text>
+<text x="682" y="121" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">made by</text>
+<rect x="560" y="180" width="300" height="28" rx="3" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.4"/>
+<text x="710" y="198.5" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">2026-03-01 · borrow · BK001</text>
+<rect x="560" y="218" width="300" height="28" rx="3" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.4"/>
+<text x="710" y="236.5" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">2026-03-05 · borrow · BK003</text>
+<path d="M780 142 L780 180" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<path d="M880 142 L880 232 L860 232" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="710" y="268" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">Sara’s two borrowings: two instances, one value each</text></g><g class="ar"><text x="710" y="268" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">استعارتا Sara: نسختان، لكلٍّ منهما قيمة واحدة</text></g>
+<g class="en"><text x="200" y="260" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">Search for one title: no match</text></g><g class="ar"><text x="200" y="260" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">ابحث عن عنوان واحد: لا تطابق</text></g>
+</svg>

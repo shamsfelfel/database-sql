@@ -39,15 +39,918 @@
 <link rel="stylesheet" href="../assets/theory/css/base.css">
 <link rel="stylesheet" href="../assets/theory/css/chrome.css">
 <link rel="stylesheet" href="../assets/theory/css/components.css">
+<link rel="stylesheet" href="../assets/theory/css/diagram.css">
+<link rel="stylesheet" href="../assets/css/widget.css">
 </head>
 <body data-chapter="t2" data-page="t2-lesson-05" data-kind="lesson" data-path="lessons/t2-lesson-05.html">
 <main>
 <section class="page" id="t2-lesson-05">
 <nav class="crumbs"></nav>
 
-  <span class="kicker">lesson</span>
+
+  <span class="kicker">Lesson 5</span>
   <h1><span class="en">Attributes and Their Values</span><span class="ar">الخصائص وقيمها</span></h1>
-  <p class="en">Being written.</p><p class="ar">قيد الكتابة.</p>
+  <p class="lede en">By the end of this lesson you will be able to name the attributes an entity needs, tell an attribute from its value, give each attribute a data type, keep every attribute to one value at a time, and mark each one mandatory or optional &mdash; choosing the non-volatile attribute whenever you can.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تسمّي الخصائص التي يحتاج إليها الكيان، وأن تميّز الخاصية من قيمتها، وأن تعطي كل خاصية نوع بيانات، وأن تُبقي كل خاصية على قيمة واحدة في كل وقت، وأن تَسِم كلًّا منها إلزامية أو اختيارية &mdash; مختارًا الخاصية غير المتقلّبة كلما استطعت.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> <a href="../lessons/t2-lesson-04.html#t2-lesson-04">Lesson 4</a> ended with five entities and an open question: what do we record about each instance? This lesson answers it. The library is the same &mdash; Matt, the faculty member, the librarian, the members Sara Hamdan, Omar Saleh and Lina Khalil, and four books. Read lesson 4 first.</p>
+    <p class="ar"><strong>السياق.</strong> انتهى <a href="../lessons/t2-lesson-04.html#t2-lesson-04">الدرس 4</a> بخمسة كيانات وسؤال مفتوح: ماذا نسجّل عن كل نسخة؟ وهذا الدرس يجيب عنه. والمكتبة هي نفسها &mdash; مات، وعضو هيئة التدريس، وأمين المكتبة، والأعضاء Sara Hamdan وOmar Saleh وLina Khalil، وأربعة كتب. اقرأ الدرس 4 أولًا.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Say what an attribute does for an entity, and list attributes for a given entity.</li>
+      <li class="ar">بيان ما تفعله الخاصية للكيان، وسرد خصائص كيان معطى.</li>
+      <li class="en">Distinguish an attribute from its value, and name the data type of each attribute.</li>
+      <li class="ar">التمييز بين الخاصية وقيمتها، وتسمية نوع بيانات كل خاصية.</li>
+      <li class="en">Explain why an attribute must be single-valued, and repair one that is not.</li>
+      <li class="ar">شرح لماذا يجب أن تكون الخاصية أحادية القيمة، وإصلاح خاصية ليست كذلك.</li>
+      <li class="en">Mark attributes mandatory or optional for a given business, and say what null means.</li>
+      <li class="ar">وَسْم الخصائص إلزامية أو اختيارية لعمل محدّد، وبيان معنى null.</li>
+      <li class="en">Tell volatile from non-volatile attributes, and choose the non-volatile one.</li>
+      <li class="ar">التمييز بين الخصائص المتقلّبة وغير المتقلّبة، واختيار غير المتقلّبة.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t2l5-h1"><span class="en">1 · What an attribute does</span><span class="ar">١ · ما الذي تفعله الخاصية</span></h2>
+
+  <div class="problem">
+    <p class="en">Sara Hamdan has kept <em>Citizen of the World</em> for a month. The librarian opens Matt's model to send her a reminder and finds a box called <code>MEMBER</code> &mdash; and nothing inside it. The library knows Sara is a member. It does not know where she lives.</p>
+    <p class="ar">احتفظت Sara Hamdan بكتاب <em>Citizen of the World</em> شهرًا كاملًا. يفتح أمين المكتبة نموذج مات ليرسل إليها تذكيرًا، فيجد صندوقًا اسمه <code>MEMBER</code> &mdash; ولا شيء في داخله. المكتبة تعرف أن Sara عضو، لكنها لا تعرف أين تسكن.</p>
+  </div>
+
+  <p class="en">An entity says <em>what</em> the business keeps data about. Attributes are that data. Like an entity, an attribute is something of significance to the business, and it gives more specific information about the entity. It also helps tell one instance from another: two members differ in their names and addresses.</p>
+  <p class="ar">يقول الكيان <em>عمّا</em> يحتفظ العمل ببيانات. والخصائص هي تلك البيانات. فالخاصية، كالكيان، شيءٌ ذو أهمية للعمل، وتعطي معلومات أدقّ عن الكيان. وتساعد أيضًا على تمييز نسخة من أخرى: فالعضوان يختلفان في اسميهما وعنوانيهما.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="attribute">attribute</span> is a specific piece of information that helps describe, quantify, qualify, classify or specify an entity.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="attribute">الخاصية</span> (Attribute) معلومة محدّدة تساعد على وصف الكيان، أو تكميمه، أو تقييمه، أو تصنيفه، أو تحديده.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-attribute-roles">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" direction="ltr" role="img" aria-labelledby="t2-attribute-roles-t">
+<title id="t2-attribute-roles-t">An attribute describes, quantifies, qualifies, classifies or specifies an entity: BOOK's five attributes and one book's values / الخاصية تصف الكيان أو تكمّمه أو تقيّمه أو تصنّفه أو تحدّده: خمس خصائص للكيان BOOK وقيم كتاب واحد</title>
+<g class="en"><text x="450" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Five jobs an attribute can do for BOOK</text></g><g class="ar"><text x="450" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">خمس وظائف تؤدّيها الخاصية للكيان BOOK</text></g>
+<rect x="40" y="60" width="230" height="135" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.4"/>
+<text x="155.0" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK</text>
+<text x="54" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Title</text>
+<text x="54" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Page Count</text>
+<text x="54" y="142" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Condition</text>
+<text x="54" y="161" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Genre</text>
+<text x="54" y="180" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Edition</text>
+<g class="en"><text x="560" y="58" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px;font-weight:600">what it does</text></g><g class="ar"><text x="560" y="58" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px;font-weight:600">ما تفعله</text></g>
+<g class="en"><text x="800" y="58" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px;font-weight:600">one value</text></g><g class="ar"><text x="800" y="58" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px;font-weight:600">قيمة واحدة</text></g>
+<path d="M276 100 L420 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="430" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">describes — what is it?</text></g><g class="ar"><text x="430" y="104" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">تَصِف — ما هو؟</text></g>
+<path d="M700 100 L735 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<text x="745" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">War and Peace</text>
+<path d="M276 119 L420 119" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="430" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">quantifies — how many?</text></g><g class="ar"><text x="430" y="123" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">تُكمِّم — كم؟</text></g>
+<path d="M700 119 L735 119" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<text x="745" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">1225</text>
+<path d="M276 138 L420 138" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="430" y="142" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">qualifies — in what state?</text></g><g class="ar"><text x="430" y="142" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">تُقيِّم — في أيّ حال؟</text></g>
+<path d="M700 138 L735 138" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<text x="745" y="142" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">worn</text>
+<path d="M276 157 L420 157" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="430" y="161" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">classifies — what kind?</text></g><g class="ar"><text x="430" y="161" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">تُصنِّف — من أيّ نوع؟</text></g>
+<path d="M700 157 L735 157" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<text x="745" y="161" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">novel</text>
+<path d="M276 176 L420 176" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="430" y="180" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">specifies — exactly which?</text></g><g class="ar"><text x="430" y="180" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">تُحدِّد — أيّها بالضبط؟</text></g>
+<path d="M700 176 L735 176" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<text x="745" y="180" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">2nd</text>
+<rect x="40" y="230" width="820" height="50" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1.4"/>
+<g class="en"><text x="450" y="260" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">The attribute is the question; the value is one instance’s answer: War and Peace, 1225 pages, worn, a novel, 2nd edition.</text></g><g class="ar"><text x="450" y="260" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">الخاصية هي السؤال، والقيمة جواب نسخة واحدة: War and Peace، و1225 صفحة، ومهترئ، ورواية، والطبعة الثانية.</text></g>
+</svg>
+<figcaption><span class="en">Five verbs from the slides, one attribute of <code>BOOK</code> for each. Read across: the attribute asks a question, and one book's value answers it.</span><span class="ar">خمسة أفعال من الشرائح، وخاصية واحدة من <code>BOOK</code> لكلٍّ منها. اقرأ أفقيًّا: الخاصية تطرح سؤالًا، وقيمة كتاب واحد تجيب عنه.</span></figcaption></figure>
+
+  <h3 id="t2l5-s1"><span class="en">Only what the business tracks</span><span class="ar">ما يتتبّعه العمل فقط</span></h3>
+
+  <p class="en">An entity could have hundreds of attributes. You model only the ones the business wants to track. The slides' example: a shoe store tracks a customer's shoe size; a grocery store does not. The same person, two businesses, two different lists.</p>
+  <p class="ar">قد تكون للكيان مئات الخصائص، لكنك لا تنمذج إلا ما يريد العمل أن يتتبّعه. ومثال الشرائح: متجر الأحذية يتتبّع مقاس حذاء الزبون، ومتجر البقالة لا يفعل. الشخص نفسه، وعملان، وقائمتان مختلفتان.</p>
+
+  <div class="evolve" id="t2l5-e1">
+    <div class="ver" data-title-en="Version 1 — an empty box" data-title-ar="الإصدار 1 — صندوق فارغ">
+      <pre class="code" data-lang="text"><code>MEMBER</code></pre>
+      <p class="en">Defect: the entity exists, but it holds no data. The library can count its members and cannot write to a single one of them. The reminder letter has no address.</p>
+      <p class="ar">العيب: الكيان موجود، لكنه لا يحمل أيّ بيانات. تستطيع المكتبة أن تعدّ أعضاءها، ولا تستطيع أن تراسل أحدًا منهم. ورسالة التذكير بلا عنوان.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — everything Matt can think of" data-title-ar="الإصدار 2 — كل ما خطر لمات">
+      <pre class="code" data-lang="text"><code>MEMBER
+  First Name   Last Name   Street Address   City   State   ZIP
+  Shoe Size    Hair Colour   Favourite Food</code></pre>
+      <p class="en">Defect: the address is there now, but so are three attributes the library will never use. Each one is data someone must collect, type and keep correct, for no question the library ever asks.</p>
+      <p class="ar">العيب: صار العنوان موجودًا، لكن معه ثلاث خصائص لن تستعملها المكتبة أبدًا. وكلٌّ منها بيانات يجب أن يجمعها أحد ويكتبها ويُبقيها صحيحة، من أجل سؤال لا تطرحه المكتبة أبدًا.</p>
+    </div>
+    <div class="ver" data-title-en="Version 3 — what the library tracks" data-title-ar="الإصدار 3 — ما تتتبّعه المكتبة">
+      <pre class="code" data-lang="text"><code>MEMBER
+  First Name   Last Name   Street Address   City   State   ZIP</code></pre>
+      <p class="en">Fixed: these are the attributes of lesson 3's logical model. Each one answers a question the library really asks &mdash; who is this, and where do we send the letter? Shoe size belongs in a shoe store's model, not this one.</p>
+      <p class="ar">أُصلح: هذه خصائص النموذج المنطقي في الدرس 3. وكلٌّ منها يجيب عن سؤال تطرحه المكتبة فعلًا &mdash; من هذا، وإلى أين نرسل الرسالة؟ أمّا مقاس الحذاء فمكانه نموذج متجر أحذية، لا هذا النموذج.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Each attribute becomes one column of the entity's table. With version 3 built, the reminder letter is one query away:</p>
+    <p class="ar">تصبح كل خاصية عمودًا واحدًا في جدول الكيان. وبعد بناء الإصدار 3، صارت رسالة التذكير على بُعد استعلام واحد:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE members (id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, street_address VARCHAR(40) NOT NULL, city VARCHAR(20) NOT NULL, state VARCHAR(20), zip VARCHAR(10) NOT NULL)","INSERT INTO members VALUES (1, 'Sara', 'Hamdan', 'Omar Al-Mukhtar St', 'Gaza', NULL, '00970'), (2, 'Omar', 'Saleh', 'Jalal St', 'Khan Younis', NULL, '00970')"],"sql":"SELECT first_name, last_name, street_address, city\nFROM members\nWHERE id = 1;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>first_name</code></th><th><code>last_name</code></th><th><code>street_address</code></th><th><code>city</code></th></tr></thead>
+          <tbody><tr><td>Sara</td><td>Hamdan</td><td>Omar Al-Mukhtar St</td><td>Gaza</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">A <code>shoe_size</code> column would cost a column in every row and answer nothing. A column you never query is the design telling you the attribute was not of significance.</p>
+    <p class="ar">عمود <code>shoe_size</code> سيكلّف عمودًا في كل صفّ ولا يجيب عن شيء. والعمود الذي لا تستعلم عنه أبدًا هو التصميم يقول لك إن الخاصية لم تكن ذات أهمية.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">On the diagram, <code>Page Count</code> answers "how many?". Which of the five jobs does it do for <code>BOOK</code>?</p>
+    <p class="q ar">في المخطّط، تجيب <code>Page Count</code> عن «كم؟». أيّ الوظائف الخمس تؤدّيها للكيان <code>BOOK</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Classifies</span><span class="ar">تُصنِّف</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Quantifies</span><span class="ar">تُكمِّم</span></button></li>
+      <li><button class="opt"><span class="en">Specifies</span><span class="ar">تُحدِّد</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">To quantify is to say how much or how many. <code>Genre</code> classifies (what kind of book), and <code>Edition</code> specifies (exactly which version).</p>
+      <p class="ar">التكميم أن تقول كم مقدارًا أو كم عددًا. أمّا <code>Genre</code> فتصنّف (أيّ نوع من الكتب)، و<code>Edition</code> تحدّد (أيّ طبعة بالضبط).</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Should the library's <code>MEMBER</code> have a <code>Shoe Size</code> attribute?</p>
+    <p class="q ar">هل يجب أن تكون للكيان <code>MEMBER</code> في المكتبة خاصية <code>Shoe Size</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Yes &mdash; every true fact about a member is an attribute</span><span class="ar">نعم &mdash; كل حقيقة صحيحة عن العضو خاصية</span></button></li>
+      <li><button class="opt"><span class="en">Yes &mdash; it helps tell two members apart</span><span class="ar">نعم &mdash; تساعد على تمييز عضو من آخر</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">No &mdash; the library does not need to track it</span><span class="ar">لا &mdash; لا تحتاج المكتبة إلى تتبّعها</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">You model only the attributes the business wants to track. A shoe store would keep shoe size; a library, like the slides' grocery store, would not.</p>
+      <p class="ar">لا تنمذج إلا الخصائص التي يريد العمل تتبّعها. متجر الأحذية يحتفظ بمقاس الحذاء، أمّا المكتبة، مثل متجر البقالة في الشرائح، فلا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t2l5-h2"><span class="en">2 · An attribute and its value</span><span class="ar">٢ · الخاصية وقيمتها</span></h2>
+
+  <div class="problem">
+    <p class="en">A classmate draws <code>MEMBER</code> with the attributes <code>Sara</code>, <code>Hamdan</code> and <code>Gaza</code>. Then Omar Saleh joins. Does <code>MEMBER</code> now need <code>Omar</code>, <code>Saleh</code> and <code>Khan Younis</code> as well? The classmate has written answers where the questions should be.</p>
+    <p class="ar">يرسم زميلٌ <code>MEMBER</code> بالخصائص <code>Sara</code> و<code>Hamdan</code> و<code>Gaza</code>. ثم ينضمّ Omar Saleh. فهل يحتاج <code>MEMBER</code> الآن إلى <code>Omar</code> و<code>Saleh</code> و<code>Khan Younis</code> أيضًا؟ لقد كتب الزميل الأجوبة في مكان الأسئلة.</p>
+  </div>
+
+  <p class="en">This is lesson 4's entity-versus-instance mistake, one level down. The attribute is <code>City</code>; it is the same for every member. "Gaza" is a <em>value</em> of that attribute, for one instance. The lecturer's notes use <code>FRUIT</code>: its attributes are name, type, region and date picked; one instance has the values Orange, citrus, west coast, 10-APR-2005.</p>
+  <p class="ar">هذا خطأ «الكيان مقابل النسخة» من الدرس 4، لكن في مستوًى أدنى. فالخاصية هي <code>City</code>، وهي نفسها لكل عضو. أمّا «Gaza» فـ<em>قيمة</em> تلك الخاصية لنسخة واحدة. وتستعمل ملاحظات المحاضِرة الكيان <code>FRUIT</code>: خصائصه name وtype وregion وdate picked، ولنسخة واحدة منه القيم Orange وcitrus وwest coast و10-APR-2005.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="attribute-value">attribute value</span> is the data one instance holds for one attribute.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="attribute-value">قيمة الخاصية</span> (Attribute Value) هي البيانات التي تحملها نسخة واحدة لخاصية واحدة.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-attribute-values">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 325" direction="ltr" role="img" aria-labelledby="t2-attribute-values-t">
+<title id="t2-attribute-values-t">MEMBER's attributes beside one instance's values and the data type of each / خصائص MEMBER إلى جانب قيم نسخة واحدة ونوع بيانات كلٍّ منها</title>
+<g class="en"><text x="450" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">MEMBER: attributes, one instance’s values, and their data types</text></g><g class="ar"><text x="450" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">MEMBER: الخصائص، وقيم نسخة واحدة، وأنواع بياناتها</text></g>
+<rect x="30" y="56" width="230" height="173" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.4"/>
+<text x="145.0" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBER</text>
+<text x="44" y="100" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="44" y="119" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="44" y="138" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<text x="44" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Street Address</text>
+<text x="44" y="176" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* City</text>
+<text x="44" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o State</text>
+<text x="44" y="214" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* ZIP</text>
+<rect x="330" y="56" width="250" height="173" rx="4" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<g class="en"><text x="455" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">one instance: Sara Hamdan</text></g><g class="ar"><text x="455" y="78" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">نسخة واحدة: Sara Hamdan</text></g>
+<g class="en"><text x="735" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">data type</text></g><g class="ar"><text x="735" y="78" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">نوع البيانات</text></g>
+<path d="M266 96 L324 96" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<text x="344" y="100" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">1</text>
+<path d="M586 96 L640 96" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="650" y="100" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">number</text></g><g class="ar"><text x="650" y="100" text-anchor="end" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">رقم</text></g>
+<path d="M266 115 L324 115" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<text x="344" y="119" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Sara</text>
+<path d="M586 115 L640 115" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="650" y="119" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">character string</text></g><g class="ar"><text x="650" y="119" text-anchor="end" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">سلسلة محارف</text></g>
+<path d="M266 134 L324 134" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<text x="344" y="138" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Hamdan</text>
+<path d="M586 134 L640 134" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="650" y="138" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">character string</text></g><g class="ar"><text x="650" y="138" text-anchor="end" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">سلسلة محارف</text></g>
+<path d="M266 153 L324 153" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<text x="344" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Omar Al-Mukhtar St</text>
+<path d="M586 153 L640 153" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="650" y="157" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">character string</text></g><g class="ar"><text x="650" y="157" text-anchor="end" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">سلسلة محارف</text></g>
+<path d="M266 172 L324 172" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<text x="344" y="176" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Gaza</text>
+<path d="M586 172 L640 172" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="650" y="176" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">character string</text></g><g class="ar"><text x="650" y="176" text-anchor="end" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">سلسلة محارف</text></g>
+<path d="M266 191 L324 191" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<rect x="344" y="181" width="90" height="17" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4;stroke-dasharray:4 3"/>
+<g class="en"><text x="389" y="194" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">null</text></g><g class="ar"><text x="389" y="194" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">null</text></g>
+<path d="M586 191 L640 191" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="650" y="195" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">character string</text></g><g class="ar"><text x="650" y="195" text-anchor="end" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">سلسلة محارف</text></g>
+<path d="M266 210 L324 210" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<text x="344" y="214" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">00970</text>
+<path d="M586 210 L640 210" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="650" y="214" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">character string</text></g><g class="ar"><text x="650" y="214" text-anchor="end" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">سلسلة محارف</text></g>
+<rect x="30" y="256" width="840" height="56" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1.4"/>
+<g class="en"><text x="450" y="279" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px">Left: the attributes, the same for every member. Middle: values, one per attribute, different for every member.</text></g><g class="ar"><text x="450" y="279" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px">يسارًا: الخصائص، وهي نفسها لكل عضو. وفي الوسط: القيم، واحدة لكل خاصية، وتختلف من عضو لآخر.</text></g>
+<g class="en"><text x="450" y="299" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px">ZIP is a character string: 00970 is not a number to add, and its leading zeros matter.</text></g><g class="ar"><text x="450" y="299" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px">وZIP سلسلة محارف: 00970 ليس عددًا للجمع، والأصفار في أوّله مهمّة.</text></g>
+</svg>
+<figcaption><span class="en">The softbox lists attributes, never values. The card beside it is one instance, Sara, holding one value per attribute. <code>State</code> holds no value at all &mdash; section 5 explains why that is allowed.</span><span class="ar">يسرد الصندوق المستدير الخصائص، ولا يسرد القيم أبدًا. والبطاقة إلى جانبه نسخة واحدة، Sara، تحمل قيمة واحدة لكل خاصية. أمّا <code>State</code> فلا تحمل قيمة إطلاقًا &mdash; ويشرح القسم 5 لماذا يجوز ذلك.</span></figcaption></figure>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The attribute is the column heading; the value is lesson 2's <em>field</em> &mdash; the one value where a row meets a column. Ask for one attribute and you get one value per instance:</p>
+    <p class="ar">الخاصية هي عنوان العمود، والقيمة هي <em>الحقل</em> في الدرس 2 &mdash; القيمة الواحدة حيث يلتقي صفّ بعمود. اطلب خاصية واحدة، تحصل على قيمة واحدة لكل نسخة:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE members (id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, street_address VARCHAR(40) NOT NULL, city VARCHAR(20) NOT NULL, state VARCHAR(20), zip VARCHAR(10) NOT NULL)","INSERT INTO members VALUES (1, 'Sara', 'Hamdan', 'Omar Al-Mukhtar St', 'Gaza', NULL, '00970'), (2, 'Omar', 'Saleh', 'Jalal St', 'Khan Younis', NULL, '00970')"],"sql":"SELECT first_name, city\nFROM members\nORDER BY id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>first_name</code></th><th><code>city</code></th></tr></thead>
+          <tbody>
+            <tr><td>Sara</td><td>Gaza</td></tr>
+            <tr><td>Omar</td><td>Khan Younis</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Two members, one <code>city</code> column, two values. The classmate's model would have needed a new column for each new city &mdash; and a column called <code>Gaza</code> holds nothing anyone could query.</p>
+    <p class="ar">عضوان، وعمود <code>city</code> واحد، وقيمتان. أمّا نموذج الزميل فكان سيحتاج إلى عمود جديد لكل مدينة جديدة &mdash; وعمود اسمه <code>Gaza</code> لا يحمل شيئًا يستطيع أحد أن يستعلم عنه.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the <code>FRUIT</code> example, which of these is an attribute, not a value?</p>
+    <p class="q ar">في مثال <code>FRUIT</code>، أيّ هذه خاصية وليس قيمة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">citrus</span><span class="ar">citrus</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">date picked</span><span class="ar">date picked</span></button></li>
+      <li><button class="opt"><span class="en">10-APR-2005</span><span class="ar">10-APR-2005</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"Date picked" is asked of every fruit, so it is the attribute. 10-APR-2005 is the orange's answer to it, and "citrus" is the orange's value for <code>type</code>.</p>
+      <p class="ar">«date picked» سؤال يُطرح على كل فاكهة، فهو الخاصية. و10-APR-2005 جواب البرتقالة عنه، و«citrus» قيمة البرتقالة للخاصية <code>type</code>.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">What should the classmate's <code>MEMBER</code> box have held instead of <code>Sara</code>, <code>Hamdan</code> and <code>Gaza</code>?</p>
+    <p class="q ar">ماذا كان يجب أن يحمل صندوق <code>MEMBER</code> عند الزميل بدلًا من <code>Sara</code> و<code>Hamdan</code> و<code>Gaza</code>؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en"><code>First Name</code>, <code>Last Name</code>, <code>City</code></span><span class="ar"><code>First Name</code> و<code>Last Name</code> و<code>City</code></span></button></li>
+      <li><button class="opt"><span class="en">Nothing &mdash; values go in the box, and the box is right</span><span class="ar">لا شيء &mdash; القيم توضع في الصندوق، والصندوق صحيح</span></button></li>
+      <li><button class="opt"><span class="en"><code>Sara</code>, <code>Omar</code>, <code>Lina</code> &mdash; one per member</span><span class="ar"><code>Sara</code> و<code>Omar</code> و<code>Lina</code> &mdash; واحدة لكل عضو</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The box names the questions asked of every member. Sara, Hamdan and Gaza are one member's answers; they live in a row of the table, not in the diagram.</p>
+      <p class="ar">يسمّي الصندوق الأسئلة التي تُطرح على كل عضو. أمّا Sara وHamdan وGaza فأجوبة عضو واحد، تعيش في صفّ من الجدول، لا في المخطّط.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t2l5-h3"><span class="en">3 · Every value has a data type</span><span class="ar">٣ · لكل قيمة نوع بيانات</span></h2>
+
+  <div class="problem">
+    <p class="en">The faculty member asks, "Which is our longest book?" Matt sorts by page count and answers <em>Citizen of the World</em> &mdash; 96 pages. <em>War and Peace</em>, with 1225, comes last. Every page count was typed correctly. The model never said what kind of value a page count is.</p>
+    <p class="ar">يسأل عضو هيئة التدريس: «ما أطول كتاب لدينا؟» فيرتّب مات حسب عدد الصفحات ويجيب: <em>Citizen of the World</em> &mdash; 96 صفحة. ويأتي <em>War and Peace</em>، بصفحاته الـ 1225، في الآخر. كُتب كل عدد صفحات صحيحًا، لكنّ النموذج لم يقل قطّ أيّ نوع من القيم هو عدد الصفحات.</p>
+  </div>
+
+  <p class="en">Attribute values can be a number, a character string, a date, an image, a sound, and so on. The slides call these data types, or formats. Every attribute stores one piece of data of one specific data type: a name is a character string, a salary is a number, a photograph is an image.</p>
+  <p class="ar">قد تكون قيم الخصائص رقمًا، أو سلسلة محارف، أو تاريخًا، أو صورة، أو صوتًا، وغير ذلك. وتسمّي الشرائح هذه أنواع البيانات، أو الصِّيَغ. وكل خاصية تخزّن معلومة واحدة من نوع بيانات واحد محدّد: الاسم سلسلة محارف، والراتب رقم، والصورة الفوتوغرافية صورة.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="data-type">data type</span> is a classification of data that states its possible values, the operations that can be done on it, and the way the values are stored.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="data-type">نوع البيانات</span> (Data Type) تصنيفٌ للبيانات يبيّن قيمها الممكنة، والعمليات التي يمكن إجراؤها عليها، وطريقة تخزين قيمها.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Entity</th><th class="ar">الكيان</th><th class="en">Attributes (from the slides)</th><th class="ar">الخصائص (من الشرائح)</th></tr></thead>
+      <tbody>
+        <tr><td class="en"><code>CUSTOMER</code></td><td class="ar"><code>CUSTOMER</code></td><td class="en">family name, date of birth, shoe size, town of residence, email</td><td class="ar">family name، date of birth، shoe size، town of residence، email</td></tr>
+        <tr><td class="en"><code>CAR</code></td><td class="ar"><code>CAR</code></td><td class="en">model, weight, catalog price</td><td class="ar">model، weight، catalog price</td></tr>
+        <tr><td class="en"><code>ORDER</code></td><td class="ar"><code>ORDER</code></td><td class="en">order date, ship date</td><td class="ar">order date، ship date</td></tr>
+        <tr><td class="en"><code>JOB</code></td><td class="ar"><code>JOB</code></td><td class="en">title, description</td><td class="ar">title، description</td></tr>
+        <tr><td class="en"><code>TRANSACTION</code></td><td class="ar"><code>TRANSACTION</code></td><td class="en">amount, transaction date</td><td class="ar">amount، transaction date</td></tr>
+        <tr><td class="en"><code>EMPLOYMENT CONTRACT</code></td><td class="ar"><code>EMPLOYMENT CONTRACT</code></td><td class="en">start date, salary</td><td class="ar">start date، salary</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The data type becomes the column's type, and it decides what sorting means. This table stores the page count twice: <code>pages_text</code> as characters, <code>pages</code> as a number. Run it:</p>
+    <p class="ar">يصبح نوع البيانات نوعَ العمود، وهو الذي يقرّر معنى الترتيب. يخزّن هذا الجدول عدد الصفحات مرّتين: <code>pages_text</code> محارفَ، و<code>pages</code> رقمًا. شغّله:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE books (id VARCHAR(15) PRIMARY KEY, title VARCHAR(50) NOT NULL, pages_text VARCHAR(5), pages NUMBER)","INSERT INTO books VALUES ('BK001','A Vision','256',256), ('BK002','War and Peace','1225',1225), ('BK003','Citizen of the World','96',96), ('BK004','Androcles and the Lion','128',128)"],"sql":"SELECT title, pages_text\nFROM books\nORDER BY pages_text DESC;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>title</code></th><th><code>pages_text</code></th></tr></thead>
+          <tbody>
+            <tr><td>Citizen of the World</td><td>96</td></tr>
+            <tr><td>A Vision</td><td>256</td></tr>
+            <tr><td>Androcles and the Lion</td><td>128</td></tr>
+            <tr><td>War and Peace</td><td>1225</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">As characters, "9" beats "2" and "1", so 96 comes first. Change both <code>pages_text</code> to <code>pages</code> and run again: <em>War and Peace</em> (1225) is first and <em>Citizen of the World</em> (96) last. Same values, right type, right answer.</p>
+    <p class="ar">بوصفها محارف، «9» تسبق «2» و«1»، فيأتي 96 أولًا. غيّر <code>pages_text</code> في الموضعين إلى <code>pages</code> وشغّل من جديد: يأتي <em>War and Peace</em> (1225) أولًا و<em>Citizen of the World</em> (96) أخيرًا. القيم نفسها، والنوع الصحيح، والجواب الصحيح.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · the SQL track</span><span class="ar">خيط · مسار SQL</span></h4>
+    <p class="en"><a href="../chapters/chapter-2.html">SQL Chapter 2 &mdash; Multiple Columns</a> gives every column a type such as <code>NUMBER</code>, <code>VARCHAR</code> or <code>DATE</code>, and you learn the syntax there. It never asks which type a value <em>is</em>. That question is answered here, when the attribute is modelled; the column type only writes the answer down.</p>
+    <p class="ar">يعطي <a href="../chapters/chapter-2.html">الفصل 2 من مسار SQL &mdash; أعمدة متعدّدة</a> كل عمود نوعًا مثل <code>NUMBER</code> أو <code>VARCHAR</code> أو <code>DATE</code>، وهناك تتعلّم الصياغة. لكنه لا يسأل أبدًا من أيّ نوع <em>هي</em> القيمة. فذلك سؤال يُجاب عنه هنا، حين تُنمذج الخاصية، ونوع العمود يدوّن الجواب فقط.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">What is the data type of <code>CUSTOMER</code>'s <code>family name</code>?</p>
+    <p class="q ar">ما نوع بيانات <code>family name</code> في <code>CUSTOMER</code>؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">A character string</span><span class="ar">سلسلة محارف</span></button></li>
+      <li><button class="opt"><span class="en">A number</span><span class="ar">رقم</span></button></li>
+      <li><button class="opt"><span class="en">A date</span><span class="ar">تاريخ</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">This is the slides' own first answer: family name is a character string. <code>date of birth</code> would be a date, and <code>shoe size</code> a number.</p>
+      <p class="ar">هذا هو أوّل جواب في الشرائح نفسها: family name سلسلة محارف. أمّا <code>date of birth</code> فتاريخ، و<code>shoe size</code> رقم.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The library's <code>ZIP</code> values look like <code>00970</code>. Which data type should <code>ZIP</code> have?</p>
+    <p class="q ar">قيم <code>ZIP</code> في المكتبة تبدو مثل <code>00970</code>. أيّ نوع بيانات يجب أن يكون لـ <code>ZIP</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A number &mdash; it is made of digits</span><span class="ar">رقم &mdash; فهو مكوّن من أرقام</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A character string &mdash; nobody adds ZIP codes, and the leading zeros matter</span><span class="ar">سلسلة محارف &mdash; لا أحد يجمع الرموز البريدية، والأصفار في أوّلها مهمّة</span></button></li>
+      <li><button class="opt"><span class="en">A date</span><span class="ar">تاريخ</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A data type states the operations that make sense. You never add or average a ZIP code, and stored as a number <code>00970</code> becomes <code>970</code>. Lesson 3's physical model made it <code>VARCHAR2</code> for that reason.</p>
+      <p class="ar">يبيّن نوع البيانات العمليات التي لها معنى. ولا أحد يجمع رمزًا بريديًّا أو يحسب متوسّطه، وإذا خُزّن رقمًا صار <code>00970</code> هو <code>970</code>. ولهذا جعله النموذج الفيزيائي في الدرس 3 <code>VARCHAR2</code>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t2l5-h4"><span class="en">4 · One value at a time</span><span class="ar">٤ · قيمة واحدة في كل وقت</span></h2>
+
+  <div class="problem">
+    <p class="en">To track borrowing, Matt adds <code>Books Borrowed</code> to <code>MEMBER</code>. Sara's value is "A Vision, Citizen of the World". Now the librarian asks, "Who has <em>Citizen of the World</em>?" The answer is in the table, inside Sara's field, and a search for that title finds nobody.</p>
+    <p class="ar">ليتتبّع الاستعارة، يضيف مات <code>Books Borrowed</code> إلى <code>MEMBER</code>. وقيمة Sara فيها «A Vision, Citizen of the World». ثم يسأل أمين المكتبة: «من معه <em>Citizen of the World</em>؟» الجواب موجود في الجدول، داخل حقل Sara، والبحث عن ذلك العنوان لا يجد أحدًا.</p>
+  </div>
+
+  <p class="en">The slides are firm: an attribute has a single value. Each attribute can have only one value, at any point in time, for each instance of the entity. Lesson 2's rule 5, "entries in columns are single values", is the same rule seen from the table.</p>
+  <p class="ar">الشرائح حاسمة: للخاصية قيمة مفردة. فلكل خاصية قيمة واحدة فقط، في أيّ لحظة، لكل نسخة من الكيان. والقاعدة 5 في الدرس 2، «المُدخَلات في الأعمدة قيم مفردة»، هي القاعدة نفسها منظورًا إليها من الجدول.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An attribute is <span class="term" data-term="single-valued">single-valued</span> when each instance has only one value for it at any point in time.</p>
+    <p class="ar"><strong>تعريف.</strong> تكون الخاصية <span class="term" data-term="single-valued">أحادية القيمة</span> (Single-Valued) حين لا يكون لكل نسخة إلا قيمة واحدة لها في أيّ لحظة.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-books-borrowed">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" direction="ltr" role="img" aria-labelledby="t2-books-borrowed-t">
+<title id="t2-books-borrowed-t">A multi-valued Books Borrowed attribute in MEMBER, against each borrowing as an instance of BOOK TRANSACTION / خاصية Books Borrowed متعدّدة القيم في MEMBER، مقابل كل استعارة نسخةً من BOOK TRANSACTION</title>
+<g class="en"><text x="450" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Two books in one attribute — and where they belong</text></g><g class="ar"><text x="450" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">كتابان في خاصية واحدة — وأين مكانهما</text></g>
+<g class="en"><text x="200" y="52" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">✗ many values in one attribute</text></g><g class="ar"><text x="200" y="52" text-anchor="middle" direction="rtl" style="fill:var(--dg-bad, var(--bad));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">✗ قيم كثيرة في خاصية واحدة</text></g>
+<rect x="60" y="64" width="280" height="97" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.4"/>
+<text x="200.0" y="86" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBER</text>
+<text x="74" y="108" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="74" y="127" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="74" y="146" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Books Borrowed</text>
+<rect x="60" y="180" width="280" height="52" rx="4" style="fill:var(--dg-bad-soft, var(--bad-soft));stroke:var(--dg-bad, var(--bad));stroke-width:1.4"/>
+<text x="74" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Sara · Books Borrowed =</text>
+<text x="74" y="220" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">'A Vision, Citizen of the World'</text>
+<path d="M200 161 L200 180" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<path d="M450 50 L450 300" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1;fill:none;stroke-dasharray:4 4"/>
+<g class="en"><text x="690" y="52" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">✓ each borrowing is one instance</text></g><g class="ar"><text x="690" y="52" text-anchor="middle" direction="rtl" style="fill:var(--dg-good, var(--good));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">✓ كل استعارة نسخة واحدة</text></g>
+<rect x="470" y="64" width="140" height="78" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.4"/>
+<text x="540.0" y="86" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBER</text>
+<text x="484" y="108" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="484" y="127" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<rect x="725" y="64" width="165" height="78" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.4"/>
+<text x="807.5" y="86" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK TRANSACTION</text>
+<text x="739" y="108" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Tran Date</text>
+<text x="739" y="127" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Type</text>
+<path d="M610 101 L667 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M667 101 L725 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M711 101 L725 93" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M711 101 L725 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M711 101 L725 109" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="638" y="93" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">make</text>
+<text x="682" y="121" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">made by</text>
+<rect x="560" y="180" width="300" height="28" rx="3" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.4"/>
+<text x="710" y="198.5" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">2026-03-01 · borrow · BK001</text>
+<rect x="560" y="218" width="300" height="28" rx="3" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.4"/>
+<text x="710" y="236.5" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">2026-03-05 · borrow · BK003</text>
+<path d="M780 142 L780 180" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<path d="M880 142 L880 232 L860 232" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="710" y="268" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">Sara’s two borrowings: two instances, one value each</text></g><g class="ar"><text x="710" y="268" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">استعارتا Sara: نسختان، لكلٍّ منهما قيمة واحدة</text></g>
+<g class="en"><text x="200" y="260" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">Search for one title: no match</text></g><g class="ar"><text x="200" y="260" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">ابحث عن عنوان واحد: لا تطابق</text></g>
+</svg>
+<figcaption><span class="en">Left: two books squeezed into one attribute. Right: each borrowing is its own instance of <code>BOOK TRANSACTION</code>, the event entity from lesson 4, and every attribute holds one value.</span><span class="ar">يسارًا: كتابان محشوران في خاصية واحدة. ويمينًا: كل استعارة نسخةٌ مستقلّة من <code>BOOK TRANSACTION</code>، الكيان الحدث من الدرس 4، وكل خاصية تحمل قيمة واحدة.</span></figcaption></figure>
+
+  <div class="evolve" id="t2l5-e2">
+    <div class="ver" data-title-en="Version 1 — a list in one attribute" data-title-ar="الإصدار 1 — قائمة في خاصية واحدة">
+      <pre class="code" data-lang="text"><code>MEMBER
+  # * Id   * First Name   o Books Borrowed
+
+Sara:  Books Borrowed = 'A Vision, Citizen of the World'</code></pre>
+      <p class="en">Defect: <code>Books Borrowed</code> is not single-valued. One title cannot be found, counted or removed without picking the text apart, and there is nowhere to say <em>when</em> each book was borrowed.</p>
+      <p class="ar">العيب: <code>Books Borrowed</code> ليست أحادية القيمة. لا يمكن إيجاد عنوان واحد، ولا عدّه، ولا حذفه، دون تفكيك النصّ، ولا مكان لنقول <em>متى</em> استُعير كل كتاب.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — each borrowing is an instance" data-title-ar="الإصدار 2 — كل استعارة نسخة">
+      <pre class="code" data-lang="text"><code>MEMBER                     BOOK TRANSACTION
+  # * Id                     # * Tran Date
+  * First Name               o Type
+
+Sara's borrowings:  2026-03-01 borrow BK001
+                    2026-03-05 borrow BK003</code></pre>
+      <p class="en">Fixed: the many values became many instances of an entity the model already had. Every attribute now holds one value, and each borrowing has its own date. How the two entities are linked is chapter T3.</p>
+      <p class="ar">أُصلح: صارت القيم الكثيرة نُسخًا كثيرة من كيان موجود أصلًا في النموذج. وكل خاصية تحمل الآن قيمة واحدة، ولكل استعارة تاريخها. أمّا كيف يُربط الكيانان فموضوع الفصل T3.</p>
+    </div>
+  </div>
+
+  <h3 id="t2l5-s2"><span class="en">One at a time &mdash; not one forever</span><span class="ar">واحدة في كل وقت &mdash; لا واحدة إلى الأبد</span></h3>
+
+  <p class="en">Single-valued does not mean the value never changes. The slides' <code>CAR</code> has a model and a colour, one of each at any time. The model stays the same for the car's whole life; the colour can change if it is repainted. If Sara moves to Rafah, her <code>City</code> changes from Gaza to Rafah &mdash; still one value.</p>
+  <p class="ar">«أحادية القيمة» لا تعني أن القيمة لا تتغيّر أبدًا. فللكيان <code>CAR</code> في الشرائح طراز ولون، واحد من كلٍّ منهما في أيّ وقت. يبقى الطراز كما هو طوال عمر السيارة، أمّا اللون فقد يتغيّر إن أُعيد طلاؤها. وإن انتقلت Sara إلى رفح، تتغيّر <code>City</code> عندها من Gaza إلى Rafah &mdash; وتبقى قيمة واحدة.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 1 as a table. Ask for the members who have <em>Citizen of the World</em>:</p>
+    <p class="ar">الإصدار 1 جدولًا. اطلب الأعضاء الذين معهم <em>Citizen of the World</em>:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE members (id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, books_borrowed VARCHAR(100))","INSERT INTO members VALUES (1, 'Sara', 'A Vision, Citizen of the World'), (2, 'Omar', 'War and Peace')"],"sql":"SELECT first_name\nFROM members\nWHERE books_borrowed = 'Citizen of the World';"}
+      </script>
+    </div>
+    <p class="en">It returns no rows. Now version 2, where each borrowing is one row of <code>book_transactions</code> and <code>BK003</code> is <em>Citizen of the World</em>:</p>
+    <p class="ar">لا يعيد أيّ صفّ. والآن الإصدار 2، حيث كل استعارة صفّ واحد في <code>book_transactions</code>، و<code>BK003</code> هو <em>Citizen of the World</em>:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE book_transactions (tran_date DATE NOT NULL, type VARCHAR(10), members_id NUMBER NOT NULL, books_id VARCHAR(15) NOT NULL, PRIMARY KEY (tran_date, books_id))","INSERT INTO book_transactions VALUES ('2026-03-01','borrow',1,'BK001'), ('2026-03-05','borrow',2,'BK002'), ('2026-03-05','borrow',1,'BK003')"],"sql":"SELECT members_id, tran_date\nFROM book_transactions\nWHERE books_id = 'BK003';"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>members_id</code></th><th><code>tran_date</code></th></tr></thead>
+          <tbody><tr><td>1</td><td>2026-03-05</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Member <code>1</code> &mdash; Sara &mdash; since 5 March. One value per field makes the question a plain <code>WHERE</code>, and the date comes free.</p>
+    <p class="ar">العضو <code>1</code> &mdash; Sara &mdash; منذ 5 آذار. قيمة واحدة في كل حقل تجعل السؤال <code>WHERE</code> بسيطة، ويأتي التاريخ معها مجّانًا.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Omar's car was blue last year and is red now. Does that make <code>Colour</code> a multi-valued attribute of <code>CAR</code>?</p>
+    <p class="q ar">كانت سيارة Omar زرقاء في العام الماضي، وهي حمراء الآن. هل يجعل هذا <code>Colour</code> خاصية متعدّدة القيم في <code>CAR</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Yes &mdash; it has had two values</span><span class="ar">نعم &mdash; كانت لها قيمتان</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">No &mdash; it has one value at any point in time</span><span class="ar">لا &mdash; لها قيمة واحدة في أيّ لحظة</span></button></li>
+      <li><button class="opt"><span class="en">No &mdash; because colour can never change</span><span class="ar">لا &mdash; لأن اللون لا يمكن أن يتغيّر أبدًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Single-valued means one value <em>at a time</em>. The value may change over time, as a car's colour does when it is repainted. Only the model is expected to stay the same.</p>
+      <p class="ar">«أحادية القيمة» تعني قيمة واحدة <em>في كل وقت</em>. وقد تتغيّر القيمة مع الزمن، كما يتغيّر لون السيارة حين يُعاد طلاؤها. أمّا الطراز وحده فيُتوقّع أن يبقى كما هو.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which evolve version breaks the single-value rule, and why is version 2 better?</p>
+    <p class="q ar">أيّ إصدار في كتلة التطوّر يخالف قاعدة القيمة المفردة، ولماذا الإصدار 2 أفضل؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">Version 1; in version 2 each borrowing is one instance with one value per attribute</span><span class="ar">الإصدار 1؛ ففي الإصدار 2 كل استعارة نسخة واحدة، بقيمة واحدة لكل خاصية</span></button></li>
+      <li><button class="opt"><span class="en">Version 2; it splits one member's data across two entities</span><span class="ar">الإصدار 2؛ لأنه يوزّع بيانات عضو واحد على كيانين</span></button></li>
+      <li><button class="opt"><span class="en">Neither; a comma-separated list counts as one value</span><span class="ar">ولا واحد منهما؛ فالقائمة المفصولة بفواصل تُعدّ قيمة واحدة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"A Vision, Citizen of the World" is two values typed into one field, as the failed search shows. Version 2 gives each value its own instance, and each instance its own date.</p>
+      <p class="ar">«A Vision, Citizen of the World» قيمتان كُتبتا في حقل واحد، كما يُظهر البحث الفاشل. ويعطي الإصدار 2 كل قيمة نسختها الخاصة، ولكل نسخة تاريخها.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t2l5-h5"><span class="en">5 · Mandatory or optional</span><span class="ar">٥ · إلزامية أو اختيارية</span></h2>
+
+  <div class="problem">
+    <p class="en">Lina Khalil comes to join the library. She has no cell phone. Matt's first draft marked every attribute <code>*</code>, so the form will not let her in. Matt's second draft marked every attribute <code>o</code> &mdash; and last week it saved a member with no last name, whom nobody can now find.</p>
+    <p class="ar">تأتي Lina Khalil لتنضمّ إلى المكتبة، وليس لديها هاتف محمول. وسمت مسوّدة مات الأولى كل خاصية بـ <code>*</code>، فلا يسمح لها النموذج بالدخول. ووسمت مسوّدته الثانية كل خاصية بـ <code>o</code> &mdash; فحفظت في الأسبوع الماضي عضوًا بلا اسم عائلة، لا يستطيع أحد الآن أن يجده.</p>
+  </div>
+
+  <p class="en">Some attributes must contain a value: in most businesses that track people, the name is required. Others may hold a value or be left null: a cell phone number is often optional, except in a mobile or wireless application. Lesson 3 gave the marks: <code>*</code> for mandatory, <code>o</code> for optional.</p>
+  <p class="ar">بعض الخصائص يجب أن تحتوي على قيمة: ففي معظم الأعمال التي تتتبّع الأشخاص، الاسم مطلوب. وبعضها يجوز أن تحمل قيمة أو أن تبقى null: فرقم الهاتف المحمول اختياري في الغالب، إلا في تطبيقات الهاتف المحمول أو الاتصالات اللاسلكية. وقد أعطى الدرس 3 العلامتين: <code>*</code> للإلزامية، و<code>o</code> للاختيارية.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="mandatory">mandatory</span> attribute is one that must contain a value for every instance.</p>
+    <p class="ar"><strong>تعريف.</strong> الخاصية <span class="term" data-term="mandatory">الإلزامية</span> (Mandatory) خاصية يجب أن تحتوي على قيمة في كل نسخة.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="optional">optional</span> attribute is one that may contain a value or be left null.</p>
+    <p class="ar"><strong>تعريف.</strong> الخاصية <span class="term" data-term="optional">الاختيارية</span> (Optional) خاصية يجوز أن تحتوي على قيمة أو أن تبقى null.</p>
+  </div>
+
+  <div class="evolve" id="t2l5-e3">
+    <div class="ver" data-title-en="Version 1 — everything mandatory" data-title-ar="الإصدار 1 — كل شيء إلزامي">
+      <pre class="code" data-lang="text"><code>MEMBER
+  # * Id   * First Name   * Last Name   * City   * State   * Cell Phone</code></pre>
+      <p class="en">Defect: the model demands values the business does not always have. Lina has no cell phone and Gaza addresses have no state, so real members are refused &mdash; or someone types <code>000</code> to get past the form.</p>
+      <p class="ar">العيب: يطلب النموذج قيمًا لا تتوفّر للعمل دائمًا. فليس لدى Lina هاتف محمول، وعناوين غزّة بلا ولاية، فيُرفض أعضاء حقيقيون &mdash; أو يكتب أحدهم <code>000</code> ليتجاوز النموذج.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — everything optional" data-title-ar="الإصدار 2 — كل شيء اختياري">
+      <pre class="code" data-lang="text"><code>MEMBER
+  # * Id   o First Name   o Last Name   o City   o State   o Cell Phone</code></pre>
+      <p class="en">Defect: nothing is required, so nothing is guaranteed. A member with no name and no city can be saved, and the reminder letter of section 1 has nobody to go to.</p>
+      <p class="ar">العيب: لا شيء مطلوب، فلا شيء مضمون. يمكن حفظ عضو بلا اسم ولا مدينة، ورسالة التذكير في القسم 1 لا تجد من تذهب إليه.</p>
+    </div>
+    <div class="ver" data-title-en="Version 3 — required where the library needs it" data-title-ar="الإصدار 3 — مطلوب حيث تحتاج إليه المكتبة">
+      <pre class="code" data-lang="text"><code>MEMBER
+  # * Id   * First Name   * Last Name   * City   o State   o Cell Phone</code></pre>
+      <p class="en">Fixed: the library must always be able to name and reach a member, so those attributes are <code>*</code>. State and cell phone are useful when known, so they are <code>o</code>. Lina joins; a member with no name cannot.</p>
+      <p class="ar">أُصلح: يجب أن تستطيع المكتبة دائمًا أن تسمّي العضو وأن تصل إليه، فتلك الخصائص <code>*</code>. أمّا الولاية والهاتف المحمول فمفيدان حين يُعرفان، فهما <code>o</code>. تنضمّ Lina، ولا يستطيع عضو بلا اسم أن ينضمّ.</p>
+    </div>
+  </div>
+
+  <h3 id="t2l5-s3"><span class="en">Null: neither zero nor a space</span><span class="ar">القيمة null: ليست صفرًا ولا مسافة</span></h3>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="null">Null</span> is a value that is unavailable, unassigned, unknown or empty; it is neither a zero nor a space.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="null">القيمة null</span> (Null) قيمة غير متوفّرة، أو غير مُسندة، أو مجهولة، أو فارغة؛ وليست صفرًا ولا مسافة.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-member-optionality">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" direction="ltr" role="img" aria-labelledby="t2-member-optionality-t">
+<title id="t2-member-optionality-t">MEMBER with mandatory and optional attributes, two instances with null values, and null beside zero and a space / MEMBER بخصائص إلزامية واختيارية، ونسختان فيهما قيم null، والقيمة null إلى جانب الصفر والمسافة</title>
+<g class="en"><text x="450" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Mandatory * and optional o — and what null looks like</text></g><g class="ar"><text x="450" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإلزامية * والاختيارية o — وكيف تبدو القيمة null</text></g>
+<rect x="30" y="56" width="220" height="154" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.4"/>
+<text x="140.0" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBER</text>
+<text x="44" y="100" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="44" y="119" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="44" y="138" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<text x="44" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* City</text>
+<text x="44" y="176" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o State</text>
+<text x="44" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Cell Phone</text>
+<rect x="300" y="56" width="180" height="154" rx="4" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="390" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">Sara</text>
+<text x="314" y="100" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">1</text>
+<text x="314" y="119" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Sara</text>
+<text x="314" y="138" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Hamdan</text>
+<text x="314" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Gaza</text>
+<rect x="312" y="164" width="80" height="15" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4;stroke-dasharray:4 3"/>
+<text x="352" y="175" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:10.5px">null</text>
+<text x="314" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">0599 111 222</text>
+<rect x="500" y="56" width="180" height="154" rx="4" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="590" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">Omar</text>
+<text x="514" y="100" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">2</text>
+<text x="514" y="119" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Omar</text>
+<text x="514" y="138" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Saleh</text>
+<text x="514" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Khan Younis</text>
+<rect x="512" y="164" width="80" height="15" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4;stroke-dasharray:4 3"/>
+<text x="552" y="175" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:10.5px">null</text>
+<rect x="512" y="183" width="80" height="15" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4;stroke-dasharray:4 3"/>
+<text x="552" y="194" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:10.5px">null</text>
+<g class="en"><text x="800" y="70" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">three different things</text></g><g class="ar"><text x="800" y="70" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">ثلاثة أشياء مختلفة</text></g>
+<rect x="720" y="86" width="60" height="28" rx="3" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="750" y="104.5" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">0</text>
+<g class="en"><text x="794" y="104.5" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">zero</text></g><g class="ar"><text x="794" y="104.5" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">صفر</text></g>
+<rect x="720" y="128" width="60" height="28" rx="3" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="750" y="146.5" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">' '</text>
+<g class="en"><text x="794" y="146.5" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">a space</text></g><g class="ar"><text x="794" y="146.5" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">مسافة</text></g>
+<rect x="720" y="170" width="60" height="28" rx="3" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4;stroke-dasharray:4 3"/>
+<g class="en"><text x="794" y="188.5" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">null</text></g><g class="ar"><text x="794" y="188.5" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">null</text></g>
+<rect x="30" y="230" width="840" height="52" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1.4"/>
+<g class="en"><text x="450" y="252" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px">Every * row is filled in both members. Only o rows may hold null: Sara has no state; Omar has no state and no cell phone.</text></g><g class="ar"><text x="450" y="252" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px">كل صفّ عليه * ممتلئ عند العضوين. والصفوف التي عليها o وحدها يجوز أن تحمل null: لا ولاية لـ Sara، ولا ولاية ولا هاتف لـ Omar.</text></g>
+<g class="en"><text x="450" y="271" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px">Null is unavailable, unassigned, unknown or empty — not a zero and not a space.</text></g><g class="ar"><text x="450" y="271" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px">القيمة null غير متوفّرة أو غير مُسندة أو مجهولة أو فارغة — وليست صفرًا ولا مسافة.</text></g>
+</svg>
+<figcaption><span class="en">Version 3, with two instances. Every <code>*</code> row is filled for both members; null appears only in <code>o</code> rows. On the right, the three things people confuse: a zero and a space are values, null is the absence of one.</span><span class="ar">الإصدار 3، بنسختين. كل صفّ عليه <code>*</code> ممتلئ عند العضوين، ولا تظهر null إلا في صفوف <code>o</code>. وعلى اليمين، الأشياء الثلاثة التي يخلط الناس بينها: الصفر والمسافة قيمتان، أمّا null فغياب القيمة.</span></figcaption></figure>
+
+  <h3 id="t2l5-s4"><span class="en">The business decides</span><span class="ar">العمل هو الذي يقرّر</span></h3>
+
+  <p class="en">The same attribute can be mandatory in one model and optional in another. The slides' example: an email address could be mandatory for <code>EMPLOYEE</code> in an email application, but optional for <code>CUSTOMER</code> in an online catalog. Ask what the business cannot work without, not what is nice to have.</p>
+  <p class="ar">قد تكون الخاصية نفسها إلزامية في نموذج واختيارية في آخر. ومثال الشرائح: عنوان البريد الإلكتروني قد يكون إلزاميًّا للكيان <code>EMPLOYEE</code> في تطبيق بريد إلكتروني، لكنه اختياري للكيان <code>CUSTOMER</code> في كتالوج على الإنترنت. اسأل عمّا لا يستطيع العمل أن يعمل بدونه، لا عمّا يُستحسن وجوده.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en"><code>*</code> becomes <code>NOT NULL</code>; <code>o</code> leaves the column nullable. Here Sara gave a phone, Omar gave none (<code>NULL</code>), and a clerk typed a single space for Lina. Count the members and the phones:</p>
+    <p class="ar">تصبح <code>*</code> قيد <code>NOT NULL</code>، وتترك <code>o</code> العمود قابلًا لـ null. هنا أعطت Sara رقم هاتف، ولم يعطِ Omar شيئًا (<code>NULL</code>)، وكتب موظّف مسافة واحدة لـ Lina. عُدّ الأعضاء والهواتف:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE members (id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, cell_phone VARCHAR(15))","INSERT INTO members VALUES (1, 'Sara', 'Hamdan', '0599111222'), (2, 'Omar', 'Saleh', NULL), (3, 'Lina', 'Khalil', ' ')"],"sql":"SELECT COUNT(*) AS all_members, COUNT(cell_phone) AS with_phone\nFROM members;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>all_members</code></th><th><code>with_phone</code></th></tr></thead>
+          <tbody><tr><td>3</td><td>2</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Only Omar's null is skipped. Lina's space is a value, so the database counts her as having a phone &mdash; which is exactly why null must never be faked with a space or a zero. Now try <code>INSERT INTO members VALUES (4, 'Huda', NULL, NULL);</code>:</p>
+    <p class="ar">لا تُتخطّى إلا null التي عند Omar. أمّا مسافة Lina فقيمة، فتعدّها قاعدة البيانات صاحبة هاتف &mdash; ولهذا بالضبط يجب ألّا تُزيَّف null بمسافة أو صفر أبدًا. والآن جرّب <code>INSERT INTO members VALUES (4, 'Huda', NULL, NULL);</code>:</p>
+    <div class="output">
+      <pre class="code" data-lang="text"><code>Wrong NULL value in NOT NULL column last_name</code></pre>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A member's <code>Cell Phone</code> is null. What does that tell you?</p>
+    <p class="q ar">قيمة <code>Cell Phone</code> لعضو ما هي null. ماذا يخبرك ذلك؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The phone number is 0</span><span class="ar">رقم الهاتف هو 0</span></button></li>
+      <li><button class="opt"><span class="en">The phone number is a blank space</span><span class="ar">رقم الهاتف مسافة فارغة</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">No value is available for it: unknown, unassigned or empty</span><span class="ar">لا قيمة متوفّرة له: مجهول أو غير مُسند أو فارغ</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Null is neither a zero nor a space. It is the absence of a value, which is why the count of phones above skipped it and counted the space.</p>
+      <p class="ar">null ليست صفرًا ولا مسافة، بل هي غياب القيمة؛ ولهذا تخطّاها عدّ الهواتف أعلاه، وعَدّ المسافة.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A text-messaging service keeps data on its <code>SUBSCRIBER</code>s. How should it mark <code>Cell Phone</code>?</p>
+    <p class="q ar">خدمة رسائل نصّية تحتفظ ببيانات عن <code>SUBSCRIBER</code>. كيف يجب أن تَسِم <code>Cell Phone</code>؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en"><code>* Cell Phone</code> &mdash; the business cannot work without it</span><span class="ar"><code>* Cell Phone</code> &mdash; لا يستطيع العمل أن يعمل بدونه</span></button></li>
+      <li><button class="opt"><span class="en"><code>o Cell Phone</code> &mdash; a phone number is always optional</span><span class="ar"><code>o Cell Phone</code> &mdash; رقم الهاتف اختياري دائمًا</span></button></li>
+      <li><button class="opt"><span class="en">Either; optionality is not a business decision</span><span class="ar">أيّهما؛ فالاختيارية ليست قرارًا يتّخذه العمل</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The slides say a cell phone is often optional "except in mobile or wireless applications". Like the email example, the business decides: here a subscriber without a phone cannot be served.</p>
+      <p class="ar">تقول الشرائح إن الهاتف المحمول اختياري في الغالب «إلا في تطبيقات الهاتف المحمول أو الاتصالات اللاسلكية». وكما في مثال البريد الإلكتروني، العمل هو الذي يقرّر: فهنا لا يمكن خدمة مشترك بلا هاتف.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 6 -->
+  <h2 id="t2l5-h6"><span class="en">6 · Volatile or non-volatile</span><span class="ar">٦ · متقلّبة أو غير متقلّبة</span></h2>
+
+  <div class="problem">
+    <p class="en">Last year the library recorded each member's <code>Age</code>. Today the list says Sara is 18. She turned 19 in April. Nobody lied and nobody made a typing mistake; the value simply went out of date, as it will for every member, every year.</p>
+    <p class="ar">سجّلت المكتبة في العام الماضي <code>Age</code> لكل عضو. واليوم تقول القائمة إن عمر Sara 18 سنة، وقد بلغت 19 في نيسان. لم يكذب أحد، ولم يخطئ أحد في الكتابة؛ القيمة ببساطة صارت قديمة، كما سيحدث لكل عضو، كل سنة.</p>
+  </div>
+
+  <p class="en">Some attributes, such as age, have values that constantly change. Others, such as order date, will rarely change, if ever. The slides' advice is short: if given a choice, select the non-volatile attribute &mdash; use birth date instead of age.</p>
+  <p class="ar">لبعض الخصائص، مثل العمر، قيمٌ تتغيّر باستمرار. ولبعضها الآخر، مثل تاريخ الطلب، قيمٌ نادرًا ما تتغيّر، إن تغيّرت أصلًا. ونصيحة الشرائح قصيرة: إن خُيّرت، فاختر الخاصية غير المتقلّبة &mdash; استعمل تاريخ الميلاد بدلًا من العمر.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="volatile">volatile</span> attribute is one whose values change constantly, so they must be updated often.</p>
+    <p class="ar"><strong>تعريف.</strong> الخاصية <span class="term" data-term="volatile">المتقلّبة</span> (Volatile) خاصية تتغيّر قيمها باستمرار، فيجب تحديثها كثيرًا.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="non-volatile">non-volatile</span> attribute is one whose values rarely change, if ever.</p>
+    <p class="ar"><strong>تعريف.</strong> الخاصية <span class="term" data-term="non-volatile">غير المتقلّبة</span> (Non-Volatile) خاصية نادرًا ما تتغيّر قيمها، إن تغيّرت أصلًا.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-volatile">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 310" direction="ltr" role="img" aria-labelledby="t2-volatile-t">
+<title id="t2-volatile-t">Sara's age changes every year and must be updated; her birth date never changes / عمر Sara يتغيّر كل سنة ويجب تحديثه، وتاريخ ميلادها لا يتغيّر أبدًا</title>
+<g class="en"><text x="450" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Volatile Age against non-volatile Birth Date</text></g><g class="ar"><text x="450" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">العمر المتقلّب مقابل تاريخ الميلاد غير المتقلّب</text></g>
+<rect x="30" y="52" width="200" height="62" rx="10" style="fill:var(--dg-warn-soft, var(--warn-soft));stroke:var(--dg-warn, var(--warn));stroke-width:1.4"/>
+<text x="130" y="74" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBER</text>
+<text x="44" y="98" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Age</text>
+<text x="350" y="60" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:11.5px">2025</text>
+<rect x="290" y="68" width="120" height="30" rx="3" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="350" y="87.5" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">18</text>
+<text x="500" y="60" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:11.5px">2026</text>
+<rect x="440" y="68" width="120" height="30" rx="3" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="500" y="87.5" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">19</text>
+<path d="M410 83 L440 83" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<text x="425" y="112" text-anchor="middle" style="fill:var(--dg-warn, var(--warn));font-family:var(--mono, monospace);font-size:11px;font-weight:700">UPDATE</text>
+<text x="650" y="60" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:11.5px">2027</text>
+<rect x="590" y="68" width="120" height="30" rx="3" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="650" y="87.5" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">20</text>
+<path d="M560 83 L590 83" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<text x="575" y="112" text-anchor="middle" style="fill:var(--dg-warn, var(--warn));font-family:var(--mono, monospace);font-size:11px;font-weight:700">UPDATE</text>
+<path d="M230 83 L290 83" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="740" y="128" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">volatile: must be rewritten every year</text></g><g class="ar"><text x="740" y="128" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">متقلّبة: يجب أن تُعاد كتابتها كل سنة</text></g>
+<rect x="30" y="160" width="200" height="62" rx="10" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.4"/>
+<text x="130" y="182" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBER</text>
+<text x="44" y="206" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Birth Date</text>
+<text x="350" y="168" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:11.5px">2025</text>
+<rect x="290" y="176" width="120" height="30" rx="3" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="350" y="195.5" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">2007-04-12</text>
+<text x="500" y="168" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:11.5px">2026</text>
+<rect x="440" y="176" width="120" height="30" rx="3" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="500" y="195.5" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">2007-04-12</text>
+<path d="M410 191 L440 191" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<text x="650" y="168" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:11.5px">2027</text>
+<rect x="590" y="176" width="120" height="30" rx="3" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="650" y="195.5" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">2007-04-12</text>
+<path d="M560 191 L590 191" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<path d="M230 191 L290 191" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.1;fill:none;stroke-dasharray:2 3"/>
+<g class="en"><text x="740" y="236" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">non-volatile: stored once, never changes</text></g><g class="ar"><text x="740" y="236" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">غير متقلّبة: تُخزَّن مرّة، ولا تتغيّر أبدًا</text></g>
+<rect x="30" y="262" width="840" height="32" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1.4"/>
+<g class="en"><text x="450" y="283" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px">One million members means one million updates a year for Age — and none for Birth Date, from which age can be worked out.</text></g><g class="ar"><text x="450" y="283" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px">مليون عضو يعني مليون تحديث في السنة للعمر — ولا تحديث لتاريخ الميلاد، الذي يمكن أن يُستنتج منه العمر.</text></g>
+</svg>
+<figcaption><span class="en">Three years of Sara. <code>Age</code> needs an <code>UPDATE</code> every year; <code>Birth Date</code> is written once. The lecturer's question: how long would the yearly update take with a million customers?</span><span class="ar">ثلاث سنوات من حياة Sara. تحتاج <code>Age</code> إلى <code>UPDATE</code> كل سنة، و<code>Birth Date</code> تُكتب مرّة واحدة. وسؤال المحاضِرة: كم سيستغرق التحديث السنوي مع مليون زبون؟</span></figcaption></figure>
+
+  <div class="evolve" id="t2l5-e4">
+    <div class="ver" data-title-en="Version 1 — store the age" data-title-ar="الإصدار 1 — خزّن العمر">
+      <pre class="code" data-lang="text"><code>MEMBER
+  # * Id   * First Name   * Last Name   * Age</code></pre>
+      <p class="en">Defect: <code>Age</code> is volatile. Every value is right for at most a year, and keeping them right means updating every member, every year. Miss one and the database quietly tells a lie.</p>
+      <p class="ar">العيب: <code>Age</code> متقلّبة. كل قيمة صحيحة لسنة على الأكثر، وإبقاؤها صحيحة يعني تحديث كل عضو، كل سنة. وإن فاتك واحد، تكذب قاعدة البيانات بصمت.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — store the birth date" data-title-ar="الإصدار 2 — خزّن تاريخ الميلاد">
+      <pre class="code" data-lang="text"><code>MEMBER
+  # * Id   * First Name   * Last Name   * Birth Date</code></pre>
+      <p class="en">Fixed: <code>Birth Date</code> is non-volatile, written once and never updated. Nothing is lost, because age can always be deduced from the birth date when someone needs it.</p>
+      <p class="ar">أُصلح: <code>Birth Date</code> غير متقلّبة، تُكتب مرّة ولا تُحدَّث أبدًا. ولا يضيع شيء، لأن العمر يمكن دائمًا أن يُستنتج من تاريخ الميلاد حين يحتاج إليه أحد.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">This table kept both: <code>age</code> as typed in 2025, and <code>birth_date</code>. Work the age out from the birth date and compare:</p>
+    <p class="ar">احتفظ هذا الجدول بالاثنين: <code>age</code> كما كُتب في 2025، و<code>birth_date</code>. استنتج العمر من تاريخ الميلاد وقارن:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE members (id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, age NUMBER, birth_date DATE NOT NULL)","INSERT INTO members VALUES (1, 'Sara', 18, '2007-04-12'), (2, 'Omar', 17, '2008-11-30'), (3, 'Lina', 19, '2006-01-05')"],"sql":"SELECT first_name, age, 2026 - YEAR(birth_date) AS age_in_2026\nFROM members\nORDER BY id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>first_name</code></th><th><code>age</code></th><th><code>age_in_2026</code></th></tr></thead>
+          <tbody>
+            <tr><td>Sara</td><td>18</td><td>19</td></tr>
+            <tr><td>Omar</td><td>17</td><td>18</td></tr>
+            <tr><td>Lina</td><td>19</td><td>20</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Every stored <code>age</code> is a year behind; every computed one is the age each member reaches in 2026. In the physical model, drop the <code>age</code> column and keep <code>birth_date DATE NOT NULL</code>.</p>
+    <p class="ar">كل <code>age</code> مخزَّن متأخّر سنة، وكل عمر محسوب هو العمر الذي يبلغه كل عضو في 2026. وفي النموذج الفيزيائي، احذف عمود <code>age</code> وأبقِ <code>birth_date DATE NOT NULL</code>.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which attribute of <code>ORDER</code> is volatile?</p>
+    <p class="q ar">أيّ خصائص <code>ORDER</code> متقلّبة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>Order Date</code></span><span class="ar"><code>Order Date</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>Days Since Ordered</code></span><span class="ar"><code>Days Since Ordered</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>Ship Date</code></span><span class="ar"><code>Ship Date</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>Days Since Ordered</code> is wrong by tomorrow; it is the age mistake again. <code>Order Date</code> is the slides' own non-volatile example, and the number of days can be deduced from it.</p>
+      <p class="ar"><code>Days Since Ordered</code> تصير خاطئة غدًا؛ إنه خطأ العمر مرّة أخرى. أمّا <code>Order Date</code> فمثال الشرائح نفسها على الخاصية غير المتقلّبة، ويمكن استنتاج عدد الأيام منها.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why does the lesson prefer <code>Birth Date</code> to <code>Age</code>?</p>
+    <p class="q ar">لماذا يفضّل الدرس <code>Birth Date</code> على <code>Age</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Birth date is optional and age is mandatory</span><span class="ar">تاريخ الميلاد اختياري والعمر إلزامي</span></button></li>
+      <li><button class="opt"><span class="en">Age is not single-valued</span><span class="ar">العمر ليس أحادي القيمة</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Birth date never needs updating, and age can be deduced from it</span><span class="ar">تاريخ الميلاد لا يحتاج إلى تحديث أبدًا، والعمر يمكن استنتاجه منه</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Age is single-valued &mdash; one value at a time &mdash; but volatile: the value changes every year. Birth date is non-volatile, so it is the one to store.</p>
+      <p class="ar">العمر أحادي القيمة &mdash; قيمة واحدة في كل وقت &mdash; لكنه متقلّب: تتغيّر قيمته كل سنة. أمّا تاريخ الميلاد فغير متقلّب، فهو الذي يُخزَّن.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t2l5-h7"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Attributes for EMPLOYEE</span><span class="ar">تمرين 1 · خصائص EMPLOYEE</span></h4>
+    <p class="en">This is the slides' class exercise. A Human Resources system has an entity <code>EMPLOYEE</code>. List five attributes it might have, and give one or two example values for each.</p>
+    <p class="ar">هذا تمرين الصفّ في الشرائح. لنظام الموارد البشرية كيان <code>EMPLOYEE</code>. اسرد خمس خصائص قد تكون له، وأعطِ قيمة أو قيمتين مثالًا لكلٍّ منها.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">The lecturer's possible answers: <code>First Name</code> (Dana, Tyler), <code>Last Name</code> (Smith, Adams), <code>Address</code> (King Street), <code>Salary</code> (4500), <code>Social Security Number</code>. Each is a question asked of every employee; Dana, Smith and 4500 are one employee's answers.</p>
+      <p class="ar">الأجوبة الممكنة عند المحاضِرة: <code>First Name</code> (Dana، Tyler)، و<code>Last Name</code> (Smith، Adams)، و<code>Address</code> (King Street)، و<code>Salary</code> (4500)، و<code>Social Security Number</code>. كلٌّ منها سؤال يُطرح على كل موظّف، أمّا Dana وSmith و4500 فأجوبة موظّف واحد.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Name the data type</span><span class="ar">تمرين 2 · سمِّ نوع البيانات</span></h4>
+    <p class="en">Give the data type of each attribute of <code>CUSTOMER</code> on the slides: family name, date of birth, shoe size, town of residence, email. Then add one attribute whose data type is an image.</p>
+    <p class="ar">أعطِ نوع بيانات كل خاصية من خصائص <code>CUSTOMER</code> في الشرائح: family name، وdate of birth، وshoe size، وtown of residence، وemail. ثم أضف خاصية واحدة نوع بياناتها صورة.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Family name: character string. Date of birth: date. Shoe size: number. Town of residence: character string. Email: character string. An image attribute: <code>Photograph</code>. Each attribute stores one piece of data of one data type.</p>
+      <p class="ar">family name: سلسلة محارف. date of birth: تاريخ. shoe size: رقم. town of residence: سلسلة محارف. email: سلسلة محارف. وخاصية نوعها صورة: <code>Photograph</code>. وكل خاصية تخزّن معلومة واحدة من نوع بيانات واحد.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Fix the BOOK entity</span><span class="ar">تمرين 3 · أصلح الكيان BOOK</span></h4>
+    <p class="en">A classmate drew this. Find three defects, name the rule each breaks, and write the repaired attribute list.</p>
+    <p class="ar">رسم زميلٌ هذا. جِد ثلاثة عيوب، وسمِّ القاعدة التي يخالفها كلٌّ منها، واكتب قائمة الخصائص بعد الإصلاح.</p>
+    <pre class="code" data-lang="text"><code>BOOK
+  * Title
+  * War and Peace
+  o Borrowers         'Sara Hamdan, Omar Saleh'
+  * Years Since Published</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en"><code>War and Peace</code> is a value of <code>Title</code>, not an attribute &mdash; remove it. <code>Borrowers</code> is not single-valued &mdash; each borrowing is an instance of <code>BOOK TRANSACTION</code>. <code>Years Since Published</code> is volatile &mdash; store a non-volatile <code>Publication Date</code> instead. Repaired: <code>* Title</code>, <code>o Publication Date</code>.</p>
+      <p class="ar"><code>War and Peace</code> قيمة للخاصية <code>Title</code>، لا خاصية &mdash; احذفها. و<code>Borrowers</code> ليست أحادية القيمة &mdash; فكل استعارة نسخة من <code>BOOK TRANSACTION</code>. و<code>Years Since Published</code> متقلّبة &mdash; خزّن بدلًا منها <code>Publication Date</code> غير المتقلّبة. بعد الإصلاح: <code>* Title</code> و<code>o Publication Date</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Mandatory or optional?</span><span class="ar">تمرين 4 · إلزامية أم اختيارية؟</span></h4>
+    <p class="en">Mark each attribute <code>*</code> or <code>o</code>, and give a reason. <code>AUTHOR</code>: Name, Email. <code>BOOK TRANSACTION</code>: Tran Date, Type. Then say how an online catalog and an email application would mark <code>Email</code> differently.</p>
+    <p class="ar">ضع على كل خاصية <code>*</code> أو <code>o</code>، وأعطِ السبب. <code>AUTHOR</code>: Name وEmail. <code>BOOK TRANSACTION</code>: Tran Date وType. ثم قل كيف يَسِم كتالوج على الإنترنت وتطبيق بريد إلكتروني <code>Email</code> بشكل مختلف.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en"><code>* Name</code>: an author with no name is useless to the library. <code>o Email</code>: the library rarely needs to write to an author. <code>* Tran Date</code>: an event is pinned down by when it happened. <code>o Type</code>: lesson 3's logical model marks it optional. An email application makes <code>Email</code> mandatory for <code>EMPLOYEE</code>; an online catalog leaves it optional for <code>CUSTOMER</code>.</p>
+      <p class="ar"><code>* Name</code>: المؤلف بلا اسم لا فائدة منه للمكتبة. و<code>o Email</code>: نادرًا ما تحتاج المكتبة إلى مراسلة مؤلف. و<code>* Tran Date</code>: الحدث يُحدَّد بوقت وقوعه. و<code>o Type</code>: يَسِمها النموذج المنطقي في الدرس 3 اختيارية. وتطبيق البريد الإلكتروني يجعل <code>Email</code> إلزامية للكيان <code>EMPLOYEE</code>، أمّا الكتالوج على الإنترنت فيتركها اختيارية للكيان <code>CUSTOMER</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Build it</span><span class="ar">تمرين 5 · ابنِه</span></h4>
+    <p class="en">Create <code>members</code> from this entity: <code># * Id</code>, <code>* First Name</code>, <code>* Last Name</code>, <code>o Cell Phone</code>, <code>* Birth Date</code>. Insert Sara (born 2007-04-12, phone 0599111222) and Omar (born 2008-11-30, no phone). Then list each member's first name with the age they reach in 2026.</p>
+    <p class="ar">أنشئ <code>members</code> من هذا الكيان: <code># * Id</code> و<code>* First Name</code> و<code>* Last Name</code> و<code>o Cell Phone</code> و<code>* Birth Date</code>. أضف Sara (مولودة في 2007-04-12، وهاتفها 0599111222) وOmar (مولود في 2008-11-30، بلا هاتف). ثم اسرد الاسم الأول لكل عضو مع العمر الذي يبلغه في 2026.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"explore","objects":true,"dataset":{},"sql":""}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE members (
+  id         NUMBER      PRIMARY KEY,
+  first_name VARCHAR(20) NOT NULL,
+  last_name  VARCHAR(20) NOT NULL,
+  cell_phone VARCHAR(15),
+  birth_date DATE        NOT NULL
+);
+
+INSERT INTO members VALUES (1, 'Sara', 'Hamdan', '0599111222', '2007-04-12');
+INSERT INTO members VALUES (2, 'Omar', 'Saleh', NULL, '2008-11-30');
+
+SELECT first_name, 2026 - YEAR(birth_date) AS age_in_2026
+FROM members
+ORDER BY id;</code></pre>
+      <div class="output">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th><code>first_name</code></th><th><code>age_in_2026</code></th></tr></thead>
+            <tbody>
+              <tr><td>Sara</td><td>19</td></tr>
+              <tr><td>Omar</td><td>18</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="en">Every <code>*</code> became <code>NOT NULL</code>; the one <code>o</code> did not, so Omar's <code>NULL</code> phone is accepted. There is no <code>age</code> column: it is volatile, and the query works it out from the non-volatile birth date.</p>
+      <p class="ar">صارت كل <code>*</code> قيد <code>NOT NULL</code>، ولم تصر <code>o</code> الوحيدة كذلك، فقُبل هاتف Omar الذي قيمته <code>NULL</code>. ولا عمود <code>age</code>: فهو متقلّب، والاستعلام يستنتجه من تاريخ الميلاد غير المتقلّب.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">An attribute is a specific piece of information that describes, quantifies, qualifies, classifies or specifies an entity. Model only the attributes the business tracks.</li>
+      <li class="ar">الخاصية معلومة محدّدة تصف الكيان أو تكمّمه أو تقيّمه أو تصنّفه أو تحدّده. ولا تنمذج إلا الخصائص التي يتتبّعها العمل.</li>
+      <li class="en">The attribute is the question asked of every instance; the value is one instance's answer. Attributes go in the softbox; values go in rows.</li>
+      <li class="ar">الخاصية هي السؤال الذي يُطرح على كل نسخة، والقيمة جواب نسخة واحدة. الخصائص في الصندوق المستدير، والقيم في الصفوف.</li>
+      <li class="en">Every attribute stores one piece of data of one data type &mdash; number, character string, date, image, sound.</li>
+      <li class="ar">كل خاصية تخزّن معلومة واحدة من نوع بيانات واحد &mdash; رقم، أو سلسلة محارف، أو تاريخ، أو صورة، أو صوت.</li>
+      <li class="en">An attribute is single-valued: one value per instance at any point in time. The value may change over time.</li>
+      <li class="ar">الخاصية أحادية القيمة: قيمة واحدة لكل نسخة في أيّ لحظة. وقد تتغيّر القيمة مع الزمن.</li>
+      <li class="en">Mandatory (<code>*</code>) must hold a value; optional (<code>o</code>) may be null. Null is neither zero nor a space. The business decides which is which.</li>
+      <li class="ar">الإلزامية (<code>*</code>) يجب أن تحمل قيمة، والاختيارية (<code>o</code>) يجوز أن تكون null. وnull ليست صفرًا ولا مسافة. والعمل هو الذي يقرّر أيّها أيّ.</li>
+      <li class="en">Given a choice, store the non-volatile attribute: birth date, not age.</li>
+      <li class="ar">إن خُيّرت، فخزّن الخاصية غير المتقلّبة: تاريخ الميلاد، لا العمر.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Writing values (<code>Gaza</code>) in the softbox where the attribute (<code>City</code>) belongs.</li>
+      <li class="ar">كتابة القيم (<code>Gaza</code>) في الصندوق المستدير في مكان الخاصية (<code>City</code>).</li>
+      <li class="en">Packing a list into one attribute ("A Vision, Citizen of the World").</li>
+      <li class="ar">حشر قائمة في خاصية واحدة («A Vision, Citizen of the World»).</li>
+      <li class="en">Storing digits you never calculate with as a number, or numbers you sort as text.</li>
+      <li class="ar">تخزين أرقام لا تحسب بها أبدًا بوصفها رقمًا، أو أعداد ترتّبها بوصفها نصًّا.</li>
+      <li class="en">Marking everything mandatory, or everything optional, instead of asking what the business cannot work without.</li>
+      <li class="ar">وَسْم كل شيء إلزاميًّا، أو كل شيء اختياريًّا، بدلًا من السؤال عمّا لا يستطيع العمل أن يعمل بدونه.</li>
+      <li class="en">Faking a missing value with <code>0</code> or a space instead of leaving it null.</li>
+      <li class="ar">تزييف القيمة الغائبة بـ <code>0</code> أو بمسافة بدلًا من تركها null.</li>
+      <li class="en">Storing age, days since ordered, or any value that goes stale by itself.</li>
+      <li class="ar">تخزين العمر، أو عدد الأيام منذ الطلب، أو أيّ قيمة تصبح قديمة من تلقاء نفسها.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="../tests/t2-test-05.html#t2-test-05">Test 5 &mdash; Attributes and Their Values</a>. Then <a href="../lessons/t2-lesson-06.html#t2-lesson-06">Lesson 6 &mdash; Unique Identifiers and Your First ERD</a> asks the question the two Omar Salehs of lesson 3 left open: which attribute tells one instance from every other?</p>
+    <p class="ar">اختبر نفسك بـ<a href="../tests/t2-test-05.html#t2-test-05">اختبار 5 &mdash; الخصائص وقيمها</a>. ثم يطرح <a href="../lessons/t2-lesson-06.html#t2-lesson-06">الدرس 6 &mdash; المعرّفات الفريدة وأول مخطط ERD لك</a> السؤال الذي تركه عُمَرا Omar Saleh في الدرس 3 مفتوحًا: أيّ خاصية تميّز نسخة من كل نسخة أخرى؟</p>
+  </div>
 
 </section>
 <nav class="pager"></nav>
@@ -69,6 +972,9 @@
 <script src="../assets/theory/js/anchors.js"></script>
 <script src="../assets/theory/js/chrome.js"></script>
 <script src="../assets/theory/js/code.js"></script>
+<script src="../assets/vendor/alasql/alasql.min.js"></script>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/widget.js"></script>
 <script src="../assets/theory/js/app.js"></script>
 </body>
 </html>

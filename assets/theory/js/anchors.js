@@ -82,6 +82,21 @@ window.DBTAnchors = {
 "t2l4-s1": "lessons/t2-lesson-04.html",
 "t2l4-s2": "lessons/t2-lesson-04.html",
 "t2l4-s3": "lessons/t2-lesson-04.html",
+"t2l5-e1": "lessons/t2-lesson-05.html",
+"t2l5-e2": "lessons/t2-lesson-05.html",
+"t2l5-e3": "lessons/t2-lesson-05.html",
+"t2l5-e4": "lessons/t2-lesson-05.html",
+"t2l5-h1": "lessons/t2-lesson-05.html",
+"t2l5-h2": "lessons/t2-lesson-05.html",
+"t2l5-h3": "lessons/t2-lesson-05.html",
+"t2l5-h4": "lessons/t2-lesson-05.html",
+"t2l5-h5": "lessons/t2-lesson-05.html",
+"t2l5-h6": "lessons/t2-lesson-05.html",
+"t2l5-h7": "lessons/t2-lesson-05.html",
+"t2l5-s1": "lessons/t2-lesson-05.html",
+"t2l5-s2": "lessons/t2-lesson-05.html",
+"t2l5-s3": "lessons/t2-lesson-05.html",
+"t2l5-s4": "lessons/t2-lesson-05.html",
 "t3-chapter": "chapters/t3.html",
 "t3-exam-a": "exams/t3-exam-a.html",
 "t3-exam-b": "exams/t3-exam-b.html",
@@ -338,6 +353,50 @@ window.DBTHeadings = {
 "t2l4-s3": {
 "ar": "الأحداث",
 "en": "Events"
+},
+"t2l5-h1": {
+"ar": "١ · ما الذي تفعله الخاصية",
+"en": "1 · What an attribute does"
+},
+"t2l5-h2": {
+"ar": "٢ · الخاصية وقيمتها",
+"en": "2 · An attribute and its value"
+},
+"t2l5-h3": {
+"ar": "٣ · لكل قيمة نوع بيانات",
+"en": "3 · Every value has a data type"
+},
+"t2l5-h4": {
+"ar": "٤ · قيمة واحدة في كل وقت",
+"en": "4 · One value at a time"
+},
+"t2l5-h5": {
+"ar": "٥ · إلزامية أو اختيارية",
+"en": "5 · Mandatory or optional"
+},
+"t2l5-h6": {
+"ar": "٦ · متقلّبة أو غير متقلّبة",
+"en": "6 · Volatile or non-volatile"
+},
+"t2l5-h7": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t2l5-s1": {
+"ar": "ما يتتبّعه العمل فقط",
+"en": "Only what the business tracks"
+},
+"t2l5-s2": {
+"ar": "واحدة في كل وقت — لا واحدة إلى الأبد",
+"en": "One at a time — not one forever"
+},
+"t2l5-s3": {
+"ar": "القيمة null: ليست صفرًا ولا مسافة",
+"en": "Null: neither zero nor a space"
+},
+"t2l5-s4": {
+"ar": "العمل هو الذي يقرّر",
+"en": "The business decides"
 },
 "t3idx-h1": {
 "ar": "الدروس",

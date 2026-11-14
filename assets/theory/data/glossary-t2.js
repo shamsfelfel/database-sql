@@ -25,6 +25,52 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "attribute",
+  "term": {
+   "en": "Attribute",
+   "ar": "الخاصية"
+  },
+  "def": {
+   "en": "A specific piece of information, of significance to the business, that helps describe, quantify, qualify, classify or specify an entity; in the database, a column.",
+   "ar": "معلومة محدّدة، ذات أهمية للعمل، تساعد على وصف الكيان أو تكميمه أو تقييمه أو تصنيفه أو تحديده؛ وفي قاعدة البيانات عمود."
+  },
+  "cat": {
+   "en": "Attributes",
+   "ar": "الخصائص"
+  },
+  "see": [
+   "attribute-value",
+   "entity",
+   "column"
+  ],
+  "used": [
+   "t2l5-h1"
+  ]
+ },
+ {
+  "id": "attribute-value",
+  "term": {
+   "en": "Attribute value",
+   "ar": "قيمة الخاصية"
+  },
+  "def": {
+   "en": "The data one instance holds for one attribute; in the database, one field.",
+   "ar": "البيانات التي تحملها نسخة واحدة لخاصية واحدة؛ وفي قاعدة البيانات حقل واحد."
+  },
+  "cat": {
+   "en": "Attributes",
+   "ar": "الخصائص"
+  },
+  "see": [
+   "attribute",
+   "instance",
+   "field"
+  ],
+  "used": [
+   "t2l5-h2"
+  ]
+ },
+ {
   "id": "business-context",
   "term": {
    "en": "Business context",
@@ -176,6 +222,28 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l1-h3"
+  ]
+ },
+ {
+  "id": "data-type",
+  "term": {
+   "en": "Data type",
+   "ar": "نوع البيانات"
+  },
+  "def": {
+   "en": "A classification of data, such as number, character string, date, image or sound, that states its possible values, the operations allowed on it and how it is stored.",
+   "ar": "تصنيف للبيانات، كالرقم وسلسلة المحارف والتاريخ والصورة والصوت، يبيّن قيمها الممكنة والعمليات المسموحة عليها وطريقة تخزينها."
+  },
+  "cat": {
+   "en": "Attributes",
+   "ar": "الخصائص"
+  },
+  "see": [
+   "attribute",
+   "column"
+  ],
+  "used": [
+   "t2l5-h3"
   ]
  },
  {
@@ -512,6 +580,28 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "mandatory",
+  "term": {
+   "en": "Mandatory attribute",
+   "ar": "الخاصية الإلزامية"
+  },
+  "def": {
+   "en": "An attribute that must contain a value for every instance; marked * on an ERD and declared NOT NULL in the table.",
+   "ar": "خاصية يجب أن تحتوي على قيمة في كل نسخة؛ تُوسَم بـ * في الـ ERD وتُعلَن NOT NULL في الجدول."
+  },
+  "cat": {
+   "en": "Attributes",
+   "ar": "الخصائص"
+  },
+  "see": [
+   "optional",
+   "null"
+  ],
+  "used": [
+   "t2l5-h5"
+  ]
+ },
+ {
   "id": "multi-user-access",
   "term": {
    "en": "Multi-user access",
@@ -533,6 +623,49 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "non-volatile",
+  "term": {
+   "en": "Non-volatile attribute",
+   "ar": "الخاصية غير المتقلّبة"
+  },
+  "def": {
+   "en": "An attribute whose values rarely change, if ever, such as birth date or order date; preferred when there is a choice.",
+   "ar": "خاصية نادرًا ما تتغيّر قيمها، إن تغيّرت أصلًا، كتاريخ الميلاد أو تاريخ الطلب؛ وتُفضَّل حين يوجد خيار."
+  },
+  "cat": {
+   "en": "Attributes",
+   "ar": "الخصائص"
+  },
+  "see": [
+   "volatile"
+  ],
+  "used": [
+   "t2l5-h6"
+  ]
+ },
+ {
+  "id": "null",
+  "term": {
+   "en": "Null",
+   "ar": "القيمة null"
+  },
+  "def": {
+   "en": "A value that is unavailable, unassigned, unknown or empty; it is neither a zero nor a space.",
+   "ar": "قيمة غير متوفّرة أو غير مُسندة أو مجهولة أو فارغة؛ وليست صفرًا ولا مسافة."
+  },
+  "cat": {
+   "en": "Attributes",
+   "ar": "الخصائص"
+  },
+  "see": [
+   "optional",
+   "mandatory"
+  ],
+  "used": [
+   "t2l5-s3"
+  ]
+ },
+ {
   "id": "business-significance",
   "term": {
    "en": "Of significance to the business",
@@ -551,6 +684,28 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l4-s1"
+  ]
+ },
+ {
+  "id": "optional",
+  "term": {
+   "en": "Optional attribute",
+   "ar": "الخاصية الاختيارية"
+  },
+  "def": {
+   "en": "An attribute that may contain a value or be left null; marked o on an ERD, and its column is nullable.",
+   "ar": "خاصية يجوز أن تحتوي على قيمة أو أن تبقى null؛ تُوسَم بـ o في الـ ERD، ويكون عمودها قابلًا لـ null."
+  },
+  "cat": {
+   "en": "Attributes",
+   "ar": "الخصائص"
+  },
+  "see": [
+   "mandatory",
+   "null"
+  ],
+  "used": [
+   "t2l5-h5"
   ]
  },
  {
@@ -690,6 +845,28 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "single-valued",
+  "term": {
+   "en": "Single-valued",
+   "ar": "أحادي القيمة"
+  },
+  "def": {
+   "en": "Said of an attribute that has only one value for each instance at any point in time; the value may change over time.",
+   "ar": "وصفٌ لخاصية ليس لها إلا قيمة واحدة لكل نسخة في أيّ لحظة؛ وقد تتغيّر القيمة مع الزمن."
+  },
+  "cat": {
+   "en": "Attributes",
+   "ar": "الخصائص"
+  },
+  "see": [
+   "attribute",
+   "field"
+  ],
+  "used": [
+   "t2l5-h4"
+  ]
+ },
+ {
   "id": "softbox",
   "term": {
    "en": "Softbox",
@@ -797,6 +974,27 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l1-h4"
+  ]
+ },
+ {
+  "id": "volatile",
+  "term": {
+   "en": "Volatile attribute",
+   "ar": "الخاصية المتقلّبة"
+  },
+  "def": {
+   "en": "An attribute whose values change constantly, such as age, so that they must be updated often.",
+   "ar": "خاصية تتغيّر قيمها باستمرار، كالعمر، فيجب تحديثها كثيرًا."
+  },
+  "cat": {
+   "en": "Attributes",
+   "ar": "الخصائص"
+  },
+  "see": [
+   "non-volatile"
+  ],
+  "used": [
+   "t2l5-h6"
   ]
  }
 ];
