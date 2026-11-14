@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" direction="ltr" role="img" aria-labelledby="t3-customer-order-t">
+<title id="t3-customer-order-t">The restaurant: three customers and four orders as instances, and the CUSTOMER place / placed by ORDER relationship that describes every such link / المطعم: ثلاثة زبائن وأربعة طلبات بوصفها نُسَخًا، وعلاقة CUSTOMER place / placed by ORDER التي تصف كل رابط من هذا النوع</title>
+<g class="en"><text x="450.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Instances on the left, the relationship on the right</text></g><g class="ar"><text x="450.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">النُّسَخ يسارًا، والعلاقة يمينًا</text></g>
+<g class="en"><text x="150" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">Instances</text></g><g class="ar"><text x="150" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">النُّسَخ</text></g>
+<rect x="40" y="71" width="96" height="30" rx="6" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="88" y="90" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Linda</text>
+<rect x="40" y="151" width="96" height="30" rx="6" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="88" y="170" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Krishna</text>
+<rect x="40" y="221" width="96" height="30" rx="6" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="88" y="240" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Mel</text>
+<rect x="180" y="57" width="104" height="30" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="232" y="76" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Order 10</text>
+<rect x="180" y="107" width="104" height="30" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="232" y="126" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Order 102</text>
+<rect x="180" y="157" width="104" height="30" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="232" y="176" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Order 77</text>
+<rect x="180" y="221" width="104" height="30" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="232" y="240" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Order 100</text>
+<path d="M136 86 L180 72" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<path d="M136 86 L180 122" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<path d="M136 166 L180 172" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<path d="M136 236 L180 236" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<path d="M320 40 L320 280" style="stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1;fill:none;stroke-dasharray:2 4"/>
+<g class="en"><text x="610" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">The relationship</text></g><g class="ar"><text x="610" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">العلاقة</text></g>
+<rect x="360" y="90" width="180" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="450.0" y="112" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CUSTOMER</text>
+<rect x="690" y="90" width="180" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="780.0" y="112" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ORDER</text>
+<path d="M540 107 L615.0 107" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M615.0 107 L690 107" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M676 107 L690 99" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M676 107 L690 107" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M676 107 L690 115" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="548" y="99" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">place</text>
+<text x="682" y="125" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">placed by</text>
+<text x="615" y="176" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">Each CUSTOMER must place</text>
+<text x="615" y="194" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">one or more ORDERs.</text>
+<text x="615" y="222" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">Each ORDER must be placed by</text>
+<text x="615" y="240" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">one and only one CUSTOMER.</text>
+<rect x="40" y="290" width="830" height="56" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="314" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Each thin line on the left is one link between instances. The one relationship on the right describes all of them.</text></g><g class="ar"><text x="854" y="314" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">كل خط رفيع على اليسار رابط واحد بين نسختين، والعلاقة الواحدة على اليمين تصفها كلها.</text></g>
+<g class="en"><text x="56" y="334" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Linda ordered for her children too, but she owns and pays for orders 10 and 102: she is their one CUSTOMER.</text></g><g class="ar"><text x="854" y="334" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">طلبت ليندا لأطفالها أيضًا، لكنها تملك الطلبين 10 و102 وتدفع ثمنهما: فهي زبونهما الوحيد.</text></g>
+</svg>

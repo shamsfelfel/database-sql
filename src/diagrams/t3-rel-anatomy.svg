@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" direction="ltr" role="img" aria-labelledby="t3-rel-anatomy-t">
+<title id="t3-rel-anatomy-t">A relationship between EMPLOYEE and DEPARTMENT, named works in at the EMPLOYEE end and responsible for at the DEPARTMENT end, read in both directions / علاقة بين EMPLOYEE وDEPARTMENT، مسمّاة works in عند طرف EMPLOYEE وresponsible for عند طرف DEPARTMENT، تُقرأ في الاتجاهين</title>
+<g class="en"><text x="380.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">One relationship, two names, two readings</text></g><g class="ar"><text x="380.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">علاقة واحدة، واسمان، وقراءتان</text></g>
+<rect x="40" y="56" width="200" height="95" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="140.0" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">EMPLOYEE</text>
+<text x="54" y="100" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Employee ID</text>
+<text x="54" y="119" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="54" y="138" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="520" y="56" width="200" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="620.0" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">DEPARTMENT</text>
+<text x="534" y="100" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Department ID</text>
+<text x="534" y="119" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M240 110 L380.0 110" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M380.0 110 L520 110" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M254 110 L240 102" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M254 110 L240 110" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M254 110 L240 118" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="262" y="102" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">works in</text>
+<text x="510" y="128" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">responsible for</text>
+<path d="M262 74 L500 74" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M492 69 L500 74 L492 79" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<g class="en"><text x="381" y="66" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">read from EMPLOYEE</text></g><g class="ar"><text x="381" y="66" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">القراءة من EMPLOYEE</text></g>
+<path d="M262 148 L500 148" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M270 143 L262 148 L270 153" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<g class="en"><text x="381" y="166" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">read from DEPARTMENT</text></g><g class="ar"><text x="381" y="166" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">القراءة من DEPARTMENT</text></g>
+<rect x="40" y="190" width="680" height="124" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="214" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each EMPLOYEE must work in one and only one DEPARTMENT.</text>
+<text x="56" y="236" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each DEPARTMENT may be responsible for one or more EMPLOYEEs.</text>
+<g class="en"><text x="56" y="266" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Each name sits next to the entity you start from, in lowercase.</text></g><g class="ar"><text x="704" y="266" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">يقع كل اسم بجانب الكيان الذي تبدأ منه، بحروف صغيرة.</text></g>
+<g class="en"><text x="56" y="290" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Line halves and line ends (must/may, one/many): lessons 2 and 3.</text></g><g class="ar"><text x="704" y="290" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">نصفا الخط وطرفاه («يجب/قد»، «واحد/أكثر»): الدرسان 2 و3.</text></g>
+</svg>

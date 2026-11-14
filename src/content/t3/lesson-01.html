@@ -1,0 +1,576 @@
+<section class="page" id="t3-lesson-01">
+
+  <span class="kicker">Lesson 1</span>
+  <h1><span class="en">What a Relationship Is</span><span class="ar">ما هي العلاقة</span></h1>
+  <p class="lede en">By the end of this lesson you will be able to say what makes a line between two entities a relationship, read one line in both directions, name it correctly at both ends, find the relationships hiding in a business scenario, and draw an entity related to itself.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تقول ما الذي يجعل الخط بين كيانين علاقةً، وأن تقرأ الخط الواحد في الاتجاهين، وأن تسمّيه تسمية صحيحة عند طرفيه، وأن تجد العلاقات المختبئة في سيناريو عمل، وأن ترسم كيانًا مرتبطًا بنفسه.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> You left Chapter 2 with the H.R. ERD (<a href="#t2l6-h6">Lesson 6</a>): six boxes you can read, and lines you cannot read yet. This lesson is about the lines themselves &mdash; what one is and what it must carry &mdash; before Lessons 2 and 3 read the marks at their ends. The second case is the restaurant from the <a href="#t3-chapter">chapter home</a>.</p>
+    <p class="ar"><strong>السياق.</strong> أنهيت الفصل 2 ومعك مخطّط ERD للموارد البشرية (<a href="#t2l6-h6">الدرس 6</a>): ستة صناديق تستطيع قراءتها، وخطوط لا تستطيع قراءتها بعد. هذا الدرس عن الخطوط نفسها &mdash; ما هي، وما الذي يجب أن تحمله &mdash; قبل أن يقرأ الدرسان 2 و3 العلامات عند أطرافها. والحالة الثانية هي المطعم من <a href="#t3-chapter">صفحة الفصل</a>.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">State the definition of a relationship and decide whether a proposed link is significant to the business.</li>
+      <li class="ar">ذكر تعريف العلاقة، والحكم على رابط مقترح: هل هو ذو أهمية للعمل؟</li>
+      <li class="en">Read one relationship in both directions, and explain why it needs a name at each end.</li>
+      <li class="ar">قراءة العلاقة الواحدة في الاتجاهين، وشرح لماذا تحتاج إلى اسم عند كل طرف.</li>
+      <li class="en">Find the relationships in a short business scenario, such as the restaurant's <code>CUSTOMER</code> and <code>ORDER</code>.</li>
+      <li class="ar">إيجاد العلاقات في سيناريو عمل قصير، مثل <code>CUSTOMER</code> و<code>ORDER</code> في المطعم.</li>
+      <li class="en">Recognise when a relationship joins an entity to itself, and model a manager without a second entity.</li>
+      <li class="ar">تمييز العلاقة التي تربط الكيان بنفسه، ونمذجة المدير دون كيان ثانٍ.</li>
+      <li class="en">List what every relationship carries: two names, optionality and cardinality.</li>
+      <li class="ar">سرد ما تحمله كل علاقة: اسمان، والإلزامية، والتعدّدية.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t3l1-h1"><span class="en">1 · A line that matters to the business</span><span class="ar">١ · خط يهمّ العمل</span></h2>
+
+  <div class="problem">
+    <p class="en">A new designer joins the H.R. project and, to be safe, draws a line between every pair of boxes: <code>JOB</code> to <code>LOCATION</code>, <code>JOB</code> to <code>REGION</code>, <code>EMPLOYEE</code> to <code>COUNTRY</code>. Fifteen lines for six entities. Nobody in H.R. can say what most of them mean, and nobody will ever look anything up through them.</p>
+    <p class="ar">ينضمّ مصمّم جديد إلى مشروع الموارد البشرية، وحتى يكون في أمان يرسم خطًّا بين كل زوج من الصناديق: <code>JOB</code> إلى <code>LOCATION</code>، و<code>JOB</code> إلى <code>REGION</code>، و<code>EMPLOYEE</code> إلى <code>COUNTRY</code>. خمسة عشر خطًّا لستة كيانات. لا يستطيع أحد في الموارد البشرية أن يقول ما معنى معظمها، ولن يبحث أحد عن شيء من خلالها أبدًا.</p>
+  </div>
+
+  <p class="en">A line on an ERD is not decoration and not a guess. The slides put it first in their list: a relationship represents something of significance or importance to the business, and shows how the entities are related to each other. If the business never needs the link, it is not a relationship.</p>
+  <p class="ar">الخط في مخطّط ERD ليس زينة ولا تخمينًا. وتضع الشرائح هذا أوّلًا في قائمتها: العلاقة تمثّل شيئًا ذا أهمية أو قيمة للعمل، وتُظهر كيف ترتبط الكيانات بعضها ببعض. فإن لم يحتج العمل إلى الرابط قطّ، فليس علاقة.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="relationship">relationship</span> is a bi-directional, significant association between two entities, or between an entity and itself.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="relationship">العلاقة</span> (Relationship) ارتباطٌ ثنائي الاتجاه وذو أهمية بين كيانين، أو بين كيان ونفسه.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="significance">Significance</span> means the business actually needs to know about the link &mdash; to record it, look it up or act on it.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="significance">الأهمية</span> (Significance) تعني أن العمل يحتاج فعلًا إلى معرفة الرابط &mdash; ليسجّله أو يبحث عنه أو يتصرّف بناءً عليه.</p>
+  </div>
+
+  <p class="en">Who decides? The business does. The lecturer's note on the first slide: the answer "may vary from one organization to another, depending on the business rules". In general an employee has a job, but some jobs are vacant or obsolete, so no employee holds them. Each such statement is a <span class="term" data-term="business-rule">business rule</span>.</p>
+  <p class="ar">مَن يقرّر؟ العمل نفسه. تقول ملاحظة المحاضِرة على الشريحة الأولى إن الجواب «قد يختلف من مؤسسة إلى أخرى، بحسب قواعد العمل». فالموظّف عمومًا له وظيفة، لكن بعض الوظائف شاغرة أو ملغاة فلا يشغلها أحد. وكل عبارة من هذا النوع <span class="term" data-term="business-rule">قاعدة عمل</span> (Business Rule).</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="business-rule">business rule</span> is a statement, given by the business, of how its data behaves &mdash; for example, "each employee works in one department".</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="business-rule">قاعدة العمل</span> عبارةٌ يعطيها العمل نفسه تصف كيف تتصرّف بياناته &mdash; مثل «يعمل كل موظّف في قسم واحد».</p>
+  </div>
+
+  <h3 id="t3l1-s1"><span class="en">Only between entities</span><span class="ar">بين الكيانات فقط</span></h3>
+
+  <p class="en">The slides add a second limit: relationships exist only between entities (or one entity and itself). Never between an attribute and an entity, never between two attributes. If <code>EMPLOYEE</code> holds <code>* Department Name</code>, the department is hiding inside an attribute &mdash; exactly the defect Chapter 2 removed by making <code>DEPARTMENT</code> an entity and drawing a line.</p>
+  <p class="ar">وتضيف الشرائح حدًّا ثانيًا: العلاقات لا توجد إلا بين الكيانات (أو بين كيان ونفسه). لا بين خاصية وكيان، ولا بين خاصيتين. فإن حمل <code>EMPLOYEE</code> السطر <code>* Department Name</code>، فالقسم مختبئ داخل خاصية &mdash; وهذا بالضبط العيب الذي أزاله الفصل 2 حين جعل <code>DEPARTMENT</code> كيانًا ورسم خطًّا.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Every relationship you draw becomes a foreign key column, one per line: <code>works in</code> becomes <code>employees.department_id</code>. A line nobody needs becomes a column nobody fills &mdash; <code>jobs.region_id</code>, kept up to date by nobody, trusted by nobody. Fifteen lines would mean fifteen such columns to maintain.</p>
+    <p class="ar">كل علاقة ترسمها تصبح عمود مفتاح أجنبي، عمودًا لكل خط: فالعلاقة <code>works in</code> تصبح <code>employees.department_id</code>. أمّا الخط الذي لا يحتاج إليه أحد فيصبح عمودًا لا يملؤه أحد &mdash; <code>jobs.region_id</code>، لا يحدّثه أحد ولا يثق به أحد. وخمسة عشر خطًّا تعني خمسة عشر عمودًا من هذا النوع تجب صيانتها.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which of these is a relationship the H.R. business needs, according to its scenario?</p>
+    <p class="q ar">أيّ هذه علاقة يحتاج إليها عمل الموارد البشرية، بحسب السيناريو الخاص به؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en"><code>EMPLOYEE</code> to <code>DEPARTMENT</code> &mdash; "we need to know the department responsible for each employee"</span><span class="ar"><code>EMPLOYEE</code> إلى <code>DEPARTMENT</code> &mdash; «نحتاج إلى معرفة القسم المسؤول عن كل موظّف»</span></button></li>
+      <li><button class="opt"><span class="en"><code>JOB</code> to <code>REGION</code> &mdash; every job exists somewhere in the world</span><span class="ar"><code>JOB</code> إلى <code>REGION</code> &mdash; فكل وظيفة موجودة في مكان ما من العالم</span></button></li>
+      <li><button class="opt"><span class="en"><code>Salary</code> to <code>JOB</code> &mdash; a salary belongs to a job</span><span class="ar"><code>Salary</code> إلى <code>JOB</code> &mdash; فالراتب يخصّ الوظيفة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The scenario asks for the employee's department in so many words, so that link is significant. Nothing in it asks about a job's region. And <code>Salary</code> is an attribute: relationships exist only between entities.</p>
+      <p class="ar">يطلب السيناريو قسم الموظّف صراحةً، فهذا الرابط ذو أهمية. ولا شيء فيه يسأل عن إقليم الوظيفة. أمّا <code>Salary</code> فخاصية، والعلاقات لا توجد إلا بين الكيانات.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Company A says every job must have at least one employee; company B keeps vacant jobs on its books. Which statement is right?</p>
+    <p class="q ar">تقول الشركة A إن كل وظيفة يجب أن يشغلها موظّف واحد على الأقل، وتحتفظ الشركة B بالوظائف الشاغرة في سجلّاتها. أيّ العبارات صحيحة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">One of them has modelled it wrongly</span><span class="ar">إحداهما نمذجت الأمر خطأً</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Both can be right: business rules vary from one organization to another</span><span class="ar">كلتاهما قد تكون على صواب: قواعد العمل تختلف من مؤسسة إلى أخرى</span></button></li>
+      <li><button class="opt"><span class="en">The database designer should choose the better rule for them</span><span class="ar">على مصمّم قاعدة البيانات أن يختار لهما القاعدة الأفضل</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">This is the lecturer's own note. The designer captures the rule; the business owns it. Two companies with the same entities can have different relationships between them.</p>
+      <p class="ar">هذه ملاحظة المحاضِرة نفسها. المصمّم يلتقط القاعدة، والعمل يملكها. وقد تكون لشركتين لهما الكيانات نفسها علاقاتٌ مختلفة بينها.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t3l1-h2"><span class="en">2 · One line, two directions</span><span class="ar">٢ · خط واحد، واتجاهان</span></h2>
+
+  <div class="problem">
+    <p class="en">Two people ask H.R. a question on the same morning. Tyler Adams asks, "Which department am I in?" The head of Accounting asks, "Who works for me?" They are asking about the same link, from opposite ends. One model has to answer both.</p>
+    <p class="ar">يسأل شخصان قسمَ الموارد البشرية سؤالًا في الصباح نفسه. يسأل Tyler Adams: «في أيّ قسم أنا؟» ويسأل رئيس قسم المحاسبة: «مَن يعمل عندي؟» إنهما يسألان عن الرابط نفسه، من طرفين متقابلين. وعلى نموذج واحد أن يجيب عن السؤالين.</p>
+  </div>
+
+  <p class="en">That is why the slides call a relationship <span class="term" data-term="bidirectional">bi-directional</span>. You do not draw one line from <code>EMPLOYEE</code> to <code>DEPARTMENT</code> and another back. One line carries both readings: an employee works in a department, and a department is responsible for employees.</p>
+  <p class="ar">لهذا تصف الشرائح العلاقة بأنها <span class="term" data-term="bidirectional">ثنائية الاتجاه</span> (Bi-directional). فلا ترسم خطًّا من <code>EMPLOYEE</code> إلى <code>DEPARTMENT</code> وخطًّا آخر عائدًا. خط واحد يحمل القراءتين: الموظّف يعمل في قسم، والقسم مسؤول عن موظّفين.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A relationship is <span class="term" data-term="bidirectional">bi-directional</span>: it can be read starting from either of its two entities, and each reading states its own business rule.</p>
+    <p class="ar"><strong>تعريف.</strong> العلاقة <span class="term" data-term="bidirectional">ثنائية الاتجاه</span>: يمكن قراءتها بدءًا من أيٍّ من كيانَيها، وكل قراءة تذكر قاعدة عمل خاصة بها.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t3-rel-anatomy"><figcaption><span class="en">One line, read twice. Starting at <code>EMPLOYEE</code> you read <code>works in</code>; starting at <code>DEPARTMENT</code> you read <code>responsible for</code>. The two sentences in the box are the slides' own; the words <em>must</em>, <em>may</em>, <em>one and only one</em> and <em>one or more</em> come from the line's halves and ends, which Lessons 2 and 3 teach.</span><span class="ar">خط واحد يُقرأ مرّتين. حين تبدأ من <code>EMPLOYEE</code> تقرأ <code>works in</code>، وحين تبدأ من <code>DEPARTMENT</code> تقرأ <code>responsible for</code>. والجملتان في الإطار من الشرائح نفسها؛ أمّا كلمات <em>must</em> و<em>may</em> و<em>one and only one</em> و<em>one or more</em> فتأتي من نصفَي الخط وطرفيه، ويعلّمها الدرسان 2 و3.</span></figcaption></figure>
+
+  <h3 id="t3l1-s2"><span class="en">The same column answers both questions</span><span class="ar">العمود نفسه يجيب عن السؤالين</span></h3>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The one line becomes one column, <code>employees.department_id</code>, and that one column is read from both ends. Here is the head of Accounting's question &mdash; department 10:</p>
+    <p class="ar">يصبح الخط الواحد عمودًا واحدًا، <code>employees.department_id</code>، وهذا العمود الواحد يُقرأ من الطرفين. وهذا سؤال رئيس قسم المحاسبة &mdash; القسم 10:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE departments (department_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO departments VALUES (10,'Accounting'), (15,'Sales'), (22,'Development')","CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, department_id NUMBER NOT NULL, manager_id NUMBER)","INSERT INTO employees VALUES (100,'Dana','Smith',10,NULL), (310,'Tyler','Adams',15,100), (210,'Lawrence','Chen',10,100), (405,'Carlos','Gomez',10,210), (378,'Neil','Loungani',22,100)"],"sql":"SELECT employee_id, first_name, last_name\nFROM employees\nWHERE department_id = 10\nORDER BY employee_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>employee_id</code></th><th><code>first_name</code></th><th><code>last_name</code></th></tr></thead>
+          <tbody>
+            <tr><td>100</td><td>Dana</td><td>Smith</td></tr>
+            <tr><td>210</td><td>Lawrence</td><td>Chen</td></tr>
+            <tr><td>405</td><td>Carlos</td><td>Gomez</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Now Tyler's question, from the other end: <code>SELECT department_id FROM employees WHERE employee_id = 310;</code> returns one row, <code>15</code> &mdash; Sales. Same column, opposite direction. No second link was needed.</p>
+    <p class="ar">والآن سؤال Tyler، من الطرف الآخر: <code>SELECT department_id FROM employees WHERE employee_id = 310;</code> يعيد صفًّا واحدًا، <code>15</code> &mdash; المبيعات. العمود نفسه، والاتجاه المعاكس. ولم تكن هناك حاجة إلى رابط ثانٍ.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A designer draws two separate lines between <code>EMPLOYEE</code> and <code>DEPARTMENT</code>: one for "works in", one for "responsible for". What is wrong?</p>
+    <p class="q ar">يرسم مصمّم خطّين منفصلين بين <code>EMPLOYEE</code> و<code>DEPARTMENT</code>: واحدًا لـ «works in» وآخر لـ «responsible for». ما الخطأ؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Nothing &mdash; each direction needs its own line</span><span class="ar">لا شيء &mdash; فكل اتجاه يحتاج إلى خطّه الخاص</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">They are two readings of one bi-directional relationship, so they belong on one line</span><span class="ar">هما قراءتان لعلاقة واحدة ثنائية الاتجاه، فمكانهما خط واحد</span></button></li>
+      <li><button class="opt"><span class="en">"Responsible for" is not significant, so that line should be deleted</span><span class="ar">«responsible for» ليست ذات أهمية، فيجب حذف خطّها</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Every relationship is bi-directional. "Works in" and "responsible for" describe the same link from its two ends &mdash; one line, named at both ends. Two lines would mean two different links.</p>
+      <p class="ar">كل علاقة ثنائية الاتجاه. و«works in» و«responsible for» تصفان الرابط نفسه من طرفيه &mdash; خط واحد مسمّى عند طرفيه. أمّا خطّان فيعنيان رابطين مختلفين.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the demo above, which query reads the relationship starting from <code>EMPLOYEE</code>?</p>
+    <p class="q ar">في العرض أعلاه، أيّ استعلام يقرأ العلاقة بدءًا من <code>EMPLOYEE</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>WHERE department_id = 10</code> &mdash; the employees of a department</span><span class="ar"><code>WHERE department_id = 10</code> &mdash; موظّفو قسم ما</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>WHERE employee_id = 310</code> &mdash; the department of an employee</span><span class="ar"><code>WHERE employee_id = 310</code> &mdash; قسم موظّف ما</span></button></li>
+      <li><button class="opt"><span class="en">Neither &mdash; SQL can only read a relationship one way</span><span class="ar">لا هذا ولا ذاك &mdash; SQL لا تقرأ العلاقة إلا في اتجاه واحد</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Starting from one employee (310) and finding the department is the <code>works in</code> reading. Starting from one department (10) and finding its employees is the <code>responsible for</code> reading.</p>
+      <p class="ar">البدء من موظّف واحد (310) وإيجاد قسمه هو قراءة <code>works in</code>. والبدء من قسم واحد (10) وإيجاد موظّفيه هو قراءة <code>responsible for</code>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t3l1-h3"><span class="en">3 · Named at both ends</span><span class="ar">٣ · مسمّاة عند طرفيها</span></h2>
+
+  <div class="problem">
+    <p class="en">A line joins <code>EMPLOYEE</code> and <code>DEPARTMENT</code>, and nothing is written on it. The H.R. manager reads "works in". The finance officer reads "manages", and asks why one department has forty managers. The diagram cannot settle the argument, because it never said.</p>
+    <p class="ar">خط يربط <code>EMPLOYEE</code> و<code>DEPARTMENT</code>، ولا شيء مكتوب عليه. يقرؤه مدير الموارد البشرية «يعمل في»، ويقرؤه الموظّف المالي «يدير»، ويسأل لماذا لقسم واحد أربعون مديرًا. لا يستطيع المخطّط أن يحسم الخلاف، لأنه لم يقل شيئًا قطّ.</p>
+  </div>
+
+  <p class="en">So a relationship is named &mdash; and, because it is read in two directions, it is named at both ends. Each <span class="term" data-term="relationship-end">end of the relationship</span> belongs to one entity, and the name written at that end is what you say when you start from that entity.</p>
+  <p class="ar">لذلك تُسمّى العلاقة &mdash; ولأنها تُقرأ في اتجاهين، فإنها تُسمّى عند طرفيها. كل <span class="term" data-term="relationship-end">طرف من طرفَي العلاقة</span> (Relationship End) يخصّ كيانًا واحدًا، والاسم المكتوب عند ذلك الطرف هو ما تقوله حين تبدأ من ذلك الكيان.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="relationship-end">relationship end</span> is the half of a relationship that belongs to one of its entities; it carries that entity's name for the link.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="relationship-end">طرف العلاقة</span> هو نصف العلاقة الذي يخصّ أحد كيانَيها؛ ويحمل اسمَ الرابط كما يراه ذلك الكيان.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="relationship-name">relationship name</span> is the short lowercase label written close to the entity it is assigned to, saying how that entity is related to the other.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="relationship-name">اسم العلاقة</span> (Relationship Name) عنوان قصير بحروف صغيرة يُكتب قريبًا من الكيان الذي يخصّه، ويقول كيف يرتبط ذلك الكيان بالآخر.</p>
+  </div>
+
+  <div class="evolve" id="t3l1-e1">
+    <div class="ver" data-title-en="Version 1 — a line with no name" data-title-ar="الإصدار 1 — خط بلا اسم">
+      <figure class="diagram" data-diagram="t3-name-v1"></figure>
+      <p class="en">Defect: ambiguous. The line records that a link exists, but every reader may supply a different meaning, and the business rule it stands for is lost.</p>
+      <p class="ar">العيب: غامض. يسجّل الخط أن رابطًا موجود، لكن كل قارئ قد يعطيه معنًى مختلفًا، وتضيع قاعدة العمل التي يمثّلها.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — named at one end" data-title-ar="الإصدار 2 — مسمّى عند طرف واحد">
+      <figure class="diagram" data-diagram="t3-name-v2"></figure>
+      <p class="en">Fixed: read from <code>EMPLOYEE</code>, the meaning is clear. Still open: the relationship is bi-directional, and from <code>DEPARTMENT</code> it has no name, so half of the rule is still unstated.</p>
+      <p class="ar">أُصلح: حين تقرأ من <code>EMPLOYEE</code> يتّضح المعنى. وما زال مفتوحًا: العلاقة ثنائية الاتجاه، ومن جهة <code>DEPARTMENT</code> لا اسم لها، فنصف القاعدة ما زال غير مذكور.</p>
+    </div>
+    <div class="ver" data-title-en="Version 3 — named at both ends" data-title-ar="الإصدار 3 — مسمّى عند طرفيه">
+      <figure class="diagram" data-diagram="t3-rel-anatomy"></figure>
+      <p class="en">Fixed: each end carries its own lowercase name, next to its own entity. Both readings are now a full sentence. This is the recommended form, and the slides' own.</p>
+      <p class="ar">أُصلح: يحمل كل طرف اسمه الخاص بحروف صغيرة، بجانب كيانه. وصارت كل قراءة جملة كاملة. وهذا هو الشكل الموصى به، وهو شكل الشرائح نفسها.</p>
+    </div>
+  </div>
+
+  <h3 id="t3l1-s3"><span class="en">Where the name goes, and how it is written</span><span class="ar">أين يوضع الاسم، وكيف يُكتب</span></h3>
+
+  <p class="en">The slides give two rules. The name is the label that appears <em>close to the entity it is assigned to</em>: <code>works in</code> sits by <code>EMPLOYEE</code>, because you say it starting from an employee. And every relationship name is written in <strong>lowercase</strong>, while entity names stay in capitals &mdash; so a glance tells you which word is which.</p>
+  <p class="ar">تعطي الشرائح قاعدتين. الاسم هو العنوان الذي يظهر <em>قريبًا من الكيان الذي يخصّه</em>: فـ <code>works in</code> تقع بجانب <code>EMPLOYEE</code>، لأنك تقولها بدءًا من موظّف. وكل اسم علاقة يُكتب <strong>بحروف صغيرة</strong>، بينما تبقى أسماء الكيانات بحروف كبيرة &mdash; فتعرف بنظرة واحدة أيّ كلمة هي أيّ.</p>
+
+  <pre class="code" data-lang="erdish"><code>EMPLOYEE   works in          DEPARTMENT     -- start at EMPLOYEE
+DEPARTMENT responsible for   EMPLOYEE       -- start at DEPARTMENT</code></pre>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The name is the one part of a relationship that does <em>not</em> reach the table. The column is just a number:</p>
+    <p class="ar">الاسم هو الجزء الوحيد من العلاقة الذي <em>لا</em> يصل إلى الجدول. فالعمود مجرّد رقم:</p>
+    <pre class="code" data-lang="sql"><code>CREATE TABLE employees (
+  employee_id   NUMBER PRIMARY KEY,
+  first_name    VARCHAR(20) NOT NULL,
+  last_name     VARCHAR(20) NOT NULL,
+  department_id NUMBER NOT NULL      -- works in? manages? the column cannot say
+);</code></pre>
+    <p class="en">Reading <code>department_id = 10</code>, nobody can tell whether Dana works in Accounting or runs it. That meaning lives only on the ERD, which is exactly why the ERD must carry it, at both ends.</p>
+    <p class="ar">حين تقرأ <code>department_id = 10</code>، لا يستطيع أحد أن يعرف هل تعمل Dana في المحاسبة أم تديرها. هذا المعنى لا يعيش إلا في مخطّط ERD، ولهذا بالضبط يجب أن يحمله المخطّط، عند الطرفين.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In version 3, you start reading at <code>DEPARTMENT</code>. Which name do you read?</p>
+    <p class="q ar">في الإصدار 3، تبدأ القراءة من <code>DEPARTMENT</code>. أيّ اسم تقرأ؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>works in</code> &mdash; it is the first name on the line</span><span class="ar"><code>works in</code> &mdash; فهو الاسم الأول على الخط</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>responsible for</code> &mdash; the name next to <code>DEPARTMENT</code></span><span class="ar"><code>responsible for</code> &mdash; الاسم المجاور لـ <code>DEPARTMENT</code></span></button></li>
+      <li><button class="opt"><span class="en">Both, joined: "works in responsible for"</span><span class="ar">الاثنين معًا: «works in responsible for»</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A name sits close to the entity it is assigned to, and you read the name next to the entity you start from: each <code>DEPARTMENT</code> is <code>responsible for</code> employees.</p>
+      <p class="ar">يقع الاسم قريبًا من الكيان الذي يخصّه، وتقرأ الاسم المجاور للكيان الذي تبدأ منه: كل <code>DEPARTMENT</code> هو <code>responsible for</code> موظّفين.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which of these labels follows the slides' naming rule?</p>
+    <p class="q ar">أيّ هذه العناوين يتّبع قاعدة التسمية في الشرائح؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>WORKS IN</code></span><span class="ar"><code>WORKS IN</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>Works_In</code></span><span class="ar"><code>Works_In</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>works in</code></span><span class="ar"><code>works in</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"Make sure that all relationship names are in lowercase." Capitals are for entity names, so <code>WORKS IN</code> would look like an entity.</p>
+      <p class="ar">«تأكّد من أن كل أسماء العلاقات بحروف صغيرة.» فالحروف الكبيرة لأسماء الكيانات، و<code>WORKS IN</code> ستبدو وكأنها كيان.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t3l1-h4"><span class="en">4 · Finding relationships in a scenario</span><span class="ar">٤ · إيجاد العلاقات في سيناريو</span></h2>
+
+  <div class="problem">
+    <p class="en">The restaurant's owner describes the business in a few sentences and asks for a database. Nobody says the word "relationship". The links are in there, in ordinary verbs, and the designer has to find them before drawing a single line.</p>
+    <p class="ar">يصف صاحب المطعم عمله في بضع جمل ويطلب قاعدة بيانات. لا أحد يقول كلمة «علاقة». الروابط موجودة هناك، في أفعال عادية، وعلى المصمّم أن يجدها قبل أن يرسم خطًّا واحدًا.</p>
+  </div>
+
+  <p class="en">The slides call this a <span class="term" data-term="business-scenario">business scenario</span>. Their first one:</p>
+  <p class="ar">تسمّي الشرائح هذا <span class="term" data-term="business-scenario">سيناريو عمل</span> (Business Scenario). وهذا أوّلها:</p>
+
+  <div class="note">
+    <p class="en">"In our restaurant, a customer walks up to the counter and places their order. A customer can order for him or herself only, or for him/herself and others. For example, a mother orders for herself and her children. We consider the mother to be the customer who owns the order and is responsible for payment. Over a period of time, a customer can place as many orders as he wants."</p>
+    <p class="ar">«في مطعمنا، يتقدّم الزبون إلى المنضدة ويضع طلبه. ويستطيع الزبون أن يطلب لنفسه فقط، أو لنفسه ولغيره. فمثلًا، تطلب أمٌّ لنفسها ولأطفالها. ونعدّ الأمَّ الزبونَ الذي يملك الطلب ويتحمّل مسؤولية الدفع. وعلى مدى فترة من الزمن، يستطيع الزبون أن يضع من الطلبات ما يشاء.»</p>
+  </div>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="business-scenario">business scenario</span> is the business's own description of what it does, from which the designer extracts entities, attributes and relationships.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="business-scenario">سيناريو العمل</span> وصفُ العمل بكلماته هو لما يفعله، ومنه يستخرج المصمّم الكيانات والخصائص والعلاقات.</p>
+  </div>
+
+  <h3 id="t3l1-s4"><span class="en">Instances, and the relationship that describes them</span><span class="ar">النُّسَخ، والعلاقة التي تصفها</span></h3>
+
+  <p class="en">Two nouns have facts of their own: <code>CUSTOMER</code> and <code>ORDER</code>. The verb between them is "places". The children are not customers: the business says the mother owns the order. The slides draw it with real instances &mdash; Linda, Krishna, Mel &mdash; then with the two entities:</p>
+  <p class="ar">اسمان لهما حقائقهما الخاصة: <code>CUSTOMER</code> و<code>ORDER</code>. والفعل بينهما «يضع». والأطفال ليسوا زبائن: فالعمل يقول إن الأمّ تملك الطلب. وترسمه الشرائح بنُسَخ حقيقية &mdash; ليندا وكريشنا وميل &mdash; ثم بالكيانين:</p>
+
+  <figure class="diagram" data-diagram="t3-customer-order"><figcaption><span class="en">Left: four links between instances. Right: the one relationship that describes them all, named <code>place</code> at <code>CUSTOMER</code> and <code>placed by</code> at <code>ORDER</code>. Linda has two orders, so the line meets <code>ORDER</code> as a crow's foot; Lesson 3 reads it.</span><span class="ar">يسارًا: أربعة روابط بين النُّسَخ. ويمينًا: العلاقة الواحدة التي تصفها كلها، مسمّاة <code>place</code> عند <code>CUSTOMER</code> و<code>placed by</code> عند <code>ORDER</code>. لليندا طلبان، فيلتقي الخط بـ <code>ORDER</code> على شكل قدم غراب؛ ويقرؤها الدرس 3.</span></figcaption></figure>
+
+  <p class="en">The scenario gives both readings: "places their order" from the customer; "the customer who owns the order" from the order. The slides' sentences: each <code>ORDER</code> must be placed by one and only one <code>CUSTOMER</code>; each <code>CUSTOMER</code> must place one or more <code>ORDER</code>s.</p>
+  <p class="ar">يعطي السيناريو القراءتين: «يضع طلبه» من جهة الزبون، و«الزبون الذي يملك الطلب» من جهة الطلب. وجملتا الشرائح: يجب أن يوضع كل <code>ORDER</code> من قِبل <code>CUSTOMER</code> واحد فقط لا غير؛ ويجب أن يضع كل <code>CUSTOMER</code> واحدًا أو أكثر من <code>ORDER</code>.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">An order has one customer, so <code>orders</code> gets a <code>customer_id</code> column. Linda is customer 1. Her orders:</p>
+    <p class="ar">للطلب زبون واحد، فيأخذ <code>orders</code> عمود <code>customer_id</code>. وليندا هي الزبون 1. طلباتها:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Krishna'), (3,'Mel')","CREATE TABLE orders (order_no NUMBER PRIMARY KEY, customer_id NUMBER NOT NULL)","INSERT INTO orders VALUES (10,1), (102,1), (77,2), (100,3)"],"sql":"SELECT order_no\nFROM orders\nWHERE customer_id = 1\nORDER BY order_no;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>order_no</code></th></tr></thead>
+          <tbody>
+            <tr><td>10</td></tr>
+            <tr><td>102</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">That is the <code>place</code> reading. For <code>placed by</code>, ask who owns order 77: <code>SELECT customer_id FROM orders WHERE order_no = 77;</code> returns <code>2</code> &mdash; Krishna. The children appear nowhere, exactly as the business decided.</p>
+    <p class="ar">هذه قراءة <code>place</code>. ولقراءة <code>placed by</code>، اسأل مَن يملك الطلب 77: <code>SELECT customer_id FROM orders WHERE order_no = 77;</code> يعيد <code>2</code> &mdash; كريشنا. ولا يظهر الأطفال في أيّ مكان، تمامًا كما قرّر العمل.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which pair of names fits the <code>CUSTOMER</code> / <code>ORDER</code> relationship, written at the right ends?</p>
+    <p class="q ar">أيّ زوج من الأسماء يناسب علاقة <code>CUSTOMER</code> / <code>ORDER</code>، مكتوبًا عند الطرفين الصحيحين؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en"><code>place</code> next to <code>CUSTOMER</code>, <code>placed by</code> next to <code>ORDER</code></span><span class="ar"><code>place</code> بجانب <code>CUSTOMER</code>، و<code>placed by</code> بجانب <code>ORDER</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>placed by</code> next to <code>CUSTOMER</code>, <code>place</code> next to <code>ORDER</code></span><span class="ar"><code>placed by</code> بجانب <code>CUSTOMER</code>، و<code>place</code> بجانب <code>ORDER</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>pays for</code> in the middle of the line</span><span class="ar"><code>pays for</code> في منتصف الخط</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Start at <code>CUSTOMER</code>: a customer <em>places</em> orders, so <code>place</code> sits by <code>CUSTOMER</code>. Start at <code>ORDER</code>: an order is <em>placed by</em> a customer. A name in the middle belongs to neither end.</p>
+      <p class="ar">ابدأ من <code>CUSTOMER</code>: الزبون <em>يضع</em> طلبات، فتقع <code>place</code> بجانب <code>CUSTOMER</code>. وابدأ من <code>ORDER</code>: الطلب <em>يوضع من قِبل</em> زبون. أمّا الاسم في المنتصف فلا يخصّ أيًّا من الطرفين.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Linda orders for herself and her two children. How many <code>CUSTOMER</code> instances does that order link to?</p>
+    <p class="q ar">تطلب ليندا لنفسها ولطفليها. بكم نسخة من <code>CUSTOMER</code> يرتبط ذلك الطلب؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Three &mdash; one per person who eats</span><span class="ar">ثلاث &mdash; نسخة لكل شخص يأكل</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">One &mdash; the business makes the mother the customer</span><span class="ar">واحدة &mdash; فالعمل يجعل الأمَّ هي الزبون</span></button></li>
+      <li><button class="opt"><span class="en">It depends on who pays at the counter that day</span><span class="ar">يعتمد ذلك على مَن يدفع عند المنضدة في ذلك اليوم</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"We consider the mother to be the customer who owns the order and is responsible for payment." A business rule decides the relationship, not who is eating.</p>
+      <p class="ar">«نعدّ الأمَّ الزبونَ الذي يملك الطلب ويتحمّل مسؤولية الدفع.» قاعدة العمل هي التي تقرّر العلاقة، لا مَن يأكل.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t3l1-h5"><span class="en">5 · An entity related to itself</span><span class="ar">٥ · كيان مرتبط بنفسه</span></h2>
+
+  <div class="problem">
+    <p class="en">The slides' second scenario: "We need to keep track of our employees and their managers. Every employee has one manager, including the managing director who manages him/herself. Each manager can manage several employees." The obvious drawing has a box for managers. Lawrence Chen is managed by Dana and manages Carlos &mdash; which box is he in?</p>
+    <p class="ar">السيناريو الثاني في الشرائح: «نحتاج إلى تتبّع موظّفينا ومديريهم. لكل موظّف مدير واحد، بمن فيهم المدير العام الذي يدير نفسه. ويستطيع كل مدير أن يدير عدّة موظّفين.» الرسم البديهي فيه صندوق للمديرين. لكنّ Lawrence Chen تديره Dana وهو يدير Carlos &mdash; ففي أيّ صندوق يكون؟</p>
+  </div>
+
+  <p class="en">The slides answer: since managers are also employees, both are listed in the same entity, <code>EMPLOYEE</code>. The link is then between <code>EMPLOYEE</code> and <code>EMPLOYEE</code>. The definition allowed for this from the start: "between two entities, <em>or between an entity and itself</em>."</p>
+  <p class="ar">وتجيب الشرائح: بما أن المديرين موظّفون أيضًا، فالاثنان مُدرَجان في الكيان نفسه، <code>EMPLOYEE</code>. فيصير الرابط بين <code>EMPLOYEE</code> و<code>EMPLOYEE</code>. وقد سمح التعريف بهذا منذ البداية: «بين كيانين، <em>أو بين كيان ونفسه</em>».</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="recursive-relationship">recursive relationship</span> is a relationship between an entity and itself: both ends belong to the same entity, and each end still has its own name.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="recursive-relationship">العلاقة الذاتية</span> (Recursive Relationship) علاقة بين كيان ونفسه: الطرفان كلاهما يخصّان الكيان نفسه، ولكل طرف مع ذلك اسمه الخاص.</p>
+  </div>
+
+  <div class="evolve" id="t3l1-e2">
+    <div class="ver" data-title-en="Version 1 — MANAGER as a second entity" data-title-ar="الإصدار 1 — MANAGER كيانًا ثانيًا">
+      <figure class="diagram" data-diagram="t3-manager-v1"></figure>
+      <p class="en">Defect: the same person in two entities. Every manager is stored twice, so their facts can disagree. And a middle manager such as Lawrence belongs in both boxes at once.</p>
+      <p class="ar">العيب: الشخص نفسه في كيانين. كل مدير يُخزَّن مرّتين، فقد تتعارض حقائقه. والمدير الأوسط مثل Lawrence ينتمي إلى الصندوقين في آنٍ واحد.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — EMPLOYEE related to itself" data-title-ar="الإصدار 2 — EMPLOYEE مرتبط بنفسه">
+      <figure class="diagram" data-diagram="t3-recursive"></figure>
+      <p class="en">Fixed: one entity, one row per person, and one line that leaves <code>EMPLOYEE</code> and comes back to it. Lawrence is simply an employee at both ends. This is the recommended model, and the one in the H.R. ERD.</p>
+      <p class="ar">أُصلح: كيان واحد، وصفّ واحد لكل شخص، وخط واحد يخرج من <code>EMPLOYEE</code> ويعود إليه. وLawrence مجرّد موظّف عند الطرفين. وهذا هو النموذج الموصى به، وهو الموجود في مخطّط الموارد البشرية.</p>
+    </div>
+  </div>
+
+  <h3 id="t3l1-s5"><span class="en">Reading a recursive relationship</span><span class="ar">قراءة العلاقة الذاتية</span></h3>
+
+  <p class="en">Read it exactly like any other: start at one end, read the name beside it, finish at the other end &mdash; which is the same entity. Both ends need a name even more than usual, because the entity name alone cannot tell the two readings apart:</p>
+  <p class="ar">اقرأها تمامًا مثل أيّ علاقة أخرى: ابدأ من طرف، واقرأ الاسم المجاور له، وانتهِ عند الطرف الآخر &mdash; وهو الكيان نفسه. والطرفان يحتاجان إلى اسم أكثر من المعتاد، لأن اسم الكيان وحده لا يميّز إحدى القراءتين من الأخرى:</p>
+
+  <pre class="code" data-lang="erdish"><code>Each EMPLOYEE may be managed by one and only one EMPLOYEE.
+Each EMPLOYEE may be the manager of one or more EMPLOYEEs.</code></pre>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The recursive relationship becomes a column, <code>manager_id</code>, in the <em>same</em> table, holding another row's <code>employee_id</code>. To read a manager's name, join the table to itself:</p>
+    <p class="ar">تصبح العلاقة الذاتية عمودًا، <code>manager_id</code>، في الجدول <em>نفسه</em>، يحمل <code>employee_id</code> لصفّ آخر. ولقراءة اسم المدير، اربط الجدول بنفسه:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, department_id NUMBER NOT NULL, manager_id NUMBER)","INSERT INTO employees VALUES (100,'Dana','Smith',10,NULL), (310,'Tyler','Adams',15,100), (210,'Lawrence','Chen',10,100), (405,'Carlos','Gomez',10,210), (378,'Neil','Loungani',22,100)"],"sql":"SELECT e.employee_id, e.first_name, e.last_name, m.first_name AS manager\nFROM employees e JOIN employees m ON e.manager_id = m.employee_id\nORDER BY e.employee_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>employee_id</code></th><th><code>first_name</code></th><th><code>last_name</code></th><th><code>manager</code></th></tr></thead>
+          <tbody>
+            <tr><td>210</td><td>Lawrence</td><td>Chen</td><td>Dana</td></tr>
+            <tr><td>310</td><td>Tyler</td><td>Adams</td><td>Dana</td></tr>
+            <tr><td>378</td><td>Neil</td><td>Loungani</td><td>Dana</td></tr>
+            <tr><td>405</td><td>Carlos</td><td>Gomez</td><td>Lawrence</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Lawrence appears as an employee (row 210) and as a manager (Carlos's row) &mdash; one row, two roles. Dana is missing: her <code>manager_id</code> is null, so the join finds no partner. That is the slides' "<em>may</em> be managed by", which Lesson 2 explains.</p>
+    <p class="ar">يظهر Lawrence موظّفًا (الصفّ 210) ومديرًا (في صفّ Carlos) &mdash; صفّ واحد ودوران. أمّا Dana فغائبة: قيمة <code>manager_id</code> عندها null، فلا يجد الربط لها شريكًا. وهذا هو «<em>may</em> be managed by» في الشرائح، الذي يشرحه الدرس 2.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why does the recommended model have no <code>MANAGER</code> entity?</p>
+    <p class="q ar">لماذا لا يحوي النموذج الموصى به كيان <code>MANAGER</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Managers are not significant to H.R.</span><span class="ar">لأن المديرين ليسوا ذوي أهمية للموارد البشرية</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Managers are also employees, so they are instances of <code>EMPLOYEE</code></span><span class="ar">لأن المديرين موظّفون أيضًا، فهم نُسَخ من <code>EMPLOYEE</code></span></button></li>
+      <li><button class="opt"><span class="en">An ERD may contain at most one entity about people</span><span class="ar">لأن مخطّط ERD لا يجوز أن يحوي أكثر من كيان واحد عن الأشخاص</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"Since managers are also employees, both are listed in the same entity." The link between a manager and the people they manage is then a relationship from <code>EMPLOYEE</code> to itself.</p>
+      <p class="ar">«بما أن المديرين موظّفون أيضًا، فالاثنان مُدرَجان في الكيان نفسه.» فيصير الرابط بين المدير ومَن يديرهم علاقةً من <code>EMPLOYEE</code> إلى نفسه.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which scenario sentence calls for a recursive relationship?</p>
+    <p class="q ar">أيّ جملة في سيناريو تستدعي علاقة ذاتية؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">"Each employee reports to a department."</span><span class="ar">«يتبع كل موظّف قسمًا.»</span></button></li>
+      <li><button class="opt"><span class="en">"A customer can place as many orders as he wants."</span><span class="ar">«يستطيع الزبون أن يضع من الطلبات ما يشاء.»</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">"Each employee may mentor other employees."</span><span class="ar">«قد يرشد كل موظّف موظّفين آخرين.»</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Mentor and mentee are both employees, so both ends of the line are <code>EMPLOYEE</code>. The other two link two different entities.</p>
+      <p class="ar">المرشد والمسترشد كلاهما موظّف، فطرفا الخط كلاهما <code>EMPLOYEE</code>. أمّا الجملتان الأخريان فتربطان كيانين مختلفين.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 6 -->
+  <h2 id="t3l1-h6"><span class="en">6 · What every relationship carries</span><span class="ar">٦ · ما تحمله كل علاقة</span></h2>
+
+  <div class="problem">
+    <p class="en">You now know a relationship is significant, bi-directional and named at both ends. Look again at the H.R. ERD: the lines still differ &mdash; some halves dashed, some ends split into three. Two names do not explain those marks. Something else is on the line.</p>
+    <p class="ar">تعرف الآن أن العلاقة ذات أهمية، وثنائية الاتجاه، ومسمّاة عند طرفيها. انظر مجدّدًا إلى مخطّط الموارد البشرية: ما زالت الخطوط مختلفة &mdash; بعض الأنصاف متقطّعة، وبعض الأطراف متفرّعة إلى ثلاث. والاسمان لا يفسّران هذه العلامات. ثمّة شيء آخر على الخط.</p>
+  </div>
+
+  <p class="en">The slides list it in full. Relationships represent something significant to the business, show how entities are related, exist only between entities (or an entity and itself), are bi-directional, are named at both ends &mdash; and <strong>have optionality</strong> and <strong>have cardinality</strong>. The last two are drawn on the <span class="term" data-term="relationship-line">relationship line</span>.</p>
+  <p class="ar">تسردها الشرائح كاملة. العلاقات تمثّل شيئًا ذا أهمية للعمل، وتُظهر كيف ترتبط الكيانات، ولا توجد إلا بين الكيانات (أو بين كيان ونفسه)، وهي ثنائية الاتجاه، ومسمّاة عند طرفيها &mdash; و<strong>لها إلزامية</strong> (Optionality) و<strong>لها تعدّدية</strong> (Cardinality). والأخيرتان تُرسمان على <span class="term" data-term="relationship-line">خط العلاقة</span> (Relationship Line).</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="relationship-line">relationship line</span> is the line joining two entities on an ERD; its two halves and its two ends carry the relationship's signs.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="relationship-line">خط العلاقة</span> هو الخط الذي يربط كيانين في مخطّط ERD؛ ونصفاه وطرفاه يحملان علامات (signs) العلاقة.</p>
+  </div>
+
+  <h3 id="t3l1-s6"><span class="en">Three components, previewed</span><span class="ar">ثلاثة مكوّنات، نظرة أولى</span></h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Component</th><th class="ar">المكوّن</th><th class="en">The question it answers</th><th class="ar">السؤال الذي يجيب عنه</th><th class="en">Where</th><th class="ar">أين</th></tr></thead>
+      <tbody>
+        <tr><td class="en">Name</td><td class="ar">الاسم</td><td class="en">How is this entity related to the other?</td><td class="ar">كيف يرتبط هذا الكيان بالآخر؟</td><td class="en">this lesson</td><td class="ar">هذا الدرس</td></tr>
+        <tr><td class="en">Optionality</td><td class="ar">الإلزامية</td><td class="en">Must it be related, or may it?</td><td class="ar">هل يجب أن يرتبط، أم قد يرتبط؟</td><td class="en"><a href="#t3-lesson-02">Lesson 2</a></td><td class="ar"><a href="#t3-lesson-02">الدرس 2</a></td></tr>
+        <tr><td class="en">Cardinality</td><td class="ar">التعدّدية</td><td class="en">How many: one, or more than one?</td><td class="ar">كم: واحد، أم أكثر من واحد؟</td><td class="en"><a href="#t3-lesson-03">Lesson 3</a></td><td class="ar"><a href="#t3-lesson-03">الدرس 3</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="en">Like the name, optionality and cardinality are answered once per end. That is why the H.R. line between <code>EMPLOYEE</code> and <code>DEPARTMENT</code> can be solid at one half and dashed at the other: two ends, two answers.</p>
+  <p class="ar">ومثل الاسم، يُجاب عن الإلزامية والتعدّدية مرّةً لكل طرف. ولهذا يمكن أن يكون خط الموارد البشرية بين <code>EMPLOYEE</code> و<code>DEPARTMENT</code> متّصلًا في نصف ومتقطّعًا في النصف الآخر: طرفان، وجوابان.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Each component lands somewhere different. The <strong>name</strong> stays on the ERD, as you saw. <strong>Cardinality</strong> decides which table gets the key column: an employee has one department, so <code>employees</code> carries <code>department_id</code>. <strong>Optionality</strong> decides whether that column is <code>NOT NULL</code>. The <a href="#t3-lab">chapter lab</a> builds all three.</p>
+    <p class="ar">كل مكوّن يستقرّ في مكان مختلف. <strong>الاسم</strong> يبقى في مخطّط ERD، كما رأيت. و<strong>التعدّدية</strong> تقرّر أيّ جدول يأخذ عمود المفتاح: للموظّف قسم واحد، فيحمل <code>employees</code> العمود <code>department_id</code>. و<strong>الإلزامية</strong> تقرّر هل يكون ذلك العمود <code>NOT NULL</code>. ويبني <a href="#t3-lab">مختبر الفصل</a> الثلاثة كلها.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapter 3</span><span class="ar">خيط · الفصل 3 في SQL</span></h4>
+    <p class="en">On the SQL track, <a href="@/chapters/chapter-3.html">Chapter 3 &mdash; Relationships</a> joins tables through a foreign key that is already there. It shows <em>how</em> to follow the key. It does not say why the key exists, what it means in words, or which end of the link it belongs to. This lesson is that missing half: the relationship comes first, the column follows.</p>
+    <p class="ar">في مسار SQL، يربط <a href="@/chapters/chapter-3.html">الفصل 3 &mdash; العلاقات</a> الجداولَ عبر مفتاح أجنبي موجود سلفًا. يُريك <em>كيف</em> تتبع المفتاح، لكنه لا يقول لماذا وُجد، ولا ما معناه بالكلمات، ولا إلى أيّ طرف من الرابط ينتمي. وهذا الدرس هو ذلك النصف الناقص: العلاقة أوّلًا، ثم يتبعها العمود.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which of these is <em>not</em> on the slides' list of what a relationship has or does?</p>
+    <p class="q ar">أيّ هذه <em>ليس</em> في قائمة الشرائح لما تملكه العلاقة أو تفعله؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">It is named at both ends</span><span class="ar">مسمّاة عند طرفيها</span></button></li>
+      <li><button class="opt"><span class="en">It has optionality and cardinality</span><span class="ar">لها إلزامية وتعدّدية</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">It always joins two different entities</span><span class="ar">تربط دائمًا كيانين مختلفين</span></button></li>
+      <li><button class="opt"><span class="en">It is bi-directional</span><span class="ar">ثنائية الاتجاه</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Relationships exist between entities <em>or one entity and itself</em>, as <code>EMPLOYEE</code> managing <code>EMPLOYEE</code>s showed. Everything else is on the list.</p>
+      <p class="ar">العلاقات توجد بين الكيانات <em>أو بين كيان ونفسه</em>، كما أظهر <code>EMPLOYEE</code> الذي يدير موظّفين من <code>EMPLOYEE</code>. وكل ما عدا ذلك موجود في القائمة.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t3l1-h7"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Name both ends</span><span class="ar">تمرين 1 · سمِّ الطرفين</span></h4>
+    <p class="en">For each pair, write the lowercase name at each end and say which entity it sits next to: (a) <code>EMPLOYEE</code> and <code>JOB</code>; (b) <code>DEPARTMENT</code> and <code>LOCATION</code>; (c) <code>BOOK</code> and <code>AUTHOR</code>; (d) <code>CUSTOMER</code> and <code>ORDER</code>.</p>
+    <p class="ar">لكل زوج، اكتب الاسم بحروف صغيرة عند كل طرف، وقل بجانب أيّ كيان يقع: (a) <code>EMPLOYEE</code> و<code>JOB</code>؛ (b) <code>DEPARTMENT</code> و<code>LOCATION</code>؛ (c) <code>BOOK</code> و<code>AUTHOR</code>؛ (d) <code>CUSTOMER</code> و<code>ORDER</code>.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">The names the slides and the H.R. ERD use: (a) <code>hold</code> by <code>EMPLOYEE</code>, <code>held by</code> by <code>JOB</code>. (b) <code>located in</code> by <code>DEPARTMENT</code>, <code>address of</code> by <code>LOCATION</code>. (c) <code>written by</code> by <code>BOOK</code>, <code>the author of</code> by <code>AUTHOR</code>. (d) <code>place</code> by <code>CUSTOMER</code>, <code>placed by</code> by <code>ORDER</code>. Other wording is fine if each name reads correctly from its own entity.</p>
+      <p class="ar">الأسماء التي تستعملها الشرائح ومخطّط الموارد البشرية: (a) <code>hold</code> بجانب <code>EMPLOYEE</code>، و<code>held by</code> بجانب <code>JOB</code>. (b) <code>located in</code> بجانب <code>DEPARTMENT</code>، و<code>address of</code> بجانب <code>LOCATION</code>. (c) <code>written by</code> بجانب <code>BOOK</code>، و<code>the author of</code> بجانب <code>AUTHOR</code>. (d) <code>place</code> بجانب <code>CUSTOMER</code>، و<code>placed by</code> بجانب <code>ORDER</code>. وتُقبل صياغة أخرى إن كان كل اسم يُقرأ قراءة صحيحة من كيانه.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Find the relationships</span><span class="ar">تمرين 2 · جِد العلاقات</span></h4>
+    <p class="en">From the H.R. scenario: "Our company is divided into departments. Each employee reports to a department. All employees hold a job, and we keep track of the job title, max and min salary for each job." List every relationship, the sentence it comes from, and a name for each end.</p>
+    <p class="ar">من سيناريو الموارد البشرية: «شركتنا مقسّمة إلى أقسام. ويتبع كل موظّف قسمًا. ويشغل كل الموظّفين وظيفة، ونتتبّع المسمّى الوظيفي والحدّ الأعلى والأدنى للراتب لكل وظيفة.» اذكر كل علاقة، والجملة التي جاءت منها، واسمًا لكل طرف.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Two. "Each employee reports to a department": <code>EMPLOYEE</code> <code>works in</code> / <code>DEPARTMENT</code> <code>responsible for</code>. "All employees hold a job": <code>EMPLOYEE</code> <code>hold</code> / <code>JOB</code> <code>held by</code>. Title and salaries are attributes of <code>JOB</code>, not relationships: they are not entities.</p>
+      <p class="ar">علاقتان. «يتبع كل موظّف قسمًا»: <code>EMPLOYEE</code> <code>works in</code> / <code>DEPARTMENT</code> <code>responsible for</code>. و«يشغل كل الموظّفين وظيفة»: <code>EMPLOYEE</code> <code>hold</code> / <code>JOB</code> <code>held by</code>. أمّا المسمّى والراتبان فخصائص لـ <code>JOB</code>، لا علاقات: فهي ليست كيانات.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Repair the diagram</span><span class="ar">تمرين 3 · أصلح المخطّط</span></h4>
+    <p class="en">A classmate's draft, written as text. Find four defects against this lesson and fix each.</p>
+    <p class="ar">مسوّدة زميل، مكتوبة نصًّا. جِد فيها أربعة عيوب بحسب هذا الدرس، وأصلح كلًّا منها.</p>
+    <pre class="code" data-lang="text"><code>1  EMPLOYEE    # * Employee ID  * First Name  * Department Name
+2  MANAGER     # * Manager ID   * First Name
+3  EMPLOYEE  ---- MANAGES ----  MANAGER
+4  CUSTOMER  ---- place --------  ORDER</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Line 1: <code>Department Name</code> hides an entity &mdash; make <code>DEPARTMENT</code> an entity and link it with <code>works in</code> / <code>responsible for</code>. Lines 2&ndash;3: managers are employees &mdash; delete <code>MANAGER</code> and draw a recursive line, <code>managed by</code> / <code>manager of</code>. Line 3: the name is uppercase and named once &mdash; lowercase, both ends. Line 4: only one end named &mdash; add <code>placed by</code> next to <code>ORDER</code>.</p>
+      <p class="ar">السطر 1: <code>Department Name</code> تخفي كيانًا &mdash; اجعل <code>DEPARTMENT</code> كيانًا واربطه بـ <code>works in</code> / <code>responsible for</code>. والسطران 2&ndash;3: المديرون موظّفون &mdash; احذف <code>MANAGER</code> وارسم خطًّا ذاتيًّا، <code>managed by</code> / <code>manager of</code>. والسطر 3: الاسم بحروف كبيرة ومسمّى مرّة واحدة &mdash; بحروف صغيرة، وعند الطرفين. والسطر 4: طرف واحد فقط مسمّى &mdash; أضف <code>placed by</code> بجانب <code>ORDER</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Recursive or not?</span><span class="ar">تمرين 4 · ذاتية أم لا؟</span></h4>
+    <p class="en">For each sentence, name the entity or entities at the two ends, and say whether the relationship is recursive: (a) "Each employee has one manager." (b) "Each department is located in a location." (c) "An employee may mentor other employees." (d) "A customer orders for herself and her children."</p>
+    <p class="ar">لكل جملة، سمِّ الكيان أو الكيانين عند الطرفين، وقل هل العلاقة ذاتية: (a) «لكل موظّف مدير واحد.» (b) «يقع كل قسم في موقع.» (c) «قد يرشد الموظّف موظّفين آخرين.» (d) «تطلب الزبونة لنفسها ولأطفالها.»</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) <code>EMPLOYEE</code>&ndash;<code>EMPLOYEE</code>: recursive, because a manager is an employee. (b) <code>DEPARTMENT</code>&ndash;<code>LOCATION</code>: not recursive. (c) <code>EMPLOYEE</code>&ndash;<code>EMPLOYEE</code>: recursive. (d) <code>CUSTOMER</code>&ndash;<code>ORDER</code>: not recursive &mdash; and the children are not a relationship at all, because the business makes only the mother the customer.</p>
+      <p class="ar">(a) <code>EMPLOYEE</code>&ndash;<code>EMPLOYEE</code>: ذاتية، لأن المدير موظّف. (b) <code>DEPARTMENT</code>&ndash;<code>LOCATION</code>: ليست ذاتية. (c) <code>EMPLOYEE</code>&ndash;<code>EMPLOYEE</code>: ذاتية. (d) <code>CUSTOMER</code>&ndash;<code>ORDER</code>: ليست ذاتية &mdash; والأطفال ليسوا علاقة أصلًا، لأن العمل يجعل الأمّ وحدها هي الزبون.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Follow the line in SQL</span><span class="ar">تمرين 5 · تتبّع الخط في SQL</span></h4>
+    <p class="en">Using the <code>employees</code> table of section 5, write the query that reads the recursive relationship from Lawrence Chen (210) in the <code>managed by</code> direction. What does it return, and whose id is that? Then: the scenario says the managing director manages herself. What would Dana's <code>manager_id</code> be?</p>
+    <p class="ar">مستعينًا بجدول <code>employees</code> في القسم 5، اكتب الاستعلام الذي يقرأ العلاقة الذاتية من Lawrence Chen ‏(210) في اتجاه <code>managed by</code>. ماذا يعيد، ورقمُ مَن هذا؟ ثم: يقول السيناريو إن المدير العام يدير نفسه. فما قيمة <code>manager_id</code> عند Dana؟</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT manager_id FROM employees WHERE employee_id = 210;</code></pre>
+      <p class="en">It returns <code>100</code> &mdash; Dana Smith. Under the "manages herself" rule, Dana's <code>manager_id</code> would be <code>100</code>, her own <code>employee_id</code>: a recursive relationship can link a row to itself. The demo data leaves it null instead, which is the slides' "may be managed by".</p>
+      <p class="ar">يعيد <code>100</code> &mdash; Dana Smith. وبحسب قاعدة «يدير نفسه»، تكون قيمة <code>manager_id</code> عند Dana هي <code>100</code>، أي <code>employee_id</code> الخاص بها: فالعلاقة الذاتية قد تربط الصفّ بنفسه. أمّا بيانات العرض فتتركها null، وهذا هو «may be managed by» في الشرائح.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">A relationship is a bi-directional, significant association between two entities, or between an entity and itself.</li>
+      <li class="ar">العلاقة ارتباط ثنائي الاتجاه وذو أهمية بين كيانين، أو بين كيان ونفسه.</li>
+      <li class="en">Significant means the business needs it. Business rules decide, and they vary from one organization to another.</li>
+      <li class="ar">ذات أهمية تعني أن العمل يحتاج إليها. وقواعد العمل هي التي تقرّر، وهي تختلف من مؤسسة إلى أخرى.</li>
+      <li class="en">One line carries two readings. Each end has its own lowercase name, written close to its own entity.</li>
+      <li class="ar">الخط الواحد يحمل قراءتين. ولكل طرف اسمه الخاص بحروف صغيرة، مكتوبًا قريبًا من كيانه.</li>
+      <li class="en">Relationships exist only between entities. A fact about another thing hiding in an attribute is a missing relationship.</li>
+      <li class="ar">العلاقات لا توجد إلا بين الكيانات. والحقيقة عن شيء آخر المختبئة في خاصية علاقةٌ مفقودة.</li>
+      <li class="en">When both ends are the same entity &mdash; a manager is an employee &mdash; draw one recursive relationship, not a second entity.</li>
+      <li class="ar">حين يكون الطرفان الكيانَ نفسه &mdash; فالمدير موظّف &mdash; ارسم علاقة ذاتية واحدة، لا كيانًا ثانيًا.</li>
+      <li class="en">Every relationship also has optionality and cardinality, one answer per end: Lessons 2 and 3.</li>
+      <li class="ar">ولكل علاقة أيضًا إلزامية وتعدّدية، جواب لكل طرف: الدرسان 2 و3.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Drawing a line between every pair of entities "just in case".</li>
+      <li class="ar">رسم خط بين كل زوج من الكيانات «احتياطًا».</li>
+      <li class="en">Naming a line once, in the middle, or in capitals.</li>
+      <li class="ar">تسمية الخط مرّة واحدة، أو في منتصفه، أو بحروف كبيرة.</li>
+      <li class="en">Drawing two lines for the two directions of one relationship.</li>
+      <li class="ar">رسم خطّين لاتجاهَي علاقة واحدة.</li>
+      <li class="en">Creating a <code>MANAGER</code> entity for people who are already <code>EMPLOYEE</code>s.</li>
+      <li class="ar">إنشاء كيان <code>MANAGER</code> لأشخاص هم أصلًا من <code>EMPLOYEE</code>.</li>
+      <li class="en">Deciding the business rule yourself instead of asking the business.</li>
+      <li class="ar">أن تقرّر قاعدة العمل بنفسك بدلًا من أن تسأل العمل.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="#t3-test-01">Test 1 &mdash; What a Relationship Is</a>. Then <a href="#t3-lesson-02">Lesson 2 &mdash; Optionality</a> reads the first sign on the line: must every employee have a job, and must every job have an employee?</p>
+    <p class="ar">اختبر نفسك بـ<a href="#t3-test-01">اختبار 1 &mdash; ما هي العلاقة</a>. ثم يقرأ <a href="#t3-lesson-02">الدرس 2 &mdash; الإلزامية</a> العلامة الأولى على الخط: هل يجب أن يكون لكل موظّف وظيفة، وهل يجب أن يكون لكل وظيفة موظّف؟</p>
+  </div>
+
+</section>

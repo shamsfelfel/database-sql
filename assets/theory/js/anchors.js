@@ -144,6 +144,21 @@ window.DBTAnchors = {
 "t3idx-h2": "chapters/t3.html",
 "t3idx-how": "chapters/t3.html",
 "t3idx-why": "chapters/t3.html",
+"t3l1-e1": "lessons/t3-lesson-01.html",
+"t3l1-e2": "lessons/t3-lesson-01.html",
+"t3l1-h1": "lessons/t3-lesson-01.html",
+"t3l1-h2": "lessons/t3-lesson-01.html",
+"t3l1-h3": "lessons/t3-lesson-01.html",
+"t3l1-h4": "lessons/t3-lesson-01.html",
+"t3l1-h5": "lessons/t3-lesson-01.html",
+"t3l1-h6": "lessons/t3-lesson-01.html",
+"t3l1-h7": "lessons/t3-lesson-01.html",
+"t3l1-s1": "lessons/t3-lesson-01.html",
+"t3l1-s2": "lessons/t3-lesson-01.html",
+"t3l1-s3": "lessons/t3-lesson-01.html",
+"t3l1-s4": "lessons/t3-lesson-01.html",
+"t3l1-s5": "lessons/t3-lesson-01.html",
+"t3l1-s6": "lessons/t3-lesson-01.html",
 "t4-chapter": "chapters/t4.html",
 "t4-exam-a": "exams/t4-exam-a.html",
 "t4-exam-b": "exams/t4-exam-b.html",
@@ -528,6 +543,58 @@ window.DBTHeadings = {
 "t3idx-why": {
 "ar": "لماذا تهمّ الخطوط قبل أي SQL",
 "en": "Why the lines matter before any SQL"
+},
+"t3l1-h1": {
+"ar": "١ · خط يهمّ العمل",
+"en": "1 · A line that matters to the business"
+},
+"t3l1-h2": {
+"ar": "٢ · خط واحد، واتجاهان",
+"en": "2 · One line, two directions"
+},
+"t3l1-h3": {
+"ar": "٣ · مسمّاة عند طرفيها",
+"en": "3 · Named at both ends"
+},
+"t3l1-h4": {
+"ar": "٤ · إيجاد العلاقات في سيناريو",
+"en": "4 · Finding relationships in a scenario"
+},
+"t3l1-h5": {
+"ar": "٥ · كيان مرتبط بنفسه",
+"en": "5 · An entity related to itself"
+},
+"t3l1-h6": {
+"ar": "٦ · ما تحمله كل علاقة",
+"en": "6 · What every relationship carries"
+},
+"t3l1-h7": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t3l1-s1": {
+"ar": "بين الكيانات فقط",
+"en": "Only between entities"
+},
+"t3l1-s2": {
+"ar": "العمود نفسه يجيب عن السؤالين",
+"en": "The same column answers both questions"
+},
+"t3l1-s3": {
+"ar": "أين يوضع الاسم، وكيف يُكتب",
+"en": "Where the name goes, and how it is written"
+},
+"t3l1-s4": {
+"ar": "النُّسَخ، والعلاقة التي تصفها",
+"en": "Instances, and the relationship that describes them"
+},
+"t3l1-s5": {
+"ar": "قراءة العلاقة الذاتية",
+"en": "Reading a recursive relationship"
+},
+"t3l1-s6": {
+"ar": "ثلاثة مكوّنات، نظرة أولى",
+"en": "Three components, previewed"
 },
 "t4idx-h1": {
 "ar": "الدروس",

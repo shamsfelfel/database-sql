@@ -1,0 +1,19 @@
+/* Topic tags of T3 lesson 1 -- What a Relationship Is. */
+window.DBTTopics = window.DBTTopics || {};
+window.DBTTopics["t3-relationship"] = { en: "Relationship", ar: "العلاقة", href: "t3l1-h1" };
+window.DBTTopics["t3-significance"] = { en: "Significant to the business", ar: "ذات أهمية للعمل", href: "t3l1-h1" };
+window.DBTTopics["t3-business-rule"] = { en: "Business rules decide relationships", ar: "قواعد العمل تقرّر العلاقات", href: "t3l1-h1" };
+window.DBTTopics["t3-between-entities"] = { en: "Relationships exist only between entities", ar: "العلاقات لا توجد إلا بين الكيانات", href: "t3l1-s1" };
+window.DBTTopics["t3-bidirectional"] = { en: "Bi-directional relationship", ar: "العلاقة ثنائية الاتجاه", href: "t3l1-h2" };
+window.DBTTopics["t3-one-column-two-readings"] = { en: "One foreign key column, read from both ends", ar: "عمود مفتاح أجنبي واحد، يُقرأ من الطرفين", href: "t3l1-s2" };
+window.DBTTopics["t3-relationship-name"] = { en: "Relationship name", ar: "اسم العلاقة", href: "t3l1-h3" };
+window.DBTTopics["t3-named-both-ends"] = { en: "Named at both ends", ar: "مسمّاة عند طرفيها", href: "t3l1-h3" };
+window.DBTTopics["t3-name-placement"] = { en: "Where a relationship name is written", ar: "أين يُكتب اسم العلاقة", href: "t3l1-s3" };
+window.DBTTopics["t3-lowercase-names"] = { en: "Relationship names in lowercase", ar: "أسماء العلاقات بحروف صغيرة", href: "t3l1-s3" };
+window.DBTTopics["t3-business-scenario"] = { en: "Finding relationships in a business scenario", ar: "إيجاد العلاقات في سيناريو عمل", href: "t3l1-h4" };
+window.DBTTopics["t3-customer-order"] = { en: "CUSTOMER places ORDER", ar: "CUSTOMER يضع ORDER", href: "t3l1-s4" };
+window.DBTTopics["t3-recursive-relationship"] = { en: "Recursive relationship", ar: "العلاقة الذاتية", href: "t3l1-h5" };
+window.DBTTopics["t3-manager-is-employee"] = { en: "A manager is an employee", ar: "المدير موظّف", href: "t3l1-h5" };
+window.DBTTopics["t3-self-referencing-column"] = { en: "manager_id: a key to the same table", ar: "manager_id: مفتاح إلى الجدول نفسه", href: "t3l1-s5" };
+window.DBTTopics["t3-relationship-components"] = { en: "Components of a relationship", ar: "مكوّنات العلاقة", href: "t3l1-h6" };
+window.DBTTopics["t3-relationship-line"] = { en: "Relationship line", ar: "خط العلاقة", href: "t3l1-s6" };

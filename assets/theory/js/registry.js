@@ -312,7 +312,7 @@ window.DBT_REGISTRY = {
       "ar": "ذات أهمية للعمل، وثنائية الاتجاه، ومسمّاة من طرفيها، ويجوز أن تربط الكيان بنفسه."
      },
      "href": "lessons/t3-lesson-01.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t3-test-01",

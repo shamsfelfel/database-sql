@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 250" direction="ltr" role="img" aria-labelledby="t3-name-v1-t">
+<title id="t3-name-v1-t">Version 1: EMPLOYEE and DEPARTMENT joined by a line with no name / الإصدار 1: EMPLOYEE وDEPARTMENT يربطهما خط بلا اسم</title>
+<g class="en"><text x="380.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1 — a line with no name</text></g><g class="ar"><text x="380.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 1 — خط بلا اسم</text></g>
+<rect x="40" y="56" width="200" height="95" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="140.0" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">EMPLOYEE</text>
+<text x="54" y="100" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Employee ID</text>
+<text x="54" y="119" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="54" y="138" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="520" y="56" width="200" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="620.0" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">DEPARTMENT</text>
+<text x="534" y="100" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Department ID</text>
+<text x="534" y="119" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M240 110 L380.0 110" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M380.0 110 L520 110" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M254 110 L240 102" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M254 110 L240 110" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M254 110 L240 118" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="380" y="98" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:16px;font-weight:700">?</text>
+<rect x="40" y="160" width="680" height="72" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="184" text-anchor="start" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:12.5px;font-weight:600">Defect: the line says the two are linked, not how.</text></g><g class="ar"><text x="704" y="184" text-anchor="start" direction="rtl" style="fill:var(--dg-bad, var(--bad));font-family:var(--font-ar, sans-serif);font-size:13.5px;font-weight:600">العيب: يقول الخط إن الكيانين مرتبطان، ولا يقول كيف.</text></g>
+<g class="en"><text x="56" y="208" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Works in? Manages? Was hired by? Every reader can guess a different rule.</text></g><g class="ar"><text x="704" y="208" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">يعمل فيه؟ يديره؟ وظّفه؟ كل قارئ يستطيع أن يخمّن قاعدة مختلفة.</text></g>
+</svg>
