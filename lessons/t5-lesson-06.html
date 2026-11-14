@@ -39,15 +39,811 @@
 <link rel="stylesheet" href="../assets/theory/css/base.css">
 <link rel="stylesheet" href="../assets/theory/css/chrome.css">
 <link rel="stylesheet" href="../assets/theory/css/components.css">
+<link rel="stylesheet" href="../assets/theory/css/diagram.css">
+<link rel="stylesheet" href="../assets/css/widget.css">
 </head>
 <body data-chapter="t5" data-page="t5-lesson-06" data-kind="lesson" data-path="lessons/t5-lesson-06.html">
 <main>
 <section class="page" id="t5-lesson-06">
 <nav class="crumbs"></nav>
 
-  <span class="kicker">lesson</span>
+
+  <span class="kicker">Lesson 6</span>
   <h1><span class="en">Barred Relationships and Composite UIDs</span><span class="ar">العلاقات المقضّبة والمعرّفات المركّبة</span></h1>
-  <p class="en">Being written.</p><p class="ar">قيد الكتابة.</p>
+  <p class="lede en">By the end of this lesson you will be able to say where an intersection entity's unique identifier comes from, draw it as bars on the right ends of the right lines, read a composite UID part by part in order, and turn it into a composite primary key that refuses a duplicate pair.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تقول من أين يأتي المعرّف الفريد لكيان التقاطع، وأن ترسمه قضبانًا على الأطراف الصحيحة من الخطوط الصحيحة، وأن تقرأ المعرّف المركّب جزءًا جزءًا بالترتيب، وأن تحوّله إلى مفتاح أساسي مركّب يرفض الزوج المكرّر.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> <a href="../lessons/t5-lesson-05.html#t5-lesson-05">Lesson 5</a> built <code>ENROLLMENT</code> and ended on the slides' own question: what would be the UID of the intersection entity? Without one, a clerk recorded Sara in Maths twice, with an A and a D. The school is the same: Sara, Omar, Lina and Yousef; Maths, Physics and Arabic.</p>
+    <p class="ar"><strong>السياق.</strong> بنى <a href="../lessons/t5-lesson-05.html#t5-lesson-05">الدرس 5</a> الكيان <code>ENROLLMENT</code>، وانتهى بسؤال الشرائح نفسها: ما المعرّف الفريد لكيان التقاطع؟ ومن دونه سجّل موظّفٌ Sara في الرياضيات مرّتين، بدرجة A ودرجة D. والمدرسة هي نفسها: Sara وOmar وLina وYousef، والرياضيات والفيزياء والعربية.</p>
+    <p class="en">You need Chapter 2's <a href="../lessons/t2-lesson-06.html#t2l6-h2">composite UID</a> &mdash; a UID unique only in combination &mdash; and Lesson 1's <a href="../lessons/t5-lesson-01.html#t5-lesson-01">diamond</a>, because the bar is the second mark ever drawn <em>on</em> a relationship line.</p>
+    <p class="ar">تحتاج <a href="../lessons/t2-lesson-06.html#t2l6-h2">المعرّف المركّب</a> من الفصل 2 &mdash; معرّفًا لا يكون فريدًا إلا مجتمعًا &mdash; و<a href="../lessons/t5-lesson-01.html#t5-lesson-01">المعيَّن</a> من الدرس 1، لأن القضيب هو العلامة الثانية التي تُرسم <em>على</em> خط العلاقة نفسه.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Identify the UID of an intersection entity, and say why no attribute of its own can serve.</li>
+      <li class="ar">تحديد المعرّف الفريد لكيان التقاطع، وقول لماذا لا تصلح لذلك أيّ خاصية من خصائصه.</li>
+      <li class="en">Represent that UID on the ERD with bars, at the intersection entity's end of each line.</li>
+      <li class="ar">تمثيل ذلك المعرّف على المخطّط بقضبان، عند طرف كيان التقاطع من كل خط.</li>
+      <li class="en">Read a composite UID in order, and state what is unique: the combination, not each part.</li>
+      <li class="ar">قراءة المعرّف المركّب بالترتيب، وقول ما الفريد فيه: التركيب، لا كل جزء.</li>
+      <li class="en">Decide when the bars are not enough and a <code>#</code> attribute must join them.</li>
+      <li class="ar">الحكم متى لا تكفي القضبان ويجب أن تنضمّ إليها خاصية <code>#</code>.</li>
+      <li class="en">Turn barred relationships into a composite primary key, and watch it refuse a duplicate.</li>
+      <li class="ar">تحويل العلاقات المقضّبة إلى مفتاح أساسي مركّب، ورؤيته يرفض التكرار.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t5l6-h1"><span class="en">1 · What identifies an enrollment?</span><span class="ar">١ · ما الذي يميّز التسجيل؟</span></h2>
+
+  <div class="problem">
+    <p class="en">The office finds two rows for Sara in Maths: one says A, one says D. Which is her grade? The model cannot say, because nothing in it declares that one student in one subject is one enrollment. Every entity since Chapter 2 has had a <code>#</code>. <code>ENROLLMENT</code> has none.</p>
+    <p class="ar">تجد الإدارة صفّين لـ Sara في الرياضيات: أحدهما يقول A، والآخر D. فأيّهما درجتها؟ لا يستطيع النموذج أن يقول، لأن لا شيء فيه يعلن أن الطالب الواحد في المادة الواحدة تسجيل واحد. لكل كيان منذ الفصل 2 خاصية <code>#</code>، أمّا <code>ENROLLMENT</code> فلا.</p>
+  </div>
+
+  <p class="en">Two rows like that are a <span class="term" data-term="duplicate-pair">duplicate pair</span>. A UID exists to stop exactly this: two instances that the business would call the same thing. So the question is not academic. Until <code>ENROLLMENT</code> has a UID, every grade report can be wrong.</p>
+  <p class="ar">صفّان كهذين <span class="term" data-term="duplicate-pair">زوج مكرّر</span> (Duplicate pair). والمعرّف الفريد موجود لمنع هذا بالضبط: نسختان يعدّهما العمل شيئًا واحدًا. فالسؤال ليس نظريًّا؛ وما دام <code>ENROLLMENT</code> بلا معرّف فريد، فقد يكون كل كشف درجات خاطئًا.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="duplicate-pair">duplicate pair</span> is two instances of an intersection entity that join the same two parent instances.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="duplicate-pair">الزوج المكرّر</span> (Duplicate pair) نسختان من كيان التقاطع تربطان نسختَي الأبوين نفسيهما.</p>
+  </div>
+
+  <h3 id="t5l6-s1"><span class="en">Nothing inside the box will do</span><span class="ar">لا شيء داخل الصندوق يصلح</span></h3>
+
+  <p class="en">Look for a candidate inside <code>ENROLLMENT</code>. It has one attribute, <code>o Grade</code>, and three students hold an A, so <code>Grade</code> repeats. It is optional, too, and a UID must always have a value. The box holds nothing that tells one enrollment from another.</p>
+  <p class="ar">ابحث عن مرشّح داخل <code>ENROLLMENT</code>. فيه خاصية واحدة، <code>o Grade</code>، وثلاثة طلاب يحملون A، فـ <code>Grade</code> تتكرّر. وهي اختيارية أيضًا، والمعرّف يجب أن تكون له قيمة دائمًا. فالصندوق لا يحمل شيئًا يميّز تسجيلًا من آخر.</p>
+
+  <p class="en">What does tell them apart is outside the box: which student, and which subject. Those arrive along the two lines from the <span class="term" data-term="originating-entity">originating entities</span>. The slides put it in one sentence: the UID of the intersection entity often comes from the <span class="term" data-term="originating-relationship">originating relationships</span>.</p>
+  <p class="ar">أمّا ما يميّزها فهو خارج الصندوق: أيّ طالب، وأيّ مادة. وهذان يصلان على الخطّين من <span class="term" data-term="originating-entity">الكيانين الأصليين</span> (Originating entities). وتقولها الشرائح في جملة واحدة: المعرّف الفريد لكيان التقاطع يأتي غالبًا من <span class="term" data-term="originating-relationship">العلاقات الأصلية</span> (Originating relationships).</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="originating-entity">originating entity</span> is one of the two entities of the M:M that an intersection entity resolves; its <span class="term" data-term="originating-relationship">originating relationship</span> is the 1:M that now joins it to the intersection entity.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="originating-entity">الكيان الأصلي</span> (Originating entity) أحد كيانَي علاقة <bdi>M:M</bdi> التي يحلّها كيان التقاطع؛ و<span class="term" data-term="originating-relationship">علاقته الأصلية</span> (Originating relationship) هي علاقة <bdi>1:M</bdi> التي تربطه الآن بكيان التقاطع.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Test each column of <code>enrollments</code> as a key on its own. Count the rows per <code>student_id</code>:</p>
+    <p class="ar">اختبر كل عمود من <code>enrollments</code> مفتاحًا وحده. عُدّ الصفوف لكل <code>student_id</code>:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE students (student_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL)","INSERT INTO students VALUES (1001,'Sara','Hamdan'), (1002,'Omar','Khalil'), (1003,'Lina','Nasser'), (1004,'Yousef','Odeh')","CREATE TABLE subjects (subject_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO subjects VALUES (1,'Maths'), (2,'Physics'), (3,'Arabic')","CREATE TABLE enrollments (student_id NUMBER NOT NULL REFERENCES students(student_id), subject_id NUMBER NOT NULL REFERENCES subjects(subject_id), grade VARCHAR(2))","INSERT INTO enrollments VALUES (1001,1,'A'), (1001,2,'B'), (1002,1,'C'), (1003,2,'A'), (1003,3,'A')"],"sql":"SELECT student_id, COUNT(*) AS enrollments\nFROM enrollments\nGROUP BY student_id\nORDER BY student_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>student_id</code></th><th><code>enrollments</code></th></tr></thead>
+          <tbody>
+            <tr><td>1001</td><td>2</td></tr>
+            <tr><td>1002</td><td>1</td></tr>
+            <tr><td>1003</td><td>2</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Sara and Lina each appear twice, so <code>student_id</code> alone is not a key. Grouping by <code>subject_id</code> gives Maths 2, Physics 2, Arabic 1; grouping by <code>grade</code> gives A three times. No single column works.</p>
+    <p class="ar">تظهر Sara وLina مرّتين لكلٍّ منهما، فـ <code>student_id</code> وحده ليس مفتاحًا. والتجميع بـ <code>subject_id</code> يعطي: الرياضيات 2، والفيزياء 2، والعربية 1؛ والتجميع بـ <code>grade</code> يعطي A ثلاث مرّات. فلا عمود واحد يصلح.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why can <code>Grade</code> not be the UID of <code>ENROLLMENT</code>?</p>
+    <p class="q ar">لماذا لا تصلح <code>Grade</code> معرّفًا فريدًا لـ <code>ENROLLMENT</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Because an intersection entity may not have attributes</span><span class="ar">لأن كيان التقاطع لا يجوز أن تكون له خصائص</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Because it repeats, and it can be empty</span><span class="ar">لأنها تتكرّر، وقد تكون فارغة</span></button></li>
+      <li><button class="opt"><span class="en">Because it belongs in <code>STUDENT</code></span><span class="ar">لأن مكانها <code>STUDENT</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Three students hold an A, and a grade is unknown until the subject ends &mdash; the <code>o</code>. A UID must be unique and always present. <code>Grade</code> does belong in <code>ENROLLMENT</code> (Lesson 5); it just cannot identify it.</p>
+      <p class="ar">ثلاثة طلاب يحملون A، والدرجة مجهولة حتى تنتهي المادة &mdash; وهذا معنى <code>o</code>. والمعرّف يجب أن يكون فريدًا وحاضرًا دائمًا. و<code>Grade</code> مكانها <code>ENROLLMENT</code> فعلًا (الدرس 5)، لكنها لا تستطيع أن تميّزه.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t5l6-h2"><span class="en">2 · The bar on the line</span><span class="ar">٢ · القضيب على الخط</span></h2>
+
+  <div class="problem">
+    <p class="en">The UID is the student plus the subject. Now draw it. A <code>#</code> marks an attribute, and the student is not an attribute of <code>ENROLLMENT</code> &mdash; it is a relationship. Chapter 3's notation has no way yet to say "this line is part of the identifier".</p>
+    <p class="ar">المعرّف هو الطالب مع المادة. فارسمه الآن. علامة <code>#</code> توضع على خاصية، والطالب ليس خاصية في <code>ENROLLMENT</code> &mdash; بل علاقة. وترميز الفصل 3 لا يملك بعدُ طريقة ليقول «هذا الخط جزء من المعرّف».</p>
+  </div>
+
+  <p class="en">Oracle's answer is a short <span class="term" data-term="uid-bar">bar</span> across the line, drawn at the intersection entity's end, just beyond the crow's foot. A line that carries one is a <span class="term" data-term="barred-relationship">barred relationship</span>. Two bars at <code>ENROLLMENT</code> say: an enrollment is identified by its student and its subject.</p>
+  <p class="ar">جواب Oracle <span class="term" data-term="uid-bar">قضيب</span> (Bar) قصير يعترض الخط، يُرسم عند طرف كيان التقاطع، بعد رِجل الغراب مباشرة. والخط الذي يحمله <span class="term" data-term="barred-relationship">علاقة مقضّبة</span> (Barred relationship). وقضيبان عند <code>ENROLLMENT</code> يقولان: التسجيل يُعرَف بطالبه ومادّته.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="barred-relationship">barred relationship</span> is a relationship that is part of the UID of the entity at its many end, shown by a bar across the line at that end.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="barred-relationship">العلاقة المقضّبة</span> (Barred relationship) علاقة هي جزء من المعرّف الفريد للكيان عند طرفها المتعدّد، ويدلّ عليها قضيب يعترض الخط عند ذلك الطرف.</p>
+  </div>
+
+  <div class="evolve" id="t5l6-e1">
+    <div class="ver" data-title-en="Version 1 — the parents' IDs typed into the box" data-title-ar="الإصدار 1 — معرّفا الأبوين مكتوبان داخل الصندوق">
+      <figure class="diagram" data-diagram="t5-uid-copied">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 340" direction="ltr" role="img" aria-labelledby="t5-uid-copied-t">
+<title id="t5-uid-copied-t">Version 1: ENROLLMENT with # Student ID and # Subject ID typed in as attributes, and no bars: the box repeats what the two lines already say / الإصدار 1: ENROLLMENT مع # Student ID و# Subject ID مكتوبتين خاصيتين، وبلا قضبان: الصندوق يكرّر ما يقوله الخطّان أصلًا</title>
+<g class="en"><text x="430.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1 — the parents' IDs typed into the box</text></g><g class="ar"><text x="430.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 1 — معرّفا الأبوين مكتوبان داخل الصندوق</text></g>
+<rect x="20" y="50" width="180" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="110.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="32" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="32" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="32" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="340" y="50" width="180" height="99" rx="10" style="fill:var(--dg-bad-soft, var(--accent-soft));stroke:var(--dg-bad, var(--accent));stroke-width:2"/>
+<text x="430.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ENROLLMENT</text>
+<text x="352" y="94" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700"># Student ID</text>
+<text x="352" y="113" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700"># Subject ID</text>
+<text x="352" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Grade</text>
+<rect x="660" y="50" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="750.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SUBJECT</text>
+<text x="672" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="672" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M200 95 L270.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M270.0 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="208" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">enrols for</text>
+<text x="312" y="117" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<path d="M520 95 L590.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M590.0 95 L660 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M534 95 L520 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="548" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<text x="652" y="117" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">subject of</text>
+<g class="en"><text x="430" y="170" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">copied from the parents</text></g><g class="ar"><text x="430" y="170" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">‏منسوختان من الأبوين</text></g>
+<rect x="20" y="196" width="820" height="98" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="218" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Defect: the box says twice what the lines already say once.</text></g><g class="ar"><text x="824" y="218" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏العيب: الصندوق يقول مرّتين ما يقوله الخطّان مرّة واحدة.</text></g>
+<g class="en"><text x="36" y="237" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The line to STUDENT already ties each enrollment to one student; # Student ID restates it as an attribute.</text></g><g class="ar"><text x="824" y="237" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏الخط إلى STUDENT يربط كل تسجيل بطالب واحد أصلًا؛ و‎# Student ID‎ تعيد قوله خاصيةً.</text></g>
+<g class="en"><text x="36" y="256" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">In an ERD a link is a line. The student_id column appears only when the line becomes a table.</text></g><g class="ar"><text x="824" y="256" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏في المخطّط الرابط خطّ. ولا يظهر العمود student_id إلا حين يصير الخط جدولًا.</text></g>
+<g class="en"><text x="36" y="275" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Nothing here says the UID comes from the relationships — and that is what the slides draw.</text></g><g class="ar"><text x="824" y="275" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏ولا شيء هنا يقول إن المعرّف يأتي من العلاقات — وهذا ما ترسمه الشرائح.</text></g>
+</svg>
+</figure>
+      <p class="en">Defect: the box repeats the lines. <code># Student ID</code> and <code># Subject ID</code> restate, as attributes, what the two relationships already carry. In an ERD a link is a line; the <code>student_id</code> column appears only when the line becomes a table.</p>
+      <p class="ar">العيب: الصندوق يكرّر الخطّين. <code># Student ID</code> و<code># Subject ID</code> تعيدان، خاصيتين، قول ما تحمله العلاقتان أصلًا. في المخطّط الرابط خطّ، ولا يظهر العمود <code>student_id</code> إلا حين يصير الخط جدولًا.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — one bar, on the STUDENT line" data-title-ar="الإصدار 2 — قضيب واحد، على خط STUDENT">
+      <figure class="diagram" data-diagram="t5-barred-one">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 330" direction="ltr" role="img" aria-labelledby="t5-barred-one-t">
+<title id="t5-barred-one-t">Version 2: a bar on the STUDENT line only: the UID of ENROLLMENT is its STUDENT alone, so each student could have only one enrollment / الإصدار 2: قضيب على خط STUDENT وحده: معرّف ENROLLMENT هو طالبه وحده، فلا يكون لكل طالب إلا تسجيل واحد</title>
+<g class="en"><text x="430.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — one bar, on the STUDENT line</text></g><g class="ar"><text x="430.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 2 — قضيب واحد، على خط STUDENT</text></g>
+<rect x="20" y="50" width="180" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="110.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="32" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="32" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="32" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="340" y="50" width="180" height="61" rx="10" style="fill:var(--dg-bad-soft, var(--accent-soft));stroke:var(--dg-bad, var(--accent));stroke-width:2"/>
+<text x="430.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ENROLLMENT</text>
+<text x="352" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Grade</text>
+<rect x="660" y="50" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="750.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SUBJECT</text>
+<text x="672" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="672" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M200 95 L270.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M270.0 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M318 85 L318 105" style="stroke:var(--dg-good, var(--text));stroke-width:2.6;fill:none"/>
+<text x="208" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">enrols for</text>
+<text x="312" y="117" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<path d="M520 95 L590.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M590.0 95 L660 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M534 95 L520 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="548" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<text x="652" y="117" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">subject of</text>
+<g class="en"><text x="318" y="148" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11px">bar</text></g><g class="ar"><text x="318" y="148" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12px">‏قضيب</text></g>
+<path d="M318 136 L318 108" style="stroke:var(--dg-text-soft, var(--text-soft));stroke-width:1;fill:none"/>
+<rect x="20" y="176" width="820" height="79" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="198" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Defect: the UID is the STUDENT alone, so a student can have only one enrollment.</text></g><g class="ar"><text x="824" y="198" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏العيب: المعرّف هو الطالب وحده، فلا يكون للطالب إلا تسجيل واحد.</text></g>
+<g class="en"><text x="36" y="217" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Sara enrols in Maths. Her Physics enrollment would carry the same UID — refused.</text></g><g class="ar"><text x="824" y="217" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏تسجّل Sara في الرياضيات. وتسجيلها في الفيزياء سيحمل المعرّف نفسه — فيُرفض.</text></g>
+<g class="en"><text x="36" y="236" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Each student can now take one subject: the M:M has quietly become many-to-one. Half a UID is a different rule.</text></g><g class="ar"><text x="824" y="236" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏فلا يدرس كل طالب الآن إلا مادة واحدة: صارت ‎M:M بصمتٍ «متعدّد إلى واحد». ونصف المعرّف قاعدة عمل مختلفة.</text></g>
+</svg>
+</figure>
+      <p class="en">Defect: half a UID. The identifier is the student alone, so each student may have only one enrollment. Sara's Physics enrollment carries the same UID as her Maths one and is refused. Each student can now take one subject: the M:M has quietly become a many-to-one.</p>
+      <p class="ar">العيب: نصف معرّف. المعرّف هو الطالب وحده، فلا يكون لكل طالب إلا تسجيل واحد. وتسجيل Sara في الفيزياء يحمل معرّف تسجيلها في الرياضيات نفسه فيُرفض. فلا يدرس كل طالب الآن إلا مادة واحدة: لقد صارت علاقة <bdi>M:M</bdi> بصمتٍ علاقة «متعدّد إلى واحد».</p>
+    </div>
+    <div class="ver" data-title-en="Version 3 — a bar on both lines" data-title-ar="الإصدار 3 — قضيب على الخطّين كليهما">
+      <figure class="diagram" data-diagram="t5-barred-enrollment">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 410" direction="ltr" role="img" aria-labelledby="t5-barred-enrollment-t">
+<title id="t5-barred-enrollment-t">The slides' barred relationships: a bar across each line at ENROLLMENT, next to the crow's foot; the UID of ENROLLMENT is its STUDENT plus its SUBJECT, a composite UID / العلاقات المقضّبة في الشرائح: قضيب يعترض كل خط عند ENROLLMENT بجوار رِجل الغراب؛ ومعرّف ENROLLMENT هو طالبه مع مادّته، معرّف مركّب</title>
+<g class="en"><text x="430.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Barred relationships — the UID comes from the parents</text></g><g class="ar"><text x="430.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏العلاقات المقضّبة — المعرّف يأتي من الأبوين</text></g>
+<rect x="20" y="50" width="180" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="110.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="32" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="32" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="32" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="340" y="50" width="180" height="61" rx="10" style="fill:var(--dg-good-soft, var(--accent-soft));stroke:var(--dg-good, var(--accent));stroke-width:2"/>
+<text x="430.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ENROLLMENT</text>
+<text x="352" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Grade</text>
+<rect x="660" y="50" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="750.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SUBJECT</text>
+<text x="672" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="672" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M200 95 L270.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M270.0 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M318 85 L318 105" style="stroke:var(--dg-good, var(--text));stroke-width:2.6;fill:none"/>
+<text x="208" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">enrols for</text>
+<text x="312" y="117" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<path d="M520 95 L590.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M590.0 95 L660 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M534 95 L520 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M542 85 L542 105" style="stroke:var(--dg-good, var(--text));stroke-width:2.6;fill:none"/>
+<text x="548" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<text x="652" y="117" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">subject of</text>
+<g class="en"><text x="318" y="148" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11px">bar</text></g><g class="ar"><text x="318" y="148" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12px">‏قضيب</text></g>
+<path d="M318 136 L318 108" style="stroke:var(--dg-text-soft, var(--text-soft));stroke-width:1;fill:none"/>
+<g class="en"><text x="542" y="148" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11px">bar</text></g><g class="ar"><text x="542" y="148" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12px">‏قضيب</text></g>
+<path d="M542 136 L542 108" style="stroke:var(--dg-text-soft, var(--text-soft));stroke-width:1;fill:none"/>
+<g class="en"><text x="430" y="148" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">no # inside</text></g><g class="ar"><text x="430" y="148" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">‏لا ‎#‎ في الداخل</text></g>
+<rect x="20" y="170" width="820" height="104" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="36" y="194" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each STUDENT may enrol for one or more ENROLLMENTs.</text>
+<text x="36" y="215" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each ENROLLMENT must be for one and only one STUDENT.</text>
+<text x="36" y="236" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each ENROLLMENT must be for one and only one SUBJECT.</text>
+<text x="36" y="257" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each SUBJECT may be the subject of one or more ENROLLMENTs.</text>
+<rect x="20" y="288" width="820" height="79" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="310" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Two bars at ENROLLMENT: it is identified by its STUDENT and its SUBJECT, together.</text></g><g class="ar"><text x="824" y="310" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏قضيبان عند ENROLLMENT: يُعرَف بطالبه ومادّته معًا.</text></g>
+<g class="en"><text x="36" y="329" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The bar sits at the child end, just beyond the crow's foot. The diamond, for comparison, sits mid-line.</text></g><g class="ar"><text x="824" y="329" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏يقع القضيب عند طرف الابن، بعد رِجل الغراب مباشرة. أمّا المعيَّن، للمقارنة، ففي منتصف الخط.</text></g>
+<g class="en"><text x="36" y="348" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Neither part is unique alone — Sara has two enrollments, Maths has two. The pair is: a composite UID.</text></g><g class="ar"><text x="824" y="348" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏لا جزء فريد وحده — لـ Sara تسجيلان، وللرياضيات تسجيلان. أمّا الزوج ففريد: معرّف مركّب.</text></g>
+</svg>
+</figure>
+      <p class="en">Fixed: the slides' model. Both originating relationships are barred, so the UID is student plus subject. Sara may take many subjects, Maths may have many students, and the same pair cannot appear twice. This is the recommended form.</p>
+      <p class="ar">أُصلح: نموذج الشرائح. العلاقتان الأصليتان مقضّبتان، فالمعرّف هو الطالب مع المادة. يجوز لـ Sara أن تدرس موادّ كثيرة، وللرياضيات أن يكون لها طلاب كثيرون، ولا يظهر الزوج نفسه مرّتين. وهذا هو الشكل الموصى به.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Two bars become one primary key over two columns: <code>PRIMARY KEY (student_id, subject_id)</code>, declared on the two foreign-key columns. Rebuild the table that way, then repeat the clerk's mistake:</p>
+    <p class="ar">يصير القضيبان مفتاحًا أساسيًّا واحدًا على عمودين: <code>PRIMARY KEY (student_id, subject_id)</code>، يُعلَن على عمودَي المفتاح الأجنبي. أعد بناء الجدول هكذا، ثم كرّر خطأ الموظّف:</p>
+    <pre class="code" data-lang="sql"><code>CREATE TABLE enrollments (
+  student_id NUMBER NOT NULL REFERENCES students(student_id),
+  subject_id NUMBER NOT NULL REFERENCES subjects(subject_id),
+  grade      VARCHAR(2),
+  PRIMARY KEY (student_id, subject_id)
+);</code></pre>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE students (student_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL)","INSERT INTO students VALUES (1001,'Sara','Hamdan'), (1002,'Omar','Khalil'), (1003,'Lina','Nasser'), (1004,'Yousef','Odeh')","CREATE TABLE subjects (subject_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO subjects VALUES (1,'Maths'), (2,'Physics'), (3,'Arabic')","CREATE TABLE enrollments (student_id NUMBER NOT NULL REFERENCES students(student_id), subject_id NUMBER NOT NULL REFERENCES subjects(subject_id), grade VARCHAR(2), PRIMARY KEY (student_id, subject_id))","INSERT INTO enrollments VALUES (1001,1,'A'), (1001,2,'B'), (1002,1,'C'), (1003,2,'A'), (1003,3,'A')"],"sql":"INSERT INTO enrollments VALUES (1001, 1, 'D');"}
+      </script>
+    </div>
+    <p class="en">It fails with <code>Cannot insert record, because it already exists in primary key index</code>. Lesson 5's table accepted the same row. Nothing else changed: the columns are identical, and only the key now says what the two bars say.</p>
+    <p class="ar">يفشل برسالة <code>Cannot insert record, because it already exists in primary key index</code>. وجدول الدرس 5 قبِل الصفّ نفسه. ولم يتغيّر شيء آخر: الأعمدة هي هي، والمفتاح وحده صار يقول ما يقوله القضيبان.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Version 2 is replaced by version 3. Which defect does version 3 close?</p>
+    <p class="q ar">حلّ الإصدار 3 محلّ الإصدار 2. أيّ عيب يُغلقه الإصدار 3؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The parents' IDs were typed in as attributes</span><span class="ar">كان معرّفا الأبوين مكتوبين خاصيتين</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A student could have only one enrollment</span><span class="ar">لم يكن للطالب إلا تسجيل واحد</span></button></li>
+      <li><button class="opt"><span class="en">The same pair could be recorded twice</span><span class="ar">كان يمكن تسجيل الزوج نفسه مرّتين</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">With one bar the UID was the student alone, so Sara could not take a second subject. Version 2 already refused a duplicate pair &mdash; it refused far too much. The second bar lets the student repeat, as long as the subject differs.</p>
+      <p class="ar">بقضيب واحد كان المعرّف هو الطالب وحده، فلم تستطع Sara أن تدرس مادة ثانية. والإصدار 2 كان يرفض الزوج المكرّر أصلًا &mdash; لكنه كان يرفض أكثر بكثير. والقضيب الثاني يسمح بتكرار الطالب، ما دامت المادة مختلفة.</p>
+    </div>
+  </div>
+
+  <h3 id="t5l6-s2"><span class="en">Three marks, three places</span><span class="ar">ثلاث علامات، ثلاثة مواضع</span></h3>
+
+  <p class="en">A relationship line can now carry three marks, and each has its own place. Mix the places up and the diagram says something else:</p>
+  <p class="ar">صار خط العلاقة يحمل ثلاث علامات، ولكلٍّ منها موضعها. اخلط المواضع فيقول المخطّط شيئًا آخر:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th><span class="en">Mark</span><span class="ar">العلامة</span></th><th><span class="en">Where it is drawn</span><span class="ar">أين تُرسم</span></th><th><span class="en">What it says</span><span class="ar">ماذا تقول</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">crow's foot</span><span class="ar">رِجل الغراب</span></td><td><span class="en">touching the entity at the many end</span><span class="ar">ملامسةً الكيان عند الطرف المتعدّد</span></td><td><span class="en">one or more</span><span class="ar">واحد أو أكثر</span></td></tr>
+        <tr><td><span class="en">bar</span><span class="ar">القضيب</span></td><td><span class="en">across the line at the many end, just beyond the crow's foot</span><span class="ar">معترضًا الخط عند الطرف المتعدّد، بعد رِجل الغراب مباشرة</span></td><td><span class="en">this relationship is part of that entity's UID</span><span class="ar">هذه العلاقة جزء من معرّف ذلك الكيان</span></td></tr>
+        <tr><td><span class="en">diamond</span><span class="ar">المعيَّن</span></td><td><span class="en">on the middle of the line</span><span class="ar">في منتصف الخط</span></td><td><span class="en">nontransferable</span><span class="ar">غير قابلة للنقل</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">On the line between <code>SUBJECT</code> and <code>ENROLLMENT</code>, where does the bar go?</p>
+    <p class="q ar">على الخط بين <code>SUBJECT</code> و<code>ENROLLMENT</code>، أين يوضع القضيب؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">At the <code>SUBJECT</code> end, because the UID comes from <code>SUBJECT</code></span><span class="ar">عند طرف <code>SUBJECT</code>، لأن المعرّف يأتي من <code>SUBJECT</code></span></button></li>
+      <li><button class="opt"><span class="en">On the middle of the line</span><span class="ar">في منتصف الخط</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">At the <code>ENROLLMENT</code> end, beside the crow's foot</span><span class="ar">عند طرف <code>ENROLLMENT</code>، بجوار رِجل الغراب</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The bar marks the entity being identified, and that is <code>ENROLLMENT</code>. <code>SUBJECT</code> already has its own <code>#</code>; it lends its identity, it does not receive one. The middle of the line belongs to the diamond.</p>
+      <p class="ar">القضيب يدلّ على الكيان الذي يُعرَّف، وهو <code>ENROLLMENT</code>. أمّا <code>SUBJECT</code> فله <code>#</code> خاصّته أصلًا؛ هو يُعير هويته ولا يتلقّى هوية. ومنتصف الخط موضع المعيَّن.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t5l6-h3"><span class="en">3 · Reading a composite UID</span><span class="ar">٣ · قراءة المعرّف المركّب</span></h2>
+
+  <div class="problem">
+    <p class="en">A student reads the barred diagram and writes: "<code>STUDENT ID</code> is unique and <code>SUBJECT ID</code> is unique." Build that and Sara can have one enrollment, Maths can have one student, and the school is back to version 2 &mdash; twice over.</p>
+    <p class="ar">يقرأ طالبٌ المخطّط المقضّب ويكتب: «<code>STUDENT ID</code> فريد و<code>SUBJECT ID</code> فريد». ابنِ ذلك فلا يكون لـ Sara إلا تسجيل واحد، ولا يكون للرياضيات إلا طالب واحد، وتعود المدرسة إلى الإصدار 2 &mdash; مضاعفًا.</p>
+  </div>
+
+  <p class="en">The slides label the two bars together: the UID is a combination, a <span class="term" data-term="composite-uid">composite UID</span>. Chapter 2 built composites from attributes; here the parts are relationships. Each part is a <span class="term" data-term="uid-component">UID component</span>, and none of them is unique alone.</p>
+  <p class="ar">تضع الشرائح على القضيبين معًا عنوانًا واحدًا: المعرّف تركيب، أي <span class="term" data-term="composite-uid">معرّف مركّب</span> (Composite UID). في الفصل 2 بُني المركّب من خصائص، وهنا أجزاؤه علاقات. وكل جزء <span class="term" data-term="uid-component">مكوّن من مكوّنات المعرّف</span> (UID component)، ولا أحد منها فريد وحده.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="composite-uid">composite UID</span> is a UID made of two or more components &mdash; attributes, barred relationships, or both &mdash; whose values are unique only in combination.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="composite-uid">المعرّف المركّب</span> (Composite UID) معرّف فريد مكوّن من مكوّنين أو أكثر &mdash; خصائص، أو علاقات مقضّبة، أو كليهما &mdash; لا تكون قيمها فريدة إلا مجتمعة.</p>
+  </div>
+
+  <p class="en">Read one in a fixed order, so nothing is missed. This <span class="term" data-term="uid-reading">reading order</span> works on any box: first the <code>#</code> attributes inside it; then each bar at its edge, followed to the parent's own UID. List every part, then join them with "plus":</p>
+  <p class="ar">اقرأه بترتيب ثابت حتى لا يفوتك شيء. و<span class="term" data-term="uid-reading">ترتيب القراءة</span> (UID reading order) هذا يصلح لأيّ صندوق: أوّلًا خصائص <code>#</code> التي في داخله، ثم كل قضيب عند حافّته، متتبَّعًا إلى معرّف الأب نفسه. اسرد كل الأجزاء، ثم اجمعها بكلمة «مع»:</p>
+
+  <figure class="diagram" data-diagram="t5-uid-reading">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 420" direction="ltr" role="img" aria-labelledby="t5-uid-reading-t">
+<title id="t5-uid-reading-t">Reading a composite UID in order: 1 look inside the box for #, 2 follow the first bar to STUDENT's # ID, 3 follow the second bar to SUBJECT's # ID; the enrollments table with the duplicate row 1001, 1 refused / قراءة المعرّف المركّب بالترتيب: 1 ابحث عن # داخل الصندوق، 2 اتبع القضيب الأول إلى # ID في STUDENT، 3 اتبع القضيب الثاني إلى # ID في SUBJECT؛ وجدول التسجيلات مع رفض الصفّ المكرّر 1001، 1</title>
+<g class="en"><text x="430.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Reading a composite UID — three steps, in order</text></g><g class="ar"><text x="430.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏قراءة المعرّف المركّب — ثلاث خطوات، بالترتيب</text></g>
+<rect x="20" y="50" width="180" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="110.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="32" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="32" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="32" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="340" y="50" width="180" height="61" rx="10" style="fill:var(--dg-good-soft, var(--accent-soft));stroke:var(--dg-good, var(--accent));stroke-width:2"/>
+<text x="430.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ENROLLMENT</text>
+<text x="352" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Grade</text>
+<rect x="660" y="50" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="750.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SUBJECT</text>
+<text x="672" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="672" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M200 95 L270.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M270.0 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M318 85 L318 105" style="stroke:var(--dg-good, var(--text));stroke-width:2.6;fill:none"/>
+<text x="208" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">enrols for</text>
+<text x="312" y="117" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<path d="M520 95 L590.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M590.0 95 L660 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M534 95 L520 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M542 85 L542 105" style="stroke:var(--dg-good, var(--text));stroke-width:2.6;fill:none"/>
+<text x="548" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<text x="652" y="117" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">subject of</text>
+<circle cx="430" cy="142" r="10" style="fill:var(--dg-warn-soft, var(--accent-soft));stroke:var(--dg-warn, var(--accent));stroke-width:1.5"/>
+<text x="430" y="146" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">1</text>
+<circle cx="318" cy="142" r="10" style="fill:var(--dg-warn-soft, var(--accent-soft));stroke:var(--dg-warn, var(--accent));stroke-width:1.5"/>
+<text x="318" y="146" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">2</text>
+<circle cx="542" cy="142" r="10" style="fill:var(--dg-warn-soft, var(--accent-soft));stroke:var(--dg-warn, var(--accent));stroke-width:1.5"/>
+<text x="542" y="146" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">3</text>
+<circle cx="84" cy="90" r="10" style="fill:var(--dg-warn-soft, var(--accent-soft));stroke:var(--dg-warn, var(--accent));stroke-width:1.5"/>
+<text x="84" y="94" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">2</text>
+<circle cx="724" cy="90" r="10" style="fill:var(--dg-warn-soft, var(--accent-soft));stroke:var(--dg-warn, var(--accent));stroke-width:1.5"/>
+<text x="724" y="94" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">3</text>
+<rect x="20" y="170" width="400" height="100" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="192" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">1  Inside ENROLLMENT: any # attribute? None.</text></g><g class="ar"><text x="404" y="192" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏1  داخل ENROLLMENT: أيّ خاصية ‎#‎؟ لا شيء.</text></g>
+<g class="en"><text x="36" y="215" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">2  First bar → STUDENT → its # ID.</text></g><g class="ar"><text x="404" y="215" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏2  القضيب الأول ← STUDENT ← معرّفه ‎# ID‎</text></g>
+<g class="en"><text x="36" y="238" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">3  Second bar → SUBJECT → its # ID.</text></g><g class="ar"><text x="404" y="238" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏3  القضيب الثاني ← SUBJECT ← معرّفه ‎# ID‎</text></g>
+<g class="en"><text x="36" y="259" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">UID = STUDENT ID + SUBJECT ID</text></g><g class="ar"><text x="404" y="259" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:700">‏المعرّف = STUDENT ID + SUBJECT ID</text></g>
+<rect x="450" y="170" width="390" height="20" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="462" y="184" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">STUDENT ID</text>
+<text x="592" y="184" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">SUBJECT ID</text>
+<text x="722" y="184" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">Grade</text>
+<rect x="450" y="190" width="390" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="462" y="204" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1001</text>
+<text x="592" y="204" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1</text>
+<text x="722" y="204" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">A</text>
+<rect x="450" y="210" width="390" height="20" style="fill:var(--dg-row-even, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="462" y="224" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1001</text>
+<text x="592" y="224" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">2</text>
+<text x="722" y="224" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">B</text>
+<rect x="450" y="230" width="390" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="462" y="244" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1002</text>
+<text x="592" y="244" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1</text>
+<text x="722" y="244" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">C</text>
+<rect x="450" y="250" width="390" height="20" style="fill:var(--dg-row-even, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="462" y="264" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1003</text>
+<text x="592" y="264" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">2</text>
+<text x="722" y="264" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">A</text>
+<rect x="450" y="270" width="390" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="462" y="284" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1003</text>
+<text x="592" y="284" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">3</text>
+<text x="722" y="284" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">A</text>
+<rect x="450" y="290" width="390" height="20" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:1"/>
+<text x="462" y="304" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1001</text>
+<text x="592" y="304" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1</text>
+<text x="722" y="304" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:11.5px">D</text>
+<path d="M456 300 L834 300" style="stroke:var(--dg-bad, var(--text));stroke-width:1.2;fill:none"/>
+<g class="en"><text x="450" y="330" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px">1001 + 1 already exists: refused.</text></g><g class="ar"><text x="840" y="330" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px">‏1001 + 1 موجود أصلًا: يُرفض.</text></g>
+<rect x="20" y="346" width="820" height="60" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="368" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Each column repeats on its own — 1001 twice, 1 twice. Only the combination never repeats.</text></g><g class="ar"><text x="824" y="368" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏كل عمود يتكرّر وحده — 1001 مرّتين، و1 مرّتين. أمّا التركيب فلا يتكرّر أبدًا.</text></g>
+<g class="en"><text x="36" y="387" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Read the parts in the order you met them: the box first, then each bar to its parent's #.</text></g><g class="ar"><text x="824" y="387" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏اقرأ الأجزاء بالترتيب الذي تلقاها به: الصندوق أوّلًا، ثم كل قضيب إلى خاصية ‎#‎ في أبيه.</text></g>
+</svg>
+<figcaption><span class="en">Step 1 finds nothing inside <code>ENROLLMENT</code>. Steps 2 and 3 follow the bars to <code>STUDENT</code>'s <code># ID</code> and <code>SUBJECT</code>'s <code># ID</code>. In the instances, 1001 repeats and 1 repeats; the pair 1001 + 1 may not.</span><span class="ar">الخطوة 1 لا تجد شيئًا داخل <code>ENROLLMENT</code>. والخطوتان 2 و3 تتبعان القضيبين إلى <code># ID</code> في <code>STUDENT</code> و<code># ID</code> في <code>SUBJECT</code>. وفي النسخ يتكرّر 1001 ويتكرّر 1، أمّا الزوج 1001 + 1 فلا يجوز أن يتكرّر.</span></figcaption></figure>
+
+  <pre class="code" data-lang="text"><code>ENROLLMENT  UID = STUDENT (ID)  +  SUBJECT (ID)
+            -- unique together, not apart</code></pre>
+
+  <h3 id="t5l6-s3"><span class="en">Unique together, not apart</span><span class="ar">فريد مجتمعًا، لا متفرّقًا</span></h3>
+
+  <p class="en">Half a composite UID finds a group; the whole of it finds one instance. That is the test of having read it correctly. Ask for Sara's enrollments and you get several. Ask for Sara in Physics and you get at most one &mdash; always.</p>
+  <p class="ar">نصف المعرّف المركّب يجد مجموعة، وكلّه يجد نسخة واحدة. وهذا اختبار قراءته قراءةً صحيحة. اطلب تسجيلات Sara فتحصل على عدّة. واطلب Sara في الفيزياء فتحصل على واحد على الأكثر &mdash; دائمًا.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">With the composite key in place, look Sara up by the whole key: student 1001 <em>and</em> subject 2.</p>
+    <p class="ar">والمفتاح المركّب في مكانه، ابحث عن Sara بالمفتاح كلّه: الطالب 1001 <em>و</em>المادة 2.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE students (student_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL)","INSERT INTO students VALUES (1001,'Sara','Hamdan'), (1002,'Omar','Khalil'), (1003,'Lina','Nasser'), (1004,'Yousef','Odeh')","CREATE TABLE subjects (subject_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO subjects VALUES (1,'Maths'), (2,'Physics'), (3,'Arabic')","CREATE TABLE enrollments (student_id NUMBER NOT NULL REFERENCES students(student_id), subject_id NUMBER NOT NULL REFERENCES subjects(subject_id), grade VARCHAR(2), PRIMARY KEY (student_id, subject_id))","INSERT INTO enrollments VALUES (1001,1,'A'), (1001,2,'B'), (1002,1,'C'), (1003,2,'A'), (1003,3,'A')"],"sql":"SELECT student_id, subject_id, grade\nFROM enrollments\nWHERE student_id = 1001 AND subject_id = 2;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>student_id</code></th><th><code>subject_id</code></th><th><code>grade</code></th></tr></thead>
+          <tbody>
+            <tr><td>1001</td><td>2</td><td>B</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Drop <code>AND subject_id = 2</code> and two rows return, Maths A and Physics B. And the key checks the pair, not each column: <code>INSERT INTO enrollments VALUES (1001, 3, NULL)</code> is accepted, Sara's first Arabic enrollment, while <code>(1003, 3, 'B')</code> is refused &mdash; Lina already has Arabic.</p>
+    <p class="ar">احذف <code>AND subject_id = 2</code> فيعود صفّان، الرياضيات A والفيزياء B. والمفتاح يفحص الزوج لا كل عمود: فالجملة <code>INSERT INTO enrollments VALUES (1001, 3, NULL)</code> تُقبل، وهي أوّل تسجيل لـ Sara في العربية، بينما <code>(1003, 3, 'B')</code> تُرفض &mdash; فـ Lina مسجّلة في العربية أصلًا.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapter 3</span><span class="ar">خيط · الفصل 3 في SQL</span></h4>
+    <p class="en"><a href="../chapters/chapter-3.html">Chapter 3 &mdash; Relationships</a> gives every table a one-column primary key and joins through foreign keys. Here a primary key is two columns that are foreign keys as well. The SQL is the same <code>PRIMARY KEY</code> clause; the design side explains why it lists two columns, and which two.</p>
+    <p class="ar">يعطي <a href="../chapters/chapter-3.html">الفصل 3 &mdash; العلاقات</a> كل جدول مفتاحًا أساسيًّا من عمود واحد، ويربط عبر المفاتيح الأجنبية. وهنا المفتاح الأساسي عمودان هما مفتاحان أجنبيان أيضًا. وجملة SQL هي العبارة <code>PRIMARY KEY</code> نفسها؛ أمّا جانب التصميم فيشرح لماذا تسرد عمودين، وأيّ عمودين.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which statement about the UID of <code>ENROLLMENT</code> is correct?</p>
+    <p class="q ar">أيّ عبارة عن معرّف <code>ENROLLMENT</code> صحيحة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Each student ID appears in at most one enrollment</span><span class="ar">كل رقم طالب يظهر في تسجيل واحد على الأكثر</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Each student-and-subject combination appears in at most one enrollment</span><span class="ar">كل تركيب من طالب ومادة يظهر في تسجيل واحد على الأكثر</span></button></li>
+      <li><button class="opt"><span class="en">Each student ID and each subject ID appears at most once</span><span class="ar">كل رقم طالب وكل رقم مادة يظهر مرّة واحدة على الأكثر</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A composite UID is unique as a combination. The first option is version 2's one-bar model; the third is the misreading in the problem box, which would allow one enrollment per student and one per subject.</p>
+      <p class="ar">المعرّف المركّب فريد بوصفه تركيبًا. والخيار الأول نموذج الإصدار 2 ذو القضيب الواحد؛ والثالث هو القراءة الخاطئة في صندوق المشكلة، التي لا تسمح إلا بتسجيل واحد لكل طالب وواحد لكل مادة.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The table holds (1001, 1), (1001, 2), (1002, 1), (1003, 2), (1003, 3). Which new enrollment is refused?</p>
+    <p class="q ar">في الجدول (1001, 1) و(1001, 2) و(1002, 1) و(1003, 2) و(1003, 3). أيّ تسجيل جديد يُرفض؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">(1002, 2) &mdash; Omar in Physics</span><span class="ar">(1002, 2) &mdash; Omar في الفيزياء</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">(1003, 2) &mdash; Lina in Physics</span><span class="ar">(1003, 2) &mdash; Lina في الفيزياء</span></button></li>
+      <li><button class="opt"><span class="en">(1004, 1) &mdash; Yousef in Maths</span><span class="ar">(1004, 1) &mdash; Yousef في الرياضيات</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Only (1003, 2) is already there as a pair. Omar and Physics each appear already, but never together; Yousef appears nowhere. Check the whole combination, never one part.</p>
+      <p class="ar">(1003, 2) وحده موجود أصلًا زوجًا. أمّا Omar والفيزياء فكلٌّ منهما موجود، لكن لم يجتمعا قطّ؛ وYousef لا يظهر في أيّ مكان. افحص التركيب كلّه، لا جزءًا منه.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t5l6-h4"><span class="en">4 · When the bars are not enough</span><span class="ar">٤ · حين لا تكفي القضبان</span></h2>
+
+  <div class="problem">
+    <p class="en">The TV channel bars both lines of <code>VIEWING RECORD</code>, as the school did. Then it decides to record every viewing, not just one rating per viewer. Huda watches News again a week later, and her second viewing is refused: same show, same person, same UID.</p>
+    <p class="ar">تضع القناة التلفزيونية قضيبًا على خطَّي <code>VIEWING RECORD</code>، كما فعلت المدرسة. ثم تقرّر أن تسجّل كل مشاهدة، لا تقييمًا واحدًا لكل مشاهد. تشاهد Huda برنامج News مرّة أخرى بعد أسبوع، فتُرفض مشاهدتها الثانية: البرنامج نفسه، والشخص نفسه، والمعرّف نفسه.</p>
+  </div>
+
+  <p class="en">That is why the slides say the UID <em>often</em> comes from the originating relationships &mdash; not always. When one pair may meet more than once, the bars need a <code>#</code> attribute beside them. Together they form a <span class="term" data-term="mixed-uid">mixed UID</span>, read in the same order: inside the box first, then the bars.</p>
+  <p class="ar">لهذا تقول الشرائح إن المعرّف يأتي <em>غالبًا</em> من العلاقات الأصلية &mdash; لا دائمًا. فحين يجوز للزوج الواحد أن يلتقي أكثر من مرّة، تحتاج القضبان إلى خاصية <code>#</code> بجوارها. ومعًا يكوّنان <span class="term" data-term="mixed-uid">معرّفًا مختلطًا</span> (Mixed UID)، يُقرأ بالترتيب نفسه: داخل الصندوق أوّلًا، ثم القضبان.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="mixed-uid">mixed UID</span> is a composite UID made of one or more barred relationships plus one or more <code>#</code> attributes of the entity itself.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="mixed-uid">المعرّف المختلط</span> (Mixed UID) معرّف مركّب يتكوّن من علاقة مقضّبة أو أكثر مع خاصية <code>#</code> أو أكثر من خصائص الكيان نفسه.</p>
+  </div>
+
+  <div class="evolve" id="t5l6-e2">
+    <div class="ver" data-title-en="Version 1 — two bars, nothing else" data-title-ar="الإصدار 1 — قضيبان، ولا شيء غيرهما">
+      <figure class="diagram" data-diagram="t5-viewing-barred">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 300" direction="ltr" role="img" aria-labelledby="t5-viewing-barred-t">
+<title id="t5-viewing-barred-t">Version 1: VIEWING RECORD with o Rating and two bars: its UID is TV SHOW plus PERSON, so a person can have only one viewing record per show / الإصدار 1: VIEWING RECORD مع o Rating وقضيبين: معرّفه TV SHOW مع PERSON، فلا يكون للشخص إلا سجلّ مشاهدة واحد لكل برنامج</title>
+<g class="en"><text x="430.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1 — two bars, nothing else</text></g><g class="ar"><text x="430.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 1 — قضيبان، ولا شيء غيرهما</text></g>
+<rect x="20" y="50" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="110.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">TV SHOW</text>
+<text x="32" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="32" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Title</text>
+<rect x="340" y="50" width="180" height="61" rx="10" style="fill:var(--dg-bad-soft, var(--accent-soft));stroke:var(--dg-bad, var(--accent));stroke-width:2"/>
+<text x="430.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">VIEWING RECORD</text>
+<text x="352" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Rating</text>
+<rect x="660" y="50" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="750.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PERSON</text>
+<text x="672" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="672" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M200 95 L270.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M270.0 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M318 85 L318 105" style="stroke:var(--dg-good, var(--text));stroke-width:2.6;fill:none"/>
+<text x="208" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">on</text>
+<text x="312" y="117" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<path d="M520 95 L590.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M590.0 95 L660 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M534 95 L520 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M542 85 L542 105" style="stroke:var(--dg-good, var(--text));stroke-width:2.6;fill:none"/>
+<text x="548" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<text x="652" y="117" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">on</text>
+<rect x="20" y="166" width="820" height="79" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="188" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">UID = TV SHOW + PERSON: one viewing record per person per show — ever.</text></g><g class="ar"><text x="824" y="188" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏المعرّف = TV SHOW + PERSON: سجلّ مشاهدة واحد لكل شخص في كل برنامج — إلى الأبد.</text></g>
+<g class="en"><text x="36" y="207" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Right for one rating per viewer. Wrong once the channel records every viewing:</text></g><g class="ar"><text x="824" y="207" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏صحيح إن كان لكل مشاهد تقييم واحد. وخطأ حين تسجّل القناة كل مشاهدة:</text></g>
+<g class="en"><text x="36" y="226" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Huda watches News again a week later, and her second viewing carries the same UID — refused.</text></g><g class="ar"><text x="824" y="226" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏تشاهد Huda برنامج News مرّة أخرى بعد أسبوع، فيحمل تسجيلها الثاني المعرّف نفسه — فيُرفض.</text></g>
+</svg>
+</figure>
+      <p class="en">Defect: the UID allows one viewing record per person per show, ever. That is right for a single rating, and wrong for a log of viewings. Huda's second News viewing has nowhere to go.</p>
+      <p class="ar">العيب: المعرّف لا يسمح إلا بسجلّ مشاهدة واحد لكل شخص في كل برنامج، إلى الأبد. وهذا صحيح لتقييم واحد، وخطأ لسجلّ مشاهدات. ولا مكان لمشاهدة Huda الثانية لبرنامج News.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — two bars and a # attribute" data-title-ar="الإصدار 2 — قضيبان وخاصية #">
+      <figure class="diagram" data-diagram="t5-viewing-date">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 310" direction="ltr" role="img" aria-labelledby="t5-viewing-date-t">
+<title id="t5-viewing-date-t">Version 2: VIEWING RECORD with # Date Watched and o Rating and two bars: its UID is TV SHOW plus PERSON plus Date Watched, two relationships and one attribute / الإصدار 2: VIEWING RECORD مع # Date Watched وo Rating وقضيبين: معرّفه TV SHOW مع PERSON مع Date Watched، علاقتان وخاصية واحدة</title>
+<g class="en"><text x="430.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — two bars and a # attribute</text></g><g class="ar"><text x="430.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 2 — قضيبان وخاصية #</text></g>
+<rect x="20" y="50" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="110.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">TV SHOW</text>
+<text x="32" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="32" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Title</text>
+<rect x="340" y="50" width="180" height="80" rx="10" style="fill:var(--dg-good-soft, var(--accent-soft));stroke:var(--dg-good, var(--accent));stroke-width:2"/>
+<text x="430.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">VIEWING RECORD</text>
+<text x="352" y="94" text-anchor="start" style="fill:var(--dg-good, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700"># Date Watched</text>
+<text x="352" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Rating</text>
+<rect x="660" y="50" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="750.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PERSON</text>
+<text x="672" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="672" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M200 95 L270.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M270.0 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M318 85 L318 105" style="stroke:var(--dg-good, var(--text));stroke-width:2.6;fill:none"/>
+<text x="208" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">on</text>
+<text x="312" y="117" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<path d="M520 95 L590.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M590.0 95 L660 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M534 95 L520 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M542 85 L542 105" style="stroke:var(--dg-good, var(--text));stroke-width:2.6;fill:none"/>
+<text x="548" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<text x="652" y="117" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">on</text>
+<rect x="20" y="184" width="820" height="79" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="206" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">UID = TV SHOW + PERSON + Date Watched: two parts from the bars, one from inside the box.</text></g><g class="ar"><text x="824" y="206" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏المعرّف = TV SHOW + PERSON + Date Watched: جزءان من القضيبين، وجزء من داخل الصندوق.</text></g>
+<g class="en"><text x="36" y="225" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Huda's two viewings of News differ by date, so both are kept. The same viewing twice is still refused.</text></g><g class="ar"><text x="824" y="225" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏مشاهدتا Huda لبرنامج News تختلفان في التاريخ، فتُحفظان كلتاهما. والمشاهدة نفسها مرّتين ما زالت تُرفض.</text></g>
+<g class="en"><text x="36" y="244" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">This is why the slides say the UID often — not always — comes from the relationships.</text></g><g class="ar"><text x="824" y="244" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏ولهذا تقول الشرائح إن المعرّف يأتي غالبًا — لا دائمًا — من العلاقات.</text></g>
+</svg>
+</figure>
+      <p class="en">Fixed: <code># Date Watched</code> joins the two bars. The UID is TV show plus person plus date, so two viewings on different days are two instances, and the same viewing entered twice is still refused. This is the recommended form for a viewing log.</p>
+      <p class="ar">أُصلح: انضمّت <code># Date Watched</code> إلى القضيبين. فالمعرّف هو البرنامج مع الشخص مع التاريخ، فمشاهدتان في يومين مختلفين نسختان، والمشاهدة نفسها إذا أُدخلت مرّتين ما زالت تُرفض. وهذا هو الشكل الموصى به لسجلّ المشاهدات.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The mixed UID becomes a three-column key, <code>PRIMARY KEY (show_id, person_id, date_watched)</code>: two foreign keys and one ordinary column. Record Huda's second News viewing, on 8 November:</p>
+    <p class="ar">يصير المعرّف المختلط مفتاحًا من ثلاثة أعمدة، <code>PRIMARY KEY (show_id, person_id, date_watched)</code>: مفتاحان أجنبيان وعمود عادي. سجّل مشاهدة Huda الثانية لبرنامج News، في 8 نوفمبر:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE tv_shows (show_id NUMBER PRIMARY KEY, title VARCHAR(20) NOT NULL)","INSERT INTO tv_shows VALUES (1,'News'), (2,'Drama')","CREATE TABLE persons (person_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO persons VALUES (1,'Huda'), (2,'Ahmad'), (3,'Mona')","CREATE TABLE viewings (show_id NUMBER NOT NULL REFERENCES tv_shows(show_id), person_id NUMBER NOT NULL REFERENCES persons(person_id), date_watched DATE NOT NULL, rating NUMBER, PRIMARY KEY (show_id, person_id, date_watched))","INSERT INTO viewings VALUES (1,1,'2026-11-01',4), (2,1,'2026-11-01',2), (1,2,'2026-11-02',5), (2,3,'2026-11-03',4)"],"sql":"INSERT INTO viewings VALUES (1, 1, '2026-11-08', 3);\n\nSELECT p.name, t.title, v.date_watched, v.rating\nFROM viewings v\nJOIN persons p ON p.person_id = v.person_id\nJOIN tv_shows t ON t.show_id = v.show_id\nWHERE p.name = 'Huda'\nORDER BY v.date_watched, t.title;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>name</code></th><th><code>title</code></th><th><code>date_watched</code></th><th><code>rating</code></th></tr></thead>
+          <tbody>
+            <tr><td>Huda</td><td>Drama</td><td>2026-11-01</td><td>2</td></tr>
+            <tr><td>Huda</td><td>News</td><td>2026-11-01</td><td>4</td></tr>
+            <tr><td>Huda</td><td>News</td><td>2026-11-08</td><td>3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">With version 1's key, <code>PRIMARY KEY (show_id, person_id)</code>, the same insert fails with <code>Cannot insert record, because it already exists in primary key index</code>. With this key, entering the 8 November viewing a second time fails with that message instead.</p>
+    <p class="ar">بمفتاح الإصدار 1، <code>PRIMARY KEY (show_id, person_id)</code>، يفشل الإدخال نفسه برسالة <code>Cannot insert record, because it already exists in primary key index</code>. وبهذا المفتاح يفشل إدخال مشاهدة 8 نوفمبر مرّةً ثانية بتلك الرسالة بدلًا منه.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Read the UID of version 2's <code>VIEWING RECORD</code> in order.</p>
+    <p class="q ar">اقرأ معرّف <code>VIEWING RECORD</code> في الإصدار 2 بالترتيب.</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>Date Watched</code> alone</span><span class="ar"><code>Date Watched</code> وحدها</span></button></li>
+      <li><button class="opt"><span class="en"><code>TV SHOW</code> plus <code>PERSON</code></span><span class="ar"><code>TV SHOW</code> مع <code>PERSON</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>Date Watched</code> plus <code>TV SHOW</code> plus <code>PERSON</code></span><span class="ar"><code>Date Watched</code> مع <code>TV SHOW</code> مع <code>PERSON</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Step 1 finds <code># Date Watched</code> inside the box; steps 2 and 3 follow the two bars. Many people watch on the same date, so the date alone repeats. Stopping at the bars misses the <code>#</code> &mdash; that is version 1.</p>
+      <p class="ar">الخطوة 1 تجد <code># Date Watched</code> داخل الصندوق، والخطوتان 2 و3 تتبعان القضيبين. يشاهد أناس كثيرون في التاريخ نفسه، فالتاريخ وحده يتكرّر. والتوقّف عند القضيبين يُفوّت <code>#</code> &mdash; وذلك هو الإصدار 1.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t5l6-h5"><span class="en">5 · From bars to a primary key</span><span class="ar">٥ · من القضبان إلى المفتاح الأساسي</span></h2>
+
+  <div class="problem">
+    <p class="en">The cleaning agency's <code>CLEANING SCHEDULE</code> from Lesson 5 has <code>* Start Date</code> and <code>* Price</code>, and no UID. Sparkle is listed twice for window cleaning, at two prices, and customers are quoted both.</p>
+    <p class="ar">لجدول <code>CLEANING SCHEDULE</code> الخاص بوكالة التنظيف من الدرس 5 خاصيتان، <code>* Start Date</code> و<code>* Price</code>، ولا معرّف فريد. فشركة Sparkle مدرجة مرّتين لتنظيف النوافذ، بسعرين، ويُعرض السعران كلاهما على الزبائن.</p>
+  </div>
+
+  <p class="en">One company offers one service at one price, so the pair is enough: bar both lines at <code>CLEANING SCHEDULE</code>. The step to tables is mechanical. Each bar is a foreign-key column that also joins the primary key; each <code>#</code> attribute inside the box is a primary-key column; together they are one <span class="term" data-term="composite-primary-key">composite primary key</span>.</p>
+  <p class="ar">الشركة الواحدة تقدّم الخدمة الواحدة بسعر واحد، فالزوج يكفي: ضع قضيبًا على الخطّين عند <code>CLEANING SCHEDULE</code>. والانتقال إلى الجداول آلي. كل قضيب عمودُ مفتاح أجنبي ينضمّ أيضًا إلى المفتاح الأساسي، وكل خاصية <code>#</code> داخل الصندوق عمودٌ في المفتاح الأساسي، ومعًا يكوّنان <span class="term" data-term="composite-primary-key">مفتاحًا أساسيًّا مركّبًا</span> (Composite primary key) واحدًا.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="composite-primary-key">composite primary key</span> is a primary key declared on two or more columns, so that only their combination must be unique.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="composite-primary-key">المفتاح الأساسي المركّب</span> (Composite primary key) مفتاح أساسي يُعلَن على عمودين أو أكثر، فلا يلزم أن يكون فريدًا إلا تركيبُها.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <pre class="code" data-lang="sql"><code>CREATE TABLE cleaning_schedules (
+  company_id NUMBER NOT NULL REFERENCES cleaning_companies(company_id),  -- bar 1
+  service_id NUMBER NOT NULL REFERENCES cleaning_services(service_id),   -- bar 2
+  start_date DATE   NOT NULL,                                            -- * Start Date
+  price      NUMBER NOT NULL,                                            -- * Price
+  PRIMARY KEY (company_id, service_id)
+);</code></pre>
+    <p class="en">Sparkle (1) already offers windows and kitchens. Add carpets, then list its services:</p>
+    <p class="ar">تقدّم Sparkle (1) تنظيف النوافذ والمطابخ أصلًا. أضف السجّاد، ثم اعرض خدماتها:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE cleaning_companies (company_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO cleaning_companies VALUES (1,'Sparkle'), (2,'FreshHome')","CREATE TABLE cleaning_services (service_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO cleaning_services VALUES (1,'Windows'), (2,'Carpets'), (3,'Kitchens')","CREATE TABLE cleaning_schedules (company_id NUMBER NOT NULL REFERENCES cleaning_companies(company_id), service_id NUMBER NOT NULL REFERENCES cleaning_services(service_id), start_date DATE NOT NULL, price NUMBER NOT NULL, PRIMARY KEY (company_id, service_id))","INSERT INTO cleaning_schedules VALUES (1,1,'2025-02-01',40), (1,3,'2025-06-15',90), (2,1,'2026-01-10',35), (2,2,'2026-03-01',70)"],"sql":"INSERT INTO cleaning_schedules VALUES (1, 2, '2026-09-01', 60);\n\nSELECT c.name AS company, s.name AS service, cs.price\nFROM cleaning_schedules cs\nJOIN cleaning_companies c ON c.company_id = cs.company_id\nJOIN cleaning_services s ON s.service_id = cs.service_id\nWHERE c.name = 'Sparkle'\nORDER BY s.name;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>company</code></th><th><code>service</code></th><th><code>price</code></th></tr></thead>
+          <tbody>
+            <tr><td>Sparkle</td><td>Carpets</td><td>60</td></tr>
+            <tr><td>Sparkle</td><td>Kitchens</td><td>90</td></tr>
+            <tr><td>Sparkle</td><td>Windows</td><td>40</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">A new pair is accepted. A second price for windows, <code>INSERT INTO cleaning_schedules VALUES (1, 1, '2026-09-01', 45)</code>, fails with <code>Cannot insert record, because it already exists in primary key index</code>: one company, one service, one price.</p>
+    <p class="ar">يُقبل الزوج الجديد. أمّا سعر ثانٍ للنوافذ، <code>INSERT INTO cleaning_schedules VALUES (1, 1, '2026-09-01', 45)</code>، فيفشل برسالة <code>Cannot insert record, because it already exists in primary key index</code>: شركة واحدة، وخدمة واحدة، وسعر واحد.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">An intersection entity has two bars and one <code>#</code> attribute. How many columns does its primary key have?</p>
+    <p class="q ar">لكيان تقاطع قضيبان وخاصية <code>#</code> واحدة. كم عمودًا في مفتاحه الأساسي؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">One &mdash; the <code>#</code> attribute</span><span class="ar">عمود واحد &mdash; خاصية <code>#</code></span></button></li>
+      <li><button class="opt"><span class="en">Two &mdash; one per bar</span><span class="ar">عمودان &mdash; عمود لكل قضيب</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Three &mdash; two foreign keys and the attribute</span><span class="ar">ثلاثة &mdash; مفتاحان أجنبيان والخاصية</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Every component becomes a key column: each bar a foreign key that is also in the primary key, the <code>#</code> attribute an ordinary column. That is the <code>viewings</code> table of section 4.</p>
+      <p class="ar">كل مكوّن يصير عمودًا في المفتاح: كل قضيب مفتاحًا أجنبيًّا هو أيضًا في المفتاح الأساسي، وخاصية <code>#</code> عمودًا عاديًّا. وذلك جدول <code>viewings</code> في القسم 4.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t5l6-h6"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Bar the cleaning model</span><span class="ar">تمرين 1 · ضع القضبان على نموذج التنظيف</span></h4>
+    <p class="en">For the resolved cleaning model, say where each bar goes, then write the UID of <code>CLEANING SCHEDULE</code> using the reading order of section 3.</p>
+    <p class="ar">في نموذج التنظيف المحلول، قل أين يوضع كل قضيب، ثم اكتب معرّف <code>CLEANING SCHEDULE</code> بترتيب القراءة في القسم 3.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">One bar on each line, at the <code>CLEANING SCHEDULE</code> end, just beyond its crow's foot. Step 1: no <code>#</code> inside &mdash; <code>Start Date</code> and <code>Price</code> are <code>*</code>. Steps 2 and 3 follow the bars.</p>
+      <p class="ar">قضيب على كل خط، عند طرف <code>CLEANING SCHEDULE</code>، بعد رِجل الغراب مباشرة. الخطوة 1: لا <code>#</code> في الداخل &mdash; فـ <code>Start Date</code> و<code>Price</code> بالرمز <code>*</code>. والخطوتان 2 و3 تتبعان القضيبين.</p>
+      <pre class="code" data-lang="text"><code>CLEANING SCHEDULE  UID = CLEANING COMPANY (ID)  +  CLEANING SERVICE (ID)</code></pre>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Find the misplaced bar</span><span class="ar">تمرين 2 · جِد القضيب في غير موضعه</span></h4>
+    <p class="en">A student described the barred school model as text. Which line is wrong, and what should it say?</p>
+    <p class="ar">وصف طالبٌ نموذج المدرسة المقضّب نصًّا. أيّ سطر خاطئ، وماذا يجب أن يقول؟</p>
+    <pre class="code" data-lang="text"><code>1  STUDENT     # ID, * First Name, * Last Name
+2  SUBJECT     # ID, * Name
+3  ENROLLMENT  o Grade
+4  STUDENT  --enrols for / for-->  ENROLLMENT   crow's foot and bar at ENROLLMENT
+5  SUBJECT  --subject of / for-->  ENROLLMENT   crow's foot at ENROLLMENT, bar at SUBJECT</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Line 5. A bar always sits at the end of the entity being identified, beside its crow's foot: <em>crow's foot and bar at ENROLLMENT</em>. A bar at <code>SUBJECT</code> would claim that <code>SUBJECT</code> takes its identity from <code>ENROLLMENT</code> &mdash; but <code>SUBJECT</code> already has <code># ID</code>.</p>
+      <p class="ar">السطر 5. القضيب يقع دائمًا عند طرف الكيان الذي يُعرَّف، بجوار رِجل الغراب: <em>crow's foot and bar at ENROLLMENT</em>. والقضيب عند <code>SUBJECT</code> يدّعي أن <code>SUBJECT</code> يأخذ هويته من <code>ENROLLMENT</code> &mdash; و<code>SUBJECT</code> له <code># ID</code> أصلًا.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Which rows clash?</span><span class="ar">تمرين 3 · أيّ الصفوف تتعارض؟</span></h4>
+    <p class="en">Use version 2 of section 4: the UID is <code>Date Watched</code> + <code>TV SHOW</code> + <code>PERSON</code>. Which two rows break it?</p>
+    <p class="ar">استعمل الإصدار 2 في القسم 4: المعرّف هو <code>Date Watched</code> + <code>TV SHOW</code> + <code>PERSON</code>. أيّ صفّين يكسرانه؟</p>
+    <pre class="code" data-lang="text"><code>   show     person  date_watched  rating
+1  News     Huda    2026-11-01    4
+2  News     Ahmad   2026-11-01    5
+3  News     Huda    2026-11-08    3
+4  Drama    Huda    2026-11-08    2
+5  News     Huda    2026-11-08    5</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Rows 3 and 5: News, Huda, 8 November in both. The different ratings do not help, because <code>Rating</code> is not part of the UID. Rows 1 and 2 share show and date but not person; rows 3 and 4 share person and date but not show.</p>
+      <p class="ar">الصفّان 3 و5: News وHuda و8 نوفمبر في كليهما. ولا يفيد اختلاف التقييم، لأن <code>Rating</code> ليست جزءًا من المعرّف. والصفّان 1 و2 يشتركان في البرنامج والتاريخ لا في الشخص، والصفّان 3 و4 يشتركان في الشخص والتاريخ لا في البرنامج.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Write the table</span><span class="ar">تمرين 4 · اكتب الجدول</span></h4>
+    <p class="en">Write <code>CREATE TABLE enrollments</code> for the barred model of section 2, with <code>Grade</code> optional, so that the duplicate Maths row for Sara is refused.</p>
+    <p class="ar">اكتب <code>CREATE TABLE enrollments</code> للنموذج المقضّب في القسم 2، مع <code>Grade</code> اختيارية، بحيث يُرفض صفّ الرياضيات المكرّر لـ Sara.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE enrollments (
+  student_id NUMBER NOT NULL REFERENCES students(student_id),
+  subject_id NUMBER NOT NULL REFERENCES subjects(subject_id),
+  grade      VARCHAR(2),
+  PRIMARY KEY (student_id, subject_id)
+);</code></pre>
+      <p class="en">Two foreign keys, both <code>NOT NULL</code> because the halves at <code>ENROLLMENT</code> are solid; one primary key over both, because both lines are barred; <code>grade</code> nullable for the <code>o</code>. Two separate <code>UNIQUE</code> columns would be the misreading of section 3.</p>
+      <p class="ar">مفتاحان أجنبيان، كلاهما <code>NOT NULL</code> لأن النصفين عند <code>ENROLLMENT</code> متّصلان؛ ومفتاح أساسي واحد عليهما كليهما، لأن الخطّين مقضّبان؛ و<code>grade</code> تقبل القيمة الفارغة بسبب <code>o</code>. أمّا عمودان <code>UNIQUE</code> منفصلان فهما القراءة الخاطئة في القسم 3.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Find the duplicates already there</span><span class="ar">تمرين 5 · جِد التكرارات الموجودة أصلًا</span></h4>
+    <p class="en">Lesson 5's keyless <code>enrollments</code> table already holds Sara's second Maths row, so adding the key would fail. Write a query that lists every duplicate pair and how many copies it has.</p>
+    <p class="ar">جدول <code>enrollments</code> بلا مفتاح في الدرس 5 يحمل أصلًا صفّ الرياضيات الثاني لـ Sara، فإضافة المفتاح ستفشل. اكتب استعلامًا يسرد كل زوج مكرّر وعدد نسخه.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT student_id, subject_id, COUNT(*) AS copies
+FROM enrollments
+GROUP BY student_id, subject_id
+HAVING COUNT(*) &gt; 1;</code></pre>
+      <div class="output">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th><code>student_id</code></th><th><code>subject_id</code></th><th><code>copies</code></th></tr></thead>
+            <tbody>
+              <tr><td>1001</td><td>1</td><td>2</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="en">Group by the whole would-be key, not by one part: grouping by <code>student_id</code> alone would also flag Lina, who takes two different subjects and has no duplicate at all. The office decides which Maths row is real, deletes the other, then adds the key.</p>
+      <p class="ar">جمّع بالمفتاح المرتقب كلّه، لا بجزء منه: فالتجميع بـ <code>student_id</code> وحده سيشير أيضًا إلى Lina، وهي تدرس مادتين مختلفتين ولا تكرار عندها أصلًا. تقرّر الإدارة أيّ صفّ رياضيات هو الحقيقي، وتحذف الآخر، ثم تضيف المفتاح.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">An intersection entity usually has no attribute that can identify it; its UID comes from its originating relationships.</li>
+      <li class="ar">كيان التقاطع في العادة بلا خاصية تستطيع أن تميّزه؛ فمعرّفه يأتي من علاقاته الأصلية.</li>
+      <li class="en">A relationship that is part of a UID is barred: a short bar across the line at the intersection entity's end, beside the crow's foot.</li>
+      <li class="ar">العلاقة التي هي جزء من المعرّف علاقة مقضّبة: قضيب قصير يعترض الخط عند طرف كيان التقاطع، بجوار رِجل الغراب.</li>
+      <li class="en">Two bars make a composite UID. It is unique as a combination; each part repeats freely.</li>
+      <li class="ar">القضيبان يكوّنان معرّفًا مركّبًا. وهو فريد بوصفه تركيبًا، وكل جزء منه يتكرّر بحرّية.</li>
+      <li class="en">Read a UID in order: <code>#</code> attributes inside the box, then each bar to its parent's UID.</li>
+      <li class="ar">اقرأ المعرّف بالترتيب: خصائص <code>#</code> داخل الصندوق، ثم كل قضيب إلى معرّف أبيه.</li>
+      <li class="en">If one pair can meet more than once, add a <code>#</code> attribute to the bars. In SQL, every component becomes a column of one composite primary key.</li>
+      <li class="ar">إن جاز للزوج الواحد أن يلتقي أكثر من مرّة، فأضف خاصية <code>#</code> إلى القضبان. وفي SQL يصير كل مكوّن عمودًا في مفتاح أساسي مركّب واحد.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Typing the parents' IDs into the intersection entity as <code>#</code> attributes: the lines already carry them.</li>
+      <li class="ar">كتابة معرّفَي الأبوين داخل كيان التقاطع خاصيتين <code>#</code>: فالخطّان يحملانهما أصلًا.</li>
+      <li class="en">Barring only one line: the UID becomes that parent alone, and each student may take only one subject.</li>
+      <li class="ar">وضع قضيب على خط واحد فقط: فيصير المعرّف ذلك الأب وحده، ولا يدرس كل طالب إلا مادة واحدة.</li>
+      <li class="en">Drawing the bar at the parent's end, or on the middle of the line where the diamond goes.</li>
+      <li class="ar">رسم القضيب عند طرف الأب، أو في منتصف الخط حيث يوضع المعيَّن.</li>
+      <li class="en">Reading a composite UID as "each part is unique": two <code>UNIQUE</code> columns instead of one two-column key.</li>
+      <li class="ar">قراءة المعرّف المركّب على أنه «كل جزء فريد»: عمودان <code>UNIQUE</code> بدل مفتاح واحد من عمودين.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="../tests/t5-test-06.html#t5-test-06">Test 6 &mdash; Barred Relationships and Composite UIDs</a>. Then the <a href="../labs/t5-lab.html#t5-lab">SQL Lab</a> builds the whole resolved school model for real and asks it which students got an A in Maths.</p>
+    <p class="ar">اختبر نفسك بـ<a href="../tests/t5-test-06.html#t5-test-06">اختبار 6 &mdash; العلاقات المقضّبة والمعرّفات المركّبة</a>. ثم يبني <a href="../labs/t5-lab.html#t5-lab">مختبر SQL</a> نموذج المدرسة المحلول كاملًا فعلًا، ويسأله: من نال A في الرياضيات؟</p>
+  </div>
 
 </section>
 <nav class="pager"></nav>
@@ -69,6 +865,9 @@
 <script src="../assets/theory/js/anchors.js"></script>
 <script src="../assets/theory/js/chrome.js"></script>
 <script src="../assets/theory/js/code.js"></script>
+<script src="../assets/vendor/alasql/alasql.min.js"></script>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/widget.js"></script>
 <script src="../assets/theory/js/app.js"></script>
 </body>
 </html>

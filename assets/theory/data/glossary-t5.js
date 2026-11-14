@@ -2,6 +2,51 @@
 window.DBTGlossary = window.DBTGlossary || {};
 window.DBTGlossary["t5"] = [
  {
+  "id": "uid-bar",
+  "term": {
+   "en": "Bar",
+   "ar": "القضيب"
+  },
+  "def": {
+   "en": "A short line drawn across a relationship at the many end, just beyond the crow's foot, showing that the relationship is part of that entity's UID.",
+   "ar": "خط قصير يعترض العلاقة عند الطرف المتعدّد، بعد رِجل الغراب مباشرة، يدلّ على أن العلاقة جزء من معرّف ذلك الكيان."
+  },
+  "cat": {
+   "en": "Barred relationships",
+   "ar": "العلاقات المقضّبة"
+  },
+  "see": [
+   "barred-relationship",
+   "nontransferable-diamond"
+  ],
+  "used": [
+   "t5l6-h2"
+  ]
+ },
+ {
+  "id": "barred-relationship",
+  "term": {
+   "en": "Barred relationship",
+   "ar": "العلاقة المقضّبة"
+  },
+  "def": {
+   "en": "A relationship that is part of the UID of the entity at its many end, shown by a bar across the line at that end.",
+   "ar": "علاقة هي جزء من المعرّف الفريد للكيان عند طرفها المتعدّد، ويدلّ عليها قضيب يعترض الخط عند ذلك الطرف."
+  },
+  "cat": {
+   "en": "Barred relationships",
+   "ar": "العلاقات المقضّبة"
+  },
+  "see": [
+   "uid-bar",
+   "composite-uid",
+   "originating-relationship"
+  ],
+  "used": [
+   "t5l6-h2"
+  ]
+ },
+ {
   "id": "cancel-and-reissue",
   "term": {
    "en": "Cancel and reissue",
@@ -68,6 +113,52 @@ window.DBTGlossary["t5"] = [
   ]
  },
  {
+  "id": "composite-primary-key",
+  "term": {
+   "en": "Composite primary key",
+   "ar": "المفتاح الأساسي المركّب"
+  },
+  "def": {
+   "en": "A primary key declared on two or more columns, so that only their combination must be unique; each bar becomes one of its columns.",
+   "ar": "مفتاح أساسي يُعلَن على عمودين أو أكثر، فلا يلزم أن يكون فريدًا إلا تركيبُها؛ وكل قضيب يصير أحد أعمدته."
+  },
+  "cat": {
+   "en": "Barred relationships",
+   "ar": "العلاقات المقضّبة"
+  },
+  "see": [
+   "composite-uid",
+   "duplicate-pair"
+  ],
+  "used": [
+   "t5l6-h5"
+  ]
+ },
+ {
+  "id": "composite-uid",
+  "term": {
+   "en": "Composite UID",
+   "ar": "المعرّف المركّب"
+  },
+  "def": {
+   "en": "A UID made of two or more components (attributes, barred relationships, or both) whose values are unique only in combination.",
+   "ar": "معرّف فريد مكوّن من مكوّنين أو أكثر (خصائص، أو علاقات مقضّبة، أو كليهما) لا تكون قيمها فريدة إلا مجتمعة."
+  },
+  "cat": {
+   "en": "Barred relationships",
+   "ar": "العلاقات المقضّبة"
+  },
+  "see": [
+   "uid-component",
+   "barred-relationship",
+   "mixed-uid",
+   "composite-primary-key"
+  ],
+  "used": [
+   "t5l6-h3"
+  ]
+ },
+ {
   "id": "nontransferable-diamond",
   "term": {
    "en": "Diamond (nontransferable)",
@@ -87,6 +178,28 @@ window.DBTGlossary["t5"] = [
   ],
   "used": [
    "t5l1-h4"
+  ]
+ },
+ {
+  "id": "duplicate-pair",
+  "term": {
+   "en": "Duplicate pair",
+   "ar": "الزوج المكرّر"
+  },
+  "def": {
+   "en": "Two instances of an intersection entity that join the same two parent instances, such as two enrollments of Sara in Maths.",
+   "ar": "نسختان من كيان التقاطع تربطان نسختَي الأبوين نفسيهما، مثل تسجيلين لـ Sara في الرياضيات."
+  },
+  "cat": {
+   "en": "Barred relationships",
+   "ar": "العلاقات المقضّبة"
+  },
+  "see": [
+   "intersection-entity",
+   "composite-uid"
+  ],
+  "used": [
+   "t5l6-h1"
   ]
  },
  {
@@ -356,6 +469,28 @@ window.DBTGlossary["t5"] = [
   ]
  },
  {
+  "id": "mixed-uid",
+  "term": {
+   "en": "Mixed UID",
+   "ar": "المعرّف المختلط"
+  },
+  "def": {
+   "en": "A composite UID made of one or more barred relationships plus one or more # attributes of the entity itself, such as TV SHOW + PERSON + Date Watched.",
+   "ar": "معرّف مركّب يتكوّن من علاقة مقضّبة أو أكثر مع خاصية # أو أكثر من خصائص الكيان نفسه، مثل TV SHOW + PERSON + Date Watched."
+  },
+  "cat": {
+   "en": "Barred relationships",
+   "ar": "العلاقات المقضّبة"
+  },
+  "see": [
+   "composite-uid",
+   "barred-relationship"
+  ],
+  "used": [
+   "t5l6-h4"
+  ]
+ },
+ {
   "id": "nontransferable-relationship",
   "term": {
    "en": "Nontransferable relationship",
@@ -466,6 +601,50 @@ window.DBTGlossary["t5"] = [
   ],
   "used": [
    "t5l3-h1"
+  ]
+ },
+ {
+  "id": "originating-entity",
+  "term": {
+   "en": "Originating entity",
+   "ar": "الكيان الأصلي"
+  },
+  "def": {
+   "en": "One of the two entities of the many-to-many that an intersection entity resolves, such as STUDENT or SUBJECT for ENROLLMENT.",
+   "ar": "أحد كيانَي علاقة «متعدّد إلى متعدّد» التي يحلّها كيان التقاطع، مثل STUDENT أو SUBJECT بالنسبة إلى ENROLLMENT."
+  },
+  "cat": {
+   "en": "Barred relationships",
+   "ar": "العلاقات المقضّبة"
+  },
+  "see": [
+   "originating-relationship",
+   "intersection-entity"
+  ],
+  "used": [
+   "t5l6-s1"
+  ]
+ },
+ {
+  "id": "originating-relationship",
+  "term": {
+   "en": "Originating relationship",
+   "ar": "العلاقة الأصلية"
+  },
+  "def": {
+   "en": "The one-to-many that joins an originating entity to the intersection entity; the intersection entity's UID often comes from these relationships.",
+   "ar": "علاقة «واحد إلى متعدّد» التي تربط الكيان الأصلي بكيان التقاطع؛ ومعرّف كيان التقاطع يأتي غالبًا من هذه العلاقات."
+  },
+  "cat": {
+   "en": "Barred relationships",
+   "ar": "العلاقات المقضّبة"
+  },
+  "see": [
+   "originating-entity",
+   "barred-relationship"
+  ],
+  "used": [
+   "t5l6-s1"
   ]
  },
  {
@@ -844,6 +1023,50 @@ window.DBTGlossary["t5"] = [
   ],
   "used": [
    "t5l1-h1"
+  ]
+ },
+ {
+  "id": "uid-component",
+  "term": {
+   "en": "UID component",
+   "ar": "مكوّن المعرّف"
+  },
+  "def": {
+   "en": "One part of a composite UID: either a # attribute inside the box or a barred relationship at its edge; no component is unique alone.",
+   "ar": "جزء واحد من المعرّف المركّب: إمّا خاصية # داخل الصندوق وإمّا علاقة مقضّبة عند حافّته؛ ولا مكوّن فريد وحده."
+  },
+  "cat": {
+   "en": "Barred relationships",
+   "ar": "العلاقات المقضّبة"
+  },
+  "see": [
+   "composite-uid",
+   "uid-reading"
+  ],
+  "used": [
+   "t5l6-h3"
+  ]
+ },
+ {
+  "id": "uid-reading",
+  "term": {
+   "en": "UID reading order",
+   "ar": "ترتيب قراءة المعرّف"
+  },
+  "def": {
+   "en": "Reading a UID by listing first the # attributes inside the box, then each bar at its edge followed to the parent's own UID, and joining every part with plus.",
+   "ar": "قراءة المعرّف بسرد خصائص # داخل الصندوق أوّلًا، ثم كل قضيب عند حافّته متتبَّعًا إلى معرّف الأب نفسه، وجمع الأجزاء كلها بكلمة «مع»."
+  },
+  "cat": {
+   "en": "Barred relationships",
+   "ar": "العلاقات المقضّبة"
+  },
+  "see": [
+   "composite-uid",
+   "uid-component"
+  ],
+  "used": [
+   "t5l6-h3"
   ]
  },
  {

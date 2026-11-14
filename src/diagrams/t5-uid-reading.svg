@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 420" direction="ltr" role="img" aria-labelledby="t5-uid-reading-t">
+<title id="t5-uid-reading-t">Reading a composite UID in order: 1 look inside the box for #, 2 follow the first bar to STUDENT's # ID, 3 follow the second bar to SUBJECT's # ID; the enrollments table with the duplicate row 1001, 1 refused / قراءة المعرّف المركّب بالترتيب: 1 ابحث عن # داخل الصندوق، 2 اتبع القضيب الأول إلى # ID في STUDENT، 3 اتبع القضيب الثاني إلى # ID في SUBJECT؛ وجدول التسجيلات مع رفض الصفّ المكرّر 1001، 1</title>
+<g class="en"><text x="430.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Reading a composite UID — three steps, in order</text></g><g class="ar"><text x="430.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏قراءة المعرّف المركّب — ثلاث خطوات، بالترتيب</text></g>
+<rect x="20" y="50" width="180" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="110.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="32" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="32" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="32" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="340" y="50" width="180" height="61" rx="10" style="fill:var(--dg-good-soft, var(--accent-soft));stroke:var(--dg-good, var(--accent));stroke-width:2"/>
+<text x="430.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ENROLLMENT</text>
+<text x="352" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Grade</text>
+<rect x="660" y="50" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="750.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SUBJECT</text>
+<text x="672" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="672" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M200 95 L270.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M270.0 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M318 85 L318 105" style="stroke:var(--dg-good, var(--text));stroke-width:2.6;fill:none"/>
+<text x="208" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">enrols for</text>
+<text x="312" y="117" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<path d="M520 95 L590.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M590.0 95 L660 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M534 95 L520 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M542 85 L542 105" style="stroke:var(--dg-good, var(--text));stroke-width:2.6;fill:none"/>
+<text x="548" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<text x="652" y="117" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">subject of</text>
+<circle cx="430" cy="142" r="10" style="fill:var(--dg-warn-soft, var(--accent-soft));stroke:var(--dg-warn, var(--accent));stroke-width:1.5"/>
+<text x="430" y="146" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">1</text>
+<circle cx="318" cy="142" r="10" style="fill:var(--dg-warn-soft, var(--accent-soft));stroke:var(--dg-warn, var(--accent));stroke-width:1.5"/>
+<text x="318" y="146" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">2</text>
+<circle cx="542" cy="142" r="10" style="fill:var(--dg-warn-soft, var(--accent-soft));stroke:var(--dg-warn, var(--accent));stroke-width:1.5"/>
+<text x="542" y="146" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">3</text>
+<circle cx="84" cy="90" r="10" style="fill:var(--dg-warn-soft, var(--accent-soft));stroke:var(--dg-warn, var(--accent));stroke-width:1.5"/>
+<text x="84" y="94" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">2</text>
+<circle cx="724" cy="90" r="10" style="fill:var(--dg-warn-soft, var(--accent-soft));stroke:var(--dg-warn, var(--accent));stroke-width:1.5"/>
+<text x="724" y="94" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">3</text>
+<rect x="20" y="170" width="400" height="100" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="192" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">1  Inside ENROLLMENT: any # attribute? None.</text></g><g class="ar"><text x="404" y="192" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏1  داخل ENROLLMENT: أيّ خاصية ‎#‎؟ لا شيء.</text></g>
+<g class="en"><text x="36" y="215" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">2  First bar → STUDENT → its # ID.</text></g><g class="ar"><text x="404" y="215" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏2  القضيب الأول ← STUDENT ← معرّفه ‎# ID‎</text></g>
+<g class="en"><text x="36" y="238" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">3  Second bar → SUBJECT → its # ID.</text></g><g class="ar"><text x="404" y="238" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏3  القضيب الثاني ← SUBJECT ← معرّفه ‎# ID‎</text></g>
+<g class="en"><text x="36" y="259" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">UID = STUDENT ID + SUBJECT ID</text></g><g class="ar"><text x="404" y="259" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:700">‏المعرّف = STUDENT ID + SUBJECT ID</text></g>
+<rect x="450" y="170" width="390" height="20" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="462" y="184" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">STUDENT ID</text>
+<text x="592" y="184" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">SUBJECT ID</text>
+<text x="722" y="184" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">Grade</text>
+<rect x="450" y="190" width="390" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="462" y="204" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1001</text>
+<text x="592" y="204" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1</text>
+<text x="722" y="204" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">A</text>
+<rect x="450" y="210" width="390" height="20" style="fill:var(--dg-row-even, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="462" y="224" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1001</text>
+<text x="592" y="224" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">2</text>
+<text x="722" y="224" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">B</text>
+<rect x="450" y="230" width="390" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="462" y="244" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1002</text>
+<text x="592" y="244" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1</text>
+<text x="722" y="244" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">C</text>
+<rect x="450" y="250" width="390" height="20" style="fill:var(--dg-row-even, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="462" y="264" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1003</text>
+<text x="592" y="264" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">2</text>
+<text x="722" y="264" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">A</text>
+<rect x="450" y="270" width="390" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="462" y="284" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1003</text>
+<text x="592" y="284" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">3</text>
+<text x="722" y="284" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">A</text>
+<rect x="450" y="290" width="390" height="20" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:1"/>
+<text x="462" y="304" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1001</text>
+<text x="592" y="304" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:11.5px">1</text>
+<text x="722" y="304" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:11.5px">D</text>
+<path d="M456 300 L834 300" style="stroke:var(--dg-bad, var(--text));stroke-width:1.2;fill:none"/>
+<g class="en"><text x="450" y="330" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px">1001 + 1 already exists: refused.</text></g><g class="ar"><text x="840" y="330" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px">‏1001 + 1 موجود أصلًا: يُرفض.</text></g>
+<rect x="20" y="346" width="820" height="60" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="368" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Each column repeats on its own — 1001 twice, 1 twice. Only the combination never repeats.</text></g><g class="ar"><text x="824" y="368" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏كل عمود يتكرّر وحده — 1001 مرّتين، و1 مرّتين. أمّا التركيب فلا يتكرّر أبدًا.</text></g>
+<g class="en"><text x="36" y="387" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Read the parts in the order you met them: the box first, then each bar to its parent's #.</text></g><g class="ar"><text x="824" y="387" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏اقرأ الأجزاء بالترتيب الذي تلقاها به: الصندوق أوّلًا، ثم كل قضيب إلى خاصية ‎#‎ في أبيه.</text></g>
+</svg>

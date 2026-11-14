@@ -910,7 +910,7 @@ window.DBT_REGISTRY = {
       "ar": "كيان التقاطع يستعير هويته من أبويه. والقضيب على الخط هو ما يقول ذلك — والمعرّف المركّب يجب أن يُقرأ بترتيبه."
      },
      "href": "lessons/t5-lesson-06.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t5-test-06",

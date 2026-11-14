@@ -1,0 +1,19 @@
+/* Topic tags of T5 lesson 6 -- Barred Relationships and Composite UIDs. */
+window.DBTTopics = window.DBTTopics || {};
+window.DBTTopics["t5-intersection-uid"] = { en: "The UID of an intersection entity", ar: "معرّف كيان التقاطع", href: "t5l6-h1" };
+window.DBTTopics["t5-duplicate-pair"] = { en: "Duplicate pairs", ar: "الأزواج المكرّرة", href: "t5l6-h1" };
+window.DBTTopics["t5-no-own-uid"] = { en: "No attribute of its own can identify it", ar: "لا خاصية من خصائصه تميّزه", href: "t5l6-s1" };
+window.DBTTopics["t5-originating-relationship"] = { en: "Originating entities and relationships", ar: "الكيانات والعلاقات الأصلية", href: "t5l6-s1" };
+window.DBTTopics["t5-barred-relationship"] = { en: "Barred relationships", ar: "العلاقات المقضّبة", href: "t5l6-h2" };
+window.DBTTopics["t5-bar"] = { en: "The bar on the line", ar: "القضيب على الخط", href: "t5l6-h2" };
+window.DBTTopics["t5-half-uid"] = { en: "One bar only: half a UID", ar: "قضيب واحد فقط: نصف معرّف", href: "t5l6-h2" };
+window.DBTTopics["t5-uid-as-attributes"] = { en: "Parents' IDs typed in as attributes", ar: "معرّفا الأبوين مكتوبان خاصيتين", href: "t5l6-h2" };
+window.DBTTopics["t5-bar-placement"] = { en: "Where the bar is drawn", ar: "أين يُرسم القضيب", href: "t5l6-s2" };
+window.DBTTopics["t5-bar-vs-diamond"] = { en: "Crow's foot, bar and diamond", ar: "رِجل الغراب والقضيب والمعيَّن", href: "t5l6-s2" };
+window.DBTTopics["t5-composite-uid"] = { en: "Composite UID from relationships", ar: "معرّف مركّب من العلاقات", href: "t5l6-h3" };
+window.DBTTopics["t5-uid-reading-order"] = { en: "Reading a composite UID in order", ar: "قراءة المعرّف المركّب بالترتيب", href: "t5l6-h3" };
+window.DBTTopics["t5-unique-together"] = { en: "Unique together, not apart", ar: "فريد مجتمعًا، لا متفرّقًا", href: "t5l6-s3" };
+window.DBTTopics["t5-mixed-uid"] = { en: "Bars plus a # attribute: the mixed UID", ar: "قضبان مع خاصية #: المعرّف المختلط", href: "t5l6-h4" };
+window.DBTTopics["t5-uid-often"] = { en: "The UID often, not always, comes from the relationships", ar: "المعرّف يأتي غالبًا لا دائمًا من العلاقات", href: "t5l6-h4" };
+window.DBTTopics["t5-composite-pk"] = { en: "Composite primary key", ar: "المفتاح الأساسي المركّب", href: "t5l6-h5" };
+window.DBTTopics["t5-bar-to-column"] = { en: "Each bar becomes a key column", ar: "كل قضيب يصير عمودًا في المفتاح", href: "t5l6-h5" };

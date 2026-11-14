@@ -416,6 +416,17 @@ window.DBTAnchors = {
 "t5l5-s1": "lessons/t5-lesson-05.html",
 "t5l5-s2": "lessons/t5-lesson-05.html",
 "t5l5-s3": "lessons/t5-lesson-05.html",
+"t5l6-e1": "lessons/t5-lesson-06.html",
+"t5l6-e2": "lessons/t5-lesson-06.html",
+"t5l6-h1": "lessons/t5-lesson-06.html",
+"t5l6-h2": "lessons/t5-lesson-06.html",
+"t5l6-h3": "lessons/t5-lesson-06.html",
+"t5l6-h4": "lessons/t5-lesson-06.html",
+"t5l6-h5": "lessons/t5-lesson-06.html",
+"t5l6-h6": "lessons/t5-lesson-06.html",
+"t5l6-s1": "lessons/t5-lesson-06.html",
+"t5l6-s2": "lessons/t5-lesson-06.html",
+"t5l6-s3": "lessons/t5-lesson-06.html",
 "track-theory": "theory/index.html"
 };
 window.DBTHeadings = {
@@ -1566,6 +1577,42 @@ window.DBTHeadings = {
 "t5l5-s3": {
 "ar": "سؤال واحد ما زال مفتوحًا",
 "en": "One question still open"
+},
+"t5l6-h1": {
+"ar": "١ · ما الذي يميّز التسجيل؟",
+"en": "1 · What identifies an enrollment?"
+},
+"t5l6-h2": {
+"ar": "٢ · القضيب على الخط",
+"en": "2 · The bar on the line"
+},
+"t5l6-h3": {
+"ar": "٣ · قراءة المعرّف المركّب",
+"en": "3 · Reading a composite UID"
+},
+"t5l6-h4": {
+"ar": "٤ · حين لا تكفي القضبان",
+"en": "4 · When the bars are not enough"
+},
+"t5l6-h5": {
+"ar": "٥ · من القضبان إلى المفتاح الأساسي",
+"en": "5 · From bars to a primary key"
+},
+"t5l6-h6": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t5l6-s1": {
+"ar": "لا شيء داخل الصندوق يصلح",
+"en": "Nothing inside the box will do"
+},
+"t5l6-s2": {
+"ar": "ثلاث علامات، ثلاثة مواضع",
+"en": "Three marks, three places"
+},
+"t5l6-s3": {
+"ar": "فريد مجتمعًا، لا متفرّقًا",
+"en": "Unique together, not apart"
 },
 "track-theory": {
 "ar": "النظري — تصميم قواعد البيانات",
