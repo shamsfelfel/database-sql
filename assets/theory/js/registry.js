@@ -814,7 +814,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 2 — واحد إلى متعدّد"
      },
      "href": "tests/t5-test-02.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t5-lesson-03",
