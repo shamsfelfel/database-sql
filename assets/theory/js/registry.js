@@ -677,7 +677,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 5 — الحكم على نموذج"
      },
      "href": "tests/t4-test-05.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t4-lab",
