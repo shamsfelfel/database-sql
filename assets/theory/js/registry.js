@@ -512,7 +512,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار الفصل ج — المتقدّم"
      },
      "href": "exams/t3-exam-c.html",
-     "written": false
+     "written": true
     }
    ]
   },
