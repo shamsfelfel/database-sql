@@ -328,6 +328,18 @@ def main():
     st = read_state()
     work = units(reg, args.only)
 
+    if not (args.status or args.dry_run):
+        # Say once, up front, whether a push can work. Otherwise the same
+        # failure repeats quietly after every page and is only noticed later.
+        chk = run(["bash", "tools/check_push.sh"], timeout=120)
+        if chk.returncode == 0:
+            log("push check: ok -- commits will reach GitHub")
+        else:
+            log("push check: FAILED -- building anyway, commits stay local")
+            for line in (chk.stdout or "").splitlines():
+                if line.strip():
+                    log("    " + line.rstrip())
+
     if args.status:
         done = blocked = todo = 0
         for uid, kind, ch, page in work:
