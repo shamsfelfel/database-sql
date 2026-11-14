@@ -404,6 +404,18 @@ window.DBTAnchors = {
 "t5l4-s2": "lessons/t5-lesson-04.html",
 "t5l4-s3": "lessons/t5-lesson-04.html",
 "t5l4-s4": "lessons/t5-lesson-04.html",
+"t5l5-e1": "lessons/t5-lesson-05.html",
+"t5l5-e2": "lessons/t5-lesson-05.html",
+"t5l5-e3": "lessons/t5-lesson-05.html",
+"t5l5-h1": "lessons/t5-lesson-05.html",
+"t5l5-h2": "lessons/t5-lesson-05.html",
+"t5l5-h3": "lessons/t5-lesson-05.html",
+"t5l5-h4": "lessons/t5-lesson-05.html",
+"t5l5-h5": "lessons/t5-lesson-05.html",
+"t5l5-h6": "lessons/t5-lesson-05.html",
+"t5l5-s1": "lessons/t5-lesson-05.html",
+"t5l5-s2": "lessons/t5-lesson-05.html",
+"t5l5-s3": "lessons/t5-lesson-05.html",
 "track-theory": "theory/index.html"
 };
 window.DBTHeadings = {
@@ -1518,6 +1530,42 @@ window.DBTHeadings = {
 "t5l4-s4": {
 "ar": "زائدة فقط إن قالت الشيء نفسه",
 "en": "Redundant only if it says the same thing"
+},
+"t5l5-h1": {
+"ar": "١ · كيان ثالث",
+"en": "1 · A third entity"
+},
+"t5l5-h2": {
+"ar": "٢ · علاقة «متعدّد إلى متعدّد» تصير علاقتَي «واحد إلى متعدّد»",
+"en": "2 · One many-to-many becomes two one-to-manys"
+},
+"t5l5-h3": {
+"ar": "٣ · أين تذهب الخصائص",
+"en": "3 · Where the attributes go"
+},
+"t5l5-h4": {
+"ar": "٤ · الحلّ الثاني: VIEWING RECORD",
+"en": "4 · Second resolution: VIEWING RECORD"
+},
+"t5l5-h5": {
+"ar": "٥ · الحلّ الثالث: CLEANING SCHEDULE",
+"en": "5 · Third resolution: CLEANING SCHEDULE"
+},
+"t5l5-h6": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t5l5-s1": {
+"ar": "نسخة واحدة، زوج واحد",
+"en": "One instance, one pair"
+},
+"t5l5-s2": {
+"ar": "الحلّ، خطوةً خطوة",
+"en": "The resolution, step by step"
+},
+"t5l5-s3": {
+"ar": "سؤال واحد ما زال مفتوحًا",
+"en": "One question still open"
 },
 "track-theory": {
 "ar": "النظري — تصميم قواعد البيانات",

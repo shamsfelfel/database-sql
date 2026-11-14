@@ -39,15 +39,932 @@
 <link rel="stylesheet" href="../assets/theory/css/base.css">
 <link rel="stylesheet" href="../assets/theory/css/chrome.css">
 <link rel="stylesheet" href="../assets/theory/css/components.css">
+<link rel="stylesheet" href="../assets/theory/css/diagram.css">
+<link rel="stylesheet" href="../assets/css/widget.css">
 </head>
 <body data-chapter="t5" data-page="t5-lesson-05" data-kind="lesson" data-path="lessons/t5-lesson-05.html">
 <main>
 <section class="page" id="t5-lesson-05">
 <nav class="crumbs"></nav>
 
-  <span class="kicker">lesson</span>
+
+  <span class="kicker">Lesson 5</span>
   <h1><span class="en">The Intersection Entity</span><span class="ar">كيان التقاطع</span></h1>
-  <p class="en">Being written.</p><p class="ar">قيد الكتابة.</p>
+  <p class="lede en">By the end of this lesson you will be able to resolve a many-to-many relationship with an intersection entity, draw and read the two one-to-many relationships that replace it, move each hidden attribute into its new home, and repeat the recipe on a model you have not seen.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تحلّ علاقة «متعدّد إلى متعدّد» بكيان تقاطع، وأن ترسم علاقتَي «واحد إلى متعدّد» اللتين تحلّان محلّها وتقرأهما، وأن تنقل كل خاصية مخفية إلى بيتها الجديد، وأن تكرّر الوصفة على نموذج لم تره من قبل.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> <a href="../lessons/t5-lesson-04.html#t5-lesson-04">Lesson 4</a> ended with a diagnosis and no cure: <code>Grade</code> describes one student in one subject, so it belongs to the <code>STUDENT</code>&ndash;<code>SUBJECT</code> relationship, and no box could hold it. This lesson builds the box. The case is still the slides' school: Sara, Omar, Lina and Yousef, and Maths, Physics and Arabic.</p>
+    <p class="ar"><strong>السياق.</strong> انتهى <a href="../lessons/t5-lesson-04.html#t5-lesson-04">الدرس 4</a> بتشخيص بلا علاج: <code>Grade</code> تصف طالبًا واحدًا في مادة واحدة، فهي تنتمي إلى علاقة <code>STUDENT</code>&ndash;<code>SUBJECT</code>، ولم يستطع أيّ صندوق حملها. وهذا الدرس يبني ذلك الصندوق. والحالة ما زالت مدرسة الشرائح: Sara وOmar وLina وYousef، والرياضيات والفيزياء والعربية.</p>
+    <p class="en">You need Lesson 4's <a href="../lessons/t5-lesson-04.html#t5l4-s3">pair test</a> and its M:M, and <a href="../lessons/t5-lesson-02.html#t5-lesson-02">Lesson 2</a>'s one-to-many: the crow's foot marks the child, and the child holds the foreign key.</p>
+    <p class="ar">تحتاج <a href="../lessons/t5-lesson-04.html#t5l4-s3">اختبار الزوج</a> وعلاقة <bdi>M:M</bdi> من الدرس 4، وعلاقة «واحد إلى متعدّد» من <a href="../lessons/t5-lesson-02.html#t5-lesson-02">الدرس 2</a>: رِجل الغراب تدلّ على الابن، والابن يحمل المفتاح الأجنبي.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Define an intersection entity and say what one of its instances is.</li>
+      <li class="ar">تعريف كيان التقاطع، وقول ما الذي تمثّله نسخة واحدة منه.</li>
+      <li class="en">Demonstrate the steps that resolve an M:M into two 1:M relationships, with the crow's feet and the halves in the right places.</li>
+      <li class="ar">بيان خطوات حلّ علاقة <bdi>M:M</bdi> إلى علاقتَي <bdi>1:M</bdi>، مع رِجلَي الغراب والنصفين في مواضعها الصحيحة.</li>
+      <li class="en">Identify the attributes that belong to the intersection entity, and leave every other attribute where it was.</li>
+      <li class="ar">تحديد الخصائص التي تنتمي إلى كيان التقاطع، وإبقاء كل خاصية أخرى في مكانها.</li>
+      <li class="en">Resolve the slides' TV SHOW and CLEANING SERVICE many-to-manys, and read the result in ERDish.</li>
+      <li class="ar">حلّ علاقتَي TV SHOW وCLEANING SERVICE في الشرائح، وقراءة النتيجة بلغة ERDish.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t5l5-h1"><span class="en">1 · A third entity</span><span class="ar">١ · كيان ثالث</span></h2>
+
+  <div class="problem">
+    <p class="en">Sara's Maths result is in: an A. The office opens the model to record it and finds two boxes and a line. <code>STUDENT</code> cannot say which subject the A is for; <code>SUBJECT</code> cannot say who got it. Lesson 4 drew the grade as a note hanging off the line &mdash; and a note is not somewhere you can store anything.</p>
+    <p class="ar">وصلت نتيجة Sara في الرياضيات: A. فتحت الإدارة النموذج لتسجّلها فوجدت صندوقين وخطًّا. <code>STUDENT</code> لا يستطيع أن يقول لأيّ مادة هذه الـA، و<code>SUBJECT</code> لا يستطيع أن يقول من نالها. وقد رسم الدرس 4 الدرجة ملاحظةً معلّقة بالخط &mdash; والملاحظة ليست مكانًا تُخزّن فيه شيئًا.</p>
+  </div>
+
+  <p class="en">The slides' answer is short: a third entity is needed to resolve the M:M relationship. Each of its instances is one student enrolled in one subject, so the slides call it <code>ENROLLMENT</code>, and <code>Grade</code> goes inside it. The original M:M line disappears.</p>
+  <p class="ar">جواب الشرائح قصير: نحتاج إلى كيان ثالث لحلّ علاقة <bdi>M:M</bdi>. كل نسخة منه طالب واحد مسجَّل في مادة واحدة، فتسمّيه الشرائح <code>ENROLLMENT</code> (تسجيل)، وتوضع <code>Grade</code> داخله. ويختفي خط <bdi>M:M</bdi> الأصلي.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="intersection-entity">intersection entity</span> is a third entity added between the two entities of an M:M relationship, so that the M:M becomes two 1:M relationships.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="intersection-entity">كيان التقاطع</span> (Intersection entity) كيان ثالث يُضاف بين كيانَي علاقة <bdi>M:M</bdi>، فتصير علاقة <bdi>M:M</bdi> علاقتَي <bdi>1:M</bdi>.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t5-enrollment">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 400" direction="ltr" role="img" aria-labelledby="t5-enrollment-t">
+<title id="t5-enrollment-t">STUDENT enrols for / ENROLLMENT for / SUBJECT subject of: the intersection entity ENROLLMENT with o Grade, crow's feet at ENROLLMENT on both lines, solid at ENROLLMENT and dashed at the parents: two one-to-many relationships / STUDENT enrols for / ENROLLMENT for / SUBJECT subject of: كيان التقاطع ENROLLMENT مع o Grade، ورِجلا الغراب عند ENROLLMENT في الخطين، متّصل عند ENROLLMENT ومتقطّع عند الأبوين: علاقتا واحد إلى متعدّد</title>
+<g class="en"><text x="430.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">The intersection entity — one M:M becomes two 1:Ms</text></g><g class="ar"><text x="430.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏كيان التقاطع — علاقة ‎M:M واحدة تصير علاقتَي ‎1:M</text></g>
+<rect x="20" y="50" width="180" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="110.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="32" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="32" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="32" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="340" y="50" width="180" height="61" rx="10" style="fill:var(--dg-good-soft, var(--accent-soft));stroke:var(--dg-good, var(--accent));stroke-width:2"/>
+<text x="430.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ENROLLMENT</text>
+<text x="352" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Grade</text>
+<rect x="660" y="50" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="750.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SUBJECT</text>
+<text x="672" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="672" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M200 95 L270.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M270.0 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="208" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">enrols for</text>
+<text x="320" y="115" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<path d="M520 95 L590.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M590.0 95 L660 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M534 95 L520 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="540" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<text x="652" y="115" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">subject of</text>
+<rect x="20" y="176" width="820" height="98" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="36" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each STUDENT may enrol for one or more ENROLLMENTs.</text>
+<text x="36" y="221" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each ENROLLMENT must be for one and only one STUDENT.</text>
+<text x="36" y="242" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each ENROLLMENT must be for one and only one SUBJECT.</text>
+<text x="36" y="263" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each SUBJECT may be the subject of one or more ENROLLMENTs.</text>
+<rect x="20" y="288" width="820" height="92" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="310" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Both crow's feet now point at ENROLLMENT: it is the child of both lines.</text></g><g class="ar"><text x="824" y="310" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏رِجلا الغراب تشيران الآن إلى ENROLLMENT: فهو الابن في الخطّين كليهما.</text></g>
+<g class="en"><text x="36" y="329" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Solid at ENROLLMENT: an enrollment cannot exist without its student and its subject.</text></g><g class="ar"><text x="824" y="329" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏متّصل عند ENROLLMENT: لا يوجد تسجيل بلا طالبه ومادّته.</text></g>
+<g class="en"><text x="36" y="348" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Dashed at the parents, as in the M:M: a student or a subject may have no enrollments.</text></g><g class="ar"><text x="824" y="348" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏متقطّع عند الأبوين، كما في ‎M:M: قد لا يكون للطالب أو للمادة أيّ تسجيل.</text></g>
+<g class="en"><text x="36" y="367" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">No # in ENROLLMENT yet. What identifies an enrollment is Lesson 6's question.</text></g><g class="ar"><text x="824" y="367" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏لا # في ENROLLMENT بعد. وما الذي يميّز التسجيل هو سؤال الدرس 6.</text></g>
+</svg>
+<figcaption><span class="en">The slides' resolution. Look at the ends first: both crow's feet meet <code>ENROLLMENT</code>, and both parents meet a single toe. Then the halves: solid next to <code>ENROLLMENT</code>, dashed next to the parents.</span><span class="ar">حلّ الشرائح. انظر إلى الطرفين أوّلًا: رِجلا الغراب كلتاهما عند <code>ENROLLMENT</code>، والأبوان كلاهما يلقيان إصبعًا واحدة. ثم النصفان: متّصل بجوار <code>ENROLLMENT</code>، ومتقطّع بجوار الأبوين.</span></figcaption></figure>
+
+  <h3 id="t5l5-s1"><span class="en">One instance, one pair</span><span class="ar">نسخة واحدة، زوج واحد</span></h3>
+
+  <p class="en">An <span class="term" data-term="enrollment">ENROLLMENT</span> is not a student and not a subject; it is the fact that this student takes this subject. Lesson 4 counted five such pairs, so there are five enrollments. That is the <span class="term" data-term="intersection-instance">intersection instance</span>: one instance for each pair that the M:M line used to join.</p>
+  <p class="ar">التسجيل <span class="term" data-term="enrollment">ENROLLMENT</span> ليس طالبًا وليس مادة؛ إنه حقيقة أنّ هذا الطالب يدرس هذه المادة. وقد عدّ الدرس 4 خمسة أزواج كهذه، فهناك خمسة تسجيلات. وهذه هي <span class="term" data-term="intersection-instance">نسخة التقاطع</span> (Intersection instance): نسخة واحدة لكل زوج كان خط <bdi>M:M</bdi> يربطه.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The intersection entity is a table of its own, <code>enrollments</code>, with one row per pair. Each row carries a <code>student_id</code>, a <code>subject_id</code> and the <code>grade</code>. Sara's Physics result has not arrived yet, so that grade is empty:</p>
+    <p class="ar">كيان التقاطع جدول مستقلّ، <code>enrollments</code>، فيه صفّ لكل زوج. ويحمل كل صفّ <code>student_id</code> و<code>subject_id</code> و<code>grade</code>. ونتيجة Sara في الفيزياء لم تصل بعد، فتلك الدرجة فارغة:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE students (student_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL)","INSERT INTO students VALUES (1001,'Sara','Hamdan'), (1002,'Omar','Khalil'), (1003,'Lina','Nasser'), (1004,'Yousef','Odeh')","CREATE TABLE subjects (subject_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO subjects VALUES (1,'Maths'), (2,'Physics'), (3,'Arabic')","CREATE TABLE enrollments (student_id NUMBER NOT NULL REFERENCES students(student_id), subject_id NUMBER NOT NULL REFERENCES subjects(subject_id), grade VARCHAR(2))","INSERT INTO enrollments VALUES (1001,1,'A'), (1001,2,NULL), (1002,1,'C'), (1003,2,'A'), (1003,3,'A')"],"sql":"SELECT student_id, subject_id, grade\nFROM enrollments\nORDER BY student_id, subject_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>student_id</code></th><th><code>subject_id</code></th><th><code>grade</code></th></tr></thead>
+          <tbody>
+            <tr><td>1001</td><td>1</td><td>A</td></tr>
+            <tr><td>1001</td><td>2</td><td>&empty;</td></tr>
+            <tr><td>1002</td><td>1</td><td>C</td></tr>
+            <tr><td>1003</td><td>2</td><td>A</td></tr>
+            <tr><td>1003</td><td>3</td><td>A</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Sara appears twice, Maths twice, and every grade sits next to exactly one student and one subject. Yousef (1004) has no row: he has not enrolled in anything yet.</p>
+    <p class="ar">تظهر Sara مرّتين، والرياضيات مرّتين، وكل درجة تقع بجوار طالب واحد ومادة واحدة بالضبط. أمّا Yousef (1004) فلا صفّ له: لم يسجّل في شيء بعد.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">What does one instance of <code>ENROLLMENT</code> stand for?</p>
+    <p class="q ar">علامَ تدلّ نسخة واحدة من <code>ENROLLMENT</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">One student, with all the subjects they take</span><span class="ar">طالب واحد، مع كل المواد التي يدرسها</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">One student taking one subject</span><span class="ar">طالب واحد يدرس مادة واحدة</span></button></li>
+      <li><button class="opt"><span class="en">One subject, with all the students who take it</span><span class="ar">مادة واحدة، مع كل الطلاب الذين يدرسونها</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">An enrollment is one pair. Sara with all her subjects is two enrollments; Maths with all its students is two as well. That is why a grade stored in an enrollment is never ambiguous.</p>
+      <p class="ar">التسجيل زوج واحد. Sara مع كل موادّها تسجيلان، والرياضيات مع كل طلابها تسجيلان أيضًا. ولهذا لا تكون الدرجة المحفوظة في التسجيل ملتبسة أبدًا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t5l5-h2"><span class="en">2 · One many-to-many becomes two one-to-manys</span><span class="ar">٢ · علاقة «متعدّد إلى متعدّد» تصير علاقتَي «واحد إلى متعدّد»</span></h2>
+
+  <div class="problem">
+    <p class="en">Drawing the new box is easy. The lines are where a first resolution goes wrong. A student draws <code>ENROLLMENT</code> in the middle, copies the two crow's feet from the old M:M exactly where they were, and ends up with an enrollment that holds a crowd of students.</p>
+    <p class="ar">رسم الصندوق الجديد سهل. أمّا الخطوط فهي حيث يخطئ الحلّ الأول. يرسم طالبٌ <code>ENROLLMENT</code> في الوسط، وينسخ رِجلَي الغراب من علاقة <bdi>M:M</bdi> القديمة في موضعيهما تمامًا، فينتهي بتسجيل يحمل جمعًا من الطلاب.</p>
+  </div>
+
+  <p class="en">The slides state the result: the original M:M relationship has become <span class="term" data-term="mm-resolution">two 1:M relationships</span>. Each new line is an ordinary Lesson 2 one-to-many, and in both of them the child is the intersection entity. So both crow's feet move to the new box, and each original entity meets a single toe.</p>
+  <p class="ar">تذكر الشرائح النتيجة: علاقة <bdi>M:M</bdi> الأصلية صارت <span class="term" data-term="mm-resolution">علاقتَي <bdi>1:M</bdi></span> (Resolution of an M:M). وكل خط جديد علاقة «واحد إلى متعدّد» عادية من الدرس 2، والابن فيهما كليهما هو كيان التقاطع. فتنتقل رِجلا الغراب إلى الصندوق الجديد، ويلقى كلُّ كيان أصلي إصبعًا واحدة.</p>
+
+  <div class="evolve" id="t5l5-e1">
+    <div class="ver" data-title-en="Version 1 — the M:M, unresolved" data-title-ar="الإصدار 1 — علاقة M:M بلا حلّ">
+      <figure class="diagram" data-diagram="t5-student-subject">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 300" direction="ltr" role="img" aria-labelledby="t5-student-subject-t">
+<title id="t5-student-subject-t">STUDENT studies / SUBJECT studied by: dashed at both ends, a crow's foot at both ends: a many-to-many / STUDENT studies / SUBJECT studied by: متقطّع عند الطرفين، رِجل غراب عند الطرفين: متعدّد إلى متعدّد</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">STUDENT and SUBJECT — the slides' many-to-many</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏STUDENT وSUBJECT — علاقة «متعدّد إلى متعدّد» في الشرائح</text></g>
+<rect x="40" y="50" width="210" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="530" y="50" width="210" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="635.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SUBJECT</text>
+<text x="544" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="544" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M250 95 L390 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M390 95 L530 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M264 95 L250 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 95 L250 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 95 L250 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M516 95 L530 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M516 95 L530 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M516 95 L530 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="270" y="87" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">studies</text>
+<text x="522" y="113" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">studied by</text>
+<rect x="40" y="166" width="700" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="189" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each STUDENT may study one or more SUBJECTs.</text>
+<text x="56" y="210" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each SUBJECT may be studied by one or more STUDENTs.</text>
+<rect x="40" y="236" width="700" height="54" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="257" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">A crow's foot at both ends: M:M. Both halves dashed: may, in both directions.</text></g><g class="ar"><text x="724" y="257" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏رِجل غراب عند الطرفين: ‎M:M. والنصفان متقطّعان: «قد» في الاتجاهين.</text></g>
+<g class="en"><text x="56" y="276" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Common in a first version of a model; resolved in a later stage (Lesson 5).</text></g><g class="ar"><text x="724" y="276" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏شائعة في النسخة الأولى من النموذج، وتُحَلّ في مرحلة لاحقة (الدرس 5).</text></g></svg>
+</figure>
+      <p class="en">Defect: an unresolved M:M. It is the honest first version, but <code>Grade</code> has no box, and no table can hold the line. This is where Lesson 4 stopped.</p>
+      <p class="ar">العيب: علاقة <bdi>M:M</bdi> لم تُحَلّ. إنها النسخة الأولى الصادقة، لكن <code>Grade</code> بلا صندوق، ولا جدول يتّسع للخط. وهنا توقّف الدرس 4.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — a box in the middle, the feet left at the parents" data-title-ar="الإصدار 2 — صندوق في الوسط، والأرجل باقية عند الأبوين">
+      <figure class="diagram" data-diagram="t5-enroll-wrong">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 330" direction="ltr" role="img" aria-labelledby="t5-enroll-wrong-t">
+<title id="t5-enroll-wrong-t">Version 2: ENROLLMENT added between STUDENT and SUBJECT, but the crow's feet are drawn at STUDENT and SUBJECT, so each enrollment would be for many students and many subjects / الإصدار 2: أُضيف ENROLLMENT بين STUDENT وSUBJECT، لكن رِجلَي الغراب رُسمتا عند STUDENT وSUBJECT، فيصير التسجيل الواحد لطلاب كثيرين ومواد كثيرة</title>
+<g class="en"><text x="430.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — a box in the middle, the feet in the wrong place</text></g><g class="ar"><text x="430.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 2 — صندوق في الوسط، والأرجل في المكان الخطأ</text></g>
+<rect x="20" y="50" width="180" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="110.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="32" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="32" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="32" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="340" y="50" width="180" height="61" rx="10" style="fill:var(--dg-bad-soft, var(--accent-soft));stroke:var(--dg-bad, var(--accent));stroke-width:2"/>
+<text x="430.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ENROLLMENT</text>
+<text x="352" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Grade</text>
+<rect x="660" y="50" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="750.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SUBJECT</text>
+<text x="672" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="672" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M200 95 L270.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M270.0 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M214 95 L200 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M214 95 L200 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M214 95 L200 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="220" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">enrols for</text>
+<text x="332" y="115" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<circle cx="207" cy="95" r="15" style="fill:none;stroke:var(--dg-bad, var(--text-soft));stroke-width:1.6;stroke-dasharray:3 2"/>
+<path d="M520 95 L590.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M590.0 95 L660 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M646 95 L660 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M646 95 L660 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M646 95 L660 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="528" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<text x="640" y="115" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">subject of</text>
+<circle cx="653" cy="95" r="15" style="fill:none;stroke:var(--dg-bad, var(--text-soft));stroke-width:1.6;stroke-dasharray:3 2"/>
+<rect x="20" y="176" width="820" height="56" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="36" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each ENROLLMENT must be for one or more STUDENTs.</text>
+<text x="36" y="221" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each ENROLLMENT must be for one or more SUBJECTs.</text>
+<rect x="20" y="246" width="820" height="54" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="268" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">The crow's feet stayed at the parents. One enrollment now holds many students and many subjects,</text></g><g class="ar"><text x="824" y="268" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏بقيت رِجلا الغراب عند الأبوين. فالتسجيل الواحد يحمل الآن طلابًا كثيرين وموادّ كثيرة،</text></g>
+<g class="en"><text x="36" y="287" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">so its Grade is again one value for a crowd, not for one student in one subject.</text></g><g class="ar"><text x="824" y="287" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏فتعود درجته قيمةً واحدة لجمعٍ، لا لطالب واحد في مادة واحدة.</text></g>
+</svg>
+</figure>
+      <p class="en">Defect: the crow's feet are at the wrong ends. <code>ENROLLMENT</code> exists, but each enrollment is now for one or more students and one or more subjects. Its <code>Grade</code> describes a crowd again &mdash; the same ambiguity, one box further along.</p>
+      <p class="ar">العيب: رِجلا الغراب عند الطرفين الخطأ. <code>ENROLLMENT</code> موجود، لكن كل تسجيل صار لطالب أو أكثر ولمادة أو أكثر. فعادت <code>Grade</code> تصف جمعًا &mdash; اللبس نفسه، بعد صندوق واحد.</p>
+    </div>
+    <div class="ver" data-title-en="Version 3 — both crow's feet at ENROLLMENT" data-title-ar="الإصدار 3 — رِجلا الغراب عند ENROLLMENT">
+      <figure class="diagram" data-diagram="t5-enrollment">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 400" direction="ltr" role="img" aria-labelledby="t5-enrollment-t">
+<title id="t5-enrollment-t">STUDENT enrols for / ENROLLMENT for / SUBJECT subject of: the intersection entity ENROLLMENT with o Grade, crow's feet at ENROLLMENT on both lines, solid at ENROLLMENT and dashed at the parents: two one-to-many relationships / STUDENT enrols for / ENROLLMENT for / SUBJECT subject of: كيان التقاطع ENROLLMENT مع o Grade، ورِجلا الغراب عند ENROLLMENT في الخطين، متّصل عند ENROLLMENT ومتقطّع عند الأبوين: علاقتا واحد إلى متعدّد</title>
+<g class="en"><text x="430.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">The intersection entity — one M:M becomes two 1:Ms</text></g><g class="ar"><text x="430.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏كيان التقاطع — علاقة ‎M:M واحدة تصير علاقتَي ‎1:M</text></g>
+<rect x="20" y="50" width="180" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="110.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="32" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="32" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="32" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="340" y="50" width="180" height="61" rx="10" style="fill:var(--dg-good-soft, var(--accent-soft));stroke:var(--dg-good, var(--accent));stroke-width:2"/>
+<text x="430.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ENROLLMENT</text>
+<text x="352" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Grade</text>
+<rect x="660" y="50" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="750.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SUBJECT</text>
+<text x="672" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="672" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M200 95 L270.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M270.0 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="208" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">enrols for</text>
+<text x="320" y="115" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<path d="M520 95 L590.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M590.0 95 L660 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M534 95 L520 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="540" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<text x="652" y="115" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">subject of</text>
+<rect x="20" y="176" width="820" height="98" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="36" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each STUDENT may enrol for one or more ENROLLMENTs.</text>
+<text x="36" y="221" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each ENROLLMENT must be for one and only one STUDENT.</text>
+<text x="36" y="242" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each ENROLLMENT must be for one and only one SUBJECT.</text>
+<text x="36" y="263" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each SUBJECT may be the subject of one or more ENROLLMENTs.</text>
+<rect x="20" y="288" width="820" height="92" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="310" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Both crow's feet now point at ENROLLMENT: it is the child of both lines.</text></g><g class="ar"><text x="824" y="310" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏رِجلا الغراب تشيران الآن إلى ENROLLMENT: فهو الابن في الخطّين كليهما.</text></g>
+<g class="en"><text x="36" y="329" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Solid at ENROLLMENT: an enrollment cannot exist without its student and its subject.</text></g><g class="ar"><text x="824" y="329" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏متّصل عند ENROLLMENT: لا يوجد تسجيل بلا طالبه ومادّته.</text></g>
+<g class="en"><text x="36" y="348" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Dashed at the parents, as in the M:M: a student or a subject may have no enrollments.</text></g><g class="ar"><text x="824" y="348" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏متقطّع عند الأبوين، كما في ‎M:M: قد لا يكون للطالب أو للمادة أيّ تسجيل.</text></g>
+<g class="en"><text x="36" y="367" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">No # in ENROLLMENT yet. What identifies an enrollment is Lesson 6's question.</text></g><g class="ar"><text x="824" y="367" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏لا # في ENROLLMENT بعد. وما الذي يميّز التسجيل هو سؤال الدرس 6.</text></g>
+</svg>
+</figure>
+      <p class="en">Fixed: the slides' model. Each enrollment is for one and only one student and one and only one subject, so one grade means one thing. Two plain 1:Ms, both with <code>ENROLLMENT</code> as the child. This is the recommended form.</p>
+      <p class="ar">أُصلح: نموذج الشرائح. كل تسجيل لطالب واحد فقط لا غير ولمادة واحدة فقط لا غير، فالدرجة الواحدة تعني شيئًا واحدًا. علاقتا <bdi>1:M</bdi> بسيطتان، والابن فيهما <code>ENROLLMENT</code>. وهذا هو الشكل الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t5l5-s2"><span class="en">The resolution, step by step</span><span class="ar">الحلّ، خطوةً خطوة</span></h3>
+
+  <p class="en">The slides' objective is to demonstrate the steps. Here they are as a recipe you can repeat on any M:M:</p>
+  <p class="ar">هدف الشرائح أن تبيّن الخطوات. وهذه هي وصفةً تكرّرها على أيّ علاقة <bdi>M:M</bdi>:</p>
+
+  <div class="card">
+    <ol>
+      <li class="en"><strong>Name the pair.</strong> Ask what one student-in-a-subject <em>is</em> to the business: an enrollment. That noun is the new entity.</li>
+      <li class="ar"><strong>سمِّ الزوج.</strong> اسأل: ما الذي يمثّله «طالب في مادة» للعمل؟ إنه تسجيل. وذلك الاسم هو الكيان الجديد.</li>
+      <li class="en"><strong>Replace the line.</strong> Remove the M:M line and draw the new entity between the two.</li>
+      <li class="ar"><strong>استبدل الخط.</strong> أزل خط <bdi>M:M</bdi> وارسم الكيان الجديد بين الكيانين.</li>
+      <li class="en"><strong>Move the feet.</strong> Draw two lines, each with its crow's foot at the intersection entity and a single toe at the original entity.</li>
+      <li class="ar"><strong>انقل الأرجل.</strong> ارسم خطّين، لكلٍّ منهما رِجل غراب عند كيان التقاطع وإصبع واحدة عند الكيان الأصلي.</li>
+      <li class="en"><strong>Set the halves.</strong> Solid at the intersection entity: an enrollment must have its student and its subject. Each parent's half keeps the optionality it had in the M:M.</li>
+      <li class="ar"><strong>اضبط النصفين.</strong> متّصل عند كيان التقاطع: يجب أن يكون للتسجيل طالبه ومادّته. ويحتفظ نصف كل أب بالإلزامية التي كانت له في <bdi>M:M</bdi>.</li>
+      <li class="en"><strong>Name both ends</strong> of both lines, and read the four ERDish sentences aloud.</li>
+      <li class="ar"><strong>سمِّ الطرفين</strong> في الخطّين كليهما، واقرأ جمل ERDish الأربع بصوت عالٍ.</li>
+      <li class="en"><strong>Move the hidden attributes in</strong> &mdash; section 3.</li>
+      <li class="ar"><strong>انقل الخصائص المخفية إلى الداخل</strong> &mdash; القسم 3.</li>
+    </ol>
+  </div>
+
+  <p class="en">Read the result with the slides' names. <code>STUDENT</code> <em>enrols for</em> <code>ENROLLMENT</code>; <code>ENROLLMENT</code> is <em>for</em> a <code>STUDENT</code>, and <em>for</em> a <code>SUBJECT</code>; <code>SUBJECT</code> is the <em>subject of</em> <code>ENROLLMENT</code>s:</p>
+  <p class="ar">اقرأ النتيجة بأسماء الشرائح. <code>STUDENT</code> <em>enrols for</em> <code>ENROLLMENT</code>، و<code>ENROLLMENT</code> هو <em>for</em> طالبٍ <code>STUDENT</code>، و<em>for</em> مادةٍ <code>SUBJECT</code>، و<code>SUBJECT</code> هي <em>subject of</em> تسجيلات <code>ENROLLMENT</code>:</p>
+  <pre class="code" data-lang="erdish"><code>Each STUDENT may enrol for one or more ENROLLMENTs.
+Each ENROLLMENT must be for one and only one STUDENT.
+Each ENROLLMENT must be for one and only one SUBJECT.
+Each SUBJECT may be the subject of one or more ENROLLMENTs.</code></pre>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Two 1:Ms with the same child means two foreign keys in one table: <code>enrollments.student_id</code> references <code>students</code>, <code>enrollments.subject_id</code> references <code>subjects</code>. Both are <code>NOT NULL</code>, because both halves at <code>ENROLLMENT</code> are solid. Try an enrollment with no subject:</p>
+    <p class="ar">علاقتا <bdi>1:M</bdi> لهما الابن نفسه تعنيان مفتاحين أجنبيين في جدول واحد: <code>enrollments.student_id</code> يشير إلى <code>students</code>، و<code>enrollments.subject_id</code> يشير إلى <code>subjects</code>. وكلاهما <code>NOT NULL</code>، لأن النصفين عند <code>ENROLLMENT</code> متّصلان. جرّب تسجيلًا بلا مادة:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE students (student_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL)","INSERT INTO students VALUES (1001,'Sara','Hamdan'), (1002,'Omar','Khalil'), (1003,'Lina','Nasser'), (1004,'Yousef','Odeh')","CREATE TABLE subjects (subject_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO subjects VALUES (1,'Maths'), (2,'Physics'), (3,'Arabic')","CREATE TABLE enrollments (student_id NUMBER NOT NULL REFERENCES students(student_id), subject_id NUMBER NOT NULL REFERENCES subjects(subject_id), grade VARCHAR(2))","INSERT INTO enrollments VALUES (1001,1,'A'), (1001,2,NULL), (1002,1,'C'), (1003,2,'A'), (1003,3,'A')"],"sql":"INSERT INTO enrollments (student_id, grade)\nVALUES (1004, 'B');"}
+      </script>
+    </div>
+    <p class="en">It fails with <code>Wrong NULL value in NOT NULL column subject_id</code>: a grade for Yousef in no subject is exactly the ambiguity the box was built to end. An enrollment for a student who does not exist is refused too &mdash; <code>INSERT INTO enrollments VALUES (1009, 1, 'A')</code> fails with <code>Foreign key "1009" not found in table "students"</code>.</p>
+    <p class="ar">يفشل برسالة <code>Wrong NULL value in NOT NULL column subject_id</code>: فدرجة لـ Yousef في لا مادة هي بالضبط اللبس الذي بُني الصندوق لإنهائه. ويُرفض أيضًا تسجيل لطالب غير موجود &mdash; فالجملة <code>INSERT INTO enrollments VALUES (1009, 1, 'A')</code> تفشل برسالة <code>Foreign key "1009" not found in table "students"</code>.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Version 2 is replaced by version 3. Which defect does version 3 close?</p>
+    <p class="q ar">حلّ الإصدار 3 محلّ الإصدار 2. أيّ عيب يُغلقه الإصدار 3؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A student could have no enrollments</span><span class="ar">كان يمكن ألّا يكون للطالب أيّ تسجيل</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">One enrollment could be for many students and many subjects</span><span class="ar">كان التسجيل الواحد يمكن أن يكون لطلاب كثيرين ومواد كثيرة</span></button></li>
+      <li><button class="opt"><span class="en"><code>Grade</code> was in the wrong entity</span><span class="ar">كانت <code>Grade</code> في الكيان الخطأ</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Only the ends moved: the crow's feet went from the parents to <code>ENROLLMENT</code>. <code>Grade</code> was already in <code>ENROLLMENT</code> in version 2, and a student without enrollments is legal in both &mdash; the <code>STUDENT</code> half is dashed.</p>
+      <p class="ar">لم يتحرّك إلا الطرفان: انتقلت رِجلا الغراب من الأبوين إلى <code>ENROLLMENT</code>. أمّا <code>Grade</code> فكانت في <code>ENROLLMENT</code> منذ الإصدار 2، والطالب بلا تسجيلات مشروع في الإصدارين &mdash; فنصف <code>STUDENT</code> متقطّع.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">After resolving <code>STUDENT</code>&ndash;<code>SUBJECT</code>, how many crow's feet touch <code>STUDENT</code>?</p>
+    <p class="q ar">بعد حلّ <code>STUDENT</code>&ndash;<code>SUBJECT</code>، كم رِجل غراب تلمس <code>STUDENT</code>؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">None &mdash; <code>STUDENT</code> is a parent and meets a single toe</span><span class="ar">ولا واحدة &mdash; <code>STUDENT</code> أبٌ ويلقى إصبعًا واحدة</span></button></li>
+      <li><button class="opt"><span class="en">One &mdash; it kept the crow's foot it had in the M:M</span><span class="ar">واحدة &mdash; احتفظ برِجل الغراب التي كانت له في M:M</span></button></li>
+      <li><button class="opt"><span class="en">Two &mdash; one from each new relationship</span><span class="ar">اثنتان &mdash; واحدة من كل علاقة جديدة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Each enrollment is for one and only one student, so the line meets <code>STUDENT</code> as a toe. The crow's foot is at <code>ENROLLMENT</code>, because one student has many enrollments. Only one new line touches <code>STUDENT</code> at all.</p>
+      <p class="ar">كل تسجيل لطالب واحد فقط لا غير، فيلقى الخط <code>STUDENT</code> إصبعًا. ورِجل الغراب عند <code>ENROLLMENT</code>، لأن للطالب الواحد تسجيلات كثيرة. ولا يلمس <code>STUDENT</code> أصلًا إلا خطّ جديد واحد.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t5l5-h3"><span class="en">3 · Where the attributes go</span><span class="ar">٣ · أين تذهب الخصائص</span></h2>
+
+  <div class="problem">
+    <p class="en">The school's list from Lesson 4 is still waiting: <code>Phone</code>, <code>Credit Hours</code>, <code>Grade</code>, the <code>Enrolment Date</code>, and the <code>Absences</code> in a subject. Now there are three boxes. Put one in the wrong one and the old defects come back.</p>
+    <p class="ar">ما زالت قائمة المدرسة من الدرس 4 تنتظر: <code>Phone</code>، و<code>Credit Hours</code>، و<code>Grade</code>، وتاريخ التسجيل <code>Enrolment Date</code>، والغيابات <code>Absences</code> في المادة. وصار هناك الآن ثلاثة صناديق. ضع واحدة في الصندوق الخطأ فتعود العيوب القديمة.</p>
+  </div>
+
+  <p class="en">The slides' first objective is to identify the attributes which belong to an M:M relationship. The pair test from Lesson 4 does it, and now its answer has an address. One value per student: <code>STUDENT</code>. One per subject: <code>SUBJECT</code>. One per student in a subject: the <span class="term" data-term="intersection-attribute">intersection attribute</span>, in <code>ENROLLMENT</code>.</p>
+  <p class="ar">أوّل أهداف الشرائح تحديد الخصائص التي تنتمي إلى علاقة <bdi>M:M</bdi>. واختبار الزوج من الدرس 4 يفعل ذلك، وصار لجوابه الآن عنوان. قيمة واحدة لكل طالب: <code>STUDENT</code>. وواحدة لكل مادة: <code>SUBJECT</code>. وواحدة لكل طالب في مادة: <span class="term" data-term="intersection-attribute">خاصية التقاطع</span> (Intersection attribute)، في <code>ENROLLMENT</code>.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="intersection-attribute">intersection attribute</span> is an attribute that describes one pair of instances, so it is stored in the intersection entity that resolves their M:M.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="intersection-attribute">خاصية التقاطع</span> (Intersection attribute) خاصية تصف زوجًا واحدًا من النسخ، فتُخزَّن في كيان التقاطع الذي يحلّ علاقة <bdi>M:M</bdi> بينهما.</p>
+  </div>
+
+  <div class="evolve" id="t5l5-e2">
+    <div class="ver" data-title-en="Version 1 — Grade diagnosed, but homeless" data-title-ar="الإصدار 1 — شُخّصت Grade، لكنها بلا بيت">
+      <figure class="diagram" data-diagram="t5-grade-hidden">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 470" direction="ltr" role="img" aria-labelledby="t5-grade-hidden-t">
+<title id="t5-grade-hidden-t">Grade hangs from the STUDENT–SUBJECT line: it describes one student in one subject, so the relationship is hiding it / Grade معلّقة بخط STUDENT–SUBJECT: فهي تصف طالبًا واحدًا في مادة واحدة، والعلاقة تخفيها</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — Grade belongs to the pair</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 2 — Grade تنتمي إلى الزوج</text></g>
+<rect x="40" y="50" width="210" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="530" y="50" width="210" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="635.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SUBJECT</text>
+<text x="544" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="544" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M250 95 L390 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M390 95 L530 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M264 95 L250 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 95 L250 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 95 L250 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M516 95 L530 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M516 95 L530 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M516 95 L530 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="270" y="87" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">studies</text>
+<text x="522" y="113" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">studied by</text>
+<path d="M390 95 L390 170" style="stroke:var(--dg-warn, var(--text-soft));stroke-width:1.4;fill:none;stroke-dasharray:2 3"/>
+<circle cx="390" cy="95" r="4" style="fill:var(--dg-warn, var(--text-soft))"/>
+<rect x="295" y="170" width="190" height="44" rx="4" style="fill:var(--dg-warn-soft, var(--surface));stroke:var(--dg-warn, var(--text-soft));stroke-width:1.2;stroke-dasharray:5 3"/>
+<text x="390.0" y="197" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">o Grade</text>
+<rect x="160" y="236" width="150" height="22" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:0.8"/>
+<text x="170" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">STUDENT</text>
+<rect x="310" y="236" width="150" height="22" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:0.8"/>
+<text x="320" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">SUBJECT</text>
+<rect x="460" y="236" width="160" height="22" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:0.8"/>
+<text x="470" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">Grade</text>
+<rect x="160" y="258" width="150" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="170" y="272" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Sara</text>
+<rect x="310" y="258" width="150" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="320" y="272" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Maths</text>
+<rect x="460" y="258" width="160" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="470" y="272" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">A</text>
+<rect x="160" y="278" width="150" height="20" style="fill:var(--dg-row-even, var(--bg));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="170" y="292" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Sara</text>
+<rect x="310" y="278" width="150" height="20" style="fill:var(--dg-row-even, var(--bg));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="320" y="292" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Physics</text>
+<rect x="460" y="278" width="160" height="20" style="fill:var(--dg-row-even, var(--bg));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="470" y="292" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">B</text>
+<rect x="160" y="298" width="150" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="170" y="312" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Omar</text>
+<rect x="310" y="298" width="150" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="320" y="312" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Maths</text>
+<rect x="460" y="298" width="160" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="470" y="312" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">C</text>
+<rect x="160" y="318" width="150" height="20" style="fill:var(--dg-row-even, var(--bg));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="170" y="332" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Lina</text>
+<rect x="310" y="318" width="150" height="20" style="fill:var(--dg-row-even, var(--bg));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="320" y="332" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Physics</text>
+<rect x="460" y="318" width="160" height="20" style="fill:var(--dg-row-even, var(--bg));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="470" y="332" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">A</text>
+<rect x="160" y="338" width="150" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="170" y="352" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Lina</text>
+<rect x="310" y="338" width="150" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="320" y="352" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Arabic</text>
+<rect x="460" y="338" width="160" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="470" y="352" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">A</text>
+<rect x="40" y="380" width="700" height="73" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="401" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Each grade needs a STUDENT and a SUBJECT to mean anything: five grades, five pairs.</text></g><g class="ar"><text x="724" y="401" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏كل درجة تحتاج إلى STUDENT وSUBJECT معًا لتعني شيئًا: خمس درجات، خمسة أزواج.</text></g>
+<g class="en"><text x="56" y="420" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The M:M relationship is hiding an attribute. No box holds it yet — Lesson 5 gives it one.</text></g><g class="ar"><text x="724" y="420" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏علاقة ‎M:M تخفي خاصية. ولا يحملها أيّ صندوق بعد — والدرس 5 يعطيها صندوقًا.</text></g>
+<g class="en"><text x="56" y="439" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The dotted note is a sketch, not Oracle notation: attributes never sit on a line.</text></g><g class="ar"><text x="724" y="439" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏الملاحظة المنقّطة رسم توضيحي لا ترميز Oracle: فالخصائص لا توضع على الخط أبدًا.</text></g></svg>
+</figure>
+      <p class="en">Defect: a hidden attribute with no entity. Lesson 4 knew <code>Grade</code> belongs to the pair, but a sketch on a line is not Oracle notation, and it becomes no column.</p>
+      <p class="ar">العيب: خاصية مخفية بلا كيان. عرف الدرس 4 أن <code>Grade</code> تنتمي إلى الزوج، لكن الرسم على الخط ليس ترميز Oracle، ولا يصير عمودًا.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — every attribute in its home" data-title-ar="الإصدار 2 — كل خاصية في بيتها">
+      <figure class="diagram" data-diagram="t5-enroll-attrs">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 330" direction="ltr" role="img" aria-labelledby="t5-enroll-attrs-t">
+<title id="t5-enroll-attrs-t">STUDENT, ENROLLMENT and SUBJECT with every attribute in its home: Phone in STUDENT, Credit Hours in SUBJECT, Enrolment Date, Grade and Absences in ENROLLMENT / STUDENT وENROLLMENT وSUBJECT وكل خاصية في بيتها: Phone في STUDENT، وCredit Hours في SUBJECT، وEnrolment Date وGrade وAbsences في ENROLLMENT</title>
+<g class="en"><text x="430.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Every attribute in its home</text></g><g class="ar"><text x="430.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏كل خاصية في بيتها</text></g>
+<rect x="20" y="50" width="180" height="118" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="110.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="32" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="32" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="32" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<text x="32" y="151" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Phone</text>
+<rect x="340" y="50" width="180" height="99" rx="10" style="fill:var(--dg-good-soft, var(--accent-soft));stroke:var(--dg-good, var(--accent));stroke-width:2"/>
+<text x="430.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ENROLLMENT</text>
+<text x="352" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Enrolment Date</text>
+<text x="352" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Grade</text>
+<text x="352" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Absences</text>
+<rect x="660" y="50" width="180" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="750.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SUBJECT</text>
+<text x="672" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="672" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<text x="672" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Credit Hours</text>
+<path d="M200 95 L270.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M270.0 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="208" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">enrols for</text>
+<text x="320" y="115" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<path d="M520 95 L590.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M590.0 95 L660 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M534 95 L520 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="540" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<text x="652" y="115" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">subject of</text>
+<rect x="20" y="196" width="820" height="92" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="218" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">One value per student: STUDENT. One value per subject: SUBJECT.</text></g><g class="ar"><text x="824" y="218" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏قيمة واحدة لكل طالب: STUDENT. وقيمة واحدة لكل مادة: SUBJECT.</text></g>
+<g class="en"><text x="36" y="237" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">One value per student in a subject: ENROLLMENT — the pair test now has a box to point at.</text></g><g class="ar"><text x="824" y="237" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏قيمة واحدة لكل طالب في مادة: ENROLLMENT — فصار لاختبار الزوج صندوق يشير إليه.</text></g>
+<g class="en"><text x="36" y="256" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Grade is o: it is known only when the subject ends. The date is *: known on the day of enrolment.</text></g><g class="ar"><text x="824" y="256" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏Grade اختيارية (o): لا تُعرف إلا حين تنتهي المادة. والتاريخ إلزامي (*): يُعرف يوم التسجيل.</text></g>
+<g class="en"><text x="36" y="275" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Nothing moved out of STUDENT or SUBJECT except what never belonged there.</text></g><g class="ar"><text x="824" y="275" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏لم يخرج من STUDENT أو SUBJECT إلا ما لم يكن ينتمي إليهما أصلًا.</text></g>
+</svg>
+</figure>
+      <p class="en">Fixed: <code>Grade</code>, <code>Enrolment Date</code> and <code>Absences</code> sit in <code>ENROLLMENT</code>. <code>Phone</code> stays in <code>STUDENT</code>, <code>Credit Hours</code> in <code>SUBJECT</code>. Nothing left a parent that belonged there. This is the recommended form.</p>
+      <p class="ar">أُصلح: <code>Grade</code> و<code>Enrolment Date</code> و<code>Absences</code> في <code>ENROLLMENT</code>. ويبقى <code>Phone</code> في <code>STUDENT</code>، و<code>Credit Hours</code> في <code>SUBJECT</code>. ولم يغادر أيّ أبٍ شيءٌ كان ينتمي إليه. وهذا هو الشكل الموصى به.</p>
+    </div>
+  </div>
+
+  <p class="en">Notice the symbols. The slides draw <code>o Grade</code>: optional, because the grade is unknown until the subject ends, while the enrollment exists from its first day. The <code>Enrolment Date</code> is known on that first day, so it is mandatory.</p>
+  <p class="ar">لاحظ الرموز. ترسم الشرائح <code>o Grade</code>: اختيارية، لأن الدرجة مجهولة حتى تنتهي المادة، بينما التسجيل موجود من يومه الأول. أمّا <code>Enrolment Date</code> فمعروف في ذلك اليوم الأول، فهو إلزامي.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">In Lesson 4, Sara's Physics B overwrote her Maths A in <code>students.grade</code>. Run the same story against <code>enrollments</code>: the update now names both the student and the subject.</p>
+    <p class="ar">في الدرس 4 كتبت B الفيزياء فوق A الرياضيات في <code>students.grade</code>. شغّل القصة نفسها على <code>enrollments</code>: التعديل يسمّي الآن الطالب والمادة معًا.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE students (student_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL)","INSERT INTO students VALUES (1001,'Sara','Hamdan'), (1002,'Omar','Khalil'), (1003,'Lina','Nasser'), (1004,'Yousef','Odeh')","CREATE TABLE subjects (subject_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO subjects VALUES (1,'Maths'), (2,'Physics'), (3,'Arabic')","CREATE TABLE enrollments (student_id NUMBER NOT NULL REFERENCES students(student_id), subject_id NUMBER NOT NULL REFERENCES subjects(subject_id), grade VARCHAR(2))","INSERT INTO enrollments VALUES (1001,1,'A'), (1001,2,NULL), (1002,1,'C'), (1003,2,'A'), (1003,3,'A')"],"sql":"UPDATE enrollments SET grade = 'B'\nWHERE student_id = 1001 AND subject_id = 2;\n\nSELECT s.first_name, j.name AS subject, e.grade\nFROM enrollments e\nJOIN students s ON s.student_id = e.student_id\nJOIN subjects j ON j.subject_id = e.subject_id\nWHERE e.student_id = 1001\nORDER BY j.name;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>first_name</code></th><th><code>subject</code></th><th><code>grade</code></th></tr></thead>
+          <tbody>
+            <tr><td>Sara</td><td>Maths</td><td>A</td></tr>
+            <tr><td>Sara</td><td>Physics</td><td>B</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Both grades survive, each beside its subject. The question Lesson 4 could not even write &mdash; "who got an A in Maths?" &mdash; is now a join of three tables (Exercise 4).</p>
+    <p class="ar">بقيت الدرجتان، كلٌّ بجوار مادّتها. والسؤال الذي لم يستطع الدرس 4 حتى كتابته &mdash; «من نال A في الرياضيات؟» &mdash; صار ربطًا بين ثلاثة جداول (التمرين 4).</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The school adds <code>Credit Hours</code> &mdash; how many hours a subject counts for. Where does it go now that <code>ENROLLMENT</code> exists?</p>
+    <p class="q ar">تضيف المدرسة <code>Credit Hours</code> &mdash; عدد الساعات التي تُحسب بها المادة. أين توضع الآن وقد وُجد <code>ENROLLMENT</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>ENROLLMENT</code> &mdash; every new attribute goes in the new box</span><span class="ar"><code>ENROLLMENT</code> &mdash; كل خاصية جديدة تذهب إلى الصندوق الجديد</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>SUBJECT</code> &mdash; one value per subject</span><span class="ar"><code>SUBJECT</code> &mdash; قيمة واحدة لكل مادة</span></button></li>
+      <li><button class="opt"><span class="en"><code>STUDENT</code> &mdash; students earn the hours</span><span class="ar"><code>STUDENT</code> &mdash; فالطلاب هم الذين ينالون الساعات</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Maths counts the same hours for Sara and for Omar, so the answer to "one value per what?" is the subject. Stored in <code>ENROLLMENT</code>, the same number would repeat in every enrollment of Maths &mdash; Chapter 2's update anomaly.</p>
+      <p class="ar">تُحسب الرياضيات بالساعات نفسها لـ Sara ولـ Omar، فجواب «قيمة واحدة لكلّ ماذا؟» هو المادة. ولو خُزّنت في <code>ENROLLMENT</code> لتكرّر الرقم نفسه في كل تسجيل في الرياضيات &mdash; شذوذ التحديث من الفصل 2.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why do the slides draw <code>Grade</code> in <code>ENROLLMENT</code> as <code>o</code>, not <code>*</code>?</p>
+    <p class="q ar">لماذا ترسم الشرائح <code>Grade</code> في <code>ENROLLMENT</code> بالرمز <code>o</code> لا <code>*</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Every attribute of an intersection entity is optional</span><span class="ar">كل خصائص كيان التقاطع اختيارية</span></button></li>
+      <li><button class="opt"><span class="en">Some students never study any subject</span><span class="ar">بعض الطلاب لا يدرسون أيّ مادة</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">An enrollment exists before its grade is known</span><span class="ar">التسجيل موجود قبل أن تُعرف درجته</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Sara is enrolled in Physics today; her grade arrives at the end of term. A student with no subjects is about the dashed half at <code>STUDENT</code>, not about <code>Grade</code>. And <code>Enrolment Date</code> shows an intersection attribute can be mandatory.</p>
+      <p class="ar">Sara مسجَّلة في الفيزياء اليوم، ودرجتها تصل في نهاية الفصل. أمّا الطالب بلا موادّ فأمرٌ يخصّ النصف المتقطّع عند <code>STUDENT</code>، لا <code>Grade</code>. و<code>Enrolment Date</code> يبيّن أن خاصية التقاطع قد تكون إلزامية.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t5l5-h4"><span class="en">4 · Second resolution: VIEWING RECORD</span><span class="ar">٤ · الحلّ الثاني: VIEWING RECORD</span></h2>
+
+  <div class="problem">
+    <p class="en">The TV channel from Lesson 4 wants each viewer's rating of each show, and the average rating per show. Its first version has <code>TV SHOW</code> and <code>PERSON</code> joined by an M:M, and <code>Rating</code> has nowhere to live.</p>
+    <p class="ar">تريد القناة التلفزيونية من الدرس 4 تقييم كل مشاهد لكل برنامج، ومتوسط التقييم لكل برنامج. وفي نسختها الأولى يرتبط <code>TV SHOW</code> و<code>PERSON</code> بعلاقة <bdi>M:M</bdi>، ولا مكان تسكن فيه <code>Rating</code>.</p>
+  </div>
+
+  <p class="en">The slides resolve it with the same recipe. One person watching one show is a viewing, so the new entity is <span class="term" data-term="viewing-record">VIEWING RECORD</span>. The names are short: each viewing record is <em>for</em> a show and <em>for</em> a person; a show or a person is <em>on</em> many viewing records.</p>
+  <p class="ar">تحلّها الشرائح بالوصفة نفسها. شخص واحد يشاهد برنامجًا واحدًا هو مشاهدة، فالكيان الجديد <span class="term" data-term="viewing-record">VIEWING RECORD</span> (سجلّ مشاهدة). والأسماء قصيرة: كل سجلّ مشاهدة <em>for</em> برنامج و<em>for</em> شخص، والبرنامج أو الشخص <em>on</em> سجلّات مشاهدة كثيرة.</p>
+
+  <div class="evolve" id="t5l5-e3">
+    <div class="ver" data-title-en="Version 1 — TV SHOW and PERSON, M:M" data-title-ar="الإصدار 1 — TV SHOW وPERSON، علاقة M:M">
+      <figure class="diagram" data-diagram="t5-tv-mm">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 290" direction="ltr" role="img" aria-labelledby="t5-tv-mm-t">
+<title id="t5-tv-mm-t">Version 1: TV SHOW watched by / PERSON watch, dashed at both ends with a crow's foot at both ends; Rating has no home / الإصدار 1: TV SHOW watched by / PERSON watch، متقطّع عند الطرفين ورِجل غراب عند الطرفين؛ وRating بلا بيت</title>
+<g class="en"><text x="430.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1 — the slides' TV SHOW many-to-many</text></g><g class="ar"><text x="430.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 1 — علاقة TV SHOW في الشرائح: متعدّد إلى متعدّد</text></g>
+<rect x="60" y="50" width="200" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="160.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">TV SHOW</text>
+<text x="72" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="72" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Title</text>
+<rect x="600" y="50" width="200" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="700.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PERSON</text>
+<text x="612" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="612" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M260 95 L430.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M430.0 95 L600 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M274 95 L260 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M274 95 L260 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M274 95 L260 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M586 95 L600 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M586 95 L600 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M586 95 L600 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="280" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">watched by</text>
+<text x="580" y="115" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">watch</text>
+<rect x="20" y="150" width="820" height="56" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="36" y="174" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each TV SHOW may be watched by one or more PERSONs.</text>
+<text x="36" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each PERSON may watch one or more TV SHOWs.</text>
+<rect x="20" y="220" width="820" height="54" rx="6" style="fill:var(--dg-warn-soft, var(--surface));stroke:var(--dg-warn, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="242" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">A crow's foot at both ends: M:M. Rating is one value per person per show,</text></g><g class="ar"><text x="824" y="242" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏رِجل غراب عند الطرفين: ‎M:M. والتقييم Rating قيمة واحدة لكل شخص في كل برنامج،</text></g>
+<g class="en"><text x="36" y="261" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">so neither box can hold it (Lesson 4). The line is hiding it.</text></g><g class="ar"><text x="824" y="261" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏فلا يستطيع أيّ من الصندوقين حمله (الدرس 4). والخط يخفيه.</text></g>
+</svg>
+</figure>
+      <p class="en">Defect: an unresolved M:M hiding <code>Rating</code>. The slides' rules are both <em>may</em> and both "one or more", so the line is dashed with two crow's feet, and no table can hold it.</p>
+      <p class="ar">العيب: علاقة <bdi>M:M</bdi> لم تُحَلّ وتخفي <code>Rating</code>. قاعدتا الشرائح كلتاهما <em>may</em> وكلتاهما «واحد أو أكثر»، فالخط متقطّع برِجلَي غراب، ولا جدول يتّسع له.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — resolved with VIEWING RECORD" data-title-ar="الإصدار 2 — حُلّت بـ VIEWING RECORD">
+      <figure class="diagram" data-diagram="t5-viewing-record">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 330" direction="ltr" role="img" aria-labelledby="t5-viewing-record-t">
+<title id="t5-viewing-record-t">Version 2: TV SHOW on / VIEWING RECORD for / PERSON on: the intersection entity VIEWING RECORD with o Rating, crow's feet at VIEWING RECORD on both lines / الإصدار 2: TV SHOW on / VIEWING RECORD for / PERSON on: كيان التقاطع VIEWING RECORD مع o Rating، ورِجلا الغراب عند VIEWING RECORD في الخطين</title>
+<g class="en"><text x="430.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — resolved with VIEWING RECORD</text></g><g class="ar"><text x="430.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 2 — حُلّت بـ VIEWING RECORD</text></g>
+<rect x="20" y="50" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="110.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">TV SHOW</text>
+<text x="32" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="32" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Title</text>
+<rect x="340" y="50" width="180" height="61" rx="10" style="fill:var(--dg-good-soft, var(--accent-soft));stroke:var(--dg-good, var(--accent));stroke-width:2"/>
+<text x="430.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">VIEWING RECORD</text>
+<text x="352" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Rating</text>
+<rect x="660" y="50" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="750.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PERSON</text>
+<text x="672" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="672" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M200 95 L270.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M270.0 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 95 L340 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="208" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">on</text>
+<text x="320" y="115" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<path d="M520 95 L590.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M590.0 95 L660 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M534 95 L520 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 95 L520 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="540" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<text x="652" y="115" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">on</text>
+<rect x="20" y="156" width="820" height="98" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="36" y="180" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each TV SHOW may be on one or more VIEWING RECORDs.</text>
+<text x="36" y="201" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each VIEWING RECORD must be for one and only one TV SHOW.</text>
+<text x="36" y="222" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each VIEWING RECORD must be for one and only one PERSON.</text>
+<text x="36" y="243" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each PERSON may be on one or more VIEWING RECORDs.</text>
+<rect x="20" y="266" width="820" height="54" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="288" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">One viewing record = one person watching one show. Rating has a home.</text></g><g class="ar"><text x="824" y="288" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏سجلّ مشاهدة واحد = شخص واحد يشاهد برنامجًا واحدًا. وصار لـ Rating بيت.</text></g>
+<g class="en"><text x="36" y="307" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The slides draw VIEWING RECORD with no attributes; Rating is Lesson 4's hidden attribute.</text></g><g class="ar"><text x="824" y="307" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏ترسم الشرائح VIEWING RECORD بلا خصائص؛ وRating هي الخاصية المخفية من الدرس 4.</text></g>
+</svg>
+</figure>
+      <p class="en">Fixed: <code>VIEWING RECORD</code> sits between, both crow's feet point at it, and both its halves are solid. <code>Rating</code> lives inside it. Two 1:Ms; this is the recommended form.</p>
+      <p class="ar">أُصلح: <code>VIEWING RECORD</code> في الوسط، ورِجلا الغراب تشيران إليه، ونصفاه متّصلان. و<code>Rating</code> تسكن داخله. علاقتا <bdi>1:M</bdi>؛ وهذا هو الشكل الموصى به.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en"><code>viewing_records</code> holds <code>show_id</code> and <code>person_id</code>, both <code>NOT NULL</code>, and <code>rating</code>. Huda rated News 4 and Drama 2; Ahmad rated News 5; Mona rated Drama 4. The average per show is one query:</p>
+    <p class="ar">يحمل <code>viewing_records</code> العمودين <code>show_id</code> و<code>person_id</code>، وكلاهما <code>NOT NULL</code>، ومعهما <code>rating</code>. قيّمت Huda برنامج News بـ4 وDrama بـ2، وقيّم Ahmad برنامج News بـ5، وقيّمت Mona برنامج Drama بـ4. ومتوسط كل برنامج استعلام واحد:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE tv_shows (show_id NUMBER PRIMARY KEY, title VARCHAR(20) NOT NULL)","INSERT INTO tv_shows VALUES (1,'News'), (2,'Drama')","CREATE TABLE persons (person_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO persons VALUES (1,'Huda'), (2,'Ahmad'), (3,'Mona')","CREATE TABLE viewing_records (show_id NUMBER NOT NULL REFERENCES tv_shows(show_id), person_id NUMBER NOT NULL REFERENCES persons(person_id), rating NUMBER)","INSERT INTO viewing_records VALUES (1,1,4), (2,1,2), (1,2,5), (2,3,4)"],"sql":"SELECT t.title, COUNT(*) AS viewers, AVG(v.rating) AS avg_rating\nFROM viewing_records v\nJOIN tv_shows t ON t.show_id = v.show_id\nGROUP BY t.title\nORDER BY t.title;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>title</code></th><th><code>viewers</code></th><th><code>avg_rating</code></th></tr></thead>
+          <tbody>
+            <tr><td>Drama</td><td>2</td><td>3</td></tr>
+            <tr><td>News</td><td>2</td><td>4.5</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Compare Lesson 4's <code>persons.ratings = 'News 4, Drama 2'</code>: there, this average was string surgery. Here it is a <code>GROUP BY</code> over one row per pair.</p>
+    <p class="ar">قارن بـ <code>persons.ratings = 'News 4, Drama 2'</code> في الدرس 4: هناك كان هذا المتوسط تقطيعًا للنصوص. وهنا هو <code>GROUP BY</code> على صفّ واحد لكل زوج.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapters 3 and 5</span><span class="ar">خيط · الفصلان 3 و5 في SQL</span></h4>
+    <p class="en"><a href="../chapters/chapter-3.html">Chapter 3 &mdash; Relationships</a> joins a child to its parent through one foreign key. An intersection table is a child twice over, so it joins to both parents, three tables in one query. <a href="../chapters/chapter-5.html">Chapter 5 &mdash; Aggregation</a> supplies the <code>COUNT</code>, <code>AVG</code> and <code>GROUP BY</code>. What the SQL track takes as given &mdash; that the table exists &mdash; is what this lesson designs.</p>
+    <p class="ar">يربط <a href="../chapters/chapter-3.html">الفصل 3 &mdash; العلاقات</a> الابنَ بأبيه عبر مفتاح أجنبي واحد. وجدول التقاطع ابنٌ مرّتين، فيُربط بالأبوين كليهما، ثلاثة جداول في استعلام واحد. ويقدّم <a href="../chapters/chapter-5.html">الفصل 5 &mdash; التجميع</a> الدوالّ <code>COUNT</code> و<code>AVG</code> و<code>GROUP BY</code>. وما يأخذه مسار SQL مسلَّمًا &mdash; أن الجدول موجود &mdash; هو ما يصمّمه هذا الدرس.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which sentence correctly reads the resolved TV model?</p>
+    <p class="q ar">أيّ جملة تقرأ نموذج التلفاز بعد الحلّ قراءةً صحيحة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Each VIEWING RECORD may be for one or more PERSONs.</span><span class="ar">Each VIEWING RECORD may be for one or more PERSONs.</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Each VIEWING RECORD must be for one and only one TV SHOW.</span><span class="ar">Each VIEWING RECORD must be for one and only one TV SHOW.</span></button></li>
+      <li><button class="opt"><span class="en">Each TV SHOW must be on one and only one VIEWING RECORD.</span><span class="ar">Each TV SHOW must be on one and only one VIEWING RECORD.</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">From the intersection entity's side the sentence is always <em>must</em> and "one and only one": solid half, single toe at the parent. The first sentence puts the crow's foot at the parent (version 2 of section 2); the third would let a show be watched only once.</p>
+      <p class="ar">من جهة كيان التقاطع تكون الجملة دائمًا <em>must</em> و«واحد فقط لا غير»: نصف متّصل، وإصبع واحدة عند الأب. والجملة الأولى تضع رِجل الغراب عند الأب (الإصدار 2 في القسم 2)، والثالثة لا تسمح بمشاهدة البرنامج إلا مرّة واحدة.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t5l5-h5"><span class="en">5 · Third resolution: CLEANING SCHEDULE</span><span class="ar">٥ · الحلّ الثالث: CLEANING SCHEDULE</span></h2>
+
+  <div class="problem">
+    <p class="en">The cleaning agency wants to say when each company started offering each service, and at what price. The first version joins <code>CLEANING COMPANY</code> and <code>CLEANING SERVICE</code> with an M:M, and both facts are hidden in the line.</p>
+    <p class="ar">تريد وكالة التنظيف أن تقول متى بدأت كل شركة تقديم كل خدمة، وبأيّ سعر. والنسخة الأولى تربط <code>CLEANING COMPANY</code> و<code>CLEANING SERVICE</code> بعلاقة <bdi>M:M</bdi>، والحقيقتان مخفيّتان في الخط.</p>
+  </div>
+
+  <p class="en">The slides' third example follows the recipe a third time. One company offering one service is a scheduled service, so the new entity is <span class="term" data-term="cleaning-schedule">CLEANING SCHEDULE</span>, with the same <em>for</em> and <em>on</em> names as the TV model. Once all three are drawn, the shape is unmistakable: a box in the middle, two crow's feet pointing in.</p>
+  <p class="ar">يتّبع مثال الشرائح الثالث الوصفة للمرة الثالثة. شركة واحدة تقدّم خدمة واحدة هي خدمة مجدولة، فالكيان الجديد <span class="term" data-term="cleaning-schedule">CLEANING SCHEDULE</span> (جدول التنظيف)، بالاسمين <em>for</em> و<em>on</em> كما في نموذج التلفاز. وحين تُرسم الأمثلة الثلاثة يصير الشكل لا يُخطأ: صندوق في الوسط، ورِجلا غراب تشيران إليه.</p>
+
+  <figure class="diagram" data-diagram="t5-cleaning-schedule">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 440" direction="ltr" role="img" aria-labelledby="t5-cleaning-schedule-t">
+<title id="t5-cleaning-schedule-t">CLEANING COMPANY provide / CLEANING SERVICE provided by as a many-to-many, then resolved: CLEANING COMPANY on / CLEANING SCHEDULE for / CLEANING SERVICE on / CLEANING COMPANY provide / CLEANING SERVICE provided by علاقةَ متعدّد إلى متعدّد، ثم بعد الحلّ: CLEANING COMPANY on / CLEANING SCHEDULE for / CLEANING SERVICE on</title>
+<g class="en"><text x="430.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">CLEANING SERVICES — before and after</text></g><g class="ar"><text x="430.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏CLEANING SERVICES — قبل الحلّ وبعده</text></g>
+<g class="en"><text x="20" y="52" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">Before: the first version</text></g><g class="ar"><text x="840" y="52" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">‏قبل: النسخة الأولى</text></g>
+<rect x="60" y="64" width="200" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="160.0" y="86" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CLEANING COMPANY</text>
+<text x="72" y="108" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="72" y="127" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="600" y="64" width="200" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="700.0" y="86" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CLEANING SERVICE</text>
+<text x="612" y="108" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="612" y="127" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M260 109 L430.0 109" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M430.0 109 L600 109" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M274 109 L260 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M274 109 L260 109" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M274 109 L260 117" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M586 109 L600 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M586 109 L600 109" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M586 109 L600 117" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="280" y="99" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">provide</text>
+<text x="580" y="129" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">provided by</text>
+<path d="M20 172 L840 172" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1;fill:none;stroke-dasharray:2 4"/>
+<g class="en"><text x="20" y="198" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">After: resolved with an intersection entity</text></g><g class="ar"><text x="840" y="198" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">‏بعد: حُلّت بكيان تقاطع</text></g>
+<rect x="20" y="210" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="110.0" y="232" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CLEANING COMPANY</text>
+<text x="32" y="254" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="32" y="273" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="340" y="210" width="180" height="80" rx="10" style="fill:var(--dg-good-soft, var(--accent-soft));stroke:var(--dg-good, var(--accent));stroke-width:2"/>
+<text x="430.0" y="232" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CLEANING SCHEDULE</text>
+<text x="352" y="254" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Start Date</text>
+<text x="352" y="273" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<rect x="660" y="210" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="750.0" y="232" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CLEANING SERVICE</text>
+<text x="672" y="254" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="672" y="273" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M200 255 L270.0 255" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M270.0 255 L340 255" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 255 L340 247" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 255 L340 255" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M326 255 L340 263" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="208" y="245" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">on</text>
+<text x="320" y="275" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<path d="M520 255 L590.0 255" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M590.0 255 L660 255" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M534 255 L520 247" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 255 L520 255" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M534 255 L520 263" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="540" y="245" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<text x="652" y="275" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">on</text>
+<rect x="20" y="318" width="820" height="92" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="340" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Same recipe, third time: the M:M line goes; a new box sits between; both crow's feet point at it.</text></g><g class="ar"><text x="824" y="340" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏الوصفة نفسها للمرة الثالثة: يذهب خط ‎M:M، ويقعد صندوق جديد بين الكيانين، وتشير إليه رِجلا الغراب.</text></g>
+<g class="en"><text x="36" y="359" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Each CLEANING SCHEDULE must be for one and only one CLEANING COMPANY and one CLEANING SERVICE.</text></g><g class="ar"><text x="824" y="359" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏كل CLEANING SCHEDULE يجب أن يكون لـ CLEANING COMPANY واحدة فقط ولـ CLEANING SERVICE واحدة فقط.</text></g>
+<g class="en"><text x="36" y="378" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Start Date and Price are one value per company per service (Lesson 4), so they live here.</text></g><g class="ar"><text x="824" y="378" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏Start Date وPrice قيمة واحدة لكل شركة في كل خدمة (الدرس 4)، فتسكنان هنا.</text></g>
+<g class="en"><text x="36" y="397" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The slides name the box and its lines; the two attributes are this lesson's illustration.</text></g><g class="ar"><text x="824" y="397" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏تسمّي الشرائح الصندوق وخطّيه؛ أمّا الخاصيتان فتوضيح من هذا الدرس.</text></g>
+</svg>
+<figcaption><span class="en">Before and after in one figure. The M:M line between the two original boxes is gone; nothing connects <code>CLEANING COMPANY</code> to <code>CLEANING SERVICE</code> directly any more.</span><span class="ar">قبل الحلّ وبعده في شكل واحد. اختفى خط <bdi>M:M</bdi> بين الصندوقين؛ ولم يعد شيء يربط <code>CLEANING COMPANY</code> بـ <code>CLEANING SERVICE</code> مباشرة.</span></figcaption></figure>
+
+  <p class="en">After every M:M in a model has been resolved like this, you have a <span class="term" data-term="resolved-model">resolved model</span>. The slides put it plainly: in later stages of the modelling process, all M:M relationships will be resolved, and disappear.</p>
+  <p class="ar">وبعد أن تُحَلّ كل علاقات <bdi>M:M</bdi> في النموذج على هذا النحو، يصير لديك <span class="term" data-term="resolved-model">نموذج محلول</span> (Resolved model). وتقولها الشرائح صراحة: في المراحل اللاحقة من النمذجة ستُحَلّ كل علاقات <bdi>M:M</bdi>، وتختفي.</p>
+
+  <div class="quiz">
+    <p class="q en">In the resolved cleaning model, how is <code>CLEANING COMPANY</code> related to <code>CLEANING SERVICE</code>?</p>
+    <p class="q ar">في نموذج التنظيف بعد الحلّ، كيف ترتبط <code>CLEANING COMPANY</code> بـ <code>CLEANING SERVICE</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">By the original M:M line, kept beside the new entity</span><span class="ar">بخط M:M الأصلي، باقيًا بجوار الكيان الجديد</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Only through <code>CLEANING SCHEDULE</code>, by two 1:M lines</span><span class="ar">عبر <code>CLEANING SCHEDULE</code> فقط، بخطَّي 1:M</span></button></li>
+      <li><button class="opt"><span class="en">By a new 1:M line drawn straight between them</span><span class="ar">بخط 1:M جديد مرسوم بينهما مباشرة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The M:M is replaced, not supplemented. Keeping it would leave a line that says the same as the path through <code>CLEANING SCHEDULE</code> &mdash; a redundant relationship, Lesson 4's other defect.</p>
+      <p class="ar">علاقة <bdi>M:M</bdi> تُستبدل ولا يُضاف إليها. ولو أُبقيت لبقي خطّ يقول ما يقوله المسار عبر <code>CLEANING SCHEDULE</code> &mdash; علاقة زائدة، العيب الآخر من الدرس 4.</p>
+    </div>
+  </div>
+
+  <h3 id="t5l5-s3"><span class="en">One question still open</span><span class="ar">سؤال واحد ما زال مفتوحًا</span></h3>
+
+  <p class="en">Look back at every intersection entity in this lesson: none has a <code>#</code>. The slides leave it that way on purpose and ask, under the resolved diagram: what would be the UID of the intersection entity? Until it has one, nothing stops the same pair being recorded twice.</p>
+  <p class="ar">ارجع إلى كل كيان تقاطع في هذا الدرس: لا أحد منها فيه <code>#</code>. وتتركه الشرائح كذلك عمدًا، وتسأل تحت المخطّط المحلول: ما المعرّف الفريد (UID) لكيان التقاطع؟ وما دام بلا معرّف، فلا شيء يمنع تسجيل الزوج نفسه مرّتين.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Our <code>enrollments</code> table has no primary key, just like the box. A clerk enters Sara in Maths a second time, with a D:</p>
+    <p class="ar">جدول <code>enrollments</code> عندنا بلا مفتاح أساسي، تمامًا كالصندوق. يُدخل موظّف Sara في الرياضيات مرّة ثانية، بدرجة D:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE students (student_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL)","INSERT INTO students VALUES (1001,'Sara','Hamdan'), (1002,'Omar','Khalil'), (1003,'Lina','Nasser'), (1004,'Yousef','Odeh')","CREATE TABLE subjects (subject_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO subjects VALUES (1,'Maths'), (2,'Physics'), (3,'Arabic')","CREATE TABLE enrollments (student_id NUMBER NOT NULL REFERENCES students(student_id), subject_id NUMBER NOT NULL REFERENCES subjects(subject_id), grade VARCHAR(2))","INSERT INTO enrollments VALUES (1001,1,'A'), (1001,2,'B'), (1002,1,'C'), (1003,2,'A'), (1003,3,'A')"],"sql":"INSERT INTO enrollments VALUES (1001, 1, 'D');\n\nSELECT student_id, subject_id, grade\nFROM enrollments\nWHERE student_id = 1001\nORDER BY subject_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>student_id</code></th><th><code>subject_id</code></th><th><code>grade</code></th></tr></thead>
+          <tbody>
+            <tr><td>1001</td><td>1</td><td>A</td></tr>
+            <tr><td>1001</td><td>1</td><td>D</td></tr>
+            <tr><td>1001</td><td>2</td><td>B</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">The insert succeeds. Sara now has two Maths grades, and the model cannot say which is real. <a href="../lessons/t5-lesson-06.html#t5-lesson-06">Lesson 6</a> gives <code>ENROLLMENT</code> its UID, and draws it on the diagram.</p>
+    <p class="ar">ينجح الإدخال. صار لـ Sara درجتان في الرياضيات، ولا يستطيع النموذج أن يقول أيّهما الحقيقية. ويعطي <a href="../lessons/t5-lesson-06.html#t5-lesson-06">الدرس 6</a> الكيانَ <code>ENROLLMENT</code> معرّفه الفريد، ويرسمه على المخطّط.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why could the second Maths row for Sara be inserted?</p>
+    <p class="q ar">لماذا أمكن إدخال صفّ رياضيات ثانٍ لـ Sara؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The crow's feet are at the wrong ends</span><span class="ar">رِجلا الغراب عند الطرفين الخطأ</span></button></li>
+      <li><button class="opt"><span class="en"><code>Grade</code> should have been mandatory</span><span class="ar">كان يجب أن تكون <code>Grade</code> إلزامية</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>ENROLLMENT</code> has no unique identifier yet</span><span class="ar"><code>ENROLLMENT</code> بلا معرّف فريد بعد</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The lines are right and both foreign keys are valid: student 1001 and subject 1 exist. What is missing is a rule that says one student-subject pair is one enrollment. That is a UID &mdash; next lesson.</p>
+      <p class="ar">الخطّان صحيحان، والمفتاحان الأجنبيان صالحان: فالطالب 1001 والمادة 1 موجودان. والناقص قاعدةٌ تقول إن زوج الطالب والمادة تسجيل واحد. وذلك معرّف فريد &mdash; في الدرس القادم.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t5l5-h6"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Write the four sentences</span><span class="ar">تمرين 1 · اكتب الجمل الأربع</span></h4>
+    <p class="en">Write the four ERDish sentences for the resolved cleaning model in section 5, and say for each line where the crow's foot is and which half is solid.</p>
+    <p class="ar">اكتب جمل ERDish الأربع لنموذج التنظيف المحلول في القسم 5، وقل لكل خط أين رِجل الغراب وأيّ نصف متّصل.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="erdish"><code>Each CLEANING COMPANY may be on one or more CLEANING SCHEDULEs.
+Each CLEANING SCHEDULE must be for one and only one CLEANING COMPANY.
+Each CLEANING SCHEDULE must be for one and only one CLEANING SERVICE.
+Each CLEANING SERVICE may be on one or more CLEANING SCHEDULEs.</code></pre>
+      <p class="en">On both lines the crow's foot is at <code>CLEANING SCHEDULE</code>, and the half next to it is solid. The halves next to the company and the service stay dashed, as they were in the M:M.</p>
+      <p class="ar">في الخطّين كليهما رِجل الغراب عند <code>CLEANING SCHEDULE</code>، والنصف المجاور له متّصل. ويبقى النصفان المجاوران للشركة والخدمة متقطّعين، كما كانا في <bdi>M:M</bdi>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Find the broken line</span><span class="ar">تمرين 2 · جِد الخط المكسور</span></h4>
+    <p class="en">A student resolved <code>TV SHOW</code>&ndash;<code>PERSON</code> and wrote the model as text. Which line breaks the resolution, and how should it read?</p>
+    <p class="ar">حلّ طالبٌ علاقة <code>TV SHOW</code>&ndash;<code>PERSON</code> وكتب النموذج نصًّا. أيّ سطر يكسر الحلّ، وكيف يجب أن يُقرأ؟</p>
+    <pre class="code" data-lang="erdish"><code>1  Each TV SHOW may be on one or more VIEWING RECORDs.
+2  Each VIEWING RECORD must be for one and only one TV SHOW.
+3  Each VIEWING RECORD must be for one or more PERSONs.
+4  Each PERSON may be on one or more VIEWING RECORDs.</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Line 3. It puts a crow's foot at <code>PERSON</code>, so one viewing record could belong to several people and its rating would mean nothing. It should read: <em>Each VIEWING RECORD must be for one and only one PERSON.</em></p>
+      <p class="ar">السطر 3. فهو يضع رِجل غراب عند <code>PERSON</code>، فقد ينتمي سجلّ المشاهدة الواحد إلى عدّة أشخاص ولا يعني تقييمه شيئًا. والصواب: <em>Each VIEWING RECORD must be for one and only one PERSON.</em></p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Give every attribute a home</span><span class="ar">تمرين 3 · أعطِ كل خاصية بيتًا</span></h4>
+    <p class="en">The channel lists facts it wants to keep. Put each in <code>TV SHOW</code>, <code>PERSON</code> or <code>VIEWING RECORD</code>.</p>
+    <p class="ar">تسرد القناة حقائق تريد حفظها. ضع كلًّا منها في <code>TV SHOW</code> أو <code>PERSON</code> أو <code>VIEWING RECORD</code>.</p>
+    <pre class="code" data-lang="text"><code>1  Title              4  Rating
+2  Name               5  Date Watched (this person, this show)
+3  Duration Of Show   6  Email</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en"><code>TV SHOW</code>: 1, 3. <code>PERSON</code>: 2, 6. <code>VIEWING RECORD</code>: 4, 5 &mdash; each is one value per person per show. The duration is the same for every viewer, so it stays with the show.</p>
+      <p class="ar"><code>TV SHOW</code>: 1 و3. <code>PERSON</code>: 2 و6. <code>VIEWING RECORD</code>: 4 و5 &mdash; فكلٌّ منهما قيمة واحدة لكل شخص في كل برنامج. أمّا المدّة فهي نفسها لكل مشاهد، فتبقى مع البرنامج.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Who got an A in Maths?</span><span class="ar">تمرين 4 · من نال A في الرياضيات؟</span></h4>
+    <p class="en">Using the <code>students</code>, <code>subjects</code> and <code>enrollments</code> tables of section 3 (after Sara's Physics B), write a query for the first and last names of every student with an A in Maths.</p>
+    <p class="ar">مستعملًا جداول <code>students</code> و<code>subjects</code> و<code>enrollments</code> في القسم 3 (بعد B الفيزياء لـ Sara)، اكتب استعلامًا يعطي الاسم الأول واسم العائلة لكل طالب نال A في الرياضيات.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT s.first_name, s.last_name
+FROM enrollments e
+JOIN students s ON s.student_id = e.student_id
+JOIN subjects j ON j.subject_id = e.subject_id
+WHERE j.name = 'Maths' AND e.grade = 'A'
+ORDER BY s.first_name;</code></pre>
+      <div class="output">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th><code>first_name</code></th><th><code>last_name</code></th></tr></thead>
+            <tbody>
+              <tr><td>Sara</td><td>Hamdan</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="en">Lina has two A's, but in Physics and Arabic; Omar's Maths grade is a C. The filter needs both the subject and the grade, and only <code>enrollments</code> holds them side by side.</p>
+      <p class="ar">لـ Lina درجتا A، لكن في الفيزياء والعربية؛ ودرجة Omar في الرياضيات C. فالشرط يحتاج إلى المادة والدرجة معًا، ولا يحملهما جنبًا إلى جنب إلا <code>enrollments</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Count through the box</span><span class="ar">تمرين 5 · عُدّ عبر الصندوق</span></h4>
+    <p class="en">With the same tables, write a query that shows how many students are enrolled in each subject, by subject name.</p>
+    <p class="ar">بالجداول نفسها، اكتب استعلامًا يبيّن عدد الطلاب المسجّلين في كل مادة، باسم المادة.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT j.name AS subject, COUNT(*) AS students
+FROM enrollments e
+JOIN subjects j ON j.subject_id = e.subject_id
+GROUP BY j.name
+ORDER BY j.name;</code></pre>
+      <div class="output">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th><code>subject</code></th><th><code>students</code></th></tr></thead>
+            <tbody>
+              <tr><td>Arabic</td><td>1</td></tr>
+              <tr><td>Maths</td><td>2</td></tr>
+              <tr><td>Physics</td><td>2</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="en">One row per enrollment means counting rows counts students. In the M:M version there was no table to count at all &mdash; the line was the only place the fact lived.</p>
+      <p class="ar">صفّ واحد لكل تسجيل يعني أن عدّ الصفوف عدٌّ للطلاب. وفي نسخة <bdi>M:M</bdi> لم يكن هناك جدول يُعدّ أصلًا &mdash; فالخط كان المكان الوحيد الذي تسكن فيه الحقيقة.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">An M:M is resolved by a third entity, the intersection entity; one of its instances is one pair.</li>
+      <li class="ar">تُحَلّ علاقة <bdi>M:M</bdi> بكيان ثالث هو كيان التقاطع، ونسخته الواحدة زوج واحد.</li>
+      <li class="en">The M:M line disappears and becomes two 1:Ms, both with the intersection entity as the child.</li>
+      <li class="ar">يختفي خط <bdi>M:M</bdi> ويصير علاقتَي <bdi>1:M</bdi>، والابن فيهما كليهما كيان التقاطع.</li>
+      <li class="en">Both crow's feet point at the intersection entity; its halves are solid; the parents' halves keep their optionality.</li>
+      <li class="ar">رِجلا الغراب تشيران إلى كيان التقاطع، ونصفاه متّصلان، ونصفا الأبوين يحتفظان بإلزاميتهما.</li>
+      <li class="en">Attributes that describe one pair move into the intersection entity; everything else stays where it was.</li>
+      <li class="ar">الخصائص التي تصف زوجًا واحدًا تنتقل إلى كيان التقاطع، وكل ما سواها يبقى في مكانه.</li>
+      <li class="en">The same recipe gives ENROLLMENT, VIEWING RECORD and CLEANING SCHEDULE. Their UID is the next question.</li>
+      <li class="ar">الوصفة نفسها تعطي ENROLLMENT وVIEWING RECORD وCLEANING SCHEDULE. ومعرّفها الفريد هو السؤال التالي.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Leaving the crow's feet at the parents: one intersection instance then holds many pairs.</li>
+      <li class="ar">ترك رِجلَي الغراب عند الأبوين: فتحمل نسخة التقاطع الواحدة أزواجًا كثيرة.</li>
+      <li class="en">Keeping the old M:M line beside the new entity: it is now redundant.</li>
+      <li class="ar">إبقاء خط <bdi>M:M</bdi> القديم بجوار الكيان الجديد: فقد صار زائدًا.</li>
+      <li class="en">Drawing the intersection entity's halves dashed: an enrollment with no student is meaningless.</li>
+      <li class="ar">رسم نصفَي كيان التقاطع متقطّعين: فالتسجيل بلا طالب لا معنى له.</li>
+      <li class="en">Moving every attribute into the new box: <code>Credit Hours</code> belongs to <code>SUBJECT</code> still.</li>
+      <li class="ar">نقل كل خاصية إلى الصندوق الجديد: فـ <code>Credit Hours</code> ما زالت تنتمي إلى <code>SUBJECT</code>.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="../tests/t5-test-05.html#t5-test-05">Test 5 &mdash; The Intersection Entity</a>. Then <a href="../lessons/t5-lesson-06.html#t5-lesson-06">Lesson 6 &mdash; Barred Relationships and Composite UIDs</a> answers the slides' last question: what identifies an enrollment.</p>
+    <p class="ar">اختبر نفسك بـ<a href="../tests/t5-test-05.html#t5-test-05">اختبار 5 &mdash; كيان التقاطع</a>. ثم يجيب <a href="../lessons/t5-lesson-06.html#t5-lesson-06">الدرس 6 &mdash; العلاقات المقضّبة والمعرّفات المركّبة</a> عن سؤال الشرائح الأخير: ما الذي يميّز التسجيل؟</p>
+  </div>
 
 </section>
 <nav class="pager"></nav>
@@ -69,6 +986,9 @@
 <script src="../assets/theory/js/anchors.js"></script>
 <script src="../assets/theory/js/chrome.js"></script>
 <script src="../assets/theory/js/code.js"></script>
+<script src="../assets/vendor/alasql/alasql.min.js"></script>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/widget.js"></script>
 <script src="../assets/theory/js/app.js"></script>
 </body>
 </html>

@@ -883,7 +883,7 @@ window.DBT_REGISTRY = {
       "ar": "أضف «تسجيل» فتصير علاقة «متعدّد إلى متعدّد» علاقتَي «واحد إلى متعدّد»، وتجد الخاصية المخفية بيتًا لها أخيرًا."
      },
      "href": "lessons/t5-lesson-05.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t5-test-05",

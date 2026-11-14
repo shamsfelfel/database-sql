@@ -46,6 +46,28 @@ window.DBTGlossary["t5"] = [
   ]
  },
  {
+  "id": "cleaning-schedule",
+  "term": {
+   "en": "CLEANING SCHEDULE",
+   "ar": "CLEANING SCHEDULE (جدول التنظيف)"
+  },
+  "def": {
+   "en": "The slides' intersection entity that resolves CLEANING COMPANY and CLEANING SERVICE: one company providing one service.",
+   "ar": "كيان التقاطع في الشرائح الذي يحلّ علاقة CLEANING COMPANY وCLEANING SERVICE: شركة واحدة تقدّم خدمة واحدة."
+  },
+  "cat": {
+   "en": "Resolving many-to-many",
+   "ar": "حلّ علاقات متعدّد إلى متعدّد"
+  },
+  "see": [
+   "intersection-entity",
+   "viewing-record"
+  ],
+  "used": [
+   "t5l5-h5"
+  ]
+ },
+ {
   "id": "nontransferable-diamond",
   "term": {
    "en": "Diamond (nontransferable)",
@@ -68,6 +90,28 @@ window.DBTGlossary["t5"] = [
   ]
  },
  {
+  "id": "enrollment",
+  "term": {
+   "en": "ENROLLMENT",
+   "ar": "ENROLLMENT (التسجيل)"
+  },
+  "def": {
+   "en": "The slides' intersection entity between STUDENT and SUBJECT: one student enrolled for one subject, holding the optional Grade.",
+   "ar": "كيان التقاطع في الشرائح بين STUDENT وSUBJECT: طالب واحد مسجَّل في مادة واحدة، ويحمل الخاصية الاختيارية Grade."
+  },
+  "cat": {
+   "en": "Resolving many-to-many",
+   "ar": "حلّ علاقات متعدّد إلى متعدّد"
+  },
+  "see": [
+   "intersection-entity",
+   "intersection-attribute"
+  ],
+  "used": [
+   "t5l5-s1"
+  ]
+ },
+ {
   "id": "first-version",
   "term": {
    "en": "First version (of an ER model)",
@@ -86,6 +130,75 @@ window.DBTGlossary["t5"] = [
   ],
   "used": [
    "t5l4-s2"
+  ]
+ },
+ {
+  "id": "intersection-attribute",
+  "term": {
+   "en": "Intersection attribute",
+   "ar": "خاصية التقاطع"
+  },
+  "def": {
+   "en": "An attribute that describes one pair of instances, and is therefore stored in the intersection entity that resolves their many-to-many, such as Grade in ENROLLMENT.",
+   "ar": "خاصية تصف زوجًا واحدًا من النسخ، فتُخزَّن لذلك في كيان التقاطع الذي يحلّ علاقة «متعدّد إلى متعدّد» بينهما، مثل Grade في ENROLLMENT."
+  },
+  "cat": {
+   "en": "Resolving many-to-many",
+   "ar": "حلّ علاقات متعدّد إلى متعدّد"
+  },
+  "see": [
+   "hidden-attribute",
+   "pair-test",
+   "intersection-entity"
+  ],
+  "used": [
+   "t5l5-h3"
+  ]
+ },
+ {
+  "id": "intersection-entity",
+  "term": {
+   "en": "Intersection entity",
+   "ar": "كيان التقاطع"
+  },
+  "def": {
+   "en": "A third entity added between the two entities of a many-to-many relationship, so that the many-to-many becomes two one-to-many relationships.",
+   "ar": "كيان ثالث يُضاف بين كيانَي علاقة «متعدّد إلى متعدّد»، فتصير علاقتَي «واحد إلى متعدّد»."
+  },
+  "cat": {
+   "en": "Resolving many-to-many",
+   "ar": "حلّ علاقات متعدّد إلى متعدّد"
+  },
+  "see": [
+   "many-to-many",
+   "mm-resolution",
+   "intersection-instance",
+   "intersection-attribute"
+  ],
+  "used": [
+   "t5l5-h1"
+  ]
+ },
+ {
+  "id": "intersection-instance",
+  "term": {
+   "en": "Intersection instance",
+   "ar": "نسخة التقاطع"
+  },
+  "def": {
+   "en": "One instance of an intersection entity, standing for exactly one pair of instances that the many-to-many line used to join, such as Sara taking Maths.",
+   "ar": "نسخة واحدة من كيان التقاطع، تمثّل زوجًا واحدًا بالضبط من النسخ كان خط «متعدّد إلى متعدّد» يربطه، مثل Sara تدرس الرياضيات."
+  },
+  "cat": {
+   "en": "Resolving many-to-many",
+   "ar": "حلّ علاقات متعدّد إلى متعدّد"
+  },
+  "see": [
+   "intersection-entity",
+   "enrollment"
+  ],
+  "used": [
+   "t5l5-s1"
   ]
  },
  {
@@ -533,6 +646,51 @@ window.DBTGlossary["t5"] = [
   ]
  },
  {
+  "id": "mm-resolution",
+  "term": {
+   "en": "Resolution of an M:M",
+   "ar": "حلّ علاقة ‎M:M"
+  },
+  "def": {
+   "en": "Replacing a many-to-many line by an intersection entity and two one-to-many lines, each with its crow's foot at the intersection entity.",
+   "ar": "استبدال خط «متعدّد إلى متعدّد» بكيان تقاطع وخطَّي «واحد إلى متعدّد»، لكلٍّ منهما رِجل غراب عند كيان التقاطع."
+  },
+  "cat": {
+   "en": "Resolving many-to-many",
+   "ar": "حلّ علاقات متعدّد إلى متعدّد"
+  },
+  "see": [
+   "intersection-entity",
+   "one-to-many",
+   "resolved-model"
+  ],
+  "used": [
+   "t5l5-h2"
+  ]
+ },
+ {
+  "id": "resolved-model",
+  "term": {
+   "en": "Resolved model",
+   "ar": "النموذج المحلول"
+  },
+  "def": {
+   "en": "An ER model in a later stage of modelling, in which every many-to-many relationship has been resolved by an intersection entity and none remains.",
+   "ar": "نموذج كيانات وعلاقات في مرحلة لاحقة من النمذجة، حُلّت فيه كل علاقة «متعدّد إلى متعدّد» بكيان تقاطع، فلم تبقَ منها واحدة."
+  },
+  "cat": {
+   "en": "Resolving many-to-many",
+   "ar": "حلّ علاقات متعدّد إلى متعدّد"
+  },
+  "see": [
+   "first-version",
+   "mm-resolution"
+  ],
+  "used": [
+   "t5l5-h5"
+  ]
+ },
+ {
   "id": "role",
   "term": {
    "en": "Role",
@@ -708,6 +866,28 @@ window.DBTGlossary["t5"] = [
   ],
   "used": [
    "t5l3-s2"
+  ]
+ },
+ {
+  "id": "viewing-record",
+  "term": {
+   "en": "VIEWING RECORD",
+   "ar": "VIEWING RECORD (سجلّ المشاهدة)"
+  },
+  "def": {
+   "en": "The slides' intersection entity that resolves TV SHOW and PERSON: one person watching one show.",
+   "ar": "كيان التقاطع في الشرائح الذي يحلّ علاقة TV SHOW وPERSON: شخص واحد يشاهد برنامجًا واحدًا."
+  },
+  "cat": {
+   "en": "Resolving many-to-many",
+   "ar": "حلّ علاقات متعدّد إلى متعدّد"
+  },
+  "see": [
+   "intersection-entity",
+   "cleaning-schedule"
+  ],
+  "used": [
+   "t5l5-h4"
   ]
  },
  {
