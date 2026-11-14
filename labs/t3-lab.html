@@ -39,6 +39,7 @@
 <link rel="stylesheet" href="../assets/theory/css/base.css">
 <link rel="stylesheet" href="../assets/theory/css/chrome.css">
 <link rel="stylesheet" href="../assets/theory/css/components.css">
+<link rel="stylesheet" href="../assets/theory/css/diagram.css">
 <link rel="stylesheet" href="../assets/css/widget.css">
 </head>
 <body data-chapter="t3" data-page="t3-lab" data-kind="lab" data-path="labs/t3-lab.html">
@@ -46,10 +47,697 @@
 <section class="page" id="t3-lab">
 <nav class="crumbs"></nav>
 
-  <span class="kicker">SQL Lab</span>
-  <h1><span class="en">SQL Lab</span><span class="ar">مختبر SQL</span></h1>
-  <p class="en">Not written yet.</p>
-  <p class="ar">لم يُكتب بعد.</p>
+
+  <span class="kicker">Lab &middot; Chapter 3</span>
+  <h1><span class="en">SQL Lab &mdash; the lines become foreign keys</span><span class="ar">مختبر SQL &mdash; الخطوط تصير مفاتيح أجنبية</span></h1>
+  <p class="lede en">The H.R. ERD is finished, and every line on it is a business rule. In this lab you turn each line into a foreign key, decide from the diagram which table carries it and whether it may be empty, then insert the rows the rule forbids and watch the database refuse them.</p>
+  <p class="lede ar">اكتمل مخطّط الموارد البشرية، وكل خطّ فيه قاعدة عمل. في هذا المختبر تحوّل كل خطّ إلى مفتاح أجنبي (foreign key)، وتقرّر من المخطّط أيّ جدول يحمله وهل يجوز أن يبقى فارغًا، ثم تُدخل الصفوف التي تمنعها القاعدة وترى قاعدة البيانات ترفضها.</p>
+
+  <div class="note">
+    <p class="en">You need <a href="../lessons/t3-lesson-02.html#t3-lesson-02">Lesson 2</a> (solid and dashed halves), <a href="../lessons/t3-lesson-03.html#t3-lesson-03">Lesson 3</a> (single toe and crow's foot) and <a href="../lessons/t3-lesson-05.html#t3-lesson-05">Lesson 5</a> (the recursive relationship), plus the <a href="../labs/t2-lab.html#t2-lab">Chapter 2 lab</a>, where <code>#</code>, <code>*</code> and <code>o</code> became constraints. <strong>Run</strong> executes your SQL; <strong>Check answer</strong> grades it on a fresh database, so earlier runs never count against you.</p>
+    <p class="ar">تحتاج إلى <a href="../lessons/t3-lesson-02.html#t3-lesson-02">الدرس 2</a> (النصف المتّصل والنصف المتقطّع)، و<a href="../lessons/t3-lesson-03.html#t3-lesson-03">الدرس 3</a> (الإصبع المفردة وقدم الغراب)، و<a href="../lessons/t3-lesson-05.html#t3-lesson-05">الدرس 5</a> (العلاقة الذاتية)، ومعها <a href="../labs/t2-lab.html#t2-lab">مختبر الفصل 2</a> الذي صارت فيه <code>#</code> و<code>*</code> و<code>o</code> قيودًا. زرّ <strong>Run</strong> ينفّذ SQL التي كتبتها، وزرّ <strong>Check answer</strong> يصحّحها على قاعدة بيانات جديدة، فلا تُحسب عليك محاولاتك السابقة.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Turn a relationship into a foreign key column declared with <code>REFERENCES</code>.</li>
+      <li class="ar">تحويل العلاقة إلى عمود مفتاح أجنبي مُعلَن بـ <code>REFERENCES</code>.</li>
+      <li class="en">Use the crow's foot to decide which table carries the key, and the line's half at that end to decide <code>NOT NULL</code>.</li>
+      <li class="ar">استعمال قدم الغراب لتقرير أيّ جدول يحمل المفتاح، ونصف الخطّ عند ذلك الطرف لتقرير <code>NOT NULL</code>.</li>
+      <li class="en">Build a recursive relationship as a key that points into its own table.</li>
+      <li class="ar">بناء العلاقة الذاتية مفتاحًا يشير إلى جدوله نفسه.</li>
+      <li class="en">Predict which <code>INSERT</code> a foreign key refuses, and say which half of the line a key cannot enforce.</li>
+      <li class="ar">توقّع أيّ جملة <code>INSERT</code> يرفضها المفتاح الأجنبي، وبيان أيّ نصف من الخطّ لا يستطيع المفتاح أن يفرضه.</li>
+    </ul>
+  </div>
+
+  <h2 id="t3lab-h1"><span class="en">1 · The diagram, and the rule each line carries</span><span class="ar">١ · المخطّط، والقاعدة التي يحملها كل خطّ</span></h2>
+
+  <div class="problem">
+    <p class="en">The Chapter 2 lab built boxes that stood alone. Nothing in them could say that Tyler works in Sales, or stop a clerk filing him under a department that does not exist. A line on the ERD says both things &mdash; but only if it reaches the table.</p>
+    <p class="ar">بنى مختبر الفصل 2 صناديق قائمة بذاتها. لا شيء فيها يستطيع أن يقول إن Tyler يعمل في قسم المبيعات، ولا أن يمنع موظّفًا من تسجيله في قسم غير موجود. خطّ المخطّط يقول الأمرين &mdash; لكن بشرط أن يصل إلى الجدول.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t3-conv-hr">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" direction="ltr" role="img" aria-labelledby="t3-conv-hr-t">
+<title id="t3-conv-hr-t">The H.R. ERD drawn by the convention: DEPARTMENT, EMPLOYEE and JOB as softboxes with marked attributes; work in / responsible for and hold / held by as lines with solid and dashed halves, single toes and crow's feet / مخطّط الموارد البشرية مرسومًا وفق العُرف: DEPARTMENT وEMPLOYEE وJOB صناديقَ مستديرة بخصائص مُعلَّمة؛ وwork in / responsible for وhold / held by خطوطًا بأنصاف متّصلة ومتقطّعة، وأصابع مفردة وأقدام غراب</title>
+<g class="en"><text x="450.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — every mark by the convention</text></g><g class="ar"><text x="450.0" y="24" text-anchor="middle" direction="rtl" style="unicode-bidi:embed;fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 2 — كل علامة وفق العُرف</text></g>
+<rect x="30" y="50" width="180" height="82" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="120.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">DEPARTMENT</text>
+<text x="44" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Department ID</text>
+<text x="44" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="360" y="50" width="200" height="158" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="460.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">EMPLOYEE</text>
+<text x="374" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Employee ID</text>
+<text x="374" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="374" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<text x="374" y="151" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Hire Date</text>
+<text x="374" y="170" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Salary</text>
+<text x="374" y="189" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Commission</text>
+<rect x="710" y="50" width="160" height="120" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="790.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">JOB</text>
+<text x="724" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Job ID</text>
+<text x="724" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Title</text>
+<text x="724" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Max Salary</text>
+<text x="724" y="151" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Min Salary</text>
+<path d="M210 100 L285 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M285 100 L360 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M346 100 L360 92" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M346 100 L360 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M346 100 L360 108" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="216" y="92" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">responsible for</text>
+<text x="352" y="118" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">work in</text>
+<path d="M560 100 L635 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M635 100 L710 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M574 100 L560 92" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M574 100 L560 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M574 100 L560 108" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="580" y="92" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">hold</text>
+<text x="702" y="118" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">held by</text>
+<rect x="30" y="228" width="840" height="96" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<text x="46" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each EMPLOYEE must work in one and only one DEPARTMENT.</text>
+<text x="46" y="271" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each DEPARTMENT may be responsible for one or more EMPLOYEEs.</text>
+<text x="46" y="291" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each EMPLOYEE must hold one and only one JOB.</text>
+<text x="46" y="311" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each JOB may be held by one or more EMPLOYEEs.</text>
+<rect x="30" y="342" width="840" height="96" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="46" y="365" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Softbox, name SINGULAR and UPPERCASE · # UID · * mandatory · o optional</text></g><g class="ar"><text x="854" y="365" text-anchor="start" direction="rtl" style="unicode-bidi:embed;fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">صندوق مستدير، واسم مفرد بأحرف كبيرة · # المعرّف الفريد · * إلزامية · o اختيارية</text></g>
+<g class="en"><text x="46" y="385" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Relationship names in lowercase, each beside the entity its sentence starts from</text></g><g class="ar"><text x="854" y="385" text-anchor="start" direction="rtl" style="unicode-bidi:embed;fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">أسماء العلاقات بأحرف صغيرة، كلٌّ بجانب الكيان الذي تبدأ منه جملته</text></g>
+<g class="en"><text x="46" y="405" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Solid half = must, dashed half = may · single toe = one and only one, crow's foot = one or more</text></g><g class="ar"><text x="854" y="405" text-anchor="start" direction="rtl" style="unicode-bidi:embed;fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">النصف المتّصل = يجب، والمتقطّع = قد · الإصبع الواحدة = واحد فقط لا غير، وقدم الغراب = واحد أو أكثر</text></g>
+<g class="en"><text x="46" y="425" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Any reader decodes this diagram the same way, without asking its author.</text></g><g class="ar"><text x="854" y="425" text-anchor="start" direction="rtl" style="unicode-bidi:embed;fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">يفكّ أيّ قارئ رموز هذا المخطّط بالطريقة نفسها، دون أن يسأل مؤلّفه.</text></g>
+</svg>
+<figcaption><span class="en">The chapter's finished ERD from Lesson 4. Two lines, two foreign keys. Both crow's feet sit at <code>EMPLOYEE</code>, and both <code>EMPLOYEE</code> halves are solid.</span><span class="ar">المخطّط المكتمل للفصل من الدرس 4. خطّان، فمفتاحان أجنبيّان. قدما الغراب كلتاهما عند <code>EMPLOYEE</code>، ونصفا الخطّين عند <code>EMPLOYEE</code> متّصلان.</span></figcaption></figure>
+
+  <div class="note">
+    <p class="en"><strong>Foreign key:</strong> a column whose every value must match the primary key of a row in another table (or the same one).</p>
+    <p class="ar"><strong>المفتاح الأجنبي (foreign key):</strong> عمود يجب أن تطابق كل قيمة فيه المفتاحَ الأساسي لصفٍّ في جدول آخر (أو في الجدول نفسه).</p>
+  </div>
+
+  <p class="en">Each mark on a line answers one question about that column:</p>
+  <p class="ar">كل علامة على الخطّ تجيب عن سؤال واحد يخصّ ذلك العمود:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th><span class="en">On the ERD</span><span class="ar">في المخطّط</span></th><th><span class="en">In the table</span><span class="ar">في الجدول</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">a relationship line</span><span class="ar">خطّ علاقة</span></td><td><span class="en">one foreign key column, <code>REFERENCES</code> the other table's primary key</span><span class="ar">عمود مفتاح أجنبي واحد، <code>REFERENCES</code> المفتاحَ الأساسي للجدول الآخر</span></td></tr>
+        <tr><td><span class="en">the crow's foot end</span><span class="ar">طرف قدم الغراب</span></td><td><span class="en">the table that <strong>carries</strong> the column</span><span class="ar">الجدول الذي <strong>يحمل</strong> العمود</span></td></tr>
+        <tr><td><span class="en">the single toe end</span><span class="ar">طرف الإصبع المفردة</span></td><td><span class="en">the table the column <strong>points to</strong></span><span class="ar">الجدول الذي <strong>يشير إليه</strong> العمود</span></td></tr>
+        <tr><td><span class="en">solid half at the carrying end</span><span class="ar">نصف متّصل عند الطرف الحامل</span></td><td><code>NOT NULL</code></td></tr>
+        <tr><td><span class="en">dashed half at the carrying end</span><span class="ar">نصف متقطّع عند الطرف الحامل</span></td><td><span class="en">nothing &mdash; the column accepts null</span><span class="ar">لا شيء &mdash; العمود يقبل null</span></td></tr>
+        <tr><td><span class="en">the names, <code>work in</code> / <code>responsible for</code></span><span class="ar">الاسمان، <code>work in</code> / <code>responsible for</code></span></td><td><span class="en">no column at all</span><span class="ar">لا عمود إطلاقًا</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">On the <code>hold</code> / <code>held by</code> line, which table gets the column <code>job_id</code>?</p>
+    <p class="q ar">على الخطّ <code>hold</code> / <code>held by</code>، أيّ جدول يأخذ العمود <code>job_id</code>؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en"><code>employees</code> &mdash; the crow's foot is at <code>EMPLOYEE</code></span><span class="ar"><code>employees</code> &mdash; قدم الغراب عند <code>EMPLOYEE</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>jobs</code> &mdash; the column is named after the job</span><span class="ar"><code>jobs</code> &mdash; فالعمود مسمّى باسم الوظيفة</span></button></li>
+      <li><button class="opt"><span class="en">Both tables, one copy each</span><span class="ar">كلا الجدولين، نسخة في كلٍّ منهما</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Each employee holds one and only one job, so one column per employee row is enough. A job may be held by many employees, and no single column in <code>jobs</code> could list them all.</p>
+      <p class="ar">يشغل كل موظّف وظيفة واحدة فقط لا غير، فيكفي عمود واحد في صفّ الموظّف. أمّا الوظيفة فقد يشغلها موظّفون كثيرون، ولا يستطيع عمود واحد في <code>jobs</code> أن يسردهم جميعًا.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The <code>DEPARTMENT</code> half of <code>work in</code> / <code>responsible for</code> is dashed. Which column does that half become?</p>
+    <p class="q ar">نصف <code>DEPARTMENT</code> من الخطّ <code>work in</code> / <code>responsible for</code> متقطّع. أيّ عمود يصير ذلك النصف؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A nullable <code>departments.employee_id</code></span><span class="ar">عمود <code>departments.employee_id</code> يقبل null</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">None &mdash; a department with no employees needs no column</span><span class="ar">لا عمود &mdash; القسم الذي لا موظّفين فيه لا يحتاج إلى عمود</span></button></li>
+      <li><button class="opt"><span class="en"><code>employees.department_id</code> without <code>NOT NULL</code></span><span class="ar"><code>employees.department_id</code> دون <code>NOT NULL</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"A department may be responsible for employees" is simply allowed: a <code>departments</code> row that no <code>employees.department_id</code> points to, like Shipping (<code>30</code>). The key lives at the crow's foot, and that half is solid.</p>
+      <p class="ar">«قد يكون القسم مسؤولًا عن موظّفين» أمر مسموح ببساطة: صفّ في <code>departments</code> لا يشير إليه أيّ <code>employees.department_id</code>، مثل قسم الشحن (<code>30</code>). المفتاح يقع عند قدم الغراب، وذلك النصف متّصل.</p>
+    </div>
+  </div>
+
+  <h2 id="t3lab-h2"><span class="en">2 · <code>work in</code> becomes <code>employees.department_id</code></span><span class="ar">٢ · <code>work in</code> تصير <code>employees.department_id</code></span></h2>
+
+  <figure class="diagram" data-diagram="t3-erdish-both">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 400" direction="ltr" role="img" aria-labelledby="t3-erdish-both-t">
+<title id="t3-erdish-both-t">Version 3: the full EMPLOYEE-DEPARTMENT line and its two six-part ERDish sentences, read left to right then right to left, each part numbered 1 to 6 / الإصدار 3: خط EMPLOYEE-DEPARTMENT كاملًا وجملتا ERDish ذواتا الأجزاء الستة، تُقرأ الأولى من اليسار إلى اليمين ثم الثانية من اليمين إلى اليسار، وكل جزء مرقّم من 1 إلى 6</title>
+<g class="en"><text x="410.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 3 — two sentences, the whole line</text></g><g class="ar"><text x="410.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 3 — جملتان، والخط كاملًا</text></g>
+<rect x="40" y="50" width="200" height="95" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="140.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">EMPLOYEE</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Employee ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="580" y="50" width="200" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="680.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">DEPARTMENT</text>
+<text x="594" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Department ID</text>
+<text x="594" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M240 104 L410 104" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M410 104 L580 104" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M254 104 L240 96" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M254 104 L240 104" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M254 104 L240 112" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="262" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">work in</text>
+<text x="570" y="122" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">responsible for</text>
+<path d="M262 72 L556 72" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M548 67 L556 72 L548 77" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<g class="en"><text x="410" y="64" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">first: left to right</text></g><g class="ar"><text x="410" y="64" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">أوّلًا: من اليسار إلى اليمين</text></g>
+<path d="M262 142 L556 142" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M270 137 L262 142 L270 147" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<g class="en"><text x="410" y="160" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">then: right to left</text></g><g class="ar"><text x="410" y="160" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">ثم: من اليمين إلى اليسار</text></g>
+<rect x="40" y="186" width="74" height="46" rx="5" style="fill:var(--dg-row-even, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="77.0" y="214" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px;font-weight:700">1 EACH</text>
+<rect x="122.0" y="186" width="116" height="46" rx="5" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="180.0" y="204" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px;font-weight:700">2 EMPLOYEE</text>
+<g class="en"><text x="180.0" y="223" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:10px">entity A</text></g><g class="ar"><text x="180.0" y="223" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:11px">الكيان A</text></g>
+<rect x="246.0" y="186" width="96" height="46" rx="5" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="294.0" y="204" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px;font-weight:700">3 MUST</text>
+<g class="en"><text x="294.0" y="223" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:10px">solid half</text></g><g class="ar"><text x="294.0" y="223" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:11px">نصف متّصل</text></g>
+<rect x="350.0" y="186" width="140" height="46" rx="5" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="420.0" y="204" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px;font-weight:700">4 WORK IN</text>
+<g class="en"><text x="420.0" y="223" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:10px">name</text></g><g class="ar"><text x="420.0" y="223" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:11px">الاسم</text></g>
+<rect x="498.0" y="186" width="156" height="46" rx="5" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="576.0" y="204" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px;font-weight:700">5 ONE AND ONLY ONE</text>
+<g class="en"><text x="576.0" y="223" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:10px">single toe</text></g><g class="ar"><text x="576.0" y="223" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:11px">إصبع واحدة</text></g>
+<rect x="662.0" y="186" width="118" height="46" rx="5" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="721.0" y="204" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px;font-weight:700">6 DEPARTMENT</text>
+<g class="en"><text x="721.0" y="223" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:10px">entity B</text></g><g class="ar"><text x="721.0" y="223" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:11px">الكيان B</text></g>
+<rect x="40" y="252" width="74" height="46" rx="5" style="fill:var(--dg-row-even, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="77.0" y="280" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px;font-weight:700">1 EACH</text>
+<rect x="122.0" y="252" width="116" height="46" rx="5" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="180.0" y="270" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px;font-weight:700">2 DEPARTMENT</text>
+<g class="en"><text x="180.0" y="289" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:10px">entity B</text></g><g class="ar"><text x="180.0" y="289" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:11px">الكيان B</text></g>
+<rect x="246.0" y="252" width="96" height="46" rx="5" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="294.0" y="270" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px;font-weight:700">3 MAY BE</text>
+<g class="en"><text x="294.0" y="289" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:10px">dashed half</text></g><g class="ar"><text x="294.0" y="289" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:11px">نصف متقطّع</text></g>
+<rect x="350.0" y="252" width="140" height="46" rx="5" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="420.0" y="270" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px;font-weight:700">4 RESPONSIBLE FOR</text>
+<g class="en"><text x="420.0" y="289" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:10px">name</text></g><g class="ar"><text x="420.0" y="289" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:11px">الاسم</text></g>
+<rect x="498.0" y="252" width="156" height="46" rx="5" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="576.0" y="270" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px;font-weight:700">5 ONE OR MORE</text>
+<g class="en"><text x="576.0" y="289" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:10px">crow's foot</text></g><g class="ar"><text x="576.0" y="289" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:11px">قدم الغراب</text></g>
+<rect x="662.0" y="252" width="118" height="46" rx="5" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="721.0" y="270" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px;font-weight:700">6 EMPLOYEEs</text>
+<g class="en"><text x="721.0" y="289" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:10px">entity A</text></g><g class="ar"><text x="721.0" y="289" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:11px">الكيان A</text></g>
+<rect x="40" y="316" width="740" height="70" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="338" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each EMPLOYEE must work in one and only one DEPARTMENT.</text>
+<text x="56" y="358" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each DEPARTMENT may be responsible for one or more EMPLOYEEs.</text>
+<g class="en"><text x="56" y="378" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">Every mark on the line is now said once — and nothing is said that is not drawn.</text></g><g class="ar"><text x="764" y="378" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">كل علامة على الخط قيلت الآن مرّة واحدة — ولم يُقَل شيء غير مرسوم.</text></g>
+</svg>
+<figcaption><span class="en">Lesson 5's two sentences. Sentence 1 builds the column: <em>must</em> is <code>NOT NULL</code>, <em>one and only one</em> is one column. Sentence 2 adds nothing to the table.</span><span class="ar">جملتا الدرس 5. الجملة 1 تبني العمود: <em>must</em> هي <code>NOT NULL</code>، و<em>one and only one</em> عمود واحد. والجملة 2 لا تضيف إلى الجدول شيئًا.</span></figcaption></figure>
+
+  <div class="note">
+    <p class="en"><strong>The rule:</strong> each <code>EMPLOYEE</code> must work in one and only one <code>DEPARTMENT</code> &mdash; and it must be a department that exists.</p>
+    <p class="ar"><strong>القاعدة:</strong> يجب أن يعمل كل <code>EMPLOYEE</code> في <code>DEPARTMENT</code> واحد فقط لا غير &mdash; ويجب أن يكون قسمًا موجودًا.</p>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Step 2a · Write <code>employees</code> with its key</span><span class="ar">الخطوة 2أ · اكتب <code>employees</code> بمفتاحه</span></h4>
+    <p class="en"><code>departments(department_id, name)</code> already exists in this box &mdash; do not create it again. Create <code>employees</code> with <code>employee_id</code> (<code>NUMBER</code>), <code>first_name</code> and <code>last_name</code> (<code>VARCHAR2(20)</code>, both <code>*</code>) and <code>department_id</code> (<code>NUMBER</code>). The check reads the primary key, the <code>NOT NULL</code> columns and the foreign key.</p>
+    <p class="ar">الجدول <code>departments(department_id, name)</code> موجود في هذا الصندوق &mdash; فلا تُنشئه مرّة أخرى. أنشئ <code>employees</code> بالأعمدة <code>employee_id</code> (<code>NUMBER</code>)، و<code>first_name</code> و<code>last_name</code> (<code>VARCHAR2(20)</code>، وكلاهما <code>*</code>)، و<code>department_id</code> (<code>NUMBER</code>). يقرأ التصحيح المفتاح الأساسي، والأعمدة التي عليها <code>NOT NULL</code>، والمفتاح الأجنبي.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"setup":["CREATE TABLE departments (department_id NUMBER PRIMARY KEY, name VARCHAR2(20) NOT NULL)","INSERT INTO departments VALUES (10,'Accounting'), (15,'Sales'), (22,'Development'), (30,'Shipping')"],"sql":"","placeholder":"CREATE TABLE employees ( ... );","grade":{"mode":"state","check":"SELECT ``(alasql.tables.employees||alasql.tables.EMPLOYEES).columns.map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS cols, ``((alasql.tables.employees||alasql.tables.EMPLOYEES).pk?(alasql.tables.employees||alasql.tables.EMPLOYEES).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).join(',')`` AS pk, ``(alasql.tables.employees||alasql.tables.EMPLOYEES).columns.filter(function(c){return c.notnull&&((alasql.tables.employees||alasql.tables.EMPLOYEES).pk?(alasql.tables.employees||alasql.tables.EMPLOYEES).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).indexOf(c.columnid.toLowerCase())<0}).map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS not_null, ``(alasql.tables.employees||alasql.tables.EMPLOYEES).columns.filter(function(c){return c.foreignkey}).map(function(c){return c.columnid.toLowerCase()+'>'+String(c.foreignkey.tableid).toLowerCase()+'.'+String(c.foreignkey.columnid).toLowerCase()}).sort().join(',')`` AS fk","expected":[{"cols":"department_id,employee_id,first_name,last_name","pk":"employee_id","not_null":"department_id,first_name,last_name","fk":"department_id>departments.department_id"}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE employees (
+  employee_id   NUMBER       PRIMARY KEY,
+  first_name    VARCHAR2(20) NOT NULL,
+  last_name     VARCHAR2(20) NOT NULL,
+  department_id NUMBER       NOT NULL
+                REFERENCES departments(department_id)
+);</code></pre>
+      <p class="en">The solid half gives <code>NOT NULL</code>; the line gives <code>REFERENCES</code>. Writing the key at the end of the list, <code>CONSTRAINT emp_dept_fk FOREIGN KEY (department_id) REFERENCES departments(department_id)</code>, passes the check too.</p>
+      <p class="ar">النصف المتّصل يعطي <code>NOT NULL</code>، والخطّ يعطي <code>REFERENCES</code>. وكتابة المفتاح في آخر القائمة، <code>CONSTRAINT emp_dept_fk FOREIGN KEY (department_id) REFERENCES departments(department_id)</code>، تجتاز التصحيح أيضًا.</p>
+    </details>
+  </div>
+
+  <p class="en">Now test the rule. This box holds the four departments and Dana, Lawrence, Tyler and Neil. Omar Haddad is hired into department <code>99</code>, which nobody created. Run it:</p>
+  <p class="ar">والآن اختبر القاعدة. في هذا الصندوق الأقسام الأربعة، ومعها Dana وLawrence وTyler وNeil. عُيِّن Omar Haddad في القسم <code>99</code>، ولم يُنشئه أحد. شغّله:</p>
+  <div class="qb-widget">
+    <script type="application/json" class="wd-config">
+    {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE departments (department_id NUMBER PRIMARY KEY, name VARCHAR2(20) NOT NULL)","INSERT INTO departments VALUES (10,'Accounting'), (15,'Sales'), (22,'Development'), (30,'Shipping')","CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR2(20) NOT NULL, last_name VARCHAR2(20) NOT NULL, department_id NUMBER NOT NULL REFERENCES departments(department_id))","INSERT INTO employees VALUES (100,'Dana','Smith',10), (210,'Lawrence','Chen',10), (310,'Tyler','Adams',15), (378,'Neil','Loungani',22)"],"sql":"INSERT INTO employees VALUES (420, 'Omar', 'Haddad', 99);"}
+    </script>
+  </div>
+  <div class="output">
+    <pre class="code" data-lang="text"><code>Foreign key "99" not found in table "departments"</code></pre>
+  </div>
+  <p class="en">The row is refused and Omar is not saved. Change <code>99</code> to <code>30</code> and run again: he goes into Shipping. Then leave the department out altogether with <code>INSERT INTO employees (employee_id, first_name, last_name) VALUES (421, 'Lina', 'Khalil');</code> &mdash; the solid half refuses that one: <code>Wrong NULL value in NOT NULL column department_id</code>.</p>
+  <p class="ar">رُفض الصفّ ولم يُحفظ Omar. غيّر <code>99</code> إلى <code>30</code> وشغّل من جديد: يدخل قسم الشحن. ثم أسقِط القسم كلّيًّا بـ <code>INSERT INTO employees (employee_id, first_name, last_name) VALUES (421, 'Lina', 'Khalil');</code> &mdash; فيرفضها النصف المتّصل: <code>Wrong NULL value in NOT NULL column department_id</code>.</p>
+
+  <div class="quiz">
+    <p class="q en">Two inserts failed. Which part of the line refused each one?</p>
+    <p class="q ar">فشلت جملتا إدخال. أيّ جزء من الخطّ رفض كلًّا منهما؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Both were refused by <code>NOT NULL</code></span><span class="ar">رفضهما <code>NOT NULL</code> كلتيهما</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Department <code>99</code>: the line itself (<code>REFERENCES</code>). No department: the solid half (<code>NOT NULL</code>)</span><span class="ar">القسم <code>99</code>: الخطّ نفسه (<code>REFERENCES</code>). وبلا قسم: النصف المتّصل (<code>NOT NULL</code>)</span></button></li>
+      <li><button class="opt"><span class="en">Both were refused by the primary key</span><span class="ar">رفضهما المفتاح الأساسي كلتيهما</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Two separate rules from one line. <code>REFERENCES</code> says "if there is a department, it must exist"; <code>NOT NULL</code> says "there must be one". Drop either and one of the two rows gets in.</p>
+      <p class="ar">قاعدتان منفصلتان من خطّ واحد. <code>REFERENCES</code> تقول «إن وُجد قسم، فيجب أن يكون موجودًا فعلًا»، و<code>NOT NULL</code> تقول «يجب أن يوجد قسم». احذف أيًّا منهما فيدخل أحد الصفّين.</p>
+    </div>
+  </div>
+
+  <div class="warn">
+    <p class="en">Two honest gaps in this browser engine. It accepts an explicit <code>NULL</code> in a <code>NUMBER</code> column declared <code>NOT NULL</code>, so this lab tests the solid half by leaving the column out. And it checks a key only when a row is inserted or changed: deleting department <code>10</code> while Dana still works there succeeds here. Oracle refuses that delete.</p>
+    <p class="ar">ثغرتان نعترف بهما في محرّك المتصفّح هذا. يقبل <code>NULL</code> صريحة في عمود <code>NUMBER</code> معلن <code>NOT NULL</code>، لذلك يختبر هذا المختبر النصف المتّصل بإسقاط العمود. ولا يفحص المفتاح إلا حين يُدخَل صفّ أو يُعدَّل: فحذف القسم <code>10</code> وDana ما زالت تعمل فيه ينجح هنا. أمّا Oracle فيرفض ذلك الحذف.</p>
+  </div>
+
+  <h2 id="t3lab-h3"><span class="en">3 · <code>hold</code> becomes <code>employees.job_id</code></span><span class="ar">٣ · <code>hold</code> تصير <code>employees.job_id</code></span></h2>
+
+  <div class="problem">
+    <p class="en">Payroll reads each employee's salary range from the job they hold. An employee with no job, or with a job code typed wrong, gets no range &mdash; and nobody notices until the month's pay run.</p>
+    <p class="ar">يقرأ قسم الرواتب نطاق راتب كل موظّف من الوظيفة التي يشغلها. والموظّف الذي لا وظيفة له، أو الذي كُتب رمز وظيفته خطأً، لا نطاق له &mdash; ولا يلاحظ أحد حتى يحين صرف رواتب الشهر.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t3-job-v2">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 366" direction="ltr" role="img" aria-labelledby="t3-job-v2-t">
+<title id="t3-job-v2-t">Version 2: EMPLOYEE hold / held by JOB, solid at the EMPLOYEE half and dashed at the JOB half: every employee must hold a job, a job may be held / الإصدار 2: علاقة EMPLOYEE hold / held by JOB، متّصلة في نصف EMPLOYEE ومتقطّعة في نصف JOB: يجب أن يشغل كل موظّف وظيفة، وقد تُشغل الوظيفة</title>
+<g class="en"><text x="390.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — one answer per end</text></g><g class="ar"><text x="390.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 2 — جواب لكل طرف</text></g>
+<rect x="40" y="50" width="210" height="156" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">EMPLOYEE</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Employee ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<text x="54" y="151" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Hire Date</text>
+<text x="54" y="170" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Salary</text>
+<text x="54" y="189" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Commission</text>
+<rect x="530" y="50" width="210" height="118" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="635.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">JOB</text>
+<text x="544" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Job ID</text>
+<text x="544" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Title</text>
+<text x="544" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Max Salary</text>
+<text x="544" y="151" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Min Salary</text>
+<path d="M250 112 L390.0 112" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M390.0 112 L530 112" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M264 112 L250 104" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 112 L250 112" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 112 L250 120" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="270" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">hold</text>
+<text x="522" y="130" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">held by</text>
+<g class="en"><text x="320" y="150" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">solid: must</text></g><g class="ar"><text x="320" y="150" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">متّصل: يجب</text></g>
+<g class="en"><text x="460" y="150" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">dashed: may</text></g><g class="ar"><text x="460" y="150" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">متقطّع: قد</text></g>
+<rect x="40" y="230" width="700" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="253" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each EMPLOYEE must hold one and only one JOB.</text>
+<text x="56" y="274" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each JOB may be held by one or more EMPLOYEEs.</text>
+<rect x="40" y="302" width="700" height="50" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="323" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">The vacant Stock Clerk job is allowed, and still no employee can be left without a job.</text></g><g class="ar"><text x="724" y="323" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏الوظيفة الشاغرة (أمين مخزن) مسموحة، ومع ذلك لا يمكن أن يبقى موظّف بلا وظيفة.</text></g>
+<g class="en"><text x="56" y="342" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The half next to EMPLOYEE is solid (its rule is must); the half next to JOB is dashed.</text></g><g class="ar"><text x="724" y="342" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">النصف المجاور لـ EMPLOYEE متّصل (قاعدته «يجب»)، والنصف المجاور لـ JOB متقطّع.</text></g></svg>
+<figcaption><span class="en">Lesson 2's answer, one per end. The solid <code>EMPLOYEE</code> half becomes <code>NOT NULL</code> on <code>employees.job_id</code>; the dashed <code>JOB</code> half lets <code>ST_CLERK</code> stand empty.</span><span class="ar">جواب الدرس 2، واحد لكل طرف. نصف <code>EMPLOYEE</code> المتّصل يصير <code>NOT NULL</code> على <code>employees.job_id</code>، ونصف <code>JOB</code> المتقطّع يسمح لـ <code>ST_CLERK</code> بأن تبقى شاغرة.</span></figcaption></figure>
+
+  <div class="note">
+    <p class="en"><strong>The rule:</strong> each <code>EMPLOYEE</code> must hold one and only one <code>JOB</code>; each <code>JOB</code> may be held by one or more <code>EMPLOYEE</code>s.</p>
+    <p class="ar"><strong>القاعدة:</strong> يجب أن يشغل كل <code>EMPLOYEE</code> وظيفة <code>JOB</code> واحدة فقط لا غير، وقد يشغل كلَّ <code>JOB</code> موظّف <code>EMPLOYEE</code> واحد أو أكثر.</p>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Step 3a · Both lines in one table</span><span class="ar">الخطوة 3أ · الخطّان في جدول واحد</span></h4>
+    <p class="en"><code>departments</code> and <code>jobs(job_id VARCHAR2(10), title, …)</code> exist. Create <code>employees</code> again, this time with both keys: the step 2a columns plus <code>job_id</code> (<code>VARCHAR2(10)</code>). Read every mark off the diagram above.</p>
+    <p class="ar">الجدولان <code>departments</code> و<code>jobs(job_id VARCHAR2(10), title, …)</code> موجودان. أنشئ <code>employees</code> من جديد، وهذه المرّة بالمفتاحين معًا: أعمدة الخطوة 2أ، وعمود <code>job_id</code> (<code>VARCHAR2(10)</code>). اقرأ كل علامة من المخطّط أعلاه.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"setup":["CREATE TABLE departments (department_id NUMBER PRIMARY KEY, name VARCHAR2(20) NOT NULL)","INSERT INTO departments VALUES (10,'Accounting'), (15,'Sales'), (22,'Development'), (30,'Shipping')","CREATE TABLE jobs (job_id VARCHAR2(10) PRIMARY KEY, title VARCHAR2(30) NOT NULL, max_salary NUMBER NOT NULL, min_salary NUMBER NOT NULL)","INSERT INTO jobs VALUES ('AD_PRES','President',40000,20000), ('AC_MGR','Accounting Manager',16000,8200), ('AC_ACCOUNT','Accountant',9000,4200), ('SA_REP','Sales Representative',12000,6000), ('IT_PROG','Programmer',10000,4000), ('ST_CLERK','Stock Clerk',5000,2000)"],"sql":"","placeholder":"CREATE TABLE employees ( ... );","grade":{"mode":"state","check":"SELECT ``(alasql.tables.employees||alasql.tables.EMPLOYEES).columns.map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS cols, ``((alasql.tables.employees||alasql.tables.EMPLOYEES).pk?(alasql.tables.employees||alasql.tables.EMPLOYEES).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).join(',')`` AS pk, ``(alasql.tables.employees||alasql.tables.EMPLOYEES).columns.filter(function(c){return c.notnull&&((alasql.tables.employees||alasql.tables.EMPLOYEES).pk?(alasql.tables.employees||alasql.tables.EMPLOYEES).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).indexOf(c.columnid.toLowerCase())<0}).map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS not_null, ``(alasql.tables.employees||alasql.tables.EMPLOYEES).columns.filter(function(c){return c.foreignkey}).map(function(c){return c.columnid.toLowerCase()+'>'+String(c.foreignkey.tableid).toLowerCase()+'.'+String(c.foreignkey.columnid).toLowerCase()}).sort().join(',')`` AS fk","expected":[{"cols":"department_id,employee_id,first_name,job_id,last_name","pk":"employee_id","not_null":"department_id,first_name,job_id,last_name","fk":"department_id>departments.department_id,job_id>jobs.job_id"}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE employees (
+  employee_id   NUMBER       PRIMARY KEY,
+  first_name    VARCHAR2(20) NOT NULL,
+  last_name     VARCHAR2(20) NOT NULL,
+  department_id NUMBER       NOT NULL
+                REFERENCES departments(department_id),
+  job_id        VARCHAR2(10) NOT NULL
+                REFERENCES jobs(job_id)
+);</code></pre>
+      <p class="en">Two lines end in crow's feet at <code>EMPLOYEE</code>, so <code>employees</code> carries two keys. The key's type matches the column it points to: <code>jobs.job_id</code> is text, so <code>employees.job_id</code> is text too.</p>
+      <p class="ar">خطّان ينتهيان بقدمَي غراب عند <code>EMPLOYEE</code>، فيحمل <code>employees</code> مفتاحين. ونوع المفتاح يطابق العمود الذي يشير إليه: <code>jobs.job_id</code> نصّ، فيكون <code>employees.job_id</code> نصًّا أيضًا.</p>
+    </details>
+  </div>
+
+  <p class="en">The finished table, with six employees in it. A clerk types Omar's job as <code>'ST_CLRK'</code>:</p>
+  <p class="ar">الجدول المكتمل، وفيه ستة موظّفين. يكتب الموظّف المختصّ وظيفة Omar هكذا: <code>'ST_CLRK'</code>:</p>
+  <div class="qb-widget">
+    <script type="application/json" class="wd-config">
+    {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE departments (department_id NUMBER PRIMARY KEY, name VARCHAR2(20) NOT NULL)", "INSERT INTO departments VALUES (10,'Accounting'), (15,'Sales'), (22,'Development'), (30,'Shipping')", "CREATE TABLE jobs (job_id VARCHAR2(10) PRIMARY KEY, title VARCHAR2(30) NOT NULL, max_salary NUMBER NOT NULL, min_salary NUMBER NOT NULL)", "INSERT INTO jobs VALUES ('AD_PRES','President',40000,20000), ('AC_MGR','Accounting Manager',16000,8200), ('AC_ACCOUNT','Accountant',9000,4200), ('SA_REP','Sales Representative',12000,6000), ('IT_PROG','Programmer',10000,4000), ('ST_CLERK','Stock Clerk',5000,2000)", "CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR2(20) NOT NULL, last_name VARCHAR2(20) NOT NULL, department_id NUMBER NOT NULL REFERENCES departments(department_id), job_id VARCHAR2(10) NOT NULL REFERENCES jobs(job_id))", "INSERT INTO employees VALUES (100,'Dana','Smith',10,'AD_PRES'), (210,'Lawrence','Chen',10,'AC_MGR'), (405,'Carlos','Gomez',10,'AC_ACCOUNT'), (310,'Tyler','Adams',15,'SA_REP'), (315,'Mariam','Odeh',15,'SA_REP'), (378,'Neil','Loungani',22,'IT_PROG')"],"sql":"INSERT INTO employees VALUES (420, 'Omar', 'Haddad', 30, 'ST_CLRK');"}
+    </script>
+  </div>
+  <div class="output">
+    <pre class="code" data-lang="text"><code>Foreign key "ST_CLRK" not found in table "jobs"</code></pre>
+  </div>
+  <p class="en">One missing letter, and payroll is spared a job with no salary range. Fix it to <code>'ST_CLERK'</code> and run again.</p>
+  <p class="ar">حرف واحد ناقص، ونجا قسم الرواتب من وظيفة بلا نطاق راتب. صحّحها إلى <code>'ST_CLERK'</code> وشغّل من جديد.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The dashed <code>JOB</code> half needs no constraint, and it still shows up &mdash; as rows nothing points to. Before Omar is hired, which jobs does nobody hold?</p>
+    <p class="ar">نصف <code>JOB</code> المتقطّع لا يحتاج إلى قيد، ومع ذلك يظهر &mdash; على شكل صفوف لا يشير إليها شيء. قبل تعيين Omar، أيّ الوظائف لا يشغلها أحد؟</p>
+  </div>
+  <div class="qb-widget">
+    <script type="application/json" class="wd-config">
+    {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE departments (department_id NUMBER PRIMARY KEY, name VARCHAR2(20) NOT NULL)", "INSERT INTO departments VALUES (10,'Accounting'), (15,'Sales'), (22,'Development'), (30,'Shipping')", "CREATE TABLE jobs (job_id VARCHAR2(10) PRIMARY KEY, title VARCHAR2(30) NOT NULL, max_salary NUMBER NOT NULL, min_salary NUMBER NOT NULL)", "INSERT INTO jobs VALUES ('AD_PRES','President',40000,20000), ('AC_MGR','Accounting Manager',16000,8200), ('AC_ACCOUNT','Accountant',9000,4200), ('SA_REP','Sales Representative',12000,6000), ('IT_PROG','Programmer',10000,4000), ('ST_CLERK','Stock Clerk',5000,2000)", "CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR2(20) NOT NULL, last_name VARCHAR2(20) NOT NULL, department_id NUMBER NOT NULL REFERENCES departments(department_id), job_id VARCHAR2(10) NOT NULL REFERENCES jobs(job_id))", "INSERT INTO employees VALUES (100,'Dana','Smith',10,'AD_PRES'), (210,'Lawrence','Chen',10,'AC_MGR'), (405,'Carlos','Gomez',10,'AC_ACCOUNT'), (310,'Tyler','Adams',15,'SA_REP'), (315,'Mariam','Odeh',15,'SA_REP'), (378,'Neil','Loungani',22,'IT_PROG')"],"sql":"SELECT job_id, title\nFROM jobs\nWHERE job_id NOT IN (SELECT job_id FROM employees);"}
+    </script>
+  </div>
+  <div class="output">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th><code>job_id</code></th><th><code>title</code></th></tr></thead>
+        <tbody>
+          <tr><td>ST_CLERK</td><td>Stock Clerk</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">An administrator suggests <code>jobs.employee_id</code> instead of <code>employees.job_id</code>. What breaks first?</p>
+    <p class="q ar">يقترح مسؤول قاعدة البيانات العمود <code>jobs.employee_id</code> بدلًا من <code>employees.job_id</code>. ما الذي ينكسر أوّلًا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Nothing &mdash; a key works from either side</span><span class="ar">لا شيء &mdash; المفتاح يعمل من أيّ طرف</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>SA_REP</code> can name Tyler or Mariam, never both</span><span class="ar">تستطيع <code>SA_REP</code> أن تسمّي Tyler أو Mariam، ولا تسمّيهما معًا أبدًا</span></button></li>
+      <li><button class="opt"><span class="en"><code>ST_CLERK</code> can no longer be vacant</span><span class="ar">لا تعود <code>ST_CLERK</code> قادرة على البقاء شاغرة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">One column holds one value. The crow's foot at <code>EMPLOYEE</code> says a job has many holders, so the key must sit in the table with one row per holder &mdash; Lesson 3 watched Mariam fail exactly this way.</p>
+      <p class="ar">العمود الواحد يحمل قيمة واحدة. وقدم الغراب عند <code>EMPLOYEE</code> تقول إن للوظيفة شاغلين كثيرين، فيجب أن يقع المفتاح في الجدول الذي فيه صفّ لكل شاغل &mdash; وقد رأى الدرس 3 إدخال Mariam يفشل على هذا النحو بالضبط.</p>
+    </div>
+  </div>
+
+  <h2 id="t3lab-h4"><span class="en">4 · An <code>EMPLOYEE</code> manages <code>EMPLOYEE</code>s</span><span class="ar">٤ · <code>EMPLOYEE</code> يدير <code>EMPLOYEE</code>s</span></h2>
+
+  <div class="problem">
+    <p class="en">Lawrence reports to Dana, Carlos reports to Lawrence, and Dana reports to nobody. Managers are employees, so there is no second table to point at. The line loops back to the box it left.</p>
+    <p class="ar">يتبع Lawrence إلى Dana، ويتبع Carlos إلى Lawrence، ولا تتبع Dana أحدًا. المديرون موظّفون، فلا جدول ثانيًا يُشار إليه. الخطّ يعود إلى الصندوق الذي خرج منه.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t3-recursive">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 340" direction="ltr" role="img" aria-labelledby="t3-recursive-t">
+<title id="t3-recursive-t">Version 2: EMPLOYEE related to itself by managed by / manager of, with instances Dana Smith managing three employees and Lawrence Chen managing one / الإصدار 2: EMPLOYEE مرتبط بنفسه بالعلاقة managed by / manager of، مع نُسَخ: Dana Smith تدير ثلاثة موظفين وLawrence Chen يدير واحدًا</title>
+<g class="en"><text x="410.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — one entity, related to itself</text></g><g class="ar"><text x="410.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 2 — كيان واحد مرتبط بنفسه</text></g>
+<rect x="40" y="50" width="220" height="133" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="150.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">EMPLOYEE</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Employee ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<text x="54" y="151" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Hire Date</text>
+<text x="54" y="170" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Salary</text>
+<path d="M100 183 L100 235 L150 235" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M150 235 L200 235 L200 183" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M100 197 L92 183" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M100 197 L100 183" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M100 197 L108 183" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="92" y="213" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">managed by</text>
+<text x="208" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">manager of</text>
+<g class="en"><text x="580" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">Instances of the one relationship</text></g><g class="ar"><text x="580" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">نُسَخ العلاقة الواحدة</text></g>
+<rect x="505" y="74" width="150" height="28" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="580" y="92" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">100 Dana Smith</text>
+<path d="M580 102 L422 142" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<rect x="347" y="142" width="150" height="28" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="422" y="160" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">310 Tyler Adams</text>
+<path d="M580 102 L580 142" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<rect x="505" y="142" width="150" height="28" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="580" y="160" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">210 Lawrence Chen</text>
+<path d="M580 102 L738 142" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<rect x="663" y="142" width="150" height="28" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="738" y="160" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">378 Neil Loungani</text>
+<path d="M580 170 L580 210" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<rect x="505" y="210" width="150" height="28" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="580" y="228" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">405 Carlos Gomez</text>
+<rect x="40" y="262" width="760" height="64" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="286" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Each EMPLOYEE may be managed by one and only one EMPLOYEE.</text></g><g class="ar"><text x="784" y="286" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">قد يُدار كل EMPLOYEE من قِبل EMPLOYEE واحد فقط لا غير.</text></g>
+<g class="en"><text x="56" y="308" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Each EMPLOYEE may be the manager of one or more EMPLOYEEs. Dana is stored once.</text></g><g class="ar"><text x="784" y="308" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">وقد يكون كل EMPLOYEE مديرًا لـ EMPLOYEE واحد أو أكثر. وDana مخزّنة مرّة واحدة.</text></g>
+</svg>
+<figcaption><span class="en">The recursive relationship. The crow's foot and the single toe are both at <code>EMPLOYEE</code>, so the key goes into <code>employees</code> and points back into <code>employees</code>. Both halves are dashed.</span><span class="ar">العلاقة الذاتية. قدم الغراب والإصبع المفردة كلتاهما عند <code>EMPLOYEE</code>، فيدخل المفتاح <code>employees</code> ويشير رجوعًا إلى <code>employees</code>. والنصفان كلاهما متقطّعان.</span></figcaption></figure>
+
+  <div class="note">
+    <p class="en"><strong>The rule:</strong> each <code>EMPLOYEE</code> may be managed by one and only one <code>EMPLOYEE</code>; each <code>EMPLOYEE</code> may be the manager of one or more <code>EMPLOYEE</code>s.</p>
+    <p class="ar"><strong>القاعدة:</strong> قد يُدار كل <code>EMPLOYEE</code> من <code>EMPLOYEE</code> واحد فقط لا غير، وقد يكون كل <code>EMPLOYEE</code> مديرًا لـ <code>EMPLOYEE</code> واحد أو أكثر.</p>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Step 4a · A key into its own table</span><span class="ar">الخطوة 4أ · مفتاح إلى جدوله نفسه</span></h4>
+    <p class="en">This box starts empty. Create <code>employees</code> with <code>employee_id</code> (<code>NUMBER</code>), <code>first_name</code> and <code>last_name</code> (<code>VARCHAR2(20)</code>, both <code>*</code>) and <code>manager_id</code> (<code>NUMBER</code>). The check fails a missing key &mdash; and an extra <code>NOT NULL</code>.</p>
+    <p class="ar">يبدأ هذا الصندوق فارغًا. أنشئ <code>employees</code> بالأعمدة <code>employee_id</code> (<code>NUMBER</code>)، و<code>first_name</code> و<code>last_name</code> (<code>VARCHAR2(20)</code>، وكلاهما <code>*</code>)، و<code>manager_id</code> (<code>NUMBER</code>). يُفشِل التصحيح مفتاحًا ناقصًا &mdash; وقيد <code>NOT NULL</code> زائدًا كذلك.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"sql":"","placeholder":"CREATE TABLE employees ( ... );","grade":{"mode":"state","check":"SELECT ``(alasql.tables.employees||alasql.tables.EMPLOYEES).columns.map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS cols, ``((alasql.tables.employees||alasql.tables.EMPLOYEES).pk?(alasql.tables.employees||alasql.tables.EMPLOYEES).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).join(',')`` AS pk, ``(alasql.tables.employees||alasql.tables.EMPLOYEES).columns.filter(function(c){return c.notnull&&((alasql.tables.employees||alasql.tables.EMPLOYEES).pk?(alasql.tables.employees||alasql.tables.EMPLOYEES).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).indexOf(c.columnid.toLowerCase())<0}).map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS not_null, ``(alasql.tables.employees||alasql.tables.EMPLOYEES).columns.filter(function(c){return c.foreignkey}).map(function(c){return c.columnid.toLowerCase()+'>'+String(c.foreignkey.tableid).toLowerCase()+'.'+String(c.foreignkey.columnid).toLowerCase()}).sort().join(',')`` AS fk","expected":[{"cols":"employee_id,first_name,last_name,manager_id","pk":"employee_id","not_null":"first_name,last_name","fk":"manager_id>employees.employee_id"}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE employees (
+  employee_id NUMBER       PRIMARY KEY,
+  first_name  VARCHAR2(20) NOT NULL,
+  last_name   VARCHAR2(20) NOT NULL,
+  manager_id  NUMBER
+              REFERENCES employees(employee_id)
+);</code></pre>
+      <p class="en"><code>NOT NULL</code> on <code>manager_id</code> is the extra one. The half is dashed, and Dana, the managing director, has no manager in this company's data: with <code>NOT NULL</code> the very first employee could never be saved.</p>
+      <p class="ar">قيد <code>NOT NULL</code> على <code>manager_id</code> هو الزائد. فالنصف متقطّع، وDana، المديرة العامّة، لا مدير لها في بيانات هذه الشركة: ومع <code>NOT NULL</code> لن يُحفظ أوّل موظّف أبدًا.</p>
+    </details>
+  </div>
+
+  <p class="en">Dana, Lawrence, Tyler and Neil are in, each pointing at a manager who exists. Carlos is added under manager <code>999</code>:</p>
+  <p class="ar">Dana وLawrence وTyler وNeil موجودون، وكلٌّ منهم يشير إلى مدير موجود. يُضاف Carlos تحت المدير <code>999</code>:</p>
+  <div class="qb-widget">
+    <script type="application/json" class="wd-config">
+    {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR2(20) NOT NULL, last_name VARCHAR2(20) NOT NULL, manager_id NUMBER REFERENCES employees(employee_id))","INSERT INTO employees (employee_id, first_name, last_name) VALUES (100,'Dana','Smith')","INSERT INTO employees VALUES (210,'Lawrence','Chen',100), (310,'Tyler','Adams',100), (378,'Neil','Loungani',100)"],"sql":"INSERT INTO employees VALUES (405, 'Carlos', 'Gomez', 999);"}
+    </script>
+  </div>
+  <div class="output">
+    <pre class="code" data-lang="text"><code>Foreign key "999" not found in table "employees"</code></pre>
+  </div>
+  <p class="en">There is no employee <code>999</code> to report to. Change it to <code>210</code> and Carlos goes in under Lawrence. Notice that Dana went in first, with no manager at all: a manager's row has to exist before anyone can point at it.</p>
+  <p class="ar">لا يوجد موظّف برقم <code>999</code> يُتبَع إليه. غيّره إلى <code>210</code> فيدخل Carlos تحت Lawrence. ولاحظ أن Dana دخلت أوّلًا، بلا مدير إطلاقًا: صفّ المدير يجب أن يوجد قبل أن يشير إليه أحد.</p>
+
+  <div class="quiz">
+    <p class="q en">Which ERD mark lets Dana's <code>manager_id</code> stay empty?</p>
+    <p class="q ar">أيّ علامة في المخطّط تسمح بأن يبقى <code>manager_id</code> عند Dana فارغًا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The crow's foot</span><span class="ar">قدم الغراب</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The dashed half beside <code>managed by</code></span><span class="ar">النصف المتقطّع بجانب <code>managed by</code></span></button></li>
+      <li><button class="opt"><span class="en">The relationship name <code>manager of</code></span><span class="ar">اسم العلاقة <code>manager of</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"Each EMPLOYEE <em>may</em> be managed by" &mdash; may is dashed, and dashed means no <code>NOT NULL</code>. The crow's foot only decides where the column lives; names never reach the table.</p>
+      <p class="ar">«Each EMPLOYEE <em>may</em> be managed by» &mdash; و«may» متقطّع، والمتقطّع يعني لا <code>NOT NULL</code>. أمّا قدم الغراب فتقرّر مكان العمود فقط، والأسماء لا تصل إلى الجدول أبدًا.</p>
+    </div>
+  </div>
+
+  <h2 id="t3lab-h5"><span class="en">5 · On your own: the restaurant</span><span class="ar">٥ · وحدك: المطعم</span></h2>
+
+  <p class="en">No walk-through this time. Linda, Krishna and Mel are <code>customers</code> <code>1</code>, <code>2</code> and <code>3</code>, and orders <code>10</code>, <code>102</code>, <code>77</code> and <code>100</code> belong to them. Read the line and build it.</p>
+  <p class="ar">لا شرح هذه المرّة. Linda وKrishna وMel هم الزبائن <code>1</code> و<code>2</code> و<code>3</code> في <code>customers</code>، والطلبات <code>10</code> و<code>102</code> و<code>77</code> و<code>100</code> لهم. اقرأ الخطّ وابنه.</p>
+
+  <figure class="diagram" data-diagram="t3-customer-order">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" direction="ltr" role="img" aria-labelledby="t3-customer-order-t">
+<title id="t3-customer-order-t">The restaurant: three customers and four orders as instances, and the CUSTOMER place / placed by ORDER relationship that describes every such link / المطعم: ثلاثة زبائن وأربعة طلبات بوصفها نُسَخًا، وعلاقة CUSTOMER place / placed by ORDER التي تصف كل رابط من هذا النوع</title>
+<g class="en"><text x="450.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Instances on the left, the relationship on the right</text></g><g class="ar"><text x="450.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">النُّسَخ يسارًا، والعلاقة يمينًا</text></g>
+<g class="en"><text x="150" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">Instances</text></g><g class="ar"><text x="150" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">النُّسَخ</text></g>
+<rect x="40" y="71" width="96" height="30" rx="6" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="88" y="90" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Linda</text>
+<rect x="40" y="151" width="96" height="30" rx="6" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="88" y="170" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Krishna</text>
+<rect x="40" y="221" width="96" height="30" rx="6" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="88" y="240" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Mel</text>
+<rect x="180" y="57" width="104" height="30" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="232" y="76" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Order 10</text>
+<rect x="180" y="107" width="104" height="30" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="232" y="126" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Order 102</text>
+<rect x="180" y="157" width="104" height="30" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="232" y="176" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Order 77</text>
+<rect x="180" y="221" width="104" height="30" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="232" y="240" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Order 100</text>
+<path d="M136 86 L180 72" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<path d="M136 86 L180 122" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<path d="M136 166 L180 172" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<path d="M136 236 L180 236" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<path d="M320 40 L320 280" style="stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1;fill:none;stroke-dasharray:2 4"/>
+<g class="en"><text x="610" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">The relationship</text></g><g class="ar"><text x="610" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">العلاقة</text></g>
+<rect x="360" y="90" width="180" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="450.0" y="112" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CUSTOMER</text>
+<rect x="690" y="90" width="180" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="780.0" y="112" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ORDER</text>
+<path d="M540 107 L615.0 107" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M615.0 107 L690 107" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M676 107 L690 99" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M676 107 L690 107" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M676 107 L690 115" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="548" y="99" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">place</text>
+<text x="682" y="125" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">placed by</text>
+<text x="615" y="176" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">Each CUSTOMER must place</text>
+<text x="615" y="194" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">one or more ORDERs.</text>
+<text x="615" y="222" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">Each ORDER must be placed by</text>
+<text x="615" y="240" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">one and only one CUSTOMER.</text>
+<rect x="40" y="290" width="830" height="56" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="314" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Each thin line on the left is one link between instances. The one relationship on the right describes all of them.</text></g><g class="ar"><text x="854" y="314" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">كل خط رفيع على اليسار رابط واحد بين نسختين، والعلاقة الواحدة على اليمين تصفها كلها.</text></g>
+<g class="en"><text x="56" y="334" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Linda ordered for her children too, but she owns and pays for orders 10 and 102: she is their one CUSTOMER.</text></g><g class="ar"><text x="854" y="334" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">طلبت ليندا لأطفالها أيضًا، لكنها تملك الطلبين 10 و102 وتدفع ثمنهما: فهي زبونهما الوحيد.</text></g>
+</svg>
+<figcaption><span class="en">The slides' business scenario 1: each <code>ORDER</code> must be placed by one and only one <code>CUSTOMER</code>; each <code>CUSTOMER</code> must place one or more <code>ORDER</code>s.</span><span class="ar">سيناريو العمل 1 في الشرائح: يجب أن يُقدَّم كل <code>ORDER</code> من <code>CUSTOMER</code> واحد فقط لا غير، ويجب أن يقدّم كل <code>CUSTOMER</code> طلبًا <code>ORDER</code> واحدًا أو أكثر.</span></figcaption></figure>
+
+  <div class="exercise">
+    <h4><span class="en">Step 5a · Write <code>orders</code></span><span class="ar">الخطوة 5أ · اكتب <code>orders</code></span></h4>
+    <p class="en"><code>customers(customer_id NUMBER, name)</code> exists. Create <code>orders</code> with <code>order_no</code> (<code>NUMBER</code>, the UID) and whatever column the line needs.</p>
+    <p class="ar">الجدول <code>customers(customer_id NUMBER, name)</code> موجود. أنشئ <code>orders</code> بالعمود <code>order_no</code> (<code>NUMBER</code>، وهو المعرّف الفريد)، وبأيّ عمود يحتاج إليه الخطّ.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR2(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Krishna'), (3,'Mel')"],"sql":"","placeholder":"CREATE TABLE orders ( ... );","grade":{"mode":"state","check":"SELECT ``(alasql.tables.orders||alasql.tables.ORDERS).columns.map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS cols, ``((alasql.tables.orders||alasql.tables.ORDERS).pk?(alasql.tables.orders||alasql.tables.ORDERS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).join(',')`` AS pk, ``(alasql.tables.orders||alasql.tables.ORDERS).columns.filter(function(c){return c.notnull&&((alasql.tables.orders||alasql.tables.ORDERS).pk?(alasql.tables.orders||alasql.tables.ORDERS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).indexOf(c.columnid.toLowerCase())<0}).map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS not_null, ``(alasql.tables.orders||alasql.tables.ORDERS).columns.filter(function(c){return c.foreignkey}).map(function(c){return c.columnid.toLowerCase()+'>'+String(c.foreignkey.tableid).toLowerCase()+'.'+String(c.foreignkey.columnid).toLowerCase()}).sort().join(',')`` AS fk","expected":[{"cols":"customer_id,order_no","pk":"order_no","not_null":"customer_id","fk":"customer_id>customers.customer_id"}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE orders (
+  order_no    NUMBER PRIMARY KEY,
+  customer_id NUMBER NOT NULL
+              REFERENCES customers(customer_id)
+);</code></pre>
+      <p class="en">The crow's foot is at <code>ORDER</code>, so <code>orders</code> carries the key. The <code>ORDER</code> half is solid &mdash; every order has its one customer, Linda for the meals she bought her children &mdash; so the key is <code>NOT NULL</code>.</p>
+      <p class="ar">قدم الغراب عند <code>ORDER</code>، فيحمل <code>orders</code> المفتاح. ونصف <code>ORDER</code> متّصل &mdash; لكل طلب زبونه الواحد، وLinda هي زبونة الوجبات التي اشترتها لطفليها &mdash; فيكون المفتاح <code>NOT NULL</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Step 5b · A new customer's first order</span><span class="ar">الخطوة 5ب · أوّل طلب لزبون جديد</span></h4>
+    <p class="en">Sami walks up to the counter for the first time and places order <code>106</code>. The cashier's statement below fails. Make the script work, so that Sami is customer <code>4</code> and owns order <code>106</code>.</p>
+    <p class="ar">يتقدّم Sami إلى المنضدة أوّل مرّة ويقدّم الطلب <code>106</code>. جملة أمين الصندوق أدناه تفشل. أصلح النصّ البرمجي بحيث يكون Sami الزبون <code>4</code> ويملك الطلب <code>106</code>.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR2(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Krishna'), (3,'Mel')","CREATE TABLE orders (order_no NUMBER PRIMARY KEY, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO orders VALUES (10,1), (102,1), (77,2), (100,3)"],"sql":"INSERT INTO orders VALUES (106, 4);","grade":{"mode":"state","check":"SELECT o.order_no, c.customer_id, c.name FROM orders o JOIN customers c ON o.customer_id = c.customer_id WHERE o.order_no = 106","expected":[{"order_no":106,"customer_id":4,"name":"Sami"}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>INSERT INTO customers VALUES (4, 'Sami');
+INSERT INTO orders VALUES (106, 4);</code></pre>
+      <p class="en">The parent row first, then the child. The same two statements in the other order fail on the first line, because customer <code>4</code> does not exist yet when the order arrives.</p>
+      <p class="ar">صفّ الأصل أوّلًا، ثم صفّ الفرع. والجملتان نفساهما بالترتيب المعاكس تفشلان في السطر الأوّل، لأن الزبون <code>4</code> لا يكون موجودًا بعد حين يصل الطلب.</p>
+    </details>
+  </div>
+
+  <p class="en">One half of this line is still unbuilt. The <code>CUSTOMER</code> end is solid too: <em>each CUSTOMER must place one or more ORDERs</em>. Add a customer with no order and see whether anything objects:</p>
+  <p class="ar">ما زال نصف من هذا الخطّ دون بناء. فطرف <code>CUSTOMER</code> متّصل أيضًا: <em>each CUSTOMER must place one or more ORDERs</em>. أضف زبونًا بلا طلب وانظر هل يعترض شيء:</p>
+  <div class="qb-widget">
+    <script type="application/json" class="wd-config">
+    {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR2(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Krishna'), (3,'Mel')","CREATE TABLE orders (order_no NUMBER PRIMARY KEY, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO orders VALUES (10,1), (102,1), (77,2), (100,3)"],"sql":"INSERT INTO customers VALUES (5, 'Rania');\nSELECT name\nFROM customers\nWHERE customer_id NOT IN (SELECT customer_id FROM orders);"}
+    </script>
+  </div>
+  <div class="output">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th><code>name</code></th></tr></thead>
+        <tbody>
+          <tr><td>Rania</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="en">Rania is saved with no order. A foreign key is a column in the child's row, so it can force every order to have a customer. It has nowhere to stand in <code>customers</code> to force every customer to have an order.</p>
+  <p class="ar">حُفظت Rania بلا طلب. المفتاح الأجنبي عمود في صفّ الفرع، فيستطيع أن يفرض لكل طلب زبونًا. أمّا في <code>customers</code> فلا مكان له يقف فيه ليفرض لكل زبون طلبًا.</p>
+
+  <div class="quiz">
+    <p class="q en">This line has two solid halves. How many of them did your <code>CREATE TABLE</code> enforce?</p>
+    <p class="q ar">لهذا الخطّ نصفان متّصلان. كم منهما فرضته جملة <code>CREATE TABLE</code> التي كتبتها؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Both &mdash; <code>NOT NULL</code> covers the whole line</span><span class="ar">كلاهما &mdash; <code>NOT NULL</code> تغطّي الخطّ كلّه</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">One &mdash; the <code>ORDER</code> half, as <code>orders.customer_id NOT NULL</code></span><span class="ar">واحد &mdash; نصف <code>ORDER</code>، على شكل <code>orders.customer_id NOT NULL</code></span></button></li>
+      <li><button class="opt"><span class="en">None &mdash; foreign keys ignore optionality</span><span class="ar">لا شيء &mdash; المفاتيح الأجنبية تتجاهل الاختيارية</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The half at the crow's foot becomes a constraint on the key column. The half at the single toe has no column to sit on, so the "must" there stays a business rule the application has to keep.</p>
+      <p class="ar">النصف عند قدم الغراب يصير قيدًا على عمود المفتاح. أمّا النصف عند الإصبع المفردة فلا عمود يجلس عليه، فيبقى «must» هناك قاعدة عمل على التطبيق أن يحافظ عليها.</p>
+    </div>
+  </div>
+
+  <h2 id="t3lab-h6"><span class="en">6 · Read the tables back into lines</span><span class="ar">٦ · اقرأ الجداول رجوعًا إلى خطوط</span></h2>
+
+  <p class="en">Go the other way. A table that someone else built still carries the diagram it came from &mdash; the half of it that reaches columns.</p>
+  <p class="ar">اسلك الطريق المعاكس. الجدول الذي بناه غيرك ما زال يحمل المخطّط الذي جاء منه &mdash; أو النصف الذي يصل منه إلى الأعمدة.</p>
+
+  <div class="exercise">
+    <h4><span class="en">Step 6a · From <code>REFERENCES</code> to ERDish</span><span class="ar">الخطوة 6أ · من <code>REFERENCES</code> إلى ERDish</span></h4>
+    <p class="en">The travel agency from Lesson 6 built this table. Write the ERDish sentence the table proves, starting from <code>LANDMARK</code>. Then say what the table cannot tell you about the other direction.</p>
+    <p class="ar">بنت وكالة السفر من الدرس 6 هذا الجدول. اكتب جملة ERDish التي يثبتها الجدول، بدءًا من <code>LANDMARK</code>. ثم قل ما الذي لا يستطيع الجدول أن يخبرك به عن الاتجاه الآخر.</p>
+    <pre class="code" data-lang="sql"><code>CREATE TABLE landmarks (
+  landmark_id NUMBER       PRIMARY KEY,
+  name        VARCHAR2(30) NOT NULL,
+  country_id  VARCHAR2(2)  NOT NULL
+              REFERENCES countries(country_id)
+);</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="erdish"><code>Each LANDMARK must be located in one and only one COUNTRY.</code></pre>
+      <p class="en">One column, so <em>one and only one</em>; <code>NOT NULL</code>, so <em>must</em>. The other end is a crow's foot at <code>LANDMARK</code>, but must or may? The table cannot say: a country with no landmarks is accepted either way, so only the business can answer.</p>
+      <p class="ar">عمود واحد، إذن <em>one and only one</em>، وعليه <code>NOT NULL</code>، إذن <em>must</em>. أمّا الطرف الآخر فقدم غراب عند <code>LANDMARK</code>، لكن هل هو must أم may؟ الجدول لا يستطيع أن يقول: فالدولة التي لا معالم فيها مقبولة في الحالتين، والعمل وحده يجيب.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Step 6b · Find the line built backwards</span><span class="ar">الخطوة 6ب · جِد الخطّ المبنيّ بالمقلوب</span></h4>
+    <p class="en">A first-week intern built the H.R. tables like this. Which line did they build on the wrong side, and what will the company be unable to store?</p>
+    <p class="ar">بنى متدرّب في أسبوعه الأوّل جداول الموارد البشرية هكذا. أيّ خطّ بناه على الطرف الخطأ، وما الذي لن تستطيع الشركة تخزينه؟</p>
+    <pre class="code" data-lang="sql"><code>CREATE TABLE employees (
+  employee_id NUMBER PRIMARY KEY,
+  first_name  VARCHAR2(20) NOT NULL,
+  last_name   VARCHAR2(20) NOT NULL,
+  job_id      VARCHAR2(10) NOT NULL REFERENCES jobs(job_id)
+);
+CREATE TABLE departments (
+  department_id NUMBER PRIMARY KEY,
+  name          VARCHAR2(20) NOT NULL,
+  employee_id   NUMBER REFERENCES employees(employee_id)
+);</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en"><code>work in</code> is backwards. <code>departments.employee_id</code> puts the key at the single-toe end, so Accounting could name Dana or Lawrence or Carlos, but only one. Move it to <code>employees.department_id NUMBER NOT NULL REFERENCES departments(department_id)</code>. The <code>job_id</code> key is right.</p>
+      <p class="ar">الخطّ <code>work in</code> مقلوب. فالعمود <code>departments.employee_id</code> يضع المفتاح عند طرف الإصبع المفردة، فيستطيع قسم المحاسبة أن يسمّي Dana أو Lawrence أو Carlos، لكن واحدًا فقط. انقله إلى <code>employees.department_id NUMBER NOT NULL REFERENCES departments(department_id)</code>. أمّا مفتاح <code>job_id</code> فصحيح.</p>
+    </details>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A table has the column <code>orders.customer_id NUMBER REFERENCES customers(customer_id)</code>, with no <code>NOT NULL</code>. Which half of the line is dashed?</p>
+    <p class="q ar">في جدول العمود <code>orders.customer_id NUMBER REFERENCES customers(customer_id)</code>، دون <code>NOT NULL</code>. أيّ نصف من الخطّ متقطّع؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">The <code>ORDER</code> half: each order <em>may</em> be placed by a customer</span><span class="ar">نصف <code>ORDER</code>: <em>قد</em> يُقدَّم كل طلب من زبون</span></button></li>
+      <li><button class="opt"><span class="en">The <code>CUSTOMER</code> half: a customer may place no orders</span><span class="ar">نصف <code>CUSTOMER</code>: قد لا يقدّم الزبون أيّ طلب</span></button></li>
+      <li><button class="opt"><span class="en">Neither &mdash; <code>REFERENCES</code> makes the line solid</span><span class="ar">لا هذا ولا ذاك &mdash; <code>REFERENCES</code> تجعل الخطّ متّصلًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The missing <code>NOT NULL</code> is on the key, and the key is at the <code>ORDER</code> end &mdash; Lesson 2's version 1, where order 105 was saved with no one to pay for it.</p>
+      <p class="ar"><code>NOT NULL</code> الغائب يخصّ المفتاح، والمفتاح عند طرف <code>ORDER</code> &mdash; إنه الإصدار 1 في الدرس 2، حيث حُفظ الطلب 105 بلا أحد يدفع ثمنه.</p>
+    </div>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · the SQL track</span><span class="ar">خيط · مسار SQL</span></h4>
+    <p class="en"><a href="../chapters/chapter-3.html">SQL Chapter 3 &mdash; Relationships</a> meets the same idea from the other side. It gives <code>books</code> an <code>author_id</code>, inserts rows whose key "should" name an existing author, and follows that key with <code>JOIN</code>. It never writes <code>REFERENCES</code>, so "should" is never checked. This lab adds the two things the diagram knows: <code>REFERENCES</code> turns "should" into "must", and the line's half decides <code>NOT NULL</code>.</p>
+    <p class="ar">يلتقي <a href="../chapters/chapter-3.html">الفصل 3 من مسار SQL &mdash; العلاقات</a> بالفكرة نفسها من الجهة الأخرى. فهو يعطي <code>books</code> عمود <code>author_id</code>، ويُدخل صفوفًا «ينبغي» أن يسمّي مفتاحها مؤلّفًا موجودًا، ثم يتّبع ذلك المفتاح بـ <code>JOIN</code>. ولا يكتب <code>REFERENCES</code> أبدًا، فلا يُفحَص ذلك «ينبغي» قطّ. ويضيف هذا المختبر الأمرين اللذين يعرفهما المخطّط: <code>REFERENCES</code> تحوّل «ينبغي» إلى «يجب»، ونصف الخطّ يقرّر <code>NOT NULL</code>.</p>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">A relationship becomes one foreign key column, declared with <code>REFERENCES</code> to the other table's primary key.</li>
+      <li class="ar">العلاقة تصير عمود مفتاح أجنبي واحدًا، معلنًا بـ <code>REFERENCES</code> إلى المفتاح الأساسي للجدول الآخر.</li>
+      <li class="en">The crow's foot decides which table carries the key; the single toe is the table it points to.</li>
+      <li class="ar">قدم الغراب تقرّر أيّ جدول يحمل المفتاح، والإصبع المفردة هي الجدول الذي يشير إليه.</li>
+      <li class="en">The half of the line at the crow's foot decides <code>NOT NULL</code>: solid adds it, dashed leaves it off.</li>
+      <li class="ar">نصف الخطّ عند قدم الغراب يقرّر <code>NOT NULL</code>: المتّصل يضيفه، والمتقطّع يتركه.</li>
+      <li class="en">A recursive relationship is a key into its own table, and usually nullable, because someone is at the top.</li>
+      <li class="ar">العلاقة الذاتية مفتاح إلى جدوله نفسه، ويقبل null عادةً، لأن أحدًا ما في القمّة.</li>
+      <li class="en">A "must" at the single-toe end has no column to live on; the key cannot enforce it.</li>
+      <li class="ar">«must» عند طرف الإصبع المفردة لا عمود تعيش عليه، ولا يستطيع المفتاح أن يفرضها.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Putting the key at the single-toe end (<code>jobs.employee_id</code>) &mdash; the "many" side can then hold only one.</li>
+      <li class="ar">وضع المفتاح عند طرف الإصبع المفردة (<code>jobs.employee_id</code>) &mdash; فلا يتّسع طرف «المتعدّد» إلا لواحد.</li>
+      <li class="en">Forgetting <code>REFERENCES</code> &mdash; the column runs, and quietly accepts department <code>99</code>.</li>
+      <li class="ar">نسيان <code>REFERENCES</code> &mdash; يعمل العمود، ويقبل القسم <code>99</code> بصمت.</li>
+      <li class="en">Adding <code>NOT NULL</code> to a dashed half &mdash; the managing director can never be saved.</li>
+      <li class="ar">إضافة <code>NOT NULL</code> إلى نصف متقطّع &mdash; فلا تُحفظ المديرة العامّة أبدًا.</li>
+      <li class="en">Inserting the child before its parent &mdash; Sami's order arrives before Sami exists.</li>
+      <li class="ar">إدخال الفرع قبل أصله &mdash; فيصل طلب Sami قبل أن يوجد Sami.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Next: the chapter's <a href="../glossary/t3-glossary.html#t3-glossary">glossary</a>, then <a href="../exams/t3-exam-a.html#t3-exam-a">Chapter Test A</a>. Chapter 4 asks what happens when one entity is really several kinds of thing &mdash; and its lab builds that three different ways.</p>
+    <p class="ar">التالي: <a href="../glossary/t3-glossary.html#t3-glossary">قاموس المصطلحات</a> الخاص بالفصل، ثم <a href="../exams/t3-exam-a.html#t3-exam-a">اختبار الفصل أ</a>. ويسأل الفصل 4 ماذا يحدث حين يكون الكيان الواحد في الحقيقة أنواعًا عدّة &mdash; ويبني مختبره ذلك بثلاث طرق مختلفة.</p>
+  </div>
 
 </section>
 <nav class="pager"></nav>

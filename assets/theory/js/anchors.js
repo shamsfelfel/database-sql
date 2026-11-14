@@ -225,6 +225,12 @@ window.DBTAnchors = {
 "t3l6-s1": "lessons/t3-lesson-06.html",
 "t3l6-s2": "lessons/t3-lesson-06.html",
 "t3l6-s3": "lessons/t3-lesson-06.html",
+"t3lab-h1": "labs/t3-lab.html",
+"t3lab-h2": "labs/t3-lab.html",
+"t3lab-h3": "labs/t3-lab.html",
+"t3lab-h4": "labs/t3-lab.html",
+"t3lab-h5": "labs/t3-lab.html",
+"t3lab-h6": "labs/t3-lab.html",
 "t4-chapter": "chapters/t4.html",
 "t4-exam-a": "exams/t4-exam-a.html",
 "t4-exam-b": "exams/t4-exam-b.html",
@@ -881,6 +887,30 @@ window.DBTHeadings = {
 "t3l6-s3": {
 "ar": "نقل مصفوفة أكبر",
 "en": "Mapping a bigger matrix"
+},
+"t3lab-h1": {
+"ar": "١ · المخطّط، والقاعدة التي يحملها كل خطّ",
+"en": "1 · The diagram, and the rule each line carries"
+},
+"t3lab-h2": {
+"ar": "٢ · work in تصير employees.department_id",
+"en": "2 · work in becomes employees.department_id"
+},
+"t3lab-h3": {
+"ar": "٣ · hold تصير employees.job_id",
+"en": "3 · hold becomes employees.job_id"
+},
+"t3lab-h4": {
+"ar": "٤ · EMPLOYEE يدير EMPLOYEEs",
+"en": "4 · An EMPLOYEE manages EMPLOYEEs"
+},
+"t3lab-h5": {
+"ar": "٥ · وحدك: المطعم",
+"en": "5 · On your own: the restaurant"
+},
+"t3lab-h6": {
+"ar": "٦ · اقرأ الجداول رجوعًا إلى خطوط",
+"en": "6 · Read the tables back into lines"
 },
 "t4idx-h1": {
 "ar": "الدروس",

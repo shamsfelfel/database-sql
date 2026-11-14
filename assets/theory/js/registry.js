@@ -469,7 +469,7 @@ window.DBT_REGISTRY = {
       "ar": "مختبر SQL — العلاقات تصير مفاتيح أجنبية"
      },
      "href": "labs/t3-lab.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t3-glossary",
