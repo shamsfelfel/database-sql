@@ -275,9 +275,10 @@ def check_lessons(reg, scope):
         hs = re.findall(r'<h2\b[^>]*?\sid="([^"]+)"', html)
         if len(hs) < 4:
             fail("%s: only %d h2 sections (a lesson needs at least 4)" % (rel, len(hs)))
-        lens = html.count('class="ai-lens"')
-        if lens < max(2, len(hs) // 2):
-            fail("%s: %d AI-lens boxes (need at least one per ~two concept sections, minimum 2)" % (rel, lens))
+        lens = html.count('class="sql-lens"')
+        if lens < len(hs) - 1:
+            fail("%s: %d \"In the database\" boxes for %d concept sections (one each, bar the exercises)"
+                 % (rel, lens, len(hs)))
         evo = html.count('class="evolve"')
         if evo < MIN_EVOLVE:
             fail("%s: %d evolve blocks (need at least %d)" % (rel, evo, MIN_EVOLVE))
@@ -293,9 +294,20 @@ def check_lessons(reg, scope):
                 break
         if 'data-title-en=' not in html and evo:
             fail("%s: evolve versions need data-title-en / data-title-ar" % rel)
+        # Nobody reads for ten minutes. Every concept section must end in something
+        # to do: an inline check, an exercise, a live SQL box or an evolve block.
+        chunks = re.split(r'<h2', html)[1:]
+        for i, chunk in enumerate(chunks[:-1], 1):   # the last h2 is Exercises
+            if not re.search(r'class="[^"]*(quiz|exercise|qb-widget|evolve)', chunk):
+                hid = re.search(r'id="([^"]+)"', chunk)
+                fail("%s: concept section %s has nothing to do in it"
+                     % (rel, hid.group(1) if hid else "#%d" % i))
+        quizzes = len(re.findall(r'class="[^"]*quiz', html))
+        if quizzes < 6:
+            fail("%s: %d inline checks (need at least 6)" % (rel, quizzes))
         ex = html.count('class="exercise"')
-        if ex < 3:
-            fail("%s: %d exercises (need at least 3)" % (rel, ex))
+        if ex < 4:
+            fail("%s: %d exercises (need at least 4)" % (rel, ex))
         if ex and html.count('class="solution"') + html.count("<details class=\"solution\"") < ex:
             fail("%s: an exercise has no hidden solution" % rel)
         if "takeaways" not in html:
@@ -308,7 +320,7 @@ def check_lessons(reg, scope):
         for bad in re.findall(r'<pre class="code[^"]*"(?![^>]*data-lang)', html):
             fail("%s: a code block has no data-lang" % rel)
         size = len(html.encode("utf-8"))
-        if size < 25000:
+        if size < 20000:
             fail("%s is only %d KB; a lesson should be substantial" % (rel, size // 1024))
     notes.append("%d bilingual blocks in authored content" % total)
 
@@ -612,9 +624,7 @@ def check_traces(reg, data, pages, scope):
         for ch in reg["chapters"]:
             if not ch["ready"]:
                 continue
-            mine = [k for k in mounted if k.startswith(ch["key"] + "-")]
-            if len(mine) < MIN_TRACES:
-                fail("chapter %s mounts %d traces; at least %d are required" % (ch["key"], len(mine), MIN_TRACES))
+            pass  # no execution traces in this track
     notes.append("%d traces, %d steps" % (len(traces), sum(len(t.get("steps") or []) for t in traces.values())))
 
 

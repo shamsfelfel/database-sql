@@ -364,6 +364,28 @@ html[dir="rtl"] .evo-arrow { transform: scaleX(-1); }
 }
 .ai-lens p:last-child { margin-bottom: 0; }
 
+/* "In the database" — the same box as .ai-lens with a database barrel instead of
+   a chip. This track's equivalent of the sibling course's AI lens: what a design
+   decision on the diagram becomes in a real table. */
+.sql-lens {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 12px 16px 14px;
+  margin: 18px 0;
+}
+.sql-lens > h4 {
+  display: flex; align-items: center; gap: 9px;
+  margin: 0 0 6px; font-size: 15px; color: var(--accent);
+}
+.sql-lens > h4::before {
+  content: ""; flex: none; width: 22px; height: 22px;
+  background: var(--accent);
+  -webkit-mask: var(--ic-db) center / contain no-repeat;
+          mask: var(--ic-db) center / contain no-repeat;
+}
+.sql-lens p:last-child { margin-bottom: 0; }
+
 .thread {
   position: relative;
   background: var(--surface);
@@ -396,6 +418,7 @@ html[dir="rtl"] .thread { padding: 12px 50px 16px 16px; }
 .thread p:last-child { margin-bottom: 0; }
 
 :root {
+  --ic-db: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cellipse cx='12' cy='5' rx='8' ry='3'/%3E%3Cpath d='M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5'/%3E%3Cpath d='M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3'/%3E%3C/svg%3E");
   --ic-chip: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='6' y='6' width='12' height='12' rx='2'/%3E%3Crect x='10' y='10' width='4' height='4'/%3E%3Cpath d='M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3'/%3E%3C/svg%3E");
   --ic-chain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5'/%3E%3Cpath d='M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5'/%3E%3C/svg%3E");
   --ic-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12M7 10l5 5 5-5M4 20h16'/%3E%3C/svg%3E");
@@ -560,7 +583,7 @@ ol.steps > li > p:last-child { margin-bottom: 0; }
   .evolve-js.evo-diff .dl.added { background: #e6f4ea; border-left-color: #2e7d32; }
   .code.has-bar > code { padding-top: 12px; }
   details.solution::details-content { content-visibility: visible; }
-  .ai-lens, .thread, .objectives, figure.diagram { break-inside: avoid; }
+  .ai-lens, .sql-lens, .thread, .objectives, figure.diagram { break-inside: avoid; }
 }
 
 /* the objectives list may be the element itself: <ul class="objectives"> */
