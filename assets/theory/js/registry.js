@@ -868,7 +868,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 4 — متعدّد إلى متعدّد، والخاصية التي يخفيها"
      },
      "href": "tests/t5-test-04.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t5-lesson-05",
