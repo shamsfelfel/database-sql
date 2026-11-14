@@ -79,7 +79,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 1 — جدول واحد لا يكفي"
      },
      "href": "tests/t2-test-01.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t2-lesson-02",
