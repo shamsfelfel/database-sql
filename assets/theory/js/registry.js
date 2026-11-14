@@ -324,7 +324,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 1 — ما هي العلاقة"
      },
      "href": "tests/t3-test-01.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t3-lesson-02",
