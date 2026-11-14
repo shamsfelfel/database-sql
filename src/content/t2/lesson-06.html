@@ -1,0 +1,649 @@
+<section class="page" id="t2-lesson-06">
+
+  <span class="kicker">Lesson 6</span>
+  <h1><span class="en">Unique Identifiers and Your First ERD</span><span class="ar">المعرّفات الفريدة وأول مخطط ERD لك</span></h1>
+  <p class="lede en">By the end of this lesson you will be able to choose a unique identifier for an entity and defend the choice, tell a single-attribute UID from a composite one and say when an artificial one is needed, state the four goals of ER modelling, and read a finished ERD &mdash; the H.R. department's &mdash; from end to end.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تختار معرّفًا فريدًا لكيان وأن تدافع عن اختيارك، وأن تميّز المعرّف المكوّن من خاصية واحدة من المعرّف المركّب وتقول متى يلزم معرّف اصطناعي، وأن تذكر الأهداف الأربعة لنمذجة الكيانات والعلاقات، وأن تقرأ مخطط ERD مكتملًا &mdash; مخطط قسم الموارد البشرية &mdash; من أوّله إلى آخره.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> The library has entities (<a href="#t2-lesson-04">lesson 4</a>) and attributes (<a href="#t2-lesson-05">lesson 5</a>). One question is still open from <a href="#t2-lesson-02">lesson 2</a>: two members called Omar Saleh, both in Khan Younis. This lesson answers it, then leaves the library for the slides' last example &mdash; a Human Resources department &mdash; and reads its whole ERD.</p>
+    <p class="ar"><strong>السياق.</strong> صارت للمكتبة كيانات (<a href="#t2-lesson-04">الدرس 4</a>) وخصائص (<a href="#t2-lesson-05">الدرس 5</a>). وما زال سؤال واحد مفتوحًا منذ <a href="#t2-lesson-02">الدرس 2</a>: عضوان اسم كلٍّ منهما Omar Saleh، وكلاهما في خان يونس. يجيب هذا الدرس عنه، ثم يترك المكتبة إلى المثال الأخير في الشرائح &mdash; قسم للموارد البشرية &mdash; ويقرأ مخطط ERD الخاص به كاملًا.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Explain what a unique identifier (UID) does, and find the UID that picks out one instance.</li>
+      <li class="ar">شرح ما يفعله المعرّف الفريد (UID)، وإيجاد المعرّف الذي يختار نسخة واحدة.</li>
+      <li class="en">Tell a single-attribute UID from a composite UID, and say why <code>STUDENT</code> needs an artificial student number.</li>
+      <li class="ar">التمييز بين المعرّف المكوّن من خاصية واحدة والمعرّف المركّب، وبيان لماذا يحتاج <code>STUDENT</code> إلى رقم طالب اصطناعي.</li>
+      <li class="en">Choose a UID for an entity and defend the choice against the alternatives.</li>
+      <li class="ar">اختيار معرّف فريد لكيان، والدفاع عن الاختيار أمام البدائل.</li>
+      <li class="en">List the four goals of ER modelling and name the goal a faulty model breaks.</li>
+      <li class="ar">سرد الأهداف الأربعة لنمذجة الكيانات والعلاقات، وتسمية الهدف الذي يخالفه نموذج معيب.</li>
+      <li class="en">Read the H.R. ERD: its entities, attributes, UIDs and named relationships, and match each to the business scenario.</li>
+      <li class="ar">قراءة مخطط ERD للموارد البشرية: كياناته وخصائصه ومعرّفاته الفريدة وعلاقاته المسمّاة، ومطابقة كلٍّ منها مع سيناريو العمل.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t2l6-h1"><span class="en">1 · Which one?</span><span class="ar">١ · أيّهما؟</span></h2>
+
+  <div class="problem">
+    <p class="en">Omar Saleh rings the library: "I have returned <em>War and Peace</em>." The librarian searches for Omar Saleh and gets two members, both in Khan Younis. Every attribute from lesson 5 &mdash; first name, last name, city &mdash; matches both. Whose loan should be closed?</p>
+    <p class="ar">يتّصل Omar Saleh بالمكتبة: «أعدتُ كتاب <em>War and Peace</em>.» يبحث أمين المكتبة عن Omar Saleh فيجد عضوين، كلاهما في خان يونس. وكل خاصية من الدرس 5 &mdash; الاسم الأول، واسم العائلة، والمدينة &mdash; تطابق الاثنين. فإعارةُ مَن يجب أن تُغلق؟</p>
+  </div>
+
+  <p class="en">Attributes describe an instance; they do not always <em>pick it out</em>. The slides put the question directly: how do you find one specific employee in the company? What information identifies exactly one? The answer is the entity's unique identifier.</p>
+  <p class="ar">الخصائص تصف النسخة، لكنها لا <em>تعيّنها</em> دائمًا. وتطرح الشرائح السؤال مباشرة: كيف تجد موظّفًا بعينه في الشركة؟ وأيّ معلومة تعيّن واحدًا فقط؟ والجواب هو المعرّف الفريد للكيان.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="unique-identifier">unique identifier (UID)</span> is a single attribute, or a combination of attributes, that distinguishes one instance of an entity from every other.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="unique-identifier">المعرّف الفريد</span> (Unique Identifier &mdash; UID) خاصية واحدة، أو تركيبة من الخصائص، تميّز نسخة واحدة من الكيان من كل نسخة أخرى.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-two-omars"><figcaption><span class="en">The two Omar Salehs side by side. Three of the four attributes are identical; only <code>Id</code>, marked <code>#</code>, differs. That is the attribute that answers "which one?".</span><span class="ar">عُمَرا Omar Saleh جنبًا إلى جنب. ثلاث من الخصائص الأربع متطابقة، ولا تختلف إلا <code>Id</code> الموسومة بـ <code>#</code>. وهي الخاصية التي تجيب عن «أيّهما؟».</span></figcaption></figure>
+
+  <h3 id="t2l6-s1"><span class="en">Pick one student from the class</span><span class="ar">اختر طالبًا واحدًا من الصفّ</span></h3>
+
+  <p class="en">The slides' exercise: think about all the students in your classroom. Each is described by several attributes. Which attribute, or attributes, let you pick out a single student from the rest? That is the student's UID. The same need appears everywhere &mdash; one CD in a collection, one transaction on a bank statement.</p>
+  <p class="ar">تمرين الشرائح: فكّر في كل الطلاب في صفّك. يوصف كلٌّ منهم بعدّة خصائص. فأيّ خاصية، أو خصائص، تتيح لك أن تختار طالبًا واحدًا من بين الباقين؟ تلك هي معرّفه الفريد. والحاجة نفسها تظهر في كل مكان &mdash; أسطوانة واحدة في مجموعة، وحركة واحدة في كشف حساب بنكي.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The UID becomes the table's primary key (<a href="#t2-lesson-02">lesson 2</a>). Search by the attributes the caller gave you:</p>
+    <p class="ar">يصبح المعرّف الفريد المفتاح الأساسي للجدول (<a href="#t2-lesson-02">الدرس 2</a>). ابحث بالخصائص التي أعطاك إياها المتّصل:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE members (id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, city VARCHAR(20) NOT NULL)","INSERT INTO members VALUES (1, 'Sara', 'Hamdan', 'Gaza'), (2, 'Omar', 'Saleh', 'Khan Younis'), (3, 'Lina', 'Khalil', 'Gaza'), (4, 'Omar', 'Saleh', 'Khan Younis')"],"sql":"SELECT id, first_name, last_name, city\nFROM members\nWHERE first_name = 'Omar' AND last_name = 'Saleh';"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>id</code></th><th><code>first_name</code></th><th><code>last_name</code></th><th><code>city</code></th></tr></thead>
+          <tbody>
+            <tr><td>2</td><td>Omar</td><td>Saleh</td><td>Khan Younis</td></tr>
+            <tr><td>4</td><td>Omar</td><td>Saleh</td><td>Khan Younis</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Two rows. Now replace the <code>WHERE</code> with <code>WHERE id = 4</code> and run it: exactly one row comes back. A search by UID can never return two instances &mdash; that is the whole point of it.</p>
+    <p class="ar">صفّان. والآن استبدل بشرط <code>WHERE</code> الشرطَ <code>WHERE id = 4</code> وشغّله: يعود صفّ واحد بالضبط. البحث بالمعرّف الفريد لا يمكن أن يعيد نسختين أبدًا &mdash; وهذا هو الغرض منه كلّه.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">What does a UID do that an ordinary attribute such as <code>City</code> does not?</p>
+    <p class="q ar">ماذا يفعل المعرّف الفريد ولا تفعله خاصية عادية مثل <code>City</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">It describes the instance in more detail</span><span class="ar">يصف النسخة بتفصيل أكبر</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">It distinguishes one instance from every other instance</span><span class="ar">يميّز نسخة واحدة من كل نسخة أخرى</span></button></li>
+      <li><button class="opt"><span class="en">It must hold a number</span><span class="ar">يجب أن يحمل رقمًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Every attribute describes; the UID also distinguishes. <code>City</code> is shared by many members, so it cannot pick one out. Nothing says a UID must be a number.</p>
+      <p class="ar">كل خاصية تصف، أمّا المعرّف الفريد فيميّز أيضًا. فـ <code>City</code> يتشاركها أعضاء كثيرون، فلا تستطيع أن تختار واحدًا. ولا شيء يقول إن المعرّف الفريد يجب أن يكون رقمًا.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">On an ERD, which mark tells you an attribute is part of the UID?</p>
+    <p class="q ar">في مخطط ERD، أيّ علامة تخبرك أن الخاصية جزء من المعرّف الفريد؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>*</code></span><span class="ar"><code>*</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>o</code></span><span class="ar"><code>o</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>#</code></span><span class="ar"><code>#</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>#</code> marks the UID, as in lesson 3's <code># * Id</code>. <code>*</code> means mandatory and <code>o</code> optional &mdash; lesson 5.</p>
+      <p class="ar"><code>#</code> تَسِم المعرّف الفريد، كما في <code># * Id</code> في الدرس 3. أمّا <code>*</code> فتعني إلزامية، و<code>o</code> اختيارية &mdash; الدرس 5.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t2l6-h2"><span class="en">2 · One attribute, or a combination</span><span class="ar">٢ · خاصية واحدة، أو تركيبة</span></h2>
+
+  <div class="problem">
+    <p class="en">Matt tries to give <code>BOOK TRANSACTION</code> a UID. <code>Tran Date</code> alone fails: on 5 March, Omar borrowed <em>War and Peace</em> and Sara borrowed <em>Citizen of the World</em>. Two transactions, one date. No single attribute of the transaction tells them apart.</p>
+    <p class="ar">يحاول مات أن يعطي <code>BOOK TRANSACTION</code> معرّفًا فريدًا. <code>Tran Date</code> وحدها تفشل: ففي 5 آذار استعار Omar كتاب <em>War and Peace</em> واستعارت Sara كتاب <em>Citizen of the World</em>. حركتان، وتاريخ واحد. ولا توجد خاصية واحدة في الحركة تميّز بينهما.</p>
+  </div>
+
+  <p class="en">The slides allow for this: a UID is either a single attribute or a combination of attributes. When one attribute is not enough, combine it with another until the combination is unique. Every part of the combination is marked <code>#</code>.</p>
+  <p class="ar">الشرائح تسمح بهذا: المعرّف الفريد إمّا خاصية واحدة وإمّا تركيبة من الخصائص. فإن لم تكفِ خاصية واحدة، فاجمعها مع أخرى حتى تصير التركيبة فريدة. وكل جزء من التركيبة يُوسَم بـ <code>#</code>.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="single-attribute-uid">single-attribute UID</span> is a UID made of exactly one attribute, such as <code>MEMBER</code>'s <code>Id</code>.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="single-attribute-uid">المعرّف ذو الخاصية الواحدة</span> (Single-Attribute UID) معرّف فريد مكوّن من خاصية واحدة بالضبط، مثل <code>Id</code> في <code>MEMBER</code>.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="composite-uid">composite UID</span> is a UID made of two or more attributes whose values are unique only together.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="composite-uid">المعرّف المركّب</span> (Composite UID) معرّف فريد مكوّن من خاصيتين أو أكثر، لا تكون قيمها فريدة إلا مجتمعة.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-uid-kinds"><figcaption><span class="en">Three UIDs. Left: one attribute. Middle: lesson 3's <code>BOOK TRANSACTION</code>, identified by its date <em>and</em> the book &mdash; the bar on the line, which chapter T5 explains, is how the book joins the UID. Right: a combination of natural attributes that still fails.</span><span class="ar">ثلاثة معرّفات فريدة. يسارًا: خاصية واحدة. وفي الوسط: <code>BOOK TRANSACTION</code> من الدرس 3، تُعرَّف بتاريخها <em>و</em>بالكتاب &mdash; والشَّرطة على الخط، التي يشرحها الفصل T5، هي طريقة دخول الكتاب في المعرّف. ويمينًا: تركيبة من خصائص طبيعية تفشل رغم ذلك.</span></figcaption></figure>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Lesson 3's physical model wrote this UID as <code>BOOK_TRANSACTIONS_PK (Tran_Date, BOOKS_Id)</code> &mdash; a primary key of two columns. Try to record Omar borrowing <code>BK002</code> again on 5 March:</p>
+    <p class="ar">كتب النموذج الفيزيائي في الدرس 3 هذا المعرّف هكذا: <code>BOOK_TRANSACTIONS_PK (Tran_Date, BOOKS_Id)</code> &mdash; مفتاح أساسي من عمودين. حاول أن تسجّل استعارة Omar للكتاب <code>BK002</code> مرّة أخرى في 5 آذار:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE book_transactions (tran_date DATE NOT NULL, type VARCHAR(10), members_id NUMBER NOT NULL, books_id VARCHAR(15) NOT NULL, PRIMARY KEY (tran_date, books_id))","INSERT INTO book_transactions VALUES ('2026-03-01','borrow',1,'BK001'), ('2026-03-05','borrow',2,'BK002'), ('2026-03-05','borrow',1,'BK003')"],"sql":"INSERT INTO book_transactions VALUES ('2026-03-05', 'borrow', 4, 'BK002');"}
+      </script>
+    </div>
+    <div class="output">
+      <pre class="code" data-lang="text"><code>Cannot insert record, because it already exists in primary key index</code></pre>
+    </div>
+    <p class="en">Same date, same book: refused. Change the date to <code>'2026-03-06'</code> and it is accepted, and so are the two different books of 5 March. Neither column is unique alone; the pair is. A composite UID is also a business rule: one transaction per book per day.</p>
+    <p class="ar">التاريخ نفسه والكتاب نفسه: مرفوض. غيّر التاريخ إلى <code>'2026-03-06'</code> فيُقبل، كما قُبل الكتابان المختلفان في 5 آذار. لا عمود فريد وحده، أمّا الزوج ففريد. والمعرّف المركّب قاعدة عمل أيضًا: حركة واحدة لكل كتاب في كل يوم.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">An entity's box shows <code># * Tran Date</code> and <code># * Book Id</code>. What kind of UID is this?</p>
+    <p class="q ar">يُظهر صندوق كيان <code># * Tran Date</code> و<code># * Book Id</code>. أيّ نوع من المعرّفات الفريدة هذا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Two UIDs &mdash; the entity can be found either way</span><span class="ar">معرّفان فريدان &mdash; يمكن إيجاد الكيان بأيّهما</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">One composite UID &mdash; the two values are unique together</span><span class="ar">معرّف مركّب واحد &mdash; القيمتان فريدتان مجتمعتين</span></button></li>
+      <li><button class="opt"><span class="en">A single-attribute UID with a mandatory attribute beside it</span><span class="ar">معرّف ذو خاصية واحدة، بجانبه خاصية إلزامية</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Every attribute marked <code>#</code> is part of the same UID. Two transactions may share a date, or share a book, but never both.</p>
+      <p class="ar">كل خاصية موسومة بـ <code>#</code> جزء من المعرّف الفريد نفسه. قد تتشارك حركتان التاريخ، أو الكتاب، لكن لا تتشاركان الاثنين معًا أبدًا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t2l6-h3"><span class="en">3 · When nothing natural works</span><span class="ar">٣ · حين لا ينفع شيء طبيعي</span></h2>
+
+  <div class="problem">
+    <p class="en">Matt tries the combination idea on <code>MEMBER</code>. First name plus last name: the two Omar Salehs collide. Add city: both live in Khan Younis. Add birth date: it works &mdash; this year. Next September a new Omar Saleh, born the same day in the same town, could enrol.</p>
+    <p class="ar">يجرّب مات فكرة التركيبة على <code>MEMBER</code>. الاسم الأول مع اسم العائلة: يتصادم عُمَرا Omar Saleh. أضِف المدينة: كلاهما يسكن خان يونس. أضِف تاريخ الميلاد: تنجح &mdash; هذا العام. وفي أيلول القادم قد يسجّل Omar Saleh جديد، وُلد في اليوم نفسه وفي البلدة نفسها.</p>
+  </div>
+
+  <p class="en">The lecturer's notes make the same argument for <code>STUDENT</code>. The name? No &mdash; two students can share a name. Date of birth? No &mdash; two can be born on the same day. For almost any combination of student attributes, it is at least <em>possible</em> that two students share it.</p>
+  <p class="ar">تسوق ملاحظات المحاضِرة الحجّة نفسها عن <code>STUDENT</code>. الاسم؟ لا &mdash; فقد يشترك طالبان في الاسم. تاريخ الميلاد؟ لا &mdash; فقد يولد اثنان في اليوم نفسه. ولأيّ تركيبة تقريبًا من خصائص الطالب، من <em>الممكن</em> على الأقلّ أن يشترك فيها طالبان.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="artificial-uid">artificial UID</span> is an attribute the business invents only to identify instances, such as a student number, because no natural attribute is guaranteed unique.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="artificial-uid">المعرّف الاصطناعي</span> (Artificial UID) خاصية يخترعها العمل لتعريف النسخ فقط، مثل رقم الطالب، لأن أيّ خاصية طبيعية لا تضمن التفرّد.</p>
+  </div>
+
+  <h3 id="t2l6-s2"><span class="en">The student number</span><span class="ar">رقم الطالب</span></h3>
+
+  <div class="evolve" id="t2l6-e1">
+    <div class="ver" data-title-en="Version 1 — the name" data-title-ar="الإصدار 1 — الاسم">
+      <pre class="code" data-lang="text"><code>MEMBER
+  # * First Name   # * Last Name   * City</code></pre>
+      <p class="en">Defect: not unique. The two Omar Salehs have the same UID value, so the model cannot hold both of them &mdash; or cannot say which one returned the book.</p>
+      <p class="ar">العيب: ليس فريدًا. لعُمَرَي Omar Saleh قيمة المعرّف نفسها، فلا يستطيع النموذج أن يحمل الاثنين &mdash; أو لا يستطيع أن يقول أيّهما أعاد الكتاب.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — name and city" data-title-ar="الإصدار 2 — الاسم والمدينة">
+      <pre class="code" data-lang="text"><code>MEMBER
+  # * First Name   # * Last Name   # * City</code></pre>
+      <p class="en">Defect: still not unique. Both Omars live in Khan Younis. Adding an attribute only helps if the duplicates differ in it.</p>
+      <p class="ar">العيب: ما زال غير فريد. كلا العُمَرين يسكن خان يونس. وإضافة خاصية لا تفيد إلا إذا اختلفت فيها النسخ المكرّرة.</p>
+    </div>
+    <div class="ver" data-title-en="Version 3 — name, city and birth date" data-title-ar="الإصدار 3 — الاسم والمدينة وتاريخ الميلاد">
+      <pre class="code" data-lang="text"><code>MEMBER
+  # * First Name   # * Last Name   # * City   # * Birth Date</code></pre>
+      <p class="en">Defect: unique today by luck, not by design. Two people with the same name, town and birthday are possible. And if Sara moves to Rafah, her UID changes.</p>
+      <p class="ar">العيب: فريد اليوم بالمصادفة، لا بالتصميم. فمن الممكن أن يوجد شخصان لهما الاسم والبلدة وتاريخ الميلاد أنفسها. وإن انتقلت Sara إلى رفح، تغيّر معرّفها.</p>
+    </div>
+    <div class="ver" data-title-en="Version 4 — an artificial Id" data-title-ar="الإصدار 4 — Id اصطناعية">
+      <pre class="code" data-lang="text"><code>MEMBER
+  # * Id   * First Name   * Last Name   * City   * Birth Date</code></pre>
+      <p class="en">Fixed: the library issues a number to every member and never issues it twice. Unique by design, one short attribute, and it never changes when a member moves. This is lesson 3's logical model.</p>
+      <p class="ar">أُصلح: تصدر المكتبة رقمًا لكل عضو ولا تصدره مرّتين أبدًا. فريد بالتصميم، وخاصية واحدة قصيرة، ولا يتغيّر حين ينتقل العضو. وهذا هو النموذج المنطقي في الدرس 3.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 2 as a table: the primary key is the three natural columns. The first Omar Saleh is already in. Enrol the second:</p>
+    <p class="ar">الإصدار 2 جدولًا: المفتاح الأساسي هو الأعمدة الطبيعية الثلاثة. وOmar Saleh الأول موجود سلفًا. سجّل الثاني:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE members (first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, city VARCHAR(20) NOT NULL, PRIMARY KEY (first_name, last_name, city))","INSERT INTO members VALUES ('Sara', 'Hamdan', 'Gaza'), ('Omar', 'Saleh', 'Khan Younis')"],"sql":"INSERT INTO members VALUES ('Omar', 'Saleh', 'Khan Younis');"}
+      </script>
+    </div>
+    <div class="output">
+      <pre class="code" data-lang="text"><code>Cannot insert record, because it already exists in primary key index</code></pre>
+    </div>
+    <p class="en">The database is doing its job &mdash; and turning a real person away. A bad UID does not fail quietly; it blocks the business. With version 4's <code>id</code> column, section 1's table held both Omars without complaint.</p>
+    <p class="ar">قاعدة البيانات تؤدّي عملها &mdash; وتردّ شخصًا حقيقيًّا. المعرّف السيّئ لا يفشل بصمت، بل يعطّل العمل. ومع عمود <code>id</code> في الإصدار 4، حمل جدول القسم 1 العُمَرين معًا دون اعتراض.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why do schools give every <code>STUDENT</code> a student ID instead of using name and date of birth?</p>
+    <p class="q ar">لماذا تعطي المدارس كل <code>STUDENT</code> رقمًا جامعيًّا بدلًا من استعمال الاسم وتاريخ الميلاد؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Numbers take less space than names</span><span class="ar">الأرقام تشغل مساحة أقلّ من الأسماء</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Two students could share a name and a birth date; an issued number is unique by design</span><span class="ar">قد يشترك طالبان في الاسم وتاريخ الميلاد، أمّا الرقم المُصدَر ففريد بالتصميم</span></button></li>
+      <li><button class="opt"><span class="en">Names are optional attributes</span><span class="ar">الأسماء خصائص اختيارية</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">This is the lecturer's argument: for almost any combination of student attributes, two students could share it. So the school creates an artificial student number.</p>
+      <p class="ar">هذه حجّة المحاضِرة: لأيّ تركيبة تقريبًا من خصائص الطالب، قد يشترك فيها طالبان. لذلك تنشئ المدرسة رقم طالب اصطناعيًّا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t2l6-h4"><span class="en">4 · Defending a UID</span><span class="ar">٤ · الدفاع عن معرّف فريد</span></h2>
+
+  <div class="problem">
+    <p class="en">At the review meeting the faculty member asks: "Why is <code>Id</code> the UID of <code>BOOK</code>? Titles are unique in our library &mdash; your own model marks <code>Title</code> with <code>U</code>." Matt must defend his choice, not just repeat it.</p>
+    <p class="ar">في اجتماع المراجعة يسأل عضو هيئة التدريس: «لماذا <code>Id</code> هي المعرّف الفريد للكيان <code>BOOK</code>؟ العناوين فريدة في مكتبتنا &mdash; ونموذجك نفسه يَسِم <code>Title</code> بـ <code>U</code>.» على مات أن يدافع عن اختياره، لا أن يكرّره فحسب.</p>
+  </div>
+
+  <p class="en">A defence is three questions, each built on something you already know. Is it unique for <em>every</em> instance, now and later &mdash; by design, not by luck? Does every instance have a value? The slides always draw the UID as <code># *</code>. And will the value stay the same? Lesson 5 said to prefer the non-volatile attribute; a UID needs that most of all.</p>
+  <p class="ar">الدفاع ثلاثة أسئلة، كلٌّ منها مبني على شيء تعرفه. هل هو فريد لـ<em>كل</em> نسخة، الآن ولاحقًا &mdash; بالتصميم لا بالمصادفة؟ وهل لكل نسخة قيمة له؟ فالشرائح ترسم المعرّف الفريد دائمًا <code># *</code>. وهل ستبقى القيمة كما هي؟ فقد قال الدرس 5 أن تفضّل الخاصية غير المتقلّبة، والمعرّف الفريد أحوج الخصائص إلى ذلك.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Question</th><th class="ar">السؤال</th><th class="en"><code>Title</code></th><th class="ar"><code>Title</code></th><th class="en"><code>Id</code></th><th class="ar"><code>Id</code></th></tr></thead>
+      <tbody>
+        <tr><td class="en">Unique for every book?</td><td class="ar">فريد لكل كتاب؟</td><td class="en">yes, by the library's rule (<code>U</code>)</td><td class="ar">نعم، بقاعدة المكتبة (<code>U</code>)</td><td class="en">yes, by design</td><td class="ar">نعم، بالتصميم</td></tr>
+        <tr><td class="en">Always has a value?</td><td class="ar">له قيمة دائمًا؟</td><td class="en">yes (<code>*</code>)</td><td class="ar">نعم (<code>*</code>)</td><td class="en">yes (<code>*</code>)</td><td class="ar">نعم (<code>*</code>)</td></tr>
+        <tr><td class="en">Never changes?</td><td class="ar">لا يتغيّر أبدًا؟</td><td class="en">no &mdash; a misspelt title gets corrected</td><td class="ar">لا &mdash; العنوان المكتوب خطأً يُصحَّح</td><td class="en">yes &mdash; nobody has a reason to change <code>BK002</code></td><td class="ar">نعم &mdash; لا سبب لدى أحد لتغيير <code>BK002</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="t2l6-s3"><span class="en">Unique is not the same as UID</span><span class="ar">الفريد ليس هو المعرّف الفريد</span></h3>
+
+  <p class="en">So <code>Id</code> wins, and <code>Title</code> keeps its <code>U</code>: still unique, just not the identifier. The H.R. scenario later in this lesson settles the question in the business's own words: "Each employee is assigned a unique employee number." "Each department has a unique number." The business has already chosen an artificial UID for you.</p>
+  <p class="ar">إذن تفوز <code>Id</code>، وتحتفظ <code>Title</code> بعلامة <code>U</code>: ما زالت فريدة، لكنها ليست المعرّف. وسيناريو الموارد البشرية لاحقًا في هذا الدرس يحسم السؤال بكلمات العمل نفسه: «يُعطى كل موظّف رقم موظّف فريدًا.» «لكل قسم رقم فريد.» لقد اختار العمل لك معرّفًا اصطناعيًّا سلفًا.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The UID becomes the <code>PRIMARY KEY</code>; the other unique attribute becomes a <code>UNIQUE</code> key (lesson 2's UK). Both refuse duplicates. Add a second copy of <em>War and Peace</em> under a new id:</p>
+    <p class="ar">يصبح المعرّف الفريد <code>PRIMARY KEY</code>، وتصبح الخاصية الفريدة الأخرى مفتاحًا <code>UNIQUE</code> (المفتاح الفريد UK في الدرس 2). وكلاهما يرفض التكرار. أضف نسخة ثانية من <em>War and Peace</em> برقم جديد:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE books (id VARCHAR(15) PRIMARY KEY, title VARCHAR(50) NOT NULL UNIQUE)","INSERT INTO books VALUES ('BK001','A Vision'), ('BK002','War and Peace')"],"sql":"INSERT INTO books VALUES ('BK005', 'War and Peace');"}
+      </script>
+    </div>
+    <div class="output">
+      <pre class="code" data-lang="text"><code>Cannot insert record, because it already exists in unique index</code></pre>
+    </div>
+    <p class="en">The difference is what other tables point at. Every row of <code>book_transactions</code> stores <code>books_id</code>, not the title. Correct a title and one row changes; had <code>Title</code> been the UID, every transaction that mentions the book would have to change with it.</p>
+    <p class="ar">الفرق هو ما تشير إليه الجداول الأخرى. فكل صفّ في <code>book_transactions</code> يخزّن <code>books_id</code>، لا العنوان. صحّح عنوانًا فيتغيّر صفّ واحد؛ ولو كانت <code>Title</code> هي المعرّف الفريد، لوجب أن تتغيّر معه كل حركة تذكر الكتاب.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A classmate proposes <code>Cell Phone</code> as the UID of <code>MEMBER</code>. Which defence question does it fail first?</p>
+    <p class="q ar">يقترح زميلٌ <code>Cell Phone</code> معرّفًا فريدًا للكيان <code>MEMBER</code>. أيّ أسئلة الدفاع يفشل فيه أوّلًا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">It is not a character string</span><span class="ar">ليس سلسلة محارف</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Does every instance have a value? &mdash; lesson 5 made it optional; Lina has no phone</span><span class="ar">هل لكل نسخة قيمة له؟ &mdash; جعله الدرس 5 اختياريًّا، وليس لدى Lina هاتف</span></button></li>
+      <li><button class="opt"><span class="en">None &mdash; phone numbers are unique, so it is a good UID</span><span class="ar">ولا واحد &mdash; أرقام الهواتف فريدة، فهو معرّف جيّد</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A UID is <code># *</code>: every instance needs a value. <code>Cell Phone</code> is <code>o</code>, so Lina could not be identified at all. It also changes when a member gets a new number.</p>
+      <p class="ar">المعرّف الفريد <code># *</code>: كل نسخة تحتاج إلى قيمة له. أمّا <code>Cell Phone</code> فهي <code>o</code>، فلن يمكن تعريف Lina إطلاقًا. ثم إنها تتغيّر حين يحصل العضو على رقم جديد.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t2l6-h5"><span class="en">5 · The four goals of ER modelling</span><span class="ar">٥ · الأهداف الأربعة لنمذجة الكيانات والعلاقات</span></h2>
+
+  <div class="problem">
+    <p class="en">Think of your school record. Since your first day, data about you has been captured: absences, discipline, classes taken, grades earned. Now a teacher needs your Grade 7 maths mark. If it was never stored, stored in three places, or stored somewhere nobody would think to look, the record has failed you.</p>
+    <p class="ar">فكّر في سجلّك المدرسي. منذ يومك الأول تُجمع بيانات عنك: الغياب، والانضباط، والمواد التي درستها، والعلامات التي نلتها. والآن يحتاج معلّم إلى علامتك في رياضيات الصف السابع. فإن لم تُخزَّن قطّ، أو خُزّنت في ثلاثة أماكن، أو في مكان لا يخطر لأحد أن يبحث فيه، فقد خذلك السجلّ.</p>
+  </div>
+
+  <p class="en">That data must be stored logically, so records can be found and updated easily and efficiently. <span class="term" data-term="er-modeling">Entity relationship modelling</span> &mdash; building the ERM of <a href="#t2-lesson-03">lesson 3</a>, usually drawn as an ERD &mdash; has four goals that make sure it is.</p>
+  <p class="ar">يجب أن تُخزَّن تلك البيانات بطريقة منطقية، حتى يمكن إيجاد السجلّات وتحديثها بسهولة وكفاءة. و<span class="term" data-term="er-modeling">نمذجة الكيانات والعلاقات</span> (Entity Relationship Modeling) &mdash; أي بناء نموذج ERM من <a href="#t2-lesson-03">الدرس 3</a>، الذي يُرسم عادةً مخططَ ERD &mdash; لها أربعة أهداف تضمن ذلك.</p>
+
+  <div class="note">
+    <p class="en"><strong>The <span class="term" data-term="er-modeling-goals">four goals of ER modelling</span>.</strong> (1) Capture all required data. (2) Ensure that data appears only once. (3) Model no data that is derivable from other data already modelled. (4) Locate data in a predictable, logical place.</p>
+    <p class="ar"><strong><span class="term" data-term="er-modeling-goals">الأهداف الأربعة لنمذجة الكيانات والعلاقات</span> (Goals of ER Modeling).</strong> (1) التقاط كل البيانات المطلوبة. (2) ضمان ظهور البيانات مرّة واحدة فقط. (3) عدم نمذجة أيّ بيانات يمكن اشتقاقها من بيانات أخرى منمذجة سلفًا. (4) وضع البيانات في مكان منطقي يمكن توقّعه.</p>
+  </div>
+
+  <h3 id="t2l6-s4"><span class="en">Capture everything, store it once</span><span class="ar">التقط كل شيء، وخزّنه مرّة واحدة</span></h3>
+
+  <p class="en">Goal 1 is checked against the business's own words: every fact it says it needs must have a home. Goal 2 is lesson 1's lesson: a fact stored twice will one day disagree with itself. Watch both in a first draft of the H.R. model:</p>
+  <p class="ar">يُفحص الهدف 1 بمقارنته بكلمات العمل نفسه: كل حقيقة يقول إنه يحتاج إليها يجب أن يكون لها مكان. والهدف 2 هو درس الدرس 1: الحقيقة المخزّنة مرّتين ستخالف نفسها يومًا ما. راقب الهدفين في مسوّدة أولى لنموذج الموارد البشرية:</p>
+
+  <div class="evolve" id="t2l6-e2">
+    <div class="ver" data-title-en="Version 1 — something is missing" data-title-ar="الإصدار 1 — شيء ما ناقص">
+      <pre class="code" data-lang="text"><code>EMPLOYEE
+  # * Employee ID   * First Name   * Last Name   * Hire Date   * Salary</code></pre>
+      <p class="en">Defect, goal 1: the scenario says "for each employee on commission, we also need to track his/her potential commission". There is nowhere to put it. The model is clean and incomplete.</p>
+      <p class="ar">العيب، الهدف 1: يقول السيناريو «لكل موظّف يعمل بالعمولة، نحتاج أيضًا إلى تتبّع عمولته المحتملة». ولا مكان لوضعها. النموذج نظيف وناقص.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — too much" data-title-ar="الإصدار 2 — أكثر من اللازم">
+      <pre class="code" data-lang="text"><code>EMPLOYEE
+  # * Employee ID   * First Name   * Last Name   * Hire Date   * Salary
+  o Commission      * Years of Service           * Department Name
+
+DEPARTMENT
+  # * Department ID   * Name   * Employee Count</code></pre>
+      <p class="en">Commission is captured. But goal 2: the department's name is in both entities. Goal 3: <code>Years of Service</code> can be worked out from <code>Hire Date</code>, and <code>Employee Count</code> by counting employees.</p>
+      <p class="ar">التُقطت العمولة. لكنّ الهدف 2: اسم القسم موجود في الكيانين. والهدف 3: يمكن حساب <code>Years of Service</code> من <code>Hire Date</code>، و<code>Employee Count</code> بعدّ الموظّفين.</p>
+    </div>
+    <div class="ver" data-title-en="Version 3 — all four goals met" data-title-ar="الإصدار 3 — الأهداف الأربعة متحقّقة">
+      <pre class="code" data-lang="text"><code>EMPLOYEE
+  # * Employee ID   * First Name   * Last Name   * Hire Date   * Salary
+  o Commission
+
+DEPARTMENT
+  # * Department ID   * Name
+
+EMPLOYEE  works in / responsible for  DEPARTMENT</code></pre>
+      <p class="en">Fixed: every required fact has a home; the department's name lives once, in <code>DEPARTMENT</code>, reached through the relationship; nothing derivable is stored. These are exactly the slides' two boxes.</p>
+      <p class="ar">أُصلح: لكل حقيقة مطلوبة مكان، واسم القسم يعيش مرّة واحدة في <code>DEPARTMENT</code> ويُوصل إليه عبر العلاقة، ولا شيء قابل للاشتقاق مخزَّن. وهذان بالضبط صندوقا الشرائح.</p>
+    </div>
+  </div>
+
+  <h3 id="t2l6-s5"><span class="en">Derive, do not store &mdash; and put it where it belongs</span><span class="ar">اشتقّ ولا تخزّن &mdash; وضعه حيث ينتمي</span></h3>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="derivable-data">Derivable data</span> is a value that can be worked out from data already in the model, such as an age from a birth date or a count from the rows it counts.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="derivable-data">البيانات القابلة للاشتقاق</span> (Derivable Data) قيمة يمكن حسابها من بيانات موجودة في النموذج سلفًا، مثل العمر من تاريخ الميلاد، أو العدد من الصفوف التي يعدّها.</p>
+  </div>
+
+  <p class="en">Goal 4 asks: where would anyone expect this fact? A department's location describes the department, so it belongs with <code>DEPARTMENT</code>, not copied into every employee. If you have to search, the model has failed goal 4.</p>
+  <p class="ar">ويسأل الهدف 4: أين يتوقّع أيّ أحد أن يجد هذه الحقيقة؟ موقع القسم يصف القسم، فمكانه مع <code>DEPARTMENT</code>، لا منسوخًا في كل موظّف. وإن اضطررت إلى البحث، فقد فشل النموذج في الهدف 4.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 2 was built. Accounting (department 10) had three employees when <code>employee_count</code> was typed; Huda Nasser joined in February 2026. Ask the stored column:</p>
+    <p class="ar">بُني الإصدار 2. كان في Accounting (القسم 10) ثلاثة موظّفين حين كُتبت <code>employee_count</code>، ثم انضمّت Huda Nasser في شباط 2026. اسأل العمود المخزَّن:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE departments (department_id NUMBER PRIMARY KEY, name VARCHAR(30) NOT NULL, employee_count NUMBER)","INSERT INTO departments VALUES (10,'Accounting',3), (15,'Sales',1), (22,'Development',1)","CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, hire_date DATE NOT NULL, salary NUMBER NOT NULL, commission NUMBER, department_id NUMBER NOT NULL)","INSERT INTO employees VALUES (100,'Dana','Smith','2015-03-01',9000,NULL,10), (310,'Tyler','Adams','2019-06-15',4800,600,15), (210,'Lawrence','Chen','2017-01-09',6200,NULL,10), (405,'Carlos','Gomez','2021-09-20',4100,NULL,10), (378,'Neil','Loungani','2018-11-02',7000,NULL,22), (512,'Huda','Nasser','2026-02-01',3900,NULL,10)"],"sql":"SELECT name, employee_count\nFROM departments\nWHERE department_id = 10;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>name</code></th><th><code>employee_count</code></th></tr></thead>
+          <tbody><tr><td>Accounting</td><td>3</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Now derive it from the employees themselves:</p>
+    <p class="ar">والآن اشتقّه من الموظّفين أنفسهم:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE departments (department_id NUMBER PRIMARY KEY, name VARCHAR(30) NOT NULL, employee_count NUMBER)","INSERT INTO departments VALUES (10,'Accounting',3), (15,'Sales',1), (22,'Development',1)","CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, hire_date DATE NOT NULL, salary NUMBER NOT NULL, commission NUMBER, department_id NUMBER NOT NULL)","INSERT INTO employees VALUES (100,'Dana','Smith','2015-03-01',9000,NULL,10), (310,'Tyler','Adams','2019-06-15',4800,600,15), (210,'Lawrence','Chen','2017-01-09',6200,NULL,10), (405,'Carlos','Gomez','2021-09-20',4100,NULL,10), (378,'Neil','Loungani','2018-11-02',7000,NULL,22), (512,'Huda','Nasser','2026-02-01',3900,NULL,10)"],"sql":"SELECT COUNT(*) AS counted\nFROM employees\nWHERE department_id = 10;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>counted</code></th></tr></thead>
+          <tbody><tr><td>4</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">The stored <code>3</code> is wrong; the derived <code>4</code> cannot be. Nobody forgot anything &mdash; nobody was ever told that hiring Huda meant updating a second table. Goal 3 removes the column, and the mistake with it.</p>
+    <p class="ar"><code>3</code> المخزّنة خاطئة، و<code>4</code> المشتقّة لا يمكن أن تخطئ. لم ينسَ أحد شيئًا &mdash; فلم يقل أحد لأحد قطّ إن توظيف Huda يعني تحديث جدول ثانٍ. والهدف 3 يحذف العمود، ويحذف الخطأ معه.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A model stores both <code>Hire Date</code> and <code>Years of Service</code> for each <code>EMPLOYEE</code>. Which goal does it break?</p>
+    <p class="q ar">يخزّن نموذجٌ <code>Hire Date</code> و<code>Years of Service</code> معًا لكل <code>EMPLOYEE</code>. أيّ هدف يخالف؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Goal 1 &mdash; capture all required data</span><span class="ar">الهدف 1 &mdash; التقاط كل البيانات المطلوبة</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Goal 3 &mdash; model no data derivable from other data</span><span class="ar">الهدف 3 &mdash; عدم نمذجة بيانات قابلة للاشتقاق من بيانات أخرى</span></button></li>
+      <li><button class="opt"><span class="en">Goal 4 &mdash; locate data in a predictable place</span><span class="ar">الهدف 4 &mdash; وضع البيانات في مكان يمكن توقّعه</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Years of service can be worked out from the hire date at any moment. Stored, it goes stale every year &mdash; the same trap as storing age in lesson 5.</p>
+      <p class="ar">يمكن حساب سنوات الخدمة من تاريخ التوظيف في أيّ لحظة. وإن خُزّنت صارت قديمة كل سنة &mdash; الفخّ نفسه الذي في تخزين العمر في الدرس 5.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Where should the location of the Sales department be recorded?</p>
+    <p class="q ar">أين يجب أن يُسجَّل موقع قسم Sales؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">In each <code>EMPLOYEE</code> of Sales, so it is close to hand</span><span class="ar">في كل <code>EMPLOYEE</code> من Sales، ليكون في المتناول</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">With the department &mdash; the place anyone would look for a department's location</span><span class="ar">مع القسم &mdash; المكان الذي يبحث فيه أيّ أحد عن موقع القسم</span></button></li>
+      <li><button class="opt"><span class="en">Nowhere &mdash; it can be derived from the employees</span><span class="ar">في أيّ مكان &mdash; يمكن اشتقاقه من الموظّفين</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Goal 4: a predictable, logical place. Copying it into every employee would also break goal 2. In the full H.R. ERD it goes one step further: <code>DEPARTMENT</code> is <code>located in</code> a <code>LOCATION</code>.</p>
+      <p class="ar">الهدف 4: مكان منطقي يمكن توقّعه. ونسخه في كل موظّف يخالف الهدف 2 أيضًا. وفي مخطط ERD الكامل للموارد البشرية يذهب خطوة أبعد: <code>DEPARTMENT</code> <code>located in</code> كيانٍ <code>LOCATION</code>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 6 -->
+  <h2 id="t2l6-h6"><span class="en">6 · Your first ERD: the H.R. department</span><span class="ar">٦ · أول مخطط ERD لك: قسم الموارد البشرية</span></h2>
+
+  <div class="problem">
+    <p class="en">The manager of a Human Resources department hands you three paragraphs and says, "Build me this." Twenty facts in prose, and no way to check you understood them. You need a picture both of you can point at, correct, and agree on.</p>
+    <p class="ar">يسلّمك مدير قسم موارد بشرية ثلاث فقرات ويقول: «ابنِ لي هذا.» عشرون حقيقة في نصّ نثري، ولا طريقة للتحقّق من أنك فهمتها. تحتاج إلى صورة يستطيع كلاكما أن يشير إليها، ويصحّحها، ويتّفق عليها.</p>
+  </div>
+
+  <p class="en">That picture is the ERD. The lecturer compares it to a set of blueprints: the plan you check <em>before</em> building. Pictures help &mdash; think of describing a gift to someone who has never seen it. Here is the scenario, from the slides:</p>
+  <p class="ar">تلك الصورة هي مخطط ERD. وتشبّهه المحاضِرة بمجموعة من المخطّطات الهندسية (blueprints): الخطّة التي تفحصها <em>قبل</em> البناء. فالصور تساعد &mdash; فكّر في وصف هدية لشخص لم يرها قطّ. وهذا هو السيناريو، من الشرائح:</p>
+
+  <div class="note">
+    <p class="en">"We need to store data about each of our company's employees. We need to track each employee's first name, last name, job or position, hire date and salary. For each employee on commission, we also need to track his/her potential commission. Each employee is assigned a unique employee number."</p>
+    <p class="ar">«نحتاج إلى تخزين بيانات عن كل موظّف في شركتنا. ونحتاج إلى تتبّع الاسم الأول لكل موظّف، واسم عائلته، ووظيفته أو منصبه، وتاريخ توظيفه، وراتبه. ولكل موظّف يعمل بالعمولة، نحتاج أيضًا إلى تتبّع عمولته المحتملة. ويُعطى كل موظّف رقم موظّف فريدًا.»</p>
+    <p class="en">"Our company is divided into departments. Each employee reports to a department &mdash; for example, accounting, sales or development. We need to know the department responsible for each employee and the department location. Each department has a unique number."</p>
+    <p class="ar">«شركتنا مقسّمة إلى أقسام. ويتبع كل موظّف قسمًا &mdash; مثل المحاسبة أو المبيعات أو التطوير. ونحتاج إلى معرفة القسم المسؤول عن كل موظّف، وموقع القسم. ولكل قسم رقم فريد.»</p>
+    <p class="en">"Some of the employees are managers. We need to know each employee's manager and all of the employees that are managed by each manager."</p>
+    <p class="ar">«بعض الموظّفين مديرون. ونحتاج إلى معرفة مدير كل موظّف، وكل الموظّفين الذين يديرهم كل مدير.»</p>
+  </div>
+
+  <h3 id="t2l6-s6"><span class="en">From scenario to boxes</span><span class="ar">من السيناريو إلى الصناديق</span></h3>
+
+  <p class="en">The nouns that have their own facts become entities; the facts become attributes; "unique number" becomes <code>#</code>. The links between things become a <span class="term" data-term="relationship">relationship</span> &mdash; a line between two entities, named at both ends. Watch the model grow:</p>
+  <p class="ar">الأسماء التي لها حقائقها الخاصة تصبح كيانات، والحقائق تصبح خصائص، و«الرقم الفريد» يصبح <code>#</code>. أمّا الروابط بين الأشياء فتصبح <span class="term" data-term="relationship">علاقة</span> (Relationship) &mdash; خطًّا بين كيانين، مسمّى عند طرفيه. راقب النموذج وهو يكبر:</p>
+
+  <div class="evolve" id="t2l6-e3">
+    <div class="ver" data-title-en="Version 1 — one entity holds everything" data-title-ar="الإصدار 1 — كيان واحد يحمل كل شيء">
+      <figure class="diagram" data-diagram="t2-hr-v1"></figure>
+      <p class="en">Defect: goal 2. Accounting's name and location are copied into every Accounting employee, and the third copy is already misspelt. <code>Job</code> and <code>Manager Name</code> copy facts about other things in the same way.</p>
+      <p class="ar">العيب: الهدف 2. يُنسخ اسم Accounting وموقعه في كل موظّف من Accounting، والنسخة الثالثة مكتوبة خطأً منذ الآن. و<code>Job</code> و<code>Manager Name</code> تنسخان حقائق عن أشياء أخرى بالطريقة نفسها.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — DEPARTMENT becomes an entity" data-title-ar="الإصدار 2 — DEPARTMENT يصبح كيانًا">
+      <figure class="diagram" data-diagram="t2-hr-v2"></figure>
+      <p class="en">Fixed: each department is stored once and linked by <code>works in</code> / <code>responsible for</code>. Still open: a manager is already an <code>EMPLOYEE</code>, so storing the manager's name copies it; a job and a location have facts of their own.</p>
+      <p class="ar">أُصلح: يُخزَّن كل قسم مرّة واحدة ويُربط بـ <code>works in</code> / <code>responsible for</code>. وما زال مفتوحًا: المدير <code>EMPLOYEE</code> أصلًا، فتخزين اسمه نسخٌ له؛ والوظيفة والموقع لكلٍّ منهما حقائقه الخاصة.</p>
+    </div>
+    <div class="ver" data-title-en="Version 3 — the lecturer's ERD" data-title-ar="الإصدار 3 — مخطط المحاضِرة">
+      <figure class="diagram" data-diagram="t2-hr-erd"></figure>
+      <p class="en">Fixed: <code>JOB</code> and <code>LOCATION</code> are entities, and the manager is a line from <code>EMPLOYEE</code> back to <code>EMPLOYEE</code>. The location is modelled in more detail than the scenario asked, out to <code>COUNTRY</code> and <code>REGION</code>. This is the recommended model.</p>
+      <p class="ar">أُصلح: صار <code>JOB</code> و<code>LOCATION</code> كيانين، وصار المدير خطًّا من <code>EMPLOYEE</code> عائدًا إلى <code>EMPLOYEE</code>. ونُمذج الموقع بتفصيل أكبر ممّا طلب السيناريو، حتى <code>COUNTRY</code> و<code>REGION</code>. وهذا هو النموذج الموصى به.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="recursive-relationship">recursive relationship</span> is a relationship between an entity and itself, such as an <code>EMPLOYEE</code> who is the <code>manager of</code> other <code>EMPLOYEE</code>s.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="recursive-relationship">العلاقة الذاتية</span> (Recursive Relationship) علاقة بين كيان ونفسه، مثل <code>EMPLOYEE</code> هو <code>manager of</code> موظّفين آخرين من <code>EMPLOYEE</code>.</p>
+  </div>
+
+  <h3 id="t2l6-s7"><span class="en">Reading it end to end</span><span class="ar">قراءته من أوّله إلى آخره</span></h3>
+
+  <p class="en">Read an ERD in three passes. <strong>Boxes:</strong> six entities, each a singular noun. <strong>Marks:</strong> in each box, the <code>#</code> line is the UID, <code>*</code> lines must have a value, <code>o</code> lines may be null &mdash; only <code>Commission</code>, because only some employees are on commission. <strong>Lines:</strong> read each name from the entity it sits next to.</p>
+  <p class="ar">اقرأ مخطط ERD في ثلاث جولات. <strong>الصناديق:</strong> ستة كيانات، كلٌّ منها اسم مفرد. <strong>العلامات:</strong> في كل صندوق، سطر <code>#</code> هو المعرّف الفريد، وسطور <code>*</code> يجب أن تكون لها قيمة، وسطور <code>o</code> يجوز أن تكون null &mdash; وهي <code>Commission</code> وحدها، لأن بعض الموظّفين فقط يعملون بالعمولة. <strong>الخطوط:</strong> اقرأ كل اسم من الكيان الذي يقع بجانبه.</p>
+  <p class="en">So: an employee <code>works in</code> a department; a department is <code>responsible for</code> employees. An employee is <code>assigned</code> a job. A department is <code>located in</code> a location, which is <code>situated</code> in a country, which is <code>part of</code> a region. The dashes and crow's feet say "may" and "many" &mdash; chapter T3 teaches you to read them exactly.</p>
+  <p class="ar">إذن: الموظّف <code>works in</code> قسمًا، والقسم <code>responsible for</code> موظّفين. والموظّف <code>assigned</code> وظيفة. والقسم <code>located in</code> موقعًا، والموقع <code>situated</code> في دولة، والدولة <code>part of</code> إقليم. أمّا الخطوط المتقطّعة وأقدام الغراب فتقول «يجوز» و«كثير» &mdash; ويعلّمك الفصل T3 قراءتها بدقّة.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Each entity becomes a table and each UID its primary key. The recursive relationship becomes a column, <code>manager_id</code>, holding another row's <code>employee_id</code>. "All of the employees managed by each manager" is then one query &mdash; here, for Dana Smith (100):</p>
+    <p class="ar">يصبح كل كيان جدولًا، وكل معرّف فريد مفتاحه الأساسي. وتصبح العلاقة الذاتية عمودًا، <code>manager_id</code>، يحمل <code>employee_id</code> لصفّ آخر. ويصير «كل الموظّفين الذين يديرهم كل مدير» استعلامًا واحدًا &mdash; وهنا لـ Dana Smith (100):</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, hire_date DATE NOT NULL, salary NUMBER NOT NULL, commission NUMBER, department_id NUMBER, manager_id NUMBER)","INSERT INTO employees VALUES (100,'Dana','Smith','2015-03-01',9000,NULL,10,NULL), (310,'Tyler','Adams','2019-06-15',4800,600,15,100), (210,'Lawrence','Chen','2017-01-09',6200,NULL,10,100), (405,'Carlos','Gomez','2021-09-20',4100,NULL,10,210), (378,'Neil','Loungani','2018-11-02',7000,NULL,22,100)"],"sql":"SELECT employee_id, first_name, last_name\nFROM employees\nWHERE manager_id = 100\nORDER BY employee_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>employee_id</code></th><th><code>first_name</code></th><th><code>last_name</code></th></tr></thead>
+          <tbody>
+            <tr><td>210</td><td>Lawrence</td><td>Chen</td></tr>
+            <tr><td>310</td><td>Tyler</td><td>Adams</td></tr>
+            <tr><td>378</td><td>Neil</td><td>Loungani</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Change <code>100</code> to <code>210</code>: Lawrence Chen manages Carlos Gomez. The manager's name is never stored twice &mdash; it is found through the UID, exactly as version 3 of the evolve block promised.</p>
+    <p class="ar">غيّر <code>100</code> إلى <code>210</code>: يدير Lawrence Chen الموظّف Carlos Gomez. ولا يُخزَّن اسم المدير مرّتين أبدًا &mdash; بل يُوجد عبر المعرّف الفريد، كما وعد الإصدار 3 في كتلة التطوّر تمامًا.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · the SQL track</span><span class="ar">خيط · مسار SQL</span></h4>
+    <p class="en"><a href="@/chapters/chapter-1.html">SQL Chapter 1</a> and <a href="@/chapters/chapter-2.html">Chapter 2</a> hand you tables that already have a key and query them. They never ask why <code>employee_id</code> is the key and not the name. That decision was made here, on the ERD, by the defence in section 4. The <a href="#t2-lab">chapter lab</a> turns this chapter's diagram into <code>CREATE TABLE</code> statements.</p>
+    <p class="ar">يعطيك <a href="@/chapters/chapter-1.html">الفصل 1 من مسار SQL</a> و<a href="@/chapters/chapter-2.html">الفصل 2</a> جداول لها مفتاح سلفًا، وتستعلم عنها. ولا يسألان أبدًا لماذا <code>employee_id</code> هو المفتاح لا الاسم. ذلك قرار اتُّخذ هنا، على مخطط ERD، بالدفاع الذي في القسم 4. ويحوّل <a href="#t2-lab">مختبر الفصل</a> مخطط هذا الفصل إلى جمل <code>CREATE TABLE</code>.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the H.R. ERD, why is <code>Commission</code> marked <code>o</code> while <code>Salary</code> is marked <code>*</code>?</p>
+    <p class="q ar">في مخطط ERD للموارد البشرية، لماذا وُسمت <code>Commission</code> بـ <code>o</code> بينما وُسمت <code>Salary</code> بـ <code>*</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Commission is derivable from salary</span><span class="ar">العمولة قابلة للاشتقاق من الراتب</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Only employees on commission have one; every employee has a salary</span><span class="ar">لا تكون إلا للموظّفين الذين يعملون بالعمولة، أمّا الراتب فلكل موظّف</span></button></li>
+      <li><button class="opt"><span class="en">Commission is part of the UID</span><span class="ar">العمولة جزء من المعرّف الفريد</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The scenario says "for each employee on commission" &mdash; so for the others the value is null. That is lesson 5's optional attribute, read straight off the business's words.</p>
+      <p class="ar">يقول السيناريو «لكل موظّف يعمل بالعمولة» &mdash; فقيمتها عند الآخرين null. وهذه هي الخاصية الاختيارية من الدرس 5، مقروءةً مباشرة من كلمات العمل.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The scenario says "we need to know each employee's manager". Where is that in the ERD?</p>
+    <p class="q ar">يقول السيناريو «نحتاج إلى معرفة مدير كل موظّف». أين يظهر ذلك في مخطط ERD؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">An attribute <code>Manager Name</code> in <code>EMPLOYEE</code></span><span class="ar">خاصية <code>Manager Name</code> في <code>EMPLOYEE</code></span></button></li>
+      <li><button class="opt"><span class="en">A separate entity <code>MANAGER</code></span><span class="ar">كيان مستقلّ <code>MANAGER</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The recursive relationship <code>manager of</code> / <code>managed by</code> on <code>EMPLOYEE</code></span><span class="ar">العلاقة الذاتية <code>manager of</code> / <code>managed by</code> على <code>EMPLOYEE</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A manager is an employee, already stored in <code>EMPLOYEE</code>. A <code>Manager Name</code> attribute would store the name twice (goal 2); a <code>MANAGER</code> entity would duplicate employees. The loop links one employee to another.</p>
+      <p class="ar">المدير موظّف، مخزَّن أصلًا في <code>EMPLOYEE</code>. فخاصية <code>Manager Name</code> ستخزّن الاسم مرّتين (الهدف 2)، وكيان <code>MANAGER</code> سيكرّر الموظّفين. أمّا الحلقة فتربط موظّفًا بموظّف آخر.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t2l6-h7"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Choose and defend a UID</span><span class="ar">تمرين 1 · اختر معرّفًا فريدًا ودافع عنه</span></h4>
+    <p class="en">The slides name three things that must be told apart: one CD in your collection, one transaction on a financial statement, one student in a classroom. For each, propose a UID, say whether it is single-attribute or composite, natural or artificial, and defend it with the three questions of section 4.</p>
+    <p class="ar">تسمّي الشرائح ثلاثة أشياء يجب التمييز بينها: أسطوانة واحدة في مجموعتك، وحركة واحدة في كشف حساب مالي، وطالب واحد في الصفّ. اقترح لكلٍّ منها معرّفًا فريدًا، وقل هل هو ذو خاصية واحدة أم مركّب، وطبيعي أم اصطناعي، ودافع عنه بأسئلة القسم 4 الثلاثة.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en"><code>CD</code>: the title fails &mdash; two albums can share one &mdash; so give each CD a catalogue number: single, artificial. <code>TRANSACTION</code>: amount and date can repeat, so the bank's transaction number: single, artificial. <code>STUDENT</code>: the lecturer's own answer, a student ID: single, artificial. Each is unique by design, always present, and never changes.</p>
+      <p class="ar"><code>CD</code>: العنوان يفشل &mdash; فقد يشترك ألبومان في عنوان واحد &mdash; فأعطِ كل أسطوانة رقم فهرسة: ذو خاصية واحدة، اصطناعي. و<code>TRANSACTION</code>: المبلغ والتاريخ قد يتكرّران، فرقم الحركة الذي يصدره البنك: ذو خاصية واحدة، اصطناعي. و<code>STUDENT</code>: جواب المحاضِرة نفسها، الرقم الجامعي: ذو خاصية واحدة، اصطناعي. كلٌّ منها فريد بالتصميم، وموجود دائمًا، ولا يتغيّر أبدًا.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Which goal is broken?</span><span class="ar">تمرين 2 · أيّ هدف مخالَف؟</span></h4>
+    <p class="en">Name the goal of ER modelling each fragment breaks, and repair it.</p>
+    <p class="ar">سمِّ هدف نمذجة الكيانات والعلاقات الذي يخالفه كل مقطع، وأصلحه.</p>
+    <pre class="code" data-lang="text"><code>(a) BOOK       # * Id   U * Title   * Publisher Name   * Publisher Phone
+(b) MEMBER     # * Id   * First Name   * Last Name   * Books On Loan Count
+(c) MEMBER     # * Id   * First Name                  -- the library posts reminder letters
+(d) AUTHOR     # * Id   * Name   * Department Location</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) Goal 2: the publisher's details repeat in every book &mdash; keep them once in <code>PUBLISHER</code>. (b) Goal 3: the count can be derived by counting <code>BOOK TRANSACTION</code>s &mdash; remove it. (c) Goal 1: a letter needs an address &mdash; add <code>Last Name</code>, <code>Street Address</code>, <code>City</code>, <code>ZIP</code>. (d) Goal 4: a location does not describe an author &mdash; remove it; nobody would look for it there.</p>
+      <p class="ar">(a) الهدف 2: تفاصيل الناشر تتكرّر في كل كتاب &mdash; احتفظ بها مرّة واحدة في <code>PUBLISHER</code>. (b) الهدف 3: يمكن اشتقاق العدد بعدّ <code>BOOK TRANSACTION</code> &mdash; احذفه. (c) الهدف 1: الرسالة تحتاج إلى عنوان &mdash; أضف <code>Last Name</code> و<code>Street Address</code> و<code>City</code> و<code>ZIP</code>. (d) الهدف 4: الموقع لا يصف المؤلف &mdash; احذفه؛ فلن يبحث عنه أحد هناك.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Read the H.R. ERD</span><span class="ar">تمرين 3 · اقرأ مخطط ERD للموارد البشرية</span></h4>
+    <p class="en">Using version 3 of the evolve block in section 6, answer: (a) What is the UID of <code>LOCATION</code>? (b) Which entity holds <code>Max Salary</code>, and why not <code>EMPLOYEE</code>? (c) Read the line between <code>DEPARTMENT</code> and <code>LOCATION</code> from both ends. (d) Which scenario sentence became the recursive relationship?</p>
+    <p class="ar">مستعينًا بالإصدار 3 من كتلة التطوّر في القسم 6، أجب: (a) ما المعرّف الفريد للكيان <code>LOCATION</code>؟ (b) أيّ كيان يحمل <code>Max Salary</code>، ولماذا ليس <code>EMPLOYEE</code>؟ (c) اقرأ الخط بين <code>DEPARTMENT</code> و<code>LOCATION</code> من طرفيه. (d) أيّ جملة في السيناريو صارت العلاقة الذاتية؟</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) <code># Location ID</code>. (b) <code>JOB</code>: the salary range describes the job, and every employee in that job shares it &mdash; goals 2 and 4. (c) A department is <code>located in</code> a location; a location is the <code>address of</code> departments. (d) "We need to know each employee's manager and all of the employees that are managed by each manager."</p>
+      <p class="ar">(a) <code># Location ID</code>. (b) <code>JOB</code>: نطاق الراتب يصف الوظيفة، ويتشاركه كل موظّف فيها &mdash; الهدفان 2 و4. (c) القسم <code>located in</code> موقعًا، والموقع <code>address of</code> أقسام. (d) «نحتاج إلى معرفة مدير كل موظّف، وكل الموظّفين الذين يديرهم كل مدير.»</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Mark the library's UIDs</span><span class="ar">تمرين 4 · ضع المعرّفات الفريدة للمكتبة</span></h4>
+    <p class="en">Back to the library. For <code>MEMBER</code>, <code>BOOK</code>, <code>AUTHOR</code> and <code>PUBLISHER</code>, write the UID line and one sentence defending it. Then say why <code>AUTHOR</code>'s <code>Name</code> would be a weak UID.</p>
+    <p class="ar">عودة إلى المكتبة. اكتب لكلٍّ من <code>MEMBER</code> و<code>BOOK</code> و<code>AUTHOR</code> و<code>PUBLISHER</code> سطر المعرّف الفريد، وجملة واحدة تدافع عنه. ثم قل لماذا ستكون <code>Name</code> في <code>AUTHOR</code> معرّفًا فريدًا ضعيفًا.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Each gets <code># * Id</code>, as in lesson 3's logical model: issued by the library, unique by design, always present, never changed. <code>AUTHOR</code>'s <code>Name</code> is weak because two authors can share a name, exactly like the two Omar Salehs &mdash; uniqueness by luck, not by design.</p>
+      <p class="ar">يأخذ كلٌّ منها <code># * Id</code>، كما في النموذج المنطقي في الدرس 3: تصدره المكتبة، وهو فريد بالتصميم، وموجود دائمًا، ولا يتغيّر أبدًا. أمّا <code>Name</code> في <code>AUTHOR</code> فضعيفة لأن مؤلّفَين قد يشتركان في الاسم، تمامًا مثل عُمَرَي Omar Saleh &mdash; تفرّد بالمصادفة لا بالتصميم.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Build part of the H.R. ERD</span><span class="ar">تمرين 5 · ابنِ جزءًا من مخطط ERD للموارد البشرية</span></h4>
+    <p class="en">Create <code>departments</code> and <code>employees</code> from the ERD: each UID a <code>PRIMARY KEY</code>, each <code>*</code> <code>NOT NULL</code>, <code>commission</code> nullable, plus <code>department_id</code> and <code>manager_id</code> columns for the two relationships. Insert department 10 (Accounting), Dana Smith (100, no manager) and Lawrence Chen (210, managed by 100). List who Dana manages.</p>
+    <p class="ar">أنشئ <code>departments</code> و<code>employees</code> من مخطط ERD: كل معرّف فريد <code>PRIMARY KEY</code>، وكل <code>*</code> قيد <code>NOT NULL</code>، و<code>commission</code> قابلة لـ null، مع عمودَي <code>department_id</code> و<code>manager_id</code> للعلاقتين. أضف القسم 10 (Accounting)، وDana Smith (100، بلا مدير)، وLawrence Chen (210، يديره 100). ثم اسرد من تديرهم Dana.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"explore","objects":true,"dataset":{},"sql":""}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE departments (
+  department_id NUMBER      PRIMARY KEY,
+  name          VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE employees (
+  employee_id   NUMBER      PRIMARY KEY,
+  first_name    VARCHAR(20) NOT NULL,
+  last_name     VARCHAR(20) NOT NULL,
+  hire_date     DATE        NOT NULL,
+  salary        NUMBER      NOT NULL,
+  commission    NUMBER,
+  department_id NUMBER,
+  manager_id    NUMBER
+);
+
+INSERT INTO departments VALUES (10, 'Accounting');
+INSERT INTO employees VALUES (100, 'Dana', 'Smith', '2015-03-01', 9000, NULL, 10, NULL);
+INSERT INTO employees VALUES (210, 'Lawrence', 'Chen', '2017-01-09', 6200, NULL, 10, 100);
+
+SELECT first_name, last_name
+FROM employees
+WHERE manager_id = 100;</code></pre>
+      <div class="output">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th><code>first_name</code></th><th><code>last_name</code></th></tr></thead>
+            <tbody><tr><td>Lawrence</td><td>Chen</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="en">Both UIDs became primary keys; the department's name is stored once, in <code>departments</code>. Whether <code>department_id</code> and <code>manager_id</code> must be filled, and how the database checks they point at real rows, is chapter T3.</p>
+      <p class="ar">صار المعرّفان الفريدان مفتاحين أساسيين، واسم القسم مخزَّن مرّة واحدة في <code>departments</code>. أمّا هل يجب ملء <code>department_id</code> و<code>manager_id</code>، وكيف تتحقّق قاعدة البيانات من أنهما يشيران إلى صفوف حقيقية، فموضوع الفصل T3.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">A UID is a single attribute or a combination of attributes that distinguishes one instance from every other. It is marked <code>#</code> and becomes the primary key.</li>
+      <li class="ar">المعرّف الفريد خاصية واحدة أو تركيبة من الخصائص تميّز نسخة واحدة من كل نسخة أخرى. يُوسَم بـ <code>#</code> ويصبح المفتاح الأساسي.</li>
+      <li class="en">When no single attribute is unique, combine attributes: a composite UID, every part marked <code>#</code>.</li>
+      <li class="ar">حين لا تكون خاصية واحدة فريدة، اجمع الخصائص: معرّف مركّب، كل جزء منه موسوم بـ <code>#</code>.</li>
+      <li class="en">For people, almost any natural combination could repeat, so the business invents an artificial UID &mdash; a student number, an employee number.</li>
+      <li class="ar">في حالة الأشخاص، قد تتكرّر أيّ تركيبة طبيعية تقريبًا، فيخترع العمل معرّفًا اصطناعيًّا &mdash; رقمًا جامعيًّا، أو رقم موظّف.</li>
+      <li class="en">Defend a UID with three questions: unique by design? always present? never changes? Another unique attribute keeps its <code>U</code>.</li>
+      <li class="ar">دافع عن المعرّف الفريد بثلاثة أسئلة: فريد بالتصميم؟ موجود دائمًا؟ لا يتغيّر أبدًا؟ أمّا الخاصية الفريدة الأخرى فتحتفظ بعلامة <code>U</code>.</li>
+      <li class="en">The four goals of ER modelling: capture all required data; data appears only once; no derivable data; a predictable, logical place.</li>
+      <li class="ar">الأهداف الأربعة لنمذجة الكيانات والعلاقات: التقاط كل البيانات المطلوبة؛ وظهور البيانات مرّة واحدة؛ ولا بيانات قابلة للاشتقاق؛ ومكان منطقي يمكن توقّعه.</li>
+      <li class="en">Read an ERD in three passes: boxes, marks, lines &mdash; each relationship named at both ends, read from the entity beside the name.</li>
+      <li class="ar">اقرأ مخطط ERD في ثلاث جولات: الصناديق، فالعلامات، فالخطوط &mdash; وكل علاقة مسمّاة عند طرفيها، وتُقرأ من الكيان المجاور للاسم.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Using a name, or name plus city, as a UID because it happens to be unique today.</li>
+      <li class="ar">استعمال الاسم، أو الاسم مع المدينة، معرّفًا فريدًا لأنه فريد اليوم بالمصادفة.</li>
+      <li class="en">Choosing an optional or volatile attribute (<code>Cell Phone</code>, <code>Title</code> that may be corrected) as the UID.</li>
+      <li class="ar">اختيار خاصية اختيارية أو متقلّبة (<code>Cell Phone</code>، أو <code>Title</code> قد يُصحَّح) معرّفًا فريدًا.</li>
+      <li class="en">Reading two <code>#</code> marks as two separate UIDs instead of one composite UID.</li>
+      <li class="ar">قراءة علامتَي <code>#</code> على أنهما معرّفان فريدان منفصلان بدلًا من معرّف مركّب واحد.</li>
+      <li class="en">Storing counts, totals or years of service that can be derived.</li>
+      <li class="ar">تخزين أعداد أو مجاميع أو سنوات خدمة يمكن اشتقاقها.</li>
+      <li class="en">Storing a manager's name in <code>EMPLOYEE</code> instead of drawing the recursive relationship.</li>
+      <li class="ar">تخزين اسم المدير في <code>EMPLOYEE</code> بدلًا من رسم العلاقة الذاتية.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="#t2-test-06">Test 6 &mdash; Unique Identifiers and Your First ERD</a>. Then the <a href="#t2-lab">chapter lab</a> builds the library's tables from its ERD. Chapter T3 returns to the H.R. diagram and teaches you to read every line end: must or may, one or many.</p>
+    <p class="ar">اختبر نفسك بـ<a href="#t2-test-06">اختبار 6 &mdash; المعرّفات الفريدة وأول مخطط ERD لك</a>. ثم يبني <a href="#t2-lab">مختبر الفصل</a> جداول المكتبة من مخطط ERD الخاص بها. ويعود الفصل T3 إلى مخطط الموارد البشرية، ويعلّمك قراءة كل طرف خط: يجب أم يجوز، واحد أم كثير.</p>
+  </div>
+
+</section>

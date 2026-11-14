@@ -1,0 +1,20 @@
+/* Topic tags of T2 lesson 6 -- Unique Identifiers and Your First ERD. */
+window.DBTTopics = window.DBTTopics || {};
+window.DBTTopics["t2-uid"] = { en: "Unique identifier (UID)", ar: "المعرّف الفريد (UID)", href: "t2l6-h1" };
+window.DBTTopics["t2-uid-pick-one"] = { en: "Picking one instance out of many", ar: "اختيار نسخة واحدة من بين كثيرات", href: "t2l6-s1" };
+window.DBTTopics["t2-uid-as-primary-key"] = { en: "A UID becomes the primary key", ar: "المعرّف الفريد يصبح المفتاح الأساسي", href: "t2l6-h1" };
+window.DBTTopics["t2-single-attribute-uid"] = { en: "Single-attribute UID", ar: "المعرّف ذو الخاصية الواحدة", href: "t2l6-h2" };
+window.DBTTopics["t2-composite-uid"] = { en: "Composite UID", ar: "المعرّف المركّب", href: "t2l6-h2" };
+window.DBTTopics["t2-artificial-uid"] = { en: "Artificial UID", ar: "المعرّف الاصطناعي", href: "t2l6-h3" };
+window.DBTTopics["t2-student-number"] = { en: "Why STUDENT needs a student number", ar: "لماذا يحتاج STUDENT إلى رقم طالب", href: "t2l6-s2" };
+window.DBTTopics["t2-uid-defence"] = { en: "Choosing and defending a UID", ar: "اختيار المعرّف الفريد والدفاع عنه", href: "t2l6-h4" };
+window.DBTTopics["t2-uid-vs-unique"] = { en: "UID (#) versus unique attribute (U)", ar: "المعرّف الفريد (#) مقابل الخاصية الفريدة (U)", href: "t2l6-s3" };
+window.DBTTopics["t2-er-goals"] = { en: "The four goals of ER modelling", ar: "الأهداف الأربعة لنمذجة الكيانات والعلاقات", href: "t2l6-h5" };
+window.DBTTopics["t2-goal-capture-once"] = { en: "Capture all required data, once", ar: "التقاط كل البيانات المطلوبة، مرّة واحدة", href: "t2l6-s4" };
+window.DBTTopics["t2-derivable-data"] = { en: "No derivable data", ar: "لا بيانات قابلة للاشتقاق", href: "t2l6-s5" };
+window.DBTTopics["t2-predictable-place"] = { en: "A predictable, logical place", ar: "مكان منطقي يمكن توقّعه", href: "t2l6-s5" };
+window.DBTTopics["t2-hr-scenario"] = { en: "The H.R. business scenario", ar: "سيناريو عمل الموارد البشرية", href: "t2l6-h6" };
+window.DBTTopics["t2-scenario-to-erd"] = { en: "From scenario to ERD", ar: "من السيناريو إلى مخطط ERD", href: "t2l6-s6" };
+window.DBTTopics["t2-relationship"] = { en: "Relationship, named at both ends", ar: "العلاقة، مسمّاة عند طرفيها", href: "t2l6-s6" };
+window.DBTTopics["t2-recursive-relationship"] = { en: "Recursive relationship", ar: "العلاقة الذاتية", href: "t2l6-s6" };
+window.DBTTopics["t2-reading-erd"] = { en: "Reading an ERD end to end", ar: "قراءة مخطط ERD من أوّله إلى آخره", href: "t2l6-s7" };

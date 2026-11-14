@@ -25,6 +25,27 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "artificial-uid",
+  "term": {
+   "en": "Artificial UID",
+   "ar": "المعرّف الاصطناعي"
+  },
+  "def": {
+   "en": "An attribute the business invents only to identify instances, such as a student or employee number, because no natural attribute is guaranteed unique.",
+   "ar": "خاصية يخترعها العمل لتعريف النسخ فقط، مثل رقم الطالب أو رقم الموظّف، لأن أيّ خاصية طبيعية لا تضمن التفرّد."
+  },
+  "cat": {
+   "en": "Identifiers",
+   "ar": "المعرّفات"
+  },
+  "see": [
+   "unique-identifier"
+  ],
+  "used": [
+   "t2l6-h3"
+  ]
+ },
+ {
   "id": "attribute",
   "term": {
    "en": "Attribute",
@@ -134,6 +155,28 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l2-s2"
+  ]
+ },
+ {
+  "id": "composite-uid",
+  "term": {
+   "en": "Composite UID",
+   "ar": "المعرّف المركّب"
+  },
+  "def": {
+   "en": "A UID made of two or more attributes whose values are unique only together; every part is marked #.",
+   "ar": "معرّف فريد مكوّن من خاصيتين أو أكثر لا تكون قيمها فريدة إلا مجتمعة؛ ويُوسَم كل جزء منه بـ #."
+  },
+  "cat": {
+   "en": "Identifiers",
+   "ar": "المعرّفات"
+  },
+  "see": [
+   "unique-identifier",
+   "single-attribute-uid"
+  ],
+  "used": [
+   "t2l6-h2"
   ]
  },
  {
@@ -291,6 +334,28 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "derivable-data",
+  "term": {
+   "en": "Derivable data",
+   "ar": "البيانات القابلة للاشتقاق"
+  },
+  "def": {
+   "en": "A value that can be worked out from data already in the model, such as an age from a birth date or a count from the rows it counts; it should not be modelled.",
+   "ar": "قيمة يمكن حسابها من بيانات موجودة في النموذج سلفًا، مثل العمر من تاريخ الميلاد أو العدد من الصفوف التي يعدّها؛ ولا ينبغي أن تُنمذج."
+  },
+  "cat": {
+   "en": "ER modelling",
+   "ar": "نمذجة الكيانات والعلاقات"
+  },
+  "see": [
+   "er-modeling-goals",
+   "volatile"
+  ],
+  "used": [
+   "t2l6-s5"
+  ]
+ },
+ {
   "id": "entity",
   "term": {
    "en": "Entity",
@@ -355,6 +420,29 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l3-h3"
+  ]
+ },
+ {
+  "id": "er-modeling",
+  "term": {
+   "en": "Entity relationship modelling",
+   "ar": "نمذجة الكيانات والعلاقات"
+  },
+  "def": {
+   "en": "The work of building an entity relationship model of a business's data, usually drawn as an ERD.",
+   "ar": "عمل بناء نموذج الكيانات والعلاقات لبيانات عمل ما، ويُرسم عادةً مخططَ ERD."
+  },
+  "cat": {
+   "en": "ER modelling",
+   "ar": "نمذجة الكيانات والعلاقات"
+  },
+  "see": [
+   "er-modeling-goals",
+   "entity-relationship-model",
+   "erd"
+  ],
+  "used": [
+   "t2l6-h5"
   ]
  },
  {
@@ -443,6 +531,29 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l2-h3"
+  ]
+ },
+ {
+  "id": "er-modeling-goals",
+  "term": {
+   "en": "Goals of ER modelling",
+   "ar": "أهداف نمذجة الكيانات والعلاقات"
+  },
+  "def": {
+   "en": "The four goals: capture all required data; ensure data appears only once; model no data derivable from other data; locate data in a predictable, logical place.",
+   "ar": "الأهداف الأربعة: التقاط كل البيانات المطلوبة؛ وضمان ظهور البيانات مرّة واحدة فقط؛ وعدم نمذجة بيانات قابلة للاشتقاق من بيانات أخرى؛ ووضع البيانات في مكان منطقي يمكن توقّعه."
+  },
+  "cat": {
+   "en": "ER modelling",
+   "ar": "نمذجة الكيانات والعلاقات"
+  },
+  "see": [
+   "er-modeling",
+   "derivable-data",
+   "data-redundancy"
+  ],
+  "used": [
+   "t2l6-h5"
   ]
  },
  {
@@ -799,6 +910,27 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "recursive-relationship",
+  "term": {
+   "en": "Recursive relationship",
+   "ar": "العلاقة الذاتية"
+  },
+  "def": {
+   "en": "A relationship between an entity and itself, such as an EMPLOYEE who is the manager of other EMPLOYEEs.",
+   "ar": "علاقة بين كيان ونفسه، مثل EMPLOYEE هو مدير موظّفين آخرين من EMPLOYEE."
+  },
+  "cat": {
+   "en": "ER modelling",
+   "ar": "نمذجة الكيانات والعلاقات"
+  },
+  "see": [
+   "relationship"
+  ],
+  "used": [
+   "t2l6-s6"
+  ]
+ },
+ {
   "id": "relational-database",
   "term": {
    "en": "Relational database",
@@ -822,6 +954,29 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "relationship",
+  "term": {
+   "en": "Relationship",
+   "ar": "العلاقة"
+  },
+  "def": {
+   "en": "A link between two entities, or between an entity and itself, drawn as a line on an ERD and named at both ends.",
+   "ar": "رابط بين كيانين، أو بين كيان ونفسه، يُرسم خطًّا في الـ ERD ويُسمّى عند طرفيه."
+  },
+  "cat": {
+   "en": "ER modelling",
+   "ar": "نمذجة الكيانات والعلاقات"
+  },
+  "see": [
+   "recursive-relationship",
+   "entity",
+   "foreign-key"
+  ],
+  "used": [
+   "t2l6-s6"
+  ]
+ },
+ {
   "id": "row",
   "term": {
    "en": "Row",
@@ -842,6 +997,28 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l2-h1"
+  ]
+ },
+ {
+  "id": "single-attribute-uid",
+  "term": {
+   "en": "Single-attribute UID",
+   "ar": "المعرّف ذو الخاصية الواحدة"
+  },
+  "def": {
+   "en": "A UID made of exactly one attribute, such as MEMBER's Id.",
+   "ar": "معرّف فريد مكوّن من خاصية واحدة بالضبط، مثل Id في MEMBER."
+  },
+  "cat": {
+   "en": "Identifiers",
+   "ar": "المعرّفات"
+  },
+  "see": [
+   "unique-identifier",
+   "composite-uid"
+  ],
+  "used": [
+   "t2l6-h2"
   ]
  },
  {
@@ -930,6 +1107,30 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l4-s2"
+  ]
+ },
+ {
+  "id": "unique-identifier",
+  "term": {
+   "en": "Unique identifier (UID)",
+   "ar": "المعرّف الفريد (UID)"
+  },
+  "def": {
+   "en": "A single attribute, or a combination of attributes, that distinguishes one instance of an entity from every other; marked # on an ERD and implemented as the primary key.",
+   "ar": "خاصية واحدة، أو تركيبة من الخصائص، تميّز نسخة واحدة من الكيان من كل نسخة أخرى؛ تُوسَم بـ # في الـ ERD وتُنفَّذ مفتاحًا أساسيًّا."
+  },
+  "cat": {
+   "en": "Identifiers",
+   "ar": "المعرّفات"
+  },
+  "see": [
+   "single-attribute-uid",
+   "composite-uid",
+   "artificial-uid",
+   "primary-key"
+  ],
+  "used": [
+   "t2l6-h1"
   ]
  },
  {

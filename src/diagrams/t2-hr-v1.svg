@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 830 300" direction="ltr" role="img" aria-labelledby="t2-hr-v1-t">
+<title id="t2-hr-v1-t">HR version 1: one EMPLOYEE entity that also stores department, job and manager details / الموارد البشرية، الإصدار 1: كيان EMPLOYEE واحد يخزّن أيضًا تفاصيل القسم والوظيفة والمدير</title>
+<g class="en"><text x="415.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1 — everything in EMPLOYEE</text></g><g class="ar"><text x="415.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 1 — كل شيء في EMPLOYEE</text></g>
+<rect x="30" y="56" width="250" height="230" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="155.0" y="78" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">EMPLOYEE</text>
+<text x="44" y="100" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Employee ID</text>
+<text x="44" y="119" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="44" y="138" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="36" y="144" width="238" height="17" rx="3" style="fill:var(--dg-warn-soft, var(--warn-soft))"/>
+<text x="44" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Job</text>
+<text x="44" y="176" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Hire Date</text>
+<text x="44" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Salary</text>
+<text x="44" y="214" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Commission</text>
+<rect x="36" y="220" width="238" height="17" rx="3" style="fill:var(--dg-warn-soft, var(--warn-soft))"/>
+<text x="44" y="233" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Department Name</text>
+<rect x="36" y="239" width="238" height="17" rx="3" style="fill:var(--dg-warn-soft, var(--warn-soft))"/>
+<text x="44" y="252" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Department Location</text>
+<rect x="36" y="258" width="238" height="17" rx="3" style="fill:var(--dg-warn-soft, var(--warn-soft))"/>
+<text x="44" y="271" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Manager Name</text>
+<rect x="320" y="70" width="90" height="24" rx="0" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="326" y="86" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px;font-weight:700">Employee ID</text>
+<rect x="410" y="70" width="90" height="24" rx="0" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="416" y="86" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px;font-weight:700">Last Name</text>
+<rect x="500" y="70" width="140" height="24" rx="0" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="506" y="86" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px;font-weight:700">Department Name</text>
+<rect x="640" y="70" width="160" height="24" rx="0" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="646" y="86" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px;font-weight:700">Department Location</text>
+<rect x="320" y="94" width="90" height="24" rx="0" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="326" y="110" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">100</text>
+<rect x="410" y="94" width="90" height="24" rx="0" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="416" y="110" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Smith</text>
+<rect x="500" y="94" width="140" height="24" rx="0" style="fill:var(--dg-warn-soft, var(--warn-soft));stroke:var(--dg-warn, var(--warn));stroke-width:2"/>
+<text x="506" y="110" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Accounting</text>
+<rect x="640" y="94" width="160" height="24" rx="0" style="fill:var(--dg-warn-soft, var(--warn-soft));stroke:var(--dg-warn, var(--warn));stroke-width:2"/>
+<text x="646" y="110" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Boston</text>
+<rect x="320" y="118" width="90" height="24" rx="0" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="326" y="134" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">210</text>
+<rect x="410" y="118" width="90" height="24" rx="0" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="416" y="134" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Chen</text>
+<rect x="500" y="118" width="140" height="24" rx="0" style="fill:var(--dg-warn-soft, var(--warn-soft));stroke:var(--dg-warn, var(--warn));stroke-width:2"/>
+<text x="506" y="134" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Accounting</text>
+<rect x="640" y="118" width="160" height="24" rx="0" style="fill:var(--dg-warn-soft, var(--warn-soft));stroke:var(--dg-warn, var(--warn));stroke-width:2"/>
+<text x="646" y="134" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Boston</text>
+<rect x="320" y="142" width="90" height="24" rx="0" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="326" y="158" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">405</text>
+<rect x="410" y="142" width="90" height="24" rx="0" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-alt-stroke, var(--text-soft));stroke-width:1.4"/>
+<text x="416" y="158" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Gomez</text>
+<rect x="500" y="142" width="140" height="24" rx="0" style="fill:var(--dg-warn-soft, var(--warn-soft));stroke:var(--dg-warn, var(--warn));stroke-width:2"/>
+<text x="506" y="158" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Accounting</text>
+<rect x="640" y="142" width="160" height="24" rx="0" style="fill:var(--dg-bad-soft, var(--bad-soft));stroke:var(--dg-bad, var(--bad));stroke-width:2"/>
+<text x="646" y="158" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Bostn</text>
+<g class="en"><text x="320" y="196" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12.5px">Accounting’s name and location are stored once per employee.</text></g><g class="ar"><text x="800" y="196" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13.5px">يُخزَّن اسم Accounting وموقعه مرّة لكل موظّف.</text></g>
+<g class="en"><text x="320" y="216" text-anchor="start" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:12.5px;font-weight:600">Three copies — and the third already disagrees.</text></g><g class="ar"><text x="800" y="216" text-anchor="start" direction="rtl" style="fill:var(--dg-bad, var(--bad));font-family:var(--font-ar, sans-serif);font-size:13.5px;font-weight:600">ثلاث نسخ — والثالثة تخالف الأخريين منذ الآن.</text></g>
+<g class="en"><text x="320" y="246" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12.5px">Job and Manager Name repeat facts about other things</text></g><g class="ar"><text x="800" y="246" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13.5px">وتكرّر Job وManager Name حقائق عن أشياء أخرى</text></g>
+<g class="en"><text x="320" y="264" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12.5px">(a job, another employee) in the same way.</text></g><g class="ar"><text x="800" y="264" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13.5px">(وظيفة، وموظّف آخر) بالطريقة نفسها.</text></g>
+</svg>

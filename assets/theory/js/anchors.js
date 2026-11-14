@@ -97,6 +97,23 @@ window.DBTAnchors = {
 "t2l5-s2": "lessons/t2-lesson-05.html",
 "t2l5-s3": "lessons/t2-lesson-05.html",
 "t2l5-s4": "lessons/t2-lesson-05.html",
+"t2l6-e1": "lessons/t2-lesson-06.html",
+"t2l6-e2": "lessons/t2-lesson-06.html",
+"t2l6-e3": "lessons/t2-lesson-06.html",
+"t2l6-h1": "lessons/t2-lesson-06.html",
+"t2l6-h2": "lessons/t2-lesson-06.html",
+"t2l6-h3": "lessons/t2-lesson-06.html",
+"t2l6-h4": "lessons/t2-lesson-06.html",
+"t2l6-h5": "lessons/t2-lesson-06.html",
+"t2l6-h6": "lessons/t2-lesson-06.html",
+"t2l6-h7": "lessons/t2-lesson-06.html",
+"t2l6-s1": "lessons/t2-lesson-06.html",
+"t2l6-s2": "lessons/t2-lesson-06.html",
+"t2l6-s3": "lessons/t2-lesson-06.html",
+"t2l6-s4": "lessons/t2-lesson-06.html",
+"t2l6-s5": "lessons/t2-lesson-06.html",
+"t2l6-s6": "lessons/t2-lesson-06.html",
+"t2l6-s7": "lessons/t2-lesson-06.html",
 "t3-chapter": "chapters/t3.html",
 "t3-exam-a": "exams/t3-exam-a.html",
 "t3-exam-b": "exams/t3-exam-b.html",
@@ -397,6 +414,62 @@ window.DBTHeadings = {
 "t2l5-s4": {
 "ar": "العمل هو الذي يقرّر",
 "en": "The business decides"
+},
+"t2l6-h1": {
+"ar": "١ · أيّهما؟",
+"en": "1 · Which one?"
+},
+"t2l6-h2": {
+"ar": "٢ · خاصية واحدة، أو تركيبة",
+"en": "2 · One attribute, or a combination"
+},
+"t2l6-h3": {
+"ar": "٣ · حين لا ينفع شيء طبيعي",
+"en": "3 · When nothing natural works"
+},
+"t2l6-h4": {
+"ar": "٤ · الدفاع عن معرّف فريد",
+"en": "4 · Defending a UID"
+},
+"t2l6-h5": {
+"ar": "٥ · الأهداف الأربعة لنمذجة الكيانات والعلاقات",
+"en": "5 · The four goals of ER modelling"
+},
+"t2l6-h6": {
+"ar": "٦ · أول مخطط ERD لك: قسم الموارد البشرية",
+"en": "6 · Your first ERD: the H.R. department"
+},
+"t2l6-h7": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t2l6-s1": {
+"ar": "اختر طالبًا واحدًا من الصفّ",
+"en": "Pick one student from the class"
+},
+"t2l6-s2": {
+"ar": "رقم الطالب",
+"en": "The student number"
+},
+"t2l6-s3": {
+"ar": "الفريد ليس هو المعرّف الفريد",
+"en": "Unique is not the same as UID"
+},
+"t2l6-s4": {
+"ar": "التقط كل شيء، وخزّنه مرّة واحدة",
+"en": "Capture everything, store it once"
+},
+"t2l6-s5": {
+"ar": "اشتقّ ولا تخزّن — وضعه حيث ينتمي",
+"en": "Derive, do not store — and put it where it belongs"
+},
+"t2l6-s6": {
+"ar": "من السيناريو إلى الصناديق",
+"en": "From scenario to boxes"
+},
+"t2l6-s7": {
+"ar": "قراءته من أوّله إلى آخره",
+"en": "Reading it end to end"
 },
 "t3idx-h1": {
 "ar": "الدروس",
