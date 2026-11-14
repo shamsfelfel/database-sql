@@ -206,13 +206,22 @@ file *is* the diagram. `build-theory.py` inlines it into every
 Rules the verifier enforces:
 
 - a `viewBox` (so it scales), and **no `width`/`height` attributes on the root `<svg>`**;
-- **no hard-coded colours** — use `currentColor` and the theme variables
-  (`var(--accent)`, `var(--line)`, `var(--bg-soft)`, `var(--fg-dim)`), so one file is
-  correct in light and dark;
+- **no hard-coded colours**. `assets/theory/css/diagram.css` defines a themed
+  palette for exactly this, and a diagram uses it with a fallback to the page tokens:
+  `fill: var(--dg-node-fill, var(--accent-soft))`,
+  `stroke: var(--dg-node-stroke, var(--accent))`,
+  `fill: var(--dg-text, var(--text))`, `stroke: var(--dg-line, var(--text-soft))`,
+  plus `--dg-bg`, `--dg-warn` / `--dg-warn-soft`, `--dg-bad` / `--dg-bad-soft`,
+  `--dg-good` / `--dg-good-soft`, `--dg-note-fill` / `--dg-note-stroke`,
+  `--dg-row-odd` / `--dg-row-even`. Fonts the same way:
+  `var(--mono, monospace)`, `var(--font, sans-serif)`, `var(--font-ar, sans-serif)`.
+  One file is then correct in light and dark;
 - **both languages inside the one file**: every label is a `<g class="en">…</g>` and a
   `<g class="ar">…</g>` pair, and the page's language switch shows one and hides the
   other (the same `.en`/`.ar` rule as the prose). Arabic `<text>` carries
-  `direction="rtl"`.
+  `direction="rtl"`;
+- a `role="img"` and a `<title id="<diagram-id>-t">` naming the figure in both
+  languages, so the diagram is not silent to a screen reader.
 
 The Oracle conventions you are drawing (get these right — they are the subject):
 

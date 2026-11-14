@@ -283,8 +283,8 @@ def commit(page_id, title):
     run(["git", "add", "-A"], timeout=120)
     st = run(["git", "status", "--porcelain"], timeout=120)
     if not (st.stdout or "").strip():
-        log("  nothing to commit for %s" % page_id)
-        return True
+        log("  NOTHING TO COMMIT for %s -- the page produced no change" % page_id)
+        return False
     msg = "%s\n\nWritten by the unattended theory-track build runner\n(tools/theory_runner.py), one page per commit.\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>\n" % title
     c = run(["git", "commit", "-m", msg], timeout=180)
     if c.returncode != 0:
@@ -369,6 +369,14 @@ def main():
             if not good:
                 extra = out
                 continue
+            # The author can exit cleanly having written nothing, and verify()
+            # filters out the very lines that would have caught it (those lines
+            # are normally about other authors' unwritten pages). Check here.
+            if not already_written(kind, ch, page)[0]:
+                log("  the author wrote no %s" % rel)
+                extra = ("You exited without writing %s, which is the one file this "
+                         "task has to produce. Write it." % rel)
+                continue
             good, problems = verify(page["id"])
             if good:
                 ok = True
@@ -376,8 +384,7 @@ def main():
             log("  verification failed:\n    " + problems.replace("\n", "\n    ")[:1200])
             extra = problems
 
-        if ok:
-            commit(uid, commit_title(kind, ch, page))
+        if ok and commit(uid, commit_title(kind, ch, page)):
             st["done"].append(uid)
             log("  DONE %s" % uid)
         else:

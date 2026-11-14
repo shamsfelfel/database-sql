@@ -296,13 +296,13 @@ def check_lessons(reg, scope):
             fail("%s: evolve versions need data-title-en / data-title-ar" % rel)
         # Nobody reads for ten minutes. Every concept section must end in something
         # to do: an inline check, an exercise, a live SQL box or an evolve block.
-        chunks = re.split(r'<h2', html)[1:]
+        chunks = re.split(r'<h2\b', html)[1:]
         for i, chunk in enumerate(chunks[:-1], 1):   # the last h2 is Exercises
-            if not re.search(r'class="[^"]*(quiz|exercise|qb-widget|evolve)', chunk):
+            if not re.search(r'class="[^"]*\b(quiz|exercise|qb-widget|evolve)\b', chunk):
                 hid = re.search(r'id="([^"]+)"', chunk)
                 fail("%s: concept section %s has nothing to do in it"
                      % (rel, hid.group(1) if hid else "#%d" % i))
-        quizzes = len(re.findall(r'class="[^"]*quiz', html))
+        quizzes = len(re.findall(r'class="[^"]*\bquiz\b', html))
         if quizzes < 6:
             fail("%s: %d inline checks (need at least 6)" % (rel, quizzes))
         ex = html.count('class="exercise"')
