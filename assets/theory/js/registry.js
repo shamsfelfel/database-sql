@@ -378,7 +378,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 3 — التعدّدية — كم واحدًا؟"
      },
      "href": "tests/t3-test-03.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t3-lesson-04",
