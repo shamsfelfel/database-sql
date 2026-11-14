@@ -187,7 +187,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 5 — الخصائص وقيمها"
      },
      "href": "tests/t2-test-05.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t2-lesson-06",
