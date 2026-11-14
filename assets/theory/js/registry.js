@@ -214,7 +214,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 6 — المعرّفات الفريدة وأول مخطط ERD لك"
      },
      "href": "tests/t2-test-06.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t2-lab",
