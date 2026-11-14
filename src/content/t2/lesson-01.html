@@ -1,0 +1,563 @@
+<section class="page" id="t2-lesson-01">
+
+  <span class="kicker">Lesson 1</span>
+  <h1><span class="en">One Table Is Not Enough</span><span class="ar">جدول واحد لا يكفي</span></h1>
+  <p class="lede en">By the end of this lesson you will be able to say what a flat file is and when it is the right choice, find the repetition it forces, and name the three things that go wrong because of it: the update, insert and delete anomalies.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تقول ما الملف المسطّح ومتى يكون الخيار الصحيح، وأن تجد التكرار الذي يفرضه، وأن تسمّي الأشياء الثلاثة التي تفسد بسببه: شذوذ التحديث، وشذوذ الإضافة، وشذوذ الحذف.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> The faculty has asked Matt for a simplified library database to store the department's books (see the <a href="#t2-chapter">chapter home</a>). Before Matt draws anything, the department already keeps a list of its books in one table. This lesson looks hard at that table. No earlier lesson is needed.</p>
+    <p class="ar"><strong>السياق.</strong> طلبت الكلية من مات قاعدة بيانات مبسّطة لمكتبة تحفظ كتب القسم (انظر <a href="#t2-chapter">صفحة الفصل</a>). وقبل أن يرسم مات أي شيء، يحتفظ القسم أصلًا بقائمة كتبه في جدول واحد. هذا الدرس يتأمّل ذلك الجدول جيّدًا. لا يلزمك أي درس سابق.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Define a flat file database and recognise one, in plain text or as a table.</li>
+      <li class="ar">تعريف قاعدة بيانات الملف المسطّح والتعرّف عليها، نصًّا عاديًّا كانت أو جدولًا.</li>
+      <li class="en">List the honest advantages of a flat file, and the disadvantages that limit it.</li>
+      <li class="ar">سرد المزايا الحقيقية للملف المسطّح، والعيوب التي تحدّ منه.</li>
+      <li class="en">Point to the repeated fact in a flat table and explain how repetition leads to inconsistency.</li>
+      <li class="ar">الإشارة إلى الحقيقة المكرّرة في جدول مسطّح، وشرح كيف يقود التكرار إلى عدم الاتّساق.</li>
+      <li class="en">Name the update, insert and delete anomaly in a given scenario.</li>
+      <li class="ar">تسمية شذوذ التحديث والإضافة والحذف في حالة معطاة.</li>
+      <li class="en">Explain why storing each fact once, in its own table, removes all three.</li>
+      <li class="ar">شرح لماذا يزيلها الثلاثة تخزينُ كل حقيقة مرّة واحدة في جدولها الخاص.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t2l1-h1"><span class="en">1 · The flat file</span><span class="ar">١ · الملف المسطّح</span></h2>
+
+  <div class="problem">
+    <p class="en">The department's book list is one table. The author and the book sit side by side in every row. Nothing else exists: no second table, no link, no rules. Is that a database at all?</p>
+    <p class="ar">قائمة كتب القسم جدول واحد. المؤلف والكتاب يجلسان جنبًا إلى جنب في كل صفّ. ولا شيء غير ذلك: لا جدول ثانٍ، ولا رابط، ولا قواعد. فهل هذه قاعدة بيانات أصلًا؟</p>
+  </div>
+
+  <p class="en">Yes &mdash; the simplest kind. It has a name of its own.</p>
+  <p class="ar">نعم &mdash; أبسط أنواعها. ولها اسم خاص بها.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="flat-file">flat file database</span> is a type of database that stores all its data in a single table.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="flat-file">قاعدة بيانات الملف المسطّح</span> (Flat File Database) نوع من قواعد البيانات يحفظ كل بياناته في جدول واحد.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-flat-file"><figcaption><span class="en">The lecturer's example. One table, <code>BOOK_LIST</code>, holds both the authors and the books. Notice the shaded cells: records 3 and 4 say the same thing about the same author.</span><span class="ar">مثال المحاضِرة. جدول واحد، <code>BOOK_LIST</code>، يحمل المؤلفين والكتب معًا. لاحظ الخلايا المظلّلة: السجلّان 3 و4 يقولان الشيء نفسه عن المؤلف نفسه.</span></figcaption></figure>
+
+  <h3 id="t2l1-s1"><span class="en">One line, one record</span><span class="ar">سطر واحد، سجلّ واحد</span></h3>
+
+  <p class="en">A flat file is usually plain text. Each line holds only one <span class="term" data-term="record">record</span>, and the values on the line are separated by a mark such as a comma. The same <code>BOOK_LIST</code>, saved as a file, looks like this:</p>
+  <p class="ar">الملف المسطّح عادةً نصّ عادي. كل سطر فيه يحمل <span class="term" data-term="record">سجلًّا</span> (Record) واحدًا فقط، وتفصل بين قيم السطر علامة كالفاصلة. هكذا يبدو <code>BOOK_LIST</code> نفسه محفوظًا في ملف:</p>
+
+  <pre class="code" data-lang="text"><code>AD0001,Oscar Wilde,A Vision
+AD0002,Leo Tolstoy,War and Peace
+AD0003,Oliver Goldsmith,Citizen of the World
+AD0003,Oliver Goldsmith,Androcles and the Lion</code></pre>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <strong>record</strong> is everything stored about one item &mdash; one line of the file, one row of the table.</p>
+    <p class="ar"><strong>تعريف.</strong> <strong>السجلّ</strong> هو كل ما يُحفظ عن عنصر واحد &mdash; سطر واحد في الملف، وصفّ واحد في الجدول.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">In SQL a flat file is a single <code>CREATE TABLE</code>, and every fact the department knows about a book or its author goes into it. The lines of the file become rows of <code>book_list</code>.</p>
+    <p class="ar">في SQL يصبح الملف المسطّح جملة <code>CREATE TABLE</code> واحدة، وكل حقيقة يعرفها القسم عن كتاب أو عن مؤلفه تدخل فيها. وتصبح أسطر الملف صفوفًا في <code>book_list</code>.</p>
+    <pre class="code" data-lang="sql"><code>CREATE TABLE book_list (
+  author_id   VARCHAR(6),
+  author_name VARCHAR(40),
+  title       VARCHAR(60)
+);</code></pre>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The file above has four lines. How many records does it hold, and how many different authors?</p>
+    <p class="q ar">في الملف أعلاه أربعة أسطر. كم سجلًّا يحمل، وكم مؤلفًا مختلفًا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Four records, four authors</span><span class="ar">أربعة سجلّات، أربعة مؤلفين</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Four records, three authors</span><span class="ar">أربعة سجلّات، ثلاثة مؤلفين</span></button></li>
+      <li><button class="opt"><span class="en">Three records, three authors</span><span class="ar">ثلاثة سجلّات، ثلاثة مؤلفين</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Each line is one record, so there are four. But <code>AD0003</code> appears on two of them: three authors, one of them written down twice. Keep that gap between "records" and "authors" in mind &mdash; it is the whole lesson.</p>
+      <p class="ar">كل سطر سجلّ واحد، فهي أربعة. لكن <code>AD0003</code> يظهر في سطرين منها: ثلاثة مؤلفين، أحدهم مكتوب مرّتين. تذكّر هذه الفجوة بين «السجلّات» و«المؤلفين» &mdash; فهي الدرس كلّه.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t2l1-h2"><span class="en">2 · Its honest advantages</span><span class="ar">٢ · مزاياه الحقيقية</span></h2>
+
+  <div class="problem">
+    <p class="en">It is tempting to call the flat file "wrong" and move on. But many small businesses and home users run on one, and are happy. If it were simply wrong, they would not.</p>
+    <p class="ar">من المغري أن نصف الملف المسطّح بأنه «خطأ» ونمضي. لكنّ كثيرًا من المشاريع الصغيرة والمستخدمين في البيوت يعملون به وهم راضون. لو كان خطأً ببساطة لما فعلوا.</p>
+  </div>
+
+  <p class="en">A flat file is simpler and less expensive to use, and it fits the needs of many small businesses and home users. Here is what it really gives you:</p>
+  <p class="ar">الملف المسطّح أبسط وأقلّ كلفة في الاستعمال، ويناسب حاجات كثير من المشاريع الصغيرة والمستخدمين في البيوت. وهذا ما يقدّمه لك فعلًا:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Advantage</th><th class="ar">الميزة</th><th class="en">In the book list</th><th class="ar">في قائمة الكتب</th></tr></thead>
+      <tbody>
+        <tr><td class="en">Easy to understand</td><td class="ar">سهل الفهم</td><td class="en">Anyone can read the four rows</td><td class="ar">يستطيع أيّ أحد قراءة الصفوف الأربعة</td></tr>
+        <tr><td class="en">Easy to implement</td><td class="ar">سهل الإنشاء</td><td class="en">One table, made in a minute</td><td class="ar">جدول واحد يُنشأ في دقيقة</td></tr>
+        <tr><td class="en">Easy to extract information</td><td class="ar">سهولة استخراج المعلومات</td><td class="en">The title and its author are already on one line</td><td class="ar">العنوان ومؤلفه على سطر واحد أصلًا</td></tr>
+        <tr><td class="en">All records stored in one place</td><td class="ar">كل السجلّات في مكان واحد</td><td class="en">No need to look anywhere else</td><td class="ar">لا حاجة إلى البحث في مكان آخر</td></tr>
+        <tr><td class="en">Simple sorting and filtering of reports</td><td class="ar">فرز التقارير وتصفيتها ببساطة</td><td class="en">Sort by title, filter by author</td><td class="ar">رتّب بالعنوان، وصفِّ بالمؤلف</td></tr>
+        <tr><td class="en">Less hardware and software required</td><td class="ar">متطلّبات أقلّ من العتاد والبرمجيات</td><td class="en">A spreadsheet or a text file is enough</td><td class="ar">يكفي جدول بيانات أو ملف نصّي</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">"Easy to extract" is literal: every report is one <code>SELECT</code> on one table, with no join. Run it and change the <code>ORDER BY</code> &mdash; sorting the whole library is one word.</p>
+    <p class="ar">«سهولة الاستخراج» حرفيّة: كل تقرير <code>SELECT</code> واحدة على جدول واحد، دون أي ربط. شغّلها وغيّر <code>ORDER BY</code> &mdash; فرز المكتبة كلّها كلمة واحدة.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{"book_list":[{"author_id":"AD0001","author_name":"Oscar Wilde","title":"A Vision"},{"author_id":"AD0002","author_name":"Leo Tolstoy","title":"War and Peace"},{"author_id":"AD0003","author_name":"Oliver Goldsmith","title":"Citizen of the World"},{"author_id":"AD0003","author_name":"Oliver Goldsmith","title":"Androcles and the Lion"}]},"sql":"SELECT title, author_name\nFROM book_list\nORDER BY title;"}
+      </script>
+    </div>
+  </div>
+
+  <h3 id="t2l1-s2"><span class="en">Where it stops being enough</span><span class="ar">حيث يتوقّف عن الكفاية</span></h3>
+
+  <p class="en">The limits all come from one fact: the flat file holds <em>all</em> data in <em>one</em> table. The slide lists five disadvantages: less security, data inconsistency, data redundancy, cumbersome sharing of information, and slowness on huge databases.</p>
+  <p class="ar">كل الحدود تأتي من حقيقة واحدة: الملف المسطّح يحمل <em>كل</em> البيانات في جدول <em>واحد</em>. وتعدّد الشريحة خمسة عيوب: أمان أقلّ، وعدم اتّساق البيانات، وتكرار البيانات، وصعوبة مشاركة المعلومات، والبطء في قواعد البيانات الضخمة.</p>
+  <p class="en">The lecturer's notes add more: no <span class="term" data-term="multi-user-access">multi-user access</span>, no backup and recovery, no protection when two people change the data at once, limited functionality, and only small databases.</p>
+  <p class="ar">وتضيف ملاحظات المحاضِرة المزيد: لا <span class="term" data-term="multi-user-access">وصول متعدّد المستخدمين</span> (Multi-user Access)، ولا نسخ احتياطي واسترجاع، ولا حماية حين يغيّر شخصان البيانات في الوقت نفسه، ووظائف محدودة، وقواعد بيانات صغيرة فقط.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <strong>Multi-user access</strong> means several people can read and change the same data at the same time without spoiling each other's work.</p>
+    <p class="ar"><strong>تعريف.</strong> <strong>الوصول متعدّد المستخدمين</strong> يعني أن يستطيع عدّة أشخاص قراءة البيانات نفسها وتغييرها في الوقت نفسه دون أن يُفسد أحدهم عمل الآخر.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which of these is a real <em>advantage</em> of a flat file?</p>
+    <p class="q ar">أيّ هذه ميزة <em>حقيقية</em> للملف المسطّح؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Each author's name is stored only once</span><span class="ar">اسم كل مؤلف مخزّن مرّة واحدة فقط</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">It needs less hardware and software</span><span class="ar">يحتاج إلى عتاد وبرمجيات أقلّ</span></button></li>
+      <li><button class="opt"><span class="en">Five librarians can edit it safely at once</span><span class="ar">يستطيع خمسة أمناء مكتبة تعديله بأمان في وقت واحد</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A spreadsheet or a text file is enough to run one. The other two are exactly what it cannot do: it repeats names (redundancy), and it has no multi-user access.</p>
+      <p class="ar">يكفي جدول بيانات أو ملف نصّي لتشغيله. أمّا الخياران الآخران فهما بالضبط ما لا يستطيعه: فهو يكرّر الأسماء (تكرار البيانات)، وليس فيه وصول متعدّد المستخدمين.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t2l1-h3"><span class="en">3 · The repetition it forces</span><span class="ar">٣ · التكرار الذي يفرضه</span></h2>
+
+  <div class="problem">
+    <p class="en">Oliver Goldsmith wrote two of the department's books. The flat file has no place to write "Goldsmith" once, so it writes him into both rows. A third book would make it three.</p>
+    <p class="ar">كتب Oliver Goldsmith كتابين من كتب القسم. ليس في الملف المسطّح مكان لكتابة «Goldsmith» مرّة واحدة، فيكتبه في الصفّين كليهما. وكتاب ثالث سيجعلها ثلاث مرّات.</p>
+  </div>
+
+  <p class="en">This is not carelessness. Each row is about one <em>book</em>, so anything true of the <em>author</em> must be copied into every one of his books' rows. The table's shape forces the copy.</p>
+  <p class="ar">ليس هذا إهمالًا. كل صفّ يتحدّث عن <em>كتاب</em> واحد، فأيّ شيء صحيح عن <em>المؤلف</em> يجب أن يُنسخ في كل صفّ من صفوف كتبه. شكل الجدول هو الذي يفرض النسخ.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="data-redundancy">Data redundancy</span> is the same piece of information stored in more than one place.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="data-redundancy">تكرار البيانات</span> (Data Redundancy) هو تخزين المعلومة نفسها في أكثر من مكان.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Count the copies. Grouping by author shows how many rows carry each name. Any number above 1 is a fact stored more than once.</p>
+    <p class="ar">عُدّ النسخ. التجميع حسب المؤلف يُظهر كم صفًّا يحمل كل اسم. وأيّ رقم أكبر من 1 حقيقة مخزّنة أكثر من مرّة.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{"book_list":[{"author_id":"AD0001","author_name":"Oscar Wilde","title":"A Vision"},{"author_id":"AD0002","author_name":"Leo Tolstoy","title":"War and Peace"},{"author_id":"AD0003","author_name":"Oliver Goldsmith","title":"Citizen of the World"},{"author_id":"AD0003","author_name":"Oliver Goldsmith","title":"Androcles and the Lion"}]},"sql":"SELECT author_id, author_name, COUNT(*) AS copies\nFROM book_list\nGROUP BY author_id, author_name;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>author_id</code></th><th><code>author_name</code></th><th><code>copies</code></th></tr></thead>
+          <tbody>
+            <tr><td><code>AD0001</code></td><td>Oscar Wilde</td><td>1</td></tr>
+            <tr><td><code>AD0002</code></td><td>Leo Tolstoy</td><td>1</td></tr>
+            <tr><td><code>AD0003</code></td><td>Oliver Goldsmith</td><td>2</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The library buys 28 more Goldsmith titles. How many rows of <code>BOOK_LIST</code> now store the name "Oliver Goldsmith"?</p>
+    <p class="q ar">اشترت المكتبة 28 عنوانًا آخر لـ Goldsmith. كم صفًّا في <code>BOOK_LIST</code> يخزّن الآن الاسم «Oliver Goldsmith»؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">1 &mdash; a name is stored once</span><span class="ar">1 &mdash; الاسم يُخزَّن مرّة واحدة</span></button></li>
+      <li><button class="opt"><span class="en">28</span><span class="ar">28</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">30</span><span class="ar">30</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Two rows already, plus one per new book: 30. The redundancy grows with every book the author writes &mdash; and every copy is a place where the name can go wrong.</p>
+      <p class="ar">صفّان موجودان أصلًا، وصفّ لكل كتاب جديد: 30. يكبر التكرار مع كل كتاب يكتبه المؤلف &mdash; وكل نسخة مكان يمكن أن يُخطأ فيه الاسم.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t2l1-h4"><span class="en">4 · The update anomaly</span><span class="ar">٤ · شذوذ التحديث</span></h2>
+
+  <div class="problem">
+    <p class="en">The library decides to catalogue authors surname first: "Goldsmith, Oliver". A librarian opens the record for <em>Citizen of the World</em> and fixes the name. Ask the table now: what is the name of author <code>AD0003</code>?</p>
+    <p class="ar">قرّرت المكتبة فهرسة المؤلفين باسم العائلة أولًا: «Goldsmith, Oliver». فتح أمين المكتبة سجلّ <em>Citizen of the World</em> وعدّل الاسم. اسأل الجدول الآن: ما اسم المؤلف <code>AD0003</code>؟</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-update-anomaly"><figcaption><span class="en">Before, the two copies agree. After an update that touched one row, they disagree &mdash; and nothing in the table says which copy is right.</span><span class="ar">قبل التعديل تتّفق النسختان. وبعد تعديل لمس صفًّا واحدًا تختلفان &mdash; ولا شيء في الجدول يقول أيّ النسختين هي الصحيحة.</span></figcaption></figure>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="anomaly">anomaly</span> is a change to the data &mdash; an update, an insert or a delete &mdash; that a badly shaped table turns into a wrong result.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="anomaly">الشذوذ</span> (Anomaly) تغيير في البيانات &mdash; تحديث أو إضافة أو حذف &mdash; يحوّله جدولٌ سيّئ الشكل إلى نتيجة خاطئة.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="update-anomaly">update anomaly</span> happens when a fact stored in several rows is changed in some of them but not all.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="update-anomaly">شذوذ التحديث</span> (Update Anomaly) يقع حين تُغيَّر حقيقة مخزّنة في عدّة صفوف في بعضها دون بعض.</p>
+  </div>
+
+  <h3 id="t2l1-s3"><span class="en">From repetition to inconsistency</span><span class="ar">من التكرار إلى عدم الاتّساق</span></h3>
+
+  <p class="en">The lecturer's notes put it in one line: if the same information is stored in more than one place, any change must be made everywhere it is stored. Miss one place and the table contradicts itself.</p>
+  <p class="ar">تقولها ملاحظات المحاضِرة في سطر واحد: إذا خُزّنت المعلومة نفسها في أكثر من مكان، فيجب أن يُجرى أيّ تغيير في كل مكان خُزّنت فيه. أغفِل مكانًا واحدًا فيناقض الجدول نفسه.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="data-inconsistency">Data inconsistency</span> is two stored copies of the same fact that disagree.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="data-inconsistency">عدم اتّساق البيانات</span> (Data Inconsistency) هو أن تختلف نسختان مخزّنتان من الحقيقة نفسها.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The librarian's <code>UPDATE</code> chose the row by title, so it reached one copy. SQL ran it without a word of complaint. Run it and read <code>AD0003</code>'s rows:</p>
+    <p class="ar">اختارت جملة <code>UPDATE</code> التي كتبها الأمين الصفَّ بالعنوان، فوصلت إلى نسخة واحدة. ونفّذتها SQL دون أيّ اعتراض. شغّلها واقرأ صفوف <code>AD0003</code>:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{"book_list":[{"author_id":"AD0001","author_name":"Oscar Wilde","title":"A Vision"},{"author_id":"AD0002","author_name":"Leo Tolstoy","title":"War and Peace"},{"author_id":"AD0003","author_name":"Oliver Goldsmith","title":"Citizen of the World"},{"author_id":"AD0003","author_name":"Oliver Goldsmith","title":"Androcles and the Lion"}]},"sql":"UPDATE book_list\nSET author_name = 'Goldsmith, Oliver'\nWHERE title = 'Citizen of the World';\n\nSELECT author_id, author_name, title\nFROM book_list\nWHERE author_id = 'AD0003';"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>author_id</code></th><th><code>author_name</code></th><th><code>title</code></th></tr></thead>
+          <tbody>
+            <tr><td><code>AD0003</code></td><td>Goldsmith, Oliver</td><td>Citizen of the World</td></tr>
+            <tr><td><code>AD0003</code></td><td>Oliver Goldsmith</td><td>Androcles and the Lion</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Writing <code>WHERE author_id = 'AD0003'</code> would have caught both rows this time. But that is a rule the <em>person</em> must remember on every change; the table itself still allows two names.</p>
+    <p class="ar">لو كُتب <code>WHERE author_id = 'AD0003'</code> لالتقط الصفّين هذه المرّة. لكنّ هذه قاعدة على <em>الشخص</em> أن يتذكّرها عند كل تغيير؛ أمّا الجدول نفسه فما زال يسمح باسمين.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">After the update, a report lists books by author name. Under how many different authors does Goldsmith's work appear?</p>
+    <p class="q ar">بعد التعديل، يعرض تقرير الكتب حسب اسم المؤلف. تحت كم مؤلفًا مختلفًا تظهر أعمال Goldsmith؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">One &mdash; they share <code>AD0003</code></span><span class="ar">واحد &mdash; فهما يشتركان في <code>AD0003</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Two &mdash; "Goldsmith, Oliver" and "Oliver Goldsmith"</span><span class="ar">اثنين &mdash; «Goldsmith, Oliver» و«Oliver Goldsmith»</span></button></li>
+      <li><button class="opt"><span class="en">None &mdash; the update failed</span><span class="ar">لا شيء &mdash; فشل التعديل</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A report by name sees two different strings, so it shows one author as two. That is the inconsistency the update anomaly leaves behind: the data is now wrong, and nobody was warned.</p>
+      <p class="ar">التقرير حسب الاسم يرى نصّين مختلفين، فيعرض المؤلف الواحد مؤلفَين. هذا هو عدم الاتّساق الذي يتركه شذوذ التحديث: البيانات صارت خاطئة، ولم يُنبَّه أحد.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t2l1-h5"><span class="en">5 · The insert anomaly</span><span class="ar">٥ · شذوذ الإضافة</span></h2>
+
+  <div class="problem">
+    <p class="en">The library has ordered its first Jane Austen book. It wants to record the author now, as <code>AD0004</code>, so the order can refer to her. The book has not arrived. Where in <code>BOOK_LIST</code> does she go?</p>
+    <p class="ar">طلبت المكتبة أوّل كتاب لـ Jane Austen، وتريد تسجيل المؤلفة الآن برقم <code>AD0004</code> ليشير إليها الطلب. لم يصل الكتاب بعد. أين تُوضع في <code>BOOK_LIST</code>؟</p>
+  </div>
+
+  <p class="en">Every row of <code>BOOK_LIST</code> is a book. An author can only enter the table riding on one of their books. With no book, there is no honest row to write.</p>
+  <p class="ar">كل صفّ في <code>BOOK_LIST</code> كتاب. ولا يدخل المؤلف الجدولَ إلا محمولًا على أحد كتبه. فإن لم يكن هناك كتاب، فلا صفّ صادقًا يُكتب.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="insert-anomaly">insert anomaly</span> happens when you cannot record one fact without also recording another, unrelated one.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="insert-anomaly">شذوذ الإضافة</span> (Insert Anomaly) يقع حين لا تستطيع تسجيل حقيقة دون أن تسجّل معها حقيقة أخرى لا علاقة لها بها.</p>
+  </div>
+
+  <div class="evolve" id="t2l1-e1">
+    <div class="ver" data-title-en="Version 1 — the flat table as it is" data-title-ar="النسخة 1 — الجدول المسطّح كما هو">
+      <figure class="diagram" data-diagram="t2-flat-file"></figure>
+      <p class="en">Defect: Jane Austen cannot be recorded at all. The only kind of row the table has is "a book and its author", and there is no book yet.</p>
+      <p class="ar">العيب: لا يمكن تسجيل Jane Austen أصلًا. فالنوع الوحيد من الصفوف في الجدول هو «كتاب ومؤلفه»، ولا كتاب بعد.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — the patch: a row with no title" data-title-ar="النسخة 2 — الترقيع: صفّ بلا عنوان">
+      <figure class="diagram" data-diagram="t2-insert-anomaly"></figure>
+      <p class="en">She is in &mdash; but row 5 claims to be a book and is not. Count the rows and you get five books for a library that owns four. When her book arrives, she will be stored twice.</p>
+      <p class="ar">دخلت المؤلفة &mdash; لكنّ الصفّ 5 يدّعي أنه كتاب وهو ليس كذلك. عُدّ الصفوف تجد خمسة كتب لمكتبة تملك أربعة. وحين يصل كتابها ستُخزَّن مرّتين.</p>
+    </div>
+    <div class="ver" data-title-en="Version 3 — authors get a table of their own" data-title-ar="النسخة 3 — للمؤلفين جدول خاص بهم">
+      <figure class="diagram" data-diagram="t2-library-split"></figure>
+      <p class="en">Fixed: <code>AUTHOR</code> lists authors, <code>BOOK</code> lists books. Jane Austen is one row in <code>AUTHOR</code>, with no book needed, and <code>BOOK</code> still has exactly four rows.</p>
+      <p class="ar">أُصلح: <code>AUTHOR</code> يسرد المؤلفين، و<code>BOOK</code> يسرد الكتب. Jane Austen صفّ واحد في <code>AUTHOR</code> دون حاجة إلى كتاب، وما زال في <code>BOOK</code> أربعة صفوف بالضبط.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 2 in SQL is an <code>INSERT</code> with an empty title. It succeeds &mdash; and then every count of books is wrong:</p>
+    <p class="ar">النسخة 2 في SQL جملة <code>INSERT</code> بعنوان فارغ. تنجح &mdash; ثم يصبح كل عدّ للكتب خاطئًا:</p>
+    <pre class="code" data-lang="sql"><code>INSERT INTO book_list VALUES ('AD0004', 'Jane Austen', NULL);
+
+SELECT COUNT(*) AS book_rows FROM book_list;</code></pre>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>book_rows</code></th></tr></thead>
+          <tbody><tr><td>5</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">In version 3 the same author is <code>INSERT INTO authors</code>, and <code>SELECT COUNT(*) FROM books</code> still returns 4.</p>
+    <p class="ar">في النسخة 3 تصبح المؤلفة نفسها <code>INSERT INTO authors</code>، ويبقى <code>SELECT COUNT(*) FROM books</code> يُرجع 4.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which version of the evolve block above records Jane Austen <em>and</em> keeps the book count right?</p>
+    <p class="q ar">أيّ نسخة في المراحل أعلاه تسجّل Jane Austen <em>وتُبقي</em> عدد الكتب صحيحًا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Version 1</span><span class="ar">النسخة 1</span></button></li>
+      <li><button class="opt"><span class="en">Version 2</span><span class="ar">النسخة 2</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Version 3</span><span class="ar">النسخة 3</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Version 1 cannot record her; version 2 records her as a fake book. Only version 3 gives the author a row that is about an author, so the books table stays a list of books.</p>
+      <p class="ar">النسخة 1 لا تستطيع تسجيلها، والنسخة 2 تسجّلها كتابًا مزيّفًا. النسخة 3 وحدها تعطي المؤلفة صفًّا يتحدّث عن مؤلف، فيبقى جدول الكتب قائمةَ كتب.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 6 -->
+  <h2 id="t2l1-h6"><span class="en">6 · The delete anomaly</span><span class="ar">٦ · شذوذ الحذف</span></h2>
+
+  <div class="problem">
+    <p class="en">The department's only copy of <em>War and Peace</em> is lost, so its row is deleted. A week later someone asks: "What was Tolstoy's author code?" The table has no idea.</p>
+    <p class="ar">ضاعت نسخة القسم الوحيدة من <em>War and Peace</em>، فحُذف صفّها. وبعد أسبوع سأل أحدهم: «ما رمز المؤلف Tolstoy؟» ولا علم للجدول بذلك.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-delete-anomaly"><figcaption><span class="en">Row 2 was the only place Leo Tolstoy was written down. Deleting the book deleted the author with it.</span><span class="ar">كان الصفّ 2 المكان الوحيد الذي كُتب فيه Leo Tolstoy. فحذف الكتاب حذف المؤلف معه.</span></figcaption></figure>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="delete-anomaly">delete anomaly</span> happens when deleting one fact also destroys another fact you wanted to keep.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="delete-anomaly">شذوذ الحذف</span> (Delete Anomaly) يقع حين يُتلف حذفُ حقيقة حقيقةً أخرى أردت الاحتفاظ بها.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Delete the book, then look for the author. Zero rows: <code>AD0002</code> is gone from the database.</p>
+    <p class="ar">احذف الكتاب، ثم ابحث عن المؤلف. صفر صفوف: اختفى <code>AD0002</code> من قاعدة البيانات.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{"book_list":[{"author_id":"AD0001","author_name":"Oscar Wilde","title":"A Vision"},{"author_id":"AD0002","author_name":"Leo Tolstoy","title":"War and Peace"},{"author_id":"AD0003","author_name":"Oliver Goldsmith","title":"Citizen of the World"},{"author_id":"AD0003","author_name":"Oliver Goldsmith","title":"Androcles and the Lion"}]},"sql":"DELETE FROM book_list\nWHERE title = 'War and Peace';\n\nSELECT author_id, author_name\nFROM book_list\nWHERE author_name = 'Leo Tolstoy';"}
+      </script>
+    </div>
+    <p class="en">With separate tables, the same <code>DELETE FROM books WHERE title = 'War and Peace'</code> leaves <code>authors</code> untouched: the author row <code>AD0002, Leo Tolstoy</code> is still there.</p>
+    <p class="ar">ومع جداول منفصلة، تترك الجملة نفسها <code>DELETE FROM books WHERE title = 'War and Peace'</code> جدولَ <code>authors</code> كما هو: صفّ المؤلف <code>AD0002, Leo Tolstoy</code> ما زال موجودًا.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which deletion from the original four-row <code>BOOK_LIST</code> does <strong>not</strong> lose an author?</p>
+    <p class="q ar">أيّ حذف من <code>BOOK_LIST</code> الأصلي ذي الصفوف الأربعة <strong>لا</strong> يُضيع مؤلفًا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Deleting <em>A Vision</em></span><span class="ar">حذف <em>A Vision</em></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Deleting <em>Androcles and the Lion</em></span><span class="ar">حذف <em>Androcles and the Lion</em></span></button></li>
+      <li><button class="opt"><span class="en">Deleting <em>War and Peace</em></span><span class="ar">حذف <em>War and Peace</em></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Goldsmith has a second row, so he survives. Wilde and Tolstoy each have one row, so deleting their book deletes them. Notice the irony: the repetition that causes the update anomaly is the only thing protecting Goldsmith here.</p>
+      <p class="ar">لـ Goldsmith صفّ ثانٍ فيبقى. أمّا Wilde وTolstoy فلكلّ منهما صفّ واحد، فحذف كتابه يحذفه. لاحظ المفارقة: التكرار الذي يسبّب شذوذ التحديث هو الشيء الوحيد الذي يحمي Goldsmith هنا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 7 -->
+  <h2 id="t2l1-h7"><span class="en">7 · One fact, one place</span><span class="ar">٧ · حقيقة واحدة، مكان واحد</span></h2>
+
+  <div class="problem">
+    <p class="en">Three anomalies, three symptoms. Patching each one separately &mdash; careful <code>WHERE</code> clauses, fake rows, "never delete the last book" &mdash; only moves the risk onto the people using the table. What is the one cause?</p>
+    <p class="ar">ثلاثة أنواع من الشذوذ، وثلاثة أعراض. ترقيع كلّ منها وحده &mdash; شروط <code>WHERE</code> حذرة، وصفوف مزيّفة، و«لا تحذف آخر كتاب أبدًا» &mdash; لا يفعل إلا أن ينقل الخطر إلى من يستعملون الجدول. فما السبب الواحد؟</p>
+  </div>
+
+  <p class="en">One table is describing two different things &mdash; books and authors. Give each its own table, store each fact once, and connect them through a common field, <code>AUTHOR_ID</code>. Lesson 2 makes that connection precise.</p>
+  <p class="ar">جدول واحد يصف شيئين مختلفين &mdash; الكتب والمؤلفين. أعطِ كلًّا منهما جدوله، وخزّن كل حقيقة مرّة واحدة، واربط بينهما بحقل مشترك، <code>AUTHOR_ID</code>. والدرس 2 يجعل هذا الربط دقيقًا.</p>
+
+  <div class="evolve" id="t2l1-e2">
+    <div class="ver" data-title-en="Version 1 — one table for books and authors" data-title-ar="النسخة 1 — جدول واحد للكتب والمؤلفين">
+      <figure class="diagram" data-diagram="t2-flat-file"></figure>
+      <p class="en">Defect: the author's name is stored once per book. Renaming an author means changing every one of those rows &mdash; the update anomaly.</p>
+      <p class="ar">العيب: اسم المؤلف مخزّن مرّة لكل كتاب. وتغيير اسم مؤلف يعني تعديل كل واحد من تلك الصفوف &mdash; شذوذ التحديث.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — AUTHOR and BOOK, related by AUTHOR_ID" data-title-ar="النسخة 2 — AUTHOR وBOOK، مرتبطان بـ AUTHOR_ID">
+      <figure class="diagram" data-diagram="t2-library-split"></figure>
+      <p class="en">Fixed: the name lives in one row of <code>AUTHOR</code>, so a rename is one change. A book only carries <code>AUTHOR_ID</code>. Adding an author without a book, or deleting a book, no longer touches anything else.</p>
+      <p class="ar">أُصلح: يعيش الاسم في صفّ واحد من <code>AUTHOR</code>، فتغييره تعديل واحد. ولا يحمل الكتاب إلا <code>AUTHOR_ID</code>. وإضافة مؤلف بلا كتاب، أو حذف كتاب، لم تعد تمسّ شيئًا آخر.</p>
+    </div>
+  </div>
+
+  <h3 id="t2l1-s4"><span class="en">What a multi-table database buys</span><span class="ar">ما الذي تكسبه قاعدة البيانات متعدّدة الجداول</span></h3>
+
+  <p class="en">The lecturer lists five advantages of a relational, multiple-table database. Each one answers a problem from this lesson:</p>
+  <p class="ar">تعدّد المحاضِرة خمس مزايا لقاعدة البيانات العلائقية متعدّدة الجداول. وكلّ منها يجيب عن مشكلة من هذا الدرس:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Advantage</th><th class="ar">الميزة</th><th class="en">Why</th><th class="ar">لماذا</th></tr></thead>
+      <tbody>
+        <tr><td class="en">Less redundancy</td><td class="ar">تكرار أقلّ</td><td class="en">An author's name is stored once, not once per book</td><td class="ar">اسم المؤلف يُخزَّن مرّة واحدة، لا مرّة لكل كتاب</td></tr>
+        <tr><td class="en">Avoidance of inconsistency</td><td class="ar">تجنّب عدم الاتّساق</td><td class="en">One copy cannot disagree with itself</td><td class="ar">النسخة الواحدة لا تختلف مع نفسها</td></tr>
+        <tr><td class="en">Efficiency</td><td class="ar">الكفاءة</td><td class="en">Each piece of information is stored in fewer places</td><td class="ar">كل معلومة مخزّنة في أماكن أقلّ</td></tr>
+        <tr><td class="en">Data integrity</td><td class="ar">سلامة البيانات</td><td class="en">Easier to keep, because each column gets a strong data type</td><td class="ar">أسهل حفظًا، لأن لكل عمود نوع بيانات صارمًا</td></tr>
+        <tr><td class="en">Confidentiality</td><td class="ar">السرّية</td><td class="en">Easier to keep when storage is centralised in one place</td><td class="ar">أسهل حفظًا حين يكون التخزين مركزيًّا في مكان واحد</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 2 is two tables. The rename that caused the update anomaly is now one <code>UPDATE</code> on one row of <code>authors</code>, and both of Goldsmith's books see it. (The <code>JOIN</code> that reads them back is taught in SQL chapter 3.)</p>
+    <p class="ar">النسخة 2 جدولان. والتغيير الذي سبّب شذوذ التحديث صار جملة <code>UPDATE</code> واحدة على صفّ واحد في <code>authors</code>، ويراه كتابا Goldsmith كلاهما. (أمّا <code>JOIN</code> التي تقرؤهما معًا فتُدرَّس في الفصل 3 من مسار SQL.)</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{"authors":[{"author_id":"AD0001","author_name":"Oscar Wilde"},{"author_id":"AD0002","author_name":"Leo Tolstoy"},{"author_id":"AD0003","author_name":"Oliver Goldsmith"},{"author_id":"AD0004","author_name":"Jane Austen"}],"books":[{"title":"A Vision","author_id":"AD0001"},{"title":"War and Peace","author_id":"AD0002"},{"title":"Citizen of the World","author_id":"AD0003"},{"title":"Androcles and the Lion","author_id":"AD0003"}]},"sql":"UPDATE authors\nSET author_name = 'Goldsmith, Oliver'\nWHERE author_id = 'AD0003';\n\nSELECT b.title, a.author_name\nFROM books b JOIN authors a ON b.author_id = a.author_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>title</code></th><th><code>author_name</code></th></tr></thead>
+          <tbody>
+            <tr><td>A Vision</td><td>Oscar Wilde</td></tr>
+            <tr><td>War and Peace</td><td>Leo Tolstoy</td></tr>
+            <tr><td>Citizen of the World</td><td>Goldsmith, Oliver</td></tr>
+            <tr><td>Androcles and the Lion</td><td>Goldsmith, Oliver</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · the SQL track</span><span class="ar">خيط · مسار SQL</span></h4>
+    <p class="en"><a href="@/chapters/chapter-1.html">SQL Chapter 1 &mdash; First Steps</a> teaches the <code>CREATE</code>, <code>INSERT</code>, <code>UPDATE</code> and <code>DELETE</code> you saw here, on one table at a time. It shows <em>how</em> to change a row, not whether the table should have that shape. <a href="@/chapters/chapter-7.html">Chapter 7 &mdash; Normalization</a> returns to these same anomalies from the SQL side. This lesson is the design reason behind both.</p>
+    <p class="ar">يعلّم <a href="@/chapters/chapter-1.html">الفصل 1 من مسار SQL &mdash; الخطوات الأولى</a> جمل <code>CREATE</code> و<code>INSERT</code> و<code>UPDATE</code> و<code>DELETE</code> التي رأيتها هنا، على جدول واحد في كل مرّة. يُريك <em>كيف</em> تغيّر صفًّا، لا هل يجب أن يكون للجدول هذا الشكل. ويعود <a href="@/chapters/chapter-7.html">الفصل 7 &mdash; التطبيع</a> إلى أنواع الشذوذ نفسها من جهة SQL. وهذا الدرس هو السبب التصميمي وراء الاثنين.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which advantage of a multi-table database directly prevents the update anomaly?</p>
+    <p class="q ar">أيّ ميزة لقاعدة البيانات متعدّدة الجداول تمنع شذوذ التحديث مباشرة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Confidentiality</span><span class="ar">السرّية</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Avoidance of inconsistency</span><span class="ar">تجنّب عدم الاتّساق</span></button></li>
+      <li><button class="opt"><span class="en">Less hardware and software</span><span class="ar">عتاد وبرمجيات أقلّ</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">With the name in one place, there is no second copy to forget, so the data cannot contradict itself. "Less hardware and software" is an advantage of the <em>flat file</em>, not of the multi-table design.</p>
+      <p class="ar">حين يكون الاسم في مكان واحد، لا توجد نسخة ثانية تُنسى، فلا تستطيع البيانات أن تناقض نفسها. أمّا «عتاد وبرمجيات أقلّ» فميزة <em>للملف المسطّح</em>، لا للتصميم متعدّد الجداول.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">True or false: splitting <code>BOOK_LIST</code> into <code>AUTHOR</code> and <code>BOOK</code> removes all three anomalies at once.</p>
+    <p class="q ar">صح أم خطأ: تقسيم <code>BOOK_LIST</code> إلى <code>AUTHOR</code> و<code>BOOK</code> يزيل أنواع الشذوذ الثلاثة دفعة واحدة.</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">True</span><span class="ar">صح</span></button></li>
+      <li><button class="opt"><span class="en">False &mdash; it only fixes the update anomaly</span><span class="ar">خطأ &mdash; يُصلح شذوذ التحديث فقط</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">True. All three had one cause: author facts lived inside book rows. Once authors have their own rows, a rename is one change, a new author needs no book, and deleting a book leaves its author alone.</p>
+      <p class="ar">صح. للثلاثة سبب واحد: حقائق المؤلف كانت تعيش داخل صفوف الكتب. وحين يصبح للمؤلفين صفوفهم، يصير تغيير الاسم تعديلًا واحدًا، ولا يحتاج المؤلف الجديد إلى كتاب، ويترك حذفُ كتاب مؤلفَه كما هو.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t2l1-h8"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Find the repeated fact</span><span class="ar">تمرين 1 · جِد الحقيقة المكرّرة</span></h4>
+    <p class="en">The library also keeps its loans in one flat table, <code>LOAN_LIST</code>. Which facts are stored more than once? Name every repeated value.</p>
+    <p class="ar">تحفظ المكتبة إعاراتها أيضًا في جدول مسطّح واحد، <code>LOAN_LIST</code>. ما الحقائق المخزّنة أكثر من مرّة؟ سمِّ كل قيمة مكرّرة.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th><code>MEMBER_ID</code></th><th><code>MEMBER_NAME</code></th><th><code>CITY</code></th><th><code>TITLE</code></th><th><code>LOAN_DATE</code></th></tr></thead>
+        <tbody>
+          <tr><td><code>M01</code></td><td>Sara Hamdan</td><td>Gaza</td><td>A Vision</td><td>2026-03-01</td></tr>
+          <tr><td><code>M02</code></td><td>Omar Saleh</td><td>Khan Younis</td><td>War and Peace</td><td>2026-03-02</td></tr>
+          <tr><td><code>M01</code></td><td>Sara Hamdan</td><td>Gaza</td><td>Citizen of the World</td><td>2026-03-05</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Member <code>M01</code> is stored twice: her name "Sara Hamdan" and her city "Gaza" appear on both of her loans. Each row is about one <em>loan</em>, so every fact about the <em>member</em> is copied once per loan. Titles and dates are not repeated: each belongs to its own loan.</p>
+      <p class="ar">العضو <code>M01</code> مخزّنة مرّتين: اسمها «Sara Hamdan» ومدينتها «Gaza» يظهران في إعارتيها كلتيهما. كل صفّ يتحدّث عن <em>إعارة</em> واحدة، فكل حقيقة عن <em>العضو</em> تُنسخ مرّة لكل إعارة. أمّا العناوين والتواريخ فغير مكرّرة: كلّ منها يخصّ إعارته.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Name the anomaly</span><span class="ar">تمرين 2 · سمِّ الشذوذ</span></h4>
+    <p class="en">Using <code>LOAN_LIST</code> from exercise 1, name the anomaly in each case: (a) Sara moves to Rafah and only her latest loan is updated; (b) a new member, Lina, joins but has borrowed nothing yet; (c) Omar's only loan is deleted when he returns the book.</p>
+    <p class="ar">باستعمال <code>LOAN_LIST</code> من التمرين 1، سمِّ الشذوذ في كل حالة: (أ) انتقلت سارة إلى رفح ولم يُحدَّث إلا آخر إعاراتها؛ (ب) انضمّت عضو جديدة، لينا، ولم تستعر شيئًا بعد؛ (ج) حُذفت إعارة عمر الوحيدة حين أعاد الكتاب.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) <strong>Update anomaly</strong>: Sara now has two cities, an inconsistency. (b) <strong>Insert anomaly</strong>: Lina cannot be recorded without a loan. (c) <strong>Delete anomaly</strong>: deleting the loan erased everything known about Omar.</p>
+      <p class="ar">(أ) <strong>شذوذ التحديث</strong>: صار لسارة مدينتان، وهذا عدم اتّساق. (ب) <strong>شذوذ الإضافة</strong>: لا يمكن تسجيل لينا دون إعارة. (ج) <strong>شذوذ الحذف</strong>: حذف الإعارة محا كل ما يُعرف عن عمر.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Flat file or not?</span><span class="ar">تمرين 3 · ملف مسطّح أم لا؟</span></h4>
+    <p class="en">Advise each of these two. (a) A student lists the 40 books on their own shelf, alone, on a laptop. (b) The department's five librarians all record loans during the day, and the list must survive a broken disk.</p>
+    <p class="ar">انصح كلًّا من هذين. (أ) طالب يسرد الكتب الأربعين التي على رفّه، وحده، على حاسوبه المحمول. (ب) أمناء مكتبة القسم الخمسة يسجّلون الإعارات طوال اليوم، ويجب أن تنجو القائمة من تلف القرص.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) A flat file is a sound choice: small, one user, and it is easy, cheap and needs little software. (b) It is not: a flat file has no multi-user access, no protection when two people change data at once, and no backup and recovery.</p>
+      <p class="ar">(أ) الملف المسطّح خيار سليم: بيانات صغيرة ومستخدم واحد، وهو سهل ورخيص ويحتاج إلى برمجيات قليلة. (ب) ليس كذلك: فالملف المسطّح لا وصول متعدّد المستخدمين فيه، ولا حماية حين يغيّر شخصان البيانات معًا، ولا نسخ احتياطي واسترجاع.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Count the cost</span><span class="ar">تمرين 4 · احسب الكلفة</span></h4>
+    <p class="en">A flat book list holds 30 Goldsmith titles. His name must change. (a) How many rows must the <code>UPDATE</code> change in the flat table? (b) How many in the two-table version? (c) Why is a careful <code>WHERE author_id = 'AD0003'</code> not a real fix?</p>
+    <p class="ar">قائمة كتب مسطّحة تحمل 30 عنوانًا لـ Goldsmith، ويجب تغيير اسمه. (أ) كم صفًّا يجب أن تغيّره جملة <code>UPDATE</code> في الجدول المسطّح؟ (ب) وكم في نسخة الجدولين؟ (ج) لماذا لا يُعدّ الشرط الحذر <code>WHERE author_id = 'AD0003'</code> إصلاحًا حقيقيًّا؟</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) 30 rows. (b) One row of <code>authors</code>. (c) It works only if every person, on every change, remembers to write it. The table still permits two names for <code>AD0003</code>, so one forgotten condition brings the inconsistency back.</p>
+      <p class="ar">(أ) 30 صفًّا. (ب) صفّ واحد في <code>authors</code>. (ج) لا ينجح إلا إذا تذكّر كل شخص كتابته عند كل تغيير. فالجدول ما زال يسمح باسمين لـ <code>AD0003</code>، وشرط واحد منسيّ يُعيد عدم الاتّساق.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Split the loan list</span><span class="ar">تمرين 5 · قسّم قائمة الإعارات</span></h4>
+    <p class="en">Apply "one fact, one place" to <code>LOAN_LIST</code>. Which two tables would you make, which columns go in each, and which common field connects them?</p>
+    <p class="ar">طبّق «حقيقة واحدة، مكان واحد» على <code>LOAN_LIST</code>. ما الجدولان اللذان ستُنشئهما، وما الأعمدة في كلّ منهما، وما الحقل المشترك الذي يربطهما؟</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en"><code>MEMBER(MEMBER_ID, MEMBER_NAME, CITY)</code> and <code>LOAN(MEMBER_ID, TITLE, LOAN_DATE)</code>, connected by <code>MEMBER_ID</code>. Sara's city is now stored once, Lina can be a member with no loans, and deleting Omar's loan leaves Omar. Lesson 2 names <code>MEMBER_ID</code>'s two roles precisely.</p>
+      <p class="ar"><code>MEMBER(MEMBER_ID, MEMBER_NAME, CITY)</code> و<code>LOAN(MEMBER_ID, TITLE, LOAN_DATE)</code>، يربطهما <code>MEMBER_ID</code>. صارت مدينة سارة مخزّنة مرّة واحدة، ويمكن أن تكون لينا عضوًا بلا إعارات، وحذف إعارة عمر يُبقي عمر. والدرس 2 يسمّي دورَي <code>MEMBER_ID</code> بدقّة.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">A flat file stores all data in one table, usually as plain text with one record per line.</li>
+      <li class="ar">الملف المسطّح يحفظ كل البيانات في جدول واحد، غالبًا نصًّا عاديًّا بسجلّ واحد في كل سطر.</li>
+      <li class="en">Its advantages are real: easy, cheap, one place, simple sorting. They fit small, single-user needs.</li>
+      <li class="ar">مزاياه حقيقية: سهل، ورخيص، ومكان واحد، وفرز بسيط. وهي تناسب الحاجات الصغيرة لمستخدم واحد.</li>
+      <li class="en">One table describing two things forces redundancy; redundancy makes inconsistency possible.</li>
+      <li class="ar">الجدول الواحد الذي يصف شيئين يفرض التكرار، والتكرار يجعل عدم الاتّساق ممكنًا.</li>
+      <li class="en">Update anomaly: some copies changed, not all. Insert anomaly: no row for a fact on its own. Delete anomaly: one deletion destroys another fact.</li>
+      <li class="ar">شذوذ التحديث: تغيّرت بعض النسخ لا كلّها. شذوذ الإضافة: لا صفّ لحقيقة وحدها. شذوذ الحذف: حذف واحد يُتلف حقيقة أخرى.</li>
+      <li class="en">The cure for all three is one fact, one place: a table per thing, connected by a common field.</li>
+      <li class="ar">علاج الثلاثة واحد: حقيقة واحدة في مكان واحد &mdash; جدول لكل شيء، يربط بينها حقل مشترك.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Calling a flat file "always wrong" &mdash; for a small, single-user list it is the sensible choice.</li>
+      <li class="ar">وصف الملف المسطّح بأنه «خطأ دائمًا» &mdash; فهو الخيار المعقول لقائمة صغيرة يستعملها شخص واحد.</li>
+      <li class="en">Counting rows as things: four rows of <code>BOOK_LIST</code> are four books, not four authors.</li>
+      <li class="ar">عدّ الصفوف على أنها أشياء: الصفوف الأربعة في <code>BOOK_LIST</code> أربعة كتب، لا أربعة مؤلفين.</li>
+      <li class="en">Fixing an anomaly with a habit ("always update by ID") instead of with the table's shape.</li>
+      <li class="ar">إصلاح الشذوذ بعادة («حدّث دائمًا بالرقم») بدل إصلاحه بشكل الجدول.</li>
+      <li class="en">Inventing a fake row (an author with an empty title) to get around an insert anomaly.</li>
+      <li class="ar">اختلاق صفّ مزيّف (مؤلف بعنوان فارغ) للالتفاف على شذوذ الإضافة.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="#t2-test-01">Test 1 &mdash; One Table Is Not Enough</a>. Then <a href="#t2-lesson-02">Lesson 2 &mdash; The Relational Answer</a> turns the common field into keys and gives the seven rules every relational table obeys.</p>
+    <p class="ar">اختبر نفسك بـ<a href="#t2-test-01">الاختبار 1 &mdash; جدول واحد لا يكفي</a>. ثم يحوّل <a href="#t2-lesson-02">الدرس 2 &mdash; الجواب العلائقي</a> الحقلَ المشترك إلى مفاتيح، ويعطيك القواعد السبع التي يلتزم بها كل جدول علائقي.</p>
+  </div>
+
+</section>

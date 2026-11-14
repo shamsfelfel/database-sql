@@ -28,6 +28,20 @@ window.DBTAnchors = {
 "t2idx-h2": "chapters/t2.html",
 "t2idx-how": "chapters/t2.html",
 "t2idx-why": "chapters/t2.html",
+"t2l1-e1": "lessons/t2-lesson-01.html",
+"t2l1-e2": "lessons/t2-lesson-01.html",
+"t2l1-h1": "lessons/t2-lesson-01.html",
+"t2l1-h2": "lessons/t2-lesson-01.html",
+"t2l1-h3": "lessons/t2-lesson-01.html",
+"t2l1-h4": "lessons/t2-lesson-01.html",
+"t2l1-h5": "lessons/t2-lesson-01.html",
+"t2l1-h6": "lessons/t2-lesson-01.html",
+"t2l1-h7": "lessons/t2-lesson-01.html",
+"t2l1-h8": "lessons/t2-lesson-01.html",
+"t2l1-s1": "lessons/t2-lesson-01.html",
+"t2l1-s2": "lessons/t2-lesson-01.html",
+"t2l1-s3": "lessons/t2-lesson-01.html",
+"t2l1-s4": "lessons/t2-lesson-01.html",
 "t3-chapter": "chapters/t3.html",
 "t3-exam-a": "exams/t3-exam-a.html",
 "t3-exam-b": "exams/t3-exam-b.html",
@@ -112,6 +126,54 @@ window.DBTHeadings = {
 "t2idx-why": {
 "ar": "لماذا يسبق التصميمُ SQL",
 "en": "Why design comes before SQL"
+},
+"t2l1-h1": {
+"ar": "١ · الملف المسطّح",
+"en": "1 · The flat file"
+},
+"t2l1-h2": {
+"ar": "٢ · مزاياه الحقيقية",
+"en": "2 · Its honest advantages"
+},
+"t2l1-h3": {
+"ar": "٣ · التكرار الذي يفرضه",
+"en": "3 · The repetition it forces"
+},
+"t2l1-h4": {
+"ar": "٤ · شذوذ التحديث",
+"en": "4 · The update anomaly"
+},
+"t2l1-h5": {
+"ar": "٥ · شذوذ الإضافة",
+"en": "5 · The insert anomaly"
+},
+"t2l1-h6": {
+"ar": "٦ · شذوذ الحذف",
+"en": "6 · The delete anomaly"
+},
+"t2l1-h7": {
+"ar": "٧ · حقيقة واحدة، مكان واحد",
+"en": "7 · One fact, one place"
+},
+"t2l1-h8": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t2l1-s1": {
+"ar": "سطر واحد، سجلّ واحد",
+"en": "One line, one record"
+},
+"t2l1-s2": {
+"ar": "حيث يتوقّف عن الكفاية",
+"en": "Where it stops being enough"
+},
+"t2l1-s3": {
+"ar": "من التكرار إلى عدم الاتّساق",
+"en": "From repetition to inconsistency"
+},
+"t2l1-s4": {
+"ar": "ما الذي تكسبه قاعدة البيانات متعدّدة الجداول",
+"en": "What a multi-table database buys"
 },
 "t3idx-h1": {
 "ar": "الدروس",

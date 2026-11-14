@@ -67,7 +67,7 @@ window.DBT_REGISTRY = {
       "ar": "الملف المسطّح ومزاياه الحقيقية — ثم التكرار الذي يفرضه، وشذوذ التحديث والإضافة والحذف الذي يسبّبه ذلك التكرار."
      },
      "href": "lessons/t2-lesson-01.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t2-test-01",

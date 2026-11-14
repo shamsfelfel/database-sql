@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 274" direction="ltr" role="img" aria-labelledby="t2-insert-anomaly-t">
+<title id="t2-insert-anomaly-t">The insert anomaly / شذوذ الإضافة</title>
+<g class="en"><text x="330" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">A new author arrives before any of her books</text></g><g class="ar"><text x="330" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">يصل مؤلف جديد قبل أيٍّ من كتبه</text></g>
+<text x="20" y="52" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">BOOK_LIST</text>
+<rect x="20" y="60" width="34" height="28" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<rect x="54" y="60" width="110" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="62" y="79" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_ID</text>
+<rect x="164" y="60" width="170" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="172" y="79" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_NAME</text>
+<rect x="334" y="60" width="200" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="342" y="79" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">TITLE</text>
+<rect x="20" y="88" width="34" height="28" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="37" y="107" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">1</text>
+<rect x="54" y="88" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="62" y="107" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0001</text>
+<rect x="164" y="88" width="170" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="172" y="107" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oscar Wilde</text>
+<rect x="334" y="88" width="200" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="342" y="107" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">A Vision</text>
+<rect x="20" y="116" width="34" height="28" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="37" y="135" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">2</text>
+<rect x="54" y="116" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="62" y="135" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0002</text>
+<rect x="164" y="116" width="170" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="172" y="135" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Leo Tolstoy</text>
+<rect x="334" y="116" width="200" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="342" y="135" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">War and Peace</text>
+<rect x="20" y="144" width="34" height="28" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="37" y="163" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">3</text>
+<rect x="54" y="144" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="62" y="163" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="164" y="144" width="170" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="172" y="163" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oliver Goldsmith</text>
+<rect x="334" y="144" width="200" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="342" y="163" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Citizen of the World</text>
+<rect x="20" y="172" width="34" height="28" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="37" y="191" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">4</text>
+<rect x="54" y="172" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="62" y="191" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="164" y="172" width="170" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="172" y="191" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oliver Goldsmith</text>
+<rect x="334" y="172" width="200" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="342" y="191" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Androcles and the Lion</text>
+<rect x="20" y="200" width="34" height="28" style="fill:var(--dg-alt-fill, var(--surface-2));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="37" y="219" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">5</text>
+<rect x="54" y="200" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.5;stroke-dasharray:5 4"/>
+<text x="62" y="219" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0004</text>
+<rect x="164" y="200" width="170" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.5;stroke-dasharray:5 4"/>
+<text x="172" y="219" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Jane Austen</text>
+<rect x="334" y="200" width="200" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.5;stroke-dasharray:5 4"/>
+<text x="434" y="219" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">&#8709;</text>
+<g class="en"><text x="639" y="212" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:13px">a row with no book:</text></g><g class="ar"><text x="639" y="212" text-anchor="middle" direction="rtl" style="fill:var(--dg-bad, var(--bad));font-family:var(--font-ar, sans-serif);font-size:14px">صفّ بلا كتاب:</text></g>
+<g class="en"><text x="639" y="230" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:13px">is it a book or not?</text></g><g class="ar"><text x="639" y="230" text-anchor="middle" direction="rtl" style="fill:var(--dg-bad, var(--bad));font-family:var(--font-ar, sans-serif);font-size:14px">أهو كتاب أم لا؟</text></g>
+<g class="en"><text x="330" y="258" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px">The table is a list of books, so an author can only enter riding on a book.</text></g><g class="ar"><text x="330" y="258" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px">الجدول قائمة كتب، فلا يدخله مؤلف إلا محمولًا على كتاب.</text></g>
+</svg>
