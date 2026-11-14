@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 230" direction="ltr" role="img" aria-labelledby="t2-lab-author-t">
+<title id="t2-lab-author-t">AUTHOR as an entity and as the authors table: # Id becomes the primary key, * Name becomes NOT NULL / AUTHOR كيانًا وجدول authors: يصبح # Id مفتاحًا أساسيًا، وتصبح * Name عمودًا NOT NULL</title>
+<defs><marker id="t2-lab-author-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--dg-line, var(--text-soft))"/></marker></defs>
+<g class="en"><text x="410" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:14px;font-weight:600">AUTHOR becomes authors</text></g><g class="ar"><text x="410" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:15px;font-weight:600">AUTHOR يصير authors</text></g>
+<g class="en"><text x="130" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">ERD (logical model)</text></g><g class="ar"><text x="130" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">المخطّط (النموذج المنطقي)</text></g>
+<g class="en"><text x="585" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Table (physical model, Oracle)</text></g><g class="ar"><text x="585" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">الجدول (النموذج الفيزيائي، Oracle)</text></g>
+<rect x="30" y="70" width="200" height="94" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="130" y="91" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">AUTHOR</text>
+<rect x="380" y="70" width="410" height="94" rx="4" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1.2"/>
+<rect x="380" y="70" width="410" height="32" rx="4" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1.2"/>
+<text x="394" y="91" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">authors</text>
+<rect x="381" y="103" width="408" height="25" style="fill:var(--dg-row-odd, var(--surface))"/>
+<text x="46" y="120" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<line x1="236" y1="116" x2="374" y2="116" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-author-arr)"/>
+<text x="394" y="120" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">id</text>
+<text x="530" y="120" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<text x="646" y="120" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">PRIMARY KEY</text>
+<rect x="381" y="129" width="408" height="25" style="fill:var(--dg-row-even, var(--surface-2))"/>
+<text x="46" y="146" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<line x1="236" y1="142" x2="374" y2="142" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-author-arr)"/>
+<text x="394" y="146" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">name</text>
+<text x="530" y="146" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(30)</text>
+<text x="646" y="146" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">NOT NULL</text>
+<g class="en"><text x="410" y="194" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px"># becomes PRIMARY KEY  ·  * becomes NOT NULL</text></g><g class="ar"><text x="410" y="194" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px">العلامة # تصير PRIMARY KEY  ·  والعلامة * تصير NOT NULL</text></g>
+</svg>

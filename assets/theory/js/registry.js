@@ -224,7 +224,7 @@ window.DBT_REGISTRY = {
       "ar": "مختبر SQL — النموذج يصير جداول"
      },
      "href": "labs/t2-lab.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t2-glossary",

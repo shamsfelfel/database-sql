@@ -114,6 +114,12 @@ window.DBTAnchors = {
 "t2l6-s5": "lessons/t2-lesson-06.html",
 "t2l6-s6": "lessons/t2-lesson-06.html",
 "t2l6-s7": "lessons/t2-lesson-06.html",
+"t2lab-h1": "labs/t2-lab.html",
+"t2lab-h2": "labs/t2-lab.html",
+"t2lab-h3": "labs/t2-lab.html",
+"t2lab-h4": "labs/t2-lab.html",
+"t2lab-h5": "labs/t2-lab.html",
+"t2lab-h6": "labs/t2-lab.html",
 "t3-chapter": "chapters/t3.html",
 "t3-exam-a": "exams/t3-exam-a.html",
 "t3-exam-b": "exams/t3-exam-b.html",
@@ -470,6 +476,30 @@ window.DBTHeadings = {
 "t2l6-s7": {
 "ar": "قراءته من أوّله إلى آخره",
 "en": "Reading it end to end"
+},
+"t2lab-h1": {
+"ar": "١ · المخطّط، والقواعد التي يحملها",
+"en": "1 · The diagram, and the rules it carries"
+},
+"t2lab-h2": {
+"ar": "٢ · AUTHOR يصير authors",
+"en": "2 · AUTHOR becomes authors"
+},
+"t2lab-h3": {
+"ar": "٣ · BOOK يصير books",
+"en": "3 · BOOK becomes books"
+},
+"t2lab-h4": {
+"ar": "٤ · MEMBER يصير members",
+"en": "4 · MEMBER becomes members"
+},
+"t2lab-h5": {
+"ar": "٥ · صفوف تطيع النموذج",
+"en": "5 · Rows that obey the model"
+},
+"t2lab-h6": {
+"ar": "٦ · وحدك: PUBLISHER",
+"en": "6 · On your own: PUBLISHER"
 },
 "t3idx-h1": {
 "ar": "الدروس",

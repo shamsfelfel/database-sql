@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 360" direction="ltr" role="img" aria-labelledby="t2-lab-member-t">
+<title id="t2-lab-member-t">MEMBER as an entity and as the members table: five * attributes become NOT NULL, o State stays nullable / MEMBER كيانًا وجدول members: خمس خصائص * تصبح NOT NULL، وتبقى o State قابلة لـ null</title>
+<defs><marker id="t2-lab-member-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--dg-line, var(--text-soft))"/></marker></defs>
+<g class="en"><text x="410" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:14px;font-weight:600">MEMBER becomes members</text></g><g class="ar"><text x="410" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:15px;font-weight:600">MEMBER يصير members</text></g>
+<g class="en"><text x="130" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">ERD (logical model)</text></g><g class="ar"><text x="130" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">المخطّط (النموذج المنطقي)</text></g>
+<g class="en"><text x="585" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Table (physical model, Oracle)</text></g><g class="ar"><text x="585" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">الجدول (النموذج الفيزيائي، Oracle)</text></g>
+<rect x="30" y="70" width="200" height="224" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="130" y="91" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBER</text>
+<rect x="380" y="70" width="410" height="224" rx="4" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1.2"/>
+<rect x="380" y="70" width="410" height="32" rx="4" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1.2"/>
+<text x="394" y="91" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">members</text>
+<rect x="381" y="103" width="408" height="25" style="fill:var(--dg-row-odd, var(--surface))"/>
+<text x="46" y="120" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<line x1="236" y1="116" x2="374" y2="116" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-member-arr)"/>
+<text x="394" y="120" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">id</text>
+<text x="530" y="120" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<text x="646" y="120" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">PRIMARY KEY</text>
+<rect x="381" y="129" width="408" height="25" style="fill:var(--dg-row-even, var(--surface-2))"/>
+<text x="46" y="146" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First name</text>
+<line x1="236" y1="142" x2="374" y2="142" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-member-arr)"/>
+<text x="394" y="146" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">first_name</text>
+<text x="530" y="146" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(20)</text>
+<text x="646" y="146" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">NOT NULL</text>
+<rect x="381" y="155" width="408" height="25" style="fill:var(--dg-row-odd, var(--surface))"/>
+<text x="46" y="172" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last name</text>
+<line x1="236" y1="168" x2="374" y2="168" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-member-arr)"/>
+<text x="394" y="172" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">last_name</text>
+<text x="530" y="172" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(20)</text>
+<text x="646" y="172" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">NOT NULL</text>
+<rect x="381" y="181" width="408" height="25" style="fill:var(--dg-row-even, var(--surface-2))"/>
+<text x="46" y="198" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Street Address</text>
+<line x1="236" y1="194" x2="374" y2="194" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-member-arr)"/>
+<text x="394" y="198" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">street_address</text>
+<text x="530" y="198" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(40)</text>
+<text x="646" y="198" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">NOT NULL</text>
+<rect x="381" y="207" width="408" height="25" style="fill:var(--dg-row-odd, var(--surface))"/>
+<text x="46" y="224" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* City</text>
+<line x1="236" y1="220" x2="374" y2="220" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-member-arr)"/>
+<text x="394" y="224" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">city</text>
+<text x="530" y="224" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(20)</text>
+<text x="646" y="224" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">NOT NULL</text>
+<rect x="381" y="233" width="408" height="25" style="fill:var(--dg-row-even, var(--surface-2))"/>
+<text x="46" y="250" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o State</text>
+<line x1="236" y1="246" x2="374" y2="246" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-member-arr)"/>
+<text x="394" y="250" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">state</text>
+<text x="530" y="250" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(20)</text>
+<g class="en"><text x="646" y="250" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">(nullable)</text></g><g class="ar"><text x="646" y="250" text-anchor="end" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">(يقبل null)</text></g>
+<rect x="381" y="259" width="408" height="25" style="fill:var(--dg-row-odd, var(--surface))"/>
+<text x="46" y="276" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* ZIP</text>
+<line x1="236" y1="272" x2="374" y2="272" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-member-arr)"/>
+<text x="394" y="276" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">zip</text>
+<text x="530" y="276" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(10)</text>
+<text x="646" y="276" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">NOT NULL</text>
+<g class="en"><text x="410" y="324" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px">o adds nothing: state is left nullable, so a member may have no state</text></g><g class="ar"><text x="410" y="324" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px">العلامة o لا تضيف شيئًا: يبقى state قابلًا لـ null، فقد لا تكون للعضو ولاية</text></g>
+</svg>

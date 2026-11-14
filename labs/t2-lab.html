@@ -39,6 +39,7 @@
 <link rel="stylesheet" href="../assets/theory/css/base.css">
 <link rel="stylesheet" href="../assets/theory/css/chrome.css">
 <link rel="stylesheet" href="../assets/theory/css/components.css">
+<link rel="stylesheet" href="../assets/theory/css/diagram.css">
 <link rel="stylesheet" href="../assets/css/widget.css">
 </head>
 <body data-chapter="t2" data-page="t2-lab" data-kind="lab" data-path="labs/t2-lab.html">
@@ -46,10 +47,600 @@
 <section class="page" id="t2-lab">
 <nav class="crumbs"></nav>
 
-  <span class="kicker">SQL Lab</span>
-  <h1><span class="en">SQL Lab</span><span class="ar">مختبر SQL</span></h1>
-  <p class="en">Not written yet.</p>
-  <p class="ar">لم يُكتب بعد.</p>
+
+  <span class="kicker">Lab &middot; Chapter 2</span>
+  <h1><span class="en">SQL Lab &mdash; the model becomes tables</span><span class="ar">مختبر SQL &mdash; النموذج يصير جداول</span></h1>
+  <p class="lede en">Matt's logical model is finished. In this lab you build its first three entities &mdash; <code>AUTHOR</code>, <code>BOOK</code> and <code>MEMBER</code> &mdash; as real tables, then try to break each rule the diagram drew and watch the database refuse.</p>
+  <p class="lede ar">اكتمل النموذج المنطقي الذي رسمه مات. في هذا المختبر تبني أوّل ثلاثة كيانات منه &mdash; <code>AUTHOR</code> و<code>BOOK</code> و<code>MEMBER</code> &mdash; جداولَ حقيقية، ثم تحاول كسر كل قاعدة رسمها المخطّط، وترى قاعدة البيانات ترفض.</p>
+
+  <div class="note">
+    <p class="en">You need <a href="../lessons/t2-lesson-03.html#t2-lesson-03">Lesson 3</a> (the logical and physical models), <a href="../lessons/t2-lesson-05.html#t2-lesson-05">Lesson 5</a> (mandatory <code>*</code>, optional <code>o</code>, null) and <a href="../lessons/t2-lesson-06.html#t2-lesson-06">Lesson 6</a> (the UID <code>#</code>). Every box below runs in your browser, offline. <strong>Run</strong> executes your SQL; <strong>Check answer</strong> grades it on a fresh, empty database, so earlier runs never count against you.</p>
+    <p class="ar">تحتاج إلى <a href="../lessons/t2-lesson-03.html#t2-lesson-03">الدرس 3</a> (النموذجان المنطقي والفيزيائي)، و<a href="../lessons/t2-lesson-05.html#t2-lesson-05">الدرس 5</a> (الإلزامية <code>*</code> والاختيارية <code>o</code> والقيمة null)، و<a href="../lessons/t2-lesson-06.html#t2-lesson-06">الدرس 6</a> (المعرّف الفريد <code>#</code>). كل صندوق أدناه يعمل في متصفّحك دون اتصال. زرّ <strong>Run</strong> ينفّذ SQL التي كتبتها، وزرّ <strong>Check answer</strong> يصحّحها على قاعدة بيانات جديدة فارغة، فلا تُحسب عليك محاولاتك السابقة.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Turn an entity into a <code>CREATE TABLE</code>, and each of its attributes into a column.</li>
+      <li class="ar">تحويل الكيان إلى جملة <code>CREATE TABLE</code>، وكل خاصية من خصائصه إلى عمود.</li>
+      <li class="en">Translate each mark: <code>#</code> to <code>PRIMARY KEY</code>, <code>*</code> to <code>NOT NULL</code>, <code>o</code> to a nullable column, <code>U</code> to <code>UNIQUE</code>.</li>
+      <li class="ar">ترجمة كل علامة: <code>#</code> إلى <code>PRIMARY KEY</code>، و<code>*</code> إلى <code>NOT NULL</code>، و<code>o</code> إلى عمود يقبل null، و<code>U</code> إلى <code>UNIQUE</code>.</li>
+      <li class="en">Predict which <code>INSERT</code> the finished table will refuse, and name the rule that refuses it.</li>
+      <li class="ar">توقّع أيّ جملة <code>INSERT</code> سيرفضها الجدول المكتمل، وتسمية القاعدة التي ترفضها.</li>
+      <li class="en">Say which parts of the model a table cannot yet hold, and why they wait for relationships.</li>
+      <li class="ar">بيان أيّ أجزاء النموذج لا يستطيع الجدول أن يحملها بعد، ولماذا تنتظر العلاقات.</li>
+    </ul>
+  </div>
+
+  <h2 id="t2lab-h1"><span class="en">1 · The diagram, and the rules it carries</span><span class="ar">١ · المخطّط، والقواعد التي يحملها</span></h2>
+
+  <div class="problem">
+    <p class="en">A diagram cannot stop anyone typing a book with no title, or two authors with the same id. Only the table can. Every mark Matt drew is a rule the table must enforce &mdash; if you forget to write it down, the database never hears about it.</p>
+    <p class="ar">لا يستطيع المخطّط أن يمنع أحدًا من إدخال كتاب بلا عنوان، أو مؤلّفَين بالمعرّف نفسه. الجدول وحده يستطيع. كل علامة رسمها مات قاعدةٌ على الجدول أن يفرضها &mdash; وإن نسيتَ أن تكتبها، فلن تسمع بها قاعدة البيانات أبدًا.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-library-logical">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 440" direction="ltr" role="img" aria-labelledby="t2-library-logical-t">
+<title id="t2-library-logical-t">The library's logical model: every entity, attribute and UID, with optionality and cardinality / النموذج المنطقي للمكتبة: كل كيان وخاصية ومعرّف فريد، مع الإلزامية والعدد</title>
+<g class="en"><text x="550" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Logical model — the library</text></g><g class="ar"><text x="550" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">النموذج المنطقي — المكتبة</text></g>
+<rect x="30" y="60" width="170" height="177" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="115" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBER</text>
+<text x="44" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="44" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First name</text>
+<text x="44" y="142" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last name</text>
+<text x="44" y="161" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Street Address</text>
+<text x="44" y="180" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* City</text>
+<text x="44" y="199" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o State</text>
+<text x="44" y="218" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* ZIP</text>
+<rect x="320" y="60" width="170" height="82" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="405" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK TRANSACTION</text>
+<text x="334" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Tran Date</text>
+<text x="334" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Type</text>
+<rect x="610" y="60" width="170" height="82" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="695" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK</text>
+<text x="624" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="624" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">U * Title</text>
+<rect x="900" y="60" width="170" height="82" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="985" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PUBLISHER</text>
+<text x="914" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="914" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="610" y="300" width="170" height="56" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="695" y="333" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK AUTHOR</text>
+<rect x="900" y="287" width="170" height="82" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="985" y="309" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">AUTHOR</text>
+<text x="914" y="331" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<text x="914" y="350" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M200 101 L260 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M260 101 L320 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M306 101 L320 109" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M306 101 L320 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M306 101 L320 93" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="230" y="93" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">make</text>
+<text x="288" y="119" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">made by</text>
+<path d="M490 101 L550 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M550 101 L610 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M504 101 L490 93" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M504 101 L490 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M504 101 L490 109" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M512 93 L512 109" style="stroke:var(--dg-line, var(--text-soft));fill:none;stroke-width:2"/>
+<text x="548" y="91" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">be included in</text>
+<text x="585" y="119" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">include</text>
+<path d="M780 101 L840 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M840 101 L900 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M794 101 L780 93" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M794 101 L780 101" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M794 101 L780 109" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="838" y="91" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">published by</text>
+<text x="872" y="119" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">publish</text>
+<path d="M695 142 L695 221" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M695 221 L695 300" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M695 286 L687 300" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M695 286 L695 300" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M695 286 L703 300" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M687 278 L703 278" style="stroke:var(--dg-line, var(--text-soft));fill:none;stroke-width:2"/>
+<text x="705" y="162" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">written by</text>
+<text x="705" y="262" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">for</text>
+<path d="M780 328 L840 328" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M840 328 L900 328" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M794 328 L780 320" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M794 328 L780 328" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M794 328 L780 336" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M802 320 L802 336" style="stroke:var(--dg-line, var(--text-soft));fill:none;stroke-width:2"/>
+<text x="822" y="318" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">of</text>
+<text x="870" y="346" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">writer</text>
+<rect x="20" y="260" width="520" height="140" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="282" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">#</text></g><g class="ar"><text x="526" y="282" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">#</text></g>
+<g class="en"><text x="64" y="282" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">unique identifier (UID)</text></g><g class="ar"><text x="500" y="282" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">المعرّف الفريد (UID)</text></g>
+<g class="en"><text x="36" y="304" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">*</text></g><g class="ar"><text x="526" y="304" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">*</text></g>
+<g class="en"><text x="64" y="304" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">mandatory: must have a value</text></g><g class="ar"><text x="500" y="304" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">إلزامية: يجب أن تكون لها قيمة</text></g>
+<g class="en"><text x="36" y="326" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">o</text></g><g class="ar"><text x="526" y="326" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">o</text></g>
+<g class="en"><text x="64" y="326" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">optional: may be left empty</text></g><g class="ar"><text x="500" y="326" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">اختيارية: يجوز أن تبقى فارغة</text></g>
+<g class="en"><text x="36" y="348" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">U</text></g><g class="ar"><text x="526" y="348" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">U</text></g>
+<g class="en"><text x="64" y="348" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">unique: no two instances share the value</text></g><g class="ar"><text x="500" y="348" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">فريدة: لا تتشارك حالتان القيمة نفسها</text></g>
+<g class="en"><text x="36" y="376" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">Line ends (solid / dashed, crow’s foot, bar) record optionality and cardinality — chapter T3.</text></g><g class="ar"><text x="530" y="376" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">نهايات الخطوط (متصل / متقطّع، قدم الغراب، الشَّرطة) تسجّل الإلزامية والعدد — الفصل T3.</text></g>
+</svg>
+<figcaption><span class="en">The logical model from Lesson 3. This lab builds the three boxes that need no relationship to exist: <code>AUTHOR</code>, <code>BOOK</code> and <code>MEMBER</code>.</span><span class="ar">النموذج المنطقي من الدرس 3. يبني هذا المختبر الصناديق الثلاثة التي لا تحتاج إلى علاقة كي توجد: <code>AUTHOR</code> و<code>BOOK</code> و<code>MEMBER</code>.</span></figcaption></figure>
+
+  <p class="en">Lesson 3 gave the steps: entities become tables, attributes become columns, relationships become foreign keys. The marks beside each attribute decide the constraints:</p>
+  <p class="ar">أعطى الدرس 3 الخطوات: الكيانات تصير جداول، والخصائص تصير أعمدة، والعلاقات تصير مفاتيح أجنبية. أمّا العلامات بجانب كل خاصية فتقرّر القيود:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th><span class="en">On the ERD</span><span class="ar">في المخطّط</span></th><th><span class="en">In the table</span><span class="ar">في الجدول</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">an entity, <code>AUTHOR</code></span><span class="ar">كيان، <code>AUTHOR</code></span></td><td><code>CREATE TABLE authors (…)</code></td></tr>
+        <tr><td><span class="en">an attribute, <code>Name</code></span><span class="ar">خاصية، <code>Name</code></span></td><td><span class="en">a column with a data type, <code>name VARCHAR2(30)</code></span><span class="ar">عمود بنوع بيانات، <code>name VARCHAR2(30)</code></span></td></tr>
+        <tr><td><code>#</code> <span class="en">the UID</span><span class="ar">المعرّف الفريد</span></td><td><code>PRIMARY KEY</code></td></tr>
+        <tr><td><code>*</code> <span class="en">mandatory</span><span class="ar">إلزامية</span></td><td><code>NOT NULL</code></td></tr>
+        <tr><td><code>o</code> <span class="en">optional</span><span class="ar">اختيارية</span></td><td><span class="en">nothing &mdash; the column accepts null</span><span class="ar">لا شيء &mdash; العمود يقبل null</span></td></tr>
+        <tr><td><code>U</code> <span class="en">unique, not the UID</span><span class="ar">فريدة، وليست المعرّف</span></td><td><code>UNIQUE</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en"><code>PUBLISHER</code>, <code>BOOK TRANSACTION</code> and <code>BOOK AUTHOR</code> are left out on purpose. Each one hangs on a relationship line, and a relationship becomes a foreign key &mdash; which is Chapter 3's lab. Here every table stands alone.</p>
+    <p class="ar">تُرِكت <code>PUBLISHER</code> و<code>BOOK TRANSACTION</code> و<code>BOOK AUTHOR</code> عمدًا. فكلٌّ منها معلّق على خطّ علاقة، والعلاقة تصير مفتاحًا أجنبيًّا &mdash; وذلك مختبر الفصل 3. أمّا هنا فكل جدول قائم بذاته.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In <code>MEMBER</code>, which line becomes a column the database lets you leave empty?</p>
+    <p class="q ar">في <code>MEMBER</code>، أيّ سطر يصير عمودًا تسمح لك قاعدة البيانات بتركه فارغًا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>* City</code></span><span class="ar"><code>* City</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>o State</code></span><span class="ar"><code>o State</code></span></button></li>
+      <li><button class="opt"><span class="en"><code># * Id</code></span><span class="ar"><code># * Id</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>o</code> means optional, so <code>state</code> gets no <code>NOT NULL</code> and may hold null. <code>*</code> on <code>City</code> forces a value, and the <code>Id</code> is the UID, which is never empty.</p>
+      <p class="ar"><code>o</code> تعني اختيارية، فلا يأخذ <code>state</code> قيد <code>NOT NULL</code> ويجوز أن يحمل null. أمّا <code>*</code> على <code>City</code> فتفرض قيمة، و<code>Id</code> هو المعرّف الفريد، ولا يكون فارغًا أبدًا.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">How many tables will this lab build from the six boxes on the diagram?</p>
+    <p class="q ar">كم جدولًا سيبني هذا المختبر من صناديق المخطّط الستة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Six &mdash; one per box</span><span class="ar">ستة &mdash; واحد لكل صندوق</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Three, plus <code>publishers</code> on your own at the end</span><span class="ar">ثلاثة، ومعها <code>publishers</code> وحدك في النهاية</span></button></li>
+      <li><button class="opt"><span class="en">One &mdash; the whole library in a single table</span><span class="ar">واحد &mdash; المكتبة كلها في جدول واحد</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>authors</code>, <code>books</code> and <code>members</code> are the guided steps, and step 6 asks you to build <code>publishers</code> alone. One table for everything is the flat file of Lesson 1 &mdash; the shape this whole chapter moved away from.</p>
+      <p class="ar"><code>authors</code> و<code>books</code> و<code>members</code> هي الخطوات الموجَّهة، والخطوة 6 تطلب منك أن تبني <code>publishers</code> وحدك. أمّا جدول واحد لكل شيء فهو الملف المسطّح في الدرس 1 &mdash; الشكل الذي ابتعد عنه هذا الفصل كلّه.</p>
+    </div>
+  </div>
+
+  <h2 id="t2lab-h2"><span class="en">2 · <code>AUTHOR</code> becomes <code>authors</code></span><span class="ar">٢ · <code>AUTHOR</code> يصير <code>authors</code></span></h2>
+
+  <figure class="diagram" data-diagram="t2-lab-author">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 230" direction="ltr" role="img" aria-labelledby="t2-lab-author-t">
+<title id="t2-lab-author-t">AUTHOR as an entity and as the authors table: # Id becomes the primary key, * Name becomes NOT NULL / AUTHOR كيانًا وجدول authors: يصبح # Id مفتاحًا أساسيًا، وتصبح * Name عمودًا NOT NULL</title>
+<defs><marker id="t2-lab-author-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--dg-line, var(--text-soft))"/></marker></defs>
+<g class="en"><text x="410" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:14px;font-weight:600">AUTHOR becomes authors</text></g><g class="ar"><text x="410" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:15px;font-weight:600">AUTHOR يصير authors</text></g>
+<g class="en"><text x="130" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">ERD (logical model)</text></g><g class="ar"><text x="130" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">المخطّط (النموذج المنطقي)</text></g>
+<g class="en"><text x="585" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Table (physical model, Oracle)</text></g><g class="ar"><text x="585" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">الجدول (النموذج الفيزيائي، Oracle)</text></g>
+<rect x="30" y="70" width="200" height="94" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="130" y="91" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">AUTHOR</text>
+<rect x="380" y="70" width="410" height="94" rx="4" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1.2"/>
+<rect x="380" y="70" width="410" height="32" rx="4" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1.2"/>
+<text x="394" y="91" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">authors</text>
+<rect x="381" y="103" width="408" height="25" style="fill:var(--dg-row-odd, var(--surface))"/>
+<text x="46" y="120" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<line x1="236" y1="116" x2="374" y2="116" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-author-arr)"/>
+<text x="394" y="120" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">id</text>
+<text x="530" y="120" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<text x="646" y="120" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">PRIMARY KEY</text>
+<rect x="381" y="129" width="408" height="25" style="fill:var(--dg-row-even, var(--surface-2))"/>
+<text x="46" y="146" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<line x1="236" y1="142" x2="374" y2="142" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-author-arr)"/>
+<text x="394" y="146" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">name</text>
+<text x="530" y="146" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(30)</text>
+<text x="646" y="146" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">NOT NULL</text>
+<g class="en"><text x="410" y="194" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px"># becomes PRIMARY KEY  ·  * becomes NOT NULL</text></g><g class="ar"><text x="410" y="194" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px">العلامة # تصير PRIMARY KEY  ·  والعلامة * تصير NOT NULL</text></g>
+</svg>
+<figcaption><span class="en">Two attributes, two columns. The <code>#</code> becomes the primary key; the <code>*</code> on <code>Name</code> becomes <code>NOT NULL</code>. Types follow the physical model on slide 27.</span><span class="ar">خاصيتان، وعمودان. تصير <code>#</code> المفتاح الأساسي، وتصير <code>*</code> على <code>Name</code> قيد <code>NOT NULL</code>. والأنواع مأخوذة من النموذج الفيزيائي في الشريحة 27.</span></figcaption></figure>
+
+  <div class="note">
+    <p class="en"><strong>The rule:</strong> each <code>AUTHOR</code> is identified by its <code>Id</code>, and must have a <code>Name</code>.</p>
+    <p class="ar"><strong>القاعدة:</strong> كل <code>AUTHOR</code> يُعرَّف بمعرّفه <code>Id</code>، ويجب أن يكون له <code>Name</code>.</p>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Step 2a · Write the table</span><span class="ar">الخطوة 2أ · اكتب الجدول</span></h4>
+    <p class="en">Create <code>authors</code> with columns <code>id</code> (<code>NUMBER</code>) and <code>name</code> (<code>VARCHAR2(30)</code>), and the two constraints the marks ask for. The check reads your table's columns, its primary key and its <code>NOT NULL</code> columns.</p>
+    <p class="ar">أنشئ الجدول <code>authors</code> بعمودين <code>id</code> (<code>NUMBER</code>) و<code>name</code> (<code>VARCHAR2(30)</code>)، والقيدين اللذين تطلبهما العلامتان. يقرأ التصحيح أعمدة جدولك، ومفتاحه الأساسي، وأعمدته التي عليها <code>NOT NULL</code>.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"sql":"","placeholder":"CREATE TABLE authors ( ... );","grade":{"mode":"state","check":"SELECT ``(alasql.tables.authors||alasql.tables.AUTHORS).columns.map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS cols, ``((alasql.tables.authors||alasql.tables.AUTHORS).pk?(alasql.tables.authors||alasql.tables.AUTHORS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).join(',')`` AS pk, ``(alasql.tables.authors||alasql.tables.AUTHORS).columns.filter(function(c){return c.notnull&&((alasql.tables.authors||alasql.tables.AUTHORS).pk?(alasql.tables.authors||alasql.tables.AUTHORS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).indexOf(c.columnid.toLowerCase())<0}).map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS not_null, ``((alasql.tables.authors||alasql.tables.AUTHORS).uk||[]).map(function(u){return u.columns.map(function(s){return String(s).split(' ')[0].toLowerCase()}).join('+')}).sort().join(',')`` AS uniq","expected":[{"cols":"id,name","pk":"id","not_null":"name","uniq":""}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE authors (
+  id   NUMBER       PRIMARY KEY,
+  name VARCHAR2(30) NOT NULL
+);</code></pre>
+      <p class="en">Leave out <code>NOT NULL</code> and the check fails: the table would run, but nothing would stop an author with no name. A primary key needs no <code>NOT NULL</code> of its own &mdash; in Oracle a primary key is never null.</p>
+      <p class="ar">احذف <code>NOT NULL</code> فيفشل التصحيح: سيعمل الجدول، لكن لا شيء سيمنع مؤلّفًا بلا اسم. ولا يحتاج المفتاح الأساسي إلى <code>NOT NULL</code> خاصّ به &mdash; ففي Oracle لا يكون المفتاح الأساسي null أبدًا.</p>
+    </details>
+  </div>
+
+  <p class="en">Now test the rule. This box starts with <code>authors</code> built and two rows in it, Oscar Wilde (<code>1</code>) and Leo Tolstoy (<code>2</code>). Run it:</p>
+  <p class="ar">والآن اختبر القاعدة. يبدأ هذا الصندوق والجدول <code>authors</code> مبنيّ وفيه صفّان، Oscar Wilde (<code>1</code>) وLeo Tolstoy (<code>2</code>). شغّله:</p>
+  <div class="qb-widget">
+    <script type="application/json" class="wd-config">
+    {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE authors (id NUMBER PRIMARY KEY, name VARCHAR2(30) NOT NULL)","INSERT INTO authors VALUES (1, 'Oscar Wilde'), (2, 'Leo Tolstoy')"],"sql":"INSERT INTO authors VALUES (2, 'Oliver Goldsmith');"}
+    </script>
+  </div>
+  <div class="output">
+    <pre class="code" data-lang="text"><code>Cannot insert record, because it already exists in primary key index</code></pre>
+  </div>
+  <p class="en">Id <code>2</code> is taken, so the row is refused and the table keeps its two authors. Change <code>2</code> to <code>3</code> and run again: Oliver Goldsmith goes in. Then try <code>INSERT INTO authors (id) VALUES (4);</code> &mdash; it fails with <code>Wrong NULL value in NOT NULL column name</code>.</p>
+  <p class="ar">المعرّف <code>2</code> مأخوذ، فيُرفض الصفّ ويحتفظ الجدول بمؤلّفَيه. غيّر <code>2</code> إلى <code>3</code> وشغّل من جديد: يدخل Oliver Goldsmith. ثم جرّب <code>INSERT INTO authors (id) VALUES (4);</code> &mdash; فتفشل برسالة <code>Wrong NULL value in NOT NULL column name</code>.</p>
+
+  <div class="quiz">
+    <p class="q en">Which mark on the diagram refused <code>INSERT INTO authors (id) VALUES (4);</code>?</p>
+    <p class="q ar">أيّ علامة في المخطّط رفضت <code>INSERT INTO authors (id) VALUES (4);</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The <code>#</code> on <code>Id</code></span><span class="ar">علامة <code>#</code> على <code>Id</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The <code>*</code> on <code>Name</code></span><span class="ar">علامة <code>*</code> على <code>Name</code></span></button></li>
+      <li><button class="opt"><span class="en">None &mdash; the database guessed</span><span class="ar">لا شيء &mdash; خمّنت قاعدة البيانات</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Id <code>4</code> is new, so the key is happy. The row has no name, and <code>*</code> &mdash; written as <code>NOT NULL</code> &mdash; says every author must have one.</p>
+      <p class="ar">المعرّف <code>4</code> جديد، فلا اعتراض من المفتاح. لكن الصفّ بلا اسم، و<code>*</code> &mdash; المكتوبة <code>NOT NULL</code> &mdash; تقول إن لكل مؤلّف اسمًا.</p>
+    </div>
+  </div>
+
+  <div class="warn">
+    <p class="en">One honest gap in this browser engine: it accepts an explicit <code>NULL</code> in a <code>NUMBER</code> column even when it is the primary key or declared <code>NOT NULL</code>. Oracle refuses both. So this lab tests the <code>*</code> rule on text columns, where the engine is strict.</p>
+    <p class="ar">ثغرة نعترف بها في محرّك المتصفّح هذا: يقبل <code>NULL</code> صريحة في عمود <code>NUMBER</code> حتى لو كان مفتاحًا أساسيًّا أو معلنًا <code>NOT NULL</code>. أمّا Oracle فيرفض الحالتين. لذلك يختبر هذا المختبر قاعدة <code>*</code> على الأعمدة النصّية، حيث المحرّك صارم.</p>
+  </div>
+
+  <h2 id="t2lab-h3"><span class="en">3 · <code>BOOK</code> becomes <code>books</code></span><span class="ar">٣ · <code>BOOK</code> يصير <code>books</code></span></h2>
+
+  <div class="problem">
+    <p class="en">The faculty member wants each title catalogued once. <code>Title</code> is not the UID &mdash; <code>Id</code> is &mdash; yet two books with the same title would be a mistake. Matt marked it <code>U</code>.</p>
+    <p class="ar">يريد عضو هيئة التدريس أن يُفهرَس كل عنوان مرّة واحدة. <code>Title</code> ليس المعرّف الفريد &mdash; فالمعرّف هو <code>Id</code> &mdash; ومع ذلك فإن كتابين بالعنوان نفسه خطأ. فوسمه مات بعلامة <code>U</code>.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-lab-book">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 252" direction="ltr" role="img" aria-labelledby="t2-lab-book-t">
+<title id="t2-lab-book-t">BOOK as an entity and as the books table: U * Title becomes NOT NULL UNIQUE / BOOK كيانًا وجدول books: تصبح U * Title عمودًا NOT NULL UNIQUE</title>
+<defs><marker id="t2-lab-book-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--dg-line, var(--text-soft))"/></marker></defs>
+<g class="en"><text x="410" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:14px;font-weight:600">BOOK becomes books</text></g><g class="ar"><text x="410" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:15px;font-weight:600">BOOK يصير books</text></g>
+<g class="en"><text x="130" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">ERD (logical model)</text></g><g class="ar"><text x="130" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">المخطّط (النموذج المنطقي)</text></g>
+<g class="en"><text x="585" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Table (physical model, Oracle)</text></g><g class="ar"><text x="585" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">الجدول (النموذج الفيزيائي، Oracle)</text></g>
+<rect x="30" y="70" width="200" height="94" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="130" y="91" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BOOK</text>
+<rect x="380" y="70" width="410" height="94" rx="4" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1.2"/>
+<rect x="380" y="70" width="410" height="32" rx="4" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1.2"/>
+<text x="394" y="91" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">books</text>
+<rect x="381" y="103" width="408" height="25" style="fill:var(--dg-row-odd, var(--surface))"/>
+<text x="46" y="120" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<line x1="236" y1="116" x2="374" y2="116" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-book-arr)"/>
+<text x="394" y="120" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">id</text>
+<text x="530" y="120" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(15)</text>
+<text x="646" y="120" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">PRIMARY KEY</text>
+<rect x="381" y="129" width="408" height="25" style="fill:var(--dg-row-even, var(--surface-2))"/>
+<text x="46" y="146" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">U * Title</text>
+<line x1="236" y1="142" x2="374" y2="142" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-book-arr)"/>
+<text x="394" y="146" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">title</text>
+<text x="530" y="146" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(50)</text>
+<text x="646" y="146" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">NOT NULL UNIQUE</text>
+<g class="en"><text x="410" y="194" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px">U adds UNIQUE: no two books may share a title</text></g><g class="ar"><text x="410" y="194" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px">العلامة U تضيف UNIQUE: لا يشترك كتابان في عنوان واحد</text></g>
+<g class="en"><text x="410" y="216" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px">* still adds NOT NULL: every book has a title</text></g><g class="ar"><text x="410" y="216" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px">والعلامة * ما زالت تضيف NOT NULL: لكل كتاب عنوان</text></g>
+</svg>
+<figcaption><span class="en"><code>U * Title</code> carries two rules, so its column carries two constraints. The id is text, <code>VARCHAR2(15)</code>, as on slide 27.</span><span class="ar"><code>U * Title</code> تحمل قاعدتين، فيحمل عمودها قيدين. والمعرّف نصّ، <code>VARCHAR2(15)</code>، كما في الشريحة 27.</span></figcaption></figure>
+
+  <div class="note">
+    <p class="en"><strong>The rule:</strong> each <code>BOOK</code> is identified by its <code>Id</code>, must have a <code>Title</code>, and no two books share a title.</p>
+    <p class="ar"><strong>القاعدة:</strong> كل <code>BOOK</code> يُعرَّف بمعرّفه <code>Id</code>، ويجب أن يكون له <code>Title</code>، ولا يشترك كتابان في عنوان واحد.</p>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Step 3a · Write the table</span><span class="ar">الخطوة 3أ · اكتب الجدول</span></h4>
+    <p class="en">Create <code>books</code> with <code>id</code> (<code>VARCHAR2(15)</code>) and <code>title</code> (<code>VARCHAR2(50)</code>). Three constraints in all: one for <code>#</code>, two for <code>U *</code>.</p>
+    <p class="ar">أنشئ الجدول <code>books</code> بالعمودين <code>id</code> (<code>VARCHAR2(15)</code>) و<code>title</code> (<code>VARCHAR2(50)</code>). ثلاثة قيود في المجموع: واحد لـ <code>#</code>، واثنان لـ <code>U *</code>.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"sql":"","placeholder":"CREATE TABLE books ( ... );","grade":{"mode":"state","check":"SELECT ``(alasql.tables.books||alasql.tables.BOOKS).columns.map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS cols, ``((alasql.tables.books||alasql.tables.BOOKS).pk?(alasql.tables.books||alasql.tables.BOOKS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).join(',')`` AS pk, ``(alasql.tables.books||alasql.tables.BOOKS).columns.filter(function(c){return c.notnull&&((alasql.tables.books||alasql.tables.BOOKS).pk?(alasql.tables.books||alasql.tables.BOOKS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).indexOf(c.columnid.toLowerCase())<0}).map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS not_null, ``((alasql.tables.books||alasql.tables.BOOKS).uk||[]).map(function(u){return u.columns.map(function(s){return String(s).split(' ')[0].toLowerCase()}).join('+')}).sort().join(',')`` AS uniq","expected":[{"cols":"id,title","pk":"id","not_null":"title","uniq":"title"}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE books (
+  id    VARCHAR2(15) PRIMARY KEY,
+  title VARCHAR2(50) NOT NULL UNIQUE
+);</code></pre>
+      <p class="en">Oracle's physical model on slide 27 names the same constraint <code>BOOKS_Title_UK</code>. Writing it as <code>CONSTRAINT books_title_uk UNIQUE (title)</code> at the end of the column list passes the check too.</p>
+      <p class="ar">يسمّي النموذج الفيزيائي في الشريحة 27 القيدَ نفسه <code>BOOKS_Title_UK</code>. وكتابته على شكل <code>CONSTRAINT books_title_uk UNIQUE (title)</code> في آخر قائمة الأعمدة تجتاز التصحيح أيضًا.</p>
+    </details>
+  </div>
+
+  <p class="en">This box starts with three books: <em>A Vision</em>, <em>War and Peace</em> and <em>Citizen of the World</em>. Try to catalogue <em>War and Peace</em> a second time:</p>
+  <p class="ar">يبدأ هذا الصندوق بثلاثة كتب: <em>A Vision</em> و<em>War and Peace</em> و<em>Citizen of the World</em>. حاول فهرسة <em>War and Peace</em> مرّة ثانية:</p>
+  <div class="qb-widget">
+    <script type="application/json" class="wd-config">
+    {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE books (id VARCHAR2(15) PRIMARY KEY, title VARCHAR2(50) NOT NULL UNIQUE)","INSERT INTO books VALUES ('BK001', 'A Vision'), ('BK002', 'War and Peace'), ('BK003', 'Citizen of the World')"],"sql":"INSERT INTO books VALUES ('BK004', 'War and Peace');"}
+    </script>
+  </div>
+  <div class="output">
+    <pre class="code" data-lang="text"><code>Cannot insert record, because it already exists in unique index</code></pre>
+  </div>
+  <p class="en">The id <code>BK004</code> is new, so the primary key has no complaint &mdash; the unique key does. Change the title to <code>'Androcles and the Lion'</code> and run again: the table now holds four books.</p>
+  <p class="ar">المعرّف <code>BK004</code> جديد، فلا اعتراض للمفتاح الأساسي &mdash; الاعتراض من المفتاح الفريد. غيّر العنوان إلى <code>'Androcles and the Lion'</code> وشغّل من جديد: صار في الجدول أربعة كتب.</p>
+
+  <div class="quiz">
+    <p class="q en">Both <code>#</code> and <code>U</code> forbid duplicates. What does <code>#</code> give <code>Id</code> that <code>U</code> does not give <code>Title</code>?</p>
+    <p class="q ar">كلٌّ من <code>#</code> و<code>U</code> يمنع التكرار. فما الذي تعطيه <code>#</code> للعمود <code>Id</code> ولا تعطيه <code>U</code> للعمود <code>Title</code>؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">It is the identifier other tables will point to</span><span class="ar">أنه المعرّف الذي ستشير إليه الجداول الأخرى</span></button></li>
+      <li><button class="opt"><span class="en">Nothing &mdash; the two marks are the same</span><span class="ar">لا شيء &mdash; العلامتان متماثلتان</span></button></li>
+      <li><button class="opt"><span class="en">It allows the value to be null</span><span class="ar">أنه يسمح بأن تكون القيمة null</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A table has one primary key, and it is what a foreign key refers to: a <code>BOOK TRANSACTION</code> will record <code>BOOKS_Id</code>, not the title. <code>U</code> only promises no repeats.</p>
+      <p class="ar">للجدول مفتاح أساسي واحد، وهو ما يشير إليه المفتاح الأجنبي: فـ <code>BOOK TRANSACTION</code> ستسجّل <code>BOOKS_Id</code> لا العنوان. أمّا <code>U</code> فلا تعد إلا بعدم التكرار.</p>
+    </div>
+  </div>
+
+  <h2 id="t2lab-h4"><span class="en">4 · <code>MEMBER</code> becomes <code>members</code></span><span class="ar">٤ · <code>MEMBER</code> يصير <code>members</code></span></h2>
+
+  <div class="problem">
+    <p class="en">The library posts reminder letters, so it needs a full address for every member. But not every address has a state. The model has to say both things at once &mdash; and so does the table.</p>
+    <p class="ar">ترسل المكتبة رسائل تذكير بالبريد، فهي تحتاج إلى عنوان كامل لكل عضو. لكن ليس لكل عنوان ولاية. على النموذج أن يقول الأمرين معًا &mdash; وكذلك الجدول.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-lab-member">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 360" direction="ltr" role="img" aria-labelledby="t2-lab-member-t">
+<title id="t2-lab-member-t">MEMBER as an entity and as the members table: five * attributes become NOT NULL, o State stays nullable / MEMBER كيانًا وجدول members: خمس خصائص * تصبح NOT NULL، وتبقى o State قابلة لـ null</title>
+<defs><marker id="t2-lab-member-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--dg-line, var(--text-soft))"/></marker></defs>
+<g class="en"><text x="410" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:14px;font-weight:600">MEMBER becomes members</text></g><g class="ar"><text x="410" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:15px;font-weight:600">MEMBER يصير members</text></g>
+<g class="en"><text x="130" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">ERD (logical model)</text></g><g class="ar"><text x="130" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">المخطّط (النموذج المنطقي)</text></g>
+<g class="en"><text x="585" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Table (physical model, Oracle)</text></g><g class="ar"><text x="585" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">الجدول (النموذج الفيزيائي، Oracle)</text></g>
+<rect x="30" y="70" width="200" height="224" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="130" y="91" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MEMBER</text>
+<rect x="380" y="70" width="410" height="224" rx="4" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1.2"/>
+<rect x="380" y="70" width="410" height="32" rx="4" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1.2"/>
+<text x="394" y="91" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">members</text>
+<rect x="381" y="103" width="408" height="25" style="fill:var(--dg-row-odd, var(--surface))"/>
+<text x="46" y="120" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Id</text>
+<line x1="236" y1="116" x2="374" y2="116" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-member-arr)"/>
+<text x="394" y="120" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">id</text>
+<text x="530" y="120" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">NUMBER</text>
+<text x="646" y="120" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">PRIMARY KEY</text>
+<rect x="381" y="129" width="408" height="25" style="fill:var(--dg-row-even, var(--surface-2))"/>
+<text x="46" y="146" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First name</text>
+<line x1="236" y1="142" x2="374" y2="142" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-member-arr)"/>
+<text x="394" y="146" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">first_name</text>
+<text x="530" y="146" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(20)</text>
+<text x="646" y="146" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">NOT NULL</text>
+<rect x="381" y="155" width="408" height="25" style="fill:var(--dg-row-odd, var(--surface))"/>
+<text x="46" y="172" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last name</text>
+<line x1="236" y1="168" x2="374" y2="168" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-member-arr)"/>
+<text x="394" y="172" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">last_name</text>
+<text x="530" y="172" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(20)</text>
+<text x="646" y="172" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">NOT NULL</text>
+<rect x="381" y="181" width="408" height="25" style="fill:var(--dg-row-even, var(--surface-2))"/>
+<text x="46" y="198" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Street Address</text>
+<line x1="236" y1="194" x2="374" y2="194" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-member-arr)"/>
+<text x="394" y="198" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">street_address</text>
+<text x="530" y="198" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(40)</text>
+<text x="646" y="198" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">NOT NULL</text>
+<rect x="381" y="207" width="408" height="25" style="fill:var(--dg-row-odd, var(--surface))"/>
+<text x="46" y="224" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* City</text>
+<line x1="236" y1="220" x2="374" y2="220" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-member-arr)"/>
+<text x="394" y="224" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">city</text>
+<text x="530" y="224" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(20)</text>
+<text x="646" y="224" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">NOT NULL</text>
+<rect x="381" y="233" width="408" height="25" style="fill:var(--dg-row-even, var(--surface-2))"/>
+<text x="46" y="250" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o State</text>
+<line x1="236" y1="246" x2="374" y2="246" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-member-arr)"/>
+<text x="394" y="250" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">state</text>
+<text x="530" y="250" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(20)</text>
+<g class="en"><text x="646" y="250" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">(nullable)</text></g><g class="ar"><text x="646" y="250" text-anchor="end" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">(يقبل null)</text></g>
+<rect x="381" y="259" width="408" height="25" style="fill:var(--dg-row-odd, var(--surface))"/>
+<text x="46" y="276" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* ZIP</text>
+<line x1="236" y1="272" x2="374" y2="272" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2" marker-end="url(#t2-lab-member-arr)"/>
+<text x="394" y="276" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">zip</text>
+<text x="530" y="276" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px">VARCHAR2(10)</text>
+<text x="646" y="276" text-anchor="start" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:12px;font-weight:700">NOT NULL</text>
+<g class="en"><text x="410" y="324" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px">o adds nothing: state is left nullable, so a member may have no state</text></g><g class="ar"><text x="410" y="324" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px">العلامة o لا تضيف شيئًا: يبقى state قابلًا لـ null، فقد لا تكون للعضو ولاية</text></g>
+</svg>
+<figcaption><span class="en">Seven attributes: one UID, five <code>*</code> and one <code>o</code>. Every <code>*</code> gets <code>NOT NULL</code>; the single <code>o</code> gets nothing.</span><span class="ar">سبع خصائص: معرّف فريد واحد، وخمس <code>*</code>، و<code>o</code> واحدة. كل <code>*</code> تأخذ <code>NOT NULL</code>، و<code>o</code> الوحيدة لا تأخذ شيئًا.</span></figcaption></figure>
+
+  <div class="note">
+    <p class="en"><strong>The rule:</strong> each <code>MEMBER</code> is identified by its <code>Id</code>, must have a first name, last name, street address, city and ZIP, and may have a state.</p>
+    <p class="ar"><strong>القاعدة:</strong> كل <code>MEMBER</code> يُعرَّف بمعرّفه <code>Id</code>، ويجب أن يكون له اسم أوّل واسم عائلة وعنوان شارع ومدينة ورمز بريدي، ويجوز أن تكون له ولاية.</p>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Step 4a · Write the table</span><span class="ar">الخطوة 4أ · اكتب الجدول</span></h4>
+    <p class="en">Create <code>members</code> with <code>id</code> (<code>NUMBER</code>), <code>first_name</code>, <code>last_name</code>, <code>city</code>, <code>state</code> (all <code>VARCHAR2(20)</code>), <code>street_address</code> (<code>VARCHAR2(40)</code>) and <code>zip</code> (<code>VARCHAR2(10)</code>). The check fails a missing <code>NOT NULL</code> &mdash; and an extra one.</p>
+    <p class="ar">أنشئ الجدول <code>members</code> بالأعمدة <code>id</code> (<code>NUMBER</code>)، و<code>first_name</code> و<code>last_name</code> و<code>city</code> و<code>state</code> (كلها <code>VARCHAR2(20)</code>)، و<code>street_address</code> (<code>VARCHAR2(40)</code>)، و<code>zip</code> (<code>VARCHAR2(10)</code>). يُفشِل التصحيح قيد <code>NOT NULL</code> ناقصًا &mdash; وقيدًا زائدًا كذلك.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"sql":"","placeholder":"CREATE TABLE members ( ... );","grade":{"mode":"state","check":"SELECT ``(alasql.tables.members||alasql.tables.MEMBERS).columns.map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS cols, ``((alasql.tables.members||alasql.tables.MEMBERS).pk?(alasql.tables.members||alasql.tables.MEMBERS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).join(',')`` AS pk, ``(alasql.tables.members||alasql.tables.MEMBERS).columns.filter(function(c){return c.notnull&&((alasql.tables.members||alasql.tables.MEMBERS).pk?(alasql.tables.members||alasql.tables.MEMBERS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).indexOf(c.columnid.toLowerCase())<0}).map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS not_null, ``((alasql.tables.members||alasql.tables.MEMBERS).uk||[]).map(function(u){return u.columns.map(function(s){return String(s).split(' ')[0].toLowerCase()}).join('+')}).sort().join(',')`` AS uniq","expected":[{"cols":"city,first_name,id,last_name,state,street_address,zip","pk":"id","not_null":"city,first_name,last_name,street_address,zip","uniq":""}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE members (
+  id             NUMBER       PRIMARY KEY,
+  first_name     VARCHAR2(20) NOT NULL,
+  last_name      VARCHAR2(20) NOT NULL,
+  street_address VARCHAR2(40) NOT NULL,
+  city           VARCHAR2(20) NOT NULL,
+  state          VARCHAR2(20),
+  zip            VARCHAR2(10) NOT NULL
+);</code></pre>
+      <p class="en"><code>NOT NULL</code> on <code>state</code> is the extra one: it would turn away every member whose address has no state, which the <code>o</code> on the diagram allows.</p>
+      <p class="ar">قيد <code>NOT NULL</code> على <code>state</code> هو القيد الزائد: سيرفض كل عضو ليس في عنوانه ولاية، وهو ما تسمح به <code>o</code> في المخطّط.</p>
+    </details>
+  </div>
+
+  <p class="en">Sara and Omar from Lesson 5 are already in this box. A clerk adds Lina but forgets her city:</p>
+  <p class="ar">Sara وOmar من الدرس 5 موجودان في هذا الصندوق. يضيف موظّف Lina لكنه ينسى مدينتها:</p>
+  <div class="qb-widget">
+    <script type="application/json" class="wd-config">
+    {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE members (id NUMBER PRIMARY KEY, first_name VARCHAR2(20) NOT NULL, last_name VARCHAR2(20) NOT NULL, street_address VARCHAR2(40) NOT NULL, city VARCHAR2(20) NOT NULL, state VARCHAR2(20), zip VARCHAR2(10) NOT NULL)","INSERT INTO members VALUES (1, 'Sara', 'Hamdan', 'Omar Al-Mukhtar St', 'Gaza', NULL, '00970'), (2, 'Omar', 'Saleh', 'Jalal St', 'Khan Younis', NULL, '00970')"],"sql":"INSERT INTO members (id, first_name, last_name, street_address, zip)\nVALUES (3, 'Lina', 'Khalil', 'Al-Jalaa St', '00970');"}
+    </script>
+  </div>
+  <div class="output">
+    <pre class="code" data-lang="text"><code>Wrong NULL value in NOT NULL column city</code></pre>
+  </div>
+  <p class="en">The column list leaves out <code>state</code> as well, and the database says nothing about it. Only the missing <code>city</code> is refused, because only <code>City</code> was marked <code>*</code>.</p>
+  <p class="ar">قائمة الأعمدة تُسقِط <code>state</code> أيضًا، ولا تقول قاعدة البيانات عنه شيئًا. لا يُرفض إلا غياب <code>city</code>، لأن <code>City</code> وحدها وُسِمت بـ <code>*</code>.</p>
+
+  <div class="quiz">
+    <p class="q en">The clerk's <code>INSERT</code> left out two columns. Why was only one of them refused?</p>
+    <p class="q ar">أسقطت جملة <code>INSERT</code> التي كتبها الموظّف عمودين. لماذا رُفض أحدهما فقط؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The database checks only the first missing column</span><span class="ar">لأن قاعدة البيانات لا تفحص إلا أوّل عمود ناقص</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>city</code> is <code>NOT NULL</code> and <code>state</code> is not, because the ERD drew <code>* City</code> and <code>o State</code></span><span class="ar">لأن <code>city</code> عليه <code>NOT NULL</code> و<code>state</code> ليس عليه، إذ رسم المخطّط <code>* City</code> و<code>o State</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>state</code> was filled with a space automatically</span><span class="ar">لأن <code>state</code> مُلئ بمسافة تلقائيًّا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A column you leave out of an <code>INSERT</code> becomes null. Null is fine in <code>state</code>, which is optional, and refused in <code>city</code>, which is mandatory. The table is repeating the diagram.</p>
+      <p class="ar">العمود الذي تُسقطه من <code>INSERT</code> يصير null. والقيمة null مقبولة في <code>state</code> لأنه اختياري، ومرفوضة في <code>city</code> لأنه إلزامي. الجدول يكرّر ما قاله المخطّط.</p>
+    </div>
+  </div>
+
+  <h2 id="t2lab-h5"><span class="en">5 · Rows that obey the model</span><span class="ar">٥ · صفوف تطيع النموذج</span></h2>
+
+  <p class="en">You have seen rows refused. Now write one the model accepts. Lina Khalil lives on <code>Al-Jalaa St</code>, Gaza, ZIP <code>00970</code>, and gave no state.</p>
+  <p class="ar">رأيتَ صفوفًا تُرفض. والآن اكتب صفًّا يقبله النموذج. تسكن Lina Khalil في <code>Al-Jalaa St</code>، غزّة، والرمز البريدي <code>00970</code>، ولم تذكر ولاية.</p>
+
+  <div class="exercise">
+    <h4><span class="en">Step 5a · Add Lina as member 3</span><span class="ar">الخطوة 5أ · أضف Lina عضوًا برقم 3</span></h4>
+    <p class="en">The box starts with the finished <code>members</code> table, Sara and Omar in it. Insert Lina so her <code>state</code> is null &mdash; not a space, not the word <code>'none'</code>.</p>
+    <p class="ar">يبدأ الصندوق بالجدول <code>members</code> مكتملًا، وفيه Sara وOmar. أدخل Lina بحيث يكون <code>state</code> عندها null &mdash; لا مسافة، ولا كلمة <code>'none'</code>.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"setup":["CREATE TABLE members (id NUMBER PRIMARY KEY, first_name VARCHAR2(20) NOT NULL, last_name VARCHAR2(20) NOT NULL, street_address VARCHAR2(40) NOT NULL, city VARCHAR2(20) NOT NULL, state VARCHAR2(20), zip VARCHAR2(10) NOT NULL)","INSERT INTO members VALUES (1, 'Sara', 'Hamdan', 'Omar Al-Mukhtar St', 'Gaza', NULL, '00970'), (2, 'Omar', 'Saleh', 'Jalal St', 'Khan Younis', NULL, '00970')"],"sql":"","placeholder":"INSERT INTO members ...","grade":{"mode":"state","check":"SELECT id, first_name, last_name, city FROM members WHERE id = 3 AND state IS NULL AND zip IS NOT NULL AND street_address IS NOT NULL","expected":[{"id":3,"first_name":"Lina","last_name":"Khalil","city":"Gaza"}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>INSERT INTO members (id, first_name, last_name, street_address, city, zip)
+VALUES (3, 'Lina', 'Khalil', 'Al-Jalaa St', 'Gaza', '00970');</code></pre>
+      <p class="en">Leaving <code>state</code> out of the column list makes it null. Writing all seven values with <code>NULL</code> in sixth place works too. A space <code>' '</code> fails the check: Lesson 5 showed that a space is a value, not the absence of one.</p>
+      <p class="ar">إسقاط <code>state</code> من قائمة الأعمدة يجعله null. وكتابة القيم السبع مع <code>NULL</code> في المكان السادس تنجح أيضًا. أمّا المسافة <code>' '</code> فتفشل في التصحيح: فقد أظهر الدرس 5 أن المسافة قيمة، لا غياب قيمة.</p>
+    </details>
+  </div>
+
+  <p class="en">The optional column now answers a question. With Lina added, ask for every member who gave no state:</p>
+  <p class="ar">صار العمود الاختياري يجيب عن سؤال. بعد إضافة Lina، اطلب كل عضو لم يذكر ولاية:</p>
+  <div class="qb-widget">
+    <script type="application/json" class="wd-config">
+    {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE members (id NUMBER PRIMARY KEY, first_name VARCHAR2(20) NOT NULL, last_name VARCHAR2(20) NOT NULL, street_address VARCHAR2(40) NOT NULL, city VARCHAR2(20) NOT NULL, state VARCHAR2(20), zip VARCHAR2(10) NOT NULL)","INSERT INTO members VALUES (1, 'Sara', 'Hamdan', 'Omar Al-Mukhtar St', 'Gaza', NULL, '00970'), (2, 'Omar', 'Saleh', 'Jalal St', 'Khan Younis', NULL, '00970')","INSERT INTO members VALUES (3, 'Lina', 'Khalil', 'Al-Jalaa St', 'Gaza', NULL, '00970')"],"sql":"SELECT first_name, city\nFROM members\nWHERE state IS NULL;"}
+    </script>
+  </div>
+  <div class="output">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th><code>first_name</code></th><th><code>city</code></th></tr></thead>
+        <tbody>
+          <tr><td>Sara</td><td>Gaza</td></tr>
+          <tr><td>Omar</td><td>Khan Younis</td></tr>
+          <tr><td>Lina</td><td>Gaza</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="en">All three: none of the library's members has a state. The query is the same <code>IS NULL</code> test Lesson 5 used &mdash; <code>= NULL</code> would match nothing.</p>
+  <p class="ar">الثلاثة جميعًا: لا ولاية لأيّ عضو من أعضاء المكتبة. والاستعلام هو اختبار <code>IS NULL</code> نفسه الذي استعمله الدرس 5 &mdash; أمّا <code>= NULL</code> فلن تطابق شيئًا.</p>
+
+  <div class="quiz">
+    <p class="q en">Using only <code>authors</code> and <code>books</code> as built in this lab, can you list the books Oliver Goldsmith wrote?</p>
+    <p class="q ar">باستعمال <code>authors</code> و<code>books</code> فقط كما بُنيا في هذا المختبر، هل تستطيع أن تسرد الكتب التي كتبها Oliver Goldsmith؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Yes &mdash; both tables have an <code>id</code></span><span class="ar">نعم &mdash; في كلا الجدولين عمود <code>id</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">No &mdash; nothing records which author wrote which book</span><span class="ar">لا &mdash; لا شيء يسجّل أيّ مؤلّف كتب أيّ كتاب</span></button></li>
+      <li><button class="opt"><span class="en">Yes &mdash; with <code>WHERE name = 'Oliver Goldsmith'</code> on <code>books</code></span><span class="ar">نعم &mdash; بشرط <code>WHERE name = 'Oliver Goldsmith'</code> على <code>books</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>books</code> holds only <code>id</code> and <code>title</code>. The link is the <code>written by</code> line through <code>BOOK AUTHOR</code>, and lines become foreign keys &mdash; Chapter 3's lab.</p>
+      <p class="ar">لا يحمل <code>books</code> إلا <code>id</code> و<code>title</code>. والصلة هي خطّ <code>written by</code> عبر <code>BOOK AUTHOR</code>، والخطوط تصير مفاتيح أجنبية &mdash; وذلك مختبر الفصل 3.</p>
+    </div>
+  </div>
+
+  <h2 id="t2lab-h6"><span class="en">6 · On your own: <code>PUBLISHER</code></span><span class="ar">٦ · وحدك: <code>PUBLISHER</code></span></h2>
+
+  <p class="en">No diagram walk-through this time. On the logical model, <code>PUBLISHER</code> has <code># * Id</code> and <code>* Name</code>; slide 27 gives <code>Id NUMBER</code> and <code>Name VARCHAR2(50)</code>. Read the marks and write the table.</p>
+  <p class="ar">لا شرح للمخطّط هذه المرّة. في النموذج المنطقي، للكيان <code>PUBLISHER</code> الخاصيتان <code># * Id</code> و<code>* Name</code>، وتعطي الشريحة 27 النوعين <code>Id NUMBER</code> و<code>Name VARCHAR2(50)</code>. اقرأ العلامتين واكتب الجدول.</p>
+
+  <div class="exercise">
+    <h4><span class="en">Step 6a · Write <code>publishers</code></span><span class="ar">الخطوة 6أ · اكتب <code>publishers</code></span></h4>
+    <p class="en">Columns <code>id</code> and <code>name</code>. Then, before checking, write down an <code>INSERT</code> your table must refuse.</p>
+    <p class="ar">العمودان <code>id</code> و<code>name</code>. ثم، قبل التصحيح، دوّن جملة <code>INSERT</code> يجب أن يرفضها جدولك.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"sql":"","placeholder":"CREATE TABLE publishers ( ... );","grade":{"mode":"state","check":"SELECT ``(alasql.tables.publishers||alasql.tables.PUBLISHERS).columns.map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS cols, ``((alasql.tables.publishers||alasql.tables.PUBLISHERS).pk?(alasql.tables.publishers||alasql.tables.PUBLISHERS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).join(',')`` AS pk, ``(alasql.tables.publishers||alasql.tables.PUBLISHERS).columns.filter(function(c){return c.notnull&&((alasql.tables.publishers||alasql.tables.PUBLISHERS).pk?(alasql.tables.publishers||alasql.tables.PUBLISHERS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).indexOf(c.columnid.toLowerCase())<0}).map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS not_null, ``((alasql.tables.publishers||alasql.tables.PUBLISHERS).uk||[]).map(function(u){return u.columns.map(function(s){return String(s).split(' ')[0].toLowerCase()}).join('+')}).sort().join(',')`` AS uniq","expected":[{"cols":"id,name","pk":"id","not_null":"name","uniq":""}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE publishers (
+  id   NUMBER       PRIMARY KEY,
+  name VARCHAR2(50) NOT NULL
+);</code></pre>
+      <p class="en">It must refuse a publisher with no name, such as <code>INSERT INTO publishers (id) VALUES (1);</code>, and a second publisher with an id already used. The link from <code>BOOK</code> (<code>published by</code>) is still missing: that is <code>books.publishers_id</code>, in Chapter 3.</p>
+      <p class="ar">يجب أن يرفض ناشرًا بلا اسم، مثل <code>INSERT INTO publishers (id) VALUES (1);</code>، وناشرًا ثانيًا بمعرّف مستعمل من قبل. أمّا الصلة من <code>BOOK</code> (<code>published by</code>) فما زالت ناقصة: إنها <code>books.publishers_id</code>، في الفصل 3.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Step 6b · Read a table back into a diagram</span><span class="ar">الخطوة 6ب · اقرأ الجدول رجوعًا إلى مخطّط</span></h4>
+    <p class="en">Go the other way. The librarian has started tracking shelves. Draw the entity box, with its marks, that this table was built from.</p>
+    <p class="ar">اسلك الطريق المعاكس. بدأ أمين المكتبة يتتبّع الرفوف. ارسم صندوق الكيان، بعلاماته، الذي بُني منه هذا الجدول.</p>
+    <pre class="code" data-lang="sql"><code>CREATE TABLE shelves (
+  code     VARCHAR2(8)  PRIMARY KEY,
+  label    VARCHAR2(40) NOT NULL UNIQUE,
+  capacity NUMBER       NOT NULL,
+  room     VARCHAR2(10)
+);</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="text"><code>SHELF
+  # * Code
+  U * Label
+  * Capacity
+  o Room</code></pre>
+      <p class="en">The table is plural and lowercase; the entity is singular and uppercase. <code>PRIMARY KEY</code> is <code>#</code>, <code>NOT NULL</code> is <code>*</code>, <code>UNIQUE</code> adds <code>U</code>, and a bare column is <code>o</code>.</p>
+      <p class="ar">الجدول بصيغة الجمع وحروف صغيرة، والكيان بصيغة المفرد وحروف كبيرة. <code>PRIMARY KEY</code> هي <code>#</code>، و<code>NOT NULL</code> هي <code>*</code>، و<code>UNIQUE</code> تضيف <code>U</code>، والعمود المجرّد من القيود هو <code>o</code>.</p>
+    </details>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · the SQL track</span><span class="ar">خيط · مسار SQL</span></h4>
+    <p class="en"><a href="../chapters/chapter-1.html">SQL Chapter 1 &mdash; First Steps</a> writes <code>CREATE TABLE</code> with a <code>PRIMARY KEY</code>, and <a href="../chapters/chapter-2.html">Chapter 2 &mdash; Multiple Columns</a> gives each column a type. Neither ever writes <code>NOT NULL</code>, because neither has a model to ask. This lab is that question: the <code>*</code> and <code>o</code> on the diagram decide it, column by column.</p>
+    <p class="ar">يكتب <a href="../chapters/chapter-1.html">الفصل 1 من مسار SQL &mdash; الخطوات الأولى</a> جملة <code>CREATE TABLE</code> مع <code>PRIMARY KEY</code>، ويعطي <a href="../chapters/chapter-2.html">الفصل 2 &mdash; أعمدة متعدّدة</a> كل عمود نوعًا. ولا يكتب أيٌّ منهما <code>NOT NULL</code> أبدًا، لأنه لا نموذج لديه يسأله. وهذا المختبر هو ذلك السؤال: علامتا <code>*</code> و<code>o</code> في المخطّط تحسمانه، عمودًا عمودًا.</p>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">An entity becomes a table; each attribute becomes one column with a data type.</li>
+      <li class="ar">الكيان يصير جدولًا، وكل خاصية تصير عمودًا واحدًا بنوع بيانات.</li>
+      <li class="en"><code>#</code> becomes <code>PRIMARY KEY</code>, <code>*</code> becomes <code>NOT NULL</code>, <code>U</code> becomes <code>UNIQUE</code>, and <code>o</code> adds nothing.</li>
+      <li class="ar"><code>#</code> تصير <code>PRIMARY KEY</code>، و<code>*</code> تصير <code>NOT NULL</code>، و<code>U</code> تصير <code>UNIQUE</code>، و<code>o</code> لا تضيف شيئًا.</li>
+      <li class="en">A rule you do not write as a constraint is not enforced: the diagram cannot refuse a row, only the table can.</li>
+      <li class="ar">القاعدة التي لا تكتبها قيدًا لا تُفرَض: المخطّط لا يستطيع أن يرفض صفًّا، الجدول وحده يستطيع.</li>
+      <li class="en">Relationships are not built yet, so these tables cannot say who wrote or published a book.</li>
+      <li class="ar">العلاقات لم تُبنَ بعد، فلا تستطيع هذه الجداول أن تقول من كتب الكتاب أو من نشره.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Forgetting <code>NOT NULL</code> on a <code>*</code> attribute &mdash; the table runs, and silently accepts empty rows.</li>
+      <li class="ar">نسيان <code>NOT NULL</code> على خاصية <code>*</code> &mdash; يعمل الجدول، ويقبل الصفوف الفارغة بصمت.</li>
+      <li class="en">Adding <code>NOT NULL</code> to an <code>o</code> attribute &mdash; the table turns away rows the business allows.</li>
+      <li class="ar">إضافة <code>NOT NULL</code> إلى خاصية <code>o</code> &mdash; فيرفض الجدول صفوفًا يسمح بها العمل.</li>
+      <li class="en">Making the <code>U</code> attribute the primary key instead of the <code>#</code> one.</li>
+      <li class="ar">جعل الخاصية ذات <code>U</code> مفتاحًا أساسيًّا بدلًا من الخاصية ذات <code>#</code>.</li>
+      <li class="en">Faking a missing optional value with a space or <code>'none'</code> instead of leaving it null.</li>
+      <li class="ar">تزييف القيمة الاختيارية الغائبة بمسافة أو بـ <code>'none'</code> بدلًا من تركها null.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Next: the chapter's <a href="../glossary/t2-glossary.html#t2-glossary">glossary</a>, then <a href="../exams/t2-exam-a.html#t2-exam-a">Chapter Test A &mdash; Core</a>. Chapter 3 draws the lines between these boxes, and its lab turns them into foreign keys.</p>
+    <p class="ar">التالي: <a href="../glossary/t2-glossary.html#t2-glossary">قاموس المصطلحات</a> الخاص بالفصل، ثم <a href="../exams/t2-exam-a.html#t2-exam-a">اختبار الفصل أ &mdash; الأساسيات</a>. يرسم الفصل 3 الخطوط بين هذه الصناديق، ويحوّلها مختبره إلى مفاتيح أجنبية.</p>
+  </div>
 
 </section>
 <nav class="pager"></nav>
