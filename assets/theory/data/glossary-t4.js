@@ -2,6 +2,50 @@
 window.DBTGlossary = window.DBTGlossary || {};
 window.DBTGlossary["t4"] = [
  {
+  "id": "kind-of-test",
+  "term": {
+   "en": "\"Is a kind of\" test",
+   "ar": "اختبار «نوع من»"
+  },
+  "def": {
+   "en": "The first rule for subtypes: every instance of a subtype must also be an instance of its supertype, as every CHECK is a PAYMENT.",
+   "ar": "القاعدة الأولى للأنواع الفرعية: كل نسخة من النوع الفرعي يجب أن تكون نسخةً من نوعه الأعلى أيضًا، كما أن كل CHECK هو PAYMENT."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "three-questions",
+   "subtype"
+  ],
+  "used": [
+   "t4l3-h1"
+  ]
+ },
+ {
+  "id": "subdivision-basis",
+  "term": {
+   "en": "Basis of subdivision",
+   "ar": "أساس التقسيم"
+  },
+  "def": {
+   "en": "The single question whose answers name the subtypes, such as \"how was it paid?\"; mixing two bases makes subtypes overlap.",
+   "ar": "السؤال الواحد الذي تسمّي أجوبتُه الأنواعَ الفرعية، مثل «كيف دُفعت؟»؛ وخلط أساسين يجعل الأنواع الفرعية متداخلة."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "overlapping-subtypes",
+   "mutually-exclusive"
+  ],
+  "used": [
+   "t4l3-s3"
+  ]
+ },
+ {
   "id": "choice",
   "term": {
    "en": "Choice (of kinds)",
@@ -43,6 +87,29 @@ window.DBTGlossary["t4"] = [
   ],
   "used": [
    "t4l1-h1"
+  ]
+ },
+ {
+  "id": "exhaustive",
+  "term": {
+   "en": "Exhaustive",
+   "ar": "شاملة"
+  },
+  "def": {
+   "en": "Said of a set of subtypes when every instance of the supertype is an instance of at least one of them.",
+   "ar": "وصفٌ لمجموعة أنواع فرعية حين تكون كل نسخة من النوع الأعلى نسخةً من واحد منها على الأقل."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "other-subtype",
+   "uncovered-instance",
+   "mutually-exclusive"
+  ],
+  "used": [
+   "t4l3-h2"
   ]
  },
  {
@@ -136,6 +203,29 @@ window.DBTGlossary["t4"] = [
   ]
  },
  {
+  "id": "mutually-exclusive",
+  "term": {
+   "en": "Mutually exclusive",
+   "ar": "متنافية"
+  },
+  "def": {
+   "en": "Said of a set of subtypes when no instance of the supertype is an instance of more than one of them.",
+   "ar": "وصفٌ لمجموعة أنواع فرعية حين لا تكون أيّ نسخة من النوع الأعلى نسخةً من أكثر من واحد منها."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "overlapping-subtypes",
+   "subdivision-basis",
+   "exhaustive"
+  ],
+  "used": [
+   "t4l3-h3"
+  ]
+ },
+ {
   "id": "not-applicable",
   "term": {
    "en": "Not applicable (value)",
@@ -155,6 +245,50 @@ window.DBTGlossary["t4"] = [
   ],
   "used": [
    "t4l1-s1"
+  ]
+ },
+ {
+  "id": "other-subtype",
+  "term": {
+   "en": "OTHER subtype",
+   "ar": "النوع الفرعي OTHER"
+  },
+  "def": {
+   "en": "A subtype that holds every instance the named subtypes do not, included at the conceptual stage so that the subtypes are exhaustive.",
+   "ar": "نوعٌ فرعي يحتوي كل نسخة لا تحتويها الأنواع الفرعية المسمّاة، ويُضاف في المرحلة المفاهيمية لتكون الأنواع الفرعية شاملة."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "exhaustive",
+   "single-subtype"
+  ],
+  "used": [
+   "t4l3-s2"
+  ]
+ },
+ {
+  "id": "overlapping-subtypes",
+  "term": {
+   "en": "Overlapping subtypes",
+   "ar": "الأنواع الفرعية المتداخلة"
+  },
+  "def": {
+   "en": "Two subtypes that can both hold the same instance, such as CREDIT CARD and ONLINE for a card payment made on the website; they break the mutually exclusive rule.",
+   "ar": "نوعان فرعيان يمكن أن يحتويا النسخة نفسها، مثل CREDIT CARD وONLINE لدفعة بطاقة عبر الموقع؛ وهما يخرقان قاعدة التنافي."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "mutually-exclusive",
+   "subdivision-basis"
+  ],
+  "used": [
+   "t4l3-h3"
   ]
  },
  {
@@ -199,6 +333,28 @@ window.DBTGlossary["t4"] = [
   ],
   "used": [
    "t4l1-h3"
+  ]
+ },
+ {
+  "id": "single-subtype",
+  "term": {
+   "en": "Single subtype",
+   "ar": "النوع الفرعي الوحيد"
+  },
+  "def": {
+   "en": "A supertype drawn with only one subtype inside it, which is never allowed: another subtype should be created to contain the rest.",
+   "ar": "نوعٌ أعلى مرسوم وفي داخله نوع فرعي واحد فقط، وهذا غير مسموح أبدًا: يجب إنشاء نوع فرعي آخر يحتوي الباقي."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "other-subtype",
+   "exhaustive"
+  ],
+  "used": [
+   "t4l3-h4"
   ]
  },
  {
@@ -382,6 +538,29 @@ window.DBTGlossary["t4"] = [
   ]
  },
  {
+  "id": "three-questions",
+  "term": {
+   "en": "The three questions",
+   "ar": "الأسئلة الثلاثة"
+  },
+  "def": {
+   "en": "The check for correctly identified subtypes: is it a kind of the supertype; are all cases covered (exhaustive); does each instance fit one and only one subtype (mutually exclusive).",
+   "ar": "فحص صحة تحديد الأنواع الفرعية: هل هو نوعٌ من النوع الأعلى؛ وهل غُطّيت كل الحالات (الشمول)؛ وهل تقع كل نسخة في نوع فرعي واحد فقط (التنافي)."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "kind-of-test",
+   "exhaustive",
+   "mutually-exclusive"
+  ],
+  "used": [
+   "t4l3-h5"
+  ]
+ },
+ {
   "id": "type-attribute",
   "term": {
    "en": "Type attribute",
@@ -401,6 +580,28 @@ window.DBTGlossary["t4"] = [
   ],
   "used": [
    "t4l1-h2"
+  ]
+ },
+ {
+  "id": "uncovered-instance",
+  "term": {
+   "en": "Uncovered instance",
+   "ar": "النسخة غير المشمولة"
+  },
+  "def": {
+   "en": "An instance of the supertype that fits none of its subtypes, such as a ceramic tile under PAINT, WALLPAPER and FABRIC; its existence means the set is not exhaustive.",
+   "ar": "نسخةٌ من النوع الأعلى لا تقع في أيٍّ من أنواعه الفرعية، مثل البلاط الخزفي مع PAINT وWALLPAPER وFABRIC؛ ووجودها يعني أن المجموعة غير شاملة."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "exhaustive",
+   "other-subtype"
+  ],
+  "used": [
+   "t4l3-h2"
   ]
  }
 ];

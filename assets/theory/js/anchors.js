@@ -281,6 +281,19 @@ window.DBTAnchors = {
 "t4l2-s3": "lessons/t4-lesson-02.html",
 "t4l2-s4": "lessons/t4-lesson-02.html",
 "t4l2-s5": "lessons/t4-lesson-02.html",
+"t4l3-e1": "lessons/t4-lesson-03.html",
+"t4l3-e2": "lessons/t4-lesson-03.html",
+"t4l3-e3": "lessons/t4-lesson-03.html",
+"t4l3-h1": "lessons/t4-lesson-03.html",
+"t4l3-h2": "lessons/t4-lesson-03.html",
+"t4l3-h3": "lessons/t4-lesson-03.html",
+"t4l3-h4": "lessons/t4-lesson-03.html",
+"t4l3-h5": "lessons/t4-lesson-03.html",
+"t4l3-h6": "lessons/t4-lesson-03.html",
+"t4l3-s1": "lessons/t4-lesson-03.html",
+"t4l3-s2": "lessons/t4-lesson-03.html",
+"t4l3-s3": "lessons/t4-lesson-03.html",
+"t4l3-s4": "lessons/t4-lesson-03.html",
 "t5-chapter": "chapters/t5.html",
 "t5-exam-a": "exams/t5-exam-a.html",
 "t5-exam-b": "exams/t5-exam-b.html",
@@ -1063,6 +1076,46 @@ window.DBTHeadings = {
 "t4l2-s5": {
 "ar": "أين مكان العلاقة",
 "en": "Where a relationship belongs"
+},
+"t4l3-h1": {
+"ar": "١ · القاعدة الأولى: هل هو نوعٌ من النوع الأعلى؟",
+"en": "1 · Rule one: is it a kind of the supertype?"
+},
+"t4l3-h2": {
+"ar": "٢ · القاعدة الثانية: الشمول",
+"en": "2 · Rule two: exhaustive"
+},
+"t4l3-h3": {
+"ar": "٣ · القاعدة الثالثة: التنافي",
+"en": "3 · Rule three: mutually exclusive"
+},
+"t4l3-h4": {
+"ar": "٤ · لا نوع فرعي وحيد أبدًا",
+"en": "4 · Never just one subtype"
+},
+"t4l3-h5": {
+"ar": "٥ · الأسئلة الثلاثة معًا: SNOW SPORT",
+"en": "5 · The three questions together: SNOW SPORT"
+},
+"t4l3-h6": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t4l3-s1": {
+"ar": "قُلها جملةً",
+"en": "Say it as a sentence"
+},
+"t4l3-s2": {
+"ar": "النوع الفرعي OTHER",
+"en": "The OTHER subtype"
+},
+"t4l3-s3": {
+"ar": "سؤال واحد يحدّد التقسيم",
+"en": "One question decides the split"
+},
+"t4l3-s4": {
+"ar": "ما تعنيه الأجوبة للقراءة",
+"en": "What the answers mean for the reading"
 },
 "t5idx-h1": {
 "ar": "الدروس",

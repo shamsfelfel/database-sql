@@ -39,15 +39,816 @@
 <link rel="stylesheet" href="../assets/theory/css/base.css">
 <link rel="stylesheet" href="../assets/theory/css/chrome.css">
 <link rel="stylesheet" href="../assets/theory/css/components.css">
+<link rel="stylesheet" href="../assets/theory/css/diagram.css">
+<link rel="stylesheet" href="../assets/css/widget.css">
 </head>
 <body data-chapter="t4" data-page="t4-lesson-03" data-kind="lesson" data-path="lessons/t4-lesson-03.html">
 <main>
 <section class="page" id="t4-lesson-03">
 <nav class="crumbs"></nav>
 
-  <span class="kicker">lesson</span>
+
+  <span class="kicker">Lesson 3</span>
   <h1><span class="en">The Three Rules</span><span class="ar">القواعد الثلاث</span></h1>
-  <p class="en">Being written.</p><p class="ar">قيد الكتابة.</p>
+  <p class="lede en">By the end of this lesson you will be able to test any subtype with the lecturer's three questions, repair a hierarchy that fails one of them with an <code>OTHER</code> subtype or by moving a box out, and explain why there is never exactly one subtype.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تفحص أيّ نوع فرعي بأسئلة المحاضِرة الثلاثة، وأن تُصلح تسلسلًا هرميًّا يخفق في أحدها بنوع فرعي <code>OTHER</code> أو بإخراج صندوق من مكانه، وأن تشرح لماذا لا يكون هناك أبدًا نوع فرعي واحد فقط.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> The shop's six March payments from <a href="../lessons/t4-lesson-01.html#t4-lesson-01">Lesson 1</a>, the supertype, subtypes and inheritance of <a href="../lessons/t4-lesson-02.html#t4-lesson-02">Lesson 2</a>, and two of the lecturer's slides: a decorating store's <code>WALL COVERING</code> and the <code>SNOW SPORT</code> example. Lesson 2 ended with a reading, <em>every PAYMENT is a CASH, a CHECK or a CREDIT CARD</em>; this lesson says when that reading is true.</p>
+    <p class="ar"><strong>السياق.</strong> دفعات المتجر الست في آذار من <a href="../lessons/t4-lesson-01.html#t4-lesson-01">الدرس 1</a>، والنوع الأعلى والأنواع الفرعية والوراثة من <a href="../lessons/t4-lesson-02.html#t4-lesson-02">الدرس 2</a>، وشريحتان من شرائح المحاضِرة: <code>WALL COVERING</code> لمتجر ديكور، ومثال <code>SNOW SPORT</code>. انتهى الدرس 2 بقراءة تقول: <em>كل PAYMENT هو CASH أو CHECK أو CREDIT CARD</em>؛ وهذا الدرس يبيّن متى تكون تلك القراءة صحيحة.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Apply the "is a kind of" test to every box drawn inside a supertype.</li>
+      <li class="ar">تطبيق اختبار «نوع من» على كل صندوق مرسوم داخل نوع أعلى.</li>
+      <li class="en">Decide whether a set of subtypes is exhaustive, and make it so with an <code>OTHER</code> subtype.</li>
+      <li class="ar">الحكم على مجموعة أنواع فرعية: هل هي شاملة، وجعلها كذلك بنوع فرعي <code>OTHER</code>.</li>
+      <li class="en">Find an instance that fits two subtypes, and name the second basis that caused it.</li>
+      <li class="ar">إيجاد نسخة تقع في نوعين فرعيين، وتسمية الأساس الثاني الذي سبّب ذلك.</li>
+      <li class="en">Explain why a supertype never has exactly one subtype, and repair one that does.</li>
+      <li class="ar">شرح لماذا لا يكون للنوع الأعلى نوع فرعي واحد بالضبط أبدًا، وإصلاح ما كان كذلك.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t4l3-h1"><span class="en">1 · Rule one: is it a kind of the supertype?</span><span class="ar">١ · القاعدة الأولى: هل هو نوعٌ من النوع الأعلى؟</span></h2>
+
+  <div class="problem">
+    <p class="en">A designer notices that cheque and card payments come with a customer, and draws <code>CUSTOMER</code> as a fourth box inside <code>PAYMENT</code>, "to keep them together". By inheritance, every customer now has a payment date and an amount. Linda, who has paid twice, has which one?</p>
+    <p class="ar">يلاحظ مصمّم أن دفعات الشيك والبطاقة يرافقها زبون، فيرسم <code>CUSTOMER</code> صندوقًا رابعًا داخل <code>PAYMENT</code>، «ليبقيا معًا». وبالوراثة صار لكل زبون الآن تاريخ دفع ومبلغ. فـ Linda، التي دفعت مرّتين، أيّهما لها؟</p>
+  </div>
+
+  <p class="en">The lecturer's first question catches this at once: <em>is this subtype a kind of supertype?</em> A cheque is a kind of payment. A customer is not: she <em>makes</em> payments. A box belongs inside only if every one of its instances is also an instance of the outer box.</p>
+  <p class="ar">السؤال الأول للمحاضِرة يكشف ذلك فورًا: <em>هل هذا النوع الفرعي نوعٌ من النوع الأعلى؟</em> الشيك نوعٌ من الدفعات. أمّا الزبون فلا: فهو <em>يقوم</em> بالدفعات. ولا يكون الصندوق في الداخل إلا إذا كانت كل نسخة منه نسخةً من الصندوق الخارجي أيضًا.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="kind-of-test">"is a kind of" test</span> asks of each subtype whether every one of its instances is also an instance of the supertype.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="kind-of-test">اختبار «نوع من»</span> (Is a kind of) يسأل عن كل نوع فرعي: هل كل نسخة منه نسخةٌ من النوع الأعلى أيضًا؟</p>
+  </div>
+
+  <h3 id="t4l3-s1"><span class="en">Say it as a sentence</span><span class="ar">قُلها جملةً</span></h3>
+
+  <p class="en">Lesson 2's inwards-out reading is the test. Put the subtype's name in the first slot and say it aloud. If the sentence is false for even one instance, the box is in the wrong place.</p>
+  <p class="ar">القراءة من الداخل إلى الخارج في الدرس 2 هي الاختبار نفسه. ضع اسم النوع الفرعي في الخانة الأولى وقل الجملة. فإن كانت خاطئة ولو لنسخة واحدة، فالصندوق في غير مكانه.</p>
+
+  <pre class="code" data-lang="text"><code>Every CHECK       is a PAYMENT.     true
+Every CREDIT CARD is a PAYMENT.     true
+Every CUSTOMER    is a PAYMENT.     false -- a customer makes payments</code></pre>
+
+  <div class="evolve" id="t4l3-e1">
+    <div class="ver" data-title-en="Version 1 — CUSTOMER drawn inside PAYMENT" data-title-ar="الإصدار 1 — CUSTOMER مرسوم داخل PAYMENT">
+      <figure class="diagram" data-diagram="t4-pay-customer-inside">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 492" direction="ltr" role="img" aria-labelledby="t4-pay-customer-inside-t">
+<title id="t4-pay-customer-inside-t">PAYMENT with CASH, CHECK, CREDIT CARD and, wrongly, CUSTOMER drawn inside it; CUSTOMER fails the 'is a kind of' test / PAYMENT وفي داخله CASH وCHECK وCREDIT CARD، ومعها CUSTOMER خطأً؛ فـ CUSTOMER لا يجتاز اختبار «نوع من»</title>
+<g class="en"><text x="400.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1 — CUSTOMER drawn inside PAYMENT</text></g><g class="ar"><text x="400.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 1 — CUSTOMER مرسوم داخل PAYMENT</text></g>
+<rect x="40" y="50" width="300" height="342" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="190.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAYMENT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Payment ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Payment Date</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Amount</text>
+<rect x="60" y="147" width="260" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="168" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CASH</text>
+<rect x="60" y="189" width="260" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="210" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CHECK</text>
+<rect x="60" y="231" width="260" height="55" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="252" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CREDIT CARD</text>
+<text x="74" y="273" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Card Number</text>
+<rect x="60" y="298" width="260" height="74" rx="10" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<text x="190.0" y="319" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CUSTOMER</text>
+<text x="74" y="340" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Customer ID</text>
+<text x="74" y="359" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M320 335 L420 335" style="stroke:var(--dg-bad, var(--text-soft));stroke-width:1.6;fill:none"/>
+<rect x="420" y="292" width="340" height="102" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<g class="en"><text x="436" y="315" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Read it inwards-out:</text></g><g class="ar"><text x="744" y="315" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">اقرأه من الداخل إلى الخارج:</text></g>
+<g class="en"><text x="436" y="335" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">“Every CUSTOMER is a PAYMENT.”</text></g><g class="ar"><text x="744" y="335" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">«كل CUSTOMER هو PAYMENT.»</text></g>
+<g class="en"><text x="436" y="355" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">False: Linda makes payments;</text></g><g class="ar"><text x="744" y="355" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">خطأ: Linda تقوم بدفعات،</text></g>
+<g class="en"><text x="436" y="375" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">she is not one.</text></g><g class="ar"><text x="744" y="375" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">لكنها ليست دفعة.</text></g>
+<rect x="420" y="66" width="340" height="122" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="436" y="89" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Questions to ask of each inner box:</text></g><g class="ar"><text x="744" y="89" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">اسأل عن كل صندوق داخلي:</text></g>
+<g class="en"><text x="436" y="109" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Is a CASH a kind of PAYMENT?  yes</text></g><g class="ar"><text x="744" y="109" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">هل CASH نوع من PAYMENT؟  نعم</text></g>
+<g class="en"><text x="436" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Is a CHECK a kind of PAYMENT?  yes</text></g><g class="ar"><text x="744" y="129" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">هل CHECK نوع من PAYMENT؟  نعم</text></g>
+<g class="en"><text x="436" y="149" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Is a CREDIT CARD a kind of PAYMENT?  yes</text></g><g class="ar"><text x="744" y="149" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">هل CREDIT CARD نوع من PAYMENT؟  نعم</text></g>
+<g class="en"><text x="436" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Is a CUSTOMER a kind of PAYMENT?  no</text></g><g class="ar"><text x="744" y="169" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">هل CUSTOMER نوع من PAYMENT؟  لا</text></g>
+<rect x="40" y="410" width="720" height="62" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<g class="en"><text x="56" y="433" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Defect: CUSTOMER fails rule one. It is related to payments, not a kind of payment,</text></g><g class="ar"><text x="744" y="433" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">العيب: لا يجتاز CUSTOMER القاعدة الأولى. فهو مرتبط بالدفعات، لا نوعٌ منها،</text></g>
+<g class="en"><text x="56" y="453" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">so it belongs outside PAYMENT, joined to CHECK and CREDIT CARD by a relationship line.</text></g><g class="ar"><text x="744" y="453" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">فمكانه خارج PAYMENT، موصولًا بـ CHECK وCREDIT CARD بخطّ علاقة.</text></g>
+</svg>
+</figure>
+      <p class="en">Defect: <code>CUSTOMER</code> fails rule one. Because it is enclosed, it inherits <code># Payment ID</code>, <code>* Payment Date</code> and <code>* Amount</code>, so the drawing says each customer <em>is</em> one payment. Linda's second payment would have to be a second Linda.</p>
+      <p class="ar">العيب: يخفق <code>CUSTOMER</code> في القاعدة الأولى. ولأنه محاط داخل الصندوق، يرث <code># Payment ID</code> و<code>* Payment Date</code> و<code>* Amount</code>، فيقول الرسم إن كل زبون <em>هو</em> دفعة واحدة. فتصير دفعة Linda الثانية Linda ثانية.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — CUSTOMER outside, joined by relationships" data-title-ar="الإصدار 2 — CUSTOMER في الخارج، موصول بالعلاقات">
+      <figure class="diagram" data-diagram="t4-pay-subtypes">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" direction="ltr" role="img" aria-labelledby="t4-pay-subtypes-t">
+<title id="t4-pay-subtypes-t">PAYMENT drawn with CASH, CHECK and CREDIT CARD as boxes inside it: the common attributes once in PAYMENT, Card Number inside CREDIT CARD, and CUSTOMER related only to CHECK and CREDIT CARD / PAYMENT مرسومًا وفي داخله صناديق CASH وCHECK وCREDIT CARD: الخصائص المشتركة مرّة واحدة في PAYMENT، ورقم البطاقة داخل CREDIT CARD، وCUSTOMER مرتبط بـ CHECK وCREDIT CARD وحدهما</title>
+<g class="en"><text x="400.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Something in between — one PAYMENT, three kinds inside it</text></g><g class="ar"><text x="400.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">حلّ وسط — PAYMENT واحد، وفي داخله ثلاثة أنواع</text></g>
+<rect x="40" y="50" width="260" height="266" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="170.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAYMENT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Payment ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Payment Date</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Amount</text>
+<rect x="60" y="153" width="220" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="170.0" y="175" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CASH</text>
+<rect x="60" y="195" width="220" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="170.0" y="217" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CHECK</text>
+<rect x="60" y="237" width="220" height="59" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="170.0" y="259" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CREDIT CARD</text>
+<text x="74" y="281" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Card Number</text>
+<rect x="560" y="143.0" width="200" height="78" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="660.0" y="165.0" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CUSTOMER</text>
+<text x="574" y="187.0" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Customer ID</text>
+<text x="574" y="206.0" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M280 213 L430 213" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M430 213 L430 163.0 L560 163.0" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M292 213 L280 206" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M292 213 L280 213" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M292 213 L280 220" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="310" y="206" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">made by</text>
+<text x="552" y="157.0" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">make</text>
+<path d="M280 255 L452 255" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M452 255 L452 193.0 L560 193.0" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M292 255 L280 248" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M292 255 L280 255" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M292 255 L280 262" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="310" y="248" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">made by</text>
+<text x="552" y="208.0" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">make</text>
+<rect x="40" y="336" width="720" height="92" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="359" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Common attributes once, in PAYMENT. Each kind keeps only what is its own, drawn inside it.</text></g><g class="ar"><text x="744" y="359" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">الخصائص المشتركة مرّة واحدة، في PAYMENT. وكل نوع لا يحمل إلا ما يخصّه، مرسومًا داخله.</text></g>
+<g class="en"><text x="56" y="379" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Rules visible: * Card Number is mandatory for CREDIT CARD; the CHECK half is solid.</text></g><g class="ar"><text x="744" y="379" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">القواعد ظاهرة: رقم البطاقة إلزامي في CREDIT CARD، والنصف المجاور لـ CHECK متّصل.</text></g>
+<g class="en"><text x="56" y="399" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">And one box still says what all three are: a PAYMENT. CASH has no customer line at all.</text></g><g class="ar"><text x="744" y="399" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">وصندوق واحد ما زال يقول ما هي الثلاثة كلها: PAYMENT. وليس لـ CASH خطّ زبون أصلًا.</text></g>
+</svg>
+</figure>
+      <p class="en">Fixed: <code>CUSTOMER</code> is its own entity, outside <code>PAYMENT</code>, joined to <code>CHECK</code> and <code>CREDIT CARD</code> by <code>made by</code> lines. Every box left inside passes the test. "Related to" is drawn as a line; only "a kind of" is drawn as a box inside a box.</p>
+      <p class="ar">أُصلح: صار <code>CUSTOMER</code> كيانًا مستقلًّا خارج <code>PAYMENT</code>، موصولًا بـ <code>CHECK</code> و<code>CREDIT CARD</code> بخطوط <code>made by</code>. وكل صندوق بقي في الداخل يجتاز الاختبار. فـ«مرتبط بـ» يُرسم خطًّا، و«نوعٌ من» وحدها تُرسم صندوقًا داخل صندوق.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Build version 1 the way Lesson 2 built subtypes: the subtype's key is also a foreign key to <code>payments</code>. Then a customer row can exist only as a payment. Linda appears once per payment, and a new customer who has not paid yet cannot be recorded at all:</p>
+    <p class="ar">ابنِ الإصدار 1 كما بنى الدرس 2 الأنواعَ الفرعية: مفتاح النوع الفرعي مفتاح أجنبي إلى <code>payments</code> في الوقت نفسه. عندها لا يوجد صفّ الزبون إلا بوصفه دفعة. فتظهر Linda مرّة لكل دفعة، ولا يمكن تسجيل زبونة جديدة لم تدفع بعد أصلًا:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)", "INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90)", "CREATE TABLE customers (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), name VARCHAR(20) NOT NULL)", "INSERT INTO customers VALUES (2,'Linda'), (3,'Omar'), (5,'Linda'), (6,'Omar')"], "sql": "SELECT * FROM customers ORDER BY payment_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>payment_id</code></th><th><code>name</code></th></tr></thead>
+          <tbody>
+            <tr><td>2</td><td>Linda</td></tr>
+            <tr><td>3</td><td>Omar</td></tr>
+            <tr><td>5</td><td>Linda</td></tr>
+            <tr><td>6</td><td>Omar</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Two customers, four rows. Now try <code>INSERT INTO customers VALUES (99, 'Sara');</code> and alasql answers <code>Foreign key "99" not found in table "payments"</code>. In version 2, <code>customers</code> has its own <code>customer_id</code>, and the payment tables point at it.</p>
+    <p class="ar">زبونان، وأربعة صفوف. والآن جرّب <code>INSERT INTO customers VALUES (99, 'Sara');</code> فيجيب alasql: <code>Foreign key "99" not found in table "payments"</code>. أمّا في الإصدار 2 فلـ <code>customers</code> مفتاحه الخاصّ <code>customer_id</code>، وجداول الدفعات هي التي تشير إليه.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which box passes rule one inside <code>PAYMENT</code>?</p>
+    <p class="q ar">أيّ صندوق يجتاز القاعدة الأولى داخل <code>PAYMENT</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>BANK</code>, because cheques are drawn on a bank</span><span class="ar"><code>BANK</code>، لأن الشيكات تُسحب على مصرف</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>WALLET</code>, the mobile-wallet payments of Lesson 1</span><span class="ar"><code>WALLET</code>، دفعات المحفظة الإلكترونية في الدرس 1</span></button></li>
+      <li><button class="opt"><span class="en"><code>RECEIPT</code>, because every payment prints one</span><span class="ar"><code>RECEIPT</code>، لأن كل دفعة يُطبع لها إيصال</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"Every WALLET is a PAYMENT" is true. A bank is not a payment, and a receipt is a document a payment produces. Both are related to payments, so they are separate entities joined by lines.</p>
+      <p class="ar">«كل WALLET هو PAYMENT» جملة صحيحة. أمّا المصرف فليس دفعة، والإيصال ورقةٌ تنتجها الدفعة. كلاهما مرتبط بالدفعات، فهما كيانان منفصلان يصلهما خطّ.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In version 1, why is <code>CUSTOMER</code> worse than just "drawn in an odd place"?</p>
+    <p class="q ar">في الإصدار 1، لماذا يكون <code>CUSTOMER</code> أسوأ من مجرّد «مرسوم في مكان غريب»؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">It makes the diagram wider</span><span class="ar">يجعل المخطّط أعرض</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">By inheritance it gets a payment date and an amount, so the model says each customer is one payment</span><span class="ar">بالوراثة يأخذ تاريخ دفع ومبلغًا، فيقول النموذج إن كل زبون دفعةٌ واحدة</span></button></li>
+      <li><button class="opt"><span class="en">Subtypes may not have a <code>#</code> attribute</span><span class="ar">لا يجوز أن تكون للأنواع الفرعية خاصية <code>#</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A box inside a box is a promise: everything the outer box has, the inner one has too. Break rule one and inheritance turns the mistake into false business rules.</p>
+      <p class="ar">الصندوق داخل الصندوق وعدٌ: كل ما للصندوق الخارجي يكون للداخلي أيضًا. فإن خُرقت القاعدة الأولى، حوّلت الوراثة الخطأ إلى قواعد عمل كاذبة.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t4l3-h2"><span class="en">2 · Rule two: exhaustive</span><span class="ar">٢ · القاعدة الثانية: الشمول</span></h2>
+
+  <div class="problem">
+    <p class="en">A decorating store models its stock as <code>WALL COVERING</code> with <code>PAINT</code>, <code>WALLPAPER</code> and <code>FABRIC</code> inside. Then it stocks a ceramic wall tile and an oak wood panel. Both are wall coverings. Which box does the clerk put them in?</p>
+    <p class="ar">يرسم متجر ديكور مخزونه <code>WALL COVERING</code> وفي داخله <code>PAINT</code> و<code>WALLPAPER</code> و<code>FABRIC</code>. ثم يبدأ ببيع بلاط خزفي للجدران ولوح من خشب البلّوط. كلاهما غطاء جدار. ففي أيّ صندوق يضعهما الموظّف؟</p>
+  </div>
+
+  <p class="en">In none of them. The lecturer's second question: <em>have I covered all possible cases?</em> If an instance of the supertype fits no subtype, the outwards-in reading &mdash; <em>every WALL COVERING is a PAINT, a WALLPAPER or a FABRIC</em> &mdash; is false.</p>
+  <p class="ar">في لا شيء منها. والسؤال الثاني للمحاضِرة: <em>هل غطّيت كل الحالات الممكنة؟</em> فإن لم تجد نسخةٌ من النوع الأعلى نوعًا فرعيًّا تقع فيه، كانت القراءة من الخارج إلى الداخل &mdash; <em>كل WALL COVERING هو PAINT أو WALLPAPER أو FABRIC</em> &mdash; خاطئة.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> Subtypes are <span class="term" data-term="exhaustive">exhaustive</span> when every instance of the supertype is an instance of at least one of them.</p>
+    <p class="ar"><strong>تعريف.</strong> تكون الأنواع الفرعية <span class="term" data-term="exhaustive">شاملة</span> (Exhaustive) حين تكون كل نسخة من النوع الأعلى نسخةً من واحد منها على الأقل.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="uncovered-instance">uncovered instance</span> is an instance of the supertype that fits none of its subtypes, such as the ceramic tile.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="uncovered-instance">النسخة غير المشمولة</span> (Uncovered instance) نسخةٌ من النوع الأعلى لا تقع في أيٍّ من أنواعه الفرعية، مثل البلاط الخزفي.</p>
+  </div>
+
+  <h3 id="t4l3-s2"><span class="en">The OTHER subtype</span><span class="ar">النوع الفرعي OTHER</span></h3>
+
+  <p class="en">The slides' answer: <em>at the conceptual modeling stage, it is good practice to include an OTHER subtype to make sure that your subtypes are exhaustive</em>. <code>OTHER</code> holds every instance the named subtypes do not. It usually lists nothing of its own, and it still inherits everything from the supertype.</p>
+  <p class="ar">جواب الشرائح: <em>في مرحلة النمذجة المفاهيمية، من الممارسات الجيّدة إضافة نوع فرعي OTHER للتأكّد من أن الأنواع الفرعية شاملة</em>. يحتوي <code>OTHER</code> كل نسخة لا تحتويها الأنواع المسمّاة. وغالبًا لا يذكر شيئًا خاصًّا به، لكنه مع ذلك يرث كل شيء من النوع الأعلى.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="other-subtype">OTHER subtype</span> is a subtype that holds every instance the named subtypes do not, so that the set is exhaustive.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="other-subtype">النوع الفرعي OTHER</span> (أخرى) نوعٌ فرعي يحتوي كل نسخة لا تحتويها الأنواع الفرعية المسمّاة، فتصير المجموعة شاملة.</p>
+  </div>
+
+  <div class="evolve" id="t4l3-e2">
+    <div class="ver" data-title-en="Version 1 — three named kinds, and nothing else" data-title-ar="الإصدار 1 — ثلاثة أنواع مسمّاة، ولا شيء غيرها">
+      <figure class="diagram" data-diagram="t4-wall-v1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 478" direction="ltr" role="img" aria-labelledby="t4-wall-v1-t">
+<title id="t4-wall-v1-t">WALL COVERING with PAINT, WALLPAPER and FABRIC only: the ceramic tile and the oak panel belong to no subtype / WALL COVERING وفيه PAINT وWALLPAPER وFABRIC فقط: البلاط الخزفي ولوح البلّوط لا ينتميان إلى أي نوع فرعي</title>
+<g class="en"><text x="400.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1 — three named kinds, and nothing else</text></g><g class="ar"><text x="400.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 1 — ثلاثة أنواع مسمّاة، ولا شيء غيرها</text></g>
+<rect x="40" y="50" width="280" height="306" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="180.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WALL COVERING</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Code</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Description</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<rect x="60" y="147" width="240" height="55" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="180.0" y="168" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAINT</text>
+<text x="74" y="189" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Litres</text>
+<rect x="60" y="214" width="240" height="55" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="180.0" y="235" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WALLPAPER</text>
+<text x="74" y="256" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Roll Length</text>
+<rect x="60" y="281" width="240" height="55" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="180.0" y="302" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">FABRIC</text>
+<text x="74" y="323" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Material</text>
+<g class="en"><text x="420" y="66" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">The store's five products</text></g><g class="ar"><text x="760" y="66" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">منتجات المتجر الخمسة</text></g>
+<rect x="420" y="80" width="340" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="432" y="98" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC1  Matt white emulsion</text>
+<text x="748" y="98" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ PAINT</text>
+<rect x="420" y="114" width="340" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="432" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC2  Striped wallpaper</text>
+<text x="748" y="132" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ WALLPAPER</text>
+<rect x="420" y="148" width="340" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="432" y="166" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC3  Linen wall panel</text>
+<text x="748" y="166" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ FABRIC</text>
+<rect x="420" y="182" width="340" height="26" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<text x="432" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC4  Ceramic wall tile</text>
+<g class="en"><text x="748" y="200" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px;font-weight:700">→ no subtype</text></g><g class="ar"><text x="748" y="200" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px;font-weight:700">← لا نوع فرعي</text></g>
+<rect x="420" y="216" width="340" height="26" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<text x="432" y="234" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC5  Oak wood panel</text>
+<g class="en"><text x="748" y="234" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px;font-weight:700">→ no subtype</text></g><g class="ar"><text x="748" y="234" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px;font-weight:700">← لا نوع فرعي</text></g>
+<rect x="40" y="376" width="720" height="82" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<g class="en"><text x="56" y="399" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Defect: not exhaustive. A tile is a wall covering, but none of the subtypes holds it.</text></g><g class="ar"><text x="744" y="399" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">العيب: غير شاملة. البلاط غطاء جدار، لكن لا نوع فرعي يحتويه.</text></g>
+<g class="en"><text x="56" y="419" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Read outwards-in, the drawing claims every WALL COVERING is PAINT, WALLPAPER or FABRIC.</text></g><g class="ar"><text x="744" y="419" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">وإذا قُرئ من الخارج إلى الداخل ادّعى الرسم أن كل WALL COVERING هو PAINT أو WALLPAPER أو FABRIC.</text></g>
+<g class="en"><text x="56" y="439" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">WC4 and WC5 prove it false.</text></g><g class="ar"><text x="744" y="439" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">وWC4 وWC5 يثبتان أن ذلك خطأ.</text></g>
+</svg>
+</figure>
+      <p class="en">Defect: not exhaustive. Every box passes rule one, but <code>WC4</code> and <code>WC5</code> are wall coverings with no subtype. The drawing claims something about the store that its own stock contradicts.</p>
+      <p class="ar">العيب: غير شاملة. كل صندوق يجتاز القاعدة الأولى، لكن <code>WC4</code> و<code>WC5</code> غطاءا جدار بلا نوع فرعي. فالرسم يدّعي عن المتجر شيئًا ينقضه مخزونه نفسه.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — an OTHER subtype makes the set exhaustive" data-title-ar="الإصدار 2 — النوع الفرعي OTHER يجعل المجموعة شاملة">
+      <figure class="diagram" data-diagram="t4-wall-v2">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" direction="ltr" role="img" aria-labelledby="t4-wall-v2-t">
+<title id="t4-wall-v2-t">WALL COVERING with PAINT, WALLPAPER, FABRIC and OTHER: every instance, the tile and the wood panel included, has a subtype / WALL COVERING وفيه PAINT وWALLPAPER وFABRIC وOTHER: لكل نسخة نوع فرعي، ومنها البلاط واللوح الخشبي</title>
+<g class="en"><text x="400.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — an OTHER subtype makes the set exhaustive</text></g><g class="ar"><text x="400.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 2 — النوع الفرعي OTHER يجعل المجموعة شاملة</text></g>
+<rect x="40" y="50" width="280" height="348" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="180.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WALL COVERING</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Code</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Description</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<rect x="60" y="147" width="240" height="55" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="180.0" y="168" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAINT</text>
+<text x="74" y="189" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Litres</text>
+<rect x="60" y="214" width="240" height="55" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="180.0" y="235" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WALLPAPER</text>
+<text x="74" y="256" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Roll Length</text>
+<rect x="60" y="281" width="240" height="55" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="180.0" y="302" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">FABRIC</text>
+<text x="74" y="323" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Material</text>
+<rect x="60" y="348" width="240" height="30" rx="10" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<text x="180.0" y="369" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">OTHER</text>
+<g class="en"><text x="420" y="66" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">The store's five products</text></g><g class="ar"><text x="760" y="66" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">منتجات المتجر الخمسة</text></g>
+<rect x="420" y="80" width="340" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="432" y="98" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC1  Matt white emulsion</text>
+<text x="748" y="98" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ PAINT</text>
+<rect x="420" y="114" width="340" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="432" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC2  Striped wallpaper</text>
+<text x="748" y="132" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ WALLPAPER</text>
+<rect x="420" y="148" width="340" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="432" y="166" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC3  Linen wall panel</text>
+<text x="748" y="166" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ FABRIC</text>
+<rect x="420" y="182" width="340" height="26" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<text x="432" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC4  Ceramic wall tile</text>
+<text x="748" y="200" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ OTHER</text>
+<rect x="420" y="216" width="340" height="26" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<text x="432" y="234" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC5  Oak wood panel</text>
+<text x="748" y="234" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ OTHER</text>
+<rect x="40" y="418" width="720" height="82" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<g class="en"><text x="56" y="441" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Every WALL COVERING now fits a subtype: the OTHER box takes the rest.</text></g><g class="ar"><text x="744" y="441" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">صار لكل WALL COVERING نوع فرعي: فالصندوق OTHER يأخذ الباقي.</text></g>
+<g class="en"><text x="56" y="461" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Rule two holds: the subtypes are exhaustive.</text></g><g class="ar"><text x="744" y="461" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">القاعدة الثانية متحقّقة: الأنواع الفرعية شاملة.</text></g>
+<g class="en"><text x="56" y="481" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">OTHER lists nothing of its own; it still inherits # Code, * Description, * Price.</text></g><g class="ar"><text x="744" y="481" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">لا يذكر OTHER شيئًا خاصًّا به، لكنه يرث # Code و* Description و* Price.</text></g>
+</svg>
+</figure>
+      <p class="en">Fixed: <code>OTHER</code> takes the tile, the wood panel and whatever the store stocks next year. The named subtypes did not change. This is the lecturer's <code>WALL COVERING</code>, and the recommended model.</p>
+      <p class="ar">أُصلح: يأخذ <code>OTHER</code> البلاط واللوح الخشبي، وكل ما سيبيعه المتجر في السنة القادمة. ولم تتغيّر الأنواع المسمّاة. وهذا هو <code>WALL COVERING</code> عند المحاضِرة، والنموذج الموصى به.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Build version 1 as a <code>wall_coverings</code> table plus <code>paints</code>, <code>wallpapers</code> and <code>fabrics</code>. Nothing stops a product being in the supertype table only. This query finds the uncovered instances, the ones version 1 has no box for:</p>
+    <p class="ar">ابنِ الإصدار 1 جدولَ <code>wall_coverings</code> ومعه <code>paints</code> و<code>wallpapers</code> و<code>fabrics</code>. لا شيء يمنع أن يوجد منتج في جدول النوع الأعلى وحده. وهذا الاستعلام يجد النُّسَخ غير المشمولة، أي التي لا صندوق لها في الإصدار 1:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE wall_coverings (code VARCHAR(6) PRIMARY KEY, description VARCHAR(40) NOT NULL, price NUMBER NOT NULL)", "INSERT INTO wall_coverings VALUES ('WC1','Matt white emulsion',18), ('WC2','Striped wallpaper roll',25), ('WC3','Linen fabric panel',60), ('WC4','Ceramic wall tile',3), ('WC5','Oak wood panel',45)", "CREATE TABLE paints (code VARCHAR(6) PRIMARY KEY REFERENCES wall_coverings(code), litres NUMBER NOT NULL)", "INSERT INTO paints VALUES ('WC1',5)", "CREATE TABLE wallpapers (code VARCHAR(6) PRIMARY KEY REFERENCES wall_coverings(code), roll_length NUMBER NOT NULL)", "INSERT INTO wallpapers VALUES ('WC2',10)", "CREATE TABLE fabrics (code VARCHAR(6) PRIMARY KEY REFERENCES wall_coverings(code), material VARCHAR(20) NOT NULL)", "INSERT INTO fabrics VALUES ('WC3','linen')"], "sql": "SELECT w.code, w.description\nFROM wall_coverings w\nLEFT JOIN paints     p ON p.code = w.code\nLEFT JOIN wallpapers l ON l.code = w.code\nLEFT JOIN fabrics    f ON f.code = w.code\nWHERE p.code IS NULL AND l.code IS NULL AND f.code IS NULL\nORDER BY w.code;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>code</code></th><th><code>description</code></th></tr></thead>
+          <tbody>
+            <tr><td>WC4</td><td>Ceramic wall tile</td></tr>
+            <tr><td>WC5</td><td>Oak wood panel</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">In version 2 these two rows go into an <code>other_coverings</code> table (or carry the type <code>'OTHER'</code>), and the same query returns no rows: exhaustive, checked.</p>
+    <p class="ar">في الإصدار 2 يدخل هذان الصفّان جدول <code>other_coverings</code> (أو يحملان النوع <code>'OTHER'</code>)، فلا يعيد الاستعلام نفسه أيّ صفّ: شاملة، ومفحوصة.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The shop sometimes accepts a gift voucher. Which statement about the <code>PAYMENT</code> hierarchy (<code>CASH</code>, <code>CHECK</code>, <code>CREDIT CARD</code>) is now true?</p>
+    <p class="q ar">يقبل المتجر أحيانًا قسيمة هدية. أيّ عبارة عن تسلسل <code>PAYMENT</code> (<code>CASH</code> و<code>CHECK</code> و<code>CREDIT CARD</code>) صارت صحيحة الآن؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">It breaks rule one, because a voucher is not a kind of payment</span><span class="ar">يخرق القاعدة الأولى، لأن القسيمة ليست نوعًا من الدفعات</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">It is no longer exhaustive: a voucher payment fits no subtype</span><span class="ar">لم يعد شاملًا: دفعة القسيمة لا تقع في أيّ نوع فرعي</span></button></li>
+      <li><button class="opt"><span class="en">Nothing changes; the voucher goes in <code>CASH</code></span><span class="ar">لا يتغيّر شيء؛ تذهب القسيمة إلى <code>CASH</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A voucher payment is a payment, so rule one is fine; it simply has nowhere to go. Add <code>OTHER</code> (or a <code>VOUCHER</code> subtype if vouchers have attributes of their own). Filing it under <code>CASH</code> would make the cash totals wrong.</p>
+      <p class="ar">دفعة القسيمة دفعةٌ، فالقاعدة الأولى سليمة؛ لكنها لا تجد مكانًا. أضف <code>OTHER</code> (أو نوعًا فرعيًّا <code>VOUCHER</code> إن كانت للقسائم خصائص خاصّة بها). أمّا وضعها تحت <code>CASH</code> فيُفسد مجاميع النقد.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In version 2 of <code>WALL COVERING</code>, what does <code>WC4 Ceramic wall tile</code> have?</p>
+    <p class="q ar">في الإصدار 2 من <code>WALL COVERING</code>، ماذا يملك <code>WC4 Ceramic wall tile</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Nothing &mdash; the <code>OTHER</code> box is empty</span><span class="ar">لا شيء &mdash; صندوق <code>OTHER</code> فارغ</span></button></li>
+      <li><button class="opt"><span class="en"><code># Code</code> and <code>* Litres</code></span><span class="ar"><code># Code</code> و<code>* Litres</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code># Code</code>, <code>* Description</code> and <code>* Price</code>, inherited</span><span class="ar"><code># Code</code> و<code>* Description</code> و<code>* Price</code>، موروثة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>OTHER</code> is a subtype like any other, so Lesson 2's inheritance applies. It does not inherit <code>* Litres</code>: that belongs to its sibling <code>PAINT</code>.</p>
+      <p class="ar"><code>OTHER</code> نوعٌ فرعي كغيره، فتنطبق عليه وراثة الدرس 2. ولا يرث <code>* Litres</code>: فهي تخصّ شقيقه <code>PAINT</code>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t4l3-h3"><span class="en">3 · Rule three: mutually exclusive</span><span class="ar">٣ · القاعدة الثالثة: التنافي</span></h2>
+
+  <div class="problem">
+    <p class="en">The shop opens a website, and a designer adds an <code>ONLINE</code> subtype with <code>* Order Reference</code>. On 5 March Omar pays 75 by credit card through the website. Is payment 7 a <code>CREDIT CARD</code> or an <code>ONLINE</code>? The card total and the online total now disagree with the till.</p>
+    <p class="ar">يفتح المتجر موقعًا إلكترونيًّا، فيضيف مصمّم نوعًا فرعيًّا <code>ONLINE</code> فيه <code>* Order Reference</code>. وفي 5 آذار يدفع Omar مبلغ 75 ببطاقة ائتمان عبر الموقع. فهل الدفعة 7 من <code>CREDIT CARD</code> أم من <code>ONLINE</code>؟ صار مجموع البطاقات ومجموع الموقع لا يتّفقان مع الصندوق.</p>
+  </div>
+
+  <p class="en">It is both, and that is the defect. The lecturer's third question: <em>does each instance fit into one and only one subtype?</em> Every subtype here passes rule one, and together they are exhaustive, yet one payment sits in two boxes.</p>
+  <p class="ar">هي الاثنتان معًا، وهذا هو العيب. السؤال الثالث للمحاضِرة: <em>هل تقع كل نسخة في نوع فرعي واحد فقط؟</em> كل نوع فرعي هنا يجتاز القاعدة الأولى، وهي مجتمعةً شاملة، ومع ذلك تقع دفعة واحدة في صندوقين.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> Subtypes are <span class="term" data-term="mutually-exclusive">mutually exclusive</span> when no instance of the supertype is an instance of more than one of them.</p>
+    <p class="ar"><strong>تعريف.</strong> تكون الأنواع الفرعية <span class="term" data-term="mutually-exclusive">متنافية</span> (Mutually exclusive) حين لا تكون أيّ نسخة من النوع الأعلى نسخةً من أكثر من واحد منها.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="overlapping-subtypes">Overlapping subtypes</span> are two subtypes that can both hold the same instance, which breaks rule three.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="overlapping-subtypes">الأنواع الفرعية المتداخلة</span> (Overlapping subtypes) نوعان فرعيان يمكن أن يحتويا النسخة نفسها، وهذا يخرق القاعدة الثالثة.</p>
+  </div>
+
+  <pre class="code" data-lang="text"><code>PAYMENT        # Payment ID  * Payment Date  * Amount
+  CASH
+  CHECK
+  CREDIT CARD  * Card Number          &lt;- how did they pay?
+  ONLINE       * Order Reference      &lt;- where did they pay?</code></pre>
+
+  <h3 id="t4l3-s3"><span class="en">One question decides the split</span><span class="ar">سؤال واحد يحدّد التقسيم</span></h3>
+
+  <p class="en">Overlap usually means two questions were mixed. <code>CASH</code>, <code>CHECK</code> and <code>CREDIT CARD</code> answer <em>how did they pay?</em>; <code>ONLINE</code> answers <em>where?</em>. Keep one question for the subtypes. The other becomes an attribute of the supertype, such as <code>* Channel</code>, or is left out.</p>
+  <p class="ar">التداخل يعني غالبًا أن سؤالين اختلطا. <code>CASH</code> و<code>CHECK</code> و<code>CREDIT CARD</code> تجيب عن <em>كيف دفع؟</em>، و<code>ONLINE</code> يجيب عن <em>أين؟</em>. احتفظ بسؤال واحد للأنواع الفرعية. ويصبح الآخر خاصيةً في النوع الأعلى، مثل <code>* Channel</code>، أو يُترك.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="subdivision-basis">basis of subdivision</span> is the single question whose answers name the subtypes, such as "how was it paid?".</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="subdivision-basis">أساس التقسيم</span> (Basis of subdivision) هو السؤال الواحد الذي تسمّي أجوبتُه الأنواعَ الفرعية، مثل «كيف دُفعت؟».</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">With a table per subtype, nothing stops payment 7 entering both <code>card_payments</code> and <code>online_payments</code>. Count how many subtype tables each payment appears in:</p>
+    <p class="ar">مع جدول لكل نوع فرعي، لا شيء يمنع أن تدخل الدفعة 7 كلًّا من <code>card_payments</code> و<code>online_payments</code>. عُدّ في كم جدولًا فرعيًّا تظهر كل دفعة:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)", "INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90), (7,'2026-03-05',75)", "CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))", "INSERT INTO cash_payments VALUES (1), (4)", "CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), customer_id NUMBER NOT NULL)", "INSERT INTO check_payments VALUES (2,1), (6,2)", "CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL)", "INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111',2), (5,'5500 0000 0000 0004',1), (7,'4111 1111 1111 1111',2)", "CREATE TABLE online_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), order_ref VARCHAR(10) NOT NULL)", "INSERT INTO online_payments VALUES (7,'WEB-0042')"], "sql": "SELECT payment_id, COUNT(*) AS kinds\nFROM (SELECT payment_id FROM cash_payments\n      UNION ALL SELECT payment_id FROM check_payments\n      UNION ALL SELECT payment_id FROM card_payments\n      UNION ALL SELECT payment_id FROM online_payments) AS k\nGROUP BY payment_id\nHAVING COUNT(*) > 1;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>payment_id</code></th><th><code>kinds</code></th></tr></thead>
+          <tbody><tr><td>7</td><td>2</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">The till took 875 in total. Adding the subtype tables gives 950, because payment 7's 75 is counted twice: 605 by card and 75 online. Exclusive subtypes are what make "add up the kinds" equal "the total".</p>
+    <p class="ar">قبض الصندوق 875 في المجموع. أمّا جمع الجداول الفرعية فيعطي 950، لأن مبلغ الدفعة 7 وهو 75 يُحسب مرّتين: 605 بالبطاقة و75 عبر الموقع. فالأنواع الفرعية المتنافية هي ما يجعل «جمع الأنواع» يساوي «المجموع».</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapter 7</span><span class="ar">خيط · الفصل 7 في SQL</span></h4>
+    <p class="en"><a href="../chapters/chapter-7.html">Chapter 7 &mdash; Normalization</a> hunts for the same fact stored in two places. Overlapping subtypes create exactly that: payment 7's card row and online row both describe one payment. Rule three stops the duplicate before any table exists.</p>
+    <p class="ar">يطارد <a href="../chapters/chapter-7.html">الفصل 7 &mdash; التطبيع</a> الحقيقةَ نفسها مخزّنةً في مكانين. والأنواع الفرعية المتداخلة تصنع ذلك بالضبط: صفّ البطاقة وصفّ الموقع للدفعة 7 يصفان دفعة واحدة. والقاعدة الثالثة توقف هذا التكرار قبل أن يوجد أيّ جدول.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which hierarchy breaks rule three?</p>
+    <p class="q ar">أيّ تسلسل هرمي يخرق القاعدة الثالثة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>WALL COVERING</code>: <code>PAINT</code>, <code>WALLPAPER</code>, <code>FABRIC</code>, <code>OTHER</code></span><span class="ar"><code>WALL COVERING</code>: <code>PAINT</code>، <code>WALLPAPER</code>، <code>FABRIC</code>، <code>OTHER</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>WALL COVERING</code>: <code>PAINT</code>, <code>WALLPAPER</code>, <code>WASHABLE</code>, <code>OTHER</code></span><span class="ar"><code>WALL COVERING</code>: <code>PAINT</code>، <code>WALLPAPER</code>، <code>WASHABLE</code>، <code>OTHER</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>PAYMENT</code>: <code>CASH</code>, <code>CHECK</code>, <code>CREDIT CARD</code></span><span class="ar"><code>PAYMENT</code>: <code>CASH</code>، <code>CHECK</code>، <code>CREDIT CARD</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A washable wallpaper is both a <code>WALLPAPER</code> and a <code>WASHABLE</code>. "What is it made of?" and "can it be washed?" are two bases; washability belongs in an attribute.</p>
+      <p class="ar">ورق الجدران القابل للغسل هو <code>WALLPAPER</code> و<code>WASHABLE</code> معًا. فـ«ممّ صُنع؟» و«هل يُغسل؟» أساسان مختلفان؛ ومكان قابلية الغسل خاصيةٌ.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">What is the best repair for the <code>ONLINE</code> subtype?</p>
+    <p class="q ar">ما أفضل إصلاح للنوع الفرعي <code>ONLINE</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Keep it, and tell clerks to put online card payments only in <code>ONLINE</code></span><span class="ar">إبقاؤه، وإخبار الموظّفين بوضع دفعات البطاقة عبر الموقع في <code>ONLINE</code> وحده</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Remove it; record the channel as an attribute of <code>PAYMENT</code></span><span class="ar">إزالته، وتسجيل القناة خاصيةً في <code>PAYMENT</code></span></button></li>
+      <li><button class="opt"><span class="en">Add an <code>OTHER</code> subtype</span><span class="ar">إضافة نوع فرعي <code>OTHER</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The first option hides the rule in a clerk's memory, and online card payments would lose their card number. <code>OTHER</code> fixes rule two, not rule three. Subtype by one basis, method; the channel is a common attribute.</p>
+      <p class="ar">الخيار الأول يخبّئ القاعدة في ذاكرة الموظّف، وتفقد دفعات البطاقة عبر الموقع رقم بطاقتها. و<code>OTHER</code> يُصلح القاعدة الثانية لا الثالثة. قسّم على أساس واحد هو طريقة الدفع؛ والقناة خاصية مشتركة.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t4l3-h4"><span class="en">4 · Never just one subtype</span><span class="ar">٤ · لا نوع فرعي وحيد أبدًا</span></h2>
+
+  <div class="problem">
+    <p class="en">A first draft for the shop only cares about card numbers, so it draws <code>PAYMENT</code> with a single box inside: <code>CREDIT CARD</code>. Payments 3 and 5 go in it. Payments 1, 2, 4 and 6 are payments too. Where are they in the drawing?</p>
+    <p class="ar">مسوّدة أولى للمتجر لا يهمّها إلا أرقام البطاقات، فترسم <code>PAYMENT</code> وفي داخله صندوق واحد: <code>CREDIT CARD</code>. تدخله الدفعتان 3 و5. والدفعات 1 و2 و4 و6 دفعاتٌ أيضًا. فأين هي في الرسم؟</p>
+  </div>
+
+  <p class="en">Nowhere. A lone subtype is never exhaustive, because a supertype with only one kind would just <em>be</em> that kind. The slides make it a rule: <em>there can never be just one subtype; another subtype should be created to contain the rest.</em></p>
+  <p class="ar">في لا مكان. فالنوع الفرعي الوحيد لا يكون شاملًا أبدًا، لأن نوعًا أعلى له نوع واحد فقط <em>هو</em> ذلك النوع ببساطة. والشرائح تجعل ذلك قاعدة: <em>لا يمكن أبدًا أن يكون هناك نوع فرعي واحد فقط؛ ويجب إنشاء نوع فرعي آخر يحتوي الباقي.</em></p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="single-subtype">single subtype</span> is a supertype drawn with only one subtype inside it, which the rules never allow.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="single-subtype">النوع الفرعي الوحيد</span> (Single subtype) نوعٌ أعلى مرسوم وفي داخله نوع فرعي واحد فقط، وهذا ما لا تسمح به القواعد أبدًا.</p>
+  </div>
+
+  <div class="evolve" id="t4l3-e3">
+    <div class="ver" data-title-en="Version 1 — CREDIT CARD on its own" data-title-ar="الإصدار 1 — CREDIT CARD وحده">
+      <figure class="diagram" data-diagram="t4-pay-card-only">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 388" direction="ltr" role="img" aria-labelledby="t4-pay-card-only-t">
+<title id="t4-pay-card-only-t">PAYMENT with a single subtype, CREDIT CARD: payments 1, 2, 4 and 6 are in no subtype / PAYMENT بنوع فرعي واحد هو CREDIT CARD: الدفعات 1 و2 و4 و6 ليست في أي نوع فرعي</title>
+<g class="en"><text x="400.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1 — one subtype on its own</text></g><g class="ar"><text x="400.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 1 — نوع فرعي واحد وحده</text></g>
+<rect x="40" y="50" width="280" height="172" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="180.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAYMENT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Payment ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Payment Date</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Amount</text>
+<rect x="60" y="147" width="240" height="55" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="180.0" y="168" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CREDIT CARD</text>
+<text x="74" y="189" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Card Number</text>
+<g class="en"><text x="420" y="66" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">The six March payments</text></g><g class="ar"><text x="760" y="66" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">دفعات آذار الست</text></g>
+<rect x="420" y="80" width="340" height="26" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<text x="432" y="98" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">1  40  cash</text>
+<g class="en"><text x="748" y="98" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px;font-weight:700">→ no subtype</text></g><g class="ar"><text x="748" y="98" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px;font-weight:700">← لا نوع فرعي</text></g>
+<rect x="420" y="112" width="340" height="26" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<text x="432" y="130" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">2  125  cheque</text>
+<g class="en"><text x="748" y="130" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px;font-weight:700">→ no subtype</text></g><g class="ar"><text x="748" y="130" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px;font-weight:700">← لا نوع فرعي</text></g>
+<rect x="420" y="144" width="340" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="432" y="162" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">3  310  card</text>
+<text x="748" y="162" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CREDIT CARD</text>
+<rect x="420" y="176" width="340" height="26" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<text x="432" y="194" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">4  15  cash</text>
+<g class="en"><text x="748" y="194" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px;font-weight:700">→ no subtype</text></g><g class="ar"><text x="748" y="194" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px;font-weight:700">← لا نوع فرعي</text></g>
+<rect x="420" y="208" width="340" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="432" y="226" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">5  220  card</text>
+<text x="748" y="226" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CREDIT CARD</text>
+<rect x="420" y="240" width="340" height="26" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<text x="432" y="258" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">6  90  cheque</text>
+<g class="en"><text x="748" y="258" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px;font-weight:700">→ no subtype</text></g><g class="ar"><text x="748" y="258" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px;font-weight:700">← لا نوع فرعي</text></g>
+<rect x="40" y="286" width="720" height="82" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<g class="en"><text x="56" y="309" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Defect: just one subtype. Four of the six payments have no box to go in.</text></g><g class="ar"><text x="744" y="309" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">العيب: نوع فرعي واحد فقط. أربع من الدفعات الست لا صندوق لها.</text></g>
+<g class="en"><text x="56" y="329" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">The slides: there can never be just one subtype;</text></g><g class="ar"><text x="744" y="329" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">تقول الشرائح: لا يمكن أبدًا أن يكون هناك نوع فرعي واحد فقط؛</text></g>
+<g class="en"><text x="56" y="349" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">another subtype should be created to contain the rest.</text></g><g class="ar"><text x="744" y="349" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">ويجب إنشاء نوع فرعي آخر يحتوي الباقي.</text></g>
+</svg>
+</figure>
+      <p class="en">Defect: a single subtype. Four of the six payments have no box, so the set is not exhaustive. Read outwards-in, it says every payment is a credit card, which the till knows is false.</p>
+      <p class="ar">العيب: نوع فرعي وحيد. أربع من الدفعات الست بلا صندوق، فالمجموعة غير شاملة. وإذا قُرئت من الخارج إلى الداخل قالت إن كل دفعة بطاقة ائتمان، والصندوق يعرف أن ذلك خطأ.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — another subtype to contain the rest" data-title-ar="الإصدار 2 — نوع فرعي آخر يحتوي الباقي">
+      <figure class="diagram" data-diagram="t4-pay-card-other">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 388" direction="ltr" role="img" aria-labelledby="t4-pay-card-other-t">
+<title id="t4-pay-card-other-t">PAYMENT with two subtypes, CREDIT CARD and OTHER: payments 3 and 5 are credit cards, payments 1, 2, 4 and 6 are OTHER / PAYMENT بنوعين فرعيين، CREDIT CARD وOTHER: الدفعتان 3 و5 بطاقتان، والدفعات 1 و2 و4 و6 من OTHER</title>
+<g class="en"><text x="400.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — another subtype to contain the rest</text></g><g class="ar"><text x="400.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 2 — نوع فرعي آخر يحتوي الباقي</text></g>
+<rect x="40" y="50" width="280" height="214" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="180.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAYMENT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Payment ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Payment Date</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Amount</text>
+<rect x="60" y="147" width="240" height="55" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="180.0" y="168" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CREDIT CARD</text>
+<text x="74" y="189" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Card Number</text>
+<rect x="60" y="214" width="240" height="30" rx="10" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<text x="180.0" y="235" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">OTHER</text>
+<g class="en"><text x="420" y="66" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">The six March payments</text></g><g class="ar"><text x="760" y="66" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">دفعات آذار الست</text></g>
+<rect x="420" y="80" width="340" height="26" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<text x="432" y="98" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">1  40  cash</text>
+<text x="748" y="98" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ OTHER</text>
+<rect x="420" y="112" width="340" height="26" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<text x="432" y="130" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">2  125  cheque</text>
+<text x="748" y="130" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ OTHER</text>
+<rect x="420" y="144" width="340" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="432" y="162" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">3  310  card</text>
+<text x="748" y="162" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CREDIT CARD</text>
+<rect x="420" y="176" width="340" height="26" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<text x="432" y="194" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">4  15  cash</text>
+<text x="748" y="194" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ OTHER</text>
+<rect x="420" y="208" width="340" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="432" y="226" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">5  220  card</text>
+<text x="748" y="226" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CREDIT CARD</text>
+<rect x="420" y="240" width="340" height="26" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<text x="432" y="258" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">6  90  cheque</text>
+<text x="748" y="258" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ OTHER</text>
+<rect x="40" y="286" width="720" height="82" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<g class="en"><text x="56" y="309" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Two subtypes. Cash and cheques have nothing special the shop records, so they share OTHER.</text></g><g class="ar"><text x="744" y="309" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">نوعان فرعيان. ليس للنقد والشيكات ما يخصّها ممّا يسجّله المتجر، فيتشاركان OTHER.</text></g>
+<g class="en"><text x="56" y="329" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Every payment is now a CREDIT CARD or an OTHER, and never both.</text></g><g class="ar"><text x="744" y="329" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">صارت كل دفعة إمّا CREDIT CARD أو OTHER، ولا تكون الاثنين أبدًا.</text></g>
+<g class="en"><text x="56" y="349" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">If cheques later need their own attributes, CHECK leaves OTHER and gets its own box.</text></g><g class="ar"><text x="744" y="349" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">وإن احتاجت الشيكات لاحقًا خصائص خاصّة بها، خرج CHECK من OTHER وأخذ صندوقه.</text></g>
+</svg>
+</figure>
+      <p class="en">Fixed: <code>OTHER</code> holds the cash and cheque payments. Two subtypes, exhaustive and mutually exclusive. If cheques later need attributes of their own, <code>CHECK</code> leaves <code>OTHER</code> and becomes Lesson 2's three-subtype model.</p>
+      <p class="ar">أُصلح: يحتوي <code>OTHER</code> دفعات النقد والشيكات. نوعان فرعيان، شاملان ومتنافيان. وإن احتاجت الشيكات لاحقًا خصائص خاصّة بها، خرج <code>CHECK</code> من <code>OTHER</code> وصار النموذج نموذج الدرس 2 بأنواعه الفرعية الثلاثة.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 1 as tables: <code>payments</code> plus <code>card_payments</code> only. The payments outside the one subtype are the rows with no partner, and nothing in the schema says what they are:</p>
+    <p class="ar">الإصدار 1 جداولَ: <code>payments</code> ومعه <code>card_payments</code> وحده. والدفعات الواقعة خارج النوع الفرعي الوحيد هي الصفوف التي لا شريك لها، ولا شيء في المخطّط يقول ما هي:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)", "INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90)", "CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL)", "INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111'), (5,'5500 0000 0000 0004')"], "sql": "SELECT p.payment_id, p.amount\nFROM payments p\nLEFT JOIN card_payments c ON c.payment_id = p.payment_id\nWHERE c.payment_id IS NULL\nORDER BY p.payment_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>payment_id</code></th><th><code>amount</code></th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>40</td></tr>
+            <tr><td>2</td><td>125</td></tr>
+            <tr><td>4</td><td>15</td></tr>
+            <tr><td>6</td><td>90</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Version 2 names these four rows: they are <code>OTHER</code>. A <code>payment_type</code> column limited to <code>'CARD'</code> or <code>'OTHER'</code> says so in the table itself &mdash; section 5 shows that column refusing a bad value.</p>
+    <p class="ar">يسمّي الإصدار 2 هذه الصفوف الأربعة: إنها <code>OTHER</code>. وعمود <code>payment_type</code> مقصور على <code>'CARD'</code> أو <code>'OTHER'</code> يقول ذلك في الجدول نفسه &mdash; ويعرض القسم 5 هذا العمود وهو يرفض قيمة خاطئة.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A model shows <code>STAFF MEMBER</code> with one subtype inside, <code>MANAGER</code>. What is the lecturer's repair?</p>
+    <p class="q ar">يعرض نموذج <code>STAFF MEMBER</code> وفي داخله نوع فرعي واحد هو <code>MANAGER</code>. ما إصلاح المحاضِرة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Delete <code>MANAGER</code> and keep the supertype empty</span><span class="ar">حذف <code>MANAGER</code> وإبقاء النوع الأعلى فارغًا</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Add another subtype, such as <code>OTHER</code>, to contain the rest of the staff</span><span class="ar">إضافة نوع فرعي آخر، مثل <code>OTHER</code>، يحتوي بقية الموظّفين</span></button></li>
+      <li><button class="opt"><span class="en">Nothing: one subtype is allowed if it has attributes</span><span class="ar">لا شيء: النوع الفرعي الوحيد مسموح إن كانت له خصائص</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><em>There can never be just one subtype; another subtype should be created to contain the rest.</em> The staff who are not managers are still staff members, and need a box.</p>
+      <p class="ar"><em>لا يمكن أبدًا أن يكون هناك نوع فرعي واحد فقط؛ ويجب إنشاء نوع فرعي آخر يحتوي الباقي.</em> فالموظّفون الذين ليسوا مديرين ما زالوا موظّفين، ويحتاجون إلى صندوق.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t4l3-h5"><span class="en">5 · The three questions together: SNOW SPORT</span><span class="ar">٥ · الأسئلة الثلاثة معًا: SNOW SPORT</span></h2>
+
+  <div class="problem">
+    <p class="en">A ski resort hands you the lecturer's <code>SNOW SPORT</code> drawing and asks: "Are these subtypes right?" One rule at a time is not enough &mdash; a model can pass two and fail the third, as <code>ONLINE</code> did. You need all three, every time, in order.</p>
+    <p class="ar">يعطيك منتجع تزلّج رسم <code>SNOW SPORT</code> للمحاضِرة ويسأل: «هل هذه الأنواع الفرعية صحيحة؟» قاعدة واحدة في كل مرّة لا تكفي &mdash; فقد يجتاز النموذج قاعدتين ويخفق في الثالثة، كما حدث مع <code>ONLINE</code>. تحتاج إلى الثلاث كلها، في كل مرّة، وبالترتيب.</p>
+  </div>
+
+  <p class="en">The slides give them as a checklist for <em>correctly identifying subtypes</em>. Run them on <code>SKI</code>, <code>SNOWBOARD</code> (التزلّج على الجليد بلوح), <code>CROSS COUNTRY</code> and <code>OTHER</code>, and on any hierarchy you draw.</p>
+  <p class="ar">تقدّمها الشرائح قائمةَ فحص <em>لتحديد الأنواع الفرعية تحديدًا صحيحًا</em>. طبّقها على <code>SKI</code> (التزلّج) و<code>SNOWBOARD</code> (التزلّج على الجليد بلوح) و<code>CROSS COUNTRY</code> و<code>OTHER</code> (أخرى)، وعلى أيّ تسلسل هرمي ترسمه.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="three-questions">three questions</span> are: is this subtype a kind of the supertype; have I covered all possible cases (exhaustive); does each instance fit into one and only one subtype (mutually exclusive).</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="three-questions">الأسئلة الثلاثة</span> (Three questions) هي: هل هذا النوع الفرعي نوعٌ من النوع الأعلى؛ وهل غطّيت كل الحالات الممكنة (الشمول)؛ وهل تقع كل نسخة في نوع فرعي واحد فقط (التنافي).</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t4-snow-sport">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 414" direction="ltr" role="img" aria-labelledby="t4-snow-sport-t">
+<title id="t4-snow-sport-t">The lecturer's SNOW SPORT supertype with SKI, SNOWBOARD, CROSS COUNTRY and OTHER, checked against the three questions / النوع الأعلى SNOW SPORT للمحاضِرة، وفيه SKI وSNOWBOARD وCROSS COUNTRY وOTHER، مفحوصًا بالأسئلة الثلاثة</title>
+<g class="en"><text x="400.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">SNOW SPORT, checked against the three questions</text></g><g class="ar"><text x="400.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">SNOW SPORT، مفحوصًا بالأسئلة الثلاثة</text></g>
+<rect x="40" y="50" width="280" height="254" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="180.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SNOW SPORT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Sport ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="60" y="128" width="240" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="180.0" y="149" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SKI</text>
+<rect x="60" y="170" width="240" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="180.0" y="191" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SNOWBOARD</text>
+<rect x="60" y="212" width="240" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="180.0" y="233" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CROSS COUNTRY</text>
+<rect x="60" y="254" width="240" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="180.0" y="275" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">OTHER</text>
+<rect x="360" y="50" width="400" height="78" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<g class="en"><text x="374" y="76" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">1  Is each subtype a kind of SNOW SPORT?</text></g><g class="ar"><text x="746" y="76" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">١  هل كل نوع فرعي نوعٌ من SNOW SPORT؟</text></g>
+<g class="en"><text x="374" y="102" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Yes: a ski sport is a snow sport, and so on.</text></g><g class="ar"><text x="746" y="102" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">نعم: رياضة التزلّج رياضةٌ ثلجية، وهكذا البقية.</text></g>
+<rect x="360" y="142" width="400" height="78" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<g class="en"><text x="374" y="168" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">2  Have I covered all possible cases? (exhaustive)</text></g><g class="ar"><text x="746" y="168" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">٢  هل غطّيت كل الحالات الممكنة؟ (الشمول)</text></g>
+<g class="en"><text x="374" y="194" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Yes: any sport not named goes to OTHER.</text></g><g class="ar"><text x="746" y="194" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">نعم: أي رياضة غير مسمّاة تذهب إلى OTHER.</text></g>
+<rect x="360" y="234" width="400" height="78" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<g class="en"><text x="374" y="260" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">3  Does each instance fit one and only one? (exclusive)</text></g><g class="ar"><text x="746" y="260" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">٣  هل تقع كل نسخة في نوع واحد فقط؟ (التنافي)</text></g>
+<g class="en"><text x="374" y="286" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Yes: each sport is placed in exactly one box.</text></g><g class="ar"><text x="746" y="286" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">نعم: كل رياضة توضع في صندوق واحد بالضبط.</text></g>
+<rect x="40" y="332" width="720" height="62" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="355" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">All three answers are yes, so the subtypes are correctly identified.</text></g><g class="ar"><text x="744" y="355" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">الأجوبة الثلاثة «نعم»، فالأنواع الفرعية محدّدة تحديدًا صحيحًا.</text></g>
+<g class="en"><text x="56" y="375" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Read outwards-in: every SNOW SPORT is a SKI, a SNOWBOARD, a CROSS COUNTRY or an OTHER.</text></g><g class="ar"><text x="744" y="375" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">واقرأه من الخارج إلى الداخل: كل SNOW SPORT هو SKI أو SNOWBOARD أو CROSS COUNTRY أو OTHER.</text></g>
+</svg>
+<figcaption><span class="en">The lecturer's <code>SNOW SPORT</code> passes all three. Notice that <code>OTHER</code> is what makes question 2 a yes, and that a one-box version could never pass it.</span><span class="ar"><code>SNOW SPORT</code> عند المحاضِرة يجتاز الأسئلة الثلاثة. لاحظ أن <code>OTHER</code> هو ما يجعل جواب السؤال 2 «نعم»، وأن نسخةً بصندوق واحد لا يمكن أن تجتازه أبدًا.</span></figcaption></figure>
+
+  <h3 id="t4l3-s4"><span class="en">What the answers mean for the reading</span><span class="ar">ما تعنيه الأجوبة للقراءة</span></h3>
+
+  <p class="en">Rule one makes the inwards-out reading true: <em>every SKI is a SNOW SPORT</em>. Rules two and three together make the outwards-in reading true, and give it the word "exactly": <em>every SNOW SPORT is exactly one of SKI, SNOWBOARD, CROSS COUNTRY or OTHER</em>.</p>
+  <p class="ar">القاعدة الأولى تجعل القراءة من الداخل إلى الخارج صحيحة: <em>كل SKI هو SNOW SPORT</em>. والقاعدتان الثانية والثالثة معًا تجعلان القراءة من الخارج إلى الداخل صحيحة، وتعطيانها كلمة «بالضبط»: <em>كل SNOW SPORT هو واحدٌ بالضبط من SKI أو SNOWBOARD أو CROSS COUNTRY أو OTHER</em>.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">One table with a type column can enforce rules two and three by itself. <code>NOT NULL</code> means every sport has a type (at least one); a single column holds a single value (at most one); the <code>CHECK</code> list holds the subtypes, <code>OTHER</code> included. Try a sport that is not on the list:</p>
+    <p class="ar">جدول واحد بعمود نوع يستطيع أن يفرض القاعدتين الثانية والثالثة وحده. <code>NOT NULL</code> تعني أن لكل رياضة نوعًا (واحدًا على الأقل)، والعمود الواحد يحمل قيمة واحدة (واحدًا على الأكثر)، وقائمة <code>CHECK</code> تحمل الأنواع الفرعية، ومنها <code>OTHER</code>. جرّب رياضة ليست في القائمة:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE snow_sports (sport_id NUMBER PRIMARY KEY, name VARCHAR(30) NOT NULL, sport_type VARCHAR(13) NOT NULL CHECK (sport_type IN ('SKI','SNOWBOARD','CROSS COUNTRY','OTHER')))", "INSERT INTO snow_sports VALUES (1,'Downhill slalom','SKI'), (2,'Halfpipe','SNOWBOARD'), (3,'Forest trail 10 km','CROSS COUNTRY'), (4,'Sledging','OTHER')"], "sql": "INSERT INTO snow_sports VALUES (5, 'Snowshoe walk', 'SNOWSHOE');"}
+      </script>
+    </div>
+    <div class="output">
+      <pre class="code" data-lang="text"><code>Violation of CHECK constraint</code></pre>
+    </div>
+    <p class="en">The fix is not a new value but the one the model already provides: insert it with <code>'OTHER'</code> and it is accepted. Rule one cannot be checked by a constraint at all; only a person reading the drawing can ask "is it a kind of?".</p>
+    <p class="ar">والإصلاح ليس قيمة جديدة، بل القيمة التي يوفّرها النموذج أصلًا: أدخلها بـ <code>'OTHER'</code> فتُقبل. أمّا القاعدة الأولى فلا يفحصها أيّ قيد؛ فلا يسأل «هل هو نوعٌ من؟» إلا إنسان يقرأ الرسم.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A designer adds <code>COMPETITION</code> inside <code>SNOW SPORT</code>, for sports that are raced. Which question does it fail?</p>
+    <p class="q ar">يضيف مصمّم <code>COMPETITION</code> داخل <code>SNOW SPORT</code>، للرياضات التي تُقام فيها سباقات. في أيّ سؤال يخفق؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Question 1 &mdash; a competition is not a snow sport</span><span class="ar">السؤال 1 &mdash; المسابقة ليست رياضة ثلجية</span></button></li>
+      <li><button class="opt"><span class="en">Question 2 &mdash; the set is no longer exhaustive</span><span class="ar">السؤال 2 &mdash; لم تعد المجموعة شاملة</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Question 3 &mdash; a raced ski sport would be both <code>SKI</code> and <code>COMPETITION</code></span><span class="ar">السؤال 3 &mdash; رياضة تزلّج فيها سباقات تكون <code>SKI</code> و<code>COMPETITION</code> معًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Adding a box cannot make a set less exhaustive. The problem is a second basis, "is it raced?", beside "what kind of sport?". Like <code>ONLINE</code>, it belongs in an attribute.</p>
+      <p class="ar">إضافة صندوق لا يمكن أن تجعل المجموعة أقلّ شمولًا. المشكلة أساس ثانٍ، «هل تُقام فيه سباقات؟»، بجانب «ما نوع الرياضة؟». ومكانه، كـ <code>ONLINE</code>، خاصيةٌ.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Without <code>OTHER</code>, which of the three questions would the <code>SNOW SPORT</code> drawing be at risk of failing?</p>
+    <p class="q ar">من دون <code>OTHER</code>، أيّ الأسئلة الثلاثة يتعرّض رسم <code>SNOW SPORT</code> لخطر الإخفاق فيه؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">Question 2: a sledging run would fit no subtype</span><span class="ar">السؤال 2: التزحلق بالمزلجة لن يقع في أيّ نوع فرعي</span></button></li>
+      <li><button class="opt"><span class="en">Question 3: sledging would fit two subtypes</span><span class="ar">السؤال 3: التزحلق بالمزلجة سيقع في نوعين فرعيين</span></button></li>
+      <li><button class="opt"><span class="en">None; <code>OTHER</code> is decoration</span><span class="ar">لا شيء؛ <code>OTHER</code> للزينة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>OTHER</code> exists for question 2. At the conceptual stage nobody can list every sport in advance, so the slides recommend including it.</p>
+      <p class="ar">وُجد <code>OTHER</code> من أجل السؤال 2. ففي المرحلة المفاهيمية لا يستطيع أحد أن يعدّد كل الرياضات مسبقًا، ولذلك توصي الشرائح بإضافته.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t4l3-h6"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Which rule?</span><span class="ar">تمرين 1 · أيّ قاعدة؟</span></h4>
+    <p class="en">For each hierarchy, say which rule it breaks (one, two, three, or "only one subtype"), or say it passes. (a) <code>PAYMENT</code>: <code>CASH</code>, <code>CHECK</code>. (b) <code>WALL COVERING</code>: <code>PAINT</code>, <code>BRUSH</code>, <code>WALLPAPER</code>, <code>OTHER</code>. (c) <code>EXAM</code>: <code>QUIZ</code>, <code>MIDTERM</code>, <code>FINAL</code>. (d) <code>FOOD ORDER</code>: <code>EAT IN</code>. (e) <code>GROCERY BAG</code>: <code>PAPER</code>, <code>PLASTIC</code>, <code>REUSABLE</code>.</p>
+    <p class="ar">قل عن كل تسلسل هرمي أيّ قاعدة يخرق (الأولى أو الثانية أو الثالثة أو «نوع فرعي وحيد»)، أو قل إنه يجتازها. (a) <code>PAYMENT</code>: <code>CASH</code>، <code>CHECK</code>. (b) <code>WALL COVERING</code>: <code>PAINT</code>، <code>BRUSH</code>، <code>WALLPAPER</code>، <code>OTHER</code>. (c) <code>EXAM</code>: <code>QUIZ</code>، <code>MIDTERM</code>، <code>FINAL</code>. (d) <code>FOOD ORDER</code>: <code>EAT IN</code>. (e) <code>GROCERY BAG</code>: <code>PAPER</code>، <code>PLASTIC</code>، <code>REUSABLE</code>.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) Rule two: card payments fit no subtype. (b) Rule one: a brush is used to apply paint; it is not a wall covering. (c) Passes, as the lecturer's notes read it: <em>every EXAM is either a QUIZ, a MIDTERM or a FINAL</em>.</p>
+      <p class="ar">(a) القاعدة الثانية: دفعات البطاقة لا تقع في أيّ نوع فرعي. (b) القاعدة الأولى: الفرشاة أداة لطلاء الدهان، وليست غطاء جدار. (c) يجتاز، كما تقرؤه ملاحظات المحاضِرة: <em>كل EXAM هو إمّا QUIZ أو MIDTERM أو FINAL</em>.</p>
+      <p class="en">(d) Only one subtype: add <code>TO GO</code> (the slides' other order type) or <code>OTHER</code>. (e) Rule three: a plastic bag can be reusable &mdash; "material" and "reusable?" are two bases.</p>
+      <p class="ar">(d) نوع فرعي وحيد: أضف <code>TO GO</code> (نوع الطلب الآخر في الشرائح) أو <code>OTHER</code>. (e) القاعدة الثالثة: قد يكون الكيس البلاستيكي قابلًا لإعادة الاستعمال &mdash; فـ«المادة» و«هل يُعاد استعماله؟» أساسان مختلفان.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Find the wrong line</span><span class="ar">تمرين 2 · جِد السطر الخاطئ</span></h4>
+    <p class="en">A school draws <code>STUDENT</code> as text below. Which line breaks a rule, which rule, and what is the repair?</p>
+    <p class="ar">ترسم مدرسة <code>STUDENT</code> نصًّا كما يلي. أيّ سطر يخرق قاعدة، وأيّ قاعدة، وما الإصلاح؟</p>
+    <pre class="code" data-lang="text"><code>1  STUDENT        # Student ID  * Name
+2    FULL TIME    * Credit Load
+3    PART TIME    * Employer
+4    SCHOLARSHIP  * Sponsor
+5    OTHER</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Line 4, rule three. A full-time student can also hold a scholarship, so one student would be in <code>FULL TIME</code> and <code>SCHOLARSHIP</code>. Lines 2&ndash;3 split by study load, line 4 by funding. Remove <code>SCHOLARSHIP</code> from the hierarchy; the sponsor becomes an optional attribute, <code>o Sponsor</code>, of <code>STUDENT</code>.</p>
+      <p class="ar">السطر 4، القاعدة الثالثة. فالطالب المتفرّغ قد يحمل منحة أيضًا، فيقع طالب واحد في <code>FULL TIME</code> و<code>SCHOLARSHIP</code>. السطران 2&ndash;3 يقسّمان حسب عبء الدراسة، والسطر 4 حسب التمويل. أخرج <code>SCHOLARSHIP</code> من التسلسل، ويصبح الراعي خاصية اختيارية <code>o Sponsor</code> في <code>STUDENT</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Make it exhaustive</span><span class="ar">تمرين 3 · اجعله شاملًا</span></h4>
+    <p class="en">A café's <code>DRINK</code> has subtypes <code>COFFEE</code> (<code>* Roast</code>) and <code>TEA</code> (<code>* Leaf Type</code>). It also sells fresh juice and bottled water, and records nothing special about them. Redraw the hierarchy as text so it passes all three questions.</p>
+    <p class="ar">لـ <code>DRINK</code> في مقهى نوعان فرعيان: <code>COFFEE</code> (<code>* Roast</code>) و<code>TEA</code> (<code>* Leaf Type</code>). ويبيع أيضًا عصيرًا طازجًا وماءً معبّأً، ولا يسجّل عنهما شيئًا خاصًّا. أعد رسم التسلسل نصًّا بحيث يجتاز الأسئلة الثلاثة.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="text"><code>DRINK     # Drink ID  * Name  * Price
+  COFFEE  * Roast
+  TEA     * Leaf Type
+  OTHER</code></pre>
+      <p class="en">Juice and water have no attributes of their own, so they do not earn boxes; <code>OTHER</code> holds them. Each drink is a kind of drink, every drink has a box, and no drink is in two.</p>
+      <p class="ar">ليس للعصير والماء خصائص خاصّة بهما، فلا يستحقّان صندوقين؛ ويحتويهما <code>OTHER</code>. كل مشروب نوعٌ من المشروبات، ولكل مشروب صندوق، ولا مشروب في صندوقين.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Check exclusivity with SQL</span><span class="ar">تمرين 4 · افحص التنافي بـ SQL</span></h4>
+    <p class="en">The store builds version 2 of <code>WALL COVERING</code> with one table per subtype. Write a query that lists any product code appearing in more than one of <code>paints</code>, <code>wallpapers</code> and <code>fabrics</code>. Then try it in the sandbox: one product has been put in two tables by mistake.</p>
+    <p class="ar">يبني المتجر الإصدار 2 من <code>WALL COVERING</code> بجدول لكل نوع فرعي. اكتب استعلامًا يعرض أيّ رمز منتج يظهر في أكثر من جدول من <code>paints</code> و<code>wallpapers</code> و<code>fabrics</code>. ثم جرّبه في المختبر: فقد وُضع منتج في جدولين خطأً.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "explore", "objects": true, "dataset": {}, "setup": ["CREATE TABLE wall_coverings (code VARCHAR(6) PRIMARY KEY, description VARCHAR(40) NOT NULL, price NUMBER NOT NULL)", "INSERT INTO wall_coverings VALUES ('WC1','Matt white emulsion',18), ('WC2','Striped wallpaper roll',25), ('WC3','Linen fabric panel',60), ('WC4','Ceramic wall tile',3), ('WC5','Oak wood panel',45)", "CREATE TABLE paints (code VARCHAR(6) PRIMARY KEY REFERENCES wall_coverings(code), litres NUMBER NOT NULL)", "INSERT INTO paints VALUES ('WC1',5)", "CREATE TABLE wallpapers (code VARCHAR(6) PRIMARY KEY REFERENCES wall_coverings(code), roll_length NUMBER NOT NULL)", "INSERT INTO wallpapers VALUES ('WC2',10), ('WC3',8)", "CREATE TABLE fabrics (code VARCHAR(6) PRIMARY KEY REFERENCES wall_coverings(code), material VARCHAR(20) NOT NULL)", "INSERT INTO fabrics VALUES ('WC3','linen')"], "sql": "-- which code is in two subtype tables?\n"}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT code, COUNT(*) AS kinds
+FROM (SELECT code FROM paints
+      UNION ALL SELECT code FROM wallpapers
+      UNION ALL SELECT code FROM fabrics) AS k
+GROUP BY code
+HAVING COUNT(*) > 1;</code></pre>
+      <div class="output"><div class="table-wrap"><table>
+        <thead><tr><th><code>code</code></th><th><code>kinds</code></th></tr></thead>
+        <tbody><tr><td>WC3</td><td>2</td></tr></tbody>
+      </table></div></div>
+      <p class="en">The linen panel is in <code>wallpapers</code> and <code>fabrics</code>. The model is exclusive; the data is not. Separate subtype tables cannot prevent this by themselves, which is why a single type column (section 5) is often added.</p>
+      <p class="ar">لوح الكتّان موجود في <code>wallpapers</code> و<code>fabrics</code>. النموذج متنافٍ، أمّا البيانات فلا. والجداول الفرعية المنفصلة لا تمنع ذلك وحدها، ولهذا يُضاف كثيرًا عمود نوع واحد (القسم 5).</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Judge the fourth method</span><span class="ar">تمرين 5 · احكم على الطريقة الرابعة</span></h4>
+    <p class="en">In Lesson 1 the shop added <code>WALLET</code> as a fourth subtype of <code>PAYMENT</code>. Run the three questions on <code>CASH</code>, <code>CHECK</code>, <code>CREDIT CARD</code>, <code>WALLET</code>, then say whether an <code>OTHER</code> subtype is still worth adding, and why.</p>
+    <p class="ar">في الدرس 1 أضاف المتجر <code>WALLET</code> نوعًا فرعيًّا رابعًا لـ <code>PAYMENT</code>. طبّق الأسئلة الثلاثة على <code>CASH</code> و<code>CHECK</code> و<code>CREDIT CARD</code> و<code>WALLET</code>، ثم قل هل ما زال إضافة نوع فرعي <code>OTHER</code> أمرًا يستحقّ، ولماذا.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Question 1: each is a kind of payment. Question 3: all four answer one basis, "how was it paid?", so a payment is in exactly one. Question 2: exhaustive only for the methods the shop takes today. A gift voucher, as in section 2, would have nowhere to go, so at the conceptual stage the slides' advice holds: add <code>OTHER</code>.</p>
+      <p class="ar">السؤال 1: كلٌّ منها نوعٌ من الدفعات. السؤال 3: الأربعة تجيب عن أساس واحد هو «كيف دُفعت؟»، فتقع الدفعة في واحد بالضبط. السؤال 2: شاملة فقط للطرق التي يقبلها المتجر اليوم. أمّا قسيمة الهدية، كما في القسم 2، فلن تجد مكانًا، ولذلك تصحّ نصيحة الشرائح في المرحلة المفاهيمية: أضف <code>OTHER</code>.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">Rule one: every subtype must be a kind of its supertype. "Related to" is a line, not a box inside.</li>
+      <li class="ar">القاعدة الأولى: كل نوع فرعي يجب أن يكون نوعًا من نوعه الأعلى. و«مرتبط بـ» خطٌّ، لا صندوق في الداخل.</li>
+      <li class="en">Rule two: the subtypes must be exhaustive &mdash; every instance of the supertype has a box.</li>
+      <li class="ar">القاعدة الثانية: يجب أن تكون الأنواع الفرعية شاملة &mdash; لكل نسخة من النوع الأعلى صندوق.</li>
+      <li class="en">An <code>OTHER</code> subtype makes a set exhaustive; the slides call it good practice at the conceptual stage.</li>
+      <li class="ar">النوع الفرعي <code>OTHER</code> يجعل المجموعة شاملة؛ وتعدّه الشرائح ممارسة جيّدة في المرحلة المفاهيمية.</li>
+      <li class="en">Rule three: the subtypes must be mutually exclusive &mdash; no instance in two boxes. Split on one basis only.</li>
+      <li class="ar">القاعدة الثالثة: يجب أن تكون الأنواع الفرعية متنافية &mdash; لا نسخة في صندوقين. قسّم على أساس واحد فقط.</li>
+      <li class="en">There is never just one subtype; create another to contain the rest.</li>
+      <li class="ar">لا يكون هناك أبدًا نوع فرعي واحد فقط؛ أنشئ نوعًا آخر يحتوي الباقي.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Nesting an entity because it is related to the supertype (<code>CUSTOMER</code> inside <code>PAYMENT</code>).</li>
+      <li class="ar">وضع كيان داخل النوع الأعلى لأنه مرتبط به (<code>CUSTOMER</code> داخل <code>PAYMENT</code>).</li>
+      <li class="en">Naming only the kinds you can think of today, with no <code>OTHER</code> for the rest.</li>
+      <li class="ar">تسمية الأنواع التي تخطر لك اليوم فقط، دون <code>OTHER</code> للباقي.</li>
+      <li class="en">Mixing two bases in one set of subtypes (method and channel, material and washability).</li>
+      <li class="ar">خلط أساسين في مجموعة واحدة من الأنواع الفرعية (الطريقة والقناة، المادة وقابلية الغسل).</li>
+      <li class="en">Filing an uncovered instance in the nearest box, which falsifies that box's totals.</li>
+      <li class="ar">وضع نسخة غير مشمولة في أقرب صندوق، فتفسد مجاميع ذلك الصندوق.</li>
+      <li class="en">Drawing a supertype with a single subtype inside it.</li>
+      <li class="ar">رسم نوع أعلى وفي داخله نوع فرعي وحيد.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="../tests/t4-test-03.html#t4-test-03">Test 3 &mdash; The Three Rules</a>. Then <a href="../lessons/t4-lesson-04.html#t4-lesson-04">Lesson 4 &mdash; Nesting, and Knowing When to Stop</a> puts subtypes inside subtypes, and asks when a hierarchy is the wrong tool altogether.</p>
+    <p class="ar">اختبر نفسك بـ<a href="../tests/t4-test-03.html#t4-test-03">اختبار 3 &mdash; القواعد الثلاث</a>. ثم يضع <a href="../lessons/t4-lesson-04.html#t4-lesson-04">الدرس 4 &mdash; التداخل، ومتى تتوقّف</a> أنواعًا فرعية داخل أنواع فرعية، ويسأل متى يكون التسلسل الهرمي أداةً خاطئة أصلًا.</p>
+  </div>
 
 </section>
 <nav class="pager"></nav>
@@ -69,6 +870,9 @@
 <script src="../assets/theory/js/anchors.js"></script>
 <script src="../assets/theory/js/chrome.js"></script>
 <script src="../assets/theory/js/code.js"></script>
+<script src="../assets/vendor/alasql/alasql.min.js"></script>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/widget.js"></script>
 <script src="../assets/theory/js/app.js"></script>
 </body>
 </html>

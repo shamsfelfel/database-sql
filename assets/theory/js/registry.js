@@ -611,7 +611,7 @@ window.DBT_REGISTRY = {
       "ar": "هل هو «نوع من» النوع الأعلى؟ وهل الأنواع الفرعية شاملة؟ وهل تقع كل نسخة في واحد منها فقط؟ وتعرّف على النوع الفرعي «أخرى»."
      },
      "href": "lessons/t4-lesson-03.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t4-test-03",
