@@ -1,0 +1,196 @@
+/* ============================================================
+   Element defaults: the page itself, typography, code blocks,
+   tables, and the bilingual show/hide rule. Nothing here knows
+   about a component - it styles the tags the chapter prose is
+   written in.
+   ============================================================ */
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+/* A reader who has asked the operating system for less motion gets
+   none: the jump happens, it just does not animate. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.75;
+  -webkit-text-size-adjust: 100%;
+}
+
+html[lang="ar"] body { font-family: var(--font-ar); line-height: 1.95; }
+
+/* ---------- language visibility ---------- */
+html[lang="en"] .ar { display: none !important; }
+html[lang="ar"] .en { display: none !important; }
+
+/* ---------- layout ---------- */
+/* ---------- layout ---------- */
+main { max-width: var(--maxw); margin: 0 auto; padding: 14px 16px 80px; }
+
+/* One page per file now, so a .page section is simply the page body.
+   The rule is explicit so a stale single-file stylesheet cached by an
+   old service worker can never hide the content. */
+.page { display: block; }
+
+h1 { font-size: 28px; line-height: 1.35; margin: 10px 0 6px; }
+h2 { font-size: 23px; margin: 38px 0 10px; }
+h3 { font-size: 19px; margin: 26px 0 8px; }
+h4 { font-size: 17px; margin: 18px 0 6px; }
+p  { margin: 10px 0; }
+ul, ol { margin: 10px 0; padding-inline-start: 24px; }
+li { margin: 5px 0; }
+strong { color: var(--text); }
+code:not(pre code) {
+  font-family: var(--mono);
+  font-size: .88em;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1px 5px;
+  direction: ltr;
+  display: inline-block;
+}
+
+.lede { color: var(--text-soft); font-size: 17px; }
+
+.kicker {
+  display: inline-block;
+  font-size: 12px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 4px 10px; border-radius: 999px;
+}
+
+/* ---------- code ---------- */
+.code {
+  position: relative;
+  background: var(--code-bg);
+  color: var(--code-text);
+  border-radius: var(--radius);
+  padding: 14px 14px 14px 16px;
+  overflow-x: auto;
+  direction: ltr;
+  text-align: left;
+  margin: 12px 0;
+  border: 1px solid var(--border);
+}
+.code code {
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 1.65;
+  white-space: pre;
+  display: block;
+  tab-size: 4;
+}
+.code .copy {
+  position: absolute; top: 8px; right: 8px;
+  font-size: 11px; padding: 4px 9px; border-radius: 8px;
+  background: rgba(255,255,255,.09); color: #cfd6e3;
+  border: 1px solid rgba(255,255,255,.15);
+  cursor: pointer; opacity: .75;
+}
+.code .copy:hover { opacity: 1; }
+.code.bad  { border-color: var(--bad); }
+.code.good { border-color: var(--good); }
+
+/* python tokens */
+.t-kw  { color: #ff7b9c; }
+.t-str { color: #9ae6a4; }
+.t-com { color: #7c879b; font-style: italic; }
+.t-num { color: #f7c66b; }
+.t-fn  { color: #7fd3ff; }
+.t-self{ color: #c9a0ff; }
+
+.output {
+  background: var(--surface-2);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-family: var(--mono);
+  font-size: 13px;
+  white-space: pre-wrap;
+  direction: ltr;
+  text-align: left;
+  color: var(--text-soft);
+  margin: 10px 0;
+}
+
+/* ---------- table ---------- */
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 15px; }
+th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: start; }
+th { background: var(--surface-2); }
+
+/* Program output: pre-wrap breaks at spaces, so a long unbreakable
+   line (a traceback path, a padded table row) would still push the
+   page sideways. Let the block scroll inside itself instead. */
+.output { overflow-x: auto; overscroll-behavior-x: contain; }
+
+/* An identifier like RefrigeratedTruckCourier is one unbreakable
+   word, and inline code is display:inline-block - sized shrink-to-fit
+   from its min-content width. `anywhere` is the keyword that reduces
+   that width; `break-word` by definition does not. */
+code:not(pre code) { overflow-wrap: anywhere; }
+
+/* A wide comparison table cannot shrink below its min-content width,
+   so on a phone it scrolls inside itself. Left alone on wider
+   screens, where width:100% is still what is wanted. */
+@media (max-width: 760px) {
+  main table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+}
+
+@media (max-width: 420px) {
+  body { font-size: 16px; }
+  h1 { font-size: 24px; }
+  h2 { font-size: 20px; }
+  .code code { font-size: 12.5px; }
+  .topbar .brand span.t { display: none; }
+}
+
+@media print {
+  .topbar, .drawer, .scrim, .pager, .copy { display: none !important; }
+  details.solution { open: open; }
+  .code { background: #fff; color: #000; border: 1px solid #999; }
+  .t-kw, .t-str, .t-com, .t-num, .t-fn, .t-self { color: #000; }
+}
+
+/* ---------- more code tokens (other languages, REPL sessions) ---------- */
+.t-op     { color: #98a6bd; }
+.t-prop   { color: #ffb27a; }
+.t-prompt { color: #5fd3c6; font-weight: 700; user-select: none; -webkit-user-select: none; }
+.t-out    { color: #8f9bb0; }
+
+@media print {
+  .t-op, .t-prop, .t-prompt, .t-out { color: #000; }
+}
+
+/* ---------- in-text links: readable in both themes (the browser's default blue
+   is unreadable on a dark surface). Cards and buttons that happen to be <a>
+   keep their own colours. ---------- */
+.page :is(p, li, td, th, dd, figcaption, summary, h4) a:not(.data-dl):not(.copy),
+.page :is(p, li, td, th, dd, figcaption, summary, h4) a:not(.data-dl):not(.copy):visited {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+.page :is(p, li, td, th, dd, figcaption, summary, h4) a:not(.data-dl):not(.copy):hover {
+  text-decoration-thickness: 2px;
+}

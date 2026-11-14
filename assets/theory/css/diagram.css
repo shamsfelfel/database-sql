@@ -1,0 +1,691 @@
+/* ============================================================
+   Pre-rendered Mermaid diagrams (tools/render_diagrams.mjs).
+
+   A fragment is  <div class="dg" data-diagram="id"><div class="en">SVG</div>
+   <div class="ar">SVG</div></div>. The SVGs carry no colour of their own: every
+   fill, stroke and text colour is var(--dg-*), defined here, so one SVG per
+   language serves both themes. The renderer fails if a colour literal is left
+   in an SVG, and if an SVG uses a --dg-* name that is not defined on :root.
+
+   The block on :root is the contract (light, built from tokens.css so it also
+   follows the dark tokens); :root[data-theme="dark"] only overrides what is not
+   a token. The language switch is base.css's `html[lang] .en/.ar` rule.
+
+   Layout of this file
+     1. the --dg-* palette (hand-written)             light on :root, dark overrides
+     2. .dg container, wide-diagram scrolling, fonts, emphasis classes, print
+     3. a GENERATED block at the very end (do not edit): the Mermaid rules shared by
+        all diagrams of one type, as `.dg svg[data-t="<type>"] ...`, written by
+        `node tools/render_diagrams.mjs` so the fragments carry markup only.
+        `--check` fails when it is stale.
+   ============================================================ */
+
+/* ---------- the palette: light (and token-derived) ---------- */
+:root {
+  /* text and lines */
+  --dg-text:        var(--text);
+  --dg-text-soft:   var(--text-soft);
+  --dg-on-line:     var(--surface);
+  --dg-line:        var(--text-soft);
+  --dg-lifeline:    color-mix(in srgb, var(--text-soft) 65%, var(--surface));
+  --dg-grid:        var(--border);
+
+  /* nodes: muted teal on the page, strokes in the accent */
+  --dg-bg:          var(--surface);
+  --dg-node-fill:   var(--accent-soft);
+  --dg-node-stroke: var(--accent);
+  --dg-alt-fill:    var(--surface-2);
+  --dg-alt-stroke:  color-mix(in srgb, var(--text-soft) 55%, var(--surface));
+  --dg-cluster-fill:   var(--surface-2);
+  --dg-cluster-stroke: color-mix(in srgb, var(--text-soft) 45%, var(--surface-2));
+  --dg-label-bg:    var(--surface);
+
+  /* sequence diagrams */
+  --dg-note-fill:   var(--warn-soft);
+  --dg-note-stroke: color-mix(in srgb, var(--warn) 55%, var(--warn-soft));
+  --dg-note-text:   var(--text);
+  --dg-act-fill:    color-mix(in srgb, var(--accent) 24%, var(--surface));
+  --dg-act-stroke:  var(--accent);
+  --dg-block-fill:  var(--surface-2);
+  --dg-block-stroke: var(--text-soft);
+
+  /* er diagrams */
+  --dg-row-odd:     var(--surface);
+  --dg-row-even:    var(--surface-2);
+
+  /* meaning (also the author-facing dg-good / dg-bad / dg-warn / dg-hl classes) */
+  --dg-good:        var(--good);
+  --dg-bad:         var(--bad);
+  --dg-warn:        var(--warn);
+  --dg-accent:      var(--accent);
+  --dg-good-soft:   var(--good-soft);
+  --dg-bad-soft:    var(--bad-soft);
+  --dg-warn-soft:   var(--warn-soft);
+
+  /* quadrantChart */
+  --dg-q1:          var(--accent-soft);
+  --dg-q2:          var(--warn-soft);
+  --dg-q3:          var(--surface-2);
+  --dg-q4:          color-mix(in srgb, var(--accent-soft) 45%, var(--surface-2));
+  --dg-q-point:     var(--accent);
+  --dg-q-border:    color-mix(in srgb, var(--text-soft) 50%, var(--surface));
+
+  /* pie: mid-tone slices read on both themes, with one dark label colour */
+  --dg-pie-label:   #101318;
+  --dg-pie-stroke:  var(--surface);
+  --dg-pie1:  #5fb3a9;  --dg-pie2:  #8aa5d6;  --dg-pie3:  #e2b455;  --dg-pie4:  #dd9382;
+  --dg-pie5:  #95c479;  --dg-pie6:  #ae97d4;  --dg-pie7:  #72bad6;  --dg-pie8:  #bfa27d;
+  --dg-pie9:  #7fd0c4;  --dg-pie10: #a9bde6;  --dg-pie11: #efcb7e;  --dg-pie12: #eab0a2;
+
+  /* categorical scale (mindmap branches, timeline sections, ...): fill, edge, text */
+  --dg-c0:  #cfe8e4;  --dg-c0-edge:  #3f8f87;
+  --dg-c1:  #d5def0;  --dg-c1-edge:  #5b7bb4;
+  --dg-c2:  #f2e2b8;  --dg-c2-edge:  #b08a2a;
+  --dg-c3:  #f0d3cb;  --dg-c3-edge:  #b0624e;
+  --dg-c4:  #dce9cd;  --dg-c4-edge:  #6b9a4c;
+  --dg-c5:  #e1d8ef;  --dg-c5-edge:  #7f64b0;
+  --dg-c6:  #d3e7ef;  --dg-c6-edge:  #4a8aa6;
+  --dg-c7:  #e9ddcc;  --dg-c7-edge:  #9a7b55;
+  --dg-c8:  #b9ddd7;  --dg-c8-edge:  #2f7a73;
+  --dg-c9:  #c0cfea;  --dg-c9-edge:  #4a69a3;
+  --dg-c10: #ecd89c;  --dg-c10-edge: #9c7620;
+  --dg-c11: #e8c1b6;  --dg-c11-edge: #a2523c;
+  --dg-c0-text: var(--text);  --dg-c1-text: var(--text);  --dg-c2-text: var(--text);
+  --dg-c3-text: var(--text);  --dg-c4-text: var(--text);  --dg-c5-text: var(--text);
+  --dg-c6-text: var(--text);  --dg-c7-text: var(--text);  --dg-c8-text: var(--text);
+  --dg-c9-text: var(--text);  --dg-c10-text: var(--text); --dg-c11-text: var(--text);
+}
+
+/* ---------- the palette: dark overrides (everything that is not a token) ---------- */
+:root[data-theme="dark"] {
+  --dg-lifeline:    color-mix(in srgb, var(--text-soft) 55%, var(--surface));
+  --dg-pie-stroke:  var(--surface);
+
+  --dg-c0:  #1d4a46;  --dg-c0-edge:  #4fd1c5;
+  --dg-c1:  #2a3a5e;  --dg-c1-edge:  #8fb0ee;
+  --dg-c2:  #54431b;  --dg-c2-edge:  #e0bd77;
+  --dg-c3:  #5a2e27;  --dg-c3-edge:  #e9a68f;
+  --dg-c4:  #33502a;  --dg-c4-edge:  #93c9a3;
+  --dg-c5:  #43345f;  --dg-c5-edge:  #bda6ee;
+  --dg-c6:  #1f4556;  --dg-c6-edge:  #7fc4de;
+  --dg-c7:  #4a3f33;  --dg-c7-edge:  #cdb594;
+  --dg-c8:  #23605a;  --dg-c8-edge:  #6fe0d4;
+  --dg-c9:  #354a7a;  --dg-c9-edge:  #a3beef;
+  --dg-c10: #6b5316;  --dg-c10-edge: #efcf84;
+  --dg-c11: #733a2f;  --dg-c11-edge: #f2b7a4;
+}
+
+/* ---------- the container ---------- */
+.dg {
+  display: block;
+  margin: 14px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  color: var(--dg-text);
+  line-height: normal;          /* the page's 1.75 would spread SVG text */
+}
+
+/* The SVG scales down with the column (width:100%) but never past its natural
+   size (max-width, set inline from the viewBox). A wide diagram refuses to shrink
+   below 0.68 of its natural size - 16px labels stay >= 11px - and the container
+   scrolls sideways instead. */
+.dg svg {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  text-rendering: optimizeLegibility;
+}
+.dg svg[data-wide] { min-width: calc(var(--dg-w, 600px) * .68); }
+.dg svg a { cursor: pointer; }
+
+/* The fonts the SVGs were measured with (the renderer strips Mermaid's own font-family,
+   so every label inherits from here). */
+.dg .en svg { font-family: "Segoe UI", system-ui, Arial, sans-serif; }
+.dg .ar svg { font-family: "Segoe UI", "Noto Naskh Arabic", "Amiri", Tahoma, system-ui, sans-serif; }
+
+/* Mermaid centres a mindmap root label only when it uses HTML labels. */
+.dg svg[data-t="mindmap"] .section-root .label text { text-anchor: middle; }
+
+/* The autonumber digits are 12px in Mermaid; the circle has room for a little more. */
+.dg svg text.sequenceNumber { font-size: 13px; }
+
+/* Semantic emphasis for a node, with no colour in the source:
+       class NodeId dg-good           (also dg-bad, dg-warn, dg-hl, dg-mute)
+   Mermaid's own rules and the shapes' inline styles outrank a plain selector, so
+   these use !important. */
+.dg svg .node.dg-hl   :is(rect, polygon, circle, ellipse, path:not([fill="none"])) { fill: var(--dg-c0)        !important; stroke: var(--dg-c0-edge)   !important; stroke-width: 2px !important; }
+.dg svg .node.dg-good :is(rect, polygon, circle, ellipse, path:not([fill="none"])) { fill: var(--dg-good-soft) !important; stroke: var(--dg-good)      !important; stroke-width: 2px !important; }
+.dg svg .node.dg-bad  :is(rect, polygon, circle, ellipse, path:not([fill="none"])) { fill: var(--dg-bad-soft)  !important; stroke: var(--dg-bad)       !important; stroke-width: 2px !important; }
+.dg svg .node.dg-warn :is(rect, polygon, circle, ellipse, path:not([fill="none"])) { fill: var(--dg-warn-soft) !important; stroke: var(--dg-warn)      !important; stroke-width: 2px !important; }
+.dg svg .node.dg-mute :is(rect, polygon, circle, ellipse, path:not([fill="none"])) { fill: var(--dg-alt-fill)  !important; stroke: var(--dg-alt-stroke) !important; stroke-dasharray: 5 4 !important; }
+
+/* nothing animates (the renderer drops Mermaid's keyframes); belt and braces */
+@media (prefers-reduced-motion: reduce) {
+  .dg *, .dg *::before, .dg *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- print: the current language only, on white, in the light palette ---------- */
+@media print {
+  .dg {
+    overflow: visible;
+    break-inside: avoid;
+    background: #fff;
+    --dg-text: #16181d;        --dg-text-soft: #555c68;      --dg-on-line: #fff;
+    --dg-line: #555c68;        --dg-lifeline: #9aa1ad;       --dg-grid: #d9dee6;
+    --dg-bg: #fff;             --dg-node-fill: #e3f1ef;      --dg-node-stroke: #0d6f6a;
+    --dg-alt-fill: #eef1f5;    --dg-alt-stroke: #9aa1ad;
+    --dg-cluster-fill: #eef1f5; --dg-cluster-stroke: #b5bbc6; --dg-label-bg: #fff;
+    --dg-note-fill: #fdf3d8;   --dg-note-stroke: #c9a85a;    --dg-note-text: #16181d;
+    --dg-act-fill: #c3dedb;    --dg-act-stroke: #0d6f6a;
+    --dg-block-fill: #eef1f5;  --dg-block-stroke: #555c68;
+    --dg-row-odd: #fff;        --dg-row-even: #eef1f5;
+    --dg-good: #137a3d;        --dg-bad: #b3261e;            --dg-warn: #8a5a00;  --dg-accent: #0d6f6a;
+    --dg-good-soft: #e2f5e9;   --dg-bad-soft: #fdeceb;       --dg-warn-soft: #fdf3d8;
+    --dg-q1: #e3f1ef;          --dg-q2: #fdf3d8;             --dg-q3: #eef1f5;    --dg-q4: #e8eff0;
+    --dg-q-point: #0d6f6a;     --dg-q-border: #9aa1ad;
+    --dg-pie-stroke: #fff;
+    --dg-c0:  #cfe8e4;  --dg-c0-edge:  #3f8f87;
+    --dg-c1:  #d5def0;  --dg-c1-edge:  #5b7bb4;
+    --dg-c2:  #f2e2b8;  --dg-c2-edge:  #b08a2a;
+    --dg-c3:  #f0d3cb;  --dg-c3-edge:  #b0624e;
+    --dg-c4:  #dce9cd;  --dg-c4-edge:  #6b9a4c;
+    --dg-c5:  #e1d8ef;  --dg-c5-edge:  #7f64b0;
+    --dg-c6:  #d3e7ef;  --dg-c6-edge:  #4a8aa6;
+    --dg-c7:  #e9ddcc;  --dg-c7-edge:  #9a7b55;
+    --dg-c8:  #b9ddd7;  --dg-c8-edge:  #2f7a73;
+    --dg-c9:  #c0cfea;  --dg-c9-edge:  #4a69a3;
+    --dg-c10: #ecd89c;  --dg-c10-edge: #9c7620;
+    --dg-c11: #e8c1b6;  --dg-c11-edge: #a2523c;
+    --dg-c0-text: #16181d; --dg-c1-text: #16181d; --dg-c2-text: #16181d; --dg-c3-text: #16181d;
+    --dg-c4-text: #16181d; --dg-c5-text: #16181d; --dg-c6-text: #16181d; --dg-c7-text: #16181d;
+    --dg-c8-text: #16181d; --dg-c9-text: #16181d; --dg-c10-text: #16181d; --dg-c11-text: #16181d;
+  }
+  .dg svg { min-width: 0; max-width: 100%; }
+}
+
+/* >>> GENERATED by tools/render_diagrams.mjs [dg-css:2177dcb2a7c5b3b8] - the shared Mermaid rules per diagram type; do not edit between the markers >>> */
+/* flowchart-v2 */
+.dg svg[data-t="flowchart-v2"]{font-size:16px;fill:var(--dg-text);}
+.dg svg[data-t="flowchart-v2"] .error-icon{fill:var(--dg-bad);}
+.dg svg[data-t="flowchart-v2"] .error-text{fill:var(--dg-text);stroke:var(--dg-text);}
+.dg svg[data-t="flowchart-v2"] .edge-thickness-normal{stroke-width:1px;}
+.dg svg[data-t="flowchart-v2"] .edge-thickness-thick{stroke-width:3.5px;}
+.dg svg[data-t="flowchart-v2"] .edge-pattern-solid{stroke-dasharray:0;}
+.dg svg[data-t="flowchart-v2"] .edge-thickness-invisible{stroke-width:0;fill:none;}
+.dg svg[data-t="flowchart-v2"] .edge-pattern-dashed{stroke-dasharray:3;}
+.dg svg[data-t="flowchart-v2"] .edge-pattern-dotted{stroke-dasharray:2;}
+.dg svg[data-t="flowchart-v2"] .marker{fill:var(--dg-line);stroke:var(--dg-line);}
+.dg svg[data-t="flowchart-v2"] .marker.cross{stroke:var(--dg-line);}
+.dg svg[data-t="flowchart-v2"] svg{font-size:16px;}
+.dg svg[data-t="flowchart-v2"] p{margin:0;}
+.dg svg[data-t="flowchart-v2"] .label{color:var(--dg-text);}
+.dg svg[data-t="flowchart-v2"] .cluster-label text{fill:var(--dg-text);}
+.dg svg[data-t="flowchart-v2"] .cluster-label span{color:var(--dg-text);}
+.dg svg[data-t="flowchart-v2"] .cluster-label span p{background-color:transparent;}
+.dg svg[data-t="flowchart-v2"] .label text,.dg svg[data-t="flowchart-v2"] span{fill:var(--dg-text);color:var(--dg-text);}
+.dg svg[data-t="flowchart-v2"] .node rect,.dg svg[data-t="flowchart-v2"] .node circle,.dg svg[data-t="flowchart-v2"] .node ellipse,.dg svg[data-t="flowchart-v2"] .node polygon,.dg svg[data-t="flowchart-v2"] .node path{fill:var(--dg-node-fill);stroke:var(--dg-node-stroke);stroke-width:1px;}
+.dg svg[data-t="flowchart-v2"] .rough-node .label text,.dg svg[data-t="flowchart-v2"] .node .label text,.dg svg[data-t="flowchart-v2"] .image-shape .label,.dg svg[data-t="flowchart-v2"] .icon-shape .label{text-anchor:middle;}
+.dg svg[data-t="flowchart-v2"] .rough-node .label,.dg svg[data-t="flowchart-v2"] .node .label,.dg svg[data-t="flowchart-v2"] .image-shape .label,.dg svg[data-t="flowchart-v2"] .icon-shape .label{text-align:center;}
+.dg svg[data-t="flowchart-v2"] .node.clickable{cursor:pointer;}
+.dg svg[data-t="flowchart-v2"] .root .anchor path{fill:var(--dg-line)!important;stroke-width:0;stroke:var(--dg-line);}
+.dg svg[data-t="flowchart-v2"] .arrowheadPath{fill:var(--dg-line);}
+.dg svg[data-t="flowchart-v2"] .edgePaths .path{stroke:var(--dg-line);stroke-width:1px;}
+.dg svg[data-t="flowchart-v2"] .flowchart-link{stroke:var(--dg-line);fill:none;}
+.dg svg[data-t="flowchart-v2"] .edgeLabel{background-color:var(--dg-label-bg);text-align:center;}
+.dg svg[data-t="flowchart-v2"] .edgeLabel p{background-color:var(--dg-label-bg);}
+.dg svg[data-t="flowchart-v2"] .edgeLabel rect{opacity:0.5;background-color:var(--dg-label-bg);fill:var(--dg-label-bg);}
+.dg svg[data-t="flowchart-v2"] .labelBkg{background-color:color-mix(in srgb, var(--dg-label-bg) 50%, transparent);}
+.dg svg[data-t="flowchart-v2"] .cluster rect{fill:var(--dg-cluster-fill);stroke:var(--dg-cluster-stroke);stroke-width:1px;}
+.dg svg[data-t="flowchart-v2"] .cluster text{fill:var(--dg-text);}
+.dg svg[data-t="flowchart-v2"] .cluster span{color:var(--dg-text);}
+.dg svg[data-t="flowchart-v2"] .node .collapsed-indicator{fill:var(--dg-cluster-stroke);stroke:none;opacity:0.6;}
+.dg svg[data-t="flowchart-v2"] .node .collapsed-separator{stroke:var(--dg-cluster-stroke);stroke-width:0.75px;}
+.dg svg[data-t="flowchart-v2"] .flowchartTitleText{text-anchor:middle;font-size:18px;fill:var(--dg-text);}
+.dg svg[data-t="flowchart-v2"] rect.text{fill:none;stroke-width:0;}
+.dg svg[data-t="flowchart-v2"] .icon-shape,.dg svg[data-t="flowchart-v2"] .image-shape{background-color:var(--dg-label-bg);text-align:center;}
+.dg svg[data-t="flowchart-v2"] .icon-shape p,.dg svg[data-t="flowchart-v2"] .image-shape p{background-color:var(--dg-label-bg);padding:2px;}
+.dg svg[data-t="flowchart-v2"] .icon-shape .label rect,.dg svg[data-t="flowchart-v2"] .image-shape .label rect{opacity:0.5;background-color:var(--dg-label-bg);fill:var(--dg-label-bg);}
+.dg svg[data-t="flowchart-v2"] .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}
+.dg svg[data-t="flowchart-v2"] .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}
+.dg svg[data-t="flowchart-v2"] .node .neo-node{stroke:var(--dg-node-stroke);}
+/* sequence */
+.dg svg[data-t="sequence"]{font-size:16px;fill:var(--dg-text);}
+.dg svg[data-t="sequence"] .error-icon{fill:var(--dg-bad);}
+.dg svg[data-t="sequence"] .error-text{fill:var(--dg-text);stroke:var(--dg-text);}
+.dg svg[data-t="sequence"] .edge-thickness-normal{stroke-width:1px;}
+.dg svg[data-t="sequence"] .edge-thickness-thick{stroke-width:3.5px;}
+.dg svg[data-t="sequence"] .edge-pattern-solid{stroke-dasharray:0;}
+.dg svg[data-t="sequence"] .edge-thickness-invisible{stroke-width:0;fill:none;}
+.dg svg[data-t="sequence"] .edge-pattern-dashed{stroke-dasharray:3;}
+.dg svg[data-t="sequence"] .edge-pattern-dotted{stroke-dasharray:2;}
+.dg svg[data-t="sequence"] .marker{fill:var(--dg-line);stroke:var(--dg-line);}
+.dg svg[data-t="sequence"] .marker.cross{stroke:var(--dg-line);}
+.dg svg[data-t="sequence"] svg{font-size:16px;}
+.dg svg[data-t="sequence"] p{margin:0;}
+.dg svg[data-t="sequence"] .actor{stroke:var(--dg-node-stroke);fill:var(--dg-node-fill);stroke-width:1;}
+.dg svg[data-t="sequence"] text.actor&gt;
+tspan{fill:var(--dg-text);stroke:none;}
+.dg svg[data-t="sequence"] .actor-line{stroke:var(--dg-lifeline);}
+.dg svg[data-t="sequence"] .innerArc{stroke-width:1.5;stroke-dasharray:none;}
+.dg svg[data-t="sequence"] .messageLine0{stroke-width:1.5;stroke-dasharray:none;stroke:var(--dg-line);}
+.dg svg[data-t="sequence"] .messageLine1{stroke-width:1.5;stroke-dasharray:2,2;stroke:var(--dg-line);}
+.dg svg[data-t="sequence"] [id$="-arrowhead"] path{fill:var(--dg-line);stroke:var(--dg-line);}
+.dg svg[data-t="sequence"] .sequenceNumber{fill:var(--dg-on-line);}
+.dg svg[data-t="sequence"] [id$="-sequencenumber"]{fill:var(--dg-line);}
+.dg svg[data-t="sequence"] [id$="-crosshead"] path{fill:var(--dg-line);stroke:var(--dg-line);}
+.dg svg[data-t="sequence"] .messageText{fill:var(--dg-text);stroke:none;}
+.dg svg[data-t="sequence"] .labelBox{stroke:var(--dg-block-stroke);fill:var(--dg-block-fill);filter:none;}
+.dg svg[data-t="sequence"] .labelText,.dg svg[data-t="sequence"] .labelText&gt;
+tspan{fill:var(--dg-text);stroke:none;}
+.dg svg[data-t="sequence"] .loopText,.dg svg[data-t="sequence"] .loopText&gt;
+tspan{fill:var(--dg-text);stroke:none;}
+.dg svg[data-t="sequence"] .sectionTitle,.dg svg[data-t="sequence"] .sectionTitle&gt;
+tspan{fill:var(--dg-text);stroke:none;}
+.dg svg[data-t="sequence"] .loopLine{stroke-width:2px;stroke-dasharray:2,2;stroke:var(--dg-block-stroke);fill:var(--dg-block-stroke);}
+.dg svg[data-t="sequence"] .note{stroke:var(--dg-note-stroke);fill:var(--dg-note-fill);}
+.dg svg[data-t="sequence"] .noteText,.dg svg[data-t="sequence"] .noteText&gt;
+tspan{fill:var(--dg-note-text);stroke:none;font-weight:normal;}
+.dg svg[data-t="sequence"] .activation0{fill:var(--dg-act-fill);stroke:var(--dg-act-stroke);}
+.dg svg[data-t="sequence"] .activation1{fill:var(--dg-act-fill);stroke:var(--dg-act-stroke);}
+.dg svg[data-t="sequence"] .activation2{fill:var(--dg-act-fill);stroke:var(--dg-act-stroke);}
+.dg svg[data-t="sequence"] .actor-man circle,.dg svg[data-t="sequence"] line{fill:var(--dg-node-fill);stroke-width:2px;}
+.dg svg[data-t="sequence"] g rect.rect{filter:none;stroke:var(--dg-node-stroke);}
+.dg svg[data-t="sequence"] .node .neo-node{stroke:var(--dg-node-stroke);}
+/* classDiagram */
+.dg svg[data-t="classDiagram"]{font-size:16px;fill:var(--dg-text);}
+.dg svg[data-t="classDiagram"] .error-icon{fill:var(--dg-bad);}
+.dg svg[data-t="classDiagram"] .error-text{fill:var(--dg-text);stroke:var(--dg-text);}
+.dg svg[data-t="classDiagram"] .edge-thickness-normal{stroke-width:1px;}
+.dg svg[data-t="classDiagram"] .edge-thickness-thick{stroke-width:3.5px;}
+.dg svg[data-t="classDiagram"] .edge-pattern-solid{stroke-dasharray:0;}
+.dg svg[data-t="classDiagram"] .edge-thickness-invisible{stroke-width:0;fill:none;}
+.dg svg[data-t="classDiagram"] .edge-pattern-dashed{stroke-dasharray:3;}
+.dg svg[data-t="classDiagram"] .edge-pattern-dotted{stroke-dasharray:2;}
+.dg svg[data-t="classDiagram"] .marker{fill:var(--dg-line);stroke:var(--dg-line);}
+.dg svg[data-t="classDiagram"] .marker.cross{stroke:var(--dg-line);}
+.dg svg[data-t="classDiagram"] svg{font-size:16px;}
+.dg svg[data-t="classDiagram"] p{margin:0;}
+.dg svg[data-t="classDiagram"] g.classGroup text{fill:var(--dg-node-stroke);stroke:none;font-size:10px;}
+.dg svg[data-t="classDiagram"] g.classGroup text .title{font-weight:bolder;}
+.dg svg[data-t="classDiagram"] .cluster-label text{fill:var(--dg-text);}
+.dg svg[data-t="classDiagram"] .cluster-label span{color:var(--dg-text);}
+.dg svg[data-t="classDiagram"] .cluster-label span p{background-color:transparent;}
+.dg svg[data-t="classDiagram"] .cluster rect{fill:var(--dg-cluster-fill);stroke:var(--dg-cluster-stroke);stroke-width:1px;}
+.dg svg[data-t="classDiagram"] .cluster text{fill:var(--dg-text);}
+.dg svg[data-t="classDiagram"] .cluster span{color:var(--dg-text);}
+.dg svg[data-t="classDiagram"] .nodeLabel,.dg svg[data-t="classDiagram"] .edgeLabel{color:var(--dg-text);}
+.dg svg[data-t="classDiagram"] .noteLabel .nodeLabel,.dg svg[data-t="classDiagram"] .noteLabel .edgeLabel{color:var(--dg-note-text);}
+.dg svg[data-t="classDiagram"] .edgeLabel .label rect{fill:var(--dg-node-fill);}
+.dg svg[data-t="classDiagram"] .label text{fill:var(--dg-text);}
+.dg svg[data-t="classDiagram"] .labelBkg{background:var(--dg-node-fill);}
+.dg svg[data-t="classDiagram"] .edgeLabel .label span{background:var(--dg-node-fill);}
+.dg svg[data-t="classDiagram"] .classTitle{font-weight:bolder;}
+.dg svg[data-t="classDiagram"] .node rect,.dg svg[data-t="classDiagram"] .node circle,.dg svg[data-t="classDiagram"] .node ellipse,.dg svg[data-t="classDiagram"] .node polygon,.dg svg[data-t="classDiagram"] .node path{fill:var(--dg-node-fill);stroke:var(--dg-node-stroke);stroke-width:1;}
+.dg svg[data-t="classDiagram"] .divider{stroke:var(--dg-node-stroke);stroke-width:1;}
+.dg svg[data-t="classDiagram"] g.clickable{cursor:pointer;}
+.dg svg[data-t="classDiagram"] g.classGroup rect{fill:var(--dg-node-fill);stroke:var(--dg-node-stroke);}
+.dg svg[data-t="classDiagram"] g.classGroup line{stroke:var(--dg-node-stroke);stroke-width:1;}
+.dg svg[data-t="classDiagram"] .classLabel .box{stroke:none;stroke-width:0;fill:var(--dg-node-fill);opacity:0.5;}
+.dg svg[data-t="classDiagram"] .classLabel .label{fill:var(--dg-node-stroke);font-size:10px;}
+.dg svg[data-t="classDiagram"] .relation{stroke:var(--dg-line);stroke-width:1;fill:none;}
+.dg svg[data-t="classDiagram"] .dashed-line{stroke-dasharray:3;}
+.dg svg[data-t="classDiagram"] .dotted-line{stroke-dasharray:1 2;}
+.dg svg[data-t="classDiagram"] [id$="-compositionStart"],.dg svg[data-t="classDiagram"] .composition{fill:var(--dg-line)!important;stroke:var(--dg-line)!important;stroke-width:1;}
+.dg svg[data-t="classDiagram"] [id$="-compositionEnd"],.dg svg[data-t="classDiagram"] .composition{fill:var(--dg-line)!important;stroke:var(--dg-line)!important;stroke-width:1;}
+.dg svg[data-t="classDiagram"] [id$="-dependencyStart"],.dg svg[data-t="classDiagram"] .dependency{fill:var(--dg-line)!important;stroke:var(--dg-line)!important;stroke-width:1;}
+.dg svg[data-t="classDiagram"] [id$="-dependencyEnd"],.dg svg[data-t="classDiagram"] .dependency{fill:var(--dg-line)!important;stroke:var(--dg-line)!important;stroke-width:1;}
+.dg svg[data-t="classDiagram"] [id$="-extensionStart"],.dg svg[data-t="classDiagram"] .extension{fill:transparent!important;stroke:var(--dg-line)!important;stroke-width:1;}
+.dg svg[data-t="classDiagram"] [id$="-extensionEnd"],.dg svg[data-t="classDiagram"] .extension{fill:transparent!important;stroke:var(--dg-line)!important;stroke-width:1;}
+.dg svg[data-t="classDiagram"] [id$="-aggregationStart"],.dg svg[data-t="classDiagram"] .aggregation{fill:transparent!important;stroke:var(--dg-line)!important;stroke-width:1;}
+.dg svg[data-t="classDiagram"] [id$="-aggregationEnd"],.dg svg[data-t="classDiagram"] .aggregation{fill:transparent!important;stroke:var(--dg-line)!important;stroke-width:1;}
+.dg svg[data-t="classDiagram"] [id$="-lollipopStart"],.dg svg[data-t="classDiagram"] .lollipop{fill:var(--dg-node-fill)!important;stroke:var(--dg-line)!important;stroke-width:1;}
+.dg svg[data-t="classDiagram"] [id$="-lollipopEnd"],.dg svg[data-t="classDiagram"] .lollipop{fill:var(--dg-node-fill)!important;stroke:var(--dg-line)!important;stroke-width:1;}
+.dg svg[data-t="classDiagram"] .edgeTerminals{font-size:14px;line-height:initial;}
+.dg svg[data-t="classDiagram"] .classTitleText{text-anchor:middle;font-size:18px;fill:var(--dg-text);}
+.dg svg[data-t="classDiagram"] .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}
+.dg svg[data-t="classDiagram"] .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}
+.dg svg[data-t="classDiagram"] .node .neo-node{stroke:var(--dg-node-stroke);}
+/* er */
+.dg svg[data-t="er"]{font-size:16px;fill:var(--dg-text);}
+.dg svg[data-t="er"] .error-icon{fill:var(--dg-bad);}
+.dg svg[data-t="er"] .error-text{fill:var(--dg-text);stroke:var(--dg-text);}
+.dg svg[data-t="er"] .edge-thickness-normal{stroke-width:1px;}
+.dg svg[data-t="er"] .edge-thickness-thick{stroke-width:3.5px;}
+.dg svg[data-t="er"] .edge-pattern-solid{stroke-dasharray:0;}
+.dg svg[data-t="er"] .edge-thickness-invisible{stroke-width:0;fill:none;}
+.dg svg[data-t="er"] .edge-pattern-dashed{stroke-dasharray:3;}
+.dg svg[data-t="er"] .edge-pattern-dotted{stroke-dasharray:2;}
+.dg svg[data-t="er"] .marker{fill:var(--dg-line);stroke:var(--dg-line);}
+.dg svg[data-t="er"] .marker.cross{stroke:var(--dg-line);}
+.dg svg[data-t="er"] svg{font-size:16px;}
+.dg svg[data-t="er"] p{margin:0;}
+.dg svg[data-t="er"] .entityBox{fill:var(--dg-node-fill);stroke:var(--dg-node-stroke);}
+.dg svg[data-t="er"] .relationshipLabelBox{fill:var(--dg-cluster-fill);opacity:0.7;background-color:var(--dg-cluster-fill);}
+.dg svg[data-t="er"] .relationshipLabelBox rect{opacity:0.5;}
+.dg svg[data-t="er"] .labelBkg{background-color:color-mix(in srgb, var(--dg-cluster-fill) 50%, transparent);}
+.dg svg[data-t="er"] .edgeLabel{background-color:var(--dg-label-bg);}
+.dg svg[data-t="er"] .edgeLabel .label rect{fill:var(--dg-label-bg);}
+.dg svg[data-t="er"] .edgeLabel .label text{fill:var(--dg-text);}
+.dg svg[data-t="er"] .edgeLabel .label{fill:var(--dg-node-stroke);font-size:16px;}
+.dg svg[data-t="er"] .label{color:var(--dg-text);}
+.dg svg[data-t="er"] .edge-pattern-dashed{stroke-dasharray:8,8;}
+.dg svg[data-t="er"] .node rect,.dg svg[data-t="er"] .node circle,.dg svg[data-t="er"] .node ellipse,.dg svg[data-t="er"] .node polygon{fill:var(--dg-node-fill);stroke:var(--dg-node-stroke);stroke-width:1px;}
+.dg svg[data-t="er"] .relationshipLine{stroke:var(--dg-line);stroke-width:1px;fill:none;}
+.dg svg[data-t="er"] .marker{fill:none!important;stroke:var(--dg-line)!important;stroke-width:1;}
+.dg svg[data-t="er"] [data-look=neo].labelBkg{background-color:color-mix(in srgb, var(--dg-cluster-fill) 50%, transparent);}
+.dg svg[data-t="er"] .cluster rect{fill:var(--dg-cluster-fill);stroke:var(--dg-cluster-stroke);stroke-width:1px;}
+.dg svg[data-t="er"] .cluster text{fill:var(--dg-text);}
+.dg svg[data-t="er"] .cluster-label text{fill:var(--dg-text);}
+.dg svg[data-t="er"] .node .neo-node{stroke:var(--dg-node-stroke);}
+/* stateDiagram */
+.dg svg[data-t="stateDiagram"]{font-size:16px;fill:var(--dg-text);}
+.dg svg[data-t="stateDiagram"] .error-icon{fill:var(--dg-bad);}
+.dg svg[data-t="stateDiagram"] .error-text{fill:var(--dg-text);stroke:var(--dg-text);}
+.dg svg[data-t="stateDiagram"] .edge-thickness-normal{stroke-width:1px;}
+.dg svg[data-t="stateDiagram"] .edge-thickness-thick{stroke-width:3.5px;}
+.dg svg[data-t="stateDiagram"] .edge-pattern-solid{stroke-dasharray:0;}
+.dg svg[data-t="stateDiagram"] .edge-thickness-invisible{stroke-width:0;fill:none;}
+.dg svg[data-t="stateDiagram"] .edge-pattern-dashed{stroke-dasharray:3;}
+.dg svg[data-t="stateDiagram"] .edge-pattern-dotted{stroke-dasharray:2;}
+.dg svg[data-t="stateDiagram"] .marker{fill:var(--dg-line);stroke:var(--dg-line);}
+.dg svg[data-t="stateDiagram"] .marker.cross{stroke:var(--dg-line);}
+.dg svg[data-t="stateDiagram"] svg{font-size:16px;}
+.dg svg[data-t="stateDiagram"] p{margin:0;}
+.dg svg[data-t="stateDiagram"] defs [id$="-barbEnd"]{fill:var(--dg-line);stroke:var(--dg-line);}
+.dg svg[data-t="stateDiagram"] g.stateGroup text{fill:var(--dg-node-stroke);stroke:none;font-size:10px;}
+.dg svg[data-t="stateDiagram"] g.stateGroup text{fill:var(--dg-text);stroke:none;font-size:10px;}
+.dg svg[data-t="stateDiagram"] g.stateGroup .state-title{font-weight:bolder;fill:var(--dg-text);}
+.dg svg[data-t="stateDiagram"] g.stateGroup rect{fill:var(--dg-node-fill);stroke:var(--dg-node-stroke);}
+.dg svg[data-t="stateDiagram"] g.stateGroup line{stroke:var(--dg-line);stroke-width:1;}
+.dg svg[data-t="stateDiagram"] .transition{stroke:var(--dg-line);stroke-width:1;fill:none;}
+.dg svg[data-t="stateDiagram"] .stateGroup .composit{fill:var(--dg-bg);border-bottom:1px;}
+.dg svg[data-t="stateDiagram"] .stateGroup .alt-composit{fill:var(--dg-alt-fill);border-bottom:1px;}
+.dg svg[data-t="stateDiagram"] .state-note{stroke:var(--dg-note-stroke);fill:var(--dg-note-fill);}
+.dg svg[data-t="stateDiagram"] .state-note text{fill:var(--dg-note-text);stroke:none;font-size:10px;}
+.dg svg[data-t="stateDiagram"] .stateLabel .box{stroke:none;stroke-width:0;fill:var(--dg-node-fill);opacity:0.5;}
+.dg svg[data-t="stateDiagram"] .edgeLabel .label rect{fill:var(--dg-label-bg);opacity:0.5;}
+.dg svg[data-t="stateDiagram"] .edgeLabel{background-color:var(--dg-label-bg);text-align:center;}
+.dg svg[data-t="stateDiagram"] .edgeLabel p{background-color:var(--dg-label-bg);}
+.dg svg[data-t="stateDiagram"] .edgeLabel rect{opacity:0.5;background-color:var(--dg-label-bg);fill:var(--dg-label-bg);}
+.dg svg[data-t="stateDiagram"] .edgeLabel .label text{fill:var(--dg-text);}
+.dg svg[data-t="stateDiagram"] .label div .edgeLabel{color:var(--dg-text);}
+.dg svg[data-t="stateDiagram"] .stateLabel text{fill:var(--dg-text);font-size:10px;font-weight:bold;}
+.dg svg[data-t="stateDiagram"] .node circle.state-start{fill:var(--dg-line);stroke:var(--dg-line);}
+.dg svg[data-t="stateDiagram"] .node .fork-join{fill:var(--dg-line);stroke:var(--dg-line);}
+.dg svg[data-t="stateDiagram"] .node circle.state-end{fill:var(--dg-line);stroke:var(--dg-bg);stroke-width:1.5;}
+.dg svg[data-t="stateDiagram"] .end-state-inner{fill:var(--dg-cluster-fill);stroke-width:1.5;}
+.dg svg[data-t="stateDiagram"] .node rect{fill:var(--dg-node-fill);stroke:var(--dg-node-stroke);stroke-width:1px;}
+.dg svg[data-t="stateDiagram"] .node polygon{fill:var(--dg-node-fill);stroke:var(--dg-node-stroke);stroke-width:1px;}
+.dg svg[data-t="stateDiagram"] [id$="-barbEnd"]{fill:var(--dg-line);}
+.dg svg[data-t="stateDiagram"] .statediagram-cluster rect{fill:var(--dg-alt-fill);stroke:var(--dg-node-stroke);stroke-width:1px;}
+.dg svg[data-t="stateDiagram"] .cluster-label,.dg svg[data-t="stateDiagram"] .nodeLabel{color:var(--dg-text);}
+.dg svg[data-t="stateDiagram"] .statediagram-cluster rect.outer{rx:5px;ry:5px;}
+.dg svg[data-t="stateDiagram"] .statediagram-state .divider{stroke:var(--dg-node-stroke);}
+.dg svg[data-t="stateDiagram"] .statediagram-state .title-state{rx:5px;ry:5px;}
+.dg svg[data-t="stateDiagram"] .statediagram-cluster.statediagram-cluster .inner{fill:var(--dg-cluster-fill);}
+.dg svg[data-t="stateDiagram"] .statediagram-cluster.statediagram-cluster-alt .inner{fill:var(--dg-cluster-fill);}
+.dg svg[data-t="stateDiagram"] .statediagram-cluster .inner{rx:0;ry:0;}
+.dg svg[data-t="stateDiagram"] .statediagram-state rect.basic{rx:5px;ry:5px;}
+.dg svg[data-t="stateDiagram"] .statediagram-state rect.divider{stroke-dasharray:10,10;fill:var(--dg-cluster-fill);}
+.dg svg[data-t="stateDiagram"] .note-edge{stroke-dasharray:5;}
+.dg svg[data-t="stateDiagram"] .statediagram-note rect{fill:var(--dg-note-fill);stroke:var(--dg-note-stroke);stroke-width:1px;rx:0;ry:0;}
+.dg svg[data-t="stateDiagram"] .statediagram-note rect{fill:var(--dg-note-fill);stroke:var(--dg-note-stroke);stroke-width:1px;rx:0;ry:0;}
+.dg svg[data-t="stateDiagram"] .statediagram-note text{fill:var(--dg-note-text);}
+.dg svg[data-t="stateDiagram"] .statediagram-note .nodeLabel{color:var(--dg-note-text);}
+.dg svg[data-t="stateDiagram"] .statediagram .edgeLabel{color:var(--dg-text);}
+.dg svg[data-t="stateDiagram"] [id$="-dependencyStart"],.dg svg[data-t="stateDiagram"] [id$="-dependencyEnd"]{fill:var(--dg-line);stroke:var(--dg-line);stroke-width:1;}
+.dg svg[data-t="stateDiagram"] .statediagramTitleText{text-anchor:middle;font-size:18px;fill:var(--dg-text);}
+.dg svg[data-t="stateDiagram"] .node .neo-node{stroke:var(--dg-node-stroke);}
+/* mindmap */
+.dg svg[data-t="mindmap"]{font-size:16px;fill:var(--dg-text);}
+.dg svg[data-t="mindmap"] .error-icon{fill:var(--dg-bad);}
+.dg svg[data-t="mindmap"] .error-text{fill:var(--dg-text);stroke:var(--dg-text);}
+.dg svg[data-t="mindmap"] .edge-thickness-normal{stroke-width:1px;}
+.dg svg[data-t="mindmap"] .edge-thickness-thick{stroke-width:3.5px;}
+.dg svg[data-t="mindmap"] .edge-pattern-solid{stroke-dasharray:0;}
+.dg svg[data-t="mindmap"] .edge-thickness-invisible{stroke-width:0;fill:none;}
+.dg svg[data-t="mindmap"] .edge-pattern-dashed{stroke-dasharray:3;}
+.dg svg[data-t="mindmap"] .edge-pattern-dotted{stroke-dasharray:2;}
+.dg svg[data-t="mindmap"] .marker{fill:var(--dg-line);stroke:var(--dg-line);}
+.dg svg[data-t="mindmap"] .marker.cross{stroke:var(--dg-line);}
+.dg svg[data-t="mindmap"] svg{font-size:16px;}
+.dg svg[data-t="mindmap"] p{margin:0;}
+.dg svg[data-t="mindmap"] .edge{stroke-width:3;}
+.dg svg[data-t="mindmap"] .section--1 rect,.dg svg[data-t="mindmap"] .section--1 path,.dg svg[data-t="mindmap"] .section--1 circle,.dg svg[data-t="mindmap"] .section--1 polygon,.dg svg[data-t="mindmap"] .section--1 path{fill:var(--dg-c0);}
+.dg svg[data-t="mindmap"] .section--1 text{fill:var(--dg-c0-text);}
+.dg svg[data-t="mindmap"] .section--1 span{color:var(--dg-c0-text);}
+.dg svg[data-t="mindmap"] .node-icon--1{font-size:40px;color:var(--dg-c0-text);}
+.dg svg[data-t="mindmap"] .section-edge--1{stroke:var(--dg-c0);}
+.dg svg[data-t="mindmap"] .edge-depth--1{stroke-width:17;}
+.dg svg[data-t="mindmap"] .section--1 line{stroke:var(--dg-c0-text);stroke-width:3;}
+.dg svg[data-t="mindmap"] .section-0 rect,.dg svg[data-t="mindmap"] .section-0 path,.dg svg[data-t="mindmap"] .section-0 circle,.dg svg[data-t="mindmap"] .section-0 polygon,.dg svg[data-t="mindmap"] .section-0 path{fill:var(--dg-c1);}
+.dg svg[data-t="mindmap"] .section-0 text{fill:var(--dg-c1-text);}
+.dg svg[data-t="mindmap"] .section-0 span{color:var(--dg-c1-text);}
+.dg svg[data-t="mindmap"] .node-icon-0{font-size:40px;color:var(--dg-c1-text);}
+.dg svg[data-t="mindmap"] .section-edge-0{stroke:var(--dg-c1);}
+.dg svg[data-t="mindmap"] .edge-depth-0{stroke-width:14;}
+.dg svg[data-t="mindmap"] .section-0 line{stroke:var(--dg-c1-text);stroke-width:3;}
+.dg svg[data-t="mindmap"] .section-1 rect,.dg svg[data-t="mindmap"] .section-1 path,.dg svg[data-t="mindmap"] .section-1 circle,.dg svg[data-t="mindmap"] .section-1 polygon,.dg svg[data-t="mindmap"] .section-1 path{fill:var(--dg-c2);}
+.dg svg[data-t="mindmap"] .section-1 text{fill:var(--dg-c2-text);}
+.dg svg[data-t="mindmap"] .section-1 span{color:var(--dg-c2-text);}
+.dg svg[data-t="mindmap"] .node-icon-1{font-size:40px;color:var(--dg-c2-text);}
+.dg svg[data-t="mindmap"] .section-edge-1{stroke:var(--dg-c2);}
+.dg svg[data-t="mindmap"] .edge-depth-1{stroke-width:11;}
+.dg svg[data-t="mindmap"] .section-1 line{stroke:var(--dg-c2-text);stroke-width:3;}
+.dg svg[data-t="mindmap"] .section-2 rect,.dg svg[data-t="mindmap"] .section-2 path,.dg svg[data-t="mindmap"] .section-2 circle,.dg svg[data-t="mindmap"] .section-2 polygon,.dg svg[data-t="mindmap"] .section-2 path{fill:var(--dg-c3);}
+.dg svg[data-t="mindmap"] .section-2 text{fill:var(--dg-c3-text);}
+.dg svg[data-t="mindmap"] .section-2 span{color:var(--dg-c3-text);}
+.dg svg[data-t="mindmap"] .node-icon-2{font-size:40px;color:var(--dg-c3-text);}
+.dg svg[data-t="mindmap"] .section-edge-2{stroke:var(--dg-c3);}
+.dg svg[data-t="mindmap"] .edge-depth-2{stroke-width:8;}
+.dg svg[data-t="mindmap"] .section-2 line{stroke:var(--dg-c3-text);stroke-width:3;}
+.dg svg[data-t="mindmap"] .section-3 rect,.dg svg[data-t="mindmap"] .section-3 path,.dg svg[data-t="mindmap"] .section-3 circle,.dg svg[data-t="mindmap"] .section-3 polygon,.dg svg[data-t="mindmap"] .section-3 path{fill:var(--dg-c4);}
+.dg svg[data-t="mindmap"] .section-3 text{fill:var(--dg-c4-text);}
+.dg svg[data-t="mindmap"] .section-3 span{color:var(--dg-c4-text);}
+.dg svg[data-t="mindmap"] .node-icon-3{font-size:40px;color:var(--dg-c4-text);}
+.dg svg[data-t="mindmap"] .section-edge-3{stroke:var(--dg-c4);}
+.dg svg[data-t="mindmap"] .edge-depth-3{stroke-width:5;}
+.dg svg[data-t="mindmap"] .section-3 line{stroke:var(--dg-c4-text);stroke-width:3;}
+.dg svg[data-t="mindmap"] .section-4 rect,.dg svg[data-t="mindmap"] .section-4 path,.dg svg[data-t="mindmap"] .section-4 circle,.dg svg[data-t="mindmap"] .section-4 polygon,.dg svg[data-t="mindmap"] .section-4 path{fill:var(--dg-c5);}
+.dg svg[data-t="mindmap"] .section-4 text{fill:var(--dg-c5-text);}
+.dg svg[data-t="mindmap"] .section-4 span{color:var(--dg-c5-text);}
+.dg svg[data-t="mindmap"] .node-icon-4{font-size:40px;color:var(--dg-c5-text);}
+.dg svg[data-t="mindmap"] .section-edge-4{stroke:var(--dg-c5);}
+.dg svg[data-t="mindmap"] .edge-depth-4{stroke-width:2;}
+.dg svg[data-t="mindmap"] .section-4 line{stroke:var(--dg-c5-text);stroke-width:3;}
+.dg svg[data-t="mindmap"] .section-5 rect,.dg svg[data-t="mindmap"] .section-5 path,.dg svg[data-t="mindmap"] .section-5 circle,.dg svg[data-t="mindmap"] .section-5 polygon,.dg svg[data-t="mindmap"] .section-5 path{fill:var(--dg-c6);}
+.dg svg[data-t="mindmap"] .section-5 text{fill:var(--dg-c6-text);}
+.dg svg[data-t="mindmap"] .section-5 span{color:var(--dg-c6-text);}
+.dg svg[data-t="mindmap"] .node-icon-5{font-size:40px;color:var(--dg-c6-text);}
+.dg svg[data-t="mindmap"] .section-edge-5{stroke:var(--dg-c6);}
+.dg svg[data-t="mindmap"] .edge-depth-5{stroke-width:-1;}
+.dg svg[data-t="mindmap"] .section-5 line{stroke:var(--dg-c6-text);stroke-width:3;}
+.dg svg[data-t="mindmap"] .section-6 rect,.dg svg[data-t="mindmap"] .section-6 path,.dg svg[data-t="mindmap"] .section-6 circle,.dg svg[data-t="mindmap"] .section-6 polygon,.dg svg[data-t="mindmap"] .section-6 path{fill:var(--dg-c7);}
+.dg svg[data-t="mindmap"] .section-6 text{fill:var(--dg-c7-text);}
+.dg svg[data-t="mindmap"] .section-6 span{color:var(--dg-c7-text);}
+.dg svg[data-t="mindmap"] .node-icon-6{font-size:40px;color:var(--dg-c7-text);}
+.dg svg[data-t="mindmap"] .section-edge-6{stroke:var(--dg-c7);}
+.dg svg[data-t="mindmap"] .edge-depth-6{stroke-width:-4;}
+.dg svg[data-t="mindmap"] .section-6 line{stroke:var(--dg-c7-text);stroke-width:3;}
+.dg svg[data-t="mindmap"] .section-7 rect,.dg svg[data-t="mindmap"] .section-7 path,.dg svg[data-t="mindmap"] .section-7 circle,.dg svg[data-t="mindmap"] .section-7 polygon,.dg svg[data-t="mindmap"] .section-7 path{fill:var(--dg-c8);}
+.dg svg[data-t="mindmap"] .section-7 text{fill:var(--dg-c8-text);}
+.dg svg[data-t="mindmap"] .section-7 span{color:var(--dg-c8-text);}
+.dg svg[data-t="mindmap"] .node-icon-7{font-size:40px;color:var(--dg-c8-text);}
+.dg svg[data-t="mindmap"] .section-edge-7{stroke:var(--dg-c8);}
+.dg svg[data-t="mindmap"] .edge-depth-7{stroke-width:-7;}
+.dg svg[data-t="mindmap"] .section-7 line{stroke:var(--dg-c8-text);stroke-width:3;}
+.dg svg[data-t="mindmap"] .section-8 rect,.dg svg[data-t="mindmap"] .section-8 path,.dg svg[data-t="mindmap"] .section-8 circle,.dg svg[data-t="mindmap"] .section-8 polygon,.dg svg[data-t="mindmap"] .section-8 path{fill:var(--dg-c9);}
+.dg svg[data-t="mindmap"] .section-8 text{fill:var(--dg-c9-text);}
+.dg svg[data-t="mindmap"] .section-8 span{color:var(--dg-c9-text);}
+.dg svg[data-t="mindmap"] .node-icon-8{font-size:40px;color:var(--dg-c9-text);}
+.dg svg[data-t="mindmap"] .section-edge-8{stroke:var(--dg-c9);}
+.dg svg[data-t="mindmap"] .edge-depth-8{stroke-width:-10;}
+.dg svg[data-t="mindmap"] .section-8 line{stroke:var(--dg-c9-text);stroke-width:3;}
+.dg svg[data-t="mindmap"] .section-9 rect,.dg svg[data-t="mindmap"] .section-9 path,.dg svg[data-t="mindmap"] .section-9 circle,.dg svg[data-t="mindmap"] .section-9 polygon,.dg svg[data-t="mindmap"] .section-9 path{fill:var(--dg-c10);}
+.dg svg[data-t="mindmap"] .section-9 text{fill:var(--dg-c10-text);}
+.dg svg[data-t="mindmap"] .section-9 span{color:var(--dg-c10-text);}
+.dg svg[data-t="mindmap"] .node-icon-9{font-size:40px;color:var(--dg-c10-text);}
+.dg svg[data-t="mindmap"] .section-edge-9{stroke:var(--dg-c10);}
+.dg svg[data-t="mindmap"] .edge-depth-9{stroke-width:-13;}
+.dg svg[data-t="mindmap"] .section-9 line{stroke:var(--dg-c10-text);stroke-width:3;}
+.dg svg[data-t="mindmap"] .section-10 rect,.dg svg[data-t="mindmap"] .section-10 path,.dg svg[data-t="mindmap"] .section-10 circle,.dg svg[data-t="mindmap"] .section-10 polygon,.dg svg[data-t="mindmap"] .section-10 path{fill:var(--dg-c11);}
+.dg svg[data-t="mindmap"] .section-10 text{fill:var(--dg-c11-text);}
+.dg svg[data-t="mindmap"] .section-10 span{color:var(--dg-c11-text);}
+.dg svg[data-t="mindmap"] .node-icon-10{font-size:40px;color:var(--dg-c11-text);}
+.dg svg[data-t="mindmap"] .section-edge-10{stroke:var(--dg-c11);}
+.dg svg[data-t="mindmap"] .edge-depth-10{stroke-width:-16;}
+.dg svg[data-t="mindmap"] .section-10 line{stroke:var(--dg-c11-text);stroke-width:3;}
+.dg svg[data-t="mindmap"] .section-root rect,.dg svg[data-t="mindmap"] .section-root path,.dg svg[data-t="mindmap"] .section-root circle,.dg svg[data-t="mindmap"] .section-root polygon{fill:var(--dg-c0);}
+.dg svg[data-t="mindmap"] .section-root text{fill:var(--dg-c0-text);}
+.dg svg[data-t="mindmap"] .section-root span{color:var(--dg-c0-text);}
+.dg svg[data-t="mindmap"] .icon-container{height:100%;display:flex;justify-content:center;align-items:center;}
+.dg svg[data-t="mindmap"] .edge{fill:none;}
+.dg svg[data-t="mindmap"] .mindmap-node-label{dy:1em;alignment-baseline:middle;text-anchor:middle;dominant-baseline:middle;text-align:center;}
+.dg svg[data-t="mindmap"] .node .neo-node{stroke:var(--dg-node-stroke);}
+/* timeline */
+.dg svg[data-t="timeline"]{font-size:16px;fill:var(--dg-text);}
+.dg svg[data-t="timeline"] .error-icon{fill:var(--dg-bad);}
+.dg svg[data-t="timeline"] .error-text{fill:var(--dg-text);stroke:var(--dg-text);}
+.dg svg[data-t="timeline"] .edge-thickness-normal{stroke-width:1px;}
+.dg svg[data-t="timeline"] .edge-thickness-thick{stroke-width:3.5px;}
+.dg svg[data-t="timeline"] .edge-pattern-solid{stroke-dasharray:0;}
+.dg svg[data-t="timeline"] .edge-thickness-invisible{stroke-width:0;fill:none;}
+.dg svg[data-t="timeline"] .edge-pattern-dashed{stroke-dasharray:3;}
+.dg svg[data-t="timeline"] .edge-pattern-dotted{stroke-dasharray:2;}
+.dg svg[data-t="timeline"] .marker{fill:var(--dg-line);stroke:var(--dg-line);}
+.dg svg[data-t="timeline"] .marker.cross{stroke:var(--dg-line);}
+.dg svg[data-t="timeline"] svg{font-size:16px;}
+.dg svg[data-t="timeline"] p{margin:0;}
+.dg svg[data-t="timeline"] .edge{stroke-width:3;}
+.dg svg[data-t="timeline"] .section--1 rect,.dg svg[data-t="timeline"] .section--1 path,.dg svg[data-t="timeline"] .section--1 circle,.dg svg[data-t="timeline"] .section--1 path{fill:var(--dg-c0);}
+.dg svg[data-t="timeline"] .section--1 text{fill:var(--dg-c0-text);}
+.dg svg[data-t="timeline"] .node-icon--1{font-size:40px;color:var(--dg-c0-text);}
+.dg svg[data-t="timeline"] .section-edge--1{stroke:var(--dg-c0);}
+.dg svg[data-t="timeline"] .edge-depth--1{stroke-width:17;}
+.dg svg[data-t="timeline"] .section--1 line{stroke:var(--dg-c0-text);stroke-width:3;}
+.dg svg[data-t="timeline"] .lineWrapper line{stroke:var(--dg-c0-text);}
+.dg svg[data-t="timeline"] .section-0 rect,.dg svg[data-t="timeline"] .section-0 path,.dg svg[data-t="timeline"] .section-0 circle,.dg svg[data-t="timeline"] .section-0 path{fill:var(--dg-c1);}
+.dg svg[data-t="timeline"] .section-0 text{fill:var(--dg-c1-text);}
+.dg svg[data-t="timeline"] .node-icon-0{font-size:40px;color:var(--dg-c1-text);}
+.dg svg[data-t="timeline"] .section-edge-0{stroke:var(--dg-c1);}
+.dg svg[data-t="timeline"] .edge-depth-0{stroke-width:14;}
+.dg svg[data-t="timeline"] .section-0 line{stroke:var(--dg-c1-text);stroke-width:3;}
+.dg svg[data-t="timeline"] .lineWrapper line{stroke:var(--dg-c1-text);}
+.dg svg[data-t="timeline"] .section-1 rect,.dg svg[data-t="timeline"] .section-1 path,.dg svg[data-t="timeline"] .section-1 circle,.dg svg[data-t="timeline"] .section-1 path{fill:var(--dg-c2);}
+.dg svg[data-t="timeline"] .section-1 text{fill:var(--dg-c2-text);}
+.dg svg[data-t="timeline"] .node-icon-1{font-size:40px;color:var(--dg-c2-text);}
+.dg svg[data-t="timeline"] .section-edge-1{stroke:var(--dg-c2);}
+.dg svg[data-t="timeline"] .edge-depth-1{stroke-width:11;}
+.dg svg[data-t="timeline"] .section-1 line{stroke:var(--dg-c2-text);stroke-width:3;}
+.dg svg[data-t="timeline"] .lineWrapper line{stroke:var(--dg-c2-text);}
+.dg svg[data-t="timeline"] .section-2 rect,.dg svg[data-t="timeline"] .section-2 path,.dg svg[data-t="timeline"] .section-2 circle,.dg svg[data-t="timeline"] .section-2 path{fill:var(--dg-c3);}
+.dg svg[data-t="timeline"] .section-2 text{fill:var(--dg-c3-text);}
+.dg svg[data-t="timeline"] .node-icon-2{font-size:40px;color:var(--dg-c3-text);}
+.dg svg[data-t="timeline"] .section-edge-2{stroke:var(--dg-c3);}
+.dg svg[data-t="timeline"] .edge-depth-2{stroke-width:8;}
+.dg svg[data-t="timeline"] .section-2 line{stroke:var(--dg-c3-text);stroke-width:3;}
+.dg svg[data-t="timeline"] .lineWrapper line{stroke:var(--dg-c3-text);}
+.dg svg[data-t="timeline"] .section-3 rect,.dg svg[data-t="timeline"] .section-3 path,.dg svg[data-t="timeline"] .section-3 circle,.dg svg[data-t="timeline"] .section-3 path{fill:var(--dg-c4);}
+.dg svg[data-t="timeline"] .section-3 text{fill:var(--dg-c4-text);}
+.dg svg[data-t="timeline"] .node-icon-3{font-size:40px;color:var(--dg-c4-text);}
+.dg svg[data-t="timeline"] .section-edge-3{stroke:var(--dg-c4);}
+.dg svg[data-t="timeline"] .edge-depth-3{stroke-width:5;}
+.dg svg[data-t="timeline"] .section-3 line{stroke:var(--dg-c4-text);stroke-width:3;}
+.dg svg[data-t="timeline"] .lineWrapper line{stroke:var(--dg-c4-text);}
+.dg svg[data-t="timeline"] .section-4 rect,.dg svg[data-t="timeline"] .section-4 path,.dg svg[data-t="timeline"] .section-4 circle,.dg svg[data-t="timeline"] .section-4 path{fill:var(--dg-c5);}
+.dg svg[data-t="timeline"] .section-4 text{fill:var(--dg-c5-text);}
+.dg svg[data-t="timeline"] .node-icon-4{font-size:40px;color:var(--dg-c5-text);}
+.dg svg[data-t="timeline"] .section-edge-4{stroke:var(--dg-c5);}
+.dg svg[data-t="timeline"] .edge-depth-4{stroke-width:2;}
+.dg svg[data-t="timeline"] .section-4 line{stroke:var(--dg-c5-text);stroke-width:3;}
+.dg svg[data-t="timeline"] .lineWrapper line{stroke:var(--dg-c5-text);}
+.dg svg[data-t="timeline"] .section-5 rect,.dg svg[data-t="timeline"] .section-5 path,.dg svg[data-t="timeline"] .section-5 circle,.dg svg[data-t="timeline"] .section-5 path{fill:var(--dg-c6);}
+.dg svg[data-t="timeline"] .section-5 text{fill:var(--dg-c6-text);}
+.dg svg[data-t="timeline"] .node-icon-5{font-size:40px;color:var(--dg-c6-text);}
+.dg svg[data-t="timeline"] .section-edge-5{stroke:var(--dg-c6);}
+.dg svg[data-t="timeline"] .edge-depth-5{stroke-width:-1;}
+.dg svg[data-t="timeline"] .section-5 line{stroke:var(--dg-c6-text);stroke-width:3;}
+.dg svg[data-t="timeline"] .lineWrapper line{stroke:var(--dg-c6-text);}
+.dg svg[data-t="timeline"] .section-6 rect,.dg svg[data-t="timeline"] .section-6 path,.dg svg[data-t="timeline"] .section-6 circle,.dg svg[data-t="timeline"] .section-6 path{fill:var(--dg-c7);}
+.dg svg[data-t="timeline"] .section-6 text{fill:var(--dg-c7-text);}
+.dg svg[data-t="timeline"] .node-icon-6{font-size:40px;color:var(--dg-c7-text);}
+.dg svg[data-t="timeline"] .section-edge-6{stroke:var(--dg-c7);}
+.dg svg[data-t="timeline"] .edge-depth-6{stroke-width:-4;}
+.dg svg[data-t="timeline"] .section-6 line{stroke:var(--dg-c7-text);stroke-width:3;}
+.dg svg[data-t="timeline"] .lineWrapper line{stroke:var(--dg-c7-text);}
+.dg svg[data-t="timeline"] .section-7 rect,.dg svg[data-t="timeline"] .section-7 path,.dg svg[data-t="timeline"] .section-7 circle,.dg svg[data-t="timeline"] .section-7 path{fill:var(--dg-c8);}
+.dg svg[data-t="timeline"] .section-7 text{fill:var(--dg-c8-text);}
+.dg svg[data-t="timeline"] .node-icon-7{font-size:40px;color:var(--dg-c8-text);}
+.dg svg[data-t="timeline"] .section-edge-7{stroke:var(--dg-c8);}
+.dg svg[data-t="timeline"] .edge-depth-7{stroke-width:-7;}
+.dg svg[data-t="timeline"] .section-7 line{stroke:var(--dg-c8-text);stroke-width:3;}
+.dg svg[data-t="timeline"] .lineWrapper line{stroke:var(--dg-c8-text);}
+.dg svg[data-t="timeline"] .section-8 rect,.dg svg[data-t="timeline"] .section-8 path,.dg svg[data-t="timeline"] .section-8 circle,.dg svg[data-t="timeline"] .section-8 path{fill:var(--dg-c9);}
+.dg svg[data-t="timeline"] .section-8 text{fill:var(--dg-c9-text);}
+.dg svg[data-t="timeline"] .node-icon-8{font-size:40px;color:var(--dg-c9-text);}
+.dg svg[data-t="timeline"] .section-edge-8{stroke:var(--dg-c9);}
+.dg svg[data-t="timeline"] .edge-depth-8{stroke-width:-10;}
+.dg svg[data-t="timeline"] .section-8 line{stroke:var(--dg-c9-text);stroke-width:3;}
+.dg svg[data-t="timeline"] .lineWrapper line{stroke:var(--dg-c9-text);}
+.dg svg[data-t="timeline"] .section-9 rect,.dg svg[data-t="timeline"] .section-9 path,.dg svg[data-t="timeline"] .section-9 circle,.dg svg[data-t="timeline"] .section-9 path{fill:var(--dg-c10);}
+.dg svg[data-t="timeline"] .section-9 text{fill:var(--dg-c10-text);}
+.dg svg[data-t="timeline"] .node-icon-9{font-size:40px;color:var(--dg-c10-text);}
+.dg svg[data-t="timeline"] .section-edge-9{stroke:var(--dg-c10);}
+.dg svg[data-t="timeline"] .edge-depth-9{stroke-width:-13;}
+.dg svg[data-t="timeline"] .section-9 line{stroke:var(--dg-c10-text);stroke-width:3;}
+.dg svg[data-t="timeline"] .lineWrapper line{stroke:var(--dg-c10-text);}
+.dg svg[data-t="timeline"] .section-10 rect,.dg svg[data-t="timeline"] .section-10 path,.dg svg[data-t="timeline"] .section-10 circle,.dg svg[data-t="timeline"] .section-10 path{fill:var(--dg-c11);}
+.dg svg[data-t="timeline"] .section-10 text{fill:var(--dg-c11-text);}
+.dg svg[data-t="timeline"] .node-icon-10{font-size:40px;color:var(--dg-c11-text);}
+.dg svg[data-t="timeline"] .section-edge-10{stroke:var(--dg-c11);}
+.dg svg[data-t="timeline"] .edge-depth-10{stroke-width:-16;}
+.dg svg[data-t="timeline"] .section-10 line{stroke:var(--dg-c11-text);stroke-width:3;}
+.dg svg[data-t="timeline"] .lineWrapper line{stroke:var(--dg-c11-text);}
+.dg svg[data-t="timeline"] .section-root rect,.dg svg[data-t="timeline"] .section-root path,.dg svg[data-t="timeline"] .section-root circle{fill:var(--dg-c0);}
+.dg svg[data-t="timeline"] .section-root text{fill:var(--dg-c0-text);}
+.dg svg[data-t="timeline"] .icon-container{height:100%;display:flex;justify-content:center;align-items:center;}
+.dg svg[data-t="timeline"] .edge{fill:none;}
+.dg svg[data-t="timeline"] .eventWrapper{filter:brightness(120%);}
+.dg svg[data-t="timeline"] .node .neo-node{stroke:var(--dg-node-stroke);}
+/* quadrantChart */
+.dg svg[data-t="quadrantChart"]{font-size:16px;fill:var(--dg-text);}
+.dg svg[data-t="quadrantChart"] .error-icon{fill:var(--dg-bad);}
+.dg svg[data-t="quadrantChart"] .error-text{fill:var(--dg-text);stroke:var(--dg-text);}
+.dg svg[data-t="quadrantChart"] .edge-thickness-normal{stroke-width:1px;}
+.dg svg[data-t="quadrantChart"] .edge-thickness-thick{stroke-width:3.5px;}
+.dg svg[data-t="quadrantChart"] .edge-pattern-solid{stroke-dasharray:0;}
+.dg svg[data-t="quadrantChart"] .edge-thickness-invisible{stroke-width:0;fill:none;}
+.dg svg[data-t="quadrantChart"] .edge-pattern-dashed{stroke-dasharray:3;}
+.dg svg[data-t="quadrantChart"] .edge-pattern-dotted{stroke-dasharray:2;}
+.dg svg[data-t="quadrantChart"] .marker{fill:var(--dg-line);stroke:var(--dg-line);}
+.dg svg[data-t="quadrantChart"] .marker.cross{stroke:var(--dg-line);}
+.dg svg[data-t="quadrantChart"] svg{font-size:16px;}
+.dg svg[data-t="quadrantChart"] p{margin:0;}
+.dg svg[data-t="quadrantChart"] .node .neo-node{stroke:var(--dg-node-stroke);}
+/* pie */
+.dg svg[data-t="pie"]{font-size:16px;fill:var(--dg-text);}
+.dg svg[data-t="pie"] .error-icon{fill:var(--dg-bad);}
+.dg svg[data-t="pie"] .error-text{fill:var(--dg-text);stroke:var(--dg-text);}
+.dg svg[data-t="pie"] .edge-thickness-normal{stroke-width:1px;}
+.dg svg[data-t="pie"] .edge-thickness-thick{stroke-width:3.5px;}
+.dg svg[data-t="pie"] .edge-pattern-solid{stroke-dasharray:0;}
+.dg svg[data-t="pie"] .edge-thickness-invisible{stroke-width:0;fill:none;}
+.dg svg[data-t="pie"] .edge-pattern-dashed{stroke-dasharray:3;}
+.dg svg[data-t="pie"] .edge-pattern-dotted{stroke-dasharray:2;}
+.dg svg[data-t="pie"] .marker{fill:var(--dg-line);stroke:var(--dg-line);}
+.dg svg[data-t="pie"] .marker.cross{stroke:var(--dg-line);}
+.dg svg[data-t="pie"] svg{font-size:16px;}
+.dg svg[data-t="pie"] p{margin:0;}
+.dg svg[data-t="pie"] .pieCircle{stroke:var(--dg-pie-stroke);stroke-width:2px;opacity:1;}
+.dg svg[data-t="pie"] .pieCircle.highlighted{scale:1.05;opacity:1;}
+.dg svg[data-t="pie"] .pieCircle.highlightedOnHover:hover{transition-duration:250ms;scale:1.05;opacity:1;}
+.dg svg[data-t="pie"] .pieOuterCircle{stroke:var(--dg-pie-stroke);stroke-width:2px;fill:none;}
+.dg svg[data-t="pie"] .pieTitleText{text-anchor:middle;font-size:25px;fill:var(--dg-text);}
+.dg svg[data-t="pie"] .slice{fill:var(--dg-pie-label);font-size:17px;}
+.dg svg[data-t="pie"] .legend text{fill:var(--dg-text);font-size:17px;}
+.dg svg[data-t="pie"] .node .neo-node{stroke:var(--dg-node-stroke);}
+/* <<< GENERATED <<< */

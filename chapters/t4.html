@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Database design taught the way it is drawn — entities, attributes, unique identifiers, relationships, subtypes and many-to-many resolution — in English and Arabic, with a test after every lesson and an SQL lab that turns each chapter&#x27;s diagram into real tables.">
+<title data-en="Supertypes and Subtypes · Chapter 4 · SQL Lab" data-ar="الأنواع العليا والأنواع الفرعية · الفصل 4 · مختبر SQL">Supertypes and Subtypes · Chapter 4 · SQL Lab</title>
+<script>
+/* Theme, language and the path back to the site root, all before the
+   first paint: a dark reader must not see a white flash, and an Arabic
+   reader must not see a left-to-right page redraw itself. */
+(function () {
+  window.DBT_BASE = "../";
+  try {
+    var l = localStorage.getItem("dbt.lang");
+    if (l === "ar" || l === "en") {
+      document.documentElement.lang = l;
+      document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
+    }
+    var t = localStorage.getItem("dbt.theme");
+    if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+    else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="theme-color" content="#0d7d72">
+<meta name="color-scheme" content="light dark">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../assets/icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="SQL Lab">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="../assets/theory/css/tokens.css">
+<link rel="stylesheet" href="../assets/theory/css/base.css">
+<link rel="stylesheet" href="../assets/theory/css/chrome.css">
+<link rel="stylesheet" href="../assets/theory/css/components.css">
+</head>
+<body data-chapter="t4" data-page="t4-chapter" data-kind="chapter" data-path="chapters/t4.html">
+<main>
+<section class="page" id="t4-chapter">
+<nav class="crumbs"></nav>
+
+  <span class="kicker">Theory &middot; Chapter 4</span>
+  <h1><span class="en">Supertypes and Subtypes</span><span class="ar">الأنواع العليا والأنواع الفرعية</span></h1>
+  <p class="lede en">When some instances of an entity carry attributes and relationships the others do not, and the three rules that decide whether your hierarchy is sound.</p>
+  <p class="lede ar">حين تحمل بعض نُسخ الكيان خصائص وعلاقات لا تحملها البقية، والقواعد الثلاث التي تحدّد ما إذا كان تسلسلك سليمًا.</p>
+  <h2 id="t4idx-h1"><span class="en">The lessons</span><span class="ar">الدروس</span></h2>
+<div class="grid">
+<a class="lesson-card" href="../lessons/t4-lesson-01.html#t4-lesson-01">
+  <span class="n">01</span><span class="state" data-page-state="t4-lesson-01" hidden></span>
+  <h3><span class="en">When One Entity Is Really Several</span><span class="ar">حين يكون الكيان الواحد عدّة كيانات</span></h3>
+  <p class="en">Cash, cheque and credit card: one entity, three entities, or something in between? And what happens when a fourth method arrives.</p>
+  <p class="ar">نقدًا أو بشيك أو ببطاقة ائتمان: كيان واحد، أم ثلاثة، أم شيء بينهما؟ وماذا يحدث حين تظهر طريقة رابعة.</p>
+</a>
+<a class="lesson-card" href="../lessons/t4-lesson-02.html#t4-lesson-02">
+  <span class="n">02</span><span class="state" data-page-state="t4-lesson-02" hidden></span>
+  <h3><span class="en">Supertype and Subtype</span><span class="ar">النوع الأعلى والنوع الفرعي</span></h3>
+  <p class="en">The supertype holds what is common; each subtype adds its own. Inheritance covers every attribute and every relationship — not just the attributes.</p>
+  <p class="ar">النوع الأعلى يحمل المشترك، وكل نوع فرعي يضيف ما يخصّه. والوراثة تشمل كل خاصية وكل علاقة — لا الخصائص وحدها.</p>
+</a>
+<a class="lesson-card" href="../lessons/t4-lesson-03.html#t4-lesson-03">
+  <span class="n">03</span><span class="state" data-page-state="t4-lesson-03" hidden></span>
+  <h3><span class="en">The Three Rules</span><span class="ar">القواعد الثلاث</span></h3>
+  <p class="en">Is it a kind of the supertype? Are the subtypes exhaustive? Is each instance in exactly one? Meet the OTHER subtype.</p>
+  <p class="ar">هل هو «نوع من» النوع الأعلى؟ وهل الأنواع الفرعية شاملة؟ وهل تقع كل نسخة في واحد منها فقط؟ وتعرّف على النوع الفرعي «أخرى».</p>
+</a>
+<a class="lesson-card" href="../lessons/t4-lesson-04.html#t4-lesson-04">
+  <span class="n">04</span><span class="state" data-page-state="t4-lesson-04" hidden></span>
+  <h3><span class="en">Nesting, and Knowing When to Stop</span><span class="ar">التداخل، ومتى تتوقّف</span></h3>
+  <p class="en">Subtypes inside subtypes are legal and usually a mistake past two levels — and sometimes subtyping is the wrong tool entirely.</p>
+  <p class="ar">الأنواع الفرعية داخل أنواع فرعية جائزة، وغالبًا ما تكون خطأً بعد مستويين — وأحيانًا يكون التقسيم الفرعي أداةً خاطئة من أساسه.</p>
+</a>
+<a class="lesson-card" href="../lessons/t4-lesson-05.html#t4-lesson-05">
+  <span class="n">05</span><span class="state" data-page-state="t4-lesson-05" hidden></span>
+  <h3><span class="en">Judging a Model</span><span class="ar">الحكم على نموذج</span></h3>
+  <p class="en">Four diagrams, one of them broken: name the rule it breaks, then repair it.</p>
+  <p class="ar">أربعة مخططات، أحدها معطوب: سمِّ القاعدة التي يخرقها، ثم أصلحه.</p>
+</a>
+</div>
+<h2 id="t4idx-h2"><span class="en">Check what stuck</span><span class="ar">تأكّد ممّا رسخ</span></h2>
+<p class="en">Every lesson has a test of its own, sat after that lesson and nothing later. The Execution Lab replays the chapter&rsquo;s trickiest programs one line at a time, the glossary collects every term and where it is used, and the three chapter tests &mdash; A, B and C, the same size &mdash; cover the whole chapter.</p>
+<p class="ar">لكل درس اختباره الخاص، يُؤدَّى بعد ذلك الدرس ولا يفترض شيئًا بعده. ويعيد مختبر التنفيذ تشغيل أصعب برامج الفصل سطرًا سطرًا، ويجمع القاموس كل مصطلح وأين يُستعمل، أمّا اختبارات الفصل الثلاثة &mdash; أ وب وج، وبالحجم نفسه &mdash; فتغطي الفصل كله.</p>
+<div class="grid grid-tight">
+<a class="side-card test" href="../tests/t4-test-01.html#t4-test-01"><span class="ic">✎</span><span class="t"><span class="en">Test 1 — When One Entity Is Really Several</span><span class="ar">اختبار 1 — حين يكون الكيان الواحد عدّة كيانات</span></span><span class="state" data-page-state="t4-test-01" hidden></span></a>
+<a class="side-card test" href="../tests/t4-test-02.html#t4-test-02"><span class="ic">✎</span><span class="t"><span class="en">Test 2 — Supertype and Subtype</span><span class="ar">اختبار 2 — النوع الأعلى والنوع الفرعي</span></span><span class="state" data-page-state="t4-test-02" hidden></span></a>
+<a class="side-card test" href="../tests/t4-test-03.html#t4-test-03"><span class="ic">✎</span><span class="t"><span class="en">Test 3 — The Three Rules</span><span class="ar">اختبار 3 — القواعد الثلاث</span></span><span class="state" data-page-state="t4-test-03" hidden></span></a>
+<a class="side-card test" href="../tests/t4-test-04.html#t4-test-04"><span class="ic">✎</span><span class="t"><span class="en">Test 4 — Nesting, and Knowing When to Stop</span><span class="ar">اختبار 4 — التداخل، ومتى تتوقّف</span></span><span class="state" data-page-state="t4-test-04" hidden></span></a>
+<a class="side-card test" href="../tests/t4-test-05.html#t4-test-05"><span class="ic">✎</span><span class="t"><span class="en">Test 5 — Judging a Model</span><span class="ar">اختبار 5 — الحكم على نموذج</span></span><span class="state" data-page-state="t4-test-05" hidden></span></a>
+<a class="side-card lab" href="../labs/t4-lab.html#t4-lab"><span class="ic">▶</span><span class="t"><span class="en">Execution Lab &mdash; watch the code run</span><span class="ar">مختبر التنفيذ &mdash; شاهد الكود يُنفَّذ</span></span><span class="state" data-page-state="t4-lab" hidden></span></a>
+<a class="side-card glossary" href="../glossary/t4-glossary.html#t4-glossary"><span class="ic">Aa</span><span class="t"><span class="en">Glossary &mdash; every term and where it is used</span><span class="ar">القاموس &mdash; كل مصطلح وأين يُستعمل</span></span><span class="state" data-page-state="t4-glossary" hidden></span></a>
+<a class="side-card exam" href="../exams/t4-exam-a.html#t4-exam-a"><span class="ic">★</span><span class="t"><span class="en">Chapter Test A — Core</span><span class="ar">اختبار الفصل أ — الأساسيات</span></span><span class="state" data-page-state="t4-exam-a" hidden></span></a>
+<a class="side-card exam" href="../exams/t4-exam-b.html#t4-exam-b"><span class="ic">★</span><span class="t"><span class="en">Chapter Test B — Applied</span><span class="ar">اختبار الفصل ب — التطبيقي</span></span><span class="state" data-page-state="t4-exam-b" hidden></span></a>
+<a class="side-card exam" href="../exams/t4-exam-c.html#t4-exam-c"><span class="ic">★</span><span class="t"><span class="en">Chapter Test C — Advanced</span><span class="ar">اختبار الفصل ج — المتقدّم</span></span><span class="state" data-page-state="t4-exam-c" hidden></span></a>
+</div>
+
+</section>
+<nav class="pager"></nav>
+</main>
+<footer class="site">
+  <p class="byline">
+    <img class="byline-face" src="../assets/img/shams.jpg" width="34" height="34"
+         alt="" decoding="async">
+    <span class="en">Shams Raed Felfel</span><span class="ar">شمس رائد فلفل</span>
+  </p>
+  <span class="en">Works fully offline · nothing you answer leaves this device</span>
+  <span class="ar">يعمل دون اتصال بالكامل · لا تغادر إجاباتك هذا الجهاز</span>
+</footer>
+<script src="../assets/theory/js/registry.js"></script>
+<script src="../assets/theory/js/course.js"></script>
+<script src="../assets/theory/js/i18n.js"></script>
+<script src="../assets/theory/js/theme.js"></script>
+<script src="../assets/theory/js/progress.js"></script>
+<script src="../assets/theory/js/anchors.js"></script>
+<script src="../assets/theory/js/chrome.js"></script>
+<script src="../assets/theory/js/code.js"></script>
+<script src="../assets/theory/js/home.js"></script>
+<script src="../assets/theory/js/app.js"></script>
+</body>
+</html>

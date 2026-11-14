@@ -1,0 +1,570 @@
+/* ============================================================
+   The assessment layer: question cards, the eight answer widgets
+   (choice, text, order, match, pick-a-line, contrast, write),
+   the hint box, the test toolbar and its filters, and the result
+   panel.
+
+   Colours come from tokens.css, including the level tones. Nothing
+   here names a colour: tints are mixed from tokens, and anything
+   that sits on a code surface uses --code-bg / --code-text.
+   Loaded only by pages that carry a question bank.
+   ============================================================ */
+
+/* ---------- test page intro ---------- */
+.testhead {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 14px 16px;
+  margin: 18px 0 22px;
+}
+.testhead h4 { margin: 0 0 6px; font-size: 15px; }
+.testhead p { margin: 0 0 10px; color: var(--text-soft); font-size: 15px; }
+.testhead .meta {
+  display: flex; flex-wrap: wrap; gap: 4px 8px;
+  font-size: 13px; color: var(--text-soft);
+}
+.testhead .meta b { color: var(--text); font-weight: 600; }
+.testhead .meta > span + span::before { content: "\00b7"; margin-inline-end: 8px; }
+
+/* ---------- sticky toolbar for a whole test ---------- */
+.testbar {
+  position: sticky;
+  top: 52px;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  margin: 0 0 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.testbar .tally {
+  font-size: 14px; font-variant-numeric: tabular-nums;
+  margin-inline-end: auto; color: var(--text-soft);
+}
+.testbar .tally b { color: var(--text); font-weight: 700; }
+.testbar .bar {
+  flex: 1 1 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.testbar .bar > i {
+  display: block; height: 100%; width: 0;
+  background: var(--accent);
+  transition: width .25s ease;
+}
+
+/* ---------- filter pills ---------- */
+.qfilter { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 18px; }
+.qfilter button {
+  font: inherit; font-size: 13px; cursor: pointer;
+  min-height: 34px;
+  padding: 5px 11px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text-soft);
+}
+.qfilter button[aria-pressed="true"] {
+  background: var(--accent-soft); border-color: var(--accent);
+  color: var(--text); font-weight: 600;
+}
+
+/* ---------- question card ---------- */
+.qbox {
+  border: 1px solid var(--border);
+  border-inline-start: 4px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 14px 16px;
+  margin: 0 0 16px;
+}
+.qbox[hidden] { display: none; }
+.qbox[data-state="right"] { border-inline-start-color: var(--good); }
+.qbox[data-state="wrong"] { border-inline-start-color: var(--bad); }
+
+.qhead {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 7px;
+  margin-bottom: 10px;
+}
+.qnum {
+  font-weight: 700; font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-soft);
+}
+.chip {
+  font-size: 11.5px; font-weight: 600;
+  padding: 2.5px 9px; border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--chip-bg); color: var(--text-soft);
+  white-space: nowrap;
+}
+.chip.lv-easy   { background: var(--easy-soft); color: var(--easy); border-color: var(--easy); }
+.chip.lv-medium { background: var(--mid-soft);  color: var(--mid);  border-color: var(--mid); }
+.chip.lv-hard   { background: var(--hard-soft); color: var(--hard); border-color: var(--hard); }
+.chip.kind { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); white-space: normal; }
+
+.qtopics {
+  flex: 1 1 100%;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px;
+  font-size: 12.5px; color: var(--text-soft);
+}
+.qtopics a {
+  color: var(--text-soft);
+  text-decoration: none;
+  border: 1px dashed var(--border);
+  border-radius: 999px;
+  padding: 1.5px 9px;
+}
+.qtopics a:hover { color: var(--accent); border-color: var(--accent); border-style: solid; }
+
+.qstem { margin: 0 0 10px; }
+.qstem p { margin: 0 0 8px; }
+.qbox pre.code { margin: 10px 0; }
+
+/* ---------- focus: every control the card owns ---------- */
+.qbox button:focus-visible,
+.qbox input:focus-visible,
+.qbox textarea:focus-visible,
+.qbox summary:focus-visible,
+.qbox a:focus-visible,
+.qfilter button:focus-visible,
+.testbar button:focus-visible,
+.result a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- screen-reader-only text ---------- */
+.qbox .sr {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- choice widget ---------- */
+.answers { list-style: none; margin: 10px 0 0; padding: 0; }
+.answers li { margin-bottom: 7px; }
+.answers .opt {
+  display: flex; align-items: flex-start; gap: 10px;
+  width: 100%; min-height: 44px; text-align: start;
+  font: inherit; font-size: 15.5px; line-height: 1.6;
+  padding: 10px 13px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+}
+.answers .opt:hover:not(:disabled) { border-color: var(--accent); }
+.answers .opt .tick {
+  flex: none; width: 20px; height: 20px; margin-top: 2px;
+  border: 1.5px solid var(--border); border-radius: 50%;
+  background: var(--surface);
+  display: grid; place-items: center;
+  font-size: 12px; line-height: 1;
+}
+.answers[data-multi="1"] .opt .tick { border-radius: 5px; }
+.answers .opt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.answers .opt[aria-pressed="true"] .tick {
+  background: var(--accent); border-color: var(--accent); color: var(--surface);
+}
+.answers .opt[aria-pressed="true"] .tick::after { content: "✓"; }
+.answers .opt.right { border-color: var(--good); background: var(--good-soft); }
+.answers .opt.right .tick { background: var(--good); border-color: var(--good); color: var(--surface); }
+.answers .opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.answers .opt.wrong .tick { background: var(--bad); border-color: var(--bad); color: var(--surface); }
+.answers .opt.wrong .tick::after { content: "✕"; }
+.answers .opt:disabled { cursor: default; opacity: 1; }
+.answers .opt code:not(pre code) { background: var(--surface); }
+
+/* ---------- text / fill-in widget ---------- */
+.fills { margin: 10px 0 0; }
+.fill-row {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  margin-bottom: 9px;
+}
+.fill-row .lab { font-size: 14px; color: var(--text-soft); min-width: 0; }
+.fill-row .lab code { font-size: 13.5px; }
+input.fillin, textarea.fillin {
+  font-family: var(--mono); font-size: 14.5px;
+  min-height: 40px;
+  padding: 7px 10px;
+  border: 1px solid var(--border); border-radius: 8px;
+  background: var(--surface-2); color: var(--text);
+  direction: ltr; text-align: left;
+  max-width: 100%;
+}
+input.fillin { width: 13ch; }
+input.fillin.wide { width: 26ch; }
+textarea.fillin { width: 100%; min-height: 86px; resize: vertical; line-height: 1.55; }
+input.fillin:focus, textarea.fillin:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+.fillin.right { border-color: var(--good); background: var(--good-soft); }
+.fillin.wrong { border-color: var(--bad);  background: var(--bad-soft); }
+.fill-hint { font-size: 12.5px; color: var(--text-soft); margin: 2px 0 6px; }
+
+/* ---------- order + ordercode widget ---------- */
+.order-pool, .order-slots { list-style: none; margin: 10px 0 0; padding: 0; }
+.order-slots { counter-reset: os; }
+.order-pool li, .order-slots li { margin-bottom: 7px; }
+.order-pool button, .order-slots button {
+  display: flex; align-items: flex-start; gap: 10px;
+  width: 100%; min-height: 44px; text-align: start;
+  font: inherit; font-size: 15px;
+  padding: 9px 12px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface-2); color: var(--text); cursor: pointer;
+}
+.order-pool button:hover:not(:disabled) { border-color: var(--accent); }
+.order-slots button { background: var(--accent-soft); border-color: var(--accent); }
+.order-slots li { counter-increment: os; }
+.order-slots button::before {
+  content: counter(os);
+  flex: none; width: 22px; height: 22px;
+  border-radius: 50%; background: var(--accent); color: var(--surface);
+  display: grid; place-items: center;
+  font-size: 12px; font-weight: 700;
+}
+.order-slots button.right { background: var(--good-soft); border-color: var(--good); }
+.order-slots button.right::before { background: var(--good); }
+.order-slots button.wrong { background: var(--bad-soft); border-color: var(--bad); }
+.order-slots button.wrong::before { background: var(--bad); }
+.order-sep {
+  font-size: 12.5px; color: var(--text-soft);
+  margin: 12px 0 2px; text-transform: uppercase; letter-spacing: .04em;
+}
+
+/* ordercode: each item is a dark code tile, left to right in either language */
+.order-pool.codey button, .order-slots.codey button {
+  direction: ltr; text-align: left;
+  background: var(--code-bg); color: var(--code-text);
+  font-family: var(--mono); font-size: 13.5px; line-height: 1.6;
+  align-items: center;
+}
+.order-pool.codey button:hover:not(:disabled) { border-color: var(--accent); }
+.order-slots.codey button { border-color: var(--accent); }
+.order-slots.codey button.right { border-color: var(--good); }
+.order-slots.codey button.wrong { border-color: var(--bad); }
+.order-pool .oc, .order-slots .oc {
+  display: block; flex: 1 1 auto; min-width: 0;
+  white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 4;
+  font-family: var(--mono); font-size: inherit;
+  background: transparent; border: 0; border-radius: 0; padding: 0;
+  color: inherit; direction: ltr; text-align: left;
+}
+
+/* ---------- match widget ---------- */
+.match {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 10px 0 0;
+}
+.match > div { min-width: 0; }
+.match ul { list-style: none; margin: 0; padding: 0; }
+.match li { margin-bottom: 7px; }
+.match button {
+  display: block; width: 100%; min-height: 44px; text-align: start;
+  font: inherit; font-size: 14.5px; line-height: 1.5;
+  padding: 9px 11px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface-2); color: var(--text); cursor: pointer;
+  overflow-wrap: anywhere;
+}
+.match button:hover:not(:disabled) { border-color: var(--accent); }
+.match button.sel { border-color: var(--accent); background: var(--accent-soft); }
+.match button.done { border-style: dashed; opacity: .62; }
+.match .tagno {
+  display: inline-grid; place-items: center;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent); color: var(--surface);
+  font-size: 11.5px; font-weight: 700;
+  margin-inline-end: 7px; vertical-align: -3px;
+}
+.match .tagno[hidden] { display: none; }
+.match button.right { border-color: var(--good); background: var(--good-soft); opacity: 1; }
+.match button.wrong { border-color: var(--bad);  background: var(--bad-soft); opacity: 1; }
+.match .colhead {
+  font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--text-soft); margin-bottom: 6px;
+}
+@media (max-width: 560px) {
+  .match { grid-template-columns: 1fr; }
+}
+
+/* ---------- pick-a-line widget ---------- */
+.pickcode {
+  margin: 10px 0 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow-x: auto;
+  background: var(--code-bg);
+  direction: ltr; text-align: left;
+}
+.pickcode button {
+  display: flex; align-items: flex-start; gap: 0;
+  width: 100%; min-width: max-content; min-height: 32px;
+  text-align: left;
+  font-family: var(--mono); font-size: 14px; line-height: 1.6;
+  padding: 0; border: 0; border-inline-start: 3px solid transparent;
+  background: transparent; color: var(--code-text); cursor: pointer;
+}
+.pickcode button:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--code-text) 9%, transparent);
+}
+.pickcode .ln {
+  flex: none; width: 3.2ch; padding: 4px 10px 4px 0;
+  text-align: end; opacity: .55; user-select: none;
+}
+.pickcode .lx { white-space: pre; padding: 4px 12px 4px 0; }
+.pickcode button.sel {
+  border-inline-start-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 26%, transparent);
+}
+.pickcode button.right {
+  border-inline-start-color: var(--good);
+  background: color-mix(in srgb, var(--good) 24%, transparent);
+}
+.pickcode button.wrong {
+  border-inline-start-color: var(--bad);
+  background: color-mix(in srgb, var(--bad) 24%, transparent);
+}
+.pickcode button:focus-visible { outline-offset: -2px; }
+.pickcode-note { font-size: 12.5px; color: var(--text-soft); margin: 8px 0 0; }
+
+/* ---------- compare two blocks ---------- */
+.cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0 0; }
+.cmp > div { min-width: 0; }
+.cmp h5 {
+  margin: 0 0 4px; font-size: 12.5px; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--text-soft);
+}
+.cmp pre.code { margin: 0; }
+@media (max-width: 680px) { .cmp { grid-template-columns: 1fr; } }
+
+/* ---------- contrast widget ----------
+   One row per statement; under it one toggle per concept, "both"
+   and (optionally) "neither". Wide: the toggles sit side by side.
+   Phone: they stack, one full-width 44px target each. */
+.contrast { display: grid; gap: 10px; margin: 6px 0 0; min-width: 0; }
+.crow {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-inline-start: 4px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  padding: 10px 12px;
+}
+.crow.right { border-inline-start-color: var(--good); }
+.crow.wrong { border-inline-start-color: var(--bad); }
+.crow .cs { margin: 0 0 8px; font-size: 15.5px; line-height: 1.6; overflow-wrap: anywhere; }
+.copts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+  gap: 6px;
+}
+.copt {
+  display: flex; align-items: center; gap: 9px;
+  min-width: 0; min-height: 44px; text-align: start;
+  font: inherit; font-size: 14.5px; line-height: 1.4;
+  padding: 7px 11px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface); color: var(--text); cursor: pointer;
+}
+.copt .cl { min-width: 0; overflow-wrap: anywhere; }
+.copt:hover:not(:disabled) { border-color: var(--accent); }
+.copt .dot {
+  flex: none; width: 18px; height: 18px; border-radius: 50%;
+  border: 1.5px solid var(--border); background: var(--surface);
+}
+.copt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.copt[aria-pressed="true"] .dot {
+  border-color: var(--accent); background: var(--accent);
+  box-shadow: inset 0 0 0 3px var(--surface);
+}
+.copt.right { border-color: var(--good); background: var(--good-soft); }
+.copt.right .dot { border-color: var(--good); background: var(--good); box-shadow: inset 0 0 0 3px var(--surface); }
+.copt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.copt.wrong .dot { border-color: var(--bad); background: var(--bad); box-shadow: inset 0 0 0 3px var(--surface); }
+.copt:disabled { cursor: default; opacity: 1; }
+@media (max-width: 480px) {
+  .copts { grid-template-columns: 1fr; }
+}
+
+/* ---------- write-the-code widget ---------- */
+.writein {
+  display: block; width: 100%; max-width: 100%;
+  min-height: 120px; resize: vertical;
+  font-family: var(--mono); font-size: 14px; line-height: 1.6; tab-size: 4;
+  padding: 10px 12px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--code-bg); color: var(--code-text);
+  caret-color: var(--accent);
+  direction: ltr; text-align: left;
+  white-space: pre; overflow: auto;
+}
+.writein:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.writein.right { border-color: var(--good); box-shadow: inset 3px 0 0 var(--good); }
+.writein.wrong { border-color: var(--bad);  box-shadow: inset 3px 0 0 var(--bad); }
+.writein[readonly] { opacity: .92; }
+
+.wchecks {
+  margin: 10px 0 0; padding: 10px 12px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface-2);
+}
+.wchecks[hidden] { display: none; }
+.wchecks h5 {
+  margin: 0 0 6px; font-size: 12.5px; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--text-soft);
+}
+.wchecks ul { list-style: none; margin: 0; padding: 0; }
+.wchecks li {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px;
+  margin: 0 0 5px; font-size: 14.5px; line-height: 1.55;
+}
+.wchecks .wi {
+  flex: none; align-self: center;
+  width: 20px; height: 20px; border-radius: 50%;
+  display: inline-grid; place-items: center;
+  font-size: 12px; font-weight: 700; line-height: 1;
+  color: var(--surface);
+}
+.wchecks li.pass .wi { background: var(--good); }
+.wchecks li.fail .wi { background: var(--bad); }
+.wchecks li.fail .wl { color: var(--bad); font-weight: 600; }
+.wchecks .wl { flex: 1 1 0; min-width: 0; overflow-wrap: anywhere; }
+.wchecks .wtag {
+  font-size: 11px; font-weight: 700; letter-spacing: .03em;
+  padding: 1px 8px; border-radius: 999px;
+  background: var(--warn-soft); color: var(--warn); border: 1px solid var(--warn);
+}
+
+/* ---------- actions + hint + verdict ---------- */
+.qactions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+.qactions .btn { font-size: 13.5px; padding: 6px 12px; min-height: 38px; }
+.qactions .btn.primary {
+  background: var(--accent); color: var(--surface); border-color: var(--accent);
+}
+.qactions .btn.primary:hover { filter: brightness(1.07); }
+.qactions .btn:disabled { opacity: .5; cursor: default; }
+.qactions .btn.hintbtn[aria-expanded="true"] {
+  border-color: var(--warn); background: var(--warn-soft); color: var(--warn);
+}
+
+.qhint {
+  margin-top: 10px; padding: 9px 13px;
+  border: 1px dashed var(--warn); border-radius: 10px;
+  background: var(--warn-soft); color: var(--text);
+  font-size: 14.5px; line-height: 1.65;
+}
+.qhint[hidden] { display: none; }
+.qhint .hl { font-weight: 700; color: var(--warn); margin-inline-end: 4px; }
+
+.verdict {
+  margin-top: 11px; padding: 9px 12px;
+  border-radius: 9px; font-size: 14.5px; font-weight: 600;
+  border: 1px solid transparent;
+  min-width: 0; overflow-wrap: anywhere;
+}
+.verdict.ok   { background: var(--good-soft); color: var(--good); border-color: var(--good); }
+.verdict.no   { background: var(--bad-soft);  color: var(--bad);  border-color: var(--bad); }
+.verdict.part { background: var(--warn-soft); color: var(--warn); border-color: var(--warn); }
+.verdict[hidden] { display: none; }
+.verdict .vline { font-weight: 400; margin-top: 6px; }
+.verdict .vline code:not(pre code) { color: var(--text); }
+.verdict .vl { font-weight: 600; margin-inline-end: 4px; }
+.verdict .vline.stack > .vl { display: block; margin-bottom: 2px; }
+.verdict .vlist { margin: 2px 0 0; padding-inline-start: 24px; }
+.verdict .vlist li { margin: 4px 0; }
+.verdict .vlist pre.code { margin: 4px 0; }
+.verdict .vreview a {
+  color: inherit; font-weight: 600;
+  text-decoration: underline; text-underline-offset: 2px;
+  margin-inline-end: 10px; display: inline-block;
+}
+.verdict .vreview a:hover { text-decoration-thickness: 2px; }
+.verdict pre.code { margin: 8px 0 0; }
+
+.qbox details { margin-top: 10px; }
+.qbox details > summary {
+  cursor: pointer; font-size: 14px; font-weight: 600;
+  padding: 7px 12px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface-2);
+  display: inline-block; list-style: none;
+}
+.qbox details > summary::-webkit-details-marker { display: none; }
+.qbox details > summary::before { content: "▸ "; }
+.qbox details[open] > summary::before { content: "▾ "; }
+html[dir="rtl"] .qbox details > summary::before { content: "◂ "; }
+html[dir="rtl"] .qbox details[open] > summary::before { content: "▾ "; }
+.qbox details > summary:hover { border-color: var(--accent); }
+.qbox details .inner {
+  margin-top: 9px; padding: 11px 14px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface-2);
+  min-width: 0;
+}
+.qbox details .inner > p:first-child { margin-top: 0; }
+.qbox details .inner > p:last-child  { margin-bottom: 0; }
+.qbox details .inner pre.code { margin: 9px 0; }
+
+/* ---------- result panel ---------- */
+.result {
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+  padding: 16px 18px;
+  margin: 22px 0;
+}
+.result[hidden] { display: none; }
+.result h3 { margin: 0 0 4px; font-size: 19px; }
+.result .big {
+  font-size: 34px; font-weight: 800; line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.result .sub { color: var(--text-soft); font-size: 14.5px; margin: 0 0 14px; }
+.result table { margin: 12px 0 0; }
+.result .weak { margin: 14px 0 0; }
+.result .weak h4 { margin: 0 0 6px; font-size: 14.5px; }
+.result .weak ul { margin: 0; padding-inline-start: 20px; font-size: 14.5px; }
+.result .weak a { color: var(--accent); font-weight: 600; }
+
+/* ============================================================
+   Narrow-screen overflow - places where a question wider than a
+   phone pushed the page sideways instead of scrolling inside its
+   own box.
+   ============================================================ */
+
+/* An answer option holding a code block is a flex item, and a flex
+   item defaults to min-width:auto - it refuses to shrink below its
+   content and drags the card past the viewport. */
+.answers .opt { min-width: 0; }
+.answers .opt .ob { min-width: 0; flex: 1 1 auto; }
+.answers .opt .ob pre.code { max-width: 100%; margin: 0; }
+
+/* Same shrink problem on the card and its stem. */
+.qbox, .qstem, .qwidget, .assess { min-width: 0; }
+.qbox pre.code, .qstem pre.code { max-width: 100%; }
+.order-pool li, .order-slots li { min-width: 0; }
+
+/* On a phone the test toolbar wraps onto a second row, so anything
+   scrolled to programmatically needs to clear more chrome. */
+@media (max-width: 560px) {
+  .qbox, .result { scroll-margin-top: 168px; }
+  .qbox { padding: 12px 12px; }
+}
+
+/* Touch screens: every control gets a full-size target. */
+@media (pointer: coarse) {
+  .qactions .btn, .qfilter button { min-height: 44px; }
+  .pickcode button { min-height: 40px; }
+}
+
+@media print {
+  .testbar, .qfilter, .qactions { display: none !important; }
+  .qbox details { open: open; }
+}

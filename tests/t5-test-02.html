@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Database design taught the way it is drawn — entities, attributes, unique identifiers, relationships, subtypes and many-to-many resolution — in English and Arabic, with a test after every lesson and an SQL lab that turns each chapter&#x27;s diagram into real tables.">
+<title data-en="Test 2 — One-to-Many · Theory 5 · SQL Lab" data-ar="اختبار 2 — واحد إلى متعدّد · أنواع العلاقات وحلّها · مختبر SQL">Test 2 — One-to-Many · Theory 5 · SQL Lab</title>
+<script>
+/* Theme, language and the path back to the site root, all before the
+   first paint: a dark reader must not see a white flash, and an Arabic
+   reader must not see a left-to-right page redraw itself. */
+(function () {
+  window.DBT_BASE = "../";
+  try {
+    var l = localStorage.getItem("dbt.lang");
+    if (l === "ar" || l === "en") {
+      document.documentElement.lang = l;
+      document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
+    }
+    var t = localStorage.getItem("dbt.theme");
+    if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+    else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="theme-color" content="#0d7d72">
+<meta name="color-scheme" content="light dark">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../assets/icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="SQL Lab">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="../assets/theory/css/tokens.css">
+<link rel="stylesheet" href="../assets/theory/css/base.css">
+<link rel="stylesheet" href="../assets/theory/css/chrome.css">
+<link rel="stylesheet" href="../assets/theory/css/components.css">
+</head>
+<body data-chapter="t5" data-page="t5-test-02" data-kind="test" data-path="tests/t5-test-02.html">
+<main>
+<section class="page" id="t5-test-02">
+<nav class="crumbs"></nav>
+
+  <span class="kicker">Test 2</span>
+  <h1><span class="en">Test 2 — One-to-Many</span><span class="ar">اختبار 2 — واحد إلى متعدّد</span></h1>
+  <p class="lede en">Questions on <a href="../lessons/t5-lesson-02.html#t5-lesson-02">Lesson 2</a> alone &mdash; mixed types and difficulties. Every question has a hint, an explanation and the answer, all hidden until you ask, and every topic tag is a link back to the part of the course to review.</p>
+  <p class="lede ar">أسئلة على <a href="../lessons/t5-lesson-02.html#t5-lesson-02">الدرس 2</a> وحده &mdash; بأنواع ومستويات متنوعة. لكل سؤال تلميح وشرح وجواب، كلها مخفية حتى تطلبها، وكل وسم موضوع رابط يعيدك إلى جزء المقرر الذي تراجعه.</p>
+
+  <div class="callout prereq">
+    <h4><span class="en">Before you start this test</span><span class="ar">قبل أن تبدأ هذا الاختبار</span></h4>
+    <p class="en">Read <a href="../lessons/t5-lesson-02.html#t5-lesson-02">One-to-Many</a> first and do its exercises. This test assumes nothing from later lessons, so an answer that needs an idea you have not met yet is not expected of you.</p>
+    <p class="ar">اقرأ <a href="../lessons/t5-lesson-02.html#t5-lesson-02">واحد إلى متعدّد</a> أولًا وأنجز تمارينه. ولا يفترض هذا الاختبار شيئًا من الدروس اللاحقة، فلا يُنتظر منك جواب يحتاج فكرة لم تقابلها بعد.</p>
+  </div>
+
+  <div class="note"><h4><span class="en">Being written</span><span class="ar">قيد الكتابة</span></h4><p class="en">The questions for this test are still being written. Come back soon &mdash; the lesson and its exercises are ready to use in the meantime.</p><p class="ar">ما زالت أسئلة هذا الاختبار قيد الكتابة. عُد قريبًا &mdash; أما الدرس وتمارينه فجاهزان للاستعمال في الوقت نفسه.</p></div>
+
+  <div class="callout ahead">
+    <h4><span class="en">What comes next</span><span class="ar">ما التالي</span></h4>
+    <p class="en">When this test is green, go on to <a href="../lessons/t5-lesson-03.html#t5-lesson-03">One-to-One</a>. If it is not, the "Review" links under each question you missed go straight to the part of the lesson that explains it.</p>
+    <p class="ar">إذا نجحت في هذا الاختبار فتابع إلى <a href="../lessons/t5-lesson-03.html#t5-lesson-03">واحد إلى واحد</a>. وإن لم تنجح فروابط «مراجعة» تحت كل سؤال أخطأت فيه تنقلك مباشرة إلى جزء الدرس الذي يشرحه.</p>
+  </div>
+
+</section>
+<nav class="pager"></nav>
+</main>
+<footer class="site">
+  <p class="byline">
+    <img class="byline-face" src="../assets/img/shams.jpg" width="34" height="34"
+         alt="" decoding="async">
+    <span class="en">Shams Raed Felfel</span><span class="ar">شمس رائد فلفل</span>
+  </p>
+  <span class="en">Works fully offline · nothing you answer leaves this device</span>
+  <span class="ar">يعمل دون اتصال بالكامل · لا تغادر إجاباتك هذا الجهاز</span>
+</footer>
+<script src="../assets/theory/js/registry.js"></script>
+<script src="../assets/theory/js/course.js"></script>
+<script src="../assets/theory/js/i18n.js"></script>
+<script src="../assets/theory/js/theme.js"></script>
+<script src="../assets/theory/js/progress.js"></script>
+<script src="../assets/theory/js/anchors.js"></script>
+<script src="../assets/theory/js/chrome.js"></script>
+<script src="../assets/theory/js/code.js"></script>
+<script src="../assets/theory/js/app.js"></script>
+</body>
+</html>

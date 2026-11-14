@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Database design taught the way it is drawn — entities, attributes, unique identifiers, relationships, subtypes and many-to-many resolution — in English and Arabic, with a test after every lesson and an SQL lab that turns each chapter&#x27;s diagram into real tables.">
+<title data-en="Reading and Drawing Relationships · Chapter 3 · SQL Lab" data-ar="قراءة العلاقات ورسمها · الفصل 3 · مختبر SQL">Reading and Drawing Relationships · Chapter 3 · SQL Lab</title>
+<script>
+/* Theme, language and the path back to the site root, all before the
+   first paint: a dark reader must not see a white flash, and an Arabic
+   reader must not see a left-to-right page redraw itself. */
+(function () {
+  window.DBT_BASE = "../";
+  try {
+    var l = localStorage.getItem("dbt.lang");
+    if (l === "ar" || l === "en") {
+      document.documentElement.lang = l;
+      document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
+    }
+    var t = localStorage.getItem("dbt.theme");
+    if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+    else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="theme-color" content="#0d7d72">
+<meta name="color-scheme" content="light dark">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../assets/icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="SQL Lab">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="../assets/theory/css/tokens.css">
+<link rel="stylesheet" href="../assets/theory/css/base.css">
+<link rel="stylesheet" href="../assets/theory/css/chrome.css">
+<link rel="stylesheet" href="../assets/theory/css/components.css">
+</head>
+<body data-chapter="t3" data-page="t3-chapter" data-kind="chapter" data-path="chapters/t3.html">
+<main>
+<section class="page" id="t3-chapter">
+<nav class="crumbs"></nav>
+
+  <span class="kicker">Theory &middot; Chapter 3</span>
+  <h1><span class="en">Reading and Drawing Relationships</span><span class="ar">قراءة العلاقات ورسمها</span></h1>
+  <p class="lede en">Optionality, cardinality and the conventions that let any two designers read the same diagram the same way — plus the matrix that finds the relationships you missed.</p>
+  <p class="lede ar">الإلزامية والتعدّدية والأعراف التي تجعل أيّ مصمّمَين يقرآن المخطط نفسه بالطريقة نفسها — مع المصفوفة التي تكشف العلاقات التي فاتتك.</p>
+  <h2 id="t3idx-h1"><span class="en">The lessons</span><span class="ar">الدروس</span></h2>
+<div class="grid">
+<a class="lesson-card" href="../lessons/t3-lesson-01.html#t3-lesson-01">
+  <span class="n">01</span><span class="state" data-page-state="t3-lesson-01" hidden></span>
+  <h3><span class="en">What a Relationship Is</span><span class="ar">ما هي العلاقة</span></h3>
+  <p class="en">Significant to the business, bi-directional, named at both ends, and allowed to join an entity to itself.</p>
+  <p class="ar">ذات أهمية للعمل، وثنائية الاتجاه، ومسمّاة من طرفيها، ويجوز أن تربط الكيان بنفسه.</p>
+</a>
+<a class="lesson-card" href="../lessons/t3-lesson-02.html#t3-lesson-02">
+  <span class="n">02</span><span class="state" data-page-state="t3-lesson-02" hidden></span>
+  <h3><span class="en">Optionality — must or may</span><span class="ar">الإلزامية — «يجب» أم «قد»</span></h3>
+  <p class="en">One end at a time: must every employee have a job? A solid line and a dashed line are two different business rules.</p>
+  <p class="ar">طرفًا بطرف: هل يجب أن يكون لكل موظف وظيفة؟ الخط المتصل والخط المتقطّع قاعدتا عمل مختلفتان.</p>
+</a>
+<a class="lesson-card" href="../lessons/t3-lesson-03.html#t3-lesson-03">
+  <span class="n">03</span><span class="state" data-page-state="t3-lesson-03" hidden></span>
+  <h3><span class="en">Cardinality — how many</span><span class="ar">التعدّدية — كم واحدًا؟</span></h3>
+  <p class="en">One and only one, or one or more. The single toe and the crow’s foot answer singular-or-plural, never a number.</p>
+  <p class="ar">واحد فقط لا غير، أو واحد فأكثر. «الإصبع المفردة» و«قدم الغراب» تجيبان عن المفرد أو الجمع، لا عن عدد بعينه.</p>
+</a>
+<a class="lesson-card" href="../lessons/t3-lesson-04.html#t3-lesson-04">
+  <span class="n">04</span><span class="state" data-page-state="t3-lesson-04" hidden></span>
+  <h3><span class="en">Diagramming Conventions</span><span class="ar">أعراف الرسم</span></h3>
+  <p class="en">Softboxes, singular uppercase entity names, # for the UID, * for mandatory, o for optional, lowercase relationship names — and why a shared convention exists.</p>
+  <p class="ar">الصناديق المستديرة، وأسماء الكيانات بالمفرد وبالحروف الكبيرة، و# للمعرّف الفريد، و* للإلزامي، وo للاختياري، وأسماء العلاقات بحروف صغيرة — ولماذا يوجد عرف مشترك أصلًا.</p>
+</a>
+<a class="lesson-card" href="../lessons/t3-lesson-05.html#t3-lesson-05">
+  <span class="n">05</span><span class="state" data-page-state="t3-lesson-05" hidden></span>
+  <h3><span class="en">Speaking ERDish</span><span class="ar">التحدّث بلغة ERDish</span></h3>
+  <p class="en">The six-part sentence, read in both directions, until a drawn line and a spoken business rule are the same thing — recursive relationships included.</p>
+  <p class="ar">الجملة ذات الأجزاء الستة، تُقرأ في الاتجاهين، حتى يصير الخط المرسوم وقاعدة العمل المنطوقة شيئًا واحدًا — بما في ذلك العلاقات الانعكاسية.</p>
+</a>
+<a class="lesson-card" href="../lessons/t3-lesson-06.html#t3-lesson-06">
+  <span class="n">06</span><span class="state" data-page-state="t3-lesson-06" hidden></span>
+  <h3><span class="en">Matrix Diagrams</span><span class="ar">مخططات المصفوفة</span></h3>
+  <p class="en">Thirteen entities hide relationships that three do not. Fill the matrix in one direction only, then turn it into an ERD.</p>
+  <p class="ar">ثلاثة عشر كيانًا تخفي علاقات لا تخفيها ثلاثة. املأ المصفوفة في اتجاه واحد فقط، ثم حوّلها إلى مخطط ERD.</p>
+</a>
+</div>
+<h2 id="t3idx-h2"><span class="en">Check what stuck</span><span class="ar">تأكّد ممّا رسخ</span></h2>
+<p class="en">Every lesson has a test of its own, sat after that lesson and nothing later. The Execution Lab replays the chapter&rsquo;s trickiest programs one line at a time, the glossary collects every term and where it is used, and the three chapter tests &mdash; A, B and C, the same size &mdash; cover the whole chapter.</p>
+<p class="ar">لكل درس اختباره الخاص، يُؤدَّى بعد ذلك الدرس ولا يفترض شيئًا بعده. ويعيد مختبر التنفيذ تشغيل أصعب برامج الفصل سطرًا سطرًا، ويجمع القاموس كل مصطلح وأين يُستعمل، أمّا اختبارات الفصل الثلاثة &mdash; أ وب وج، وبالحجم نفسه &mdash; فتغطي الفصل كله.</p>
+<div class="grid grid-tight">
+<a class="side-card test" href="../tests/t3-test-01.html#t3-test-01"><span class="ic">✎</span><span class="t"><span class="en">Test 1 — What a Relationship Is</span><span class="ar">اختبار 1 — ما هي العلاقة</span></span><span class="state" data-page-state="t3-test-01" hidden></span></a>
+<a class="side-card test" href="../tests/t3-test-02.html#t3-test-02"><span class="ic">✎</span><span class="t"><span class="en">Test 2 — Optionality — must or may</span><span class="ar">اختبار 2 — الإلزامية — «يجب» أم «قد»</span></span><span class="state" data-page-state="t3-test-02" hidden></span></a>
+<a class="side-card test" href="../tests/t3-test-03.html#t3-test-03"><span class="ic">✎</span><span class="t"><span class="en">Test 3 — Cardinality — how many</span><span class="ar">اختبار 3 — التعدّدية — كم واحدًا؟</span></span><span class="state" data-page-state="t3-test-03" hidden></span></a>
+<a class="side-card test" href="../tests/t3-test-04.html#t3-test-04"><span class="ic">✎</span><span class="t"><span class="en">Test 4 — Diagramming Conventions</span><span class="ar">اختبار 4 — أعراف الرسم</span></span><span class="state" data-page-state="t3-test-04" hidden></span></a>
+<a class="side-card test" href="../tests/t3-test-05.html#t3-test-05"><span class="ic">✎</span><span class="t"><span class="en">Test 5 — Speaking ERDish</span><span class="ar">اختبار 5 — التحدّث بلغة ERDish</span></span><span class="state" data-page-state="t3-test-05" hidden></span></a>
+<a class="side-card test" href="../tests/t3-test-06.html#t3-test-06"><span class="ic">✎</span><span class="t"><span class="en">Test 6 — Matrix Diagrams</span><span class="ar">اختبار 6 — مخططات المصفوفة</span></span><span class="state" data-page-state="t3-test-06" hidden></span></a>
+<a class="side-card lab" href="../labs/t3-lab.html#t3-lab"><span class="ic">▶</span><span class="t"><span class="en">Execution Lab &mdash; watch the code run</span><span class="ar">مختبر التنفيذ &mdash; شاهد الكود يُنفَّذ</span></span><span class="state" data-page-state="t3-lab" hidden></span></a>
+<a class="side-card glossary" href="../glossary/t3-glossary.html#t3-glossary"><span class="ic">Aa</span><span class="t"><span class="en">Glossary &mdash; every term and where it is used</span><span class="ar">القاموس &mdash; كل مصطلح وأين يُستعمل</span></span><span class="state" data-page-state="t3-glossary" hidden></span></a>
+<a class="side-card exam" href="../exams/t3-exam-a.html#t3-exam-a"><span class="ic">★</span><span class="t"><span class="en">Chapter Test A — Core</span><span class="ar">اختبار الفصل أ — الأساسيات</span></span><span class="state" data-page-state="t3-exam-a" hidden></span></a>
+<a class="side-card exam" href="../exams/t3-exam-b.html#t3-exam-b"><span class="ic">★</span><span class="t"><span class="en">Chapter Test B — Applied</span><span class="ar">اختبار الفصل ب — التطبيقي</span></span><span class="state" data-page-state="t3-exam-b" hidden></span></a>
+<a class="side-card exam" href="../exams/t3-exam-c.html#t3-exam-c"><span class="ic">★</span><span class="t"><span class="en">Chapter Test C — Advanced</span><span class="ar">اختبار الفصل ج — المتقدّم</span></span><span class="state" data-page-state="t3-exam-c" hidden></span></a>
+</div>
+
+</section>
+<nav class="pager"></nav>
+</main>
+<footer class="site">
+  <p class="byline">
+    <img class="byline-face" src="../assets/img/shams.jpg" width="34" height="34"
+         alt="" decoding="async">
+    <span class="en">Shams Raed Felfel</span><span class="ar">شمس رائد فلفل</span>
+  </p>
+  <span class="en">Works fully offline · nothing you answer leaves this device</span>
+  <span class="ar">يعمل دون اتصال بالكامل · لا تغادر إجاباتك هذا الجهاز</span>
+</footer>
+<script src="../assets/theory/js/registry.js"></script>
+<script src="../assets/theory/js/course.js"></script>
+<script src="../assets/theory/js/i18n.js"></script>
+<script src="../assets/theory/js/theme.js"></script>
+<script src="../assets/theory/js/progress.js"></script>
+<script src="../assets/theory/js/anchors.js"></script>
+<script src="../assets/theory/js/chrome.js"></script>
+<script src="../assets/theory/js/code.js"></script>
+<script src="../assets/theory/js/home.js"></script>
+<script src="../assets/theory/js/app.js"></script>
+</body>
+</html>

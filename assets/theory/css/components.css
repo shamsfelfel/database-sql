@@ -1,0 +1,568 @@
+/* ============================================================
+   Content components - the boxes the chapter prose is built
+   from: cards, callouts, the problem/tip/warning notes, the
+   phase and step blocks, exercises with their worked solutions,
+   the inline quizzes, and the takeaway panel.
+   ============================================================ */
+
+/* ---------- cards / callouts ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin: 18px 0;
+}
+
+.note, .problem, .tip, .warn {
+  border-inline-start: 4px solid var(--accent);
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 18px 0;
+}
+.problem { border-color: var(--bad); background: var(--bad-soft); }
+.tip     { border-color: var(--good); background: var(--good-soft); }
+.warn    { border-color: var(--warn); background: var(--warn-soft); }
+.note h4, .problem h4, .tip h4, .warn h4 { margin-top: 0; }
+
+.label {
+  display: inline-block; font-size: 12px; font-weight: 700;
+  padding: 2px 9px; border-radius: 999px; margin-bottom: 6px;
+  background: var(--surface-2); color: var(--text-soft);
+}
+.label.bad  { background: var(--bad-soft);  color: var(--bad); }
+.label.good { background: var(--good-soft); color: var(--good); }
+
+/* ---------- callouts (prerequisite / looking ahead) ---------- */
+.callout {
+  border: 1px solid var(--border);
+  border-inline-start: 4px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--surface);
+  padding: 12px 15px; margin: 18px 0;
+}
+html[dir="rtl"] .callout { border-radius: var(--radius) 0 0 var(--radius); }
+.callout h4 { margin: 0 0 5px; font-size: 15px; }
+.callout p:last-child { margin-bottom: 0; }
+.callout.prereq { border-inline-start-color: var(--warn); }
+.callout.ahead  { border-inline-start-color: var(--good); }
+
+.seelist { margin: 8px 0 0; padding-inline-start: 20px; }
+.seelist li { margin-bottom: 4px; }
+
+/* ---------- phases / steps ---------- */
+.phase {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 16px 0;
+  background: var(--surface);
+}
+.phase > .step {
+  display: inline-block;
+  font-size: 12px; font-weight: 700;
+  color: var(--accent); background: var(--accent-soft);
+  padding: 3px 10px; border-radius: 999px; margin-bottom: 6px;
+}
+
+/* ---------- exercises ---------- */
+.exercise {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-inline-start: 4px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 18px 0;
+}
+.exercise > h4 { margin-top: 0; }
+details.solution {
+  margin-top: 10px;
+  border-top: 1px dashed var(--border);
+  padding-top: 8px;
+}
+details.solution > summary {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  list-style: none;
+  padding: 4px 0;
+}
+details.solution > summary::-webkit-details-marker { display: none; }
+details.solution > summary::before { content: "▸ "; }
+details.solution[open] > summary::before { content: "▾ "; }
+
+/* ---------- quiz ---------- */
+.quiz {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 16px 0;
+}
+.quiz .q { font-weight: 600; margin-top: 0; }
+.quiz .options { list-style: none; margin: 10px 0 0; padding: 0; }
+.quiz .options li { margin: 7px 0; }
+.quiz .opt {
+  width: 100%;
+  text-align: start;
+  font: inherit;
+  font-size: 15px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+}
+.quiz .opt:hover { border-color: var(--accent); }
+.quiz .opt.right { background: var(--good-soft); border-color: var(--good); color: var(--good); font-weight: 600; }
+.quiz .opt.wrong { background: var(--bad-soft);  border-color: var(--bad);  color: var(--bad); }
+.quiz .opt[disabled] { cursor: default; opacity: .95; }
+.quiz .feedback {
+  margin-top: 10px; padding: 10px 12px;
+  border-radius: 10px; background: var(--surface-2);
+  font-size: 15px; color: var(--text-soft);
+}
+.quiz .feedback[hidden] { display: none; }
+.score {
+  font-size: 14px; color: var(--text-soft);
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 999px; padding: 6px 14px; display: inline-block;
+}
+
+/* ---------- takeaways ---------- */
+.takeaways { background: var(--accent-soft); border: 1px solid var(--accent); }
+.takeaways h3 { margin-top: 0; }
+
+/* ============================================================
+   Code blocks: language badge + copy button in a bar of their
+   own, so neither can ever cover a line of code (even at 320px).
+   The bar is a sibling of <code> inside the <pre>; the <code>
+   is the thing that scrolls sideways, so the bar stays put.
+   Code stays left-to-right on an Arabic page.
+   ============================================================ */
+.code.has-bar { padding: 0; overflow: hidden; }
+.code.has-bar > code {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding: 10px 14px 14px 16px;
+}
+.code-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 6px 8px 5px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  direction: ltr;
+}
+.code-bar .lang-badge {
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: #9aa6ba; background: rgba(255,255,255,.07);
+  padding: 2px 9px; border-radius: 999px;
+  white-space: nowrap; user-select: none; -webkit-user-select: none;
+}
+.code .code-bar .copy {
+  position: static; flex: none;
+  font: inherit; font-size: 12px; line-height: 1.4;
+  min-height: 26px; padding: 3px 11px;
+  opacity: .85;
+}
+.code .code-bar .copy:hover { opacity: 1; }
+.code .code-bar .copy:focus-visible,
+.code.has-bar > code:focus-visible,
+.evo-tab:focus-visible, .evo-btn:focus-visible, .evo-toggle input:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+@media (pointer: coarse) { .code .code-bar .copy { min-height: 34px; } }
+.code.good .lang-badge { color: #8fe0a6; }
+.code.bad  .lang-badge { color: #ff9c92; }
+
+/* ============================================================
+   Evolve: one program, version by version.
+   Without JavaScript every version is a stacked card with its
+   title; the script adds .evolve-js and turns the cards into
+   tabs. Lines new in a version carry a green bar (.added);
+   lines dropped since the previous version sit in a small
+   collapsible strip underneath.
+   ============================================================ */
+.evolve { margin: 22px 0; }
+.evolve .ver {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 12px 14px;
+  margin: 12px 0;
+}
+.evolve .ver::before {
+  content: attr(data-title-en);
+  display: block; margin-bottom: 4px;
+  font-weight: 700; font-size: 15px; color: var(--accent);
+}
+html[lang="ar"] .evolve .ver::before { content: attr(data-title-ar); }
+.evolve .ver > pre.code { margin: 8px 0 10px; }
+.evolve .ver > p { margin: 8px 0 0; }
+.evolve .ver[hidden] { display: none; }
+
+.evolve-js {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+.evolve-js .ver {
+  border: 0; border-radius: 0; background: transparent;
+  padding: 0 14px 14px; margin: 0;
+}
+.evolve-js .ver::before,
+html[lang="ar"] .evolve-js .ver::before { display: none; }
+
+.evo-head {
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 10px 0;
+}
+.evo-tabs {
+  display: flex; gap: 4px;
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  margin-bottom: -1px;
+}
+.evo-tab {
+  flex: none;
+  min-width: 52px; min-height: 44px;
+  padding: 8px 16px 7px;
+  font: inherit; font-size: 15px; font-weight: 700;
+  color: var(--text-soft);
+  background: transparent;
+  border: 0; border-top: 3px solid transparent;
+  border-radius: 9px 9px 0 0;
+  cursor: pointer;
+}
+.evo-tab:hover { color: var(--text); background: var(--bg); }
+.evo-tab.on, .evo-tab[aria-selected="true"] {
+  color: var(--accent); background: var(--surface); border-top-color: var(--accent);
+}
+
+.evo-meta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px;
+  padding: 12px 14px 8px;
+}
+.evo-title { flex: 1 1 220px; min-width: 0; font-weight: 700; line-height: 1.45; }
+.evo-stat {
+  flex: none; font-size: 12px; font-weight: 700; line-height: 1.6;
+  padding: 1px 10px; border-radius: 999px;
+  background: var(--good-soft); color: var(--good); white-space: nowrap;
+}
+.evo-toggle {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 14px; color: var(--text-soft); cursor: pointer;
+  min-height: 32px;
+}
+.evo-toggle input { width: 18px; height: 18px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+
+.evolve-js .ver > pre.code { margin: 4px 0 10px; }
+.code.has-bar.evo-code > code { padding: 8px 0 12px; }
+.evo-code .dls { display: block; width: max-content; min-width: 100%; }
+.evo-code .dl, .rm-code .dl {
+  display: block; min-height: 1.65em;
+  padding: 0 16px 0 13px; border-left: 3px solid transparent;
+}
+.evolve-js.evo-diff .dl.added {
+  background: rgba(74,222,128,.14);
+  border-left-color: #4ade80;
+}
+
+.evo-removed { margin: 0 0 10px; }
+.evolve-js:not(.evo-diff) .evo-removed { display: none; }
+.evo-removed > summary {
+  cursor: pointer; list-style: none;
+  font-size: 13px; font-weight: 600; color: var(--bad);
+  padding: 4px 0;
+}
+.evo-removed > summary::-webkit-details-marker { display: none; }
+.evo-removed > summary::before { content: "▸ "; }
+.evo-removed[open] > summary::before { content: "▾ "; }
+.evo-removed .rm-code {
+  background: var(--code-bg); color: var(--code-text);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 8px 0;
+  font-family: var(--mono); font-size: 13px; line-height: 1.65; white-space: pre;
+  direction: ltr; text-align: left; overflow-x: auto;
+}
+.rm-code .dls { display: block; width: max-content; min-width: 100%; }
+.rm-code .dl.removed { background: rgba(255,123,156,.12); border-left-color: #ff7b9c; }
+
+.evo-nav {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.evo-count { flex: none; font-size: 13px; font-weight: 700; color: var(--text-soft); direction: ltr; }
+.evo-btn {
+  flex: 1 1 0; min-width: 0; min-height: 44px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font: inherit; font-size: 14px; font-weight: 600;
+  padding: 8px 12px; border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface); color: var(--text);
+  cursor: pointer; text-align: center;
+}
+.evo-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.evo-btn:disabled { opacity: .4; cursor: default; }
+.evo-arrow { font-size: 20px; line-height: 1; }
+html[dir="rtl"] .evo-arrow { transform: scaleX(-1); }
+@media (max-width: 420px) {
+  .evo-nav { padding: 10px; gap: 6px; }
+  .evo-btn { padding: 8px 8px; font-size: 13px; }
+  .evo-meta { padding-inline: 10px; }
+  .evolve-js .ver { padding-inline: 10px; }
+}
+
+/* ============================================================
+   Objectives, AI lens, problem thread
+   ============================================================ */
+.objectives {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 18px 0;
+}
+.objectives > h4 {
+  margin: 0 0 8px; font-size: 13px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--accent);
+}
+.objectives ul, .objectives ol { list-style: none; margin: 0; padding: 0; }
+.objectives li { position: relative; padding-inline-start: 32px; margin: 9px 0; }
+.objectives li::before {
+  content: "✓";
+  position: absolute; inset-inline-start: 0; top: .28em;
+  width: 21px; height: 21px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; line-height: 1;
+  color: var(--good); background: var(--good-soft); border: 1px solid var(--good);
+}
+
+.ai-lens {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 12px 16px 14px;
+  margin: 18px 0;
+}
+.ai-lens > h4 {
+  display: flex; align-items: center; gap: 9px;
+  margin: 0 0 6px; font-size: 15px; color: var(--accent);
+}
+.ai-lens > h4::before {
+  content: ""; flex: none; width: 22px; height: 22px;
+  background: var(--accent);
+  -webkit-mask: var(--ic-chip) center / contain no-repeat;
+          mask: var(--ic-chip) center / contain no-repeat;
+}
+.ai-lens p:last-child { margin-bottom: 0; }
+
+.thread {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px 16px 50px;
+  margin: 18px 0;
+}
+html[dir="rtl"] .thread { padding: 12px 50px 16px 16px; }
+.thread > h4 {
+  position: relative; margin: 0 0 6px; font-size: 15px; color: var(--accent);
+}
+.thread > h4::before {
+  content: ""; position: absolute; inset-inline-start: -36px; top: 1px;
+  width: 22px; height: 22px; background: var(--accent);
+  -webkit-mask: var(--ic-chain) center / contain no-repeat;
+          mask: var(--ic-chain) center / contain no-repeat;
+}
+.thread::before {                 /* the line that ties this problem to its next appearance */
+  content: ""; position: absolute; inset-inline-start: 24px;
+  top: 42px; bottom: 26px; width: 2px;
+  background: repeating-linear-gradient(to bottom, var(--accent) 0 5px, transparent 5px 9px);
+  opacity: .7;
+}
+.thread::after {
+  content: ""; position: absolute; inset-inline-start: 19px; bottom: 12px;
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid var(--accent); background: var(--surface);
+}
+.thread p:last-child { margin-bottom: 0; }
+
+:root {
+  --ic-chip: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='6' y='6' width='12' height='12' rx='2'/%3E%3Crect x='10' y='10' width='4' height='4'/%3E%3Cpath d='M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3'/%3E%3C/svg%3E");
+  --ic-chain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5'/%3E%3Cpath d='M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5'/%3E%3C/svg%3E");
+  --ic-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v12M7 10l5 5 5-5M4 20h16'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   Diagrams, tables, downloads, keys
+   ============================================================ */
+figure.diagram {
+  margin: 20px 0; padding: 12px;
+  max-width: 100%;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+figure.diagram svg, figure.diagram img { max-width: 100%; height: auto; }
+figure.diagram > svg, figure.diagram > img { display: block; margin: 0 auto; }
+figure.diagram figcaption {
+  margin: 10px 0 0; font-size: 14px; line-height: 1.55; color: var(--text-soft);
+}
+
+.table-wrap, .obj-table {
+  margin: 14px 0; max-width: 100%;
+  overflow-x: auto; overscroll-behavior-x: contain;
+  border: 1px solid var(--border); border-radius: var(--radius);
+}
+.table-wrap > table, .obj-table > table { display: table; width: 100%; min-width: 440px; margin: 0; }
+.table-wrap th:first-child, .table-wrap td:first-child,
+.obj-table th:first-child, .obj-table td:first-child { border-inline-start: 0; }
+.table-wrap th:last-child, .table-wrap td:last-child,
+.obj-table th:last-child, .obj-table td:last-child { border-inline-end: 0; }
+.table-wrap tr:first-child > *, .obj-table tr:first-child > * { border-top: 0; }
+.table-wrap tr:last-child > *, .obj-table tr:last-child > * { border-bottom: 0; }
+
+main td { background: var(--surface); vertical-align: top; }
+main tbody tr:nth-child(even) > td { background: var(--bg); }
+main th { vertical-align: bottom; }
+/* a short identifier in a cell stays whole; the table scrolls instead */
+main td code, main th code { overflow-wrap: normal; word-break: normal; }
+main table caption {
+  caption-side: bottom; padding: 6px 4px 0;
+  font-size: 14px; color: var(--text-soft); text-align: start;
+}
+
+a.data-dl, .data-dl {
+  display: inline-flex; align-items: center; gap: 10px;
+  max-width: 100%; min-height: 46px;
+  padding: 9px 18px; margin: 6px 0;
+  background: var(--accent); color: var(--bg);
+  border-radius: var(--radius);
+  font-weight: 600; font-size: 15px; line-height: 1.4;
+  text-decoration: none;
+}
+.data-dl::before {
+  content: ""; flex: none; width: 20px; height: 20px;
+  background: currentColor;
+  -webkit-mask: var(--ic-down) center / contain no-repeat;
+          mask: var(--ic-down) center / contain no-repeat;
+}
+.data-dl:hover { filter: brightness(1.1); }
+.data-dl:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+
+kbd {
+  display: inline-block; direction: ltr; white-space: nowrap;
+  font-family: var(--mono); font-size: .85em; line-height: 1.35;
+  padding: 1px 7px 2px; margin: 0 1px;
+  color: var(--text); background: var(--surface);
+  border: 1px solid var(--border); border-bottom-width: 2px;
+  border-radius: 6px;
+}
+
+/* ============================================================
+   .sheet - an HTML table drawn like a spreadsheet grid, for
+   showing Excel data: column letters across the top, row numbers
+   down the side, one cell (.hl) picked out.
+   ============================================================ */
+table.sheet {
+  display: block; width: fit-content; max-width: 100%;
+  overflow-x: auto; overscroll-behavior-x: contain;
+  border-collapse: collapse; direction: ltr;
+  font-size: 14px; margin: 14px 0;
+}
+.sheet th, .sheet td {
+  border: 1px solid var(--border);
+  padding: 4px 10px; height: 30px; min-width: 56px;
+  text-align: left; white-space: nowrap;
+  font-weight: 400; vertical-align: middle;
+  background: var(--surface);
+}
+.sheet th {
+  background: var(--surface-2); color: var(--text-soft);
+  text-align: center; font-size: 12px; font-weight: 600;
+}
+.sheet tbody tr:nth-child(even) > td { background: var(--surface); }
+.sheet td.hd { font-weight: 700; }
+.sheet td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.sheet td.fx { font-family: var(--mono); font-size: 13px; }
+.sheet td.err { color: var(--bad); }
+.sheet td.hl, .sheet td.sel {
+  outline: 2px solid var(--accent); outline-offset: -2px;
+  background: var(--accent-soft);
+  position: relative;
+}
+.sheet tbody tr:nth-child(even) > td.hl,
+.sheet tbody tr:nth-child(even) > td.sel { background: var(--accent-soft); }
+
+/* ============================================================
+   Numbered tool-setup procedures: ol.steps (or .step-list)
+   ============================================================ */
+ol.steps, ol.step-list, .step-list > ol {
+  list-style: none; counter-reset: stp;
+  margin: 18px 0; padding: 0;
+}
+ol.steps > li, ol.step-list > li, .step-list > ol > li {
+  counter-increment: stp; position: relative; min-width: 0;
+  margin: 0; padding-inline-start: 54px; padding-bottom: 18px; min-height: 40px;
+}
+ol.steps > li::before, ol.step-list > li::before, .step-list > ol > li::before {
+  content: counter(stp);
+  position: absolute; inset-inline-start: 0; top: 0;
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700; line-height: 1;
+  background: var(--accent); color: var(--bg);
+}
+ol.steps > li::after, ol.step-list > li::after, .step-list > ol > li::after {
+  content: ""; position: absolute; inset-inline-start: 18px; top: 44px; bottom: 6px;
+  width: 2px; background: var(--border);
+}
+ol.steps > li:last-child, ol.step-list > li:last-child, .step-list > ol > li:last-child { padding-bottom: 4px; }
+ol.steps > li:last-child::after, ol.step-list > li:last-child::after, .step-list > ol > li:last-child::after { display: none; }
+ol.steps > li > :first-child, ol.step-list > li > :first-child { margin-top: 6px; }
+ol.steps > li > p:last-child { margin-bottom: 0; }
+
+/* ============================================================
+   Badges: small pills that say what a tool needs
+   ============================================================ */
+.badge {
+  display: inline-block; vertical-align: middle;
+  font-size: 12px; font-weight: 700; line-height: 1.6;
+  padding: 1px 10px; border-radius: 999px; white-space: nowrap;
+  background: var(--surface-2); color: var(--text-soft);
+  border: 1px solid var(--border);
+}
+.badge.win-only { background: var(--hard-soft); color: var(--hard); border-color: var(--hard); }
+.badge.free     { background: var(--good-soft); color: var(--good); border-color: var(--good); }
+.badge.paid     { background: var(--warn-soft); color: var(--warn); border-color: var(--warn); }
+.badge.account  { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+
+/* ============================================================
+   Print: every version of an evolve block, every solution
+   ============================================================ */
+@media print {
+  .code-bar, .evo-head, .evo-meta, .evo-nav, .evo-toggle { display: none !important; }
+  .evolve-js .ver[hidden] { display: block !important; }
+  .evolve-js .ver::before { display: block !important; }
+  .evolve-js .evo-removed { display: block !important; }
+  .evolve-js .ver { break-inside: avoid; }
+  .evolve-js.evo-diff .dl.added { background: #e6f4ea; border-left-color: #2e7d32; }
+  .code.has-bar > code { padding-top: 12px; }
+  details.solution::details-content { content-visibility: visible; }
+  .ai-lens, .thread, .objectives, figure.diagram { break-inside: avoid; }
+}
+
+/* the objectives list may be the element itself: <ul class="objectives"> */
+ul.objectives, ol.objectives { list-style: none; margin-inline: 0; }
+ul.objectives > li, ol.objectives > li { list-style: none; }

@@ -1,0 +1,390 @@
+/* ============================================================
+   The shell every page wears: top bar, side drawer, breadcrumbs,
+   the previous/next pager, the reading-progress bar, the
+   back-to-top button, the chapter grid and the site footer.
+
+   These are the styles that stay put while the content changes,
+   which is why they sit apart from components.css.
+   ============================================================ */
+
+/* ---------- top bar ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar .brand {
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  color: var(--text);
+  margin-inline-end: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand .dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--accent); flex: none;
+}
+
+.btn {
+  font: inherit;
+  font-size: 14px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn:hover { border-color: var(--accent); }
+.btn:active { transform: translateY(1px); }
+
+/* ---------- drawer menu ---------- */
+.drawer {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: min(320px, 86vw);
+  background: var(--surface);
+  border-inline-end: 1px solid var(--border);
+  padding: 16px;
+  transform: translateX(-110%);
+  transition: transform .22s ease;
+  z-index: 60;
+  overflow-y: auto;
+}
+html[dir="rtl"] .drawer { transform: translateX(110%); }
+.drawer.open { transform: translateX(0) !important; }
+.drawer h2 { font-size: 15px; margin: 0 0 12px; color: var(--text-soft); }
+.drawer ol { list-style: none; margin: 0; padding: 0; counter-reset: l; }
+.drawer li { counter-increment: l; margin-bottom: 6px; }
+.drawer a {
+  display: flex; gap: 10px; align-items: baseline;
+  padding: 9px 10px; border-radius: 10px;
+  text-decoration: none; color: var(--text); font-size: 15px;
+}
+.drawer a::before {
+  content: counter(l);
+  font-size: 12px; font-weight: 700; color: var(--accent);
+  background: var(--accent-soft);
+  min-width: 22px; height: 22px; border-radius: 6px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: none;
+}
+.drawer a:hover { background: var(--surface-2); }
+.drawer a.current { background: var(--accent-soft); font-weight: 600; }
+.scrim {
+  position: fixed; inset: 0; background: rgba(0,0,0,.45);
+  opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 50;
+}
+.scrim.open { opacity: 1; pointer-events: auto; }
+
+/* ---------- drawer: grouped outline + on-this-page jump list ---------- */
+/* ---------- drawer: grouped outline + on-this-page jump list ---------- */
+.drawer { display: flex; flex-direction: column; }
+.drawer ol { flex: none; counter-reset: lesson; }
+
+/* Only lessons carry a number, so the badges read 1..7 even though
+   tests, the lab and the two exams sit between them in the list. */
+.drawer li { counter-increment: none; }
+.drawer li.nv-lesson { counter-increment: lesson; }
+.drawer li.nv-lesson a::before { content: counter(lesson); }
+
+.drawer li.nv-test a,
+.drawer li.nv-lab a {
+  margin-inline-start: 18px;
+  font-size: 14px;
+  color: var(--text-soft);
+}
+.drawer li.nv-test a::before { content: "✎"; opacity: .75; }
+.drawer li.nv-lab a::before  { content: "▶"; opacity: .75; }
+.drawer li.nv-exam a {
+  font-weight: 600;
+  background: var(--surface-2);
+}
+.drawer li.nv-exam a::before { content: "★"; }
+.drawer li.nv-home a::before { content: "⌂"; }
+.drawer li.nv-chapter a::before { content: "▤"; }
+
+.drawer .jump {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  overflow-y: auto;
+  min-height: 0;
+}
+.drawer .jump h2 { margin-bottom: 8px; }
+.drawer .jump ul { list-style: none; margin: 0; padding: 0; }
+.drawer .jump li { margin-bottom: 2px; }
+.drawer .jump li.h3 a { margin-inline-start: 14px; font-size: 13px; opacity: .85; }
+.drawer .jump a {
+  display: block;
+  padding: 5px 9px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  border-radius: 8px;
+  color: var(--text-soft);
+  text-decoration: none;
+}
+.drawer .jump a::before { content: none; }
+.drawer .jump a:hover { background: var(--surface-2); color: var(--accent); }
+.drawer .jump a code { font-size: 12.5px; }
+
+/* ---------- breadcrumbs ---------- */
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0 10px;
+  font-size: 13px;
+  color: var(--text-soft);
+}
+.crumbs a { color: var(--text-soft); text-decoration: none; }
+.crumbs a:hover { color: var(--accent); text-decoration: underline; }
+.crumbs [aria-current="page"] { color: var(--text); font-weight: 600; }
+.crumbs .sep { opacity: .5; }
+html[dir="rtl"] .crumbs .sep { transform: scaleX(-1); }
+
+/* ---------- pager ---------- */
+.pager {
+  display: flex; gap: 10px; justify-content: space-between;
+  margin-top: 42px; padding-top: 18px; border-top: 1px solid var(--border);
+}
+.pager a {
+  flex: 1 1 0;
+  text-decoration: none;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  font-size: 14px;
+}
+.pager a:hover { border-color: var(--accent); }
+.pager a.next { text-align: end; }
+.pager .mini { display: block; font-size: 12px; color: var(--text-soft); }
+.pager a.disabled { opacity: .4; pointer-events: none; }
+
+/* ---------- index page grid ---------- */
+.grid { display: grid; gap: 14px; grid-template-columns: 1fr; margin-top: 18px; }
+@media (min-width: 720px) { .grid { grid-template-columns: 1fr 1fr; } }
+.lesson-card {
+  display: block; text-decoration: none; color: var(--text);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px;
+}
+.lesson-card:hover { border-color: var(--accent); }
+.lesson-card .n {
+  font-size: 12px; font-weight: 700; color: var(--accent);
+  background: var(--accent-soft); border-radius: 999px; padding: 3px 10px;
+}
+.lesson-card h3 { margin: 10px 0 4px; font-size: 18px; }
+.lesson-card p { margin: 0; font-size: 14.5px; color: var(--text-soft); }
+
+footer.site {
+  border-top: 1px solid var(--border);
+  padding: 18px 16px 40px;
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 13px;
+}
+
+/* ---------- the author's byline ---------- */
+
+/* A flex row, so the portrait leads the name in English and follows it in
+   Arabic without a second rule. 34px from a 200x200 source: never upscaled. */
+footer.site .byline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 10px;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+footer.site .byline-face {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+}
+
+/* ---------- reading progress + back to top ---------- */
+.backtop {
+  position: fixed; inset-inline-end: 14px; bottom: 16px;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); font-size: 18px; cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,.18);
+  display: none; z-index: 30;
+}
+.backtop.show { display: block; }
+.progress {
+  position: fixed; top: 0; inset-inline-start: 0; height: 3px;
+  background: var(--accent); width: 0; z-index: 45;
+  transition: width .15s linear;
+}
+
+/* The top bar is sticky, so anything scrolled into view
+   programmatically has to clear it. */
+.qbox, .result, .trace, h2[id], h3[id] { scroll-margin-top: 72px; }
+
+@media print {
+  .topbar, .drawer, .scrim, .pager, .crumbs, .copy,
+  .backtop, .progress { display: none !important; }
+}
+
+/* ============================================================
+   Index pages - the course home and a chapter home.
+
+   Both are lists of links with a little state hanging off each
+   one: a tick for a lesson already opened, a score for a test
+   already answered, a bar for how far through a chapter the
+   reader is. Every one of these hides itself when there is
+   nothing to say, so a first visit shows a clean page.
+   ============================================================ */
+
+.chapter-card {
+  display: block; text-decoration: none; color: var(--text);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px;
+}
+.chapter-card:hover { border-color: var(--accent); }
+.chapter-card .n {
+  font-size: 12px; font-weight: 700; color: var(--accent);
+  background: var(--accent-soft); border-radius: 999px; padding: 3px 10px;
+}
+.chapter-card h3 { margin: 10px 0 4px; font-size: 19px; }
+.chapter-card p { margin: 0 0 6px; font-size: 14.5px; color: var(--text-soft); }
+.chapter-card .meta {
+  font-size: 13px; color: var(--text-soft); opacity: .85;
+  margin: 8px 0 0;
+}
+
+/* How far through a chapter: a thin bar and the count beside it. */
+.chapter-progress {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 12px; font-size: 12.5px; color: var(--text-soft);
+}
+.chapter-progress .bar {
+  flex: 1 1 auto; height: 5px; border-radius: 999px;
+  background: var(--surface-2); overflow: hidden;
+}
+.chapter-progress .fill { display: block; height: 100%; background: var(--accent); }
+
+/* ---------- tests, the lab and the exams on a chapter page ---------- */
+.grid-tight { gap: 10px; }
+.side-card {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--text);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 11px 14px;
+  font-size: 14.5px;
+}
+.side-card:hover { border-color: var(--accent); }
+.side-card .ic {
+  flex: none; width: 26px; height: 26px; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 13px; background: var(--surface-2); color: var(--text-soft);
+}
+.side-card .t { flex: 1 1 auto; min-width: 0; }
+.side-card.exam { border-inline-start: 3px solid var(--accent); font-weight: 600; }
+.side-card.exam .ic { background: var(--accent-soft); color: var(--accent); }
+.side-card.lab .ic { background: var(--good-soft); color: var(--good); }
+
+/* ---------- the tick / score chip ---------- */
+.state {
+  flex: none; font-size: 12px; font-weight: 700;
+  border-radius: 999px; padding: 2px 9px; white-space: nowrap;
+}
+.state[hidden] { display: none; }
+.seen-chip { background: var(--good-soft); color: var(--good); }
+.score-chip { background: var(--accent-soft); color: var(--accent); }
+
+/* A lesson card is not a flex row, so its chip floats to the end
+   of the line the number sits on. */
+.lesson-card .state { float: inline-end; }
+
+/* ---------- continue where you stopped ---------- */
+.resume-link {
+  display: block; margin: 18px 0;
+  padding: 14px 16px; border-radius: var(--radius);
+  background: var(--accent-soft); border: 1px solid var(--accent);
+  color: var(--text); text-decoration: none;
+}
+.resume-link:hover { filter: brightness(1.03); }
+.resume-link .mini {
+  display: block; font-size: 12px; font-weight: 700;
+  letter-spacing: .04em; text-transform: uppercase; color: var(--accent);
+}
+.resume-link .t { font-size: 16px; font-weight: 600; }
+
+/* ---------- the road ahead ---------- */
+.roadmap { list-style: none; margin: 14px 0; padding: 0; }
+.roadmap li {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; margin: 0 0 6px;
+  border: 1px dashed var(--border); border-radius: 10px;
+  color: var(--text-soft); font-size: 14.5px;
+}
+.roadmap .n {
+  flex: none; min-width: 24px; height: 24px; border-radius: 7px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+  background: var(--surface-2); color: var(--text-soft);
+}
+.roadmap .t { flex: 1 1 auto; }
+.roadmap .soon {
+  flex: none; font-size: 11.5px; padding: 2px 9px; border-radius: 999px;
+  background: var(--surface-2); color: var(--text-soft);
+}
+
+/* ---------- drawer: a page already opened ---------- */
+.drawer a.seen > span::after {
+  content: " ✓";
+  color: var(--good);
+  font-size: 12px;
+}
+
+/* The install button only exists once the browser offers it. */
+.topbar .install { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+
+/* ---------- two-track course: chapter switcher in the drawer, code badges ---------- */
+.drawer .nv-chapter-title { font-size: 14px; margin: 14px 0 8px; color: var(--text); line-height: 1.4; }
+.drawer .allchapters { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+.drawer .allchapters h2 { margin-bottom: 6px; }
+.drawer .allchapters .nv-track { margin: 10px 0 4px; font-size: 12px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--accent); }
+.drawer .allchapters ul { list-style: none; margin: 0; padding: 0; }
+.drawer .allchapters li { margin-bottom: 2px; }
+.drawer .allchapters a { display: flex; gap: 8px; align-items: baseline; padding: 6px 10px; border-radius: 8px;
+  text-decoration: none; color: var(--text); font-size: 13.5px; }
+.drawer .allchapters a::before { content: none; }
+.drawer .allchapters a b { flex: 0 0 auto; min-width: 28px; font-size: 12px; color: var(--accent); }
+.drawer .allchapters a.current { background: var(--accent-soft); font-weight: 600; }
+.drawer .allchapters a:hover { background: var(--surface-2); }
+.code-badge { display: inline-block; vertical-align: middle; margin-inline-start: 8px; font-size: 12px; font-weight: 700;
+  letter-spacing: .04em; padding: 2px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent);
+  font-family: var(--mono); direction: ltr; }
+.side-card.glossary .ic { background: var(--warn-soft); color: var(--warn); font-size: 13px; font-weight: 700; }
+.chapter-card .n { text-transform: none; }
+h2[id^="track-"] { scroll-margin-top: 72px; margin-top: 44px; }
+
+/* ---------- glossary term mentions inside lessons ---------- */
+.term { border-bottom: 1px dotted var(--accent); cursor: help; }

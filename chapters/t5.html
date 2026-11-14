@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Database design taught the way it is drawn — entities, attributes, unique identifiers, relationships, subtypes and many-to-many resolution — in English and Arabic, with a test after every lesson and an SQL lab that turns each chapter&#x27;s diagram into real tables.">
+<title data-en="Relationship Types, and Resolving Them · Chapter 5 · SQL Lab" data-ar="أنواع العلاقات وحلّها · الفصل 5 · مختبر SQL">Relationship Types, and Resolving Them · Chapter 5 · SQL Lab</title>
+<script>
+/* Theme, language and the path back to the site root, all before the
+   first paint: a dark reader must not see a white flash, and an Arabic
+   reader must not see a left-to-right page redraw itself. */
+(function () {
+  window.DBT_BASE = "../";
+  try {
+    var l = localStorage.getItem("dbt.lang");
+    if (l === "ar" || l === "en") {
+      document.documentElement.lang = l;
+      document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
+    }
+    var t = localStorage.getItem("dbt.theme");
+    if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+    else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="theme-color" content="#0d7d72">
+<meta name="color-scheme" content="light dark">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../assets/icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="SQL Lab">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="../assets/theory/css/tokens.css">
+<link rel="stylesheet" href="../assets/theory/css/base.css">
+<link rel="stylesheet" href="../assets/theory/css/chrome.css">
+<link rel="stylesheet" href="../assets/theory/css/components.css">
+</head>
+<body data-chapter="t5" data-page="t5-chapter" data-kind="chapter" data-path="chapters/t5.html">
+<main>
+<section class="page" id="t5-chapter">
+<nav class="crumbs"></nav>
+
+  <span class="kicker">Theory &middot; Chapter 5</span>
+  <h1><span class="en">Relationship Types, and Resolving Them</span><span class="ar">أنواع العلاقات وحلّها</span></h1>
+  <p class="lede en">Transferability, the three cardinality types, the attribute a many-to-many hides, and the intersection entity that sets it free.</p>
+  <p class="lede ar">قابلية النقل، وأنواع التعدّدية الثلاثة، والخاصية التي تخفيها علاقة «متعدّد إلى متعدّد»، وكيان التقاطع الذي يحرّرها.</p>
+  <h2 id="t5idx-h1"><span class="en">The lessons</span><span class="ar">الدروس</span></h2>
+<div class="grid">
+<a class="lesson-card" href="../lessons/t5-lesson-01.html#t5-lesson-01">
+  <span class="n">01</span><span class="state" data-page-state="t5-lesson-01" hidden></span>
+  <h3><span class="en">Transferability</span><span class="ar">قابلية النقل</span></h3>
+  <p class="en">Can this link move to another parent? A class can change teacher; a receipt can never change student. The diamond says which.</p>
+  <p class="ar">هل يمكن نقل هذا الارتباط إلى أبٍ آخر؟ الشعبة قد يتغيّر معلّمها؛ والإيصال لا يتغيّر طالبه أبدًا. والمعيَّن هو ما يقول أيّهما.</p>
+</a>
+<a class="lesson-card" href="../lessons/t5-lesson-02.html#t5-lesson-02">
+  <span class="n">02</span><span class="state" data-page-state="t5-lesson-02" hidden></span>
+  <h3><span class="en">One-to-Many</span><span class="ar">واحد إلى متعدّد</span></h3>
+  <p class="en">The workhorse of every model. “Many” means one-or-more or zero-or-more depending on optionality, and M:1 is the same line read backwards.</p>
+  <p class="ar">حصان العمل في كل نموذج. و«متعدّد» تعني واحدًا فأكثر أو صفرًا فأكثر بحسب الإلزامية، و«متعدّد إلى واحد» هي الخط نفسه مقروءًا بالعكس.</p>
+</a>
+<a class="lesson-card" href="../lessons/t5-lesson-03.html#t5-lesson-03">
+  <span class="n">03</span><span class="state" data-page-state="t5-lesson-03" hidden></span>
+  <h3><span class="en">One-to-One</span><span class="ar">واحد إلى واحد</span></h3>
+  <p class="en">A computer and its motherboard; a person acting as teacher and as student. Sometimes a 1:1 is a sign you drew two entities where one belongs.</p>
+  <p class="ar">حاسوب ولوحته الأم؛ وشخص بصفته معلّمًا وبصفته طالبًا. وأحيانًا تكون علاقة «واحد إلى واحد» علامةً على أنك رسمت كيانين حيث يكفي واحد.</p>
+</a>
+<a class="lesson-card" href="../lessons/t5-lesson-04.html#t5-lesson-04">
+  <span class="n">04</span><span class="state" data-page-state="t5-lesson-04" hidden></span>
+  <h3><span class="en">Many-to-Many, and the Attribute It Hides</span><span class="ar">متعدّد إلى متعدّد، والخاصية التي يخفيها</span></h3>
+  <p class="en">Where does “grade” live — in STUDENT or in SUBJECT? Neither: the relationship is hiding it. Also, how to spot a redundant relationship.</p>
+  <p class="ar">أين تسكن «الدرجة» — في الطالب أم في المادة؟ في لا واحد منهما: العلاقة هي التي تخفيها. وأيضًا: كيف تكتشف علاقة زائدة.</p>
+</a>
+<a class="lesson-card" href="../lessons/t5-lesson-05.html#t5-lesson-05">
+  <span class="n">05</span><span class="state" data-page-state="t5-lesson-05" hidden></span>
+  <h3><span class="en">The Intersection Entity</span><span class="ar">كيان التقاطع</span></h3>
+  <p class="en">Add ENROLLMENT and one many-to-many becomes two one-to-manys, with the hidden attribute finally given a home.</p>
+  <p class="ar">أضف «تسجيل» فتصير علاقة «متعدّد إلى متعدّد» علاقتَي «واحد إلى متعدّد»، وتجد الخاصية المخفية بيتًا لها أخيرًا.</p>
+</a>
+<a class="lesson-card" href="../lessons/t5-lesson-06.html#t5-lesson-06">
+  <span class="n">06</span><span class="state" data-page-state="t5-lesson-06" hidden></span>
+  <h3><span class="en">Barred Relationships and Composite UIDs</span><span class="ar">العلاقات المقضّبة والمعرّفات المركّبة</span></h3>
+  <p class="en">The intersection entity borrows its identity from its parents. The bar on the line says so — and a composite UID has to be read in order.</p>
+  <p class="ar">كيان التقاطع يستعير هويته من أبويه. والقضيب على الخط هو ما يقول ذلك — والمعرّف المركّب يجب أن يُقرأ بترتيبه.</p>
+</a>
+</div>
+<h2 id="t5idx-h2"><span class="en">Check what stuck</span><span class="ar">تأكّد ممّا رسخ</span></h2>
+<p class="en">Every lesson has a test of its own, sat after that lesson and nothing later. The Execution Lab replays the chapter&rsquo;s trickiest programs one line at a time, the glossary collects every term and where it is used, and the three chapter tests &mdash; A, B and C, the same size &mdash; cover the whole chapter.</p>
+<p class="ar">لكل درس اختباره الخاص، يُؤدَّى بعد ذلك الدرس ولا يفترض شيئًا بعده. ويعيد مختبر التنفيذ تشغيل أصعب برامج الفصل سطرًا سطرًا، ويجمع القاموس كل مصطلح وأين يُستعمل، أمّا اختبارات الفصل الثلاثة &mdash; أ وب وج، وبالحجم نفسه &mdash; فتغطي الفصل كله.</p>
+<div class="grid grid-tight">
+<a class="side-card test" href="../tests/t5-test-01.html#t5-test-01"><span class="ic">✎</span><span class="t"><span class="en">Test 1 — Transferability</span><span class="ar">اختبار 1 — قابلية النقل</span></span><span class="state" data-page-state="t5-test-01" hidden></span></a>
+<a class="side-card test" href="../tests/t5-test-02.html#t5-test-02"><span class="ic">✎</span><span class="t"><span class="en">Test 2 — One-to-Many</span><span class="ar">اختبار 2 — واحد إلى متعدّد</span></span><span class="state" data-page-state="t5-test-02" hidden></span></a>
+<a class="side-card test" href="../tests/t5-test-03.html#t5-test-03"><span class="ic">✎</span><span class="t"><span class="en">Test 3 — One-to-One</span><span class="ar">اختبار 3 — واحد إلى واحد</span></span><span class="state" data-page-state="t5-test-03" hidden></span></a>
+<a class="side-card test" href="../tests/t5-test-04.html#t5-test-04"><span class="ic">✎</span><span class="t"><span class="en">Test 4 — Many-to-Many, and the Attribute It Hides</span><span class="ar">اختبار 4 — متعدّد إلى متعدّد، والخاصية التي يخفيها</span></span><span class="state" data-page-state="t5-test-04" hidden></span></a>
+<a class="side-card test" href="../tests/t5-test-05.html#t5-test-05"><span class="ic">✎</span><span class="t"><span class="en">Test 5 — The Intersection Entity</span><span class="ar">اختبار 5 — كيان التقاطع</span></span><span class="state" data-page-state="t5-test-05" hidden></span></a>
+<a class="side-card test" href="../tests/t5-test-06.html#t5-test-06"><span class="ic">✎</span><span class="t"><span class="en">Test 6 — Barred Relationships and Composite UIDs</span><span class="ar">اختبار 6 — العلاقات المقضّبة والمعرّفات المركّبة</span></span><span class="state" data-page-state="t5-test-06" hidden></span></a>
+<a class="side-card lab" href="../labs/t5-lab.html#t5-lab"><span class="ic">▶</span><span class="t"><span class="en">Execution Lab &mdash; watch the code run</span><span class="ar">مختبر التنفيذ &mdash; شاهد الكود يُنفَّذ</span></span><span class="state" data-page-state="t5-lab" hidden></span></a>
+<a class="side-card glossary" href="../glossary/t5-glossary.html#t5-glossary"><span class="ic">Aa</span><span class="t"><span class="en">Glossary &mdash; every term and where it is used</span><span class="ar">القاموس &mdash; كل مصطلح وأين يُستعمل</span></span><span class="state" data-page-state="t5-glossary" hidden></span></a>
+<a class="side-card exam" href="../exams/t5-exam-a.html#t5-exam-a"><span class="ic">★</span><span class="t"><span class="en">Chapter Test A — Core</span><span class="ar">اختبار الفصل أ — الأساسيات</span></span><span class="state" data-page-state="t5-exam-a" hidden></span></a>
+<a class="side-card exam" href="../exams/t5-exam-b.html#t5-exam-b"><span class="ic">★</span><span class="t"><span class="en">Chapter Test B — Applied</span><span class="ar">اختبار الفصل ب — التطبيقي</span></span><span class="state" data-page-state="t5-exam-b" hidden></span></a>
+<a class="side-card exam" href="../exams/t5-exam-c.html#t5-exam-c"><span class="ic">★</span><span class="t"><span class="en">Chapter Test C — Advanced</span><span class="ar">اختبار الفصل ج — المتقدّم</span></span><span class="state" data-page-state="t5-exam-c" hidden></span></a>
+</div>
+
+</section>
+<nav class="pager"></nav>
+</main>
+<footer class="site">
+  <p class="byline">
+    <img class="byline-face" src="../assets/img/shams.jpg" width="34" height="34"
+         alt="" decoding="async">
+    <span class="en">Shams Raed Felfel</span><span class="ar">شمس رائد فلفل</span>
+  </p>
+  <span class="en">Works fully offline · nothing you answer leaves this device</span>
+  <span class="ar">يعمل دون اتصال بالكامل · لا تغادر إجاباتك هذا الجهاز</span>
+</footer>
+<script src="../assets/theory/js/registry.js"></script>
+<script src="../assets/theory/js/course.js"></script>
+<script src="../assets/theory/js/i18n.js"></script>
+<script src="../assets/theory/js/theme.js"></script>
+<script src="../assets/theory/js/progress.js"></script>
+<script src="../assets/theory/js/anchors.js"></script>
+<script src="../assets/theory/js/chrome.js"></script>
+<script src="../assets/theory/js/code.js"></script>
+<script src="../assets/theory/js/home.js"></script>
+<script src="../assets/theory/js/app.js"></script>
+</body>
+</html>

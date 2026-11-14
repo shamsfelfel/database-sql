@@ -20,6 +20,9 @@
     "lessons/**",
     "tests/**",
     "exams/**",
+    "theory/**",
+    "labs/**",
+    "glossary/**",
     "!**/*.py",
     "!**/*.md",
     "!**/*.map"

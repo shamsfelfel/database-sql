@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Database design taught the way it is drawn — entities, attributes, unique identifiers, relationships, subtypes and many-to-many resolution — in English and Arabic, with a test after every lesson and an SQL lab that turns each chapter&#x27;s diagram into real tables.">
+<title data-en="The Relational Model and the Conceptual Model · Chapter 2 · SQL Lab" data-ar="النموذج العلائقي والنموذج المفاهيمي · الفصل 2 · مختبر SQL">The Relational Model and the Conceptual Model · Chapter 2 · SQL Lab</title>
+<script>
+/* Theme, language and the path back to the site root, all before the
+   first paint: a dark reader must not see a white flash, and an Arabic
+   reader must not see a left-to-right page redraw itself. */
+(function () {
+  window.DBT_BASE = "../";
+  try {
+    var l = localStorage.getItem("dbt.lang");
+    if (l === "ar" || l === "en") {
+      document.documentElement.lang = l;
+      document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
+    }
+    var t = localStorage.getItem("dbt.theme");
+    if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+    else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+  } catch (e) {}
+})();
+</script>
+<meta name="theme-color" content="#0d7d72">
+<meta name="color-scheme" content="light dark">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" href="../assets/icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="SQL Lab">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="../assets/vendor/fonts/fonts.css">
+<link rel="stylesheet" href="../assets/theory/css/tokens.css">
+<link rel="stylesheet" href="../assets/theory/css/base.css">
+<link rel="stylesheet" href="../assets/theory/css/chrome.css">
+<link rel="stylesheet" href="../assets/theory/css/components.css">
+</head>
+<body data-chapter="t2" data-page="t2-chapter" data-kind="chapter" data-path="chapters/t2.html">
+<main>
+<section class="page" id="t2-chapter">
+<nav class="crumbs"></nav>
+
+  <span class="kicker">Theory &middot; Chapter 2</span>
+  <h1><span class="en">The Relational Model and the Conceptual Model</span><span class="ar">النموذج العلائقي والنموذج المفاهيمي</span></h1>
+  <p class="lede en">Why one table is never enough, what a relational table really guarantees, and the three models every database passes through before a single row exists.</p>
+  <p class="lede ar">لماذا لا يكفي جدول واحد أبدًا، وما الذي يضمنه الجدول العلائقي فعلًا، والنماذج الثلاثة التي تمرّ بها كل قاعدة بيانات قبل وجود صفّ واحد.</p>
+  <h2 id="t2idx-h1"><span class="en">The lessons</span><span class="ar">الدروس</span></h2>
+<div class="grid">
+<a class="lesson-card" href="../lessons/t2-lesson-01.html#t2-lesson-01">
+  <span class="n">01</span><span class="state" data-page-state="t2-lesson-01" hidden></span>
+  <h3><span class="en">One Table Is Not Enough</span><span class="ar">جدول واحد لا يكفي</span></h3>
+  <p class="en">The flat file and its honest advantages — then the repetition it forces, and the update, insert and delete anomalies that repetition causes.</p>
+  <p class="ar">الملف المسطّح ومزاياه الحقيقية — ثم التكرار الذي يفرضه، وشذوذ التحديث والإضافة والحذف الذي يسبّبه ذلك التكرار.</p>
+</a>
+<a class="lesson-card" href="../lessons/t2-lesson-02.html#t2-lesson-02">
+  <span class="n">02</span><span class="state" data-page-state="t2-lesson-02" hidden></span>
+  <h3><span class="en">The Relational Answer</span><span class="ar">الجواب العلائقي</span></h3>
+  <p class="en">Rows, columns and fields; primary, foreign and unique keys; and the seven rules a table must obey before it is relational at all.</p>
+  <p class="ar">الصفوف والأعمدة والحقول؛ والمفاتيح الأساسية والأجنبية والفريدة؛ والقواعد السبع التي يجب أن يلتزم بها الجدول ليكون علائقيًا أصلًا.</p>
+</a>
+<a class="lesson-card" href="../lessons/t2-lesson-03.html#t2-lesson-03">
+  <span class="n">03</span><span class="state" data-page-state="t2-lesson-03" hidden></span>
+  <h3><span class="en">Three Models, One Database</span><span class="ar">ثلاثة نماذج، قاعدة بيانات واحدة</span></h3>
+  <p class="en">Conceptual, logical and physical: what each one promises, what each one refuses to say, and what “implementation-free” buys you.</p>
+  <p class="ar">المفاهيمي والمنطقي والمادي: ما الذي يَعِد به كل نموذج، وما الذي يرفض قوله، وماذا تكسب من كون النموذج «مستقلًّا عن التنفيذ».</p>
+</a>
+<a class="lesson-card" href="../lessons/t2-lesson-04.html#t2-lesson-04">
+  <span class="n">04</span><span class="state" data-page-state="t2-lesson-04" hidden></span>
+  <h3><span class="en">Entities and Instances</span><span class="ar">الكيانات والنُسخ</span></h3>
+  <p class="en">An entity is a set of similar things you can list; an instance is one of them. Tangible, intangible or an event — and why DOG can be either.</p>
+  <p class="ar">الكيان مجموعة أشياء متشابهة يمكن عدّها؛ والنسخة واحدة منها. ملموس أو غير ملموس أو حدث — ولماذا قد يكون «كلب» هذا أو ذاك.</p>
+</a>
+<a class="lesson-card" href="../lessons/t2-lesson-05.html#t2-lesson-05">
+  <span class="n">05</span><span class="state" data-page-state="t2-lesson-05" hidden></span>
+  <h3><span class="en">Attributes and Their Values</span><span class="ar">الخصائص وقيمها</span></h3>
+  <p class="en">What an attribute does for an entity, why it must hold one value at a time, and how mandatory/optional and volatile/non-volatile decide your design.</p>
+  <p class="ar">ما الذي تفعله الخاصية للكيان، ولماذا يجب أن تحمل قيمة واحدة في كل لحظة، وكيف يقرّر الإلزامي/الاختياري والمتقلّب/الثابت شكلَ تصميمك.</p>
+</a>
+<a class="lesson-card" href="../lessons/t2-lesson-06.html#t2-lesson-06">
+  <span class="n">06</span><span class="state" data-page-state="t2-lesson-06" hidden></span>
+  <h3><span class="en">Unique Identifiers and Your First ERD</span><span class="ar">المعرّفات الفريدة وأول مخطط ERD لك</span></h3>
+  <p class="en">Choosing a UID and defending the choice, the four goals of ER modelling, and reading a finished HR diagram from end to end.</p>
+  <p class="ar">اختيار معرّف فريد والدفاع عن الاختيار، وأهداف نمذجة الكيانات والعلاقات الأربعة، وقراءة مخطط موارد بشرية مكتمل من أوّله إلى آخره.</p>
+</a>
+</div>
+<h2 id="t2idx-h2"><span class="en">Check what stuck</span><span class="ar">تأكّد ممّا رسخ</span></h2>
+<p class="en">Every lesson has a test of its own, sat after that lesson and nothing later. The Execution Lab replays the chapter&rsquo;s trickiest programs one line at a time, the glossary collects every term and where it is used, and the three chapter tests &mdash; A, B and C, the same size &mdash; cover the whole chapter.</p>
+<p class="ar">لكل درس اختباره الخاص، يُؤدَّى بعد ذلك الدرس ولا يفترض شيئًا بعده. ويعيد مختبر التنفيذ تشغيل أصعب برامج الفصل سطرًا سطرًا، ويجمع القاموس كل مصطلح وأين يُستعمل، أمّا اختبارات الفصل الثلاثة &mdash; أ وب وج، وبالحجم نفسه &mdash; فتغطي الفصل كله.</p>
+<div class="grid grid-tight">
+<a class="side-card test" href="../tests/t2-test-01.html#t2-test-01"><span class="ic">✎</span><span class="t"><span class="en">Test 1 — One Table Is Not Enough</span><span class="ar">اختبار 1 — جدول واحد لا يكفي</span></span><span class="state" data-page-state="t2-test-01" hidden></span></a>
+<a class="side-card test" href="../tests/t2-test-02.html#t2-test-02"><span class="ic">✎</span><span class="t"><span class="en">Test 2 — The Relational Answer</span><span class="ar">اختبار 2 — الجواب العلائقي</span></span><span class="state" data-page-state="t2-test-02" hidden></span></a>
+<a class="side-card test" href="../tests/t2-test-03.html#t2-test-03"><span class="ic">✎</span><span class="t"><span class="en">Test 3 — Three Models, One Database</span><span class="ar">اختبار 3 — ثلاثة نماذج، قاعدة بيانات واحدة</span></span><span class="state" data-page-state="t2-test-03" hidden></span></a>
+<a class="side-card test" href="../tests/t2-test-04.html#t2-test-04"><span class="ic">✎</span><span class="t"><span class="en">Test 4 — Entities and Instances</span><span class="ar">اختبار 4 — الكيانات والنُسخ</span></span><span class="state" data-page-state="t2-test-04" hidden></span></a>
+<a class="side-card test" href="../tests/t2-test-05.html#t2-test-05"><span class="ic">✎</span><span class="t"><span class="en">Test 5 — Attributes and Their Values</span><span class="ar">اختبار 5 — الخصائص وقيمها</span></span><span class="state" data-page-state="t2-test-05" hidden></span></a>
+<a class="side-card test" href="../tests/t2-test-06.html#t2-test-06"><span class="ic">✎</span><span class="t"><span class="en">Test 6 — Unique Identifiers and Your First ERD</span><span class="ar">اختبار 6 — المعرّفات الفريدة وأول مخطط ERD لك</span></span><span class="state" data-page-state="t2-test-06" hidden></span></a>
+<a class="side-card lab" href="../labs/t2-lab.html#t2-lab"><span class="ic">▶</span><span class="t"><span class="en">Execution Lab &mdash; watch the code run</span><span class="ar">مختبر التنفيذ &mdash; شاهد الكود يُنفَّذ</span></span><span class="state" data-page-state="t2-lab" hidden></span></a>
+<a class="side-card glossary" href="../glossary/t2-glossary.html#t2-glossary"><span class="ic">Aa</span><span class="t"><span class="en">Glossary &mdash; every term and where it is used</span><span class="ar">القاموس &mdash; كل مصطلح وأين يُستعمل</span></span><span class="state" data-page-state="t2-glossary" hidden></span></a>
+<a class="side-card exam" href="../exams/t2-exam-a.html#t2-exam-a"><span class="ic">★</span><span class="t"><span class="en">Chapter Test A — Core</span><span class="ar">اختبار الفصل أ — الأساسيات</span></span><span class="state" data-page-state="t2-exam-a" hidden></span></a>
+<a class="side-card exam" href="../exams/t2-exam-b.html#t2-exam-b"><span class="ic">★</span><span class="t"><span class="en">Chapter Test B — Applied</span><span class="ar">اختبار الفصل ب — التطبيقي</span></span><span class="state" data-page-state="t2-exam-b" hidden></span></a>
+<a class="side-card exam" href="../exams/t2-exam-c.html#t2-exam-c"><span class="ic">★</span><span class="t"><span class="en">Chapter Test C — Advanced</span><span class="ar">اختبار الفصل ج — المتقدّم</span></span><span class="state" data-page-state="t2-exam-c" hidden></span></a>
+</div>
+
+</section>
+<nav class="pager"></nav>
+</main>
+<footer class="site">
+  <p class="byline">
+    <img class="byline-face" src="../assets/img/shams.jpg" width="34" height="34"
+         alt="" decoding="async">
+    <span class="en">Shams Raed Felfel</span><span class="ar">شمس رائد فلفل</span>
+  </p>
+  <span class="en">Works fully offline · nothing you answer leaves this device</span>
+  <span class="ar">يعمل دون اتصال بالكامل · لا تغادر إجاباتك هذا الجهاز</span>
+</footer>
+<script src="../assets/theory/js/registry.js"></script>
+<script src="../assets/theory/js/course.js"></script>
+<script src="../assets/theory/js/i18n.js"></script>
+<script src="../assets/theory/js/theme.js"></script>
+<script src="../assets/theory/js/progress.js"></script>
+<script src="../assets/theory/js/anchors.js"></script>
+<script src="../assets/theory/js/chrome.js"></script>
+<script src="../assets/theory/js/code.js"></script>
+<script src="../assets/theory/js/home.js"></script>
+<script src="../assets/theory/js/app.js"></script>
+</body>
+</html>
