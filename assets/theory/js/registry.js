@@ -953,7 +953,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار الفصل أ — الأساسيات"
      },
      "href": "exams/t5-exam-a.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t5-exam-b",
