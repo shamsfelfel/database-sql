@@ -391,6 +391,19 @@ window.DBTAnchors = {
 "t5l3-s3": "lessons/t5-lesson-03.html",
 "t5l3-s4": "lessons/t5-lesson-03.html",
 "t5l3-s5": "lessons/t5-lesson-03.html",
+"t5l4-e1": "lessons/t5-lesson-04.html",
+"t5l4-e2": "lessons/t5-lesson-04.html",
+"t5l4-e3": "lessons/t5-lesson-04.html",
+"t5l4-h1": "lessons/t5-lesson-04.html",
+"t5l4-h2": "lessons/t5-lesson-04.html",
+"t5l4-h3": "lessons/t5-lesson-04.html",
+"t5l4-h4": "lessons/t5-lesson-04.html",
+"t5l4-h5": "lessons/t5-lesson-04.html",
+"t5l4-h6": "lessons/t5-lesson-04.html",
+"t5l4-s1": "lessons/t5-lesson-04.html",
+"t5l4-s2": "lessons/t5-lesson-04.html",
+"t5l4-s3": "lessons/t5-lesson-04.html",
+"t5l4-s4": "lessons/t5-lesson-04.html",
 "track-theory": "theory/index.html"
 };
 window.DBTHeadings = {
@@ -1465,6 +1478,46 @@ window.DBTHeadings = {
 "t5l3-s5": {
 "ar": "لماذا يبقى COMPUTER وMOTHERBOARD منفصلين",
 "en": "Why COMPUTER and MOTHERBOARD stay apart"
+},
+"t5l4-h1": {
+"ar": "١ · كثير في الاتجاهين",
+"en": "1 · Many in both directions"
+},
+"t5l4-h2": {
+"ar": "٢ · لا تحشرها في «واحد إلى متعدّد»",
+"en": "2 · Do not squeeze it into a one-to-many"
+},
+"t5l4-h3": {
+"ar": "٣ · أين تسكن Grade؟",
+"en": "3 · Where does Grade live?"
+},
+"t5l4-h4": {
+"ar": "٤ · كل «متعدّد إلى متعدّد» تستحقّ السؤال",
+"en": "4 · Every many-to-many is worth asking"
+},
+"t5l4-h5": {
+"ar": "٥ · العلاقات الزائدة",
+"en": "5 · Redundant relationships"
+},
+"t5l4-h6": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t5l4-s1": {
+"ar": "جملتان، وكلتاهما «واحد أو أكثر»",
+"en": "Two sentences, both \"one or more\""
+},
+"t5l4-s2": {
+"ar": "شائعة في النسخة الأولى، غائبة عن الأخيرة",
+"en": "Common in a first version, gone from the last"
+},
+"t5l4-s3": {
+"ar": "قيمة واحدة لكلّ ماذا؟",
+"en": "One value per what?"
+},
+"t5l4-s4": {
+"ar": "زائدة فقط إن قالت الشيء نفسه",
+"en": "Redundant only if it says the same thing"
 },
 "track-theory": {
 "ar": "النظري — تصميم قواعد البيانات",

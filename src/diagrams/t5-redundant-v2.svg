@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 870 270" direction="ltr" role="img" aria-labelledby="t5-redundant-v2-t">
+<title id="t5-redundant-v2-t">Version 2: STUDENT join STUDY GROUP and STUDY GROUP supervised by TEACHER only; the direct line is removed / الإصدار 2: STUDENT join STUDY GROUP وSTUDY GROUP supervised by TEACHER فقط؛ وأُزيل الخط المباشر</title>
+<g class="en"><text x="435" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — the redundant line removed</text></g><g class="ar"><text x="435" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 2 — أُزيل الخط الزائد</text></g>
+<rect x="30" y="60" width="180" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="120.0" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="44" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="44" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="44" y="142" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="345" y="60" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="435.0" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDY GROUP</text>
+<text x="359" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="359" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="660" y="60" width="180" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="750.0" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">TEACHER</text>
+<text x="674" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="674" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Hire Date</text>
+<path d="M210 105 L277.5 105" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M277.5 105 L345 105" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M224 105 L210 97" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M224 105 L210 105" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M224 105 L210 113" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="228" y="97" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">join</text>
+<text x="337" y="123" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">have</text>
+<path d="M525 105 L592.5 105" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M592.5 105 L660 105" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M539 105 L525 97" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M539 105 L525 105" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M539 105 L525 113" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="543" y="97" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">supervised by</text>
+<text x="652" y="123" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">supervises</text>
+<rect x="30" y="176" width="810" height="30" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="46" y="196" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">STUDENT --join--&gt; STUDY GROUP --supervised by--&gt; TEACHER   = the student's supervisor</text>
+<rect x="30" y="214" width="810" height="54" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="46" y="235" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Fixed: one path, one answer. Nothing is lost — the supervisor is read through the study group.</text></g><g class="ar"><text x="824" y="235" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏أُصلح: مسار واحد، وجواب واحد. ولم يضِع شيء — فالمشرف يُقرأ عبر مجموعة الدراسة.</text></g>
+<g class="en"><text x="46" y="254" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">A student with no study group has no supervisor, exactly as the dashed half at STUDENT allows.</text></g><g class="ar"><text x="824" y="254" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏والطالب بلا مجموعة دراسة بلا مشرف، تمامًا كما يسمح النصف المتقطّع عند STUDENT.</text></g></svg>

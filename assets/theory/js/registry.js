@@ -856,7 +856,7 @@ window.DBT_REGISTRY = {
       "ar": "أين تسكن «الدرجة» — في الطالب أم في المادة؟ في لا واحد منهما: العلاقة هي التي تخفيها. وأيضًا: كيف تكتشف علاقة زائدة."
      },
      "href": "lessons/t5-lesson-04.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t5-test-04",

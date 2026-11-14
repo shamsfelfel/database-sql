@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 470" direction="ltr" role="img" aria-labelledby="t5-grade-hidden-t">
+<title id="t5-grade-hidden-t">Grade hangs from the STUDENT–SUBJECT line: it describes one student in one subject, so the relationship is hiding it / Grade معلّقة بخط STUDENT–SUBJECT: فهي تصف طالبًا واحدًا في مادة واحدة، والعلاقة تخفيها</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — Grade belongs to the pair</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 2 — Grade تنتمي إلى الزوج</text></g>
+<rect x="40" y="50" width="210" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="530" y="50" width="210" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="635.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SUBJECT</text>
+<text x="544" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="544" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M250 95 L390 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M390 95 L530 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M264 95 L250 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 95 L250 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 95 L250 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M516 95 L530 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M516 95 L530 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M516 95 L530 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="270" y="87" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">studies</text>
+<text x="522" y="113" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">studied by</text>
+<path d="M390 95 L390 170" style="stroke:var(--dg-warn, var(--text-soft));stroke-width:1.4;fill:none;stroke-dasharray:2 3"/>
+<circle cx="390" cy="95" r="4" style="fill:var(--dg-warn, var(--text-soft))"/>
+<rect x="295" y="170" width="190" height="44" rx="4" style="fill:var(--dg-warn-soft, var(--surface));stroke:var(--dg-warn, var(--text-soft));stroke-width:1.2;stroke-dasharray:5 3"/>
+<text x="390.0" y="197" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">o Grade</text>
+<rect x="160" y="236" width="150" height="22" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:0.8"/>
+<text x="170" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">STUDENT</text>
+<rect x="310" y="236" width="150" height="22" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:0.8"/>
+<text x="320" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">SUBJECT</text>
+<rect x="460" y="236" width="160" height="22" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:0.8"/>
+<text x="470" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">Grade</text>
+<rect x="160" y="258" width="150" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="170" y="272" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Sara</text>
+<rect x="310" y="258" width="150" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="320" y="272" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Maths</text>
+<rect x="460" y="258" width="160" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="470" y="272" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">A</text>
+<rect x="160" y="278" width="150" height="20" style="fill:var(--dg-row-even, var(--bg));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="170" y="292" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Sara</text>
+<rect x="310" y="278" width="150" height="20" style="fill:var(--dg-row-even, var(--bg));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="320" y="292" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Physics</text>
+<rect x="460" y="278" width="160" height="20" style="fill:var(--dg-row-even, var(--bg));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="470" y="292" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">B</text>
+<rect x="160" y="298" width="150" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="170" y="312" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Omar</text>
+<rect x="310" y="298" width="150" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="320" y="312" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Maths</text>
+<rect x="460" y="298" width="160" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="470" y="312" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">C</text>
+<rect x="160" y="318" width="150" height="20" style="fill:var(--dg-row-even, var(--bg));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="170" y="332" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Lina</text>
+<rect x="310" y="318" width="150" height="20" style="fill:var(--dg-row-even, var(--bg));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="320" y="332" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Physics</text>
+<rect x="460" y="318" width="160" height="20" style="fill:var(--dg-row-even, var(--bg));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="470" y="332" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">A</text>
+<rect x="160" y="338" width="150" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="170" y="352" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Lina</text>
+<rect x="310" y="338" width="150" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="320" y="352" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Arabic</text>
+<rect x="460" y="338" width="160" height="20" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:0.6"/>
+<text x="470" y="352" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">A</text>
+<rect x="40" y="380" width="700" height="73" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="401" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Each grade needs a STUDENT and a SUBJECT to mean anything: five grades, five pairs.</text></g><g class="ar"><text x="724" y="401" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏كل درجة تحتاج إلى STUDENT وSUBJECT معًا لتعني شيئًا: خمس درجات، خمسة أزواج.</text></g>
+<g class="en"><text x="56" y="420" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The M:M relationship is hiding an attribute. No box holds it yet — Lesson 5 gives it one.</text></g><g class="ar"><text x="724" y="420" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏علاقة ‎M:M تخفي خاصية. ولا يحملها أيّ صندوق بعد — والدرس 5 يعطيها صندوقًا.</text></g>
+<g class="en"><text x="56" y="439" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The dotted note is a sketch, not Oracle notation: attributes never sit on a line.</text></g><g class="ar"><text x="724" y="439" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏الملاحظة المنقّطة رسم توضيحي لا ترميز Oracle: فالخصائص لا توضع على الخط أبدًا.</text></g></svg>

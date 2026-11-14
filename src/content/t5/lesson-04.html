@@ -1,0 +1,489 @@
+<section class="page" id="t5-lesson-04">
+
+  <span class="kicker">Lesson 4</span>
+  <h1><span class="en">Many-to-Many, and the Attribute It Hides</span><span class="ar">متعدّد إلى متعدّد، والخاصية التي يخفيها</span></h1>
+  <p class="lede en">By the end of this lesson you will be able to recognise a many-to-many relationship, write its two sentences, explain why no table column can hold it, find the attribute it is hiding, and spot and remove a redundant relationship.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تتعرّف علاقة «متعدّد إلى متعدّد»، وأن تكتب جملتيها، وأن تشرح لماذا لا يتّسع لها أيّ عمود في جدول، وأن تجد الخاصية التي تخفيها، وأن تكتشف العلاقة الزائدة وتزيلها.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> <a href="#t5-lesson-02">Lesson 2</a> put a crow's foot at one end; <a href="#t5-lesson-03">Lesson 3</a> put a toe at both. This lesson puts a crow's foot at both ends. The case is the slides' own: <code>STUDENT</code> and <code>SUBJECT</code>, and the grade a student gets in a subject.</p>
+    <p class="ar"><strong>السياق.</strong> وضع <a href="#t5-lesson-02">الدرس 2</a> رِجل غراب عند طرف واحد، ووضع <a href="#t5-lesson-03">الدرس 3</a> إصبعًا عند الطرفين. أمّا هذا الدرس فيضع رِجل غراب عند الطرفين. والحالة من الشرائح نفسها: <code>STUDENT</code> و<code>SUBJECT</code>، والدرجة التي ينالها الطالب في المادة.</p>
+    <p class="en">You need Lesson 2's rule that the type is read from the two ends only, Chapter 2's <a href="#t2-lesson-05">single-valued attribute</a>, and the study groups of <a href="#t5-lesson-01">Lesson 1</a>.</p>
+    <p class="ar">تحتاج قاعدة الدرس 2: النوع يُقرأ من الطرفين فقط، و<a href="#t2-lesson-05">الخاصية أحادية القيمة</a> من الفصل 2، ومجموعات الدراسة من <a href="#t5-lesson-01">الدرس 1</a>.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Recognise and give examples of a many-to-many relationship, and write its two ERDish sentences.</li>
+      <li class="ar">التعرّف على علاقة «متعدّد إلى متعدّد» وإعطاء أمثلة عليها، وكتابة جملتَي ERDish لها.</li>
+      <li class="en">Explain why an M:M cannot become a foreign key, and what goes wrong when it is forced into a 1:M.</li>
+      <li class="ar">شرح لماذا لا يمكن أن تصير علاقة <bdi>M:M</bdi> مفتاحًا أجنبيًّا، وما الذي يفسد حين تُحشر في <bdi>1:M</bdi>.</li>
+      <li class="en">Identify an attribute that belongs to an M:M relationship rather than to either entity.</li>
+      <li class="ar">تحديد الخاصية التي تنتمي إلى علاقة <bdi>M:M</bdi> لا إلى أيّ من الكيانين.</li>
+      <li class="en">Recognise a redundant relationship on an ERD and remove it.</li>
+      <li class="ar">التعرّف على العلاقة الزائدة في المخطّط وإزالتها.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t5l4-h1"><span class="en">1 · Many in both directions</span><span class="ar">١ · كثير في الاتجاهين</span></h2>
+
+  <div class="problem">
+    <p class="en">The school timetable lists who studies what. Sara studies Maths and Physics. Maths is studied by Sara and Omar. Ask "how many subjects does a student study?" and the answer is many. Ask "how many students study a subject?" and the answer is many again. Neither end of this line is "one".</p>
+    <p class="ar">يسرد جدول المدرسة من يدرس ماذا. تدرس Sara الرياضيات والفيزياء، ويدرس الرياضياتِ Sara وOmar. اسأل «كم مادة يدرس الطالب؟» فالجواب: كثير. واسأل «كم طالبًا يدرس المادة؟» فالجواب: كثير أيضًا. لا طرف من طرفَي هذا الخط «واحد».</p>
+  </div>
+
+  <p class="en">The slides give the rules. In a school, a <code>STUDENT</code> may study one or more <code>SUBJECT</code>s. Each <code>SUBJECT</code> may be studied by one or more <code>STUDENT</code>s. Both sentences end in "one or more", so both ends are a crow's foot.</p>
+  <p class="ar">تعطي الشرائح القواعد. في المدرسة، «قد» يدرس الطالب <code>STUDENT</code> مادةً <code>SUBJECT</code> واحدة أو أكثر. و«قد» يدرس كلَّ <code>SUBJECT</code> طالبٌ واحد أو أكثر. والجملتان تنتهيان بـ«واحد أو أكثر»، فالطرفان كلاهما رِجل غراب.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="many-to-many">many-to-many (M:M)</span> relationship has cardinality of one or more in both directions.</p>
+    <p class="ar"><strong>تعريف.</strong> علاقة <span class="term" data-term="many-to-many">متعدّد إلى متعدّد (Many-to-many, <bdi>M:M</bdi>)</span> تعدّديتها «واحد أو أكثر» في الاتجاهين كليهما.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t5-student-subject"><figcaption><span class="en">A crow's foot at both ends makes the line M:M. Both halves are dashed because both sentences say <em>may</em>: a new student may have no subject yet, and a new subject may have no students.</span><span class="ar">رِجل غراب عند الطرفين تجعل الخط <bdi>M:M</bdi>. والنصفان متقطّعان لأن الجملتين تقولان <em>may</em>: قد لا تكون للطالب الجديد مادة بعد، وقد لا يكون للمادة الجديدة طلاب.</span></figcaption></figure>
+
+  <h3 id="t5l4-s1"><span class="en">Two sentences, both "one or more"</span><span class="ar">جملتان، وكلتاهما «واحد أو أكثر»</span></h3>
+
+  <p class="en">The type test is the same as in Lessons 2 and 3: read the two ends. The halves still say <em>must</em> or <em>may</em> on their own. The slides' second example is <code>STUDENT</code> <em>learns from</em> <code>TEACHER</code>, and <code>TEACHER</code> <em>educates</em> <code>STUDENT</code>: a student learns from many teachers, and a teacher educates many students.</p>
+  <p class="ar">اختبار النوع هو نفسه في الدرسين 2 و3: اقرأ الطرفين. وما زال النصفان يقولان <em>must</em> أو <em>may</em> كلٌّ على حدة. والمثال الثاني في الشرائح هو <code>STUDENT</code> <em>learns from</em> <code>TEACHER</code>، و<code>TEACHER</code> <em>educates</em> <code>STUDENT</code>: فالطالب يتعلّم من معلّمين كثيرين، والمعلّم يعلّم طلابًا كثيرين.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">In a 1:M the key goes in the child, one parent id per row. In an M:M both ends are crow's feet, so both tables would be the child. A <code>students.subject_id</code> column holds one subject per row; Sara needs two. A <code>subjects.student_id</code> column holds one student; Maths needs two. No foreign key column can hold this line.</p>
+    <p class="ar">في علاقة <bdi>1:M</bdi> يذهب المفتاح إلى الابن، معرّف أبٍ واحد في كل صفّ. أمّا في <bdi>M:M</bdi> فالطرفان رِجلا غراب، فيكون الجدولان كلاهما ابنًا. العمود <code>students.subject_id</code> يحمل مادة واحدة في الصفّ، وSara تحتاج إلى اثنتين. والعمود <code>subjects.student_id</code> يحمل طالبًا واحدًا، والرياضيات تحتاج إلى اثنين. فلا يتّسع أيّ عمود مفتاح أجنبي لهذا الخط.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A line meets <code>STUDENT</code> with a crow's foot and <code>TEACHER</code> with a crow's foot. Its <code>STUDENT</code> half is solid. What type is it?</p>
+    <p class="q ar">يلتقي خطّ بـ <code>STUDENT</code> برِجل غراب، وبـ <code>TEACHER</code> برِجل غراب، ونصف <code>STUDENT</code> منه متّصل. ما نوعه؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">1:M &mdash; the solid half makes <code>STUDENT</code> the child</span><span class="ar">1:M &mdash; النصف المتّصل يجعل <code>STUDENT</code> الابن</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">M:M &mdash; the halves never change the type</span><span class="ar">M:M &mdash; النصفان لا يغيّران النوع أبدًا</span></button></li>
+      <li><button class="opt"><span class="en">Not valid: an M:M must be dashed at both ends</span><span class="ar">غير صالحة: علاقة M:M يجب أن تكون متقطّعة عند الطرفين</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Crow's foot and crow's foot is M:M, whatever the halves say. The solid half only means each student <em>must</em> learn from at least one teacher. The slides' M:M happens to be dashed at both ends; that is the business, not a rule.</p>
+      <p class="ar">رِجل غراب ورِجل غراب: <bdi>M:M</bdi>، أيًّا كان ما يقوله النصفان. والنصف المتّصل يعني فقط أن كل طالب <em>يجب</em> أن يتعلّم من معلّم واحد على الأقل. وكون علاقة الشرائح متقطّعة عند الطرفين أمر يقرّره العمل، لا قاعدة.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which pair of sentences describes a many-to-many?</p>
+    <p class="q ar">أيّ زوج من الجمل يصف علاقة «متعدّد إلى متعدّد»؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Each <code>STUDENT</code> may join one and only one <code>STUDY GROUP</code>; each <code>STUDY GROUP</code> must have one or more <code>STUDENT</code>s.</span><span class="ar">Each <code>STUDENT</code> may join one and only one <code>STUDY GROUP</code>; each <code>STUDY GROUP</code> must have one or more <code>STUDENT</code>s.</span></button></li>
+      <li><button class="opt"><span class="en">Each <code>COMPUTER</code> must contain one and only one <code>MOTHERBOARD</code>; each <code>MOTHERBOARD</code> must be contained in one and only one <code>COMPUTER</code>.</span><span class="ar">Each <code>COMPUTER</code> must contain one and only one <code>MOTHERBOARD</code>; each <code>MOTHERBOARD</code> must be contained in one and only one <code>COMPUTER</code>.</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Each <code>TEACHER</code> may educate one or more <code>STUDENT</code>s; each <code>STUDENT</code> may learn from one or more <code>TEACHER</code>s.</span><span class="ar">Each <code>TEACHER</code> may educate one or more <code>STUDENT</code>s; each <code>STUDENT</code> may learn from one or more <code>TEACHER</code>s.</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Only the third says "one or more" in both directions. The first is Lesson 1's 1:M, the second Lesson 3's 1:1.</p>
+      <p class="ar">الثالث وحده يقول «واحد أو أكثر» في الاتجاهين. أمّا الأول فعلاقة <bdi>1:M</bdi> من الدرس 1، والثاني علاقة <bdi>1:1</bdi> من الدرس 3.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t5l4-h2"><span class="en">2 · Do not squeeze it into a one-to-many</span><span class="ar">٢ · لا تحشرها في «واحد إلى متعدّد»</span></h2>
+
+  <div class="problem">
+    <p class="en">A first draft gives <code>STUDENT</code> a line to <code>SUBJECT</code> with a single toe at <code>SUBJECT</code>, because a foreign key is easy to build. Then Sara signs up for Physics as well as Maths. The model has room for one subject per student, so the clerk adds Sara a second time.</p>
+    <p class="ar">تعطي مسودّة أولى <code>STUDENT</code> خطًّا إلى <code>SUBJECT</code> بإصبع واحدة عند <code>SUBJECT</code>، لأن المفتاح الأجنبي سهل البناء. ثم تسجّل Sara في الفيزياء إضافةً إلى الرياضيات. والنموذج لا يتّسع إلا لمادة واحدة لكل طالب، فيضيف الموظّف Sara مرّة ثانية.</p>
+  </div>
+
+  <div class="evolve" id="t5l4-e1">
+    <div class="ver" data-title-en="Version 1 — a single toe at SUBJECT" data-title-ar="الإصدار 1 — إصبع واحدة عند SUBJECT">
+      <figure class="diagram" data-diagram="t5-subject-v1"></figure>
+      <p class="en">Defect: wrong cardinality at <code>SUBJECT</code>. The line is a 1:M, so each student may study one and only one subject. Sara's second subject is not a legal instance; recording it means a second <code>STUDENT</code> for one girl.</p>
+      <p class="ar">العيب: تعدّدية خاطئة عند <code>SUBJECT</code>. الخط <bdi>1:M</bdi>، فلا يدرس الطالب إلا مادة واحدة فقط لا غير. ومادة Sara الثانية ليست نسخة مشروعة؛ وتسجيلها يعني <code>STUDENT</code> ثانيًا لفتاة واحدة.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — a crow's foot at both ends" data-title-ar="الإصدار 2 — رِجل غراب عند الطرفين">
+      <figure class="diagram" data-diagram="t5-student-subject"></figure>
+      <p class="en">Fixed: the slides' model. A crow's foot at <code>SUBJECT</code> lets Sara study Maths and Physics as one student. The halves did not change. This is the honest model of the business &mdash; and, for this lesson, the recommended form.</p>
+      <p class="ar">أُصلح: نموذج الشرائح. رِجل الغراب عند <code>SUBJECT</code> تسمح لـ Sara أن تدرس الرياضيات والفيزياء وهي طالبة واحدة. ولم يتغيّر النصفان. وهذا هو النموذج الصادق للعمل &mdash; وهو، في هذا الدرس، الشكل الموصى به.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 1 becomes <code>students.subject_id</code>. Sara (1001) studies Maths (1). Now give her Physics (2) the only way this table allows &mdash; another row:</p>
+    <p class="ar">يصير الإصدار 1 العمود <code>students.subject_id</code>. تدرس Sara (1001) الرياضيات (1). والآن أعطها الفيزياء (2) بالطريقة الوحيدة التي يسمح بها هذا الجدول &mdash; صفّ آخر:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE subjects (subject_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO subjects VALUES (1,'Maths'), (2,'Physics'), (3,'Arabic')","CREATE TABLE students (student_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, subject_id NUMBER)","INSERT INTO students VALUES (1001,'Sara','Hamdan',1), (1002,'Omar','Khalil',1), (1003,'Lina','Nasser',2)"],"sql":"INSERT INTO students VALUES (1001,'Sara','Hamdan',2);"}
+      </script>
+    </div>
+    <p class="en">It fails with <code>Cannot insert record, because it already exists in primary key index</code>: student 1001 exists. Drop the primary key and the row goes in &mdash; but now Sara's name is stored twice, and Chapter 2's update anomaly is back. The table is telling you the line is not a 1:M.</p>
+    <p class="ar">يفشل برسالة <code>Cannot insert record, because it already exists in primary key index</code>: فالطالب 1001 موجود. احذف المفتاح الأساسي فيدخل الصفّ &mdash; لكن اسم Sara صار مخزّنًا مرّتين، وعاد شذوذ التحديث من الفصل 2. فالجدول يخبرك أن الخط ليس <bdi>1:M</bdi>.</p>
+  </div>
+
+  <h3 id="t5l4-s2"><span class="en">Common in a first version, gone from the last</span><span class="ar">شائعة في النسخة الأولى، غائبة عن الأخيرة</span></h3>
+
+  <p class="en">The slides say M:M relationships are common, particularly in a <span class="term" data-term="first-version">first version</span> of an ER model. Draw them: they are the truth about the business. In later stages of the modelling process, the slides add, all M:M relationships will be resolved, and disappear. Lesson 5 shows how.</p>
+  <p class="ar">تقول الشرائح إن علاقات <bdi>M:M</bdi> شائعة، خصوصًا في <span class="term" data-term="first-version">النسخة الأولى</span> (First version) من نموذج الكيانات والعلاقات. فارسمها: إنها الحقيقة عن العمل. وتضيف الشرائح أنه في المراحل اللاحقة من النمذجة ستُحَلّ كل علاقات <bdi>M:M</bdi>، وتختفي. ويبيّن الدرس 5 كيف.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="first-version">first version</span> of an ER model is the early draft that records the business rules as they are stated, M:M relationships included, before any of them is resolved.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="first-version">النسخة الأولى</span> (First version) من نموذج الكيانات والعلاقات هي المسودّة المبكّرة التي تسجّل قواعد العمل كما تُقال، ومعها علاقات <bdi>M:M</bdi>، قبل أن يُحَلّ أيّ منها.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Version 1 is replaced by version 2. Which defect does version 2 close?</p>
+    <p class="q ar">حلّ الإصدار 2 محلّ الإصدار 1. أيّ عيب يُغلقه الإصدار 2؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A subject could exist with no students</span><span class="ar">كان يمكن أن توجد مادة بلا طلاب</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A student could study only one subject</span><span class="ar">كان الطالب لا يستطيع أن يدرس إلا مادة واحدة</span></button></li>
+      <li><button class="opt"><span class="en">The grade had nowhere to go</span><span class="ar">لم يكن للدرجة مكان</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Only the end at <code>SUBJECT</code> changed, from toe to crow's foot. Both halves were dashed in both versions, so an empty subject was legal all along. And the grade still has nowhere to go in version 2 &mdash; that is section 3.</p>
+      <p class="ar">لم يتغيّر إلا الطرف عند <code>SUBJECT</code>، من إصبع إلى رِجل غراب. والنصفان كانا متقطّعين في الإصدارين، فالمادة الفارغة مشروعة من البداية. أمّا الدرجة فما زالت بلا مكان في الإصدار 2 &mdash; وهذا هو القسم 3.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t5l4-h3"><span class="en">3 · Where does Grade live?</span><span class="ar">٣ · أين تسكن Grade؟</span></h2>
+
+  <div class="problem">
+    <p class="en">The school now wants to record the grade each student attains in each subject. Sara got an A in Maths and a B in Physics. The model has two boxes and a line. The slides ask the obvious question: which entity would the attribute <code>Grade</code> belong to?</p>
+    <p class="ar">تريد المدرسة الآن أن تسجّل الدرجة التي ينالها كل طالب في كل مادة. نالت Sara A في الرياضيات وB في الفيزياء. وفي النموذج صندوقان وخطّ. وتطرح الشرائح السؤال البديهي: إلى أيّ كيان تنتمي الخاصية <code>Grade</code>؟</p>
+  </div>
+
+  <p class="en">The slides answer with two more questions. If we put <code>Grade</code> in <code>STUDENT</code>, how would we know which <code>SUBJECT</code> it is for? If we put it in <code>SUBJECT</code>, how would we know which <code>STUDENT</code> got that grade? Each box knows only half of what a grade means.</p>
+  <p class="ar">تجيب الشرائح بسؤالين آخرين. لو وضعنا <code>Grade</code> في <code>STUDENT</code>، فكيف نعرف لأيّ <code>SUBJECT</code> هي؟ ولو وضعناها في <code>SUBJECT</code>، فكيف نعرف أيّ <code>STUDENT</code> نال تلك الدرجة؟ فكل صندوق لا يعرف إلا نصف معنى الدرجة.</p>
+
+  <div class="evolve" id="t5l4-e2">
+    <div class="ver" data-title-en="Version 1 — Grade inside an entity" data-title-ar="الإصدار 1 — Grade داخل أحد الكيانين">
+      <figure class="diagram" data-diagram="t5-grade-misplaced"></figure>
+      <p class="en">Defect: a <span class="term" data-term="misplaced-attribute">misplaced attribute</span>. In <code>STUDENT</code>, one grade per student, with no subject. In <code>SUBJECT</code>, one grade per subject, with no student. Either way the model stores one value where the business has one value per pair.</p>
+      <p class="ar">العيب: <span class="term" data-term="misplaced-attribute">خاصية في غير موضعها</span> (Misplaced attribute). في <code>STUDENT</code>: درجة واحدة لكل طالب، بلا مادة. وفي <code>SUBJECT</code>: درجة واحدة لكل مادة، بلا طالب. وفي الحالتين يخزّن النموذج قيمة واحدة حيث للعمل قيمة لكل زوج.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — Grade belongs to the relationship" data-title-ar="الإصدار 2 — Grade تنتمي إلى العلاقة">
+      <figure class="diagram" data-diagram="t5-grade-hidden"></figure>
+      <p class="en">Fixed in thought, not yet in boxes: <code>Grade</code> is recognised as an attribute of the <code>STUDENT</code>&ndash;<code>SUBJECT</code> relationship. Five grades, five pairs. This is the right diagnosis; Lesson 5 turns it into a model.</p>
+      <p class="ar">أُصلح في الفهم، لا في الصناديق بعد: عُرفت <code>Grade</code> خاصيةً لعلاقة <code>STUDENT</code>&ndash;<code>SUBJECT</code>. خمس درجات، خمسة أزواج. وهذا هو التشخيص الصحيح، ويحوّله الدرس 5 إلى نموذج.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="hidden-attribute">relationship hiding an attribute</span> is an M:M relationship that carries an attribute describing one pair of instances &mdash; one from each entity &mdash; so the attribute belongs to neither entity.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="hidden-attribute">العلاقة التي تخفي خاصية</span> (Relationship hiding an attribute) علاقة <bdi>M:M</bdi> تحمل خاصية تصف زوجًا واحدًا من النسخ &mdash; نسخة من كل كيان &mdash; فلا تنتمي الخاصية إلى أيّ من الكيانين.</p>
+  </div>
+
+  <h3 id="t5l4-s3"><span class="en">One value per what?</span><span class="ar">قيمة واحدة لكلّ ماذا؟</span></h3>
+
+  <p class="en">An attribute holds one value for each instance of its entity &mdash; that is Chapter 2's single-valued rule. So ask the <span class="term" data-term="pair-test">pair test</span>: one value per <em>what</em>? <code>First Name</code>: one per student. <code>Name</code>: one per subject. <code>Grade</code>: one per student <em>in</em> a subject. That last answer names a pair, not an entity.</p>
+  <p class="ar">الخاصية تحمل قيمة واحدة لكل نسخة من كيانها &mdash; وهذه قاعدة «أحادية القيمة» من الفصل 2. فاطرح <span class="term" data-term="pair-test">اختبار الزوج</span> (Pair test): قيمة واحدة لكلّ <em>ماذا</em>؟ <code>First Name</code>: واحدة لكل طالب. <code>Name</code>: واحدة لكل مادة. <code>Grade</code>: واحدة لكل طالب <em>في</em> مادة. والجواب الأخير يسمّي زوجًا، لا كيانًا.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Build version 1A: a <code>grade</code> column in <code>students</code>. Sara's Maths A is stored. Then her Physics result arrives:</p>
+    <p class="ar">ابنِ الإصدار 1أ: عمود <code>grade</code> في <code>students</code>. خُزّنت A التي نالتها Sara في الرياضيات. ثم وصلت نتيجتها في الفيزياء:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE students (student_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, grade VARCHAR(2))","INSERT INTO students VALUES (1001,'Sara','A'), (1002,'Omar','C'), (1003,'Lina','A')"],"sql":"UPDATE students SET grade = 'B' WHERE student_id = 1001;\n\nSELECT student_id, first_name, grade\nFROM students\nORDER BY student_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>student_id</code></th><th><code>first_name</code></th><th><code>grade</code></th></tr></thead>
+          <tbody>
+            <tr><td>1001</td><td>Sara</td><td>B</td></tr>
+            <tr><td>1002</td><td>Omar</td><td>C</td></tr>
+            <tr><td>1003</td><td>Lina</td><td>A</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">The update succeeded and the Maths A is gone: the B overwrote it. Nothing in the row says which subject either grade was for. The query "who got an A in Maths?" cannot be written against this table at all.</p>
+    <p class="ar">نجح التعديل وضاعت A الرياضيات: فقد كتبت B فوقها. ولا شيء في الصفّ يقول لأيّ مادة كانت أيّ من الدرجتين. والاستعلام «من نال A في الرياضيات؟» لا يمكن كتابته على هذا الجدول أصلًا.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Version 1 is replaced by version 2. Which defect does version 2 name?</p>
+    <p class="q ar">حلّ الإصدار 2 محلّ الإصدار 1. أيّ عيب يسمّيه الإصدار 2؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>Grade</code> was mandatory and should be optional</span><span class="ar">كانت <code>Grade</code> إلزامية ويجب أن تكون اختيارية</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>Grade</code> describes one student in one subject, so neither entity can hold it</span><span class="ar"><code>Grade</code> تصف طالبًا واحدًا في مادة واحدة، فلا يستطيع أيّ من الكيانين حملها</span></button></li>
+      <li><button class="opt"><span class="en">The line should have been 1:M after all</span><span class="ar">كان يجب أن يكون الخط <bdi>1:M</bdi> في النهاية</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Version 2 changes where <code>Grade</code> belongs, not whether it is required &mdash; it is <code>o Grade</code> in both. And going back to 1:M would only bring section 2's defect back.</p>
+      <p class="ar">يغيّر الإصدار 2 مكان انتماء <code>Grade</code>، لا كونها مطلوبة أو لا &mdash; فهي <code>o Grade</code> في الإصدارين. والعودة إلى <bdi>1:M</bdi> لا تفعل إلا أن تعيد عيب القسم 2.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Apply the pair test. Which attribute is hidden by the <code>STUDENT</code>&ndash;<code>SUBJECT</code> relationship?</p>
+    <p class="q ar">طبّق اختبار الزوج. أيّ خاصية تخفيها علاقة <code>STUDENT</code>&ndash;<code>SUBJECT</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>Date Of Birth</code> &mdash; one per student</span><span class="ar"><code>Date Of Birth</code> &mdash; واحد لكل طالب</span></button></li>
+      <li><button class="opt"><span class="en"><code>Credit Hours</code> &mdash; one per subject</span><span class="ar"><code>Credit Hours</code> &mdash; واحدة لكل مادة</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>Enrolment Date</code> &mdash; the day this student joined this subject</span><span class="ar"><code>Enrolment Date</code> &mdash; اليوم الذي التحق فيه هذا الطالب بهذه المادة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Sara joined Maths in September and Physics in October: one date per pair. A date of birth belongs to <code>STUDENT</code>, and credit hours to <code>SUBJECT</code> &mdash; they pass the "one per entity" answer.</p>
+      <p class="ar">التحقت Sara بالرياضيات في أيلول وبالفيزياء في تشرين الأول: تاريخ واحد لكل زوج. أمّا تاريخ الميلاد فينتمي إلى <code>STUDENT</code>، والساعات المعتمدة إلى <code>SUBJECT</code> &mdash; فجوابهما «واحد لكل كيان».</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t5l4-h4"><span class="en">4 · Every many-to-many is worth asking</span><span class="ar">٤ · كل «متعدّد إلى متعدّد» تستحقّ السؤال</span></h2>
+
+  <div class="problem">
+    <p class="en">A TV channel wants to know how its viewers rate its shows. A cleaning agency wants to price each service each company provides. Both businesses have an M:M in their first version, and both have something to record that no single box can hold.</p>
+    <p class="ar">تريد قناة تلفزيونية أن تعرف كيف يقيّم مشاهدوها برامجها. وتريد وكالة تنظيف أن تسعّر كل خدمة تقدّمها كل شركة. ولكلا العملين علاقة <bdi>M:M</bdi> في نسخته الأولى، ولكليهما شيء يريد تسجيله لا يتّسع له أيّ صندوق منفرد.</p>
+  </div>
+
+  <p class="en">The slides give both rules. Each <code>TV SHOW</code> may be watched by one or more <code>PERSON</code>s; each <code>PERSON</code> may watch one or more <code>TV SHOW</code>s. Each <code>CLEANING COMPANY</code> may provide one or more <code>CLEANING SERVICE</code>s; each <code>CLEANING SERVICE</code> may be provided by one or more companies.</p>
+  <p class="ar">تعطي الشرائح القاعدتين. «قد» يشاهد كلَّ <code>TV SHOW</code> شخصٌ <code>PERSON</code> واحد أو أكثر، و«قد» يشاهد كلُّ <code>PERSON</code> برنامجًا واحدًا أو أكثر. و«قد» تقدّم كلُّ <code>CLEANING COMPANY</code> خدمة <code>CLEANING SERVICE</code> واحدة أو أكثر، و«قد» تقدّم كلَّ <code>CLEANING SERVICE</code> شركةٌ واحدة أو أكثر.</p>
+  <p class="en">Run the pair test on each fact the business wants. A rating is one per person per show. A price is one per company per service. Whenever the answer names two entities, the M:M is hiding that attribute.</p>
+  <p class="ar">طبّق اختبار الزوج على كل حقيقة يريدها العمل. فالتقييم واحد لكل شخص في كل برنامج. والسعر واحد لكل شركة في كل خدمة. وكلّما سمّى الجواب كيانين، فالعلاقة <bdi>M:M</bdi> تخفي تلك الخاصية.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Fact</th><th class="ar">الحقيقة</th><th class="en">One value per&hellip;</th><th class="ar">قيمة واحدة لكلّ&hellip;</th><th class="en">Belongs to</th><th class="ar">تنتمي إلى</th></tr></thead>
+      <tbody>
+        <tr><td class="en"><code>Title</code></td><td class="ar"><code>Title</code></td><td class="en">show</td><td class="ar">برنامج</td><td class="en"><code>TV SHOW</code></td><td class="ar"><code>TV SHOW</code></td></tr>
+        <tr><td class="en"><code>Rating</code></td><td class="ar"><code>Rating</code></td><td class="en">person and show</td><td class="ar">شخص وبرنامج</td><td class="en">the M:M &mdash; hidden</td><td class="ar">علاقة M:M &mdash; مخفيّة</td></tr>
+        <tr><td class="en"><code>Phone</code></td><td class="ar"><code>Phone</code></td><td class="en">company</td><td class="ar">شركة</td><td class="en"><code>CLEANING COMPANY</code></td><td class="ar"><code>CLEANING COMPANY</code></td></tr>
+        <tr><td class="en"><code>Price</code></td><td class="ar"><code>Price</code></td><td class="en">company and service</td><td class="ar">شركة وخدمة</td><td class="en">the M:M &mdash; hidden</td><td class="ar">علاقة M:M &mdash; مخفيّة</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The tempting shortcut is a list in one column: <code>persons.ratings = 'News 4, Drama 2'</code>. That breaks the single-valued rule of <a href="#t2-lesson-05">Chapter 2</a>, and "average rating of <em>News</em>" becomes string surgery instead of a query. A hidden attribute needs a row per pair &mdash; a row no current table has.</p>
+    <p class="ar">الاختصار المغري قائمة في عمود واحد: <code>persons.ratings = 'News 4, Drama 2'</code>. وهذا يخرق قاعدة «أحادية القيمة» من <a href="#t2-lesson-05">الفصل 2</a>، ويصير «متوسط تقييم <em>News</em>» تقطيعًا للنصوص بدل أن يكون استعلامًا. فالخاصية المخفية تحتاج إلى صفّ لكل زوج &mdash; صفّ ليس في أيّ جدول حاليّ.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapter 3</span><span class="ar">خيط · الفصل 3 في SQL</span></h4>
+    <p class="en">On the SQL track, <a href="@/chapters/chapter-3.html">Chapter 3 &mdash; Relationships</a> links two tables with one foreign key in the child. Every relationship it meets is a 1:M. This lesson shows the shape that key cannot carry, and the attribute that comes with it; Lesson 5 and the chapter lab build the table that does.</p>
+    <p class="ar">في مسار SQL، يربط <a href="@/chapters/chapter-3.html">الفصل 3 &mdash; العلاقات</a> جدولين بمفتاح أجنبي واحد في الابن. وكل علاقة يقابلها هي <bdi>1:M</bdi>. أمّا هذا الدرس فيُريك الشكل الذي لا يستطيع ذلك المفتاح حمله، والخاصية التي تأتي معه؛ ويبني الدرس 5 ومختبر الفصل الجدول الذي يحمله.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The cleaning agency also records the <code>Start Date</code> on which a company began offering a service. Where does it belong?</p>
+    <p class="q ar">تسجّل وكالة التنظيف أيضًا <code>Start Date</code>، اليوم الذي بدأت فيه شركة تقديم خدمة. أين تنتمي؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>CLEANING COMPANY</code> &mdash; the company starts it</span><span class="ar"><code>CLEANING COMPANY</code> &mdash; فالشركة هي التي تبدأ</span></button></li>
+      <li><button class="opt"><span class="en"><code>CLEANING SERVICE</code> &mdash; the service is what starts</span><span class="ar"><code>CLEANING SERVICE</code> &mdash; فالخدمة هي التي تبدأ</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The M:M between them &mdash; one date per company per service</span><span class="ar">علاقة M:M بينهما &mdash; تاريخ واحد لكل شركة في كل خدمة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">One company starts window cleaning in March and carpet cleaning in June; another starts window cleaning in May. The date needs both a company and a service, so the relationship is hiding it.</p>
+      <p class="ar">قد تبدأ شركة تنظيف النوافذ في آذار وتنظيف السجّاد في حزيران، وتبدأ شركة أخرى تنظيف النوافذ في أيار. فالتاريخ يحتاج إلى شركة وخدمة معًا، والعلاقة تخفيه.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t5l4-h5"><span class="en">5 · Redundant relationships</span><span class="ar">٥ · العلاقات الزائدة</span></h2>
+
+  <div class="problem">
+    <p class="en">At this school, a student's supervisor is the teacher who supervises the student's study group. A draft model draws that rule twice: <code>STUDENT</code> to <code>STUDY GROUP</code> to <code>TEACHER</code>, and also a direct line from <code>STUDENT</code> to <code>TEACHER</code>. One day the office asks who supervises Omar and gets two different answers.</p>
+    <p class="ar">في هذه المدرسة، مشرف الطالب هو المعلّم الذي يشرف على مجموعة دراسته. وترسم مسودّةٌ هذه القاعدة مرّتين: من <code>STUDENT</code> إلى <code>STUDY GROUP</code> إلى <code>TEACHER</code>، وخطًّا مباشرًا أيضًا من <code>STUDENT</code> إلى <code>TEACHER</code>. وفي يومٍ تسأل الإدارة من يشرف على Omar فتحصل على جوابين مختلفين.</p>
+  </div>
+
+  <p class="en">The slides ask you to recognise <span class="term" data-term="redundant-relationship">redundant</span> relationships and remove them from the ERD. A relationship is redundant when the same fact can already be read by following other lines &mdash; a <span class="term" data-term="relationship-path">relationship path</span>. The direct line adds no information; it only adds a second place to keep it.</p>
+  <p class="ar">تطلب الشرائح أن تتعرّف العلاقات <span class="term" data-term="redundant-relationship">الزائدة</span> (Redundant) وتزيلها من المخطّط. والعلاقة زائدة حين يمكن قراءة الحقيقة نفسها باتّباع خطوط أخرى &mdash; أي عبر <span class="term" data-term="relationship-path">مسار علاقات</span> (Relationship path). فالخط المباشر لا يضيف معلومة؛ إنه يضيف فقط مكانًا ثانيًا لحفظها.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="redundant-relationship">redundant relationship</span> is one whose information can be derived from other relationships in the model, and which should therefore be removed.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="redundant-relationship">العلاقة الزائدة</span> (Redundant relationship) علاقة يمكن اشتقاق معلوماتها من علاقات أخرى في النموذج، ولذلك يجب أن تُزال.</p>
+  </div>
+
+  <div class="evolve" id="t5l4-e3">
+    <div class="ver" data-title-en="Version 1 — a direct STUDENT–TEACHER line as well" data-title-ar="الإصدار 1 — خطّ مباشر STUDENT–TEACHER أيضًا">
+      <figure class="diagram" data-diagram="t5-redundant-v1"></figure>
+      <p class="en">Defect: a redundant relationship. Following <em>join</em> then <em>supervised by</em> already gives each student one supervisor. The lower line stores the same fact a second time, so the two copies can disagree &mdash; and for Omar they do.</p>
+      <p class="ar">العيب: علاقة زائدة. اتّباع <em>join</em> ثم <em>supervised by</em> يعطي كل طالب مشرفًا واحدًا من قبل. والخط السفلي يخزّن الحقيقة نفسها مرّة ثانية، فقد تختلف النسختان &mdash; وفي حالة Omar تختلفان.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — the redundant line removed" data-title-ar="الإصدار 2 — أُزيل الخط الزائد">
+      <figure class="diagram" data-diagram="t5-redundant-v2"></figure>
+      <p class="en">Fixed: the direct line is deleted. Every supervisor is read through the study group, so there is one answer and nothing to keep in step. No business fact was lost. This is the recommended form.</p>
+      <p class="ar">أُصلح: حُذف الخط المباشر. فكل مشرف يُقرأ عبر مجموعة الدراسة، فهناك جواب واحد ولا شيء يلزم إبقاؤه متوافقًا. ولم تضِع أيّ حقيقة من حقائق العمل. وهذا هو الشكل الموصى به.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 1 becomes two keys: <code>study_groups.teacher_id</code> and <code>students.teacher_id</code>. Rana is teacher 31, Khaled 32. Ask where the two copies disagree:</p>
+    <p class="ar">يصير الإصدار 1 مفتاحين: <code>study_groups.teacher_id</code> و<code>students.teacher_id</code>. Rana هي المعلّمة 31، وKhaled هو 32. اسأل أين تختلف النسختان:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE teachers (teacher_id NUMBER PRIMARY KEY, hire_date VARCHAR(10) NOT NULL)","INSERT INTO teachers VALUES (31,'2019-09-01'), (32,'2021-02-01')","CREATE TABLE study_groups (group_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL, teacher_id NUMBER NOT NULL)","INSERT INTO study_groups VALUES (1,'Algebra Circle',31), (2,'Data Club',32)","CREATE TABLE students (student_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, group_id NUMBER, teacher_id NUMBER)","INSERT INTO students VALUES (1001,'Sara','Hamdan',1,31), (1002,'Omar','Khalil',1,32), (1003,'Lina','Nasser',2,32), (1004,'Yousef','Odeh',NULL,NULL)"],"sql":"SELECT s.first_name, g.name AS study_group,\n       g.teacher_id AS group_says, s.teacher_id AS student_says\nFROM students s JOIN study_groups g ON g.group_id = s.group_id\nWHERE s.teacher_id <> g.teacher_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>first_name</code></th><th><code>study_group</code></th><th><code>group_says</code></th><th><code>student_says</code></th></tr></thead>
+          <tbody>
+            <tr><td>Omar</td><td>Algebra Circle</td><td>31</td><td>32</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">One fact, two columns, two answers. In version 2 <code>students</code> has no <code>teacher_id</code>; the supervisor is a join, and it cannot contradict itself:</p>
+    <p class="ar">حقيقة واحدة، عمودان، جوابان. أمّا في الإصدار 2 فلا يوجد <code>teacher_id</code> في <code>students</code>؛ والمشرف ربطٌ، ولا يمكن أن يناقض نفسه:</p>
+    <pre class="code" data-lang="sql"><code>SELECT s.first_name, g.name AS study_group, g.teacher_id AS supervisor
+FROM students s JOIN study_groups g ON g.group_id = s.group_id
+ORDER BY s.student_id;</code></pre>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>first_name</code></th><th><code>study_group</code></th><th><code>supervisor</code></th></tr></thead>
+          <tbody>
+            <tr><td>Sara</td><td>Algebra Circle</td><td>31</td></tr>
+            <tr><td>Omar</td><td>Algebra Circle</td><td>31</td></tr>
+            <tr><td>Lina</td><td>Data Club</td><td>32</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h3 id="t5l4-s4"><span class="en">Redundant only if it says the same thing</span><span class="ar">زائدة فقط إن قالت الشيء نفسه</span></h3>
+
+  <p class="en">A second path between two entities is not proof of redundancy. Apply the <span class="term" data-term="same-meaning-test">same-meaning test</span>: read the direct line in ERDish, then read the path. If the business means the same thing by both, the direct line is redundant. If it means something else, keep it.</p>
+  <p class="ar">وجود مسار ثانٍ بين كيانين ليس دليلًا على الزيادة. طبّق <span class="term" data-term="same-meaning-test">اختبار المعنى نفسه</span> (Same-meaning test): اقرأ الخط المباشر بلغة ERDish، ثم اقرأ المسار. فإن عنى العمل بهما الشيء نفسه فالخط المباشر زائد، وإن عنى شيئًا آخر فأبقِه.</p>
+  <p class="en">Suppose the school also gives each student a personal <em>tutor</em>, chosen freely from any teacher. Omar's tutor can be Khaled while his group's supervisor is Rana. That line, <code>STUDENT</code> <em>tutored by</em> <code>TEACHER</code>, records a new fact. It is not redundant.</p>
+  <p class="ar">لنفترض أن المدرسة تعطي كل طالب أيضًا <em>مرشدًا</em> شخصيًّا، يُختار بحرّية من أيّ معلّم. فقد يكون مرشد Omar هو Khaled بينما مشرف مجموعته Rana. وذلك الخط، <code>STUDENT</code> <em>tutored by</em> <code>TEACHER</code>، يسجّل حقيقة جديدة. فهو ليس زائدًا.</p>
+
+  <div class="quiz">
+    <p class="q en">Version 1 is replaced by version 2. What did the change remove?</p>
+    <p class="q ar">حلّ الإصدار 2 محلّ الإصدار 1. ماذا أزال التغيير؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The fact of who supervises each student</span><span class="ar">حقيقة من يشرف على كل طالب</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A second copy of that fact, which could contradict the first</span><span class="ar">نسخةً ثانية من تلك الحقيقة، كان يمكن أن تناقض الأولى</span></button></li>
+      <li><button class="opt"><span class="en">The rule that each study group must be supervised by a teacher</span><span class="ar">قاعدة أن كل مجموعة دراسة يجب أن يشرف عليها معلّم</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The fact is still there: follow <em>join</em> and <em>supervised by</em>. What went is the duplicate, the direct line, and with it Omar's contradiction. The <code>STUDY GROUP</code>&ndash;<code>TEACHER</code> line is untouched.</p>
+      <p class="ar">ما زالت الحقيقة موجودة: اتّبع <em>join</em> ثم <em>supervised by</em>. أمّا ما ذهب فهو النسخة المكرّرة، الخط المباشر، ومعه تناقض Omar. وخطّ <code>STUDY GROUP</code>&ndash;<code>TEACHER</code> لم يُمَسّ.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A model has <code>STUDENT</code> <em>join</em> <code>STUDY GROUP</code>, <code>STUDY GROUP</code> <em>supervised by</em> <code>TEACHER</code>, and <code>STUDENT</code> <em>tutored by</em> <code>TEACHER</code>, where the tutor is chosen freely. Is the tutor line redundant?</p>
+    <p class="q ar">في نموذج: <code>STUDENT</code> <em>join</em> <code>STUDY GROUP</code>، و<code>STUDY GROUP</code> <em>supervised by</em> <code>TEACHER</code>، و<code>STUDENT</code> <em>tutored by</em> <code>TEACHER</code>، والمرشد يُختار بحرّية. هل خطّ المرشد زائد؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Yes &mdash; there is already a path from <code>STUDENT</code> to <code>TEACHER</code></span><span class="ar">نعم &mdash; فهناك أصلًا مسار من <code>STUDENT</code> إلى <code>TEACHER</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">No &mdash; the path gives the group's supervisor, not the tutor</span><span class="ar">لا &mdash; فالمسار يعطي مشرف المجموعة، لا المرشد</span></button></li>
+      <li><button class="opt"><span class="en">Yes &mdash; two lines may never join the same two entities</span><span class="ar">نعم &mdash; لا يجوز أبدًا أن يربط خطّان الكيانين نفسيهما</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The path and the line answer different questions, so neither can be derived from the other. Two entities may be linked by several relationships as long as each carries its own meaning.</p>
+      <p class="ar">المسار والخط يجيبان عن سؤالين مختلفين، فلا يمكن اشتقاق أحدهما من الآخر. ويجوز أن يربط الكيانين عدّةُ علاقات ما دامت لكلٍّ منها معناها الخاصّ.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t5l4-h6"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Name the type</span><span class="ar">تمرين 1 · سمِّ النوع</span></h4>
+    <p class="en">For each pair, ask the two "how many?" questions and name the type: 1:1, 1:M or M:M.</p>
+    <p class="ar">لكل زوج، اطرح سؤالَي «كم؟» وسمِّ النوع: <bdi>1:1</bdi> أو <bdi>1:M</bdi> أو <bdi>M:M</bdi>.</p>
+    <pre class="code" data-lang="text"><code>1  PERSON - TV SHOW          a person watches many; a show is watched by many
+2  RECEIPT - STUDENT         a receipt is issued to one; a student gets many
+3  STUDENT - TEACHER         a student learns from many; a teacher educates many
+4  COMPUTER - MOTHERBOARD    one each way
+5  CLEANING COMPANY - CLEANING SERVICE   many each way</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">1: M:M. 2: 1:M, child <code>RECEIPT</code> (Lesson 1's diamond does not change the type). 3: M:M, the slides' example. 4: 1:1 (Lesson 3). 5: M:M.</p>
+      <p class="ar">1: <bdi>M:M</bdi>. 2: <bdi>1:M</bdi>، والابن <code>RECEIPT</code> (ومعيَّن الدرس 1 لا يغيّر النوع). 3: <bdi>M:M</bdi>، مثال الشرائح. 4: <bdi>1:1</bdi> (الدرس 3). 5: <bdi>M:M</bdi>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Write the sentences</span><span class="ar">تمرين 2 · اكتب الجملتين</span></h4>
+    <p class="en">Write both ERDish sentences for the slides' <code>TV SHOW</code> and <code>PERSON</code>, and say how each end and each half is drawn.</p>
+    <p class="ar">اكتب جملتَي ERDish لـ <code>TV SHOW</code> و<code>PERSON</code> في الشرائح، وقل كيف يُرسم كل طرف وكل نصف.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="erdish"><code>Each TV SHOW may be watched by one or more PERSONs.
+Each PERSON may watch one or more TV SHOWs.</code></pre>
+      <p class="en">Both sentences say <em>may</em>, so both halves are dashed. Both end in "one or more", so there is a crow's foot at <code>PERSON</code> and a crow's foot at <code>TV SHOW</code>: M:M.</p>
+      <p class="ar">الجملتان تقولان <em>may</em>، فالنصفان متقطّعان. وكلتاهما تنتهي بـ«واحد أو أكثر»، فهناك رِجل غراب عند <code>PERSON</code> ورِجل غراب عند <code>TV SHOW</code>: <bdi>M:M</bdi>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Sort the attributes</span><span class="ar">تمرين 3 · صنّف الخصائص</span></h4>
+    <p class="en">The school lists facts it wants to keep. Put each in <code>STUDENT</code>, in <code>SUBJECT</code>, or mark it as hidden by the M:M between them.</p>
+    <p class="ar">تسرد المدرسة حقائق تريد حفظها. ضع كلًّا منها في <code>STUDENT</code> أو في <code>SUBJECT</code>، أو علّمها مخفيّةً في علاقة <bdi>M:M</bdi> بينهما.</p>
+    <pre class="code" data-lang="text"><code>1  Last Name        4  Grade
+2  Subject Name     5  Number Of Absences in the subject
+3  Phone            6  Credit Hours</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en"><code>STUDENT</code>: 1, 3. <code>SUBJECT</code>: 2, 6. Hidden by the relationship: 4 and 5 &mdash; Sara can miss two Maths lessons and no Physics lessons, so absences are one value per student per subject.</p>
+      <p class="ar"><code>STUDENT</code>: 1 و3. <code>SUBJECT</code>: 2 و6. مخفيّة في العلاقة: 4 و5 &mdash; فقد تغيب Sara عن درسَين في الرياضيات ولا تغيب عن أيّ درس في الفيزياء، فالغيابات قيمة واحدة لكل طالب في كل مادة.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Is it redundant?</span><span class="ar">تمرين 4 · هل هي زائدة؟</span></h4>
+    <p class="en">A model has <code>STUDENT</code> <em>studies</em> <code>SUBJECT</code> (M:M), <code>SUBJECT</code> <em>taught by</em> <code>TEACHER</code> (each subject taught by one and only one teacher), and the slides' <code>STUDENT</code> <em>learns from</em> <code>TEACHER</code>. If "the teachers a student learns from" means exactly "the teachers of the subjects the student studies", is <em>learns from</em> redundant? What if students may also attend extra sessions with any teacher?</p>
+    <p class="ar">في نموذج: <code>STUDENT</code> <em>studies</em> <code>SUBJECT</code> (<bdi>M:M</bdi>)، و<code>SUBJECT</code> <em>taught by</em> <code>TEACHER</code> (كل مادة يدرّسها معلّم واحد فقط لا غير)، و<code>STUDENT</code> <em>learns from</em> <code>TEACHER</code> من الشرائح. إن كان «المعلّمون الذين يتعلّم منهم الطالب» يعني بالضبط «معلّمي المواد التي يدرسها»، فهل <em>learns from</em> زائدة؟ وماذا لو جاز للطلاب أيضًا حضور حصص إضافية مع أيّ معلّم؟</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">In the first case, yes: follow <em>studies</em> then <em>taught by</em> and you get the same teachers, so remove the line. In the second case, no: an extra session is a fact the path does not record, so <em>learns from</em> carries its own meaning and stays.</p>
+      <p class="ar">في الحالة الأولى نعم: اتّبع <em>studies</em> ثم <em>taught by</em> فتحصل على المعلّمين أنفسهم، فأزل الخط. وفي الحالة الثانية لا: فالحصة الإضافية حقيقة لا يسجّلها المسار، فلـ <em>learns from</em> معناها الخاصّ وتبقى.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Count through the path</span><span class="ar">تمرين 5 · عُدّ عبر المسار</span></h4>
+    <p class="en">In version 2 of section 5, <code>students</code> has no <code>teacher_id</code>. Using <code>students</code> and <code>study_groups</code>, write a query that shows how many students each teacher supervises.</p>
+    <p class="ar">في الإصدار 2 من القسم 5 لا يوجد <code>teacher_id</code> في <code>students</code>. مستعملًا <code>students</code> و<code>study_groups</code>، اكتب استعلامًا يبيّن عدد الطلاب الذين يشرف عليهم كل معلّم.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT g.teacher_id, COUNT(*) AS students
+FROM students s JOIN study_groups g ON g.group_id = s.group_id
+GROUP BY g.teacher_id
+ORDER BY g.teacher_id;</code></pre>
+      <div class="output">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th><code>teacher_id</code></th><th><code>students</code></th></tr></thead>
+            <tbody>
+              <tr><td>31</td><td>2</td></tr>
+              <tr><td>32</td><td>1</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="en">Rana (31) supervises Sara and Omar through the Algebra Circle; Khaled (32) supervises Lina. Yousef has no study group, so the join leaves him out &mdash; and he has no supervisor, as the dashed half allows.</p>
+      <p class="ar">تشرف Rana (31) على Sara وOmar عبر Algebra Circle، ويشرف Khaled (32) على Lina. أمّا Yousef فبلا مجموعة دراسة، فيتركه الربط خارجًا &mdash; ولا مشرف له، كما يسمح النصف المتقطّع.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">An M:M has cardinality of one or more in both directions: a crow's foot at both ends.</li>
+      <li class="ar">علاقة <bdi>M:M</bdi> تعدّديتها «واحد أو أكثر» في الاتجاهين: رِجل غراب عند الطرفين.</li>
+      <li class="en">M:M relationships are common in a first version of a model; in later stages all are resolved and disappear.</li>
+      <li class="ar">علاقات <bdi>M:M</bdi> شائعة في النسخة الأولى من النموذج، وفي المراحل اللاحقة تُحَلّ كلها وتختفي.</li>
+      <li class="en">No foreign key column can hold an M:M: each row would need many values.</li>
+      <li class="ar">لا يتّسع أيّ عمود مفتاح أجنبي لعلاقة <bdi>M:M</bdi>: فكل صفّ سيحتاج إلى قيم كثيرة.</li>
+      <li class="en">Ask "one value per what?" An attribute whose answer names two entities is hidden by their M:M.</li>
+      <li class="ar">اسأل «قيمة واحدة لكلّ ماذا؟». فالخاصية التي يسمّي جوابها كيانين تخفيها علاقة <bdi>M:M</bdi> بينهما.</li>
+      <li class="en">A relationship that can be derived from a path with the same meaning is redundant: remove it.</li>
+      <li class="ar">العلاقة التي يمكن اشتقاقها من مسار بالمعنى نفسه زائدة: أزلها.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Drawing a toe where the business says "many", just because a 1:M is easier to build.</li>
+      <li class="ar">رسم إصبع حيث يقول العمل «كثير»، لمجرّد أن <bdi>1:M</bdi> أسهل في البناء.</li>
+      <li class="en">Putting <code>Grade</code> in <code>STUDENT</code> or <code>SUBJECT</code>: each knows only half of what it means.</li>
+      <li class="ar">وضع <code>Grade</code> في <code>STUDENT</code> أو <code>SUBJECT</code>: فكلٌّ منهما لا يعرف إلا نصف معناها.</li>
+      <li class="en">Storing a list such as <code>'Maths A, Physics B'</code> in one column.</li>
+      <li class="ar">تخزين قائمة مثل <code>'Maths A, Physics B'</code> في عمود واحد.</li>
+      <li class="en">Keeping a direct line that repeats a path: two copies of one fact will disagree.</li>
+      <li class="ar">الإبقاء على خطّ مباشر يكرّر مسارًا: فنسختا الحقيقة الواحدة ستختلفان.</li>
+      <li class="en">Removing a second line that means something different: a second path is not proof of redundancy.</li>
+      <li class="ar">إزالة خطّ ثانٍ يعني شيئًا مختلفًا: فوجود مسار ثانٍ ليس دليلًا على الزيادة.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="#t5-test-04">Test 4 &mdash; Many-to-Many</a>. Then <a href="#t5-lesson-05">Lesson 5 &mdash; The Intersection Entity</a> gives <code>Grade</code> a home: one M:M becomes two 1:Ms.</p>
+    <p class="ar">اختبر نفسك بـ<a href="#t5-test-04">اختبار 4 &mdash; متعدّد إلى متعدّد</a>. ثم يعطي <a href="#t5-lesson-05">الدرس 5 &mdash; كيان التقاطع</a> الخاصيةَ <code>Grade</code> بيتًا: فتصير علاقة <bdi>M:M</bdi> واحدة علاقتَي <bdi>1:M</bdi>.</p>
+  </div>
+
+</section>

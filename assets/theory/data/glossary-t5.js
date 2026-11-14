@@ -68,6 +68,27 @@ window.DBTGlossary["t5"] = [
   ]
  },
  {
+  "id": "first-version",
+  "term": {
+   "en": "First version (of an ER model)",
+   "ar": "النسخة الأولى (من نموذج الكيانات والعلاقات)"
+  },
+  "def": {
+   "en": "The early draft of an ER model that records the business rules as stated, many-to-many relationships included, before any of them is resolved.",
+   "ar": "المسودّة المبكّرة من نموذج الكيانات والعلاقات التي تسجّل قواعد العمل كما تُقال، ومعها علاقات «متعدّد إلى متعدّد»، قبل أن يُحَلّ أيّ منها."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "many-to-many"
+  ],
+  "used": [
+   "t5l4-s2"
+  ]
+ },
+ {
   "id": "key-side",
   "term": {
    "en": "Key side (of a 1:1)",
@@ -134,6 +155,29 @@ window.DBTGlossary["t5"] = [
   ]
  },
  {
+  "id": "many-to-many",
+  "term": {
+   "en": "Many-to-many (M:M)",
+   "ar": "متعدّد إلى متعدّد (‎M:M)"
+  },
+  "def": {
+   "en": "A relationship with cardinality of one or more in both directions, drawn with a crow's foot at both ends.",
+   "ar": "علاقة تعدّديتها «واحد أو أكثر» في الاتجاهين، تُرسم برِجل غراب عند الطرفين."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "relationship-type",
+   "first-version",
+   "hidden-attribute"
+  ],
+  "used": [
+   "t5l4-h1"
+  ]
+ },
+ {
   "id": "many-to-one",
   "term": {
    "en": "Many-to-one (M:1)",
@@ -174,6 +218,28 @@ window.DBTGlossary["t5"] = [
   ],
   "used": [
    "t5l3-h5"
+  ]
+ },
+ {
+  "id": "misplaced-attribute",
+  "term": {
+   "en": "Misplaced attribute",
+   "ar": "خاصية في غير موضعها"
+  },
+  "def": {
+   "en": "An attribute put in an entity whose instances it does not describe one value each, such as Grade in STUDENT, where one row cannot say which subject the grade is for.",
+   "ar": "خاصية وُضعت في كيان لا تصف نُسخَه بقيمة واحدة لكلٍّ منها، مثل Grade في STUDENT، حيث لا يستطيع الصفّ أن يقول لأيّ مادة هي الدرجة."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "hidden-attribute",
+   "pair-test"
+  ],
+  "used": [
+   "t5l4-h3"
   ]
  },
  {
@@ -290,6 +356,28 @@ window.DBTGlossary["t5"] = [
   ]
  },
  {
+  "id": "pair-test",
+  "term": {
+   "en": "Pair test",
+   "ar": "اختبار الزوج"
+  },
+  "def": {
+   "en": "Asking of an attribute \"one value per what?\"; when the answer names an instance of each of two entities, the attribute is hidden by their many-to-many.",
+   "ar": "أن تسأل عن الخاصية «قيمة واحدة لكلّ ماذا؟»؛ فإذا سمّى الجواب نسخة من كلٍّ من كيانين، فالخاصية تخفيها علاقة «متعدّد إلى متعدّد» بينهما."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "hidden-attribute",
+   "single-valued"
+  ],
+  "used": [
+   "t5l4-s3"
+  ]
+ },
+ {
   "id": "parent-entity",
   "term": {
    "en": "Parent entity",
@@ -331,6 +419,72 @@ window.DBTGlossary["t5"] = [
   ],
   "used": [
    "t5l1-s1"
+  ]
+ },
+ {
+  "id": "redundant-relationship",
+  "term": {
+   "en": "Redundant relationship",
+   "ar": "العلاقة الزائدة"
+  },
+  "def": {
+   "en": "A relationship whose information can be derived from other relationships in the model, and which should therefore be removed from the ERD.",
+   "ar": "علاقة يمكن اشتقاق معلوماتها من علاقات أخرى في النموذج، ولذلك يجب أن تُزال من المخطّط."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "relationship-path",
+   "same-meaning-test"
+  ],
+  "used": [
+   "t5l4-h5"
+  ]
+ },
+ {
+  "id": "hidden-attribute",
+  "term": {
+   "en": "Relationship hiding an attribute",
+   "ar": "علاقة تخفي خاصية"
+  },
+  "def": {
+   "en": "A many-to-many relationship that carries an attribute describing one pair of instances, one from each entity, so the attribute belongs to neither entity.",
+   "ar": "علاقة «متعدّد إلى متعدّد» تحمل خاصية تصف زوجًا واحدًا من النسخ، نسخة من كل كيان، فلا تنتمي الخاصية إلى أيّ من الكيانين."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "many-to-many",
+   "pair-test",
+   "misplaced-attribute"
+  ],
+  "used": [
+   "t5l4-h3"
+  ]
+ },
+ {
+  "id": "relationship-path",
+  "term": {
+   "en": "Relationship path",
+   "ar": "مسار علاقات"
+  },
+  "def": {
+   "en": "A chain of relationships followed from one entity through others to a third, such as STUDENT to STUDY GROUP to TEACHER.",
+   "ar": "سلسلة علاقات تُتَّبع من كيان عبر كيانات أخرى إلى كيان ثالث، مثل STUDENT إلى STUDY GROUP إلى TEACHER."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "redundant-relationship"
+  ],
+  "used": [
+   "t5l4-h5"
   ]
  },
  {
@@ -420,6 +574,28 @@ window.DBTGlossary["t5"] = [
   ],
   "used": [
    "t5l3-h3"
+  ]
+ },
+ {
+  "id": "same-meaning-test",
+  "term": {
+   "en": "Same-meaning test",
+   "ar": "اختبار المعنى نفسه"
+  },
+  "def": {
+   "en": "Reading a direct relationship and a path between the same entities in ERDish; the direct line is redundant only if the business means the same thing by both.",
+   "ar": "قراءة علاقة مباشرة ومسارٍ بين الكيانين نفسيهما بلغة ERDish؛ فلا يكون الخط المباشر زائدًا إلا إذا عنى العمل بهما الشيء نفسه."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "redundant-relationship",
+   "relationship-path"
+  ],
+  "used": [
+   "t5l4-s4"
   ]
  },
  {
