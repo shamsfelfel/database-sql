@@ -922,7 +922,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 6 — العلاقات المقضّبة والمعرّفات المركّبة"
      },
      "href": "tests/t5-test-06.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t5-lab",
