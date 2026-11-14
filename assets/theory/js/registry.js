@@ -405,7 +405,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 4 — أعراف الرسم"
      },
      "href": "tests/t3-test-04.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t3-lesson-05",
