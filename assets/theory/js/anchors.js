@@ -201,6 +201,19 @@ window.DBTAnchors = {
 "t3l4-s3": "lessons/t3-lesson-04.html",
 "t3l4-s4": "lessons/t3-lesson-04.html",
 "t3l4-s5": "lessons/t3-lesson-04.html",
+"t3l5-e1": "lessons/t3-lesson-05.html",
+"t3l5-e2": "lessons/t3-lesson-05.html",
+"t3l5-h1": "lessons/t3-lesson-05.html",
+"t3l5-h2": "lessons/t3-lesson-05.html",
+"t3l5-h3": "lessons/t3-lesson-05.html",
+"t3l5-h4": "lessons/t3-lesson-05.html",
+"t3l5-h5": "lessons/t3-lesson-05.html",
+"t3l5-h6": "lessons/t3-lesson-05.html",
+"t3l5-s1": "lessons/t3-lesson-05.html",
+"t3l5-s2": "lessons/t3-lesson-05.html",
+"t3l5-s3": "lessons/t3-lesson-05.html",
+"t3l5-s4": "lessons/t3-lesson-05.html",
+"t3l5-s5": "lessons/t3-lesson-05.html",
 "t4-chapter": "chapters/t4.html",
 "t4-exam-a": "exams/t4-exam-a.html",
 "t4-exam-b": "exams/t4-exam-b.html",
@@ -777,6 +790,50 @@ window.DBTHeadings = {
 "t3l4-s5": {
 "ar": "اكتشف المخالفات",
 "en": "Spot the breaks"
+},
+"t3l5-h1": {
+"ar": "١ · لغة لقواعد العمل",
+"en": "1 · A language for business rules"
+},
+"t3l5-h2": {
+"ar": "٢ · الأجزاء الستة للجملة الواحدة",
+"en": "2 · The six parts of one sentence"
+},
+"t3l5-h3": {
+"ar": "٣ · اقرأها في الاتجاهين",
+"en": "3 · Read it both ways"
+},
+"t3l5-h4": {
+"ar": "٤ · من جملتين إلى خط مرسوم",
+"en": "4 · From two sentences to a drawn line"
+},
+"t3l5-h5": {
+"ar": "٥ · التحدّث بعلاقة ذاتية",
+"en": "5 · Speaking a recursive relationship"
+},
+"t3l5-h6": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t3l5-s1": {
+"ar": "مستمعان: العميل ومدير قاعدة البيانات",
+"en": "Two listeners: the client and the administrator"
+},
+"t3l5-s2": {
+"ar": "must أم must be، وحرف الجمع «s»",
+"en": "Must or must be, and the plural \"s\""
+},
+"t3l5-s3": {
+"ar": "ما الذي يتبادل مكانه بين القراءتين",
+"en": "What swaps between the two readings"
+},
+"t3l5-s4": {
+"ar": "خط مرسوم من الأعلى إلى الأسفل",
+"en": "A line drawn top to bottom"
+},
+"t3l5-s5": {
+"ar": "«may» عند الطرفين، كما تقولها الشرائح",
+"en": "May at both ends, the way the slides say it"
 },
 "t4idx-h1": {
 "ar": "الدروس",

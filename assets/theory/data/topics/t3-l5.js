@@ -1,0 +1,19 @@
+/* Topic tags of T3 lesson 5 -- Speaking ERDish. */
+window.DBTTopics = window.DBTTopics || {};
+window.DBTTopics["t3-erdish"] = { en: "ERDish: the language of an ERD", ar: "لغة ERDish: لغة مخطّط ERD", href: "t3l5-h1" };
+window.DBTTopics["t3-industry-terminology"] = { en: "Industry-specific terminology", ar: "المصطلحات الخاصة بالمجال", href: "t3l5-h1" };
+window.DBTTopics["t3-erdish-audiences"] = { en: "ERDish for the client and the DBA", ar: "لغة ERDish للعميل ولمدير قاعدة البيانات", href: "t3l5-s1" };
+window.DBTTopics["t3-erdish-six-parts"] = { en: "The six parts of an ERDish sentence", ar: "الأجزاء الستة لجملة ERDish", href: "t3l5-h2" };
+window.DBTTopics["t3-business-rule-syntax"] = { en: "Business rule syntax", ar: "صيغة قاعدة العمل", href: "t3l5-h2" };
+window.DBTTopics["t3-entity-a-entity-b"] = { en: "Entity A and entity B", ar: "الكيان A والكيان B", href: "t3l5-h2" };
+window.DBTTopics["t3-must-be-or-must"] = { en: "Must or must be, may or may be", ar: "must أم must be، وmay أم may be", href: "t3l5-s2" };
+window.DBTTopics["t3-erdish-plural"] = { en: "The plural s after one or more", ar: "حرف الجمع s بعد one or more", href: "t3l5-s2" };
+window.DBTTopics["t3-two-readings"] = { en: "Reading a relationship in both directions", ar: "قراءة العلاقة في الاتجاهين", href: "t3l5-h3" };
+window.DBTTopics["t3-reading-direction"] = { en: "Left to right (or top to bottom) first", ar: "من اليسار إلى اليمين (أو من الأعلى إلى الأسفل) أوّلًا", href: "t3l5-h3" };
+window.DBTTopics["t3-what-swaps"] = { en: "What swaps between the two readings", ar: "ما يتبادل مكانه بين القراءتين", href: "t3l5-s3" };
+window.DBTTopics["t3-sentence-to-line"] = { en: "Drawing a line from its two sentences", ar: "رسم الخط من جملتيه", href: "t3l5-h4" };
+window.DBTTopics["t3-book-author"] = { en: "BOOK and AUTHOR in ERDish", ar: "BOOK وAUTHOR بلغة ERDish", href: "t3l5-s4" };
+window.DBTTopics["t3-top-to-bottom"] = { en: "Reading a vertical line", ar: "قراءة خط عمودي", href: "t3l5-s4" };
+window.DBTTopics["t3-erdish-recursive"] = { en: "Speaking a recursive relationship", ar: "التحدّث بعلاقة ذاتية", href: "t3l5-h5" };
+window.DBTTopics["t3-recursive-symbol-end"] = { en: "Recursive: the symbol is at the far end", ar: "العلاقة الذاتية: الرمز عند الطرف البعيد", href: "t3l5-h5" };
+window.DBTTopics["t3-recursive-may-both"] = { en: "May at both ends of the manager loop", ar: "may عند طرفي حلقة المدير", href: "t3l5-s5" };

@@ -68,6 +68,28 @@ window.DBTGlossary["t3"] = [
   ]
  },
  {
+  "id": "business-rule-syntax",
+  "term": {
+   "en": "Business rule syntax",
+   "ar": "صيغة قاعدة العمل"
+  },
+  "def": {
+   "en": "The template of an ERDish sentence: Each entity1 {must be | may be} relationship-name {one and only one | one or more} entity2.",
+   "ar": "قالب جملة ERDish: Each entity1 {must be | may be} relationship-name {one and only one | one or more} entity2."
+  },
+  "cat": {
+   "en": "ERDish",
+   "ar": "لغة ERDish"
+  },
+  "see": [
+   "erdish-sentence",
+   "business-rule"
+  ],
+  "used": [
+   "t3l5-h2"
+  ]
+ },
+ {
   "id": "business-scenario",
   "term": {
    "en": "Business scenario",
@@ -204,6 +226,71 @@ window.DBTGlossary["t3"] = [
   ]
  },
  {
+  "id": "database-administrator",
+  "term": {
+   "en": "Database administrator (DBA)",
+   "ar": "مدير قاعدة البيانات (DBA)"
+  },
+  "def": {
+   "en": "The person who implements a finished design as a real database.",
+   "ar": "الشخص الذي ينفّذ التصميم المكتمل قاعدةَ بيانات حقيقية."
+  },
+  "cat": {
+   "en": "ERDish",
+   "ar": "لغة ERDish"
+  },
+  "see": [
+   "erdish"
+  ],
+  "used": [
+   "t3l5-s1"
+  ]
+ },
+ {
+  "id": "entity-a",
+  "term": {
+   "en": "Entity A",
+   "ar": "الكيان A"
+  },
+  "def": {
+   "en": "In one ERDish reading, the entity the sentence starts from; its half and its name give parts 3 and 4.",
+   "ar": "في قراءة ERDish الواحدة، الكيان الذي تبدأ منه الجملة؛ ونصفه واسمه يعطيان الجزأين 3 و4."
+  },
+  "cat": {
+   "en": "ERDish",
+   "ar": "لغة ERDish"
+  },
+  "see": [
+   "entity-b",
+   "erdish-sentence"
+  ],
+  "used": [
+   "t3l5-h2"
+  ]
+ },
+ {
+  "id": "entity-b",
+  "term": {
+   "en": "Entity B",
+   "ar": "الكيان B"
+  },
+  "def": {
+   "en": "In one ERDish reading, the entity the sentence ends at; the line's end at it gives the cardinality.",
+   "ar": "في قراءة ERDish الواحدة، الكيان الذي تنتهي عنده الجملة؛ وطرف الخط عنده يعطي التعدّدية."
+  },
+  "cat": {
+   "en": "ERDish",
+   "ar": "لغة ERDish"
+  },
+  "see": [
+   "entity-a",
+   "cardinality"
+  ],
+  "used": [
+   "t3l5-h2"
+  ]
+ },
+ {
   "id": "entity-name-convention",
   "term": {
    "en": "Entity-name convention",
@@ -248,6 +335,52 @@ window.DBTGlossary["t3"] = [
   ]
  },
  {
+  "id": "erdish",
+  "term": {
+   "en": "ERDish",
+   "ar": "لغة ERDish"
+  },
+  "def": {
+   "en": "The language used to state the relationships between entities in an ERD, in precise words.",
+   "ar": "اللغة المستعملة للتعبير عن العلاقات بين الكيانات في مخطّط ERD بكلمات دقيقة."
+  },
+  "cat": {
+   "en": "ERDish",
+   "ar": "لغة ERDish"
+  },
+  "see": [
+   "erdish-sentence",
+   "industry-terminology"
+  ],
+  "used": [
+   "t3l5-h1"
+  ]
+ },
+ {
+  "id": "erdish-sentence",
+  "term": {
+   "en": "ERDish sentence",
+   "ar": "جملة ERDish"
+  },
+  "def": {
+   "en": "One direction of a relationship stated in six parts: EACH, entity A, optionality, relationship name, cardinality, entity B.",
+   "ar": "اتجاه واحد من العلاقة منصوص عليه في ستة أجزاء: EACH، والكيان A، والإلزامية، واسم العلاقة، والتعدّدية، والكيان B."
+  },
+  "cat": {
+   "en": "ERDish",
+   "ar": "لغة ERDish"
+  },
+  "see": [
+   "business-rule-syntax",
+   "entity-a",
+   "entity-b",
+   "erdish-pair"
+  ],
+  "used": [
+   "t3l5-h2"
+  ]
+ },
+ {
   "id": "hash-mark",
   "term": {
    "en": "Hash mark (#)",
@@ -267,6 +400,27 @@ window.DBTGlossary["t3"] = [
   ],
   "used": [
    "t3l4-h3"
+  ]
+ },
+ {
+  "id": "industry-terminology",
+  "term": {
+   "en": "Industry-specific terminology",
+   "ar": "المصطلحات الخاصة بالمجال"
+  },
+  "def": {
+   "en": "A set of words that carry a special, agreed meaning inside one business or field.",
+   "ar": "مجموعة كلمات تحمل معنى خاصًّا متّفقًا عليه داخل عمل أو مجال بعينه."
+  },
+  "cat": {
+   "en": "ERDish",
+   "ar": "لغة ERDish"
+  },
+  "see": [
+   "erdish"
+  ],
+  "used": [
+   "t3l5-h1"
   ]
  },
  {
@@ -512,6 +666,73 @@ window.DBTGlossary["t3"] = [
   ],
   "used": [
    "t3l2-h1"
+  ]
+ },
+ {
+  "id": "erdish-pair",
+  "term": {
+   "en": "Pair of readings",
+   "ar": "زوج القراءتين"
+  },
+  "def": {
+   "en": "A relationship's two ERDish sentences, one from each end, which together state every mark on the line.",
+   "ar": "جملتا ERDish الخاصّتان بالعلاقة، واحدة من كل طرف، وهما معًا تنصّان على كل علامة على الخط."
+  },
+  "cat": {
+   "en": "ERDish",
+   "ar": "لغة ERDish"
+  },
+  "see": [
+   "erdish-sentence",
+   "reading-direction"
+  ],
+  "used": [
+   "t3l5-h3"
+  ]
+ },
+ {
+  "id": "reading-direction",
+  "term": {
+   "en": "Reading direction",
+   "ar": "اتجاه القراءة"
+  },
+  "def": {
+   "en": "The order of a relationship's two sentences: left to right, or top to bottom, first; then back.",
+   "ar": "ترتيب جملتي العلاقة: من اليسار إلى اليمين، أو من الأعلى إلى الأسفل، أوّلًا، ثم بالعكس."
+  },
+  "cat": {
+   "en": "ERDish",
+   "ar": "لغة ERDish"
+  },
+  "see": [
+   "erdish-pair",
+   "bidirectional"
+  ],
+  "used": [
+   "t3l5-h3"
+  ]
+ },
+ {
+  "id": "recursive-reading",
+  "term": {
+   "en": "Recursive reading",
+   "ar": "القراءة الذاتية"
+  },
+  "def": {
+   "en": "An ERDish sentence whose entity A and entity B are the same entity; the name comes from the starting end, the cardinality from the other end.",
+   "ar": "جملة ERDish يكون فيها الكيان A والكيان B كيانًا واحدًا؛ والاسم من طرف البداية، والتعدّدية من الطرف الآخر."
+  },
+  "cat": {
+   "en": "ERDish",
+   "ar": "لغة ERDish"
+  },
+  "see": [
+   "recursive-relationship",
+   "entity-a",
+   "entity-b"
+  ],
+  "used": [
+   "t3l5-h5"
   ]
  },
  {

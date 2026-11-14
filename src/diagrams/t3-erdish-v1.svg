@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" direction="ltr" role="img" aria-labelledby="t3-erdish-v1-t">
+<title id="t3-erdish-v1-t">Version 1: EMPLOYEE and DEPARTMENT joined by a line drawn from the vague sentence 'Employees work in departments' - both halves, both ends and one name are unknown / الإصدار 1: EMPLOYEE وDEPARTMENT يصلهما خط مرسوم من الجملة المبهمة 'Employees work in departments' - النصفان والطرفان وأحد الاسمين مجهولة</title>
+<g class="en"><text x="380.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1 — a sentence in ordinary words</text></g><g class="ar"><text x="380.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 1 — جملة بكلمات عادية</text></g>
+<rect x="40" y="50" width="200" height="95" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="140.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">EMPLOYEE</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Employee ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="520" y="50" width="200" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="620.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">DEPARTMENT</text>
+<text x="534" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Department ID</text>
+<text x="534" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M240 104 L380 104" style="stroke:var(--dg-warn, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:1 4"/>
+<path d="M380 104 L520 104" style="stroke:var(--dg-warn, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:1 4"/>
+<circle cx="310" cy="104" r="9" style="fill:var(--dg-warn-soft, var(--surface));stroke:var(--dg-warn, var(--text-soft));stroke-width:1.2"/>
+<text x="310" y="108" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">?</text>
+<circle cx="450" cy="104" r="9" style="fill:var(--dg-warn-soft, var(--surface));stroke:var(--dg-warn, var(--text-soft));stroke-width:1.2"/>
+<text x="450" y="108" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">?</text>
+<circle cx="256" cy="124" r="9" style="fill:var(--dg-warn-soft, var(--surface));stroke:var(--dg-warn, var(--text-soft));stroke-width:1.2"/>
+<text x="256" y="128" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">?</text>
+<circle cx="504" cy="124" r="9" style="fill:var(--dg-warn-soft, var(--surface));stroke:var(--dg-warn, var(--text-soft));stroke-width:1.2"/>
+<text x="504" y="128" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">?</text>
+<text x="262" y="92" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">work in</text>
+<circle cx="470" cy="80" r="9" style="fill:var(--dg-warn-soft, var(--surface));stroke:var(--dg-warn, var(--text-soft));stroke-width:1.2"/>
+<text x="470" y="84" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:700">?</text>
+<rect x="40" y="170" width="680" height="114" rx="6" style="fill:var(--dg-warn-soft, var(--surface));stroke:var(--dg-warn, var(--text-soft));stroke-width:1"/>
+<text x="56" y="194" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Employees work in departments.</text>
+<g class="en"><text x="56" y="220" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Must or may? One department or many? It says nothing about the DEPARTMENT end at all.</text></g><g class="ar"><text x="704" y="220" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">يجب أم قد؟ قسم واحد أم أقسام؟ ولا تقول شيئًا إطلاقًا عن طرف DEPARTMENT.</text></g>
+<g class="en"><text x="56" y="244" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Each ? is a mark the builder would have to guess: two halves, two ends, one name.</text></g><g class="ar"><text x="704" y="244" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">كل علامة ? علامةٌ سيضطرّ من يبني الجداول إلى تخمينها: نصفان، وطرفان، واسم واحد.</text></g>
+<g class="en"><text x="56" y="268" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Dotted = not yet stated. It is not the dashed half, which means may.</text></g><g class="ar"><text x="704" y="268" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">المنقّط = لم يُذكر بعد. وليس هو النصف المتقطّع الذي يعني «قد».</text></g>
+</svg>

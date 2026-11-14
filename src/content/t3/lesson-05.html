@@ -1,0 +1,578 @@
+<section class="page" id="t3-lesson-05">
+
+  <span class="kicker">Lesson 5</span>
+  <h1><span class="en">Speaking ERDish</span><span class="ar">التحدّث بلغة ERDish</span></h1>
+  <p class="lede en">By the end of this lesson you will be able to say any relationship line as two precise six-part sentences, one from each end, and draw the line back from the two sentences &mdash; including a line that leaves an entity and comes back to it.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تقول أيّ خط علاقة جملتين دقيقتين من ستة أجزاء، واحدة من كل طرف، وأن ترسم الخط من الجملتين من جديد &mdash; بما في ذلك الخط الذي يخرج من كيان ويعود إليه.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> <a href="#t3-lesson-02">Lesson 2</a> gave each half of the line a word (<em>must</em>, <em>may</em>); <a href="#t3-lesson-03">Lesson 3</a> gave each end a word (<em>one and only one</em>, <em>one or more</em>); <a href="#t3-lesson-04">Lesson 4</a> fixed how all of it is drawn. This lesson, the slides' <em>Speaking ERDish</em>, puts those words in one fixed order. Cases: H.R., the restaurant, <code>BOOK</code> and <code>AUTHOR</code>.</p>
+    <p class="ar"><strong>السياق.</strong> أعطى <a href="#t3-lesson-02">الدرس 2</a> كل نصف من الخط كلمة (<em>must</em>، <em>may</em>)، وأعطى <a href="#t3-lesson-03">الدرس 3</a> كل طرف كلمة (<em>one and only one</em>، <em>one or more</em>)، وحسم <a href="#t3-lesson-04">الدرس 4</a> كيف يُرسم ذلك كله. وهذا الدرس، <em>التحدّث بلغة ERDish</em> في الشرائح، يضع تلك الكلمات في ترتيب ثابت واحد. والحالات: الموارد البشرية، والمطعم، و<code>BOOK</code> و<code>AUTHOR</code>.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Explain what ERDish is for, and who listens to it.</li>
+      <li class="ar">شرح الغرض من لغة ERDish، ومن يستمع إليها.</li>
+      <li class="en">Break an ERDish sentence into its six parts and name the mark each part comes from.</li>
+      <li class="ar">تفكيك جملة ERDish إلى أجزائها الستة وتسمية العلامة التي يأتي منها كل جزء.</li>
+      <li class="en">Read one relationship in both directions, left to right (or top to bottom) first.</li>
+      <li class="ar">قراءة العلاقة الواحدة في الاتجاهين، من اليسار إلى اليمين (أو من الأعلى إلى الأسفل) أوّلًا.</li>
+      <li class="en">Draw and label a relationship line from its two sentences.</li>
+      <li class="ar">رسم خط العلاقة وتسميته من جملتيه.</li>
+      <li class="en">Read a recursive relationship without taking the symbol from the wrong end.</li>
+      <li class="ar">قراءة العلاقة الذاتية دون أخذ الرمز من الطرف الخطأ.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t3l5-h1"><span class="en">1 · A language for business rules</span><span class="ar">١ · لغة لقواعد العمل</span></h2>
+
+  <div class="problem">
+    <p class="en">The H.R. manager says: "Our staff belong to departments." The database administrator asks: "Can a department have nobody? Can one person be in two?" The manager cannot read crow's feet, and "belong to" answers neither question. Each side has words the other does not trust.</p>
+    <p class="ar">يقول مدير الموارد البشرية: «موظّفونا ينتمون إلى أقسام.» فيسأل مدير قاعدة البيانات: «هل يمكن أن يكون قسم بلا أحد؟ وهل يمكن أن يكون شخص واحد في قسمين؟» المدير لا يقرأ أقدام الغراب، و«ينتمون إلى» لا تجيب عن أيّ من السؤالين. لكل طرف كلمات لا يثق بها الآخر.</p>
+  </div>
+
+  <p class="en">The slides start from business: "Most businesses use industry-specific terminology &mdash; words which have a special meaning within that business." Data modelling has its own, which the course calls <strong>ERDish</strong>: the vocabulary that states, clearly, the business rules captured on an ERD.</p>
+  <p class="ar">تبدأ الشرائح من عالم الأعمال: «تستعمل معظم الأعمال مصطلحات خاصة بمجالها (Industry-Specific Terminology) &mdash; كلمات لها معنى خاص داخل ذلك العمل.» ولنمذجة البيانات مصطلحاتها أيضًا، ويسمّيها المقرّر <strong>ERDish</strong>: المفردات التي تنصّ بوضوح على قواعد العمل المسجّلة في مخطّط ERD.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="industry-terminology">Industry-specific terminology</span> is a set of words that carry a special, agreed meaning inside one business or field.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="industry-terminology">المصطلحات الخاصة بالمجال</span> (Industry-Specific Terminology) مجموعة كلمات تحمل معنى خاصًّا متّفقًا عليه داخل عمل أو مجال بعينه.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="erdish">ERDish</span> is the language used to state the relationships between entities in an ERD, in precise words.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="erdish">لغة ERDish</span> (ERDish) هي اللغة المستعملة للتعبير عن العلاقات بين الكيانات في مخطّط ERD بكلمات دقيقة.</p>
+  </div>
+
+  <h3 id="t3l5-s1"><span class="en">Two listeners: the client and the administrator</span><span class="ar">مستمعان: العميل ومدير قاعدة البيانات</span></h3>
+
+  <p class="en">ERDish, say the slides, gives you "a common language both when collecting the business rules from your client and communicating them to the Database Administrators who will implement your design." You read the sentence to the client, who says yes or no; you hand the same sentence to the builder, who turns it into tables.</p>
+  <p class="ar">تقول الشرائح إن لغة ERDish تمنحك «لغة مشتركة عند جمع قواعد العمل من عميلك، وعند إيصالها إلى مديري قواعد البيانات الذين سينفّذون تصميمك». تقرأ الجملة على العميل فيقول نعم أو لا، وتسلّم الجملة نفسها لمن يبني، فيحوّلها إلى جداول.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="database-administrator">database administrator</span> (DBA) is the person who implements a finished design as a real database.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="database-administrator">مدير قاعدة البيانات</span> (Database Administrator, DBA) هو الشخص الذي ينفّذ التصميم المكتمل قاعدةَ بيانات حقيقية.</p>
+  </div>
+
+  <p class="en">And you already speak it. The slides: "You have already been speaking and writing it, when you identified relationships and specified optionality and cardinality." Every sentence in Lessons 1 to 4 was ERDish. This lesson only takes it apart.</p>
+  <p class="ar">وأنت تتحدّثها أصلًا. تقول الشرائح: «لقد كنت تتحدّثها وتكتبها من قبل، حين حدّدت العلاقات وعيّنت الإلزامية والتعدّدية.» كل جملة في الدروس من 1 إلى 4 كانت بلغة ERDish. وهذا الدرس يفكّكها فحسب.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The administrator never sees "belong to". They get this, and every word they need is in it:</p>
+    <p class="ar">مدير قاعدة البيانات لا يرى «ينتمون إلى» أبدًا. بل يتسلّم هذا، وكل كلمة يحتاج إليها موجودة فيه:</p>
+    <pre class="code" data-lang="erdish"><code>Each EMPLOYEE must work in one and only one DEPARTMENT.
+Each DEPARTMENT may be responsible for one or more EMPLOYEEs.</code></pre>
+    <p class="en"><em>One and only one</em> department: a single column, <code>employees.department_id</code>. <em>Must</em>: that column is <code>NOT NULL</code>. <em>May be &hellip; one or more</em>: a department can appear in many rows, or in none. No phone call needed.</p>
+    <p class="ar">قسم <em>واحد فقط لا غير</em>: عمود واحد، <code>employees.department_id</code>. و<em>must</em>: هذا العمود <code>NOT NULL</code>. و<em>may be &hellip; one or more</em>: يمكن أن يظهر القسم في صفوف كثيرة، أو في لا شيء. ولا حاجة إلى اتصال هاتفي.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">According to the slides, who are ERDish's two audiences?</p>
+    <p class="q ar">بحسب الشرائح، من هما جمهورا لغة ERDish؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The client and the end users who type the data</span><span class="ar">العميل والمستخدمون النهائيون الذين يُدخلون البيانات</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The client, when you collect the rules, and the DBAs, when you hand the design over</span><span class="ar">العميل، حين تجمع القواعد، ومديرو قواعد البيانات، حين تسلّمهم التصميم</span></button></li>
+      <li><button class="opt"><span class="en">Only other data modellers, who already read ERDs</span><span class="ar">مصمّمو البيانات الآخرون فقط، الذين يقرؤون مخطّطات ERD أصلًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"A common language both when collecting the business rules from your client and communicating them to the Database Administrators who will implement your design."</p>
+      <p class="ar">«لغة مشتركة عند جمع قواعد العمل من عميلك، وعند إيصالها إلى مديري قواعد البيانات الذين سينفّذون تصميمك.»</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which of these is an ERDish sentence?</p>
+    <p class="q ar">أيّ هذه جملة بلغة ERDish؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">"Our staff belong to departments."</span><span class="ar">«موظّفونا ينتمون إلى أقسام.»</span></button></li>
+      <li><button class="opt"><span class="en">"Departments have lots of employees, usually."</span><span class="ar">«للأقسام موظّفون كثيرون، في العادة.»</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">"Each DEPARTMENT may be responsible for one or more EMPLOYEEs."</span><span class="ar">«Each DEPARTMENT may be responsible for one or more EMPLOYEEs.»</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Only the third says, in fixed words, whether a department must have employees (<em>may</em>: no) and how many it can have (<em>one or more</em>). "Usually" and "belong to" leave both open.</p>
+      <p class="ar">الثالثة وحدها تقول، بكلمات ثابتة، هل يجب أن يكون للقسم موظّفون (<em>may</em>: لا)، وكم يمكن أن يكون له منهم (<em>one or more</em>). أمّا «في العادة» و«ينتمون إلى» فتتركان السؤالين مفتوحين.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t3l5-h2"><span class="en">2 · The six parts of one sentence</span><span class="ar">٢ · الأجزاء الستة للجملة الواحدة</span></h2>
+
+  <div class="problem">
+    <p class="en">A student writes: "Each employee works in a department." It sounds precise. But is "a" <em>one and only one</em>, or "at least one"? Is the department required? The DBA must still guess two of the marks, because two of the six parts are missing.</p>
+    <p class="ar">يكتب طالب: «Each employee works in a department.» تبدو دقيقة. لكن هل «a» تعني <em>واحدًا فقط لا غير</em> أم «واحدًا على الأقل»؟ وهل القسم مطلوب؟ ما زال على مدير قاعدة البيانات أن يخمّن علامتين، لأن جزأين من الأجزاء الستة غائبان.</p>
+  </div>
+
+  <p class="en">The slides break every ERDish sentence into the same six components, always in this order: <strong>EACH</strong> &middot; <strong>entity A</strong> &middot; <strong>optionality</strong> (<em>must be</em> / <em>may be</em>) &middot; <strong>relationship name</strong> &middot; <strong>cardinality</strong> (<em>one and only one</em> / <em>one or more</em>) &middot; <strong>entity B</strong>. No part may be dropped, and no other word is needed.</p>
+  <p class="ar">تفكّك الشرائح كل جملة ERDish إلى المكوّنات الستة نفسها، بهذا الترتيب دائمًا: <strong>EACH</strong> &middot; <strong>الكيان A</strong> &middot; <strong>الإلزامية</strong> (<em>must be</em> / <em>may be</em>) &middot; <strong>اسم العلاقة</strong> &middot; <strong>التعدّدية</strong> (<em>one and only one</em> / <em>one or more</em>) &middot; <strong>الكيان B</strong>. لا يجوز إسقاط جزء، ولا حاجة إلى كلمة أخرى.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="erdish-sentence">ERDish sentence</span> states one direction of a relationship in six parts: EACH, entity A, optionality, relationship name, cardinality, entity B.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="erdish-sentence">جملة ERDish</span> (ERDish Sentence) تنصّ على اتجاه واحد من العلاقة في ستة أجزاء: EACH، والكيان A، والإلزامية، واسم العلاقة، والتعدّدية، والكيان B.</p>
+  </div>
+
+  <p class="en">The DFo slides give the same thing as a template, the <span class="term" data-term="business-rule-syntax">business rule syntax</span>. Fill each brace with exactly one choice:</p>
+  <p class="ar">وتعطي شرائح DFo الشيء نفسه قالبًا، هو <span class="term" data-term="business-rule-syntax">صيغة قاعدة العمل</span> (Business Rule Syntax). املأ كل قوسين باختيار واحد بالضبط:</p>
+
+  <pre class="code" data-lang="erdish"><code>Each entity1 {must be | may be} relationship-name {one and only one | one or more} entity2.</code></pre>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> In one reading, <span class="term" data-term="entity-a">entity A</span> is the entity the sentence starts from &mdash; its subject, after EACH.</p>
+    <p class="ar"><strong>تعريف.</strong> في القراءة الواحدة، <span class="term" data-term="entity-a">الكيان A</span> (Entity A) هو الكيان الذي تبدأ منه الجملة &mdash; فاعلها، بعد EACH.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> In the same reading, <span class="term" data-term="entity-b">entity B</span> is the entity the sentence ends at, after the cardinality.</p>
+    <p class="ar"><strong>تعريف.</strong> وفي القراءة نفسها، <span class="term" data-term="entity-b">الكيان B</span> (Entity B) هو الكيان الذي تنتهي عنده الجملة، بعد التعدّدية.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Part</th><th class="ar">الجزء</th><th class="en">In the slides' example</th><th class="ar">في مثال الشرائح</th><th class="en">Read from</th><th class="ar">يُقرأ من</th></tr></thead>
+      <tbody>
+        <tr><td class="en">1 · EACH</td><td class="ar">1 · EACH</td><td class="en"><code>EACH</code></td><td class="ar"><code>EACH</code></td><td class="en">always the same word</td><td class="ar">الكلمة نفسها دائمًا</td></tr>
+        <tr><td class="en">2 · entity A</td><td class="ar">2 · الكيان A</td><td class="en"><code>EMPLOYEE</code></td><td class="ar"><code>EMPLOYEE</code></td><td class="en">the box you start at</td><td class="ar">الصندوق الذي تبدأ منه</td></tr>
+        <tr><td class="en">3 · optionality</td><td class="ar">3 · الإلزامية</td><td class="en"><code>MUST</code></td><td class="ar"><code>MUST</code></td><td class="en">the half beside A: solid or dashed</td><td class="ar">النصف المجاور لـ A: متّصل أو متقطّع</td></tr>
+        <tr><td class="en">4 · relationship name</td><td class="ar">4 · اسم العلاقة</td><td class="en"><code>WORK IN</code></td><td class="ar"><code>WORK IN</code></td><td class="en">the name written beside A</td><td class="ar">الاسم المكتوب بجانب A</td></tr>
+        <tr><td class="en">5 · cardinality</td><td class="ar">5 · التعدّدية</td><td class="en"><code>ONE AND ONLY ONE</code></td><td class="ar"><code>ONE AND ONLY ONE</code></td><td class="en">the end at B: single toe or crow's foot</td><td class="ar">الطرف عند B: إصبع واحدة أو قدم غراب</td></tr>
+        <tr><td class="en">6 · entity B</td><td class="ar">6 · الكيان B</td><td class="en"><code>DEPARTMENT</code></td><td class="ar"><code>DEPARTMENT</code></td><td class="en">the box you finish at</td><td class="ar">الصندوق الذي تنتهي عنده</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="en">Notice the pattern: parts 2, 3 and 4 all come from <em>A's side</em> of the line; parts 5 and 6 from <em>B's side</em>. The student's sentence had parts 1, 2, 4 and 6, and nothing for 3 or 5.</p>
+  <p class="ar">لاحظ النمط: الأجزاء 2 و3 و4 كلها تأتي من <em>جهة A</em> من الخط، والجزآن 5 و6 من <em>جهة B</em>. كانت في جملة الطالب الأجزاء 1 و2 و4 و6، ولا شيء للجزأين 3 و5.</p>
+
+  <h3 id="t3l5-s2"><span class="en">Must or must be, and the plural "s"</span><span class="ar">must أم must be، وحرف الجمع «s»</span></h3>
+
+  <p class="en">Part 3 has two forms. The slides: for optional use "may be" or "may"; for mandatory use "must be" or "must". Pick the one that makes English with the name: <code>must work in</code>, <code>must be placed by</code>, <code>may be the author of</code>. The meaning is the same; only the grammar changes.</p>
+  <p class="ar">للجزء 3 صيغتان. تقول الشرائح: للاختياري استعمل «may be» أو «may»، وللإلزامي «must be» أو «must». اختر ما يصنع جملة إنجليزية سليمة مع الاسم: <code>must work in</code>، و<code>must be placed by</code>، و<code>may be the author of</code>. المعنى واحد، والذي يتغيّر هو النحو فقط.</p>
+  <p class="en">After <em>one or more</em>, entity B takes a plural &mdash; written as the singular entity name plus a lowercase <code>s</code>: <code>one or more EMPLOYEEs</code>. The box still says <code>EMPLOYEE</code>; Lesson 4's rule holds.</p>
+  <p class="ar">وبعد <em>one or more</em> يأتي الكيان B جمعًا &mdash; يُكتب اسم الكيان المفرد مع <code>s</code> صغيرة: <code>one or more EMPLOYEEs</code>. ويبقى الصندوق <code>EMPLOYEE</code>، فقاعدة الدرس 4 قائمة.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Parts 3 and 5 are the two the student left out, and they are exactly the two the table needs. <em>One and only one</em> puts one column, <code>department_id</code>, in <code>employees</code>; <em>must</em> makes it <code>NOT NULL</code>. Run this insert, which leaves the department out:</p>
+    <p class="ar">الجزآن 3 و5 هما اللذان أسقطهما الطالب، وهما بالضبط ما يحتاج إليه الجدول. فـ <em>one and only one</em> تضع عمودًا واحدًا، <code>department_id</code>، في <code>employees</code>، و<em>must</em> تجعله <code>NOT NULL</code>. شغّل هذا الإدخال، الذي يُغفل القسم:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE departments (department_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO departments VALUES (10,'Accounting'), (15,'Sales'), (22,'Development'), (30,'Shipping')","CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, department_id NUMBER NOT NULL, manager_id NUMBER)","INSERT INTO employees (employee_id, first_name, last_name, department_id) VALUES (100,'Dana','Smith',10)","INSERT INTO employees VALUES (210,'Lawrence','Chen',10,100), (310,'Tyler','Adams',15,100), (378,'Neil','Loungani',22,100), (405,'Carlos','Gomez',10,210)"],"sql":"INSERT INTO employees (employee_id, first_name, last_name, manager_id)\nVALUES (315, 'Mariam', 'Odeh', 100);"}
+      </script>
+    </div>
+    <div class="output">
+      <pre class="code" data-lang="text"><code>Wrong NULL value in NOT NULL column department_id</code></pre>
+    </div>
+    <p class="en">The <em>must</em> in part 3, enforced. Add <code>department_id</code> to the column list and <code>15</code> to the values, and Mariam is saved in Sales.</p>
+    <p class="ar">إنها <em>must</em> في الجزء 3، مُطبَّقة. أضف <code>department_id</code> إلى قائمة الأعمدة و<code>15</code> إلى القيم، فتُحفظ Mariam في قسم Sales.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In "Each <code>ORDER</code> must be placed by one and only one <code>CUSTOMER</code>", which words are part 5?</p>
+    <p class="q ar">في «Each <code>ORDER</code> must be placed by one and only one <code>CUSTOMER</code>»، ما الكلمات التي تمثّل الجزء 5؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>must be</code></span><span class="ar"><code>must be</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>placed by</code></span><span class="ar"><code>placed by</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>one and only one</code></span><span class="ar"><code>one and only one</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>CUSTOMER</code></span><span class="ar"><code>CUSTOMER</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Part 5 is the cardinality, read from the end at entity B &mdash; here a single toe at <code>CUSTOMER</code>. <code>must be</code> is part 3, <code>placed by</code> part 4, <code>CUSTOMER</code> part 6.</p>
+      <p class="ar">الجزء 5 هو التعدّدية، تُقرأ من الطرف عند الكيان B &mdash; وهنا إصبع واحدة عند <code>CUSTOMER</code>. أمّا <code>must be</code> فالجزء 3، و<code>placed by</code> الجزء 4، و<code>CUSTOMER</code> الجزء 6.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">"Each <code>JOB</code> may be held by <code>EMPLOYEE</code>s." Which part is missing?</p>
+    <p class="q ar">«Each <code>JOB</code> may be held by <code>EMPLOYEE</code>s.» أيّ جزء غائب؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Part 3, the optionality</span><span class="ar">الجزء 3، الإلزامية</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Part 5, the cardinality</span><span class="ar">الجزء 5، التعدّدية</span></button></li>
+      <li><button class="opt"><span class="en">Part 4, the relationship name</span><span class="ar">الجزء 4، اسم العلاقة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The sentence never says <em>one and only one</em> or <em>one or more</em>; the plural "s" is a hint, not the part. Complete: "Each <code>JOB</code> may be held by one or more <code>EMPLOYEE</code>s."</p>
+      <p class="ar">الجملة لا تقول أبدًا <em>one and only one</em> ولا <em>one or more</em>، و«s» الجمع تلميح لا الجزء نفسه. والكاملة: «Each <code>JOB</code> may be held by one or more <code>EMPLOYEE</code>s.»</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t3l5-h3"><span class="en">3 · Read it both ways</span><span class="ar">٣ · اقرأها في الاتجاهين</span></h2>
+
+  <div class="problem">
+    <p class="en">The DBA has the complete sentence "Each EMPLOYEE must work in one and only one DEPARTMENT", builds the tables, then hesitates: may a department be created before anyone works in it? The sentence is perfect and still silent. It never once starts from <code>DEPARTMENT</code>.</p>
+    <p class="ar">يتسلّم مدير قاعدة البيانات الجملة الكاملة «Each EMPLOYEE must work in one and only one DEPARTMENT»، ويبني الجداول، ثم يتردّد: هل يجوز إنشاء قسم قبل أن يعمل فيه أحد؟ الجملة كاملة ومع ذلك صامتة. فهي لا تبدأ من <code>DEPARTMENT</code> ولو مرّة.</p>
+  </div>
+
+  <p class="en">The slides: "Since each relationship has two sides, we read the relationship from left to right (or top to bottom, depending on the ERD layout) first." Then right to left: the same six parts, with entity B as the subject &mdash; "EACH DEPARTMENT MAY BE (dotted line) RESPONSIBLE FOR ONE OR MORE (crow's foot) EMPLOYEE."</p>
+  <p class="ar">تقول الشرائح: «بما أن لكل علاقة جهتين، نقرأ العلاقة من اليسار إلى اليمين (أو من الأعلى إلى الأسفل، بحسب تخطيط المخطّط) أوّلًا.» ثم من اليمين إلى اليسار: الأجزاء الستة نفسها، والكيان B هو الفاعل &mdash; «EACH DEPARTMENT MAY BE (خط منقّط) RESPONSIBLE FOR ONE OR MORE (قدم الغراب) EMPLOYEE.»</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="reading-direction">reading direction</span> is the order in which a relationship's two sentences are read: left to right, or top to bottom, first; then back.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="reading-direction">اتجاه القراءة</span> (Reading Direction) هو الترتيب الذي تُقرأ به جملتا العلاقة: من اليسار إلى اليمين، أو من الأعلى إلى الأسفل، أوّلًا، ثم بالعكس.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A relationship's <span class="term" data-term="erdish-pair">pair of readings</span> is its two ERDish sentences, one starting from each end; together they say every mark on the line.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="erdish-pair">زوج القراءتين</span> (Pair of Readings) للعلاقة هو جملتا ERDish الخاصّتان بها، كلٌّ منهما تبدأ من طرف؛ وهما معًا تقولان كل علامة على الخط.</p>
+  </div>
+
+  <div class="evolve" id="t3l5-e1">
+    <div class="ver" data-title-en="Version 1 — ordinary words" data-title-ar="الإصدار 1 — كلمات عادية">
+      <figure class="diagram" data-diagram="t3-erdish-v1"></figure>
+      <p class="en">Defect: no fixed parts. "Employees work in departments" gives one name and nothing else. Both halves, both ends and the second name are guesses &mdash; five marks the builder must invent.</p>
+      <p class="ar">العيب: لا أجزاء ثابتة. «Employees work in departments» تعطي اسمًا واحدًا ولا شيء غيره. فالنصفان والطرفان والاسم الثاني تخمينات &mdash; خمس علامات على من يبني أن يخترعها.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — one six-part sentence" data-title-ar="الإصدار 2 — جملة واحدة من ستة أجزاء">
+      <figure class="diagram" data-diagram="t3-erdish-v2"></figure>
+      <p class="en">Better: the six parts fix three marks &mdash; the <code>EMPLOYEE</code> half, the name <code>work in</code>, the toe at <code>DEPARTMENT</code>. Defect: only one direction. The <code>DEPARTMENT</code> half, its name and the end at <code>EMPLOYEE</code> are still open, so the DBA's question has no answer.</p>
+      <p class="ar">أفضل: الأجزاء الستة تحسم ثلاث علامات &mdash; نصف <code>EMPLOYEE</code>، والاسم <code>work in</code>، والإصبع عند <code>DEPARTMENT</code>. العيب: اتجاه واحد فقط. فنصف <code>DEPARTMENT</code> واسمه والطرف عند <code>EMPLOYEE</code> ما زالت مفتوحة، فلا جواب لسؤال مدير قاعدة البيانات.</p>
+    </div>
+    <div class="ver" data-title-en="Version 3 — both sentences" data-title-ar="الإصدار 3 — الجملتان كلتاهما">
+      <figure class="diagram" data-diagram="t3-erdish-both"></figure>
+      <p class="en">Fixed: the second reading, from <code>DEPARTMENT</code>, supplies the dashed half (<em>may be</em>), the name <code>responsible for</code> and the crow's foot at <code>EMPLOYEE</code>. Six marks, two sentences, nothing guessed. A department may exist with no one in it. Recommended.</p>
+      <p class="ar">أُصلح: القراءة الثانية، من <code>DEPARTMENT</code>، تقدّم النصف المتقطّع (<em>may be</em>)، والاسم <code>responsible for</code>، وقدم الغراب عند <code>EMPLOYEE</code>. ست علامات، وجملتان، ولا تخمين. فيجوز أن يوجد قسم لا أحد فيه. وهو الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t3l5-s3"><span class="en">What swaps between the two readings</span><span class="ar">ما الذي يتبادل مكانه بين القراءتين</span></h3>
+
+  <p class="en">Going back the other way, everything changes sides at once. Use the half and the name beside the <em>new</em> start, and the end symbol at the <em>old</em> start:</p>
+  <p class="ar">حين تعود في الاتجاه الآخر، يتبادل كل شيء جهته دفعة واحدة. استعمل النصف والاسم المجاورين لنقطة البداية <em>الجديدة</em>، ورمز الطرف عند نقطة البداية <em>القديمة</em>:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Part</th><th class="ar">الجزء</th><th class="en">Reading 1 (from <code>EMPLOYEE</code>)</th><th class="ar">القراءة 1 (من <code>EMPLOYEE</code>)</th><th class="en">Reading 2 (from <code>DEPARTMENT</code>)</th><th class="ar">القراءة 2 (من <code>DEPARTMENT</code>)</th></tr></thead>
+      <tbody>
+        <tr><td class="en">2 · subject</td><td class="ar">2 · الفاعل</td><td class="en"><code>EMPLOYEE</code></td><td class="ar"><code>EMPLOYEE</code></td><td class="en"><code>DEPARTMENT</code></td><td class="ar"><code>DEPARTMENT</code></td></tr>
+        <tr><td class="en">3 · half used</td><td class="ar">3 · النصف المستعمل</td><td class="en">beside <code>EMPLOYEE</code>, solid &rarr; must</td><td class="ar">بجانب <code>EMPLOYEE</code>، متّصل &larr; must</td><td class="en">beside <code>DEPARTMENT</code>, dashed &rarr; may be</td><td class="ar">بجانب <code>DEPARTMENT</code>، متقطّع &larr; may be</td></tr>
+        <tr><td class="en">4 · name used</td><td class="ar">4 · الاسم المستعمل</td><td class="en"><code>work in</code></td><td class="ar"><code>work in</code></td><td class="en"><code>responsible for</code></td><td class="ar"><code>responsible for</code></td></tr>
+        <tr><td class="en">5 · end used</td><td class="ar">5 · الطرف المستعمل</td><td class="en">at <code>DEPARTMENT</code>, toe &rarr; one and only one</td><td class="ar">عند <code>DEPARTMENT</code>، إصبع &larr; one and only one</td><td class="en">at <code>EMPLOYEE</code>, crow's foot &rarr; one or more</td><td class="ar">عند <code>EMPLOYEE</code>، قدم غراب &larr; one or more</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The second sentence lives in the <code>departments</code> rows that nobody points at. Shipping (30) has been created, and nobody works there yet &mdash; allowed, because the half beside <code>DEPARTMENT</code> is dashed. Count each department's employees:</p>
+    <p class="ar">الجملة الثانية تعيش في صفوف <code>departments</code> التي لا يشير إليها أحد. فقسم Shipping (30) أُنشئ، ولا أحد يعمل فيه بعد &mdash; وهذا مسموح، لأن النصف المجاور لـ <code>DEPARTMENT</code> متقطّع. عُدّ موظّفي كل قسم:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE departments (department_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO departments VALUES (10,'Accounting'), (15,'Sales'), (22,'Development'), (30,'Shipping')","CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, department_id NUMBER NOT NULL, manager_id NUMBER)","INSERT INTO employees (employee_id, first_name, last_name, department_id) VALUES (100,'Dana','Smith',10)","INSERT INTO employees VALUES (210,'Lawrence','Chen',10,100), (310,'Tyler','Adams',15,100), (378,'Neil','Loungani',22,100), (405,'Carlos','Gomez',10,210)"],"sql":"SELECT d.name AS department, COUNT(e.employee_id) AS employees\nFROM departments d LEFT JOIN employees e ON e.department_id = d.department_id\nGROUP BY d.name\nORDER BY employees DESC, d.name;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>department</code></th><th><code>employees</code></th></tr></thead>
+          <tbody>
+            <tr><td>Accounting</td><td>3</td></tr>
+            <tr><td>Development</td><td>1</td></tr>
+            <tr><td>Sales</td><td>1</td></tr>
+            <tr><td>Shipping</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Accounting's 3 is the crow's foot (<em>one or more</em>); Shipping's 0 is the dashed half (<em>may be</em>). Both facts come from reading 2 &mdash; reading 1 alone could never have told the DBA that 0 is allowed.</p>
+    <p class="ar">الرقم 3 عند Accounting هو قدم الغراب (<em>one or more</em>)، والصفر عند Shipping هو النصف المتقطّع (<em>may be</em>). والحقيقتان كلتاهما من القراءة 2 &mdash; فالقراءة 1 وحدها ما كانت لتخبر مدير قاعدة البيانات أن الصفر مسموح.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">You read the <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code> line starting from <code>DEPARTMENT</code>. Which half gives you part 3?</p>
+    <p class="q ar">تقرأ خط <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code> بدءًا من <code>DEPARTMENT</code>. أيّ نصف يعطيك الجزء 3؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The half beside <code>EMPLOYEE</code>, because that is where the sentence ends</span><span class="ar">النصف المجاور لـ <code>EMPLOYEE</code>، لأن الجملة تنتهي هناك</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The half beside <code>DEPARTMENT</code>, the entity you start from</span><span class="ar">النصف المجاور لـ <code>DEPARTMENT</code>، الكيان الذي تبدأ منه</span></button></li>
+      <li><button class="opt"><span class="en">Whichever half is solid</span><span class="ar">أيّ النصفين كان متّصلًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Optionality is always read beside entity A, the start. Starting at <code>DEPARTMENT</code>, that half is dashed, so the sentence says <em>may be</em>.</p>
+      <p class="ar">الإلزامية تُقرأ دائمًا بجانب الكيان A، نقطة البداية. وحين تبدأ من <code>DEPARTMENT</code> يكون ذلك النصف متقطّعًا، فتقول الجملة <em>may be</em>.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why is version 3 of the evolve block better than version 2?</p>
+    <p class="q ar">لماذا الإصدار 3 في كتلة التطوّر أفضل من الإصدار 2؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Version 2's sentence has a part missing</span><span class="ar">لأن جملة الإصدار 2 ينقصها جزء</span></button></li>
+      <li><button class="opt"><span class="en">Version 3 uses a different relationship name</span><span class="ar">لأن الإصدار 3 يستعمل اسم علاقة مختلفًا</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Version 2 reads only one direction; version 3's second sentence fixes the <code>DEPARTMENT</code> half, its name and the end at <code>EMPLOYEE</code></span><span class="ar">لأن الإصدار 2 يقرأ اتجاهًا واحدًا فقط، والجملة الثانية في الإصدار 3 تحسم نصف <code>DEPARTMENT</code> واسمه والطرف عند <code>EMPLOYEE</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Version 2's sentence is complete &mdash; all six parts. It is the <em>direction</em> that is missing. One sentence says half the line; the pair says all of it.</p>
+      <p class="ar">جملة الإصدار 2 كاملة &mdash; بأجزائها الستة. الغائب هو <em>الاتجاه</em>. الجملة الواحدة تقول نصف الخط، والزوج يقوله كله.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t3l5-h4"><span class="en">4 · From two sentences to a drawn line</span><span class="ar">٤ · من جملتين إلى خط مرسوم</span></h2>
+
+  <div class="problem">
+    <p class="en">The school library from Chapter T2 sends two rules: "Each book must be written by one and only one author. Each author may be the author of one or more books." You have to draw it, and the reviewer will read your drawing back aloud. If the sentences that come back differ from these, the line is wrong.</p>
+    <p class="ar">ترسل مكتبة المدرسة من الفصل T2 قاعدتين: «Each book must be written by one and only one author. Each author may be the author of one or more books.» عليك أن ترسمها، وسيقرأ المراجع رسمك بصوت عالٍ. فإن اختلفت الجمل العائدة عن هاتين، فالخط خطأ.</p>
+  </div>
+
+  <p class="en">The second objective on the slides is to "draw and label relationships correctly on an ERD". Run the table of Section 2 backwards. Each sentence draws three marks: part 3 sets the half beside its entity A, part 4 is the name written there, part 5 is the symbol at entity B. Two sentences, six marks: the whole line.</p>
+  <p class="ar">الهدف الثاني في الشرائح هو «رسم العلاقات وتسميتها بشكل صحيح في مخطّط ERD». شغّل جدول القسم 2 بالعكس. كل جملة ترسم ثلاث علامات: الجزء 3 يحدّد النصف المجاور لكيانها A، والجزء 4 هو الاسم المكتوب هناك، والجزء 5 هو الرمز عند الكيان B. جملتان، ست علامات: الخط كله.</p>
+
+  <figure class="diagram" data-diagram="t3-book-author"><figcaption><span class="en">The slides' <code>BOOK</code>&ndash;<code>AUTHOR</code> example, drawn top to bottom. Sentence 1 draws the solid half and <code>written by</code> beside <code>BOOK</code>, and the single toe at <code>AUTHOR</code>. Sentence 2 draws the dashed half and <code>the author of</code> beside <code>AUTHOR</code>, and the crow's foot at <code>BOOK</code>.</span><span class="ar">مثال <code>BOOK</code>&ndash;<code>AUTHOR</code> من الشرائح، مرسومًا من الأعلى إلى الأسفل. الجملة 1 ترسم النصف المتّصل و<code>written by</code> بجانب <code>BOOK</code>، والإصبع الواحدة عند <code>AUTHOR</code>. والجملة 2 ترسم النصف المتقطّع و<code>the author of</code> بجانب <code>AUTHOR</code>، وقدم الغراب عند <code>BOOK</code>.</span></figcaption></figure>
+
+  <h3 id="t3l5-s4"><span class="en">A line drawn top to bottom</span><span class="ar">خط مرسوم من الأعلى إلى الأسفل</span></h3>
+
+  <p class="en">When the boxes are stacked, the slides' rule becomes "top to bottom first": the upper entity is entity A of the first sentence. Nothing else changes. The same procedure reads the restaurant, and the slides' product example:</p>
+  <p class="ar">حين تكون الصناديق مكدّسة، تصبح قاعدة الشرائح «من الأعلى إلى الأسفل أوّلًا»: الكيان العلوي هو الكيان A في الجملة الأولى. ولا شيء غير ذلك يتغيّر. والإجراء نفسه يقرأ المطعم، ومثال المنتَج في الشرائح:</p>
+
+  <pre class="code" data-lang="erdish"><code>Each CUSTOMER must place one or more ORDERs.
+Each ORDER must be placed by one and only one CUSTOMER.
+
+Each PRODUCT must be classified by one and only one PRODUCT TYPE.
+Each PRODUCT TYPE may classify one or more PRODUCTs.</code></pre>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Sentence 1 builds the column: <em>one and only one</em> <code>AUTHOR</code> puts <code>author_id</code> in <code>books</code>, and <em>must be</em> makes it <code>NOT NULL</code>. Sentence 2 builds nothing &mdash; it is what the data is allowed to look like. Jane Austen (<code>AD0004</code>) has no book in the library yet:</p>
+    <p class="ar">الجملة 1 تبني العمود: <em>one and only one</em> <code>AUTHOR</code> تضع <code>author_id</code> في <code>books</code>، و<em>must be</em> تجعله <code>NOT NULL</code>. أمّا الجملة 2 فلا تبني شيئًا &mdash; بل تقول ما يُسمح للبيانات أن تبدو عليه. فـ Jane Austen (<code>AD0004</code>) ليس لها كتاب في المكتبة بعد:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE authors (author_id VARCHAR(6) PRIMARY KEY, name VARCHAR(30) NOT NULL)","INSERT INTO authors VALUES ('AD0001','Oscar Wilde'), ('AD0002','Leo Tolstoy'), ('AD0003','Oliver Goldsmith'), ('AD0004','Jane Austen')","CREATE TABLE books (book_id VARCHAR(5) PRIMARY KEY, title VARCHAR(40) NOT NULL, author_id VARCHAR(6) NOT NULL)","INSERT INTO books VALUES ('BK001','A Vision','AD0001'), ('BK002','War and Peace','AD0002'), ('BK003','Citizen of the World','AD0003'), ('BK004','Androcles and the Lion','AD0003')"],"sql":"SELECT a.name, COUNT(b.book_id) AS books\nFROM authors a LEFT JOIN books b ON b.author_id = a.author_id\nGROUP BY a.name\nORDER BY books DESC, a.name;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>name</code></th><th><code>books</code></th></tr></thead>
+          <tbody>
+            <tr><td>Oliver Goldsmith</td><td>2</td></tr>
+            <tr><td>Leo Tolstoy</td><td>1</td></tr>
+            <tr><td>Oscar Wilde</td><td>1</td></tr>
+            <tr><td>Jane Austen</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Goldsmith's 2 is <em>one or more</em>; Austen's 0 is <em>may be</em>. Now try <code>INSERT INTO books (book_id, title) VALUES ('BK005', 'Emma');</code> &mdash; it fails with <code>Wrong NULL value in NOT NULL column author_id</code>: sentence 1's <em>must be</em>.</p>
+    <p class="ar">الرقم 2 عند Goldsmith هو <em>one or more</em>، والصفر عند Austen هو <em>may be</em>. جرّب الآن <code>INSERT INTO books (book_id, title) VALUES ('BK005', 'Emma');</code> &mdash; فيفشل برسالة <code>Wrong NULL value in NOT NULL column author_id</code>: إنها <em>must be</em> في الجملة 1.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the <code>BOOK</code>&ndash;<code>AUTHOR</code> figure, which sentence is read first, and why?</p>
+    <p class="q ar">في شكل <code>BOOK</code>&ndash;<code>AUTHOR</code>، أيّ الجملتين تُقرأ أوّلًا، ولماذا؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">The one starting from <code>BOOK</code>, because it is the upper box and the rule is top to bottom first</span><span class="ar">التي تبدأ من <code>BOOK</code>، لأنه الصندوق العلوي والقاعدة: من الأعلى إلى الأسفل أوّلًا</span></button></li>
+      <li><button class="opt"><span class="en">The one starting from <code>AUTHOR</code>, because an author comes before a book</span><span class="ar">التي تبدأ من <code>AUTHOR</code>، لأن المؤلّف يأتي قبل الكتاب</span></button></li>
+      <li><button class="opt"><span class="en">The one with <em>must</em>, because mandatory rules are always read first</span><span class="ar">التي فيها <em>must</em>، لأن القواعد الإلزامية تُقرأ أوّلًا دائمًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The order comes from the layout, not from the meaning: left to right, or top to bottom, first. Here it happens that the first sentence is the <em>must</em> one, but that is a coincidence of this drawing.</p>
+      <p class="ar">الترتيب يأتي من التخطيط لا من المعنى: من اليسار إلى اليمين، أو من الأعلى إلى الأسفل، أوّلًا. وقد اتّفق هنا أن الجملة الأولى هي التي فيها <em>must</em>، لكنها مصادفة في هذا الرسم.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Draw the <code>PRODUCT</code>&ndash;<code>PRODUCT TYPE</code> line from its two sentences. Where is the crow's foot?</p>
+    <p class="q ar">ارسم خط <code>PRODUCT</code>&ndash;<code>PRODUCT TYPE</code> من جملتيه. أين قدم الغراب؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">At <code>PRODUCT TYPE</code>, beside the name <code>classify</code></span><span class="ar">عند <code>PRODUCT TYPE</code>، بجانب الاسم <code>classify</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">At <code>PRODUCT</code>, where "one or more PRODUCTs" ends</span><span class="ar">عند <code>PRODUCT</code>، حيث تنتهي «one or more PRODUCTs»</span></button></li>
+      <li><button class="opt"><span class="en">At both ends, because a type has many products</span><span class="ar">عند الطرفين، لأن للنوع منتجات كثيرة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Part 5 is drawn at entity B. "Each PRODUCT TYPE may classify <em>one or more</em> PRODUCTs" ends at <code>PRODUCT</code>, so the crow's foot is there. The other sentence puts a single toe at <code>PRODUCT TYPE</code>.</p>
+      <p class="ar">الجزء 5 يُرسم عند الكيان B. و«Each PRODUCT TYPE may classify <em>one or more</em> PRODUCTs» تنتهي عند <code>PRODUCT</code>، فقدم الغراب هناك. والجملة الأخرى تضع إصبعًا واحدة عند <code>PRODUCT TYPE</code>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t3l5-h5"><span class="en">5 · Speaking a recursive relationship</span><span class="ar">٥ · التحدّث بعلاقة ذاتية</span></h2>
+
+  <div class="problem">
+    <p class="en">A student reads the manager loop from <a href="#t3l1-h5">Lesson 1</a>: "Each EMPLOYEE may be managed by one or more EMPLOYEEs." Their reason: the crow's foot is right there, beside <code>managed by</code>. But the scenario says every employee has <em>one</em> manager. The picture is right; the reading is wrong.</p>
+    <p class="ar">يقرأ طالب حلقة المدير من <a href="#t3l1-h5">الدرس 1</a>: «Each EMPLOYEE may be managed by one or more EMPLOYEEs.» وحجّته: قدم الغراب هناك تمامًا، بجانب <code>managed by</code>. لكن السيناريو يقول إن لكل موظّف مديرًا <em>واحدًا</em>. الصورة صحيحة، والقراءة خطأ.</p>
+  </div>
+
+  <p class="en">The slides' second scenario: "Every employee has one manager &hellip; Each manager can manage several employees." Since managers are also employees, entity A and entity B are both <code>EMPLOYEE</code>. The six parts do not change. What changes is that both ends touch the same box, so the eye takes the symbol from the wrong end.</p>
+  <p class="ar">السيناريو الثاني في الشرائح: «لكل موظّف مدير واحد &hellip; ويستطيع كل مدير أن يدير عدّة موظّفين.» وبما أن المديرين موظّفون أيضًا، فالكيان A والكيان B كلاهما <code>EMPLOYEE</code>. الأجزاء الستة لا تتغيّر. الذي يتغيّر أن الطرفين يلمسان الصندوق نفسه، فتأخذ العين الرمز من الطرف الخطأ.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="recursive-reading">recursive reading</span> is an ERDish sentence whose entity A and entity B are the same entity; the name comes from the end you start at, the cardinality from the other end.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="recursive-reading">القراءة الذاتية</span> (Recursive Reading) جملة ERDish يكون فيها الكيان A والكيان B كيانًا واحدًا؛ والاسم يأتي من الطرف الذي تبدأ منه، والتعدّدية من الطرف الآخر.</p>
+  </div>
+
+  <div class="evolve" id="t3l5-e2">
+    <div class="ver" data-title-en="Version 1 — crow's foot beside manager of" data-title-ar="الإصدار 1 — قدم الغراب بجانب manager of">
+      <figure class="diagram" data-diagram="t3-erdish-rec-v1"></figure>
+      <p class="en">Defect: the author put the crow's foot where "a manager has many" felt right &mdash; beside <code>manager of</code>. Read aloud, it says each employee may have many managers and each manager may manage only one. Both sentences contradict the scenario.</p>
+      <p class="ar">العيب: وضع المؤلّف قدم الغراب حيث بدا أن «المدير يدير كثيرين» مكانها &mdash; بجانب <code>manager of</code>. وحين تُقرأ بصوت عالٍ تقول إن كل موظّف قد يكون له مديرون كثيرون، وإن كل مدير قد لا يدير إلا واحدًا. والجملتان تناقضان السيناريو.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — crow's foot beside managed by" data-title-ar="الإصدار 2 — قدم الغراب بجانب managed by">
+      <figure class="diagram" data-diagram="t3-erdish-rec-v2"></figure>
+      <p class="en">Fixed: the crow's foot sits at the <code>managed by</code> end. Start there, take the name, travel to the other end, find a single toe: <em>one and only one</em> manager. Start at <code>manager of</code>, travel back, find the crow's foot: <em>one or more</em> employees managed. Recommended.</p>
+      <p class="ar">أُصلح: قدم الغراب عند طرف <code>managed by</code>. ابدأ من هناك، وخذ الاسم، وانتقل إلى الطرف الآخر، فتجد إصبعًا واحدة: مديرًا <em>واحدًا فقط لا غير</em>. وابدأ من <code>manager of</code>، وعُد، فتجد قدم الغراب: موظّفين مُدارين <em>واحدًا أو أكثر</em>. وهو الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t3l5-s5"><span class="en">May at both ends, the way the slides say it</span><span class="ar">«may» عند الطرفين، كما تقولها الشرائح</span></h3>
+
+  <p class="en">The slides speak the loop as: "Each EMPLOYEE may be managed by one and only one EMPLOYEE. Each EMPLOYEE may manage one or more EMPLOYEEs." Both halves are dashed (<a href="#t3l2-h5">Lesson 2</a>): Dana is at the top; Tyler manages nobody. The drawn name is <code>manager of</code>, so this track says <em>may be the manager of</em>.</p>
+  <p class="ar">تقول الشرائح الحلقة هكذا: «Each EMPLOYEE may be managed by one and only one EMPLOYEE. Each EMPLOYEE may manage one or more EMPLOYEEs.» والنصفان متقطّعان (<a href="#t3l2-h5">الدرس 2</a>): Dana في القمّة، وTyler لا يدير أحدًا. والاسم المرسوم هو <code>manager of</code>، فيقول هذا المسار <em>may be the manager of</em>.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en"><em>One and only one</em> manager is why there is a single column, <code>manager_id</code>, in each row; <em>may be</em> is why it is nullable. <em>One or more</em> is counted, not stored. Count how many each manager manages:</p>
+    <p class="ar"><em>One and only one</em> مدير هو سبب وجود عمود واحد، <code>manager_id</code>، في كل صفّ، و<em>may be</em> هي سبب قبوله NULL. أمّا <em>one or more</em> فتُعَدّ ولا تُخزَّن. عُدّ كم يدير كل مدير:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, department_id NUMBER NOT NULL, manager_id NUMBER)","INSERT INTO employees (employee_id, first_name, last_name, department_id) VALUES (100,'Dana','Smith',10)","INSERT INTO employees VALUES (210,'Lawrence','Chen',10,100), (310,'Tyler','Adams',15,100), (378,'Neil','Loungani',22,100), (405,'Carlos','Gomez',10,210)"],"sql":"SELECT m.first_name AS manager, COUNT(*) AS manages\nFROM employees e JOIN employees m ON e.manager_id = m.employee_id\nGROUP BY m.first_name\nORDER BY manages DESC;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>manager</code></th><th><code>manages</code></th></tr></thead>
+          <tbody>
+            <tr><td>Dana</td><td>3</td></tr>
+            <tr><td>Lawrence</td><td>1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Dana's 3 is the crow's foot at the <code>managed by</code> end: three rows point at her. Tyler, Neil and Carlos are absent &mdash; the dashed <code>manager of</code> half. Version 1's drawing would have needed room for several managers per row, which one column cannot hold.</p>
+    <p class="ar">الرقم 3 عند Dana هو قدم الغراب عند طرف <code>managed by</code>: ثلاثة صفوف تشير إليها. وTyler وNeil وCarlos غائبون &mdash; إنه النصف المتقطّع عند <code>manager of</code>. أمّا رسم الإصدار 1 فكان سيحتاج إلى مكان لعدّة مديرين في الصفّ الواحد، وهذا ما لا يتّسع له عمود واحد.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapter 3</span><span class="ar">خيط · الفصل 3 في SQL</span></h4>
+    <p class="en">On the SQL track, <a href="@/chapters/chapter-3.html">Chapter 3 &mdash; Relationships</a> writes joins like the two above, including a table joined to itself. It starts from the columns. ERDish is the step before: the two sentences that decided those columns existed, and which of them may be empty.</p>
+    <p class="ar">في مسار SQL، يكتب <a href="@/chapters/chapter-3.html">الفصل 3 &mdash; العلاقات</a> عمليات ربط مثل اللتين أعلاه، ومنها ربط الجدول بنفسه. وهو يبدأ من الأعمدة. أمّا لغة ERDish فهي الخطوة التي قبلها: الجملتان اللتان قرّرتا أن تلك الأعمدة موجودة، وأيّها يجوز أن يكون فارغًا.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In version 2, you start at the <code>managed by</code> end. Where do you read part 5?</p>
+    <p class="q ar">في الإصدار 2، تبدأ من طرف <code>managed by</code>. من أين تقرأ الجزء 5؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">From the crow's foot beside <code>managed by</code>: one or more</span><span class="ar">من قدم الغراب بجانب <code>managed by</code>: one or more</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">From the other end, beside <code>manager of</code>: a single toe, one and only one</span><span class="ar">من الطرف الآخر، بجانب <code>manager of</code>: إصبع واحدة، one and only one</span></button></li>
+      <li><button class="opt"><span class="en">From the scenario, because a recursive line has no cardinality of its own</span><span class="ar">من السيناريو، لأن الخط الذاتي لا تعدّدية خاصة به</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Name from the start, symbol from the far end &mdash; exactly as on a line between two entities. The crow's foot beside <code>managed by</code> belongs to the <em>other</em> sentence.</p>
+      <p class="ar">الاسم من البداية، والرمز من الطرف البعيد &mdash; تمامًا كما في الخط بين كيانين. أمّا قدم الغراب بجانب <code>managed by</code> فتنتمي إلى الجملة <em>الأخرى</em>.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A new rule: "Each EMPLOYEE may mentor one or more EMPLOYEEs. Each EMPLOYEE may be mentored by one and only one EMPLOYEE." Where is the crow's foot drawn?</p>
+    <p class="q ar">قاعدة جديدة: «Each EMPLOYEE may mentor one or more EMPLOYEEs. Each EMPLOYEE may be mentored by one and only one EMPLOYEE.» أين تُرسم قدم الغراب؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">At the <code>mentor</code> end</span><span class="ar">عند طرف <code>mentor</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">At the <code>mentored by</code> end</span><span class="ar">عند طرف <code>mentored by</code></span></button></li>
+      <li><button class="opt"><span class="en">Nowhere: both ends of a recursive line are single toes</span><span class="ar">في لا مكان: طرفا الخط الذاتي إصبعان واحدتان دائمًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"May mentor <em>one or more</em>" starts at the <code>mentor</code> end, so its cardinality is drawn at the far end &mdash; the <code>mentored by</code> end. Same shape as <code>managed by</code>.</p>
+      <p class="ar">«may mentor <em>one or more</em>» تبدأ من طرف <code>mentor</code>، فتُرسم تعدّديتها عند الطرف البعيد &mdash; طرف <code>mentored by</code>. الشكل نفسه كما في <code>managed by</code>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t3l5-h6"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Take it apart</span><span class="ar">تمرين 1 · فكّكها</span></h4>
+    <p class="en">Number the six parts of "Each <code>JOB</code> may be held by one or more <code>EMPLOYEE</code>s." For parts 3 and 5, say which mark on the line each comes from.</p>
+    <p class="ar">رقّم الأجزاء الستة في «Each <code>JOB</code> may be held by one or more <code>EMPLOYEE</code>s.» وللجزأين 3 و5، قل من أيّ علامة على الخط يأتي كلٌّ منهما.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">1 <code>Each</code> &middot; 2 <code>JOB</code> &middot; 3 <code>may be</code> &middot; 4 <code>held by</code> &middot; 5 <code>one or more</code> &middot; 6 <code>EMPLOYEE</code>s. Part 3 is the dashed half beside <code>JOB</code>; part 5 is the crow's foot at <code>EMPLOYEE</code>.</p>
+      <p class="ar">1 <code>Each</code> &middot; 2 <code>JOB</code> &middot; 3 <code>may be</code> &middot; 4 <code>held by</code> &middot; 5 <code>one or more</code> &middot; 6 <code>EMPLOYEE</code>s. الجزء 3 هو النصف المتقطّع بجانب <code>JOB</code>، والجزء 5 هو قدم الغراب عند <code>EMPLOYEE</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Say the line</span><span class="ar">تمرين 2 · قُل الخط</span></h4>
+    <p class="en">In the H.R. ERD, <code>EMPLOYEE</code> is on the left and <code>JOB</code> on the right. The half beside <code>EMPLOYEE</code> is solid and named <code>hold</code>; the half beside <code>JOB</code> is dashed and named <code>held by</code>; the crow's foot is at <code>EMPLOYEE</code>. Write both sentences, in the right order.</p>
+    <p class="ar">في مخطّط الموارد البشرية، <code>EMPLOYEE</code> على اليسار و<code>JOB</code> على اليمين. النصف المجاور لـ <code>EMPLOYEE</code> متّصل واسمه <code>hold</code>، والنصف المجاور لـ <code>JOB</code> متقطّع واسمه <code>held by</code>، وقدم الغراب عند <code>EMPLOYEE</code>. اكتب الجملتين، بالترتيب الصحيح.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="erdish"><code>Each EMPLOYEE must hold one and only one JOB.
+Each JOB may be held by one or more EMPLOYEEs.</code></pre>
+      <p class="en">Left to right first, so <code>EMPLOYEE</code> is the first subject. No crow's foot at <code>JOB</code> means a single toe there: <em>one and only one</em>. These are the slides' own sentences.</p>
+      <p class="ar">من اليسار إلى اليمين أوّلًا، فيكون <code>EMPLOYEE</code> الفاعل الأول. وغياب قدم الغراب عند <code>JOB</code> يعني إصبعًا واحدة هناك: <em>one and only one</em>. وهاتان جملتا الشرائح نفسها.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Draw it from the words</span><span class="ar">تمرين 3 · ارسمه من الكلمات</span></h4>
+    <p class="en">Describe the line drawn from these two sentences, mark by mark: each half, each name and where it is written, each end. "Each <code>CUSTOMER</code> must place one or more <code>ORDER</code>s. Each <code>ORDER</code> must be placed by one and only one <code>CUSTOMER</code>."</p>
+    <p class="ar">صِف الخط المرسوم من هاتين الجملتين، علامةً علامة: كل نصف، وكل اسم وأين يُكتب، وكل طرف. «Each <code>CUSTOMER</code> must place one or more <code>ORDER</code>s. Each <code>ORDER</code> must be placed by one and only one <code>CUSTOMER</code>.»</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Sentence 1: solid half and <code>place</code> beside <code>CUSTOMER</code>; crow's foot at <code>ORDER</code>. Sentence 2: solid half and <code>placed by</code> beside <code>ORDER</code>; single toe at <code>CUSTOMER</code>. Solid all the way, a crow's foot at one end only.</p>
+      <p class="ar">الجملة 1: نصف متّصل و<code>place</code> بجانب <code>CUSTOMER</code>، وقدم غراب عند <code>ORDER</code>. والجملة 2: نصف متّصل و<code>placed by</code> بجانب <code>ORDER</code>، وإصبع واحدة عند <code>CUSTOMER</code>. الخط متّصل كله، وقدم الغراب عند طرف واحد فقط.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Mend the sentences</span><span class="ar">تمرين 4 · أصلح الجمل</span></h4>
+    <p class="en">Each sentence breaks the six-part form once. Name the fault and rewrite it.</p>
+    <p class="ar">كل جملة تخالف صيغة الأجزاء الستة مرّة واحدة. سمِّ الخطأ وأعد كتابتها.</p>
+    <pre class="code" data-lang="erdish"><code>(a) EMPLOYEE must work in one and only one DEPARTMENT.
+(b) Each DEPARTMENT may be responsible for three EMPLOYEEs.
+(c) Each ORDERS must be placed by one and only one CUSTOMER.
+(d) Each AUTHOR the author of one or more BOOKs.</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) Part 1 missing: "<strong>Each</strong> EMPLOYEE must &hellip;". (b) Cardinality is never a number (Lesson 3): "&hellip; for <strong>one or more</strong> EMPLOYEEs." (c) Entity A is singular after Each: "Each <strong>ORDER</strong> &hellip;". (d) Part 3 missing: "Each AUTHOR <strong>may be</strong> the author of one or more BOOKs."</p>
+      <p class="ar">(a) الجزء 1 غائب: «<strong>Each</strong> EMPLOYEE must &hellip;». (b) التعدّدية ليست رقمًا أبدًا (الدرس 3): «&hellip; for <strong>one or more</strong> EMPLOYEEs.» (c) الكيان A مفرد بعد Each: «Each <strong>ORDER</strong> &hellip;». (d) الجزء 3 غائب: «Each AUTHOR <strong>may be</strong> the author of one or more BOOKs.»</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · The mentor loop</span><span class="ar">تمرين 5 · حلقة الإرشاد</span></h4>
+    <p class="en">H.R. adds: "A new employee may be assigned one mentor, who is another employee. An experienced employee may mentor several new ones." Write the two ERDish sentences, say where the crow's foot goes, and name the column this adds to <code>employees</code>, with or without <code>NOT NULL</code>.</p>
+    <p class="ar">تضيف الموارد البشرية: «قد يُعيَّن للموظّف الجديد مرشد واحد، وهو موظّف آخر. وقد يرشد الموظّف المتمرّس عدّة موظّفين جدد.» اكتب جملتي ERDish، وقل أين تذهب قدم الغراب، وسمِّ العمود الذي يضيفه هذا إلى <code>employees</code>، مع <code>NOT NULL</code> أو بدونها.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="erdish"><code>Each EMPLOYEE may be mentored by one and only one EMPLOYEE.
+Each EMPLOYEE may be the mentor of one or more EMPLOYEEs.</code></pre>
+      <p class="en">Both halves dashed. The crow's foot is at the <code>mentored by</code> end &mdash; the far end of the <em>one or more</em> sentence. One mentor per row: a single column <code>mentor_id</code>, nullable because of <em>may be</em>.</p>
+      <p class="ar">النصفان متقطّعان. وقدم الغراب عند طرف <code>mentored by</code> &mdash; الطرف البعيد لجملة <em>one or more</em>. مرشد واحد لكل صفّ: عمود واحد <code>mentor_id</code>، يقبل NULL بسبب <em>may be</em>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 6 · From the table back to ERDish</span><span class="ar">تمرين 6 · من الجدول عائدًا إلى ERDish</span></h4>
+    <p class="en">A DBA shows you <code>CREATE TABLE orders (order_no NUMBER PRIMARY KEY, customer_id NUMBER NOT NULL);</code> Which of the restaurant's two sentences can you recover from this table alone, and which can you not?</p>
+    <p class="ar">يريك مدير قاعدة بيانات <code>CREATE TABLE orders (order_no NUMBER PRIMARY KEY, customer_id NUMBER NOT NULL);</code> أيّ جملتي المطعم تستطيع استعادتها من هذا الجدول وحده، وأيّهما لا تستطيع؟</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Recoverable: "Each <code>ORDER</code> must be placed by one and only one <code>CUSTOMER</code>" &mdash; one column, <code>NOT NULL</code>. Not recoverable: whether a customer <em>must</em> or <em>may</em> place orders. No column holds it; only the ERD and its second sentence say "must".</p>
+      <p class="ar">يمكن استعادة: «Each <code>ORDER</code> must be placed by one and only one <code>CUSTOMER</code>» &mdash; عمود واحد، <code>NOT NULL</code>. ولا يمكن استعادة: هل <em>يجب</em> على الزبون أن يضع طلبات أم <em>قد</em> يضعها. لا عمود يحمل ذلك؛ وحده مخطّط ERD وجملته الثانية يقولان «must».</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">ERDish is the precise language of an ERD: you check rules with the client in it, and hand them to the DBA in it.</li>
+      <li class="ar">لغة ERDish هي اللغة الدقيقة لمخطّط ERD: بها تتحقّق من القواعد مع العميل، وبها تسلّمها لمدير قاعدة البيانات.</li>
+      <li class="en">Every sentence has six parts: EACH · entity A · must be / may be · name · one and only one / one or more · entity B.</li>
+      <li class="ar">لكل جملة ستة أجزاء: EACH · الكيان A · must be / may be · الاسم · one and only one / one or more · الكيان B.</li>
+      <li class="en">Parts 3 and 4 come from beside entity A (the half, the name); part 5 from the end at entity B (toe or crow's foot).</li>
+      <li class="ar">الجزآن 3 و4 يأتيان من جانب الكيان A (النصف، والاسم)، والجزء 5 من الطرف عند الكيان B (إصبع أو قدم غراب).</li>
+      <li class="en">Every relationship is two sentences: left to right (or top to bottom) first, then back. One sentence says half the line.</li>
+      <li class="ar">كل علاقة جملتان: من اليسار إلى اليمين (أو من الأعلى إلى الأسفل) أوّلًا، ثم بالعكس. والجملة الواحدة تقول نصف الخط.</li>
+      <li class="en">Two sentences draw the whole line: two halves, two names, two ends.</li>
+      <li class="ar">الجملتان ترسمان الخط كله: نصفين، واسمين، وطرفين.</li>
+      <li class="en">In a recursive relationship entity A and B are the same; the crow's foot sits beside <code>managed by</code>, and belongs to the other sentence.</li>
+      <li class="ar">في العلاقة الذاتية الكيانان A وB واحد، وقدم الغراب تقع بجانب <code>managed by</code>، وتنتمي إلى الجملة الأخرى.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Dropping a part &mdash; most often the optionality or the cardinality.</li>
+      <li class="ar">إسقاط جزء &mdash; وأكثر ما يسقط الإلزامية أو التعدّدية.</li>
+      <li class="en">Reading the symbol at the start: part 5 is always at the far end.</li>
+      <li class="ar">قراءة الرمز عند البداية: الجزء 5 دائمًا عند الطرف البعيد.</li>
+      <li class="en">Writing only one direction and calling the relationship done.</li>
+      <li class="ar">كتابة اتجاه واحد فقط واعتبار العلاقة منتهية.</li>
+      <li class="en">A number for cardinality ("three EMPLOYEEs"), or a plural subject ("Each ORDERS").</li>
+      <li class="ar">رقم مكان التعدّدية («three EMPLOYEEs»)، أو فاعل بالجمع («Each ORDERS»).</li>
+      <li class="en">Putting the recursive crow's foot where "a manager has many" feels right, instead of where the sentence ends.</li>
+      <li class="ar">وضع قدم الغراب في العلاقة الذاتية حيث يبدو أن «المدير يدير كثيرين» مكانها، بدلًا من حيث تنتهي الجملة.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="#t3-test-05">Test 5 &mdash; Speaking ERDish</a>. Then <a href="#t3-lesson-06">Lesson 6 &mdash; Matrix Diagrams</a> finds the relationships you would otherwise miss, before you ever speak them.</p>
+    <p class="ar">اختبر نفسك بـ<a href="#t3-test-05">اختبار 5 &mdash; التحدّث بلغة ERDish</a>. ثم يجد <a href="#t3-lesson-06">الدرس 6 &mdash; مخطّطات المصفوفة</a> العلاقات التي كانت ستفوتك، قبل أن تتحدّث بها أصلًا.</p>
+  </div>
+
+</section>
