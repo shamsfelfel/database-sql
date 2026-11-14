@@ -1,0 +1,130 @@
+<section class="page" id="t2-chapter">
+
+  <span class="kicker">Theory &middot; Chapter 2</span>
+  <h1><span class="en">The Relational Model and the Conceptual Model</span><span class="ar">النموذج العلائقي والنموذج المفاهيمي</span></h1>
+  <p class="lede en">Before a database has a single table, someone has to decide what it will hold and how the pieces fit together. This chapter is that decision: why one table is never enough, what a relational table guarantees, and the models a design passes through before any SQL is written.</p>
+  <p class="lede ar">قبل أن يكون في قاعدة البيانات جدول واحد، على أحدٍ أن يقرّر ما الذي ستحفظه وكيف تترابط أجزاؤها. هذا الفصل هو ذلك القرار: لماذا لا يكفي جدول واحد أبدًا، وما الذي يضمنه الجدول العلائقي، والنماذج التي يمرّ بها التصميم قبل كتابة أي SQL.</p>
+
+  <h2 id="t2idx-why"><span class="en">Why design comes before SQL</span><span class="ar">لماذا يسبق التصميمُ SQL</span></h2>
+
+  <div class="problem">
+    <p class="en">A department keeps its books in one table. Look at records 3 and 4: the same author, <code>AD0003 Oliver Goldsmith</code>, is stored twice, once for each of his books.</p>
+    <p class="ar">يحفظ أحد الأقسام كتبه في جدول واحد. انظر إلى السجلّين 3 و4: المؤلف نفسه، <code>AD0003 Oliver Goldsmith</code>، محفوظ مرّتين، مرّة لكل كتاب من كتبه.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th><code>AUTHOR_ID</code></th><th><code>AUTHOR_NAME</code></th><th><code>TITLE</code></th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><code>AD0001</code></td><td>Oscar Wilde</td><td>A Vision</td></tr>
+          <tr><td>2</td><td><code>AD0002</code></td><td>Leo Tolstoy</td><td>War and Peace</td></tr>
+          <tr><td>3</td><td><code>AD0003</code></td><td>Oliver Goldsmith</td><td>Citizen of the World</td></tr>
+          <tr><td>4</td><td><code>AD0003</code></td><td>Oliver Goldsmith</td><td>Androcles and the Lion</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="en">SQL will happily store this table. It will not tell you the table is badly shaped. Whether facts are repeated, contradict each other or have no place to live is settled earlier, by the design &mdash; and that is what this chapter teaches.</p>
+  <p class="ar">ستحفظ SQL هذا الجدول دون اعتراض، ولن تخبرك أن شكله سيّئ. أمّا هل تتكرّر الحقائق، أو تتناقض، أو لا تجد مكانًا تُحفظ فيه، فذلك يُحسَم قبل ذلك بكثير، في التصميم &mdash; وهذا ما يعلّمه هذا الفصل.</p>
+
+  <div class="note">
+    <p class="en"><strong>Data modeling</strong> is the process of capturing the important concepts and rules that shape a business and depicting them visually in a diagram.</p>
+    <p class="ar"><strong>نمذجة البيانات</strong> هي عملية التقاط المفاهيم والقواعد المهمّة التي تُشكّل عمل المؤسسة، وتمثيلها بصريًّا في مخطّط.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Someone corrects the author's name in record 3 only. What is wrong with the table now?</p>
+    <p class="q ar">صحّح أحدهم اسم المؤلف في السجلّ 3 فقط. ما الخطأ في الجدول الآن؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">The same author <code>AD0003</code> now has two different names</span><span class="ar">صار للمؤلف نفسه <code>AD0003</code> اسمان مختلفان</span></button></li>
+      <li><button class="opt"><span class="en">Nothing &mdash; record 4 updates itself</span><span class="ar">لا شيء &mdash; السجلّ 4 يتحدّث تلقائيًّا</span></button></li>
+      <li><button class="opt"><span class="en">SQL refuses the change, so nothing happens</span><span class="ar">ترفض SQL التعديل، فلا يحدث شيء</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The name is stored twice, so a change made in one place leaves the other copy behind. The table now contradicts itself. Lesson 1 names this problem; Lesson 2 removes it.</p>
+      <p class="ar">الاسم محفوظ مرّتين، فالتعديل في مكان واحد يترك النسخة الأخرى كما هي، فيناقض الجدول نفسه. الدرس 1 يسمّي هذه المشكلة، والدرس 2 يزيلها.</p>
+    </div>
+  </div>
+
+  <h2 id="t2idx-before"><span class="en">What you should already know</span><span class="ar">ما يجب أن تعرفه مسبقًا</span></h2>
+
+  <div class="callout prereq">
+    <p class="en">No design knowledge is assumed. Chapter 1 of this track, <em>Introduction</em>, is not published yet, so this chapter starts from zero. You only need to recognise a table: a name, columns across the top, rows down the side.</p>
+    <p class="ar">لا يُفترض أنك تعرف شيئًا عن التصميم. الفصل 1 من هذا المسار، <em>مقدّمة</em>، لم يُنشر بعد، لذا يبدأ هذا الفصل من الصفر. يكفي أن تعرف شكل الجدول: اسم، وأعمدة في الأعلى، وصفوف نزولًا.</p>
+    <p class="en">If you have taken the SQL track, <a href="@/chapters/chapter-1.html">Chapter 1 &mdash; First Steps</a> is the table seen from the other side. <a href="@/chapters/chapter-3.html">Chapter 3 &mdash; Relationships</a> uses primary and foreign keys; this chapter explains where they come from.</p>
+    <p class="ar">إن كنت قد درست مسار SQL، فإن <a href="@/chapters/chapter-1.html">الفصل 1 &mdash; الخطوات الأولى</a> هو الجدول نفسه من الجهة الأخرى. ويستعمل <a href="@/chapters/chapter-3.html">الفصل 3 &mdash; العلاقات</a> المفتاح الأساسي والمفتاح الأجنبي، وهذا الفصل يشرح من أين يأتيان.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A quick self-check. How many columns does the table at the top of this page have?</p>
+    <p class="q ar">فحص سريع لنفسك. كم عمودًا في الجدول أعلى هذه الصفحة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Four &mdash; one per record</span><span class="ar">أربعة &mdash; واحد لكل سجلّ</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Three &mdash; <code>AUTHOR_ID</code>, <code>AUTHOR_NAME</code>, <code>TITLE</code></span><span class="ar">ثلاثة &mdash; <code>AUTHOR_ID</code> و<code>AUTHOR_NAME</code> و<code>TITLE</code></span></button></li>
+      <li><button class="opt"><span class="en">Two &mdash; the author and the book</span><span class="ar">اثنان &mdash; المؤلف والكتاب</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Columns run across the top; each one holds one kind of information. The four numbered lines are rows, or records. If this was easy, you are ready.</p>
+      <p class="ar">الأعمدة في الأعلى، وكل عمود يحمل نوعًا واحدًا من المعلومات. أمّا الأسطر الأربعة المرقّمة فهي صفوف، أي سجلّات. إن كان هذا سهلًا فأنت مستعد.</p>
+    </div>
+  </div>
+
+  <h2 id="t2idx-domain"><span class="en">The library you will model</span><span class="ar">المكتبة التي ستنمذجها</span></h2>
+
+  <p class="en">A faculty member asks Matt for a simplified library database to store the department's books. Matt starts by finding the entities and how they relate. You follow him through the same steps, and the same five names come back in every lesson:</p>
+  <p class="ar">يطلب أحد أعضاء هيئة التدريس من مات قاعدة بيانات مبسّطة لمكتبة تحفظ كتب القسم. يبدأ مات بتحديد الكيانات وكيف ترتبط. ستتبعه في الخطوات نفسها، وستتكرّر الأسماء الخمسة نفسها في كل درس:</p>
+
+  <ul>
+    <li class="en"><code>MEMBER</code> &mdash; a person who borrows books.</li>
+    <li class="ar"><code>MEMBER</code> &mdash; العضو الذي يستعير الكتب.</li>
+    <li class="en"><code>BOOK</code> &mdash; a book on the shelves, with its title.</li>
+    <li class="ar"><code>BOOK</code> &mdash; الكتاب على الرفوف، مع عنوانه.</li>
+    <li class="en"><code>AUTHOR</code> &mdash; who wrote a book.</li>
+    <li class="ar"><code>AUTHOR</code> &mdash; من كتب الكتاب.</li>
+    <li class="en"><code>PUBLISHER</code> &mdash; who published it.</li>
+    <li class="ar"><code>PUBLISHER</code> &mdash; من نشره.</li>
+    <li class="en"><code>BOOK TRANSACTION</code> &mdash; one borrowing, with its date.</li>
+    <li class="ar"><code>BOOK TRANSACTION</code> &mdash; عملية استعارة واحدة، مع تاريخها.</li>
+  </ul>
+
+  <div class="tip">
+    <p class="en">The last lesson leaves the library for a bigger case: the Human Resources department, whose ERD of <code>EMPLOYEE</code>, <code>DEPARTMENT</code> and <code>LOCATION</code> is the diagram this chapter builds towards.</p>
+    <p class="ar">يغادر الدرس الأخير المكتبة إلى حالة أكبر: قسم الموارد البشرية، ومخطّط الكيانات والعلاقات الخاص به لـ <code>EMPLOYEE</code> و<code>DEPARTMENT</code> و<code>LOCATION</code> هو المخطّط الذي يتّجه إليه هذا الفصل.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A member borrows <em>War and Peace</em> on 3 March. Which of the five holds that fact?</p>
+    <p class="q ar">استعار عضو كتاب <em>War and Peace</em> في 3 مارس. أيّ الخمسة يحفظ هذه الحقيقة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>MEMBER</code></span><span class="ar"><code>MEMBER</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>BOOK</code></span><span class="ar"><code>BOOK</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>BOOK TRANSACTION</code></span><span class="ar"><code>BOOK TRANSACTION</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The borrowing is an event that joins one member to one book on one date. It is neither the member nor the book, so it gets a name of its own: <code>BOOK TRANSACTION</code>.</p>
+      <p class="ar">الاستعارة حدث يربط عضوًا واحدًا بكتاب واحد في تاريخ واحد. فهي ليست العضو ولا الكتاب، ولذلك لها اسم خاص بها: <code>BOOK TRANSACTION</code>.</p>
+    </div>
+  </div>
+
+  <h2 id="t2idx-how"><span class="en">How the chapter is put together</span><span class="ar">كيف بُني هذا الفصل</span></h2>
+
+  <p class="en">Six lessons in three steps. Lessons 1&ndash;2 fix the table: from the flat file to the relational table and its keys. Lesson 3 shows the three models &mdash; conceptual, logical, physical. Lessons 4&ndash;6 build the conceptual model: entities, attributes, unique identifiers, and your first ERD.</p>
+  <p class="ar">ستة دروس في ثلاث خطوات. الدرسان 1&ndash;2 يصلحان الجدول: من الملف المسطّح إلى الجدول العلائقي ومفاتيحه. الدرس 3 يعرض النماذج الثلاثة &mdash; المفاهيمي والمنطقي والفيزيائي. والدروس 4&ndash;6 تبني النموذج المفاهيمي: الكيانات والخصائص والمعرّفات الفريدة، وأوّل مخطّط كيانات وعلاقات لك.</p>
+  <p class="en">Every lesson opens with a problem, explains briefly, draws a diagram, and asks you something every few minutes. A test follows each lesson. The lab then turns the library into real <code>CREATE TABLE</code> statements, and three chapter tests close the chapter. Start with <a href="#t2-lesson-01">Lesson 1</a>.</p>
+  <p class="ar">يبدأ كل درس بمشكلة، ويشرح باختصار، ويرسم مخطّطًا، ويسألك شيئًا كل بضع دقائق. ويليه اختبار. ثم يحوّل المختبر المكتبة إلى جمل <code>CREATE TABLE</code> حقيقية، وتختم الفصلَ ثلاثةُ اختبارات. ابدأ بـ<a href="#t2-lesson-01">الدرس 1</a>.</p>
+
+  <div class="quiz">
+    <p class="q en">Where in this chapter does a design decision become running SQL?</p>
+    <p class="q ar">أين يتحوّل قرار التصميم في هذا الفصل إلى SQL تعمل فعلًا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Nowhere &mdash; this track is theory only</span><span class="ar">لا مكان في أيّ مكان &mdash; هذا المسار نظري فقطmdash; هذا المسار نظري فقط</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">In the chapter lab, where entities become tables</span><span class="ar">في مختبر الفصل، حيث تصبح الكيانات جداول</span></button></li>
+      <li><button class="opt"><span class="en">In Lesson 1, before any model is drawn</span><span class="ar">في الدرس 1، قبل رسم أي نموذج</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Every chapter of this track ends in SQL. Here the lab builds the library's <code>members</code>, <code>books</code> and <code>authors</code> tables from the model you drew.</p>
+      <p class="ar">ينتهي كل فصل في هذا المسار بـ SQL. وهنا يبني المختبر جداول المكتبة <code>members</code> و<code>books</code> و<code>authors</code> من النموذج الذي رسمته.</p>
+    </div>
+  </div>
+
+<!--GEN:index-->
+</section>

@@ -22,8 +22,12 @@ window.DBTAnchors = {
 "t2-test-04": "tests/t2-test-04.html",
 "t2-test-05": "tests/t2-test-05.html",
 "t2-test-06": "tests/t2-test-06.html",
+"t2idx-before": "chapters/t2.html",
+"t2idx-domain": "chapters/t2.html",
 "t2idx-h1": "chapters/t2.html",
 "t2idx-h2": "chapters/t2.html",
+"t2idx-how": "chapters/t2.html",
+"t2idx-why": "chapters/t2.html",
 "t3-chapter": "chapters/t3.html",
 "t3-exam-a": "exams/t3-exam-a.html",
 "t3-exam-b": "exams/t3-exam-b.html",
@@ -85,6 +89,14 @@ window.DBTAnchors = {
 "track-theory": "theory/index.html"
 };
 window.DBTHeadings = {
+"t2idx-before": {
+"ar": "ما يجب أن تعرفه مسبقًا",
+"en": "What you should already know"
+},
+"t2idx-domain": {
+"ar": "المكتبة التي ستنمذجها",
+"en": "The library you will model"
+},
 "t2idx-h1": {
 "ar": "الدروس",
 "en": "The lessons"
@@ -92,6 +104,14 @@ window.DBTHeadings = {
 "t2idx-h2": {
 "ar": "تأكّد ممّا رسخ",
 "en": "Check what stuck"
+},
+"t2idx-how": {
+"ar": "كيف بُني هذا الفصل",
+"en": "How the chapter is put together"
+},
+"t2idx-why": {
+"ar": "لماذا يسبق التصميمُ SQL",
+"en": "Why design comes before SQL"
 },
 "t3idx-h1": {
 "ar": "الدروس",

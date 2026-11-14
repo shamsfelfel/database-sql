@@ -25,7 +25,7 @@
    that ships changes. A rebuild that changes nothing keeps the name,
    and this file stays byte-identical, so an installed reader
    re-downloads nothing: there are no timestamps in here on purpose. */
-var CACHE = 'sqllab-832908985fa3';
+var CACHE = 'sqllab-34bb02b53f3f';
 
 /* THE INVARIANT ON THIS ORIGIN.
 
@@ -293,7 +293,7 @@ var HASHES = [
   '276cc4f5d909',
   '4a58f7dc1a76',
   'da01fbfe9d5a',
-  '508c4c1a4c8e',
+  '8df883493341',
   '602ea144d39d',
   'a6fbe9e1421b',
   'e77ceea3fce6',
@@ -327,7 +327,7 @@ var HASHES = [
   '9fea20c5aefc',
   '3a9c11bd4103',
   'd744ca778cf7',
-  '93d9899c7b17',
+  'a2ce6643fe8d',
   'ef15e86f0c00',
   '9b84ef964cb5',
   '1af592a528c8',
