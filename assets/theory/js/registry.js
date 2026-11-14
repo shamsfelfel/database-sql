@@ -665,7 +665,7 @@ window.DBT_REGISTRY = {
       "ar": "أربعة مخططات، أحدها معطوب: سمِّ القاعدة التي يخرقها، ثم أصلحه."
      },
      "href": "lessons/t4-lesson-05.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t4-test-05",

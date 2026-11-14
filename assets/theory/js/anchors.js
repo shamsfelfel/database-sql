@@ -306,6 +306,19 @@ window.DBTAnchors = {
 "t4l4-s2": "lessons/t4-lesson-04.html",
 "t4l4-s3": "lessons/t4-lesson-04.html",
 "t4l4-s4": "lessons/t4-lesson-04.html",
+"t4l5-e1": "lessons/t4-lesson-05.html",
+"t4l5-e2": "lessons/t4-lesson-05.html",
+"t4l5-h1": "lessons/t4-lesson-05.html",
+"t4l5-h2": "lessons/t4-lesson-05.html",
+"t4l5-h3": "lessons/t4-lesson-05.html",
+"t4l5-h4": "lessons/t4-lesson-05.html",
+"t4l5-h5": "lessons/t4-lesson-05.html",
+"t4l5-h6": "lessons/t4-lesson-05.html",
+"t4l5-s1": "lessons/t4-lesson-05.html",
+"t4l5-s2": "lessons/t4-lesson-05.html",
+"t4l5-s3": "lessons/t4-lesson-05.html",
+"t4l5-s4": "lessons/t4-lesson-05.html",
+"t4l5-s5": "lessons/t4-lesson-05.html",
 "t5-chapter": "chapters/t5.html",
 "t5-exam-a": "exams/t5-exam-a.html",
 "t5-exam-b": "exams/t5-exam-b.html",
@@ -1168,6 +1181,50 @@ window.DBTHeadings = {
 "t4l4-s4": {
 "ar": "ثلاثة أشياء كان يجب أن يكونها الصندوق",
 "en": "Three things a box should have been instead"
+},
+"t4l5-h1": {
+"ar": "١ · للمراجعة ترتيب",
+"en": "1 · A review has an order"
+},
+"t4l5-h2": {
+"ar": "٢ · التشكيلة الأولى: أيّ نموذج يخرق قاعدة؟",
+"en": "2 · Lineup one: which model breaks a rule?"
+},
+"t4l5-h3": {
+"ar": "٣ · التشكيلة الثانية: رسم يكرّر نفسه",
+"en": "3 · Lineup two: a drawing that repeats itself"
+},
+"t4l5-h4": {
+"ar": "٤ · حين لا تستطيع الصورة أن تحسم",
+"en": "4 · When the picture cannot decide"
+},
+"t4l5-h5": {
+"ar": "٥ · إثبات الحكم بالبيانات",
+"en": "5 · Proving a verdict with the data"
+},
+"t4l5-h6": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t4l5-s1": {
+"ar": "كتابة الحكم",
+"en": "Writing the verdict"
+},
+"t4l5-s2": {
+"ar": "أصغر إصلاح",
+"en": "The smallest repair"
+},
+"t4l5-s3": {
+"ar": "التكرار ليس خطأً دائمًا",
+"en": "Repeated is not always wrong"
+},
+"t4l5-s4": {
+"ar": "رسمٌ واحد، وحكمان",
+"en": "Same drawing, two verdicts"
+},
+"t4l5-s5": {
+"ar": "الشاهد الآخر، وماذا تعني النتيجة الفارغة",
+"en": "The other witness, and what no rows means"
 },
 "t5idx-h1": {
 "ar": "الدروس",

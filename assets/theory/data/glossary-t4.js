@@ -24,6 +24,28 @@ window.DBTGlossary["t4"] = [
   ]
  },
  {
+  "id": "diagram-accuracy",
+  "term": {
+   "en": "Accuracy (of an ERD)",
+   "ar": "الدقّة (في مخطّط الكيانات والعلاقات)"
+  },
+  "def": {
+   "en": "How truly a diagram states the business's rules: every rule it draws holds in the business, and every rule the business has is drawn.",
+   "ar": "مدى صدق المخطّط في التعبير عن قواعد العمل: كل قاعدة يرسمها صحيحة في العمل، وكل قاعدة في العمل مرسومة فيه."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "business-evidence",
+   "model-review"
+  ],
+  "used": [
+   "t4l5-h4"
+  ]
+ },
+ {
   "id": "subdivision-basis",
   "term": {
    "en": "Basis of subdivision",
@@ -43,6 +65,29 @@ window.DBTGlossary["t4"] = [
   ],
   "used": [
    "t4l3-s3"
+  ]
+ },
+ {
+  "id": "business-evidence",
+  "term": {
+   "en": "Business evidence",
+   "ar": "بيّنة العمل"
+  },
+  "def": {
+   "en": "A fact about the business, from its people or its records, that settles a check the drawing alone cannot, such as whether every exam is a quiz, a midterm or a final.",
+   "ar": "حقيقةٌ عن العمل، من أهله أو من سجلّاته، تحسم فحصًا لا يستطيع الرسم وحده أن يحسمه، كمعرفة هل كل امتحان قصير أو نصفي أو نهائي."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "diagram-accuracy",
+   "exhaustive",
+   "witness-instance"
+  ],
+  "used": [
+   "t4l5-h4"
   ]
  },
  {
@@ -90,6 +135,29 @@ window.DBTGlossary["t4"] = [
   ]
  },
  {
+  "id": "coverage-query",
+  "term": {
+   "en": "Coverage query",
+   "ar": "استعلام الشمول"
+  },
+  "def": {
+   "en": "A query that lists the supertype rows found in no subtype table, the witnesses against exhaustiveness.",
+   "ar": "استعلامٌ يعرض صفوف النوع الأعلى غير الموجودة في أيّ جدول نوع فرعي، وهم الشهود على خرق الشمول."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "overlap-query",
+   "exhaustive",
+   "uncovered-instance"
+  ],
+  "used": [
+   "t4l5-s5"
+  ]
+ },
+ {
   "id": "cross-cutting-attribute",
   "term": {
    "en": "Cross-cutting attribute",
@@ -132,6 +200,28 @@ window.DBTGlossary["t4"] = [
   ],
   "used": [
    "t4l3-h2"
+  ]
+ },
+ {
+  "id": "false-alarm",
+  "term": {
+   "en": "False alarm",
+   "ar": "الإنذار الكاذب"
+  },
+  "def": {
+   "en": "Something in a diagram that looks like a defect but passes every check, such as a made by line drawn from CHECK and CREDIT CARD but not from CASH.",
+   "ar": "شيءٌ في المخطّط يبدو عيبًا لكنه يجتاز كل الفحوص، كخطّ made by مرسوم من CHECK ومن CREDIT CARD لا من CASH."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "repeated-common-attribute",
+   "subtype-relationship"
+  ],
+  "used": [
+   "t4l5-s3"
   ]
  },
  {
@@ -313,6 +403,51 @@ window.DBTGlossary["t4"] = [
   ]
  },
  {
+  "id": "minimal-repair",
+  "term": {
+   "en": "Minimal repair",
+   "ar": "أصغر إصلاح"
+  },
+  "def": {
+   "en": "The smallest change that makes a failed check pass without losing any fact the model stored, such as turning REFUNDED into o Refund Date on PAYMENT.",
+   "ar": "أصغر تغيير يجعل الفحص المُخفِق ينجح دون أن يُضيع أيّ حقيقة كان النموذج يخزّنها، كتحويل REFUNDED إلى o Refund Date في PAYMENT."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "verdict",
+   "subdivision-basis"
+  ],
+  "used": [
+   "t4l5-s2"
+  ]
+ },
+ {
+  "id": "model-review",
+  "term": {
+   "en": "Model review",
+   "ar": "مراجعة النموذج"
+  },
+  "def": {
+   "en": "Checking a finished diagram against every rule, in a fixed order, before anything is built from it.",
+   "ar": "فحص مخطّط مكتمل مقابل كل قاعدة، بترتيب ثابت، قبل أن يُبنى منه أيّ شيء."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "review-order",
+   "verdict",
+   "diagram-accuracy"
+  ],
+  "used": [
+   "t4l5-h1"
+  ]
+ },
+ {
   "id": "mutually-exclusive",
   "term": {
    "en": "Mutually exclusive",
@@ -448,6 +583,29 @@ window.DBTGlossary["t4"] = [
   ]
  },
  {
+  "id": "overlap-query",
+  "term": {
+   "en": "Overlap query",
+   "ar": "استعلام الازدواج"
+  },
+  "def": {
+   "en": "A query that lists the supertype keys found in more than one subtype table, the witnesses against mutual exclusion.",
+   "ar": "استعلامٌ يعرض مفاتيح النوع الأعلى الموجودة في أكثر من جدول نوع فرعي، وهم الشهود على خرق التنافي."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "coverage-query",
+   "mutually-exclusive",
+   "witness-instance"
+  ],
+  "used": [
+   "t4l5-h5"
+  ]
+ },
+ {
   "id": "overlapping-subtypes",
   "term": {
    "en": "Overlapping subtypes",
@@ -491,6 +649,29 @@ window.DBTGlossary["t4"] = [
   ]
  },
  {
+  "id": "repeated-common-attribute",
+  "term": {
+   "en": "Repeated common attribute",
+   "ar": "الخاصية المشتركة المكرّرة"
+  },
+  "def": {
+   "en": "An attribute every subtype has, drawn in each subtype instead of once in the supertype, which breaks the rule that common attributes are listed only in the supertype.",
+   "ar": "خاصيةٌ يملكها كل نوع فرعي، مرسومة في كل نوع فرعي بدل أن تُذكر مرّة واحدة في النوع الأعلى، فتخرق قاعدة أن الخصائص المشتركة تُذكر في النوع الأعلى وحده."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "common-attribute",
+   "inherited-attribute",
+   "false-alarm"
+  ],
+  "used": [
+   "t4l5-h3"
+  ]
+ },
+ {
   "id": "repeated-structure",
   "term": {
    "en": "Repeated structure",
@@ -510,6 +691,31 @@ window.DBTGlossary["t4"] = [
   ],
   "used": [
    "t4l1-h3"
+  ]
+ },
+ {
+  "id": "review-order",
+  "term": {
+   "en": "Review order",
+   "ar": "ترتيب المراجعة"
+  },
+  "def": {
+   "en": "The fixed sequence of six checks asked of every box that has subtypes: kind of, more than one, exhaustive, mutually exclusive, listed once, earned.",
+   "ar": "التسلسل الثابت لستّة فحوص تُطرح على كل صندوق فيه أنواع فرعية: نوعٌ من، أكثر من واحد، الشمول، التنافي، مذكور مرّة واحدة، مستحَقّ."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "model-review",
+   "kind-of-test",
+   "exhaustive",
+   "mutually-exclusive",
+   "single-subtype"
+  ],
+  "used": [
+   "t4l5-h1"
   ]
  },
  {
@@ -847,6 +1053,52 @@ window.DBTGlossary["t4"] = [
   ],
   "used": [
    "t4l3-h2"
+  ]
+ },
+ {
+  "id": "verdict",
+  "term": {
+   "en": "Verdict",
+   "ar": "الحكم"
+  },
+  "def": {
+   "en": "The reviewer's written finding on a box: the check it fails, one witness instance that proves it, and the repair.",
+   "ar": "ما يكتبه المراجِع عن صندوق: الفحص الذي يخفق فيه، ونسخة شاهدة واحدة تُثبت ذلك، والإصلاح."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "witness-instance",
+   "minimal-repair",
+   "model-review"
+  ],
+  "used": [
+   "t4l5-s1"
+  ]
+ },
+ {
+  "id": "witness-instance",
+  "term": {
+   "en": "Witness instance",
+   "ar": "النسخة الشاهدة"
+  },
+  "def": {
+   "en": "One real or possible instance that shows a rule broken, such as a ceramic tile that fits no subtype or a payment that fits two.",
+   "ar": "نسخةٌ واحدة، حقيقية أو ممكنة، تُظهر أن قاعدة قد خُرقت، كبلاطة خزفية لا تقع في أيّ نوع فرعي أو دفعة تقع في نوعين."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "verdict",
+   "uncovered-instance",
+   "overlapping-subtypes"
+  ],
+  "used": [
+   "t4l5-s1"
   ]
  }
 ];

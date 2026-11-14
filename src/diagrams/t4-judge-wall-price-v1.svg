@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 554" direction="ltr" role="img" aria-labelledby="t4-judge-wall-price-v1-t">
+<title id="t4-judge-wall-price-v1-t">Version 1: WALL COVERING with Price listed in each of PAINT, WALLPAPER, FABRIC and OTHER / الإصدار 1: WALL COVERING وPrice مذكورة في كلٍّ من PAINT وWALLPAPER وFABRIC وOTHER</title>
+<g class="en"><text x="400.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1 — * Price listed in every subtype</text></g><g class="ar"><text x="400.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 1 — Price مذكورة في كل نوع فرعي</text></g>
+<rect x="40" y="50" width="300" height="388" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="190.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WALL COVERING</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Code</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Description</text>
+<rect x="58" y="129" width="264" height="71" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="151" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAINT</text>
+<text x="72" y="173" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Litres</text>
+<text x="72" y="192" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<rect x="58" y="210" width="264" height="71" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="232" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WALLPAPER</text>
+<text x="72" y="254" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Roll Length</text>
+<text x="72" y="273" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<rect x="58" y="291" width="264" height="71" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="313" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">FABRIC</text>
+<text x="72" y="335" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Material</text>
+<text x="72" y="354" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<rect x="58" y="372" width="264" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="394" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">OTHER</text>
+<text x="72" y="416" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<g class="en"><text x="400" y="66" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">Where each product's price is kept</text></g><g class="ar"><text x="760" y="66" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">أين يُحفظ سعر كل منتج</text></g>
+<rect x="400" y="80" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="98" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC1</text>
+<text x="448" y="98" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Matt white emulsion</text>
+<text x="608" y="98" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">18</text>
+<text x="748" y="98" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">in PAINT</text>
+<rect x="400" y="114" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC2</text>
+<text x="448" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Striped wallpaper</text>
+<text x="608" y="132" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">25</text>
+<text x="748" y="132" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">in WALLPAPER</text>
+<rect x="400" y="148" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="166" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC3</text>
+<text x="448" y="166" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Linen fabric panel</text>
+<text x="608" y="166" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">60</text>
+<text x="748" y="166" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">in FABRIC</text>
+<rect x="400" y="182" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC4</text>
+<text x="448" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Ceramic wall tile</text>
+<text x="608" y="200" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">3</text>
+<text x="748" y="200" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">in OTHER</text>
+<rect x="400" y="216" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="234" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC5</text>
+<text x="448" y="234" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Oak wood panel</text>
+<text x="608" y="234" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">45</text>
+<text x="748" y="234" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">in OTHER</text>
+<rect x="40" y="458" width="720" height="80" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<g class="en"><text x="56" y="481" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--font, sans-serif);font-size:12px">Defect: a common attribute is not listed only in the supertype. Every product has a price; it is drawn four times.</text></g><g class="ar"><text x="744" y="481" text-anchor="start" direction="rtl" style="fill:var(--dg-bad, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">العيب: خاصية مشتركة غير مذكورة في النوع الأعلى وحده. لكل منتج سعر، وهو مرسوم أربع مرّات.</text></g>
+<g class="en"><text x="56" y="501" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">No rule of the three is broken, and no product is lost. The defect is in the drawing.</text></g><g class="ar"><text x="744" y="501" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">لم تُخرق أيّ من القواعد الثلاث، ولم يضع أيّ منتج. العيب في الرسم.</text></g>
+<g class="en"><text x="56" y="521" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">A fifth subtype, drawn in a hurry, could leave * Price out, and nothing would look wrong.</text></g><g class="ar"><text x="744" y="521" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">ونوعٌ فرعي خامس يُرسم على عجل قد ينسى Price، ولن يبدو شيء خاطئًا.</text></g>
+</svg>

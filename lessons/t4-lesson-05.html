@@ -39,15 +39,1034 @@
 <link rel="stylesheet" href="../assets/theory/css/base.css">
 <link rel="stylesheet" href="../assets/theory/css/chrome.css">
 <link rel="stylesheet" href="../assets/theory/css/components.css">
+<link rel="stylesheet" href="../assets/theory/css/diagram.css">
+<link rel="stylesheet" href="../assets/css/widget.css">
 </head>
 <body data-chapter="t4" data-page="t4-lesson-05" data-kind="lesson" data-path="lessons/t4-lesson-05.html">
 <main>
 <section class="page" id="t4-lesson-05">
 <nav class="crumbs"></nav>
 
-  <span class="kicker">lesson</span>
+
+  <span class="kicker">Lesson 5</span>
   <h1><span class="en">Judging a Model</span><span class="ar">الحكم على نموذج</span></h1>
-  <p class="en">Being written.</p><p class="ar">قيد الكتابة.</p>
+  <p class="lede en">By the end of this lesson you will be able to review a finished supertype diagram in a fixed order, find the box that breaks a rule, name the rule, prove it with one instance, and repair it with the smallest change that loses nothing.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تراجع مخطّط نوع أعلى مكتملًا بترتيب ثابت، وأن تجد الصندوق الذي يخرق قاعدة، وأن تسمّي القاعدة، وأن تُثبت الخرق بنسخة واحدة، وأن تصلحه بأصغر تغيير لا يُضيع شيئًا.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> Every model of this chapter comes back for judging: the shop's <code>PAYMENT</code> and its six March payments, the lecturer's <code>EXAM</code>, <code>WALL COVERING</code>, <code>SNOW SPORT</code> and the nested <code>ANIMAL</code>. You need inheritance from <a href="../lessons/t4-lesson-02.html#t4-lesson-02">Lesson 2</a>, the three rules from <a href="../lessons/t4-lesson-03.html#t4-lesson-03">Lesson 3</a> and the "something of its own" test from <a href="../lessons/t4-lesson-04.html#t4-lesson-04">Lesson 4</a>.</p>
+    <p class="ar"><strong>السياق.</strong> يعود كل نموذج في هذا الفصل ليُحكم عليه: <code>PAYMENT</code> المتجر ودفعاته الست في آذار، و<code>EXAM</code> المحاضِرة، و<code>WALL COVERING</code>، و<code>SNOW SPORT</code>، و<code>ANIMAL</code> المتداخل. تحتاج إلى الوراثة من <a href="../lessons/t4-lesson-02.html#t4-lesson-02">الدرس 2</a>، وإلى القواعد الثلاث من <a href="../lessons/t4-lesson-03.html#t4-lesson-03">الدرس 3</a>، وإلى اختبار «شيء خاصّ به» من <a href="../lessons/t4-lesson-04.html#t4-lesson-04">الدرس 4</a>.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Review a supertype diagram with six checks, in a fixed order.</li>
+      <li class="ar">مراجعة مخطّط نوع أعلى بستّة فحوص، بترتيب ثابت.</li>
+      <li class="en">Pick the broken model out of four, and name the rule it breaks.</li>
+      <li class="ar">التقاط النموذج المعطوب من بين أربعة، وتسمية القاعدة التي يخرقها.</li>
+      <li class="en">Prove a broken rule with a witness instance, and tell a real defect from a false alarm.</li>
+      <li class="ar">إثبات خرق القاعدة بنسخة شاهدة، والتمييز بين العيب الحقيقي والإنذار الكاذب.</li>
+      <li class="en">Repair a model with the smallest change, and find the witnesses in real tables with SQL.</li>
+      <li class="ar">إصلاح النموذج بأصغر تغيير، وإيجاد النُّسَخ الشاهدة في جداول حقيقية بـ SQL.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t4l5-h1"><span class="en">1 · A review has an order</span><span class="ar">١ · للمراجعة ترتيب</span></h2>
+
+  <div class="problem">
+    <p class="en">The shop's owner puts four diagrams on your desk and says: "One of these is wrong, and we build on Monday." You look at each one, it looks like an ERD, and nothing jumps out. Checking "whatever you notice first" is how a broken model reaches the database.</p>
+    <p class="ar">يضع مالك المتجر أربعة مخطّطات على مكتبك ويقول: «واحدٌ منها خاطئ، ونبني يوم الاثنين.» تنظر إلى كلٍّ منها، فيبدو مخطّط كيانات وعلاقات (ERD) عاديًّا، ولا شيء يلفت النظر. وفحص «أول ما تلاحظه» هو بالضبط الطريق الذي يصل به نموذج معطوب إلى قاعدة البيانات.</p>
+  </div>
+
+  <p class="en">The lecturer's objectives end with exactly this job: <em>apply the rules of supertype and subtype by evaluating the accuracy of ER diagrams that represent them</em>. To evaluate means to check every rule, every time, in the same order &mdash; not to hunt for something odd.</p>
+  <p class="ar">تنتهي أهداف المحاضِرة بهذه المهمّة بالضبط: <em>طبّق قواعد النوع الأعلى والنوع الفرعي بتقييم دقّة مخطّطات الكيانات والعلاقات التي تمثّلها</em>. والتقييم يعني أن تفحص كل قاعدة، في كل مرّة، بالترتيب نفسه &mdash; لا أن تبحث عن شيء غريب.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="model-review">model review</span> is checking a finished diagram against every rule before anything is built from it.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="model-review">مراجعة النموذج</span> (Model review) هي فحص مخطّط مكتمل مقابل كل قاعدة قبل أن يُبنى منه أيّ شيء.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="review-order">review order</span> is the fixed sequence of six checks asked of every box that has subtypes inside it.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="review-order">ترتيب المراجعة</span> (Review order) هو التسلسل الثابت لستّة فحوص تُطرح على كل صندوق في داخله أنواع فرعية.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table class="obj-table">
+      <thead><tr><th><span class="en">#</span><span class="ar">#</span></th><th><span class="en">Check</span><span class="ar">الفحص</span></th><th><span class="en">Ask of the box</span><span class="ar">اسأل الصندوق</span></th><th><span class="en">Source</span><span class="ar">المصدر</span></th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><span class="en">Kind of</span><span class="ar">نوعٌ من</span></td><td><span class="en">Is every inner box a kind of the outer one?</span><span class="ar">هل كل صندوق داخلي نوعٌ من الصندوق الخارجي؟</span></td><td><span class="en">rule one</span><span class="ar">القاعدة الأولى</span></td></tr>
+        <tr><td>2</td><td><span class="en">More than one</span><span class="ar">أكثر من واحد</span></td><td><span class="en">Does it hold two or more subtypes, never exactly one?</span><span class="ar">هل فيه نوعان فرعيان أو أكثر، لا واحد بالضبط أبدًا؟</span></td><td><span class="en">slides</span><span class="ar">الشرائح</span></td></tr>
+        <tr><td>3</td><td><span class="en">Exhaustive</span><span class="ar">الشمول</span></td><td><span class="en">Does every instance fit some subtype?</span><span class="ar">هل تقع كل نسخة في نوع فرعي ما؟</span></td><td><span class="en">rule two</span><span class="ar">القاعدة الثانية</span></td></tr>
+        <tr><td>4</td><td><span class="en">Mutually exclusive</span><span class="ar">التنافي</span></td><td><span class="en">Does any instance fit two subtypes?</span><span class="ar">هل تقع أيّ نسخة في نوعين فرعيين؟</span></td><td><span class="en">rule three</span><span class="ar">القاعدة الثالثة</span></td></tr>
+        <tr><td>5</td><td><span class="en">Listed once</span><span class="ar">مذكور مرّة واحدة</span></td><td><span class="en">Is what every subtype shares listed only in the supertype?</span><span class="ar">هل ما تشترك فيه كل الأنواع الفرعية مذكور في النوع الأعلى وحده؟</span></td><td><span class="en">slides</span><span class="ar">الشرائح</span></td></tr>
+        <tr><td>6</td><td><span class="en">Earned</span><span class="ar">مستحَقّ</span></td><td><span class="en">Does each named subtype have something of its own?</span><span class="ar">هل لكل نوع فرعي مسمّى شيء خاصّ به؟</span></td><td><span class="en">Lesson 4</span><span class="ar">الدرس 4</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="en">Check 1 comes first because a box that is not a kind of the supertype is not a subtype at all: counting it, or asking whether it overlaps, means nothing. Remove it, then count what is left, then test instances, then tidy the drawing.</p>
+  <p class="ar">يأتي الفحص 1 أولًا لأن الصندوق الذي ليس نوعًا من النوع الأعلى ليس نوعًا فرعيًّا أصلًا: فعدّه، أو السؤال هل يتداخل، لا معنى له. أزِله، ثم عُدّ ما بقي، ثم اختبر النُّسَخ، ثم رتّب الرسم.</p>
+
+  <h3 id="t4l5-s1"><span class="en">Writing the verdict</span><span class="ar">كتابة الحكم</span></h3>
+
+  <p class="en">"Something is off with <code>PAYMENT</code>" helps nobody. A review ends in four parts: the box, the check it fails, one instance that proves it, and the repair. If you cannot name an instance, look again before you accuse the model.</p>
+  <p class="ar">«هناك شيء غير سليم في <code>PAYMENT</code>» لا تفيد أحدًا. فالمراجعة تنتهي بأربعة أجزاء: الصندوق، والفحص الذي يخفق فيه، ونسخة واحدة تُثبت ذلك، والإصلاح. وإذا لم تستطع أن تسمّي نسخة، فانظر مرّة أخرى قبل أن تتّهم النموذج.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="verdict">verdict</span> is the reviewer's written finding: box, failed check, witness, repair.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="verdict">الحكم</span> (Verdict) هو ما يكتبه المراجِع: الصندوق، والفحص الذي أخفق فيه، والشاهد، والإصلاح.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="witness-instance">witness instance</span> is one real or possible instance that shows a rule broken, such as a tile with no box or a payment in two.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="witness-instance">النسخة الشاهدة</span> (Witness instance) نسخةٌ واحدة، حقيقية أو ممكنة، تُظهر أن قاعدة قد خُرقت، كبلاطة لا صندوق لها أو دفعة في صندوقين.</p>
+  </div>
+
+  <pre class="code" data-lang="text"><code>box       PAYMENT
+check     1, kind of
+witness   CUSTOMER Linda: "every CUSTOMER is a PAYMENT" is false
+repair    move CUSTOMER outside; join it to CHECK and CREDIT CARD by made by</code></pre>
+  <p class="en">That is Lesson 3's <code>CUSTOMER</code> mistake, written as a verdict. Checks 5 and 6 are about the drawing, not the data, so their witness is the drawing itself: the attribute listed four times, the box that holds nothing.</p>
+  <p class="ar">هذا هو خطأ <code>CUSTOMER</code> في الدرس 3، مكتوبًا حكمًا. أمّا الفحصان 5 و6 فيخصّان الرسم لا البيانات، فشاهدهما الرسم نفسه: الخاصية المذكورة أربع مرّات، أو الصندوق الذي لا يحمل شيئًا.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Every failed check leaves its own mark on the tables, which is why it is cheaper to find it on paper:</p>
+    <p class="ar">لكل فحص مُخفِق أثره الخاصّ في الجداول، ولهذا يكون اكتشافه على الورق أرخص:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th><span class="en">Fails</span><span class="ar">يخفق في</span></th><th><span class="en">What the tables show</span><span class="ar">ما تُظهره الجداول</span></th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><span class="en">a <code>customers</code> table keyed by <code>payment_id</code>: Linda gets one row per payment</span><span class="ar">جدول <code>customers</code> مفتاحه <code>payment_id</code>: تأخذ Linda صفًّا لكل دفعة</span></td></tr>
+          <tr><td>2</td><td><span class="en">one subtype table; most rows of the supertype table have no partner</span><span class="ar">جدول نوع فرعي واحد؛ وأكثر صفوف جدول النوع الأعلى بلا شريك</span></td></tr>
+          <tr><td>3</td><td><span class="en">a <code>CHECK</code> on the type column refuses a real row</span><span class="ar">قيد <code>CHECK</code> على عمود النوع يرفض صفًّا حقيقيًّا</span></td></tr>
+          <tr><td>4</td><td><span class="en">the same key in two subtype tables, or a type column that can hold only one of two true answers</span><span class="ar">المفتاح نفسه في جدولَي نوعين فرعيين، أو عمود نوع لا يتّسع إلا لواحد من جوابين صحيحين</span></td></tr>
+          <tr><td>5</td><td><span class="en">the same column in every subtype table</span><span class="ar">العمود نفسه في كل جدول نوع فرعي</span></td></tr>
+          <tr><td>6</td><td><span class="en">a subtype table with nothing but its key</span><span class="ar">جدول نوع فرعي ليس فيه إلا مفتاحه</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A draft puts <code>SUPPLIER</code> inside <code>WALL COVERING</code>, beside <code>PAINT</code> and <code>FABRIC</code>. Which check do you apply first?</p>
+    <p class="q ar">تضع مسوّدة <code>SUPPLIER</code> داخل <code>WALL COVERING</code>، بجانب <code>PAINT</code> و<code>FABRIC</code>. أيّ فحص تطبّقه أولًا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Exhaustive: is there an <code>OTHER</code>?</span><span class="ar">الشمول: هل يوجد <code>OTHER</code>؟</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Kind of: is every supplier a wall covering?</span><span class="ar">نوعٌ من: هل كل مورّد غطاءُ جدران؟</span></button></li>
+      <li><button class="opt"><span class="en">Earned: does <code>SUPPLIER</code> have attributes of its own?</span><span class="ar">مستحَقّ: هل لـ <code>SUPPLIER</code> خصائص خاصّة به؟</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Check 1 first, and it fails: a supplier sells wall coverings, it is not one. <code>SUPPLIER</code> leaves the box and becomes an entity joined by a line. Asking about <code>OTHER</code> before that would count a box that does not belong.</p>
+      <p class="ar">الفحص 1 أولًا، وهو يخفق: المورّد يبيع أغطية الجدران، وليس واحدًا منها. فيخرج <code>SUPPLIER</code> من الصندوق ويصبح كيانًا يُربط بخطّ. والسؤال عن <code>OTHER</code> قبل ذلك يعدّ صندوقًا ليس مكانه هنا.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which of these is a complete verdict?</p>
+    <p class="q ar">أيّ هذه حكمٌ كامل؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">"<code>WALL COVERING</code> looks incomplete; please check it."</span><span class="ar">«يبدو <code>WALL COVERING</code> ناقصًا؛ يُرجى فحصه.»</span></button></li>
+      <li><button class="opt"><span class="en">"<code>WALL COVERING</code> breaks rule two. Add <code>OTHER</code>."</span><span class="ar">«<code>WALL COVERING</code> يخرق القاعدة الثانية. أضف <code>OTHER</code>.»</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">"<code>WALL COVERING</code>, check 3: the ceramic tile WC4 fits no box. Add <code>OTHER</code>."</span><span class="ar">«<code>WALL COVERING</code>، الفحص 3: البلاطة الخزفية WC4 لا تقع في أيّ صندوق. أضف <code>OTHER</code>.»</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Only the third has all four parts. The second names the rule but gives no witness, so the designer can reply "every product fits" and nobody can settle it. WC4 settles it.</p>
+      <p class="ar">الثالث وحده فيه الأجزاء الأربعة. أمّا الثاني فيسمّي القاعدة ولا يعطي شاهدًا، فيستطيع المصمّم أن يردّ «كل منتج يقع في صندوق»، ولا أحد يستطيع الحسم. والبلاطة WC4 تحسم.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t4l5-h2"><span class="en">2 · Lineup one: which model breaks a rule?</span><span class="ar">٢ · التشكيلة الأولى: أيّ نموذج يخرق قاعدة؟</span></h2>
+
+  <div class="problem">
+    <p class="en">Here are the four diagrams from the owner's desk. On 5 March Linda brought back what she bought with payment 5, and the shop refunded her 220 to the same credit card. A designer added a box for that. Run the six checks on every panel before you choose.</p>
+    <p class="ar">هذه هي المخطّطات الأربعة التي على مكتب المالك. في 5 آذار أعادت Linda ما اشترته بالدفعة 5، فاستردّ لها المتجر 220 إلى بطاقة الائتمان نفسها. وأضاف مصمّمٌ صندوقًا لذلك. طبّق الفحوص الستّة على كل لوحة قبل أن تختار.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t4-judge-lineup-1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 920" direction="ltr" role="img" aria-labelledby="t4-judge-lineup-1-t">
+<title id="t4-judge-lineup-1-t">Lineup one: four supertype diagrams (EXAM, SNOW SPORT, PAYMENT with a REFUNDED subtype, WALL COVERING), one of which breaks a rule / التشكيلة الأولى: أربعة مخطّطات لأنواع عليا (EXAM وSNOW SPORT وPAYMENT مع نوع فرعي REFUNDED وWALL COVERING)، أحدها يخرق قاعدة</title>
+<g class="en"><text x="460.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Lineup one — four models, one of them broken</text></g><g class="ar"><text x="460.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">التشكيلة الأولى — أربعة نماذج، أحدها معطوب</text></g>
+<rect x="20.0" y="44" width="430.0" height="368" rx="8" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="34.0" y="66" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">A · a course: every exam is a quiz, a midterm or a final</text></g><g class="ar"><text x="436.0" y="66" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">أ · مقرّر: كل امتحان قصير أو نصفي أو نهائي</text></g>
+<rect x="36.0" y="84" width="380" height="304" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="226.0" y="106" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">EXAM</text>
+<text x="50.0" y="128" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Number</text>
+<text x="50.0" y="147" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Description</text>
+<text x="50.0" y="166" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Weight</text>
+<text x="50.0" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Date</text>
+<text x="50.0" y="204" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Grade For Written Component</text>
+<rect x="54.0" y="220" width="344" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="226.0" y="242" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">QUIZ</text>
+<rect x="54.0" y="260" width="344" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="226.0" y="282" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MIDTERM</text>
+<text x="68.0" y="304" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Grade For Oral Presentation</text>
+<rect x="54.0" y="322" width="344" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="226.0" y="344" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">FINAL</text>
+<text x="68.0" y="366" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Extra Points For Optional Paper</text>
+<rect x="470.0" y="44" width="430.0" height="368" rx="8" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="484.0" y="66" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">B · a ski resort's snow sports</text></g><g class="ar"><text x="886.0" y="66" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">ب · الرياضات الثلجية في منتجع تزلّج</text></g>
+<rect x="486.0" y="84" width="300" height="243" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="636.0" y="106" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SNOW SPORT</text>
+<text x="500.0" y="128" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Sport ID</text>
+<text x="500.0" y="147" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="504.0" y="163" width="264" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="636.0" y="185" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SKI</text>
+<rect x="504.0" y="203" width="264" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="636.0" y="225" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SNOWBOARD</text>
+<rect x="504.0" y="243" width="264" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="636.0" y="265" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CROSS COUNTRY</text>
+<rect x="504.0" y="283" width="264" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="636.0" y="305" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">OTHER</text>
+<rect x="20.0" y="428" width="430.0" height="392" rx="8" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="34.0" y="450" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">C · the shop's payments; some are refunded</text></g><g class="ar"><text x="436.0" y="450" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">ج · دفعات المتجر؛ وبعضها يُستردّ</text></g>
+<rect x="36.0" y="468" width="300" height="306" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="186.0" y="490" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAYMENT</text>
+<text x="50.0" y="512" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Payment ID</text>
+<text x="50.0" y="531" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Payment Date</text>
+<text x="50.0" y="550" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Amount</text>
+<rect x="54.0" y="566" width="264" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="186.0" y="588" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CASH</text>
+<rect x="54.0" y="606" width="264" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="186.0" y="628" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CHECK</text>
+<rect x="54.0" y="646" width="264" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="186.0" y="668" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CREDIT CARD</text>
+<text x="68.0" y="690" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Card Number</text>
+<rect x="54.0" y="708" width="264" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="186.0" y="730" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">REFUNDED</text>
+<text x="68.0" y="752" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Refund Date</text>
+<rect x="470.0" y="428" width="430.0" height="392" rx="8" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="484.0" y="450" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">D · the decorating store's stock</text></g><g class="ar"><text x="886.0" y="450" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">د · بضاعة متجر الديكور</text></g>
+<rect x="486.0" y="468" width="300" height="328" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="636.0" y="490" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WALL COVERING</text>
+<text x="500.0" y="512" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Code</text>
+<text x="500.0" y="531" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Description</text>
+<text x="500.0" y="550" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<rect x="504.0" y="566" width="264" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="636.0" y="588" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAINT</text>
+<text x="518.0" y="610" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Litres</text>
+<rect x="504.0" y="628" width="264" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="636.0" y="650" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WALLPAPER</text>
+<text x="518.0" y="672" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Roll Length</text>
+<rect x="504.0" y="690" width="264" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="636.0" y="712" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">FABRIC</text>
+<text x="518.0" y="734" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Material</text>
+<rect x="504.0" y="752" width="264" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="636.0" y="774" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">OTHER</text>
+<rect x="20" y="840" width="880" height="60" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="863" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">One diagram breaks a rule. Which one, which rule, and which instance proves it?</text></g><g class="ar"><text x="884" y="863" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">مخطّط واحد يخرق قاعدة. أيّها، وأيّ قاعدة، وأيّ نسخة تُثبت ذلك؟</text></g>
+<g class="en"><text x="36" y="883" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Relationships are left out: none of them is part of the question.</text></g><g class="ar"><text x="884" y="883" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">العلاقات محذوفة من الرسم: لا شيء منها جزء من السؤال.</text></g>
+</svg>
+<figcaption><span class="en">Lineup one. Each panel carries the business fact you need. Three panels pass all six checks; one does not.</span><span class="ar">التشكيلة الأولى. تحمل كل لوحة حقيقة العمل التي تحتاجها. ثلاث لوحات تجتاز الفحوص الستّة؛ وواحدة لا تجتازها.</span></figcaption></figure>
+
+  <div class="quiz">
+    <p class="q en">Which panel breaks a rule, and which one?</p>
+    <p class="q ar">أيّ لوحة تخرق قاعدة، وأيّ قاعدة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A: <code>EXAM</code> has no <code>OTHER</code>, so it is not exhaustive</span><span class="ar">أ: ليس في <code>EXAM</code> نوع <code>OTHER</code>، فهو غير شامل</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">C: payment 5 is a <code>CREDIT CARD</code> and a <code>REFUNDED</code> &mdash; not mutually exclusive</span><span class="ar">ج: الدفعة 5 <code>CREDIT CARD</code> و<code>REFUNDED</code> معًا &mdash; غير متنافية</span></button></li>
+      <li><button class="opt"><span class="en">D: <code>OTHER</code> has no attribute of its own, so it is not earned</span><span class="ar">د: ليس لـ <code>OTHER</code> خاصية خاصّة به، فهو غير مستحَقّ</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Panel A's caption says every exam is a quiz, a midterm or a final, so it is exhaustive without <code>OTHER</code>. <code>OTHER</code> is exempt from check 6: its job is to hold the rest. Panel C fails check 4, and payment 5 is the witness.</p>
+      <p class="ar">تقول لوحة أ إن كل امتحان قصير أو نصفي أو نهائي، فهو شامل بلا <code>OTHER</code>. و<code>OTHER</code> مستثنى من الفحص 6: فوظيفته أن يحمل البقية. أمّا لوحة ج فتخفق في الفحص 4، والدفعة 5 هي الشاهد.</p>
+    </div>
+  </div>
+
+  <h3 id="t4l5-s2"><span class="en">The smallest repair</span><span class="ar">أصغر إصلاح</span></h3>
+
+  <p class="en">There are many ways to "fix" panel C, and most of them lose something. Deleting <code>REFUNDED</code> loses the refund date. Moving payment 5 into <code>REFUNDED</code> alone loses its card number. Ask instead which question the box answers.</p>
+  <p class="ar">هناك طرق كثيرة لـ«إصلاح» اللوحة ج، وأكثرها يُضيع شيئًا. فحذف <code>REFUNDED</code> يُضيع تاريخ الاسترداد. ونقل الدفعة 5 إلى <code>REFUNDED</code> وحده يُضيع رقم بطاقتها. فاسأل بدلًا من ذلك: عن أيّ سؤال يجيب الصندوق؟</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="minimal-repair">minimal repair</span> is the smallest change that makes the failed check pass without losing any fact the model stored.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="minimal-repair">أصغر إصلاح</span> (Minimal repair) هو أصغر تغيير يجعل الفحص المُخفِق ينجح دون أن يُضيع أيّ حقيقة كان النموذج يخزّنها.</p>
+  </div>
+
+  <div class="evolve" id="t4l5-e1">
+    <div class="ver" data-title-en="Version 1 — REFUNDED as a fourth subtype" data-title-ar="الإصدار 1 — REFUNDED نوعًا فرعيًّا رابعًا">
+      <figure class="diagram" data-diagram="t4-judge-refund-v1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 472" direction="ltr" role="img" aria-labelledby="t4-judge-refund-v1-t">
+<title id="t4-judge-refund-v1-t">Version 1: PAYMENT with CASH, CHECK, CREDIT CARD and REFUNDED; payment 5 fits both CREDIT CARD and REFUNDED / الإصدار 1: PAYMENT وفيه CASH وCHECK وCREDIT CARD وREFUNDED؛ والدفعة 5 تقع في CREDIT CARD وREFUNDED معًا</title>
+<g class="en"><text x="400.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1 — REFUNDED drawn as a fourth subtype</text></g><g class="ar"><text x="400.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 1 — REFUNDED مرسومًا نوعًا فرعيًّا رابعًا</text></g>
+<rect x="40" y="50" width="300" height="306" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="190.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAYMENT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Payment ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Payment Date</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Amount</text>
+<rect x="58" y="148" width="264" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="170" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CASH</text>
+<rect x="58" y="188" width="264" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="210" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CHECK</text>
+<rect x="58" y="228" width="264" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="250" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CREDIT CARD</text>
+<text x="72" y="272" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Card Number</text>
+<rect x="58" y="290" width="264" height="52" rx="10" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<text x="190.0" y="312" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">REFUNDED</text>
+<text x="72" y="334" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Refund Date</text>
+<g class="en"><text x="400" y="66" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">The six March payments</text></g><g class="ar"><text x="760" y="66" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">دفعات آذار الست</text></g>
+<rect x="400" y="80" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="98" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">1</text>
+<text x="458" y="98" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">40</text>
+<text x="470" y="98" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">cash</text>
+<text x="748" y="98" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CASH</text>
+<rect x="400" y="114" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">2</text>
+<text x="458" y="132" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">125</text>
+<text x="470" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">cheque</text>
+<text x="748" y="132" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CHECK</text>
+<rect x="400" y="148" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="166" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">3</text>
+<text x="458" y="166" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">310</text>
+<text x="470" y="166" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">card</text>
+<text x="748" y="166" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CREDIT CARD</text>
+<rect x="400" y="182" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">4</text>
+<text x="458" y="200" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">15</text>
+<text x="470" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">cash</text>
+<text x="748" y="200" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CASH</text>
+<rect x="400" y="216" width="360" height="26" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<text x="412" y="234" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">5</text>
+<text x="458" y="234" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">220</text>
+<text x="470" y="234" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">card, refunded</text>
+<text x="748" y="234" text-anchor="end" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CREDIT CARD + REFUNDED</text>
+<rect x="400" y="250" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="268" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">6</text>
+<text x="458" y="268" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">90</text>
+<text x="470" y="268" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">cheque</text>
+<text x="748" y="268" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CHECK</text>
+<rect x="40" y="376" width="720" height="80" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<g class="en"><text x="56" y="399" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--font, sans-serif);font-size:12px">Defect: rule three, mutually exclusive. Payment 5 fits two boxes: it was paid by card, and it was refunded.</text></g><g class="ar"><text x="744" y="399" text-anchor="start" direction="rtl" style="fill:var(--dg-bad, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">العيب: القاعدة الثالثة، التنافي. الدفعة 5 تقع في صندوقين: دُفعت ببطاقة، ثم استُردّت.</text></g>
+<g class="en"><text x="56" y="419" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Two questions share one set of boxes: "how did they pay?" and "was it refunded?".</text></g><g class="ar"><text x="744" y="419" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">سؤالان يتقاسمان مجموعة صناديق واحدة: «كيف دفعوا؟» و«هل استُردّت؟».</text></g>
+<g class="en"><text x="56" y="439" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Put payment 5 in REFUNDED only, and the card number and Linda's card total are lost.</text></g><g class="ar"><text x="744" y="439" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">ضع الدفعة 5 في REFUNDED وحده، فيضيع رقم البطاقة ومجموع بطاقة Linda.</text></g>
+</svg>
+</figure>
+      <p class="en">Defect: rule three. <code>CASH</code>, <code>CHECK</code> and <code>CREDIT CARD</code> answer "how did they pay?"; <code>REFUNDED</code> answers "was it refunded?". Payment 5 answers both, so it fits two boxes.</p>
+      <p class="ar">العيب: القاعدة الثالثة. تجيب <code>CASH</code> و<code>CHECK</code> و<code>CREDIT CARD</code> عن «كيف دفعوا؟»؛ ويجيب <code>REFUNDED</code> عن «هل استُردّت؟». والدفعة 5 تجيب عن السؤالين، فتقع في صندوقين.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — o Refund Date in PAYMENT" data-title-ar="الإصدار 2 — o Refund Date في PAYMENT">
+      <figure class="diagram" data-diagram="t4-judge-refund-v2">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 429" direction="ltr" role="img" aria-labelledby="t4-judge-refund-v2-t">
+<title id="t4-judge-refund-v2-t">Version 2: REFUNDED removed; PAYMENT carries an optional Refund Date, and every payment fits exactly one of CASH, CHECK and CREDIT CARD / الإصدار 2: حُذف REFUNDED؛ ويحمل PAYMENT خاصية Refund Date اختيارية، وكل دفعة تقع في واحد بالضبط من CASH وCHECK وCREDIT CARD</title>
+<g class="en"><text x="400.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — the refund is an optional attribute of PAYMENT</text></g><g class="ar"><text x="400.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 2 — الاسترداد خاصية اختيارية في PAYMENT</text></g>
+<rect x="40" y="50" width="300" height="263" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="190.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAYMENT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Payment ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Payment Date</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Amount</text>
+<text x="54" y="151" text-anchor="start" style="fill:var(--dg-good, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Refund Date</text>
+<rect x="58" y="167" width="264" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="189" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CASH</text>
+<rect x="58" y="207" width="264" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="229" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CHECK</text>
+<rect x="58" y="247" width="264" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="269" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CREDIT CARD</text>
+<text x="72" y="291" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Card Number</text>
+<g class="en"><text x="400" y="66" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">The six March payments</text></g><g class="ar"><text x="760" y="66" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">دفعات آذار الست</text></g>
+<rect x="400" y="80" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="98" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">1</text>
+<text x="458" y="98" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">40</text>
+<text x="470" y="98" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">cash</text>
+<text x="748" y="98" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CASH</text>
+<rect x="400" y="114" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">2</text>
+<text x="458" y="132" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">125</text>
+<text x="470" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">cheque</text>
+<text x="748" y="132" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CHECK</text>
+<rect x="400" y="148" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="166" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">3</text>
+<text x="458" y="166" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">310</text>
+<text x="470" y="166" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">card</text>
+<text x="748" y="166" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CREDIT CARD</text>
+<rect x="400" y="182" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">4</text>
+<text x="458" y="200" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">15</text>
+<text x="470" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">cash</text>
+<text x="748" y="200" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CASH</text>
+<rect x="400" y="216" width="360" height="26" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<text x="412" y="234" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">5</text>
+<text x="458" y="234" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">220</text>
+<text x="470" y="234" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">card, refund 5 Mar</text>
+<text x="748" y="234" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CREDIT CARD</text>
+<rect x="400" y="250" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="268" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">6</text>
+<text x="458" y="268" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">90</text>
+<text x="470" y="268" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">cheque</text>
+<text x="748" y="268" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">→ CHECK</text>
+<rect x="40" y="333" width="720" height="80" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<g class="en"><text x="56" y="356" text-anchor="start" style="fill:var(--dg-good, var(--text));font-family:var(--font, sans-serif);font-size:12px">Fixed: one question decides the boxes. Every payment is exactly one of CASH, CHECK or CREDIT CARD.</text></g><g class="ar"><text x="744" y="356" text-anchor="start" direction="rtl" style="fill:var(--dg-good, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">أُصلح: سؤال واحد يحدّد الصناديق. كل دفعة واحدة بالضبط من CASH أو CHECK أو CREDIT CARD.</text></g>
+<g class="en"><text x="56" y="376" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">The refund is a fact any payment may have, so it sits in PAYMENT, optional (o): most are never refunded.</text></g><g class="ar"><text x="744" y="376" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">الاسترداد حقيقةٌ قد تكون لأيّ دفعة، فمكانه PAYMENT، اختياريًّا (o): فأكثر الدفعات لا تُستردّ.</text></g>
+<g class="en"><text x="56" y="396" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">A cash refund needs no new box either: payment 1 would simply get a Refund Date.</text></g><g class="ar"><text x="744" y="396" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">واسترداد النقد لا يحتاج صندوقًا جديدًا أيضًا: تأخذ الدفعة 1 ببساطة Refund Date.</text></g>
+</svg>
+</figure>
+      <p class="en">Fixed: the second question becomes an attribute of the supertype, <code>o Refund Date</code>, optional because most payments are never refunded. Payment 5 is exactly one <code>CREDIT CARD</code> with a refund date; no fact is lost. This is the recommended model.</p>
+      <p class="ar">أُصلح: يصبح السؤال الثاني خاصيةً في النوع الأعلى، <code>o Refund Date</code>، اختياريةً لأن أكثر الدفعات لا تُستردّ أبدًا. فالدفعة 5 <code>CREDIT CARD</code> واحدة بالضبط ولها تاريخ استرداد؛ ولم تضِع أيّ حقيقة. وهذا هو النموذج الموصى به.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 2 is one <code>method</code> column with a <code>CHECK</code>, and a nullable <code>refund_date</code>. The owner's question "how much did each method take, and how much went back?" is one query, and payment 5 still counts as card money:</p>
+    <p class="ar">الإصدار 2 عمود <code>method</code> واحد مع <code>CHECK</code>، وعمود <code>refund_date</code> يقبل القيمة الفارغة. وسؤال المالك «كم قبضت كل طريقة، وكم أُعيد؟» استعلامٌ واحد، والدفعة 5 ما زالت تُحسب مالَ بطاقة:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, method VARCHAR(11) NOT NULL CHECK (method IN ('CASH','CHECK','CREDIT CARD')), refund_date DATE)", "INSERT INTO payments VALUES (1,'2026-03-02',40,'CASH',NULL), (2,'2026-03-02',125,'CHECK',NULL), (3,'2026-03-03',310,'CREDIT CARD',NULL), (4,'2026-03-03',15,'CASH',NULL), (5,'2026-03-04',220,'CREDIT CARD','2026-03-05'), (6,'2026-03-04',90,'CHECK',NULL)"], "sql": "SELECT method, COUNT(*) AS payments, SUM(amount) AS taken,\n       SUM(CASE WHEN refund_date IS NULL THEN 0 ELSE amount END) AS refunded\nFROM payments\nGROUP BY method\nORDER BY method;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>method</code></th><th><code>payments</code></th><th><code>taken</code></th><th><code>refunded</code></th></tr></thead>
+          <tbody>
+            <tr><td>CASH</td><td>2</td><td>55</td><td>0</td></tr>
+            <tr><td>CHECK</td><td>2</td><td>215</td><td>0</td></tr>
+            <tr><td>CREDIT CARD</td><td>2</td><td>530</td><td>220</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Now try what version 1 invites: <code>UPDATE payments SET method = 'REFUNDED' WHERE payment_id = 5;</code>. alasql answers <code>Violation of CHECK constraint</code>, and payment 5 stays a credit card payment with its refund date.</p>
+    <p class="ar">جرّب الآن ما يدعو إليه الإصدار 1: <code>UPDATE payments SET method = 'REFUNDED' WHERE payment_id = 5;</code>. فيجيب alasql: <code>Violation of CHECK constraint</code>، وتبقى الدفعة 5 دفعةً ببطاقة ائتمان ومعها تاريخ استردادها.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why is version 2 better than simply deleting <code>REFUNDED</code>?</p>
+    <p class="q ar">لماذا الإصدار 2 أفضل من مجرّد حذف <code>REFUNDED</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Deleting it would break rule two</span><span class="ar">حذفه يخرق القاعدة الثانية</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Deleting it loses the refund date; version 2 keeps it, as an attribute</span><span class="ar">حذفه يُضيع تاريخ الاسترداد؛ والإصدار 2 يحتفظ به، خاصيةً</span></button></li>
+      <li><button class="opt"><span class="en">Version 2 has more boxes</span><span class="ar">في الإصدار 2 صناديق أكثر</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Without <code>REFUNDED</code> every payment still fits <code>CASH</code>, <code>CHECK</code> or <code>CREDIT CARD</code>, so rule two holds either way. The difference is the fact: a minimal repair moves it, never drops it. Version 2 has one box fewer.</p>
+      <p class="ar">بلا <code>REFUNDED</code> ما زالت كل دفعة تقع في <code>CASH</code> أو <code>CHECK</code> أو <code>CREDIT CARD</code>، فالقاعدة الثانية سليمة في الحالتين. والفرق هو الحقيقة: الإصلاح الأصغر ينقلها، ولا يُسقطها أبدًا. وفي الإصدار 2 صندوقٌ أقلّ.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Payment 1 (cash, 40) is refunded tomorrow. What does version 2 need?</p>
+    <p class="q ar">ستُستردّ الدفعة 1 (نقدًا، 40) غدًا. ماذا يحتاج الإصدار 2؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A <code>REFUNDED CASH</code> box inside <code>CASH</code></span><span class="ar">صندوق <code>REFUNDED CASH</code> داخل <code>CASH</code></span></button></li>
+      <li><button class="opt"><span class="en">A refund date on <code>CASH</code> only</span><span class="ar">تاريخ استرداد في <code>CASH</code> وحده</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Nothing new: payment 1 gets a value in <code>o Refund Date</code></span><span class="ar">لا شيء جديد: تأخذ الدفعة 1 قيمةً في <code>o Refund Date</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Any payment may be refunded, so the attribute sits in <code>PAYMENT</code> and every subtype inherits it. That is the sign the repair put it in the right box.</p>
+      <p class="ar">أيّ دفعة قد تُستردّ، فمكان الخاصية <code>PAYMENT</code> ويرثها كل نوع فرعي. وهذه علامة أن الإصلاح وضعها في الصندوق الصحيح.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t4l5-h3"><span class="en">3 · Lineup two: a drawing that repeats itself</span><span class="ar">٣ · التشكيلة الثانية: رسم يكرّر نفسه</span></h2>
+
+  <div class="problem">
+    <p class="en">An intern redraws the decorating store's model and is proud of it: every product still fits exactly one box, and <code>OTHER</code> is there. Yet the store's clerk, adding a new kind of product next month, could leave its price out and nothing would look wrong.</p>
+    <p class="ar">يعيد متدرّبٌ رسم نموذج متجر الديكور ويفخر به: كل منتج ما زال يقع في صندوق واحد بالضبط، و<code>OTHER</code> موجود. ومع ذلك قد يضيف موظّف المتجر نوعًا جديدًا من المنتجات الشهر القادم وينسى سعره، ولن يبدو شيء خاطئًا.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t4-judge-lineup-2">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 1007" direction="ltr" role="img" aria-labelledby="t4-judge-lineup-2-t">
+<title id="t4-judge-lineup-2-t">Lineup two: WALL COVERING with Price in every subtype, PAYMENT with made by drawn from CHECK and CREDIT CARD, the nested ANIMAL, and ORDER with EAT IN and TO GO / التشكيلة الثانية: WALL COVERING وPrice في كل نوع فرعي، وPAYMENT وmade by مرسومة من CHECK وCREDIT CARD، وANIMAL المتداخل، وORDER وفيه EAT IN وTO GO</title>
+<g class="en"><text x="460.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Lineup two — four models, one of them broken</text></g><g class="ar"><text x="460.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">التشكيلة الثانية — أربعة نماذج، أحدها معطوب</text></g>
+<rect x="20.0" y="44" width="430.0" height="452" rx="8" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="34.0" y="66" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">A · the decorating store, redrawn by an intern</text></g><g class="ar"><text x="436.0" y="66" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">أ · متجر الديكور، أعاد رسمه متدرّب</text></g>
+<rect x="36.0" y="84" width="300" height="388" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="186.0" y="106" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WALL COVERING</text>
+<text x="50.0" y="128" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Code</text>
+<text x="50.0" y="147" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Description</text>
+<rect x="54.0" y="163" width="264" height="71" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="186.0" y="185" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAINT</text>
+<text x="68.0" y="207" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Litres</text>
+<text x="68.0" y="226" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<rect x="54.0" y="244" width="264" height="71" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="186.0" y="266" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WALLPAPER</text>
+<text x="68.0" y="288" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Roll Length</text>
+<text x="68.0" y="307" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<rect x="54.0" y="325" width="264" height="71" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="186.0" y="347" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">FABRIC</text>
+<text x="68.0" y="369" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Material</text>
+<text x="68.0" y="388" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<rect x="54.0" y="406" width="264" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="186.0" y="428" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">OTHER</text>
+<text x="68.0" y="450" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<rect x="470.0" y="44" width="430.0" height="452" rx="8" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="484.0" y="66" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">B · cheques and cards carry a customer; cash does not</text></g><g class="ar"><text x="886.0" y="66" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">ب · للشيك والبطاقة زبون؛ وليس للنقد</text></g>
+<rect x="486.0" y="84" width="190" height="244" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="581.0" y="106" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAYMENT</text>
+<text x="500.0" y="128" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Payment ID</text>
+<text x="500.0" y="147" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Payment Date</text>
+<text x="500.0" y="166" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Amount</text>
+<rect x="504.0" y="182" width="154" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="581.0" y="204" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CASH</text>
+<rect x="504.0" y="222" width="154" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="581.0" y="244" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CHECK</text>
+<rect x="504.0" y="262" width="154" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="581.0" y="284" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CREDIT CARD</text>
+<text x="518.0" y="306" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Card Number</text>
+<rect x="762.0" y="215" width="124" height="78" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="824.0" y="237" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CUSTOMER</text>
+<text x="776.0" y="259" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Customer ID</text>
+<text x="776.0" y="278" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M658.0 237 L710.0 237" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M710.0 237 L710.0 237 L762.0 237" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M670.0 237 L658.0 230" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M670.0 237 L658.0 237" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M670.0 237 L658.0 244" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="674.0" y="231" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">made by</text>
+<text x="756.0" y="252" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">make</text>
+<path d="M658.0 279 L710.0 279" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M710.0 279 L710.0 279 L762.0 279" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M670.0 279 L658.0 272" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M670.0 279 L658.0 279" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M670.0 279 L658.0 286" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="674.0" y="273" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">made by</text>
+<text x="756.0" y="294" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">make</text>
+<rect x="20.0" y="512" width="430.0" height="395" rx="8" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="34.0" y="534" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">C · a zoo</text></g><g class="ar"><text x="436.0" y="534" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">ج · حديقة حيوان</text></g>
+<rect x="36.0" y="552" width="300" height="331" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="186.0" y="574" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ANIMAL</text>
+<text x="50.0" y="596" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Animal ID</text>
+<text x="50.0" y="615" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="54.0" y="631" width="264" height="198" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="186.0" y="653" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">VERTEBRATE</text>
+<rect x="72.0" y="665" width="228" height="30" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.2"/>
+<text x="186.0" y="687" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">BIRD</text>
+<rect x="72.0" y="705" width="228" height="30" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.2"/>
+<text x="186.0" y="727" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">REPTILE</text>
+<rect x="72.0" y="745" width="228" height="30" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.2"/>
+<text x="186.0" y="767" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MAMMAL</text>
+<rect x="72.0" y="785" width="228" height="30" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.2"/>
+<text x="186.0" y="807" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">OTHER</text>
+<rect x="54.0" y="839" width="264" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="186.0" y="861" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">INVERTEBRATE</text>
+<rect x="470.0" y="512" width="430.0" height="395" rx="8" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="484.0" y="534" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">D · a café that serves eat-in and to-go only</text></g><g class="ar"><text x="886.0" y="534" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">د · مقهى لا يقدّم إلا في المكان أو سفريًّا</text></g>
+<rect x="486.0" y="552" width="300" height="207" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="636.0" y="574" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ORDER</text>
+<text x="500.0" y="596" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Order Number</text>
+<text x="500.0" y="615" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Order Date</text>
+<rect x="504.0" y="631" width="264" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="636.0" y="653" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">EAT IN</text>
+<text x="518.0" y="675" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Table Number</text>
+<rect x="504.0" y="693" width="264" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="636.0" y="715" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">TO GO</text>
+<text x="518.0" y="737" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Pickup Time</text>
+<rect x="20" y="927" width="880" height="60" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="36" y="950" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">One diagram breaks a rule. Something else in this lineup only looks wrong.</text></g><g class="ar"><text x="884" y="950" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">مخطّط واحد يخرق قاعدة. وشيءٌ آخر في هذه التشكيلة يبدو خاطئًا فقط.</text></g>
+<g class="en"><text x="36" y="970" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Ask of every repeated line or attribute: is it common to every subtype, or only to some?</text></g><g class="ar"><text x="884" y="970" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">اسأل عن كل خطّ أو خاصية مكرّرة: هل هي مشتركة بين كل الأنواع الفرعية، أم بين بعضها فقط؟</text></g>
+</svg>
+<figcaption><span class="en">Lineup two. This time the three rules are not where the trouble is. Look at what is drawn more than once.</span><span class="ar">التشكيلة الثانية. هذه المرّة ليست المشكلة في القواعد الثلاث. انظر إلى ما رُسم أكثر من مرّة.</span></figcaption></figure>
+
+  <p class="en">Panel A passes checks 1 to 4. It fails check 5. The slide is plain: <em>the common attributes and relationships for all subtypes must be listed only in the supertype, but they are inherited in every subtype</em>. Every product has a price, so <code>* Price</code> belongs in <code>WALL COVERING</code>.</p>
+  <p class="ar">اللوحة أ تجتاز الفحوص من 1 إلى 4، وتخفق في الفحص 5. والشريحة واضحة: <em>الخصائص والعلاقات المشتركة بين كل الأنواع الفرعية يجب أن تُذكر في النوع الأعلى وحده، لكنها موروثة في كل نوع فرعي</em>. ولكل منتج سعر، فمكان <code>* Price</code> هو <code>WALL COVERING</code>.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="repeated-common-attribute">repeated common attribute</span> is an attribute every subtype has, drawn in each subtype instead of once in the supertype.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="repeated-common-attribute">الخاصية المشتركة المكرّرة</span> (Repeated common attribute) خاصيةٌ يملكها كل نوع فرعي، مرسومة في كل نوع فرعي بدل أن تُذكر مرّة واحدة في النوع الأعلى.</p>
+  </div>
+
+  <div class="evolve" id="t4l5-e2">
+    <div class="ver" data-title-en="Version 1 — * Price in every subtype" data-title-ar="الإصدار 1 — * Price في كل نوع فرعي">
+      <figure class="diagram" data-diagram="t4-judge-wall-price-v1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 554" direction="ltr" role="img" aria-labelledby="t4-judge-wall-price-v1-t">
+<title id="t4-judge-wall-price-v1-t">Version 1: WALL COVERING with Price listed in each of PAINT, WALLPAPER, FABRIC and OTHER / الإصدار 1: WALL COVERING وPrice مذكورة في كلٍّ من PAINT وWALLPAPER وFABRIC وOTHER</title>
+<g class="en"><text x="400.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1 — * Price listed in every subtype</text></g><g class="ar"><text x="400.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 1 — Price مذكورة في كل نوع فرعي</text></g>
+<rect x="40" y="50" width="300" height="388" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="190.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WALL COVERING</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Code</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Description</text>
+<rect x="58" y="129" width="264" height="71" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="151" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAINT</text>
+<text x="72" y="173" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Litres</text>
+<text x="72" y="192" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<rect x="58" y="210" width="264" height="71" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="232" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WALLPAPER</text>
+<text x="72" y="254" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Roll Length</text>
+<text x="72" y="273" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<rect x="58" y="291" width="264" height="71" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="313" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">FABRIC</text>
+<text x="72" y="335" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Material</text>
+<text x="72" y="354" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<rect x="58" y="372" width="264" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="394" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">OTHER</text>
+<text x="72" y="416" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<g class="en"><text x="400" y="66" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">Where each product's price is kept</text></g><g class="ar"><text x="760" y="66" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">أين يُحفظ سعر كل منتج</text></g>
+<rect x="400" y="80" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="98" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC1</text>
+<text x="448" y="98" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Matt white emulsion</text>
+<text x="608" y="98" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">18</text>
+<text x="748" y="98" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">in PAINT</text>
+<rect x="400" y="114" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC2</text>
+<text x="448" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Striped wallpaper</text>
+<text x="608" y="132" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">25</text>
+<text x="748" y="132" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">in WALLPAPER</text>
+<rect x="400" y="148" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="166" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC3</text>
+<text x="448" y="166" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Linen fabric panel</text>
+<text x="608" y="166" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">60</text>
+<text x="748" y="166" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">in FABRIC</text>
+<rect x="400" y="182" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC4</text>
+<text x="448" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Ceramic wall tile</text>
+<text x="608" y="200" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">3</text>
+<text x="748" y="200" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">in OTHER</text>
+<rect x="400" y="216" width="360" height="26" rx="6" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="412" y="234" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC5</text>
+<text x="448" y="234" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Oak wood panel</text>
+<text x="608" y="234" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">45</text>
+<text x="748" y="234" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">in OTHER</text>
+<rect x="40" y="458" width="720" height="80" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:2"/>
+<g class="en"><text x="56" y="481" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--font, sans-serif);font-size:12px">Defect: a common attribute is not listed only in the supertype. Every product has a price; it is drawn four times.</text></g><g class="ar"><text x="744" y="481" text-anchor="start" direction="rtl" style="fill:var(--dg-bad, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">العيب: خاصية مشتركة غير مذكورة في النوع الأعلى وحده. لكل منتج سعر، وهو مرسوم أربع مرّات.</text></g>
+<g class="en"><text x="56" y="501" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">No rule of the three is broken, and no product is lost. The defect is in the drawing.</text></g><g class="ar"><text x="744" y="501" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">لم تُخرق أيّ من القواعد الثلاث، ولم يضع أيّ منتج. العيب في الرسم.</text></g>
+<g class="en"><text x="56" y="521" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">A fifth subtype, drawn in a hurry, could leave * Price out, and nothing would look wrong.</text></g><g class="ar"><text x="744" y="521" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">ونوعٌ فرعي خامس يُرسم على عجل قد ينسى Price، ولن يبدو شيء خاطئًا.</text></g>
+</svg>
+</figure>
+      <p class="en">Defect: check 5. <code>* Price</code> is listed four times. The model says nothing about a fifth subtype's price, and "every product under 30" has to look in four places.</p>
+      <p class="ar">العيب: الفحص 5. <code>* Price</code> مذكورة أربع مرّات. ولا يقول النموذج شيئًا عن سعر نوع فرعي خامس، و«كل منتج أقلّ من 30» يجب أن يبحث في أربعة أماكن.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — * Price lifted into WALL COVERING" data-title-ar="الإصدار 2 — رُفعت * Price إلى WALL COVERING">
+      <figure class="diagram" data-diagram="t4-judge-wall-price-v2">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 494" direction="ltr" role="img" aria-labelledby="t4-judge-wall-price-v2-t">
+<title id="t4-judge-wall-price-v2-t">Version 2: Price lifted into WALL COVERING, listed once and inherited by PAINT, WALLPAPER, FABRIC and OTHER / الإصدار 2: رُفعت Price إلى WALL COVERING، مذكورة مرّة واحدة ويرثها PAINT وWALLPAPER وFABRIC وOTHER</title>
+<g class="en"><text x="400.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — * Price lifted into WALL COVERING</text></g><g class="ar"><text x="400.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 2 — رُفعت Price إلى WALL COVERING</text></g>
+<rect x="40" y="50" width="300" height="328" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="190.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WALL COVERING</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Code</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Description</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-good, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Price</text>
+<rect x="58" y="148" width="264" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="170" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAINT</text>
+<text x="72" y="192" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Litres</text>
+<rect x="58" y="210" width="264" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="232" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WALLPAPER</text>
+<text x="72" y="254" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Roll Length</text>
+<rect x="58" y="272" width="264" height="52" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="294" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">FABRIC</text>
+<text x="72" y="316" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Material</text>
+<rect x="58" y="334" width="264" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="190.0" y="356" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">OTHER</text>
+<g class="en"><text x="400" y="66" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">Where each product's price is kept</text></g><g class="ar"><text x="760" y="66" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">أين يُحفظ سعر كل منتج</text></g>
+<rect x="400" y="80" width="360" height="26" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<text x="412" y="98" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC1</text>
+<text x="448" y="98" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Matt white emulsion</text>
+<text x="608" y="98" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">18</text>
+<text x="748" y="98" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">in WALL COVERING</text>
+<rect x="400" y="114" width="360" height="26" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<text x="412" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC2</text>
+<text x="448" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Striped wallpaper</text>
+<text x="608" y="132" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">25</text>
+<text x="748" y="132" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">in WALL COVERING</text>
+<rect x="400" y="148" width="360" height="26" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<text x="412" y="166" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC3</text>
+<text x="448" y="166" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Linen fabric panel</text>
+<text x="608" y="166" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">60</text>
+<text x="748" y="166" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">in WALL COVERING</text>
+<rect x="400" y="182" width="360" height="26" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<text x="412" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC4</text>
+<text x="448" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Ceramic wall tile</text>
+<text x="608" y="200" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">3</text>
+<text x="748" y="200" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">in WALL COVERING</text>
+<rect x="400" y="216" width="360" height="26" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<text x="412" y="234" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">WC5</text>
+<text x="448" y="234" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Oak wood panel</text>
+<text x="608" y="234" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">45</text>
+<text x="748" y="234" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">in WALL COVERING</text>
+<rect x="40" y="398" width="720" height="80" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:2"/>
+<g class="en"><text x="56" y="421" text-anchor="start" style="fill:var(--dg-good, var(--text));font-family:var(--font, sans-serif);font-size:12px">Fixed: * Price is listed once, in the supertype, and every subtype inherits it.</text></g><g class="ar"><text x="744" y="421" text-anchor="start" direction="rtl" style="fill:var(--dg-good, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">أُصلح: Price مذكورة مرّة واحدة، في النوع الأعلى، ويرثها كل نوع فرعي.</text></g>
+<g class="en"><text x="56" y="441" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Each subtype keeps only what is its own. OTHER lists nothing, and still has a code, a description and a price.</text></g><g class="ar"><text x="744" y="441" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">لا يحتفظ كل نوع فرعي إلا بما يخصّه. لا يذكر OTHER شيئًا، ومع ذلك له رمز ووصف وسعر.</text></g>
+<g class="en"><text x="56" y="461" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">A new subtype cannot forget the price: it inherits it the moment it is drawn inside.</text></g><g class="ar"><text x="744" y="461" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">ولا يمكن لنوع فرعي جديد أن ينسى السعر: فهو يرثه لحظة يُرسم في الداخل.</text></g>
+</svg>
+</figure>
+      <p class="en">Fixed: <code>* Price</code> is listed once, in the supertype, and inherited by every subtype, including any added later. Each subtype keeps only what is its own. This is the recommended model, and it is Lesson 3's.</p>
+      <p class="ar">أُصلح: <code>* Price</code> مذكورة مرّة واحدة، في النوع الأعلى، ويرثها كل نوع فرعي، ومنه أيّ نوع يُضاف لاحقًا. ولا يحتفظ كل نوع فرعي إلا بما يخصّه. وهذا هو النموذج الموصى به، وهو نموذج الدرس 3.</p>
+    </div>
+  </div>
+
+  <h3 id="t4l5-s3"><span class="en">Repeated is not always wrong</span><span class="ar">التكرار ليس خطأً دائمًا</span></h3>
+
+  <p class="en">Panel B also draws something twice: a <code>made by</code> line from <code>CHECK</code> and another from <code>CREDIT CARD</code>. It is not a defect. Check 5 asks about what <em>all</em> subtypes share, and <code>CASH</code> has no customer. Lifting the line into <code>PAYMENT</code> would give every cash payment a customer.</p>
+  <p class="ar">اللوحة ب ترسم شيئًا مرّتين أيضًا: خطّ <code>made by</code> من <code>CHECK</code> وآخر من <code>CREDIT CARD</code>. وهذا ليس عيبًا. فالفحص 5 يسأل عمّا تشترك فيه <em>كل</em> الأنواع الفرعية، وليس لـ <code>CASH</code> زبون. ورفع الخطّ إلى <code>PAYMENT</code> يعطي كل دفعة نقدية زبونًا.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="false-alarm">false alarm</span> is something that looks like a defect but passes every check, such as a line shared by some subtypes but not all.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="false-alarm">الإنذار الكاذب</span> (False alarm) شيءٌ يبدو عيبًا لكنه يجتاز كل الفحوص، كخطّ تشترك فيه بعض الأنواع الفرعية لا كلها.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Build version 1 table per box and <code>price</code> becomes a column of <code>paints</code>, <code>wallpapers</code>, <code>fabrics</code> and <code>others</code>. "Every product under 30" is then four <code>SELECT</code>s glued with <code>UNION ALL</code>:</p>
+    <p class="ar">ابنِ الإصدار 1 جدولًا لكل صندوق، فيصبح <code>price</code> عمودًا في <code>paints</code> و<code>wallpapers</code> و<code>fabrics</code> و<code>others</code>. ويصير «كل منتج أقلّ من 30» أربعة <code>SELECT</code> ملصوقة بـ <code>UNION ALL</code>:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE wall_coverings (code VARCHAR(6) PRIMARY KEY, description VARCHAR(40) NOT NULL)", "INSERT INTO wall_coverings VALUES ('WC1','Matt white emulsion'), ('WC2','Striped wallpaper roll'), ('WC3','Linen fabric panel'), ('WC4','Ceramic wall tile'), ('WC5','Oak wood panel')", "CREATE TABLE paints (code VARCHAR(6) PRIMARY KEY REFERENCES wall_coverings(code), litres NUMBER NOT NULL, price NUMBER NOT NULL)", "INSERT INTO paints VALUES ('WC1',5,18)", "CREATE TABLE wallpapers (code VARCHAR(6) PRIMARY KEY REFERENCES wall_coverings(code), roll_length NUMBER NOT NULL, price NUMBER NOT NULL)", "INSERT INTO wallpapers VALUES ('WC2',10,25)", "CREATE TABLE fabrics (code VARCHAR(6) PRIMARY KEY REFERENCES wall_coverings(code), material VARCHAR(20) NOT NULL, price NUMBER NOT NULL)", "INSERT INTO fabrics VALUES ('WC3','linen',60)", "CREATE TABLE others (code VARCHAR(6) PRIMARY KEY REFERENCES wall_coverings(code), price NUMBER NOT NULL)", "INSERT INTO others VALUES ('WC4',3), ('WC5',45)"], "sql": "SELECT code, price FROM paints     WHERE price < 30\nUNION ALL\nSELECT code, price FROM wallpapers WHERE price < 30\nUNION ALL\nSELECT code, price FROM fabrics    WHERE price < 30\nUNION ALL\nSELECT code, price FROM others     WHERE price < 30;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>code</code></th><th><code>price</code></th></tr></thead>
+          <tbody>
+            <tr><td>WC1</td><td>18</td></tr>
+            <tr><td>WC2</td><td>25</td></tr>
+            <tr><td>WC4</td><td>3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">A fifth subtype table means a fifth <code>SELECT</code> in every such query, and forgetting it gives a wrong answer with no error. In version 2, <code>price</code> is one column of <code>wall_coverings</code> and the question is one <code>SELECT</code> on one table.</p>
+    <p class="ar">جدول نوع فرعي خامس يعني <code>SELECT</code> خامسًا في كل استعلام كهذا، ونسيانه يعطي جوابًا خاطئًا بلا أيّ خطأ ظاهر. أمّا في الإصدار 2 فـ <code>price</code> عمود واحد في <code>wall_coverings</code>، والسؤال <code>SELECT</code> واحد على جدول واحد.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapter 7</span><span class="ar">خيط · الفصل 7 في SQL</span></h4>
+    <p class="en"><a href="../chapters/chapter-7.html">Chapter 7 &mdash; Normalization</a> hunts for one fact kept in several places. A <code>price</code> column in four subtype tables is a quieter cousin: four copies of one kind of fact, with no single place that says every product has one. Check 5 catches it on the diagram.</p>
+    <p class="ar">يطارد <a href="../chapters/chapter-7.html">الفصل 7 &mdash; التطبيع</a> الحقيقةَ الواحدة المحفوظة في عدّة أماكن. وعمود <code>price</code> في أربعة جداول أنواع فرعية قريبٌ أهدأ لها: أربع نُسَخ من نوع واحد من الحقائق، بلا مكان واحد يقول إن لكل منتج سعرًا. والفحص 5 يكشفه على المخطّط.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which panel of lineup two breaks a rule?</p>
+    <p class="q ar">أيّ لوحة في التشكيلة الثانية تخرق قاعدة؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">A: <code>* Price</code> is common to every subtype but not listed in the supertype</span><span class="ar">أ: <code>* Price</code> مشتركة بين كل الأنواع الفرعية لكنها غير مذكورة في النوع الأعلى</span></button></li>
+      <li><button class="opt"><span class="en">B: <code>made by</code> is drawn twice</span><span class="ar">ب: <code>made by</code> مرسومة مرّتين</span></button></li>
+      <li><button class="opt"><span class="en">C: the hierarchy has two levels</span><span class="ar">ج: للتسلسل الهرمي مستويان</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">B is the false alarm: cash has no customer, so the line is not common to all. C is the lecturer's own nested slide, and two levels is the guideline. D is sound for a café that serves only those two ways.</p>
+      <p class="ar">ب هو الإنذار الكاذب: ليس للنقد زبون، فالخطّ ليس مشتركًا بين الكل. وج هي شريحة المحاضِرة المتداخلة نفسها، والمستويان هما الإرشاد. ود سليمة لمقهى لا يقدّم إلا بهاتين الطريقتين.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The shop starts sending a receipt by email for every payment, cash included. Where does <code>o Receipt Email</code> go?</p>
+    <p class="q ar">يبدأ المتجر بإرسال إيصال بالبريد الإلكتروني لكل دفعة، ومنها النقدية. أين توضع <code>o Receipt Email</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">In <code>CHECK</code> and in <code>CREDIT CARD</code>, beside <code>made by</code></span><span class="ar">في <code>CHECK</code> وفي <code>CREDIT CARD</code>، بجانب <code>made by</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Once, in <code>PAYMENT</code></span><span class="ar">مرّة واحدة، في <code>PAYMENT</code></span></button></li>
+      <li><button class="opt"><span class="en">In all three subtypes</span><span class="ar">في الأنواع الفرعية الثلاثة كلها</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Every kind of payment can have it, so it is common to all subtypes and check 5 puts it in the supertype. Listing it in all three would be the intern's mistake again.</p>
+      <p class="ar">كل نوع من الدفعات قد يكون له إيصال، فالخاصية مشتركة بين كل الأنواع الفرعية، والفحص 5 يضعها في النوع الأعلى. وذكرها في الثلاثة كلها هو خطأ المتدرّب مرّة أخرى.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t4l5-h4"><span class="en">4 · When the picture cannot decide</span><span class="ar">٤ · حين لا تستطيع الصورة أن تحسم</span></h2>
+
+  <div class="problem">
+    <p class="en">Two colleges hand in the same diagram: the lecturer's <code>EXAM</code> with <code>QUIZ</code>, <code>MIDTERM</code> and <code>FINAL</code>, no <code>OTHER</code>. The first college gives only those three. The second also runs a practical exam in the lab. Same lines, same boxes &mdash; is it right?</p>
+    <p class="ar">تسلّم كلّيتان المخطّط نفسه: <code>EXAM</code> المحاضِرة وفيه <code>QUIZ</code> و<code>MIDTERM</code> و<code>FINAL</code>، بلا <code>OTHER</code>. الكلية الأولى لا تعقد إلا هذه الثلاثة. والثانية تعقد أيضًا امتحانًا عمليًّا في المختبر. الخطوط نفسها، والصناديق نفسها &mdash; فهل هو صحيح؟</p>
+  </div>
+
+  <p class="en">For the first college, yes: the slide's note reads <em>every EXAM is either a QUIZ, a MIDTERM, or a FINAL</em>. For the second, no: the lab practical is an exam that fits no box, and it is the witness. A diagram is accurate only against a business.</p>
+  <p class="ar">للكلية الأولى، نعم: تقول ملاحظة الشريحة <em>كل EXAM هو QUIZ أو MIDTERM أو FINAL</em>. وللثانية، لا: فالامتحان العملي امتحانٌ لا يقع في أيّ صندوق، وهو الشاهد. فالمخطّط لا يكون دقيقًا إلا قياسًا إلى عملٍ بعينه.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="diagram-accuracy">Accuracy</span> of an ERD is how truly it states the business's rules: every rule it draws holds in the business, and every rule the business has is drawn.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="diagram-accuracy">الدقّة</span> (Accuracy) في مخطّط الكيانات والعلاقات هي مدى صدقه في التعبير عن قواعد العمل: كل قاعدة يرسمها صحيحة في العمل، وكل قاعدة في العمل مرسومة فيه.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="business-evidence">Business evidence</span> is a fact about the business, from its people or its records, that settles a check the drawing alone cannot.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="business-evidence">بيّنة العمل</span> (Business evidence) حقيقةٌ عن العمل، من أهله أو من سجلّاته، تحسم فحصًا لا يستطيع الرسم وحده أن يحسمه.</p>
+  </div>
+
+  <h3 id="t4l5-s4"><span class="en">Same drawing, two verdicts</span><span class="ar">رسمٌ واحد، وحكمان</span></h3>
+
+  <p class="en">Checks 1, 3 and 4 are claims about the business, so a reviewer asks before ruling. "Do you ever give an exam that is not one of these?" "Can a payment be a card payment and something else?" Checks 2 and 5 can be read off the drawing alone.</p>
+  <p class="ar">الفحوص 1 و3 و4 ادّعاءات عن العمل، فيسأل المراجِع قبل أن يحكم: «هل تعقدون امتحانًا ليس واحدًا من هذه؟» «هل يمكن أن تكون الدفعة ببطاقة وشيئًا آخر معًا؟» أمّا الفحصان 2 و5 فيُقرآن من الرسم وحده.</p>
+
+  <pre class="code" data-lang="text"><code>college 1   every exam is a quiz, a midterm or a final    sound
+college 2   the lab practical fits no box                 check 3 fails
+            repair: add PRACTICAL if it has its own attributes, else OTHER</code></pre>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">At the second college the diagram becomes a <code>CHECK</code> that refuses a real exam. Run the list, then try <code>INSERT INTO exams VALUES (4, 'Lab practical', 'PRACTICAL');</code>:</p>
+    <p class="ar">في الكلية الثانية يصبح المخطّط قيد <code>CHECK</code> يرفض امتحانًا حقيقيًّا. شغّل القائمة، ثم جرّب <code>INSERT INTO exams VALUES (4, 'Lab practical', 'PRACTICAL');</code>:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE exams (exam_id NUMBER PRIMARY KEY, description VARCHAR(40) NOT NULL, exam_type VARCHAR(8) NOT NULL CHECK (exam_type IN ('QUIZ','MIDTERM','FINAL')))", "INSERT INTO exams VALUES (1,'Quiz 1: entities','QUIZ'), (2,'Midterm','MIDTERM'), (3,'Final','FINAL')"], "sql": "SELECT * FROM exams ORDER BY exam_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>exam_id</code></th><th><code>description</code></th><th><code>exam_type</code></th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Quiz 1: entities</td><td>QUIZ</td></tr>
+            <tr><td>2</td><td>Midterm</td><td>MIDTERM</td></tr>
+            <tr><td>3</td><td>Final</td><td>FINAL</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">The insert fails with <code>Violation of CHECK constraint</code>, and <code>exams</code> still has three rows. At the first college that refusal is right; at the second it turns away a real exam. The constraint is only as accurate as the diagram behind it.</p>
+    <p class="ar">يفشل الإدخال برسالة <code>Violation of CHECK constraint</code>، ويبقى في <code>exams</code> ثلاثة صفوف. وهذا الرفض صحيح في الكلية الأولى؛ أمّا في الثانية فيردّ امتحانًا حقيقيًّا. فالقيد لا يكون أدقّ من المخطّط الذي خلفه.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which check can you rule on from the drawing alone, with no question to the business?</p>
+    <p class="q ar">أيّ فحص تستطيع أن تحكم فيه من الرسم وحده، بلا سؤال للعمل؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Check 3: exhaustive</span><span class="ar">الفحص 3: الشمول</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Check 2: a box with exactly one subtype</span><span class="ar">الفحص 2: صندوق فيه نوع فرعي واحد بالضبط</span></button></li>
+      <li><button class="opt"><span class="en">Check 4: mutually exclusive</span><span class="ar">الفحص 4: التنافي</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Counting the boxes needs no business fact: one subtype is wrong in every business. Whether the subtypes cover everything, or overlap, depends on what the business does, as the two colleges show.</p>
+      <p class="ar">عدّ الصناديق لا يحتاج إلى حقيقة من العمل: النوع الفرعي الوحيد خطأ في كل عمل. أمّا هل تغطّي الأنواع الفرعية كل شيء، أو تتداخل، فيتوقّف على ما يفعله العمل، كما تُظهر الكلّيتان.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The second college's lab practical has a <code>* Lab Room</code> no other exam has. What is the minimal repair?</p>
+    <p class="q ar">للامتحان العملي في الكلية الثانية <code>* Lab Room</code> لا يملكها أيّ امتحان آخر. ما أصغر إصلاح؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Add <code>o Lab Room</code> to <code>EXAM</code></span><span class="ar">أضف <code>o Lab Room</code> إلى <code>EXAM</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Add a <code>PRACTICAL</code> subtype holding <code>* Lab Room</code></span><span class="ar">أضف نوعًا فرعيًّا <code>PRACTICAL</code> يحمل <code>* Lab Room</code></span></button></li>
+      <li><button class="opt"><span class="en">Move the practical into <code>FINAL</code></span><span class="ar">انقل الامتحان العملي إلى <code>FINAL</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The practical is a kind of exam with something of its own, so it earns a box, and the set becomes exhaustive. On <code>EXAM</code> the room would be optional for everyone and mandatory for no one. A practical is not a final.</p>
+      <p class="ar">الامتحان العملي نوعٌ من الامتحانات وله شيء خاصّ به، فيستحقّ صندوقًا، وتصبح المجموعة شاملة. ولو وُضعت القاعة في <code>EXAM</code> لكانت اختيارية للجميع وإلزامية لا لأحد. والعملي ليس نهائيًّا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t4l5-h5"><span class="en">5 · Proving a verdict with the data</span><span class="ar">٥ · إثبات الحكم بالبيانات</span></h2>
+
+  <div class="problem">
+    <p class="en">The designer of the <code>REFUNDED</code> model has already built it, one table per box, and pushes back: "The tables accepted every payment. Nothing failed, so nothing is wrong." You need to show the witness in their own tables, not on a whiteboard.</p>
+    <p class="ar">بنى مصمّم نموذج <code>REFUNDED</code> نموذجه أصلًا، جدولًا لكل صندوق، وهو يعترض: «قبلت الجداول كل دفعة. لم يفشل شيء، فلا شيء خاطئ.» عليك أن تُظهر الشاهد في جداوله هو، لا على السبّورة.</p>
+  </div>
+
+  <p class="en">"Nothing failed" is the problem: no table-per-box design stops one key appearing in two subtype tables. But a query can find it. Stack every subtype table's keys with <code>UNION ALL</code>, group them, and keep any key that appears more than once.</p>
+  <p class="ar">«لم يفشل شيء» هي المشكلة نفسها: فلا شيء في تصميم جدولٍ لكل صندوق يمنع ظهور المفتاح نفسه في جدولَي نوعين فرعيين. لكن استعلامًا يستطيع أن يجده. اجمع مفاتيح كل جداول الأنواع الفرعية بـ <code>UNION ALL</code>، وجمّعها، واحتفظ بأيّ مفتاح يظهر أكثر من مرّة.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="overlap-query">overlap query</span> lists the supertype keys that appear in more than one subtype table: the witnesses against rule three.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="overlap-query">استعلام الازدواج</span> (Overlap query) يعرض مفاتيح النوع الأعلى التي تظهر في أكثر من جدول نوع فرعي: أي الشهود على خرق القاعدة الثالثة.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 1 of section 2, built one table per box. The overlap query names the witness and the number of boxes it sits in:</p>
+    <p class="ar">الإصدار 1 من القسم 2، مبنيًّا جدولًا لكل صندوق. يسمّي استعلام الازدواج الشاهدَ وعدد الصناديق التي يقع فيها:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)", "INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90)", "CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))", "INSERT INTO cash_payments VALUES (1), (4)", "CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))", "INSERT INTO check_payments VALUES (2), (6)", "CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL)", "INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111'), (5,'5500 0000 0000 0004')", "CREATE TABLE refunded_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), refund_date DATE NOT NULL)", "INSERT INTO refunded_payments VALUES (5,'2026-03-05')"], "sql": "SELECT payment_id, COUNT(*) AS boxes\nFROM (SELECT payment_id FROM cash_payments\n      UNION ALL SELECT payment_id FROM check_payments\n      UNION ALL SELECT payment_id FROM card_payments\n      UNION ALL SELECT payment_id FROM refunded_payments) AS t\nGROUP BY payment_id\nHAVING COUNT(*) > 1;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>payment_id</code></th><th><code>boxes</code></th></tr></thead>
+          <tbody><tr><td>5</td><td>2</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Payment 5 sits in two subtype tables. That one row is the verdict's witness, taken from the designer's own data.</p>
+    <p class="ar">الدفعة 5 تقع في جدولَي نوعين فرعيين. وهذا الصفّ الواحد هو شاهد الحكم، مأخوذًا من بيانات المصمّم نفسه.</p>
+  </div>
+
+  <h3 id="t4l5-s5"><span class="en">The other witness, and what no rows means</span><span class="ar">الشاهد الآخر، وماذا تعني النتيجة الفارغة</span></h3>
+
+  <p class="en">Rule two has a query too: <code>LEFT JOIN</code> the supertype table to every subtype table and keep the rows that matched none. On these six payments it returns no rows. That does not prove version 1 exhaustive; it only means no witness has arrived yet.</p>
+  <p class="ar">وللقاعدة الثانية استعلامها أيضًا: اربط جدول النوع الأعلى بكل جداول الأنواع الفرعية بـ <code>LEFT JOIN</code>، واحتفظ بالصفوف التي لم تطابق شيئًا. وعلى هذه الدفعات الست لا يعيد أيّ صفّ. وهذا لا يُثبت أن الإصدار 1 شامل؛ بل يعني فقط أن شاهدًا لم يصل بعد.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="coverage-query">coverage query</span> lists the supertype rows that appear in no subtype table: the witnesses against rule two.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="coverage-query">استعلام الشمول</span> (Coverage query) يعرض صفوف النوع الأعلى التي لا تظهر في أيّ جدول نوع فرعي: أي الشهود على خرق القاعدة الثانية.</p>
+  </div>
+
+  <pre class="code" data-lang="sql"><code>SELECT p.payment_id, p.payment_date, p.amount
+FROM payments p
+LEFT JOIN cash_payments     a ON a.payment_id = p.payment_id
+LEFT JOIN check_payments    b ON b.payment_id = p.payment_id
+LEFT JOIN card_payments     c ON c.payment_id = p.payment_id
+LEFT JOIN refunded_payments r ON r.payment_id = p.payment_id
+WHERE a.payment_id IS NULL AND b.payment_id IS NULL
+  AND c.payment_id IS NULL AND r.payment_id IS NULL;</code></pre>
+
+  <p class="en">A witness proves a rule broken; an empty result proves nothing. The rules are about every possible instance, and the data is only today's. That is why the review happens on the diagram, with business evidence, before the first row exists.</p>
+  <p class="ar">الشاهد يُثبت أن القاعدة خُرقت؛ أمّا النتيجة الفارغة فلا تُثبت شيئًا. فالقواعد تخصّ كل نسخة ممكنة، والبيانات هي بيانات اليوم فقط. ولهذا تجري المراجعة على المخطّط، مع بيّنة العمل، قبل أن يوجد أول صفّ.</p>
+
+  <div class="quiz">
+    <p class="q en">The overlap query on a <code>SNOW SPORT</code> build returns no rows. What can you conclude?</p>
+    <p class="q ar">يعيد استعلام الازدواج على بناء <code>SNOW SPORT</code> صفرَ صفوف. ماذا تستنتج؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The subtypes are mutually exclusive</span><span class="ar">الأنواع الفرعية متنافية</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">No sport stored today is in two boxes; rule three still needs the business's answer</span><span class="ar">لا رياضة مخزّنة اليوم في صندوقين؛ والقاعدة الثالثة ما زالت تحتاج إلى جواب العمل</span></button></li>
+      <li><button class="opt"><span class="en">The subtypes are exhaustive</span><span class="ar">الأنواع الفرعية شاملة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">An empty result is the absence of a witness, not a proof. Tomorrow's row may overlap. And the overlap query says nothing about rule two at all; that is the coverage query's job.</p>
+      <p class="ar">النتيجة الفارغة غياب للشاهد، لا إثبات. فقد يتداخل صفّ الغد. واستعلام الازدواج لا يقول شيئًا عن القاعدة الثانية أصلًا؛ فتلك وظيفة استعلام الشمول.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t4l5-h6"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Lineup three, as text</span><span class="ar">تمرين 1 · التشكيلة الثالثة، نصًّا</span></h4>
+    <p class="en">Four models, with the business fact for each. One breaks a rule. Write its verdict: box, check, witness, repair.</p>
+    <p class="ar">أربعة نماذج، ومع كلٍّ منها حقيقة العمل. واحدٌ منها يخرق قاعدة. اكتب حكمه: الصندوق، والفحص، والشاهد، والإصلاح.</p>
+    <pre class="code" data-lang="text"><code>(a) the resort's sports                (b) the shop's payments
+SNOW SPORT       # Sport ID  * Name     PAYMENT   # Payment ID  * Payment Date  * Amount
+  SKI            * Ski Length            CASH
+  SNOWBOARD      * Board Length          CHECK
+  CROSS COUNTRY  * Distance              CARD    * Card Number
+  OTHER                                     CREDIT CARD  * Instalments
+                                            DEBIT CARD   o Cashback Amount
+                                          OTHER
+
+(c) the store sells paint, wallpaper,   (d) a zoo
+    fabric, tiles and oak panels        ANIMAL     # Animal ID  * Name
+WALL COVERING  # Code  * Description      VERTEBRATE
+               * Price                      BIRD
+  PAINT        * Litres                     MAMMAL
+  WALLPAPER    * Roll Length                OTHER
+  FABRIC       * Material                 INVERTEBRATE
+  TILE         * Tile Size</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="text"><code>box       WALL COVERING
+check     3, exhaustive
+witness   WC5, the oak wood panel: a wall covering that fits no box
+repair    add OTHER inside WALL COVERING</code></pre>
+      <p class="en">(a), (b) and (d) pass all six checks; (d) holds reptiles and fish in <code>OTHER</code>. In (c) <code>TILE</code> was given its own box, which is fine, but the oak panel was forgotten. <code>OTHER</code> is the slides' answer, and it also covers whatever the store stocks next.</p>
+      <p class="ar">(a) و(b) و(d) تجتاز الفحوص الستّة؛ و(d) تضع الزواحف والأسماك في <code>OTHER</code>. وفي (c) أُعطي <code>TILE</code> صندوقًا خاصًّا به، وهذا سليم، لكن لوح البلّوط نُسي. و<code>OTHER</code> هو جواب الشرائح، وهو يغطّي أيضًا كل ما سيبيعه المتجر لاحقًا.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · One box only</span><span class="ar">تمرين 2 · صندوق واحد فقط</span></h4>
+    <p class="en">The resort's first draft cares only about ski lengths. Write the verdict for it, and give the repaired model as text.</p>
+    <p class="ar">مسوّدة المنتجع الأولى لا تهتمّ إلا بأطوال الزلّاجات. اكتب حكمها، وأعطِ النموذج المُصلَح نصًّا.</p>
+    <pre class="code" data-lang="text"><code>SNOW SPORT   # Sport ID  * Name
+  SKI        * Ski Length</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="text"><code>box       SNOW SPORT
+check     2, more than one subtype
+witness   the halfpipe, a snow sport that is not a ski sport and has no box
+repair    add another subtype to contain the rest
+
+SNOW SPORT   # Sport ID  * Name
+  SKI        * Ski Length
+  OTHER</code></pre>
+      <p class="en">The slide: <em>there can never be just one subtype; another subtype should be created to contain the rest</em>. <code>OTHER</code> is the minimal repair. If the resort later records board lengths, <code>SNOWBOARD</code> leaves <code>OTHER</code> with its own box, as in the lecturer's drawing.</p>
+      <p class="ar">الشريحة: <em>لا يمكن أن يكون هناك نوع فرعي واحد فقط أبدًا؛ يجب إنشاء نوع فرعي آخر ليحتوي البقية</em>. و<code>OTHER</code> هو أصغر إصلاح. وإن سجّل المنتجع لاحقًا أطوال الألواح، خرج <code>SNOWBOARD</code> من <code>OTHER</code> في صندوق خاصّ به، كما في رسم المحاضِرة.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Two defects, in order</span><span class="ar">تمرين 3 · عيبان، بالترتيب</span></h4>
+    <p class="en">This draft of the lecturer's course has two defects. Give the line numbers, write a verdict for each in review order, and give the repaired model.</p>
+    <p class="ar">في هذه المسوّدة لمقرّر المحاضِرة عيبان. اذكر أرقام الأسطر، واكتب حكمًا لكلٍّ منهما بترتيب المراجعة، وأعطِ النموذج المُصلَح.</p>
+    <pre class="code" data-lang="text"><code>1  EXAM      # Number  * Description  * Grade For Written Component
+2    QUIZ    * Weight  * Date
+3    MIDTERM * Weight  * Date  * Grade For Oral Presentation
+4    FINAL   * Weight  * Date  * Extra Points For Optional Paper
+5    STUDENT # Student ID  * Name</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Line 5 first, check 1: "every <code>STUDENT</code> is an <code>EXAM</code>" is false. Students take exams. Move <code>STUDENT</code> outside, joined to <code>EXAM</code> by <code>take</code> / <code>taken by</code>. Then lines 2&ndash;4, check 5: <code>* Weight</code> and <code>* Date</code> are in every subtype. Lift them into <code>EXAM</code>.</p>
+      <p class="ar">السطر 5 أولًا، الفحص 1: «كل <code>STUDENT</code> هو <code>EXAM</code>» خاطئة. فالطلاب يقدّمون الامتحانات. انقل <code>STUDENT</code> إلى الخارج، واربطه بـ <code>EXAM</code> بـ <code>take</code> / <code>taken by</code>. ثم الأسطر 2&ndash;4، الفحص 5: <code>* Weight</code> و<code>* Date</code> في كل نوع فرعي. فارفعهما إلى <code>EXAM</code>.</p>
+      <pre class="code" data-lang="text"><code>EXAM      # Number  * Description  * Weight  * Date  * Grade For Written Component
+  QUIZ
+  MIDTERM * Grade For Oral Presentation
+  FINAL   * Extra Points For Optional Paper
+STUDENT   # Student ID  * Name          (outside; take / taken by EXAM)</code></pre>
+      <p class="en">The order matters: with <code>STUDENT</code> still inside, <code>* Weight</code> is not in <em>every</em> box, and check 5 would wrongly pass.</p>
+      <p class="ar">الترتيب مهمّ: فما دام <code>STUDENT</code> في الداخل، فـ <code>* Weight</code> ليست في <em>كل</em> صندوق، وكان الفحص 5 سينجح خطأً.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Find both witnesses in SQL</span><span class="ar">تمرين 4 · جِد الشاهدَين بـ SQL</span></h4>
+    <p class="en">The <code>REFUNDED</code> build is loaded below, with one more row: on 7 March a customer paid 50 with a gift voucher, and the clerk, finding no box, stored it in <code>payments</code> only. Write the overlap query and the coverage query, and say which rule each witness breaks.</p>
+    <p class="ar">بناء <code>REFUNDED</code> محمّل أدناه، ومعه صفّ إضافي: في 7 آذار دفع زبون 50 بقسيمة هدية، ولم يجد الموظّف صندوقًا لها، فخزّنها في <code>payments</code> وحده. اكتب استعلام الازدواج واستعلام الشمول، وقل أيّ قاعدة يخرقها كل شاهد.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "explore", "objects": true, "dataset": {}, "setup": ["CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)", "INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90), (8,'2026-03-07',50)", "CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))", "INSERT INTO cash_payments VALUES (1), (4)", "CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))", "INSERT INTO check_payments VALUES (2), (6)", "CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL)", "INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111'), (5,'5500 0000 0000 0004')", "CREATE TABLE refunded_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), refund_date DATE NOT NULL)", "INSERT INTO refunded_payments VALUES (5,'2026-03-05')"], "sql": "-- 1. payments in more than one subtype table\n-- 2. payments in no subtype table\n"}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT payment_id, COUNT(*) AS boxes
+FROM (SELECT payment_id FROM cash_payments
+      UNION ALL SELECT payment_id FROM check_payments
+      UNION ALL SELECT payment_id FROM card_payments
+      UNION ALL SELECT payment_id FROM refunded_payments) AS t
+GROUP BY payment_id
+HAVING COUNT(*) &gt; 1;</code></pre>
+      <div class="output"><div class="table-wrap"><table>
+        <thead><tr><th><code>payment_id</code></th><th><code>boxes</code></th></tr></thead>
+        <tbody><tr><td>5</td><td>2</td></tr></tbody>
+      </table></div></div>
+      <pre class="code" data-lang="sql"><code>SELECT p.payment_id, p.payment_date, p.amount
+FROM payments p
+LEFT JOIN cash_payments     a ON a.payment_id = p.payment_id
+LEFT JOIN check_payments    b ON b.payment_id = p.payment_id
+LEFT JOIN card_payments     c ON c.payment_id = p.payment_id
+LEFT JOIN refunded_payments r ON r.payment_id = p.payment_id
+WHERE a.payment_id IS NULL AND b.payment_id IS NULL
+  AND c.payment_id IS NULL AND r.payment_id IS NULL;</code></pre>
+      <div class="output"><div class="table-wrap"><table>
+        <thead><tr><th><code>payment_id</code></th><th><code>payment_date</code></th><th><code>amount</code></th></tr></thead>
+        <tbody><tr><td>8</td><td>2026-03-07</td><td>50</td></tr></tbody>
+      </table></div></div>
+      <p class="en">Payment 5 breaks rule three; payment 8 breaks rule two. Repaired: version 2's <code>o Refund Date</code>, and an <code>OTHER</code> subtype for the voucher. Use <code>LEFT JOIN</code> here, not <code>NOT IN (SELECT ...)</code>: in this widget's alasql the <code>NOT IN</code> form returns the wrong rows.</p>
+      <p class="ar">الدفعة 5 تخرق القاعدة الثالثة؛ والدفعة 8 تخرق القاعدة الثانية. والإصلاح: <code>o Refund Date</code> من الإصدار 2، ونوع فرعي <code>OTHER</code> للقسيمة. استعمل هنا <code>LEFT JOIN</code> لا <code>NOT IN (SELECT ...)</code>: ففي alasql هذه الأداة تعيد صيغة <code>NOT IN</code> صفوفًا خاطئة.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Judge it twice</span><span class="ar">تمرين 5 · احكم عليه مرّتين</span></h4>
+    <p class="en">The café of lineup two (panel D) starts delivering. A delivery order has a <code>* Delivery Address</code> and is never eaten in or picked up. Judge panel D before and after the change, and repair it if needed.</p>
+    <p class="ar">يبدأ مقهى التشكيلة الثانية (اللوحة د) بالتوصيل. لطلب التوصيل <code>* Delivery Address</code>، ولا يؤكل في المكان ولا يُستلم أبدًا. احكم على اللوحة د قبل التغيير وبعده، وأصلحها إن لزم.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Before: sound. Each box is a kind of order with something of its own, every order is eat-in or to-go, never both. After: check 3 fails, and the first delivery order is the witness. The diagram did not change; the business did.</p>
+      <p class="ar">قبل التغيير: سليمة. كل صندوق نوعٌ من الطلبات وله شيء خاصّ به، وكل طلب إمّا في المكان أو سفري، لا الاثنين معًا. بعده: يخفق الفحص 3، وأول طلب توصيل هو الشاهد. لم يتغيّر المخطّط؛ بل تغيّر العمل.</p>
+      <pre class="code" data-lang="text"><code>ORDER        # Order Number  * Order Date
+  EAT IN     * Table Number
+  TO GO      * Pickup Time
+  DELIVERY   * Delivery Address
+  OTHER</code></pre>
+      <p class="en"><code>DELIVERY</code> earns its own box with its address. <code>OTHER</code> is the slides' advice at the conceptual stage, so the next new way of serving has a place before anyone draws it.</p>
+      <p class="ar">يستحقّ <code>DELIVERY</code> صندوقًا خاصًّا به بعنوانه. و<code>OTHER</code> هو نصيحة الشرائح في مرحلة النمذجة المفاهيمية، فيكون لأيّ طريقة تقديم جديدة مكانٌ قبل أن يرسمها أحد.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">Review in a fixed order: kind of, more than one, exhaustive, exclusive, listed once, earned.</li>
+      <li class="ar">راجِع بترتيب ثابت: نوعٌ من، أكثر من واحد، الشمول، التنافي، مذكور مرّة واحدة، مستحَقّ.</li>
+      <li class="en">A verdict names the box, the failed check, one witness and the repair.</li>
+      <li class="ar">الحكم يسمّي الصندوق، والفحص المُخفِق، وشاهدًا واحدًا، والإصلاح.</li>
+      <li class="en">Repair with the smallest change that loses no fact: a second question becomes an attribute, not a box.</li>
+      <li class="ar">أصلِح بأصغر تغيير لا يُضيع حقيقة: السؤال الثاني يصبح خاصيةً، لا صندوقًا.</li>
+      <li class="en">What every subtype shares is listed once, in the supertype. What only some share stays where it is.</li>
+      <li class="ar">ما تشترك فيه كل الأنواع الفرعية يُذكر مرّة واحدة، في النوع الأعلى. وما يشترك فيه بعضها فقط يبقى مكانه.</li>
+      <li class="en">A diagram is accurate only against a business: ask before ruling on checks 1, 3 and 4.</li>
+      <li class="ar">لا يكون المخطّط دقيقًا إلا قياسًا إلى عملٍ بعينه: اسأل قبل أن تحكم في الفحوص 1 و3 و4.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Hunting for "something odd" instead of running every check.</li>
+      <li class="ar">البحث عن «شيء غريب» بدل تطبيق كل الفحوص.</li>
+      <li class="en">Accusing a model with no witness, or calling a line shared by some subtypes a defect.</li>
+      <li class="ar">اتّهام نموذج بلا شاهد، أو تسمية خطّ تشترك فيه بعض الأنواع الفرعية عيبًا.</li>
+      <li class="en">Repairing by deleting a box and the fact with it.</li>
+      <li class="ar">الإصلاح بحذف صندوق، ومعه الحقيقة.</li>
+      <li class="en">Demanding <code>OTHER</code> where the business says the named subtypes cover everything.</li>
+      <li class="ar">المطالبة بـ <code>OTHER</code> حيث يقول العمل إن الأنواع الفرعية المسمّاة تغطّي كل شيء.</li>
+      <li class="en">Reading an empty overlap or coverage query as proof that the rule holds.</li>
+      <li class="ar">قراءة النتيجة الفارغة لاستعلام الازدواج أو الشمول دليلًا على أن القاعدة سليمة.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="../tests/t4-test-05.html#t4-test-05">Test 5 &mdash; Judging a Model</a>. Then the chapter's <a href="../labs/t4-lab.html#t4-lab">SQL lab</a> builds a supertype three ways and queries each.</p>
+    <p class="ar">اختبر نفسك بـ<a href="../tests/t4-test-05.html#t4-test-05">اختبار 5 &mdash; الحكم على نموذج</a>. ثم يبني <a href="../labs/t4-lab.html#t4-lab">مختبر SQL</a> في الفصل نوعًا أعلى بثلاث طرق، ويستعلم في كلٍّ منها.</p>
+  </div>
 
 </section>
 <nav class="pager"></nav>
@@ -69,6 +1088,9 @@
 <script src="../assets/theory/js/anchors.js"></script>
 <script src="../assets/theory/js/chrome.js"></script>
 <script src="../assets/theory/js/code.js"></script>
+<script src="../assets/vendor/alasql/alasql.min.js"></script>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/widget.js"></script>
 <script src="../assets/theory/js/app.js"></script>
 </body>
 </html>
