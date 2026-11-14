@@ -247,8 +247,12 @@ window.DBTAnchors = {
 "t4-test-03": "tests/t4-test-03.html",
 "t4-test-04": "tests/t4-test-04.html",
 "t4-test-05": "tests/t4-test-05.html",
+"t4idx-before": "chapters/t4.html",
+"t4idx-domain": "chapters/t4.html",
 "t4idx-h1": "chapters/t4.html",
 "t4idx-h2": "chapters/t4.html",
+"t4idx-how": "chapters/t4.html",
+"t4idx-why": "chapters/t4.html",
 "t5-chapter": "chapters/t5.html",
 "t5-exam-a": "exams/t5-exam-a.html",
 "t5-exam-b": "exams/t5-exam-b.html",
@@ -912,6 +916,14 @@ window.DBTHeadings = {
 "ar": "٦ · اقرأ الجداول رجوعًا إلى خطوط",
 "en": "6 · Read the tables back into lines"
 },
+"t4idx-before": {
+"ar": "ما يجب أن تعرفه مسبقًا",
+"en": "What you should already know"
+},
+"t4idx-domain": {
+"ar": "المدفوعات، وأغطية الجدران، ورياضات الثلج",
+"en": "Payments, wall coverings and snow sports"
+},
 "t4idx-h1": {
 "ar": "الدروس",
 "en": "The lessons"
@@ -919,6 +931,14 @@ window.DBTHeadings = {
 "t4idx-h2": {
 "ar": "تأكّد ممّا رسخ",
 "en": "Check what stuck"
+},
+"t4idx-how": {
+"ar": "كيف بُني هذا الفصل",
+"en": "How the chapter is put together"
+},
+"t4idx-why": {
+"ar": "لماذا يهمّ هذا قبل أي SQL",
+"en": "Why this matters before any SQL"
 },
 "t5idx-h1": {
 "ar": "الدروس",

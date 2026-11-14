@@ -45,11 +45,127 @@
 <section class="page" id="t4-chapter">
 <nav class="crumbs"></nav>
 
+
   <span class="kicker">Theory &middot; Chapter 4</span>
   <h1><span class="en">Supertypes and Subtypes</span><span class="ar">الأنواع العليا والأنواع الفرعية</span></h1>
-  <p class="lede en">When some instances of an entity carry attributes and relationships the others do not, and the three rules that decide whether your hierarchy is sound.</p>
-  <p class="lede ar">حين تحمل بعض نُسخ الكيان خصائص وعلاقات لا تحملها البقية، والقواعد الثلاث التي تحدّد ما إذا كان تسلسلك سليمًا.</p>
-  <h2 id="t4idx-h1"><span class="en">The lessons</span><span class="ar">الدروس</span></h2>
+  <p class="lede en">Chapters 2 and 3 treated every instance of an entity alike. Real businesses are rarely that tidy: some payments are cash, some are cheques, some are credit cards, and each kind needs something the others do not. This chapter shows how to model those choices without losing what they share.</p>
+  <p class="lede ar">عامل الفصلان 2 و3 كلَّ نُسَخ الكيان معاملةً واحدة. لكن المؤسسات الحقيقية نادرًا ما تكون بهذا الترتيب: فبعض المدفوعات نقدية، وبعضها بشيكات، وبعضها ببطاقات ائتمان، ولكل نوع منها ما لا يحتاجه الآخر. يبيّن هذا الفصل كيف تنمذج هذه الخيارات دون أن تفقد ما تشترك فيه.</p>
+
+  <h2 id="t4idx-why"><span class="en">Why this matters before any SQL</span><span class="ar">لماذا يهمّ هذا قبل أي SQL</span></h2>
+
+  <div class="problem">
+    <p class="en">A shop records every payment in one <code>PAYMENT</code> entity. All payments share a date and an amount. Only credit cards have a card number, and only cheque and card payments need to know which customer paid. Look what that does to the rows:</p>
+    <p class="ar">يسجّل متجر كل دفعة في كيان واحد هو <code>PAYMENT</code>. تشترك المدفوعات كلها في التاريخ والمبلغ، لكن رقم البطاقة لا يكون إلا لبطاقات الائتمان، ومعرفة الزبون الذي دفع لا تلزم إلا في الدفع بالشيك أو بالبطاقة. انظر ماذا يفعل ذلك بالصفوف:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th><code>DATE</code></th><th><code>AMOUNT</code></th><th><code>METHOD</code></th><th><code>CARD NUMBER</code></th><th><code>CUSTOMER</code></th></tr></thead>
+        <tbody>
+          <tr><td>02-03</td><td>40</td><td>cash</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td>02-03</td><td>125</td><td>check</td><td>&mdash;</td><td>Linda</td></tr>
+          <tr><td>03-03</td><td>310</td><td>credit card</td><td>4111&hellip;</td><td>Omar</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="en">Every cash row carries two empty columns, and nothing in the model says a card number belongs only to card payments. Split it into three entities instead and the date and amount are repeated three times. A fourth payment method makes either version worse.</p>
+  <p class="ar">يحمل كل صف نقدي عمودين فارغين، ولا شيء في النموذج يقول إن رقم البطاقة خاصّ بالدفع بالبطاقة. وإن قسّمته إلى ثلاثة كيانات تكرّر التاريخ والمبلغ ثلاث مرّات. وطريقة دفع رابعة تزيد كلا الحلّين سوءًا.</p>
+
+  <div class="note">
+    <p class="en">A <strong>supertype</strong> is an entity that holds the attributes common to all of its subtypes; a <strong>subtype</strong> is an entity based on a supertype that differs from it by its own specialised attributes and purpose.</p>
+    <p class="ar"><strong>النوع الأعلى (Supertype)</strong> كيانٌ يحمل الخصائص المشتركة بين كل أنواعه الفرعية؛ و<strong>النوع الفرعي (Subtype)</strong> كيانٌ مبنيّ على نوع أعلى، ويختلف عنه بخصائصه المتخصّصة وغرضه الخاص.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The shop models <code>CASH</code>, <code>CHECK</code> and <code>CREDIT CARD</code> as three unrelated entities. Next year it accepts mobile-wallet payments. What must the designer do?</p>
+    <p class="q ar">نمذج المتجر <code>CASH</code> و<code>CHECK</code> و<code>CREDIT CARD</code> ثلاثةَ كيانات لا رابط بينها. وفي العام التالي صار يقبل الدفع بالمحفظة الإلكترونية. ماذا على المصمّم أن يفعل؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Nothing &mdash; one of the three entities will hold it</span><span class="ar">لا شيء &mdash; سيحفظها أحد الكيانات الثلاثة</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Add a fourth entity and repeat the date, the amount and every shared relationship once more</span><span class="ar">يضيف كيانًا رابعًا، ويكرّر التاريخ والمبلغ وكل علاقة مشتركة مرّة أخرى</span></button></li>
+      <li><button class="opt"><span class="en">Delete the three entities and start again</span><span class="ar">يحذف الكيانات الثلاثة ويبدأ من جديد</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Three separate entities share nothing, so every common attribute and relationship is copied into each new one. A supertype stores them once; a new method is just one more subtype. Lesson 1 weighs the options.</p>
+      <p class="ar">الكيانات الثلاثة المنفصلة لا تتشارك شيئًا، فتُنسخ كل خاصية وعلاقة مشتركة في كل كيان جديد. أمّا النوع الأعلى فيحفظها مرّة واحدة، وتصبح الطريقة الجديدة مجرّد نوع فرعي آخر. يوازن الدرس 1 بين الخيارات.</p>
+    </div>
+  </div>
+
+  <h2 id="t4idx-before"><span class="en">What you should already know</span><span class="ar">ما يجب أن تعرفه مسبقًا</span></h2>
+
+  <div class="callout prereq">
+    <p class="en">From Chapter 2: an entity and its instances (<a href="../lessons/t2-lesson-04.html#t2-lesson-04">Lesson 4</a>), mandatory <code>*</code> and optional <code>o</code> attributes (<a href="../lessons/t2-lesson-05.html#t2l5-h5">Lesson 5</a>), and the <code>#</code> unique identifier (<a href="../lessons/t2-lesson-06.html#t2-lesson-06">Lesson 6</a>). A subtype is drawn as a box inside a box, so all of these marks reappear.</p>
+    <p class="ar">من الفصل 2: الكيان ونُسَخه (<a href="../lessons/t2-lesson-04.html#t2-lesson-04">الدرس 4</a>)، والخصائص الإلزامية <code>*</code> والاختيارية <code>o</code> (<a href="../lessons/t2-lesson-05.html#t2l5-h5">الدرس 5</a>)، والمعرّف الفريد <code>#</code> (<a href="../lessons/t2-lesson-06.html#t2-lesson-06">الدرس 6</a>). يُرسم النوع الفرعي صندوقًا داخل صندوق، فتعود كل هذه العلامات للظهور.</p>
+    <p class="en">From Chapter 3: the drawing conventions (<a href="../lessons/t3-lesson-04.html#t3-lesson-04">Lesson 4</a>) and reading a relationship in ERDish (<a href="../lessons/t3-lesson-05.html#t3-lesson-05">Lesson 5</a>), because subtypes inherit relationships too. On the SQL track, <a href="../chapters/chapter-7.html">Chapter 7 &mdash; Normalization</a> splits tables to remove repetition; this chapter decides the split before any table exists.</p>
+    <p class="ar">من الفصل 3: اصطلاحات الرسم (<a href="../lessons/t3-lesson-04.html#t3-lesson-04">الدرس 4</a>)، وقراءة العلاقة بلغة ERDish (<a href="../lessons/t3-lesson-05.html#t3-lesson-05">الدرس 5</a>)، لأن الأنواع الفرعية ترث العلاقات أيضًا. وفي مسار SQL، يقسّم <a href="../chapters/chapter-7.html">الفصل 7 &mdash; التطبيع</a> الجداولَ لإزالة التكرار؛ أمّا هذا الفصل فيقرّر التقسيم قبل أن يوجد أي جدول.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A quick self-check. Which line is the correct ERDish for a payment by cheque?</p>
+    <p class="q ar">فحص سريع لنفسك. أيّ سطر هو جملة ERDish الصحيحة للدفع بالشيك؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en"><code>Each CHECK must be made by one and only one CUSTOMER</code></span><span class="ar"><code>Each CHECK must be made by one and only one CUSTOMER</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>CHECKS must be made by CUSTOMERS</code></span><span class="ar"><code>CHECKS must be made by CUSTOMERS</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>Each CHECK made by one CUSTOMER or more</code></span><span class="ar"><code>Each CHECK made by one CUSTOMER or more</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The six parts are there: <code>Each</code>, the entity, <code>must</code>, the relationship name, the cardinality, and the other entity in the singular. If you hesitated, revisit <a href="../lessons/t3-lesson-05.html#t3-lesson-05">Chapter 3, Lesson 5</a> first.</p>
+      <p class="ar">الأجزاء الستة موجودة: <code>Each</code>، والكيان، و<code>must</code>، واسم العلاقة، والتعدّدية، والكيان الآخر بصيغة المفرد. إن تردّدت فراجع <a href="../lessons/t3-lesson-05.html#t3-lesson-05">الفصل 3، الدرس 5</a> أولًا.</p>
+    </div>
+  </div>
+
+  <h2 id="t4idx-domain"><span class="en">Payments, wall coverings and snow sports</span><span class="ar">المدفوعات، وأغطية الجدران، ورياضات الثلج</span></h2>
+
+  <p class="en">Three hierarchies carry the chapter, and the same names come back in every lesson:</p>
+  <p class="ar">ثلاثة تسلسلات هرمية تحمل الفصل، وتتكرّر الأسماء نفسها في كل درس:</p>
+
+  <ul>
+    <li class="en"><code>PAYMENT</code> &mdash; date and amount for all; subtypes <code>CASH</code>, <code>CHECK</code> and <code>CREDIT CARD</code>, the last with a card number.</li>
+    <li class="ar"><code>PAYMENT</code> &mdash; التاريخ والمبلغ للجميع؛ وأنواعه الفرعية <code>CASH</code> و<code>CHECK</code> و<code>CREDIT CARD</code>، وللأخير رقم بطاقة.</li>
+    <li class="en"><code>WALL COVERING</code> &mdash; <code>PAINT</code>, <code>WALLPAPER</code>, <code>FABRIC</code>, and an <code>OTHER</code> subtype for everything else.</li>
+    <li class="ar"><code>WALL COVERING</code> &mdash; <code>PAINT</code> و<code>WALLPAPER</code> و<code>FABRIC</code>، ونوع فرعي <code>OTHER</code> لكل ما سواها.</li>
+    <li class="en"><code>SNOW SPORT</code> &mdash; <code>SKI</code>, <code>SNOWBOARD</code>, <code>CROSS COUNTRY</code> and <code>OTHER</code>.</li>
+    <li class="ar"><code>SNOW SPORT</code> &mdash; <code>SKI</code> (التزلّج) و<code>SNOWBOARD</code> (التزلّج على الجليد) و<code>CROSS COUNTRY</code> و<code>OTHER</code> (أخرى).</li>
+  </ul>
+
+  <p class="en">Two of the lecturer's examples appear where they teach best: <code>EXAM</code>, with <code>QUIZ</code>, <code>MIDTERM</code> and <code>FINAL</code>, shows inheritance of attributes and relationships; <code>ANIMAL</code> shows subtypes nested inside subtypes.</p>
+  <p class="ar">ويظهر مثالان من أمثلة المحاضِرة حيث يفيدان أكثر: <code>EXAM</code> بأنواعه <code>QUIZ</code> و<code>MIDTERM</code> و<code>FINAL</code> يبيّن وراثة الخصائص والعلاقات؛ و<code>ANIMAL</code> يبيّن أنواعًا فرعية متداخلة داخل أنواع فرعية.</p>
+
+  <div class="quiz">
+    <p class="q en">A customer asks to cover a wall with ceramic tiles. Which subtype of <code>WALL COVERING</code> holds that instance?</p>
+    <p class="q ar">طلب زبون تغطية جدار ببلاط سيراميك. أيّ نوع فرعي من <code>WALL COVERING</code> يحفظ هذه النسخة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>PAINT</code></span><span class="ar"><code>PAINT</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>OTHER</code></span><span class="ar"><code>OTHER</code></span></button></li>
+      <li><button class="opt"><span class="en">None &mdash; the model cannot store it</span><span class="ar">لا شيء &mdash; النموذج لا يستطيع حفظها</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Tiles are a wall covering but none of the named kinds. That is exactly why the slides add <code>OTHER</code>: it makes the subtypes <em>exhaustive</em>, so every instance of the supertype has somewhere to go. Lesson 3 makes this a rule.</p>
+      <p class="ar">البلاط غطاء جدار، لكنه ليس من الأنواع المسمّاة. ولهذا بالضبط تضيف الشرائح <code>OTHER</code>: فهو يجعل الأنواع الفرعية <em>شاملة (exhaustive)</em>، فتجد كل نسخة من النوع الأعلى مكانًا لها. ويجعل الدرس 3 هذا قاعدة.</p>
+    </div>
+  </div>
+
+  <h2 id="t4idx-how"><span class="en">How the chapter is put together</span><span class="ar">كيف بُني هذا الفصل</span></h2>
+
+  <p class="en">Five lessons, not six: this is one Oracle lesson, and the depth comes from practice. Lesson 1 shows the problem; Lesson 2 names the supertype, the subtype and inheritance; Lesson 3 gives the three rules &mdash; <em>a kind of</em>, exhaustive, mutually exclusive. Lesson 4 nests subtypes and says when to stop; Lesson 5 judges whole models.</p>
+  <p class="ar">خمسة دروس لا ستة: فهذا درس واحد من دروس Oracle، والعمق يأتي من التطبيق. الدرس 1 يعرض المشكلة، والدرس 2 يسمّي النوع الأعلى والنوع الفرعي والوراثة (Inheritance)، والدرس 3 يقدّم القواعد الثلاث &mdash; «نوع من»، والشمول (Exhaustive)، والتنافي (Mutually exclusive). والدرس 4 يداخل الأنواع الفرعية ويقول متى تتوقّف، والدرس 5 يحكم على نماذج كاملة.</p>
+  <p class="en">Each lesson opens with a problem, explains briefly, draws, and asks you something every few minutes; a test follows it. The lab stores the payment hierarchy three ways in real SQL and lets you query each. Three chapter tests close the chapter. Start with <a href="../lessons/t4-lesson-01.html#t4-lesson-01">Lesson 1</a>.</p>
+  <p class="ar">يبدأ كل درس بمشكلة، ويشرح باختصار، ويرسم، ويسألك شيئًا كل بضع دقائق، ويليه اختبار. ثم يحفظ المختبر تسلسل المدفوعات بثلاث طرق في SQL حقيقية، ويتيح لك الاستعلام عن كل منها. وتختم الفصلَ ثلاثةُ اختبارات. ابدأ بـ<a href="../lessons/t4-lesson-01.html#t4-lesson-01">الدرس 1</a>.</p>
+
+  <div class="quiz">
+    <p class="q en">In the lab, one way stores every payment in a single <code>payments</code> table with a type column. What must be true of its <code>card_number</code> column?</p>
+    <p class="q ar">في المختبر، تحفظ إحدى الطرق كل المدفوعات في جدول واحد <code>payments</code> فيه عمود للنوع. ماذا يجب أن يكون حال عمود <code>card_number</code> فيه؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">It is <code>NOT NULL</code>, because some payments have a card number</span><span class="ar">يكون <code>NOT NULL</code>، لأن لبعض المدفوعات رقم بطاقة</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">It is nullable, because cash and cheque rows have no card number</span><span class="ar">يقبل القيمة الفارغة، لأن صفوف النقد والشيكات ليس لها رقم بطاقة</span></button></li>
+      <li><button class="opt"><span class="en">It is the primary key of the table</span><span class="ar">يكون المفتاح الأساسي للجدول</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">One table holds every subtype, so a column belonging to one subtype must stay empty for the others. That is the cost of the single-table way; the lab compares it with a table per subtype and with supertype-plus-subtype tables.</p>
+      <p class="ar">يحفظ الجدول الواحد كل الأنواع الفرعية، فالعمود الخاصّ بنوع فرعي واحد يجب أن يبقى فارغًا عند البقية. هذا ثمن طريقة الجدول الواحد، ويقارنها المختبر بجدول لكل نوع فرعي، وبجدول للنوع الأعلى مع جداول للأنواع الفرعية.</p>
+    </div>
+  </div>
+
+<h2 id="t4idx-h1"><span class="en">The lessons</span><span class="ar">الدروس</span></h2>
 <div class="grid">
 <a class="lesson-card" href="../lessons/t4-lesson-01.html#t4-lesson-01">
   <span class="n">01</span><span class="state" data-page-state="t4-lesson-01" hidden></span>
@@ -97,7 +213,6 @@
 <a class="side-card exam" href="../exams/t4-exam-b.html#t4-exam-b"><span class="ic">★</span><span class="t"><span class="en">Chapter Test B — Applied</span><span class="ar">اختبار الفصل ب — التطبيقي</span></span><span class="state" data-page-state="t4-exam-b" hidden></span></a>
 <a class="side-card exam" href="../exams/t4-exam-c.html#t4-exam-c"><span class="ic">★</span><span class="t"><span class="en">Chapter Test C — Advanced</span><span class="ar">اختبار الفصل ج — المتقدّم</span></span><span class="state" data-page-state="t4-exam-c" hidden></span></a>
 </div>
-
 </section>
 <nav class="pager"></nav>
 </main>
