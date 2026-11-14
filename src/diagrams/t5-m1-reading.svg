@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 307" direction="ltr" role="img" aria-labelledby="t5-m1-reading-t">
+<title id="t5-m1-reading-t">CUSTOMER / SALES REPRESENTATIVE read left to right as many-to-one and right to left as one-to-many / CUSTOMER / SALES REPRESENTATIVE تُقرأ من اليسار إلى اليمين متعدّدًا إلى واحد، ومن اليمين إلى اليسار واحدًا إلى متعدّد</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">One line, read from each end</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏خطّ واحد، يُقرأ من كل طرف</text></g>
+<path d="M150 62 L630 62" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M630 62 L620 57 L620 67 Z" style="fill:var(--dg-line, var(--text-soft));stroke:none"/>
+<g class="en"><text x="150" y="52" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">From CUSTOMER: many customers to one representative, many-to-one (M:1)</text></g><g class="ar"><text x="630" y="52" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏من CUSTOMER: زبائن كثيرون لمندوب واحد، متعدّد إلى واحد (‎M:1)</text></g>
+<rect x="40" y="78" width="210" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="100" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CUSTOMER</text>
+<text x="54" y="122" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="510" y="78" width="230" height="95" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="625.0" y="100" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SALES REPRESENTATIVE</text>
+<text x="524" y="122" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="524" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="524" y="160" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<path d="M250 123 L380.0 123" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M380.0 123 L510 123" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M264 123 L250 115" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 123 L250 123" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 123 L250 131" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="270" y="115" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">visited by</text>
+<text x="502" y="141" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">assigned to</text>
+<path d="M630 199 L150 199" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M150 199 L160 194 L160 204 Z" style="fill:var(--dg-line, var(--text-soft));stroke:none"/>
+<g class="en"><text x="150" y="219" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">From SALES REPRESENTATIVE: one representative to many customers, one-to-many (1:M)</text></g><g class="ar"><text x="630" y="219" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏من SALES REPRESENTATIVE: مندوب واحد لزبائن كثيرين، واحد إلى متعدّد (‎1:M)</text></g>
+<rect x="40" y="237" width="700" height="56" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="258" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Nothing on the line changes: same halves, same crow's foot, same names.</text></g><g class="ar"><text x="724" y="258" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏لا شيء على الخط يتغيّر: النصفان أنفسهما، ورِجل الغراب نفسها، والاسمان أنفسهما.</text></g>
+<g class="en"><text x="56" y="277" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Same foreign key too: customers.rep_id. One relationship, two readings.</text></g><g class="ar"><text x="724" y="277" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏والمفتاح الأجنبي نفسه أيضًا: customers.rep_id. علاقة واحدة بقراءتين.</text></g></svg>

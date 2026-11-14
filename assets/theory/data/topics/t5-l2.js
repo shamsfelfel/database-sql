@@ -1,0 +1,20 @@
+/* Topic tags of T5 lesson 2 -- One-to-Many. */
+window.DBTTopics = window.DBTTopics || {};
+window.DBTTopics["t5-relationship-type"] = { en: "Relationship types: 1:1, 1:M, M:M", ar: "أنواع العلاقات: ‎1:1 و‎1:M و‎M:M", href: "t5l2-h1" };
+window.DBTTopics["t5-one-to-many"] = { en: "One-to-many (1:M)", ar: "واحد إلى متعدّد (‎1:M)", href: "t5l2-h1" };
+window.DBTTopics["t5-most-common"] = { en: "1:M is the most common type", ar: "‎1:M هي النوع الأكثر شيوعًا", href: "t5l2-h1" };
+window.DBTTopics["t5-type-from-ends"] = { en: "The type is read from the ends only", ar: "النوع يُقرأ من الطرفين فقط", href: "t5l2-s1" };
+window.DBTTopics["t5-sales-rep"] = { en: "CUSTOMER and SALES REPRESENTATIVE", ar: "CUSTOMER وSALES REPRESENTATIVE", href: "t5l2-h2" };
+window.DBTTopics["t5-many-end"] = { en: "The one end and the many end", ar: "طرف الواحد والطرف المتعدّد", href: "t5l2-s2" };
+window.DBTTopics["t5-parent-child"] = { en: "Parent entity and child entity", ar: "الكيان الأب والكيان الابن", href: "t5l2-s2" };
+window.DBTTopics["t5-fk-in-child"] = { en: "The foreign key goes in the child", ar: "المفتاح الأجنبي يذهب إلى الابن", href: "t5l2-s2" };
+window.DBTTopics["t5-many-meaning"] = { en: "What \"many\" means", ar: "ماذا يعني «المتعدّد»", href: "t5l2-h3" };
+window.DBTTopics["t5-many-zero-or-more"] = { en: "Many as zero-or-more", ar: "المتعدّد «صفر أو أكثر»", href: "t5l2-h3" };
+window.DBTTopics["t5-many-one-or-more"] = { en: "Many as one-or-more", ar: "المتعدّد «واحد أو أكثر»", href: "t5l2-h3" };
+window.DBTTopics["t5-four-forms"] = { en: "The four forms of a 1:M", ar: "الأشكال الأربعة لعلاقة ‎1:M", href: "t5l2-s3" };
+window.DBTTopics["t5-parent-without-child"] = { en: "A parent with no children (LEFT JOIN)", ar: "أب بلا أبناء (LEFT JOIN)", href: "t5l2-s3" };
+window.DBTTopics["t5-many-to-one"] = { en: "Many-to-one (M:1)", ar: "متعدّد إلى واحد (‎M:1)", href: "t5l2-h4" };
+window.DBTTopics["t5-read-backwards"] = { en: "M:1 is 1:M read backwards", ar: "‎M:1 هي ‎1:M مقروءةً بالعكس", href: "t5l2-h4" };
+window.DBTTopics["t5-one-key-two-readings"] = { en: "One foreign key, two readings", ar: "مفتاح أجنبي واحد وقراءتان", href: "t5l2-s4" };
+window.DBTTopics["t5-person-dvd"] = { en: "PERSON and DVD", ar: "PERSON وDVD", href: "t5l2-h5" };
+window.DBTTopics["t5-two-how-many"] = { en: "The two \"how many?\" questions", ar: "سؤالا «كم؟»", href: "t5l2-s5" };

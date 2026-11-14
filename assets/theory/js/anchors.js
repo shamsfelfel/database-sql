@@ -364,6 +364,19 @@ window.DBTAnchors = {
 "t5l1-s4": "lessons/t5-lesson-01.html",
 "t5l1-s5": "lessons/t5-lesson-01.html",
 "t5l1-s6": "lessons/t5-lesson-01.html",
+"t5l2-e1": "lessons/t5-lesson-02.html",
+"t5l2-e2": "lessons/t5-lesson-02.html",
+"t5l2-h1": "lessons/t5-lesson-02.html",
+"t5l2-h2": "lessons/t5-lesson-02.html",
+"t5l2-h3": "lessons/t5-lesson-02.html",
+"t5l2-h4": "lessons/t5-lesson-02.html",
+"t5l2-h5": "lessons/t5-lesson-02.html",
+"t5l2-h6": "lessons/t5-lesson-02.html",
+"t5l2-s1": "lessons/t5-lesson-02.html",
+"t5l2-s2": "lessons/t5-lesson-02.html",
+"t5l2-s3": "lessons/t5-lesson-02.html",
+"t5l2-s4": "lessons/t5-lesson-02.html",
+"t5l2-s5": "lessons/t5-lesson-02.html",
 "track-theory": "theory/index.html"
 };
 window.DBTHeadings = {
@@ -1350,6 +1363,50 @@ window.DBTHeadings = {
 "t5l1-s6": {
 "ar": "المعيَّن الخاطئ يكلّف بقدر المعيَّن الغائب",
 "en": "A wrong diamond costs as much as a missing one"
+},
+"t5l2-h1": {
+"ar": "١ · أكثر الخطوط شيوعًا في النموذج",
+"en": "1 · The most common line in a model"
+},
+"t5l2-h2": {
+"ar": "٢ · قراءة علاقة «واحد إلى متعدّد»: الزبائن ومندوبهم",
+"en": "2 · Reading a one-to-many: customers and their representative"
+},
+"t5l2-h3": {
+"ar": "٣ · ماذا يعني «المتعدّد»",
+"en": "3 · What \"many\" means"
+},
+"t5l2-h4": {
+"ar": "٤ · M:1 هي الخط نفسه مقروءًا بالعكس",
+"en": "4 · M:1 is the same line read backwards"
+},
+"t5l2-h5": {
+"ar": "٥ · طرح السؤالين: PERSON وDVD",
+"en": "5 · Asking the two questions: PERSON and DVD"
+},
+"t5l2-h6": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t5l2-s1": {
+"ar": "الطرفان وحدهما يقرّران النوع",
+"en": "Only the two ends decide the type"
+},
+"t5l2-s2": {
+"ar": "طرف الواحد والطرف المتعدّد",
+"en": "The one end and the many end"
+},
+"t5l2-s3": {
+"ar": "نصفان، ولكلٍّ عمل مختلف",
+"en": "Two halves, two different jobs"
+},
+"t5l2-s4": {
+"ar": "مفتاح أجنبي واحد يجيب عن السؤالين",
+"en": "One foreign key answers both questions"
+},
+"t5l2-s5": {
+"ar": "رِجل الغراب توضع حيث الجواب «كثير»",
+"en": "The crow's foot goes where the answer is \"many\""
 },
 "track-theory": {
 "ar": "النظري — تصميم قواعد البيانات",

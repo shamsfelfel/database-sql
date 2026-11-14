@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 396" direction="ltr" role="img" aria-labelledby="t5-many-four-t">
+<title id="t5-many-four-t">Four one-to-many relationships with the crow's foot at the left entity: ORDER/CUSTOMER solid-solid, CUSTOMER/SALES REPRESENTATIVE solid-dashed, STUDENT/STUDY GROUP dashed-solid, DVD/PERSON dashed-dashed / أربع علاقات واحد إلى متعدّد ورِجل الغراب عند الكيان الأيسر: ORDER/CUSTOMER متّصل-متّصل، CUSTOMER/SALES REPRESENTATIVE متّصل-متقطّع، STUDENT/STUDY GROUP متقطّع-متّصل، DVD/PERSON متقطّع-متقطّع</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Four one-to-many lines: the same crow's foot, two meanings of many</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏أربعة خطوط «واحد إلى متعدّد»: رِجل الغراب نفسها، ومعنيان للمتعدّد</text></g>
+<g class="en"><text x="40" y="58" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">many end (child)</text></g><g class="ar"><text x="210" y="58" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">‏الطرف المتعدّد (الابن)</text></g>
+<g class="en"><text x="340" y="58" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">one end (parent)</text></g><g class="ar"><text x="540" y="58" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">‏طرف الواحد (الأب)</text></g>
+<g class="en"><text x="560" y="58" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">many means …</text></g><g class="ar"><text x="760" y="58" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">‏المتعدّد يعني …</text></g>
+<rect x="40" y="72" width="150" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="115.0" y="94" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">ORDER</text>
+<rect x="340" y="72" width="200" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="440.0" y="94" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">CUSTOMER</text>
+<path d="M190 89 L265.0 89" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M265.0 89 L340 89" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 89 L190 81" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 89 L190 89" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 89 L190 97" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="206" y="83" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">placed by</text>
+<text x="332" y="103" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">place</text>
+<g class="en"><text x="560" y="87" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">one or more</text></g><g class="ar"><text x="760" y="87" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏واحد أو أكثر</text></g>
+<text x="560" y="104" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:10px">orders.customer_id NOT NULL</text>
+<rect x="40" y="134" width="150" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="115.0" y="156" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">CUSTOMER</text>
+<rect x="340" y="134" width="200" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="440.0" y="156" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">SALES REPRESENTATIVE</text>
+<path d="M190 151 L265.0 151" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M265.0 151 L340 151" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M204 151 L190 143" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 151 L190 151" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 151 L190 159" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="206" y="145" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">visited by</text>
+<text x="332" y="165" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">assigned to</text>
+<g class="en"><text x="560" y="149" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">zero or more</text></g><g class="ar"><text x="760" y="149" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏صفر أو أكثر</text></g>
+<text x="560" y="166" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:10px">customers.rep_id NOT NULL</text>
+<rect x="40" y="196" width="150" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="115.0" y="218" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">STUDENT</text>
+<rect x="340" y="196" width="200" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="440.0" y="218" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">STUDY GROUP</text>
+<path d="M190 213 L265.0 213" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M265.0 213 L340 213" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 213 L190 205" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 213 L190 213" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 213 L190 221" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="206" y="207" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">join</text>
+<text x="332" y="227" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">have</text>
+<g class="en"><text x="560" y="211" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">one or more</text></g><g class="ar"><text x="760" y="211" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏واحد أو أكثر</text></g>
+<text x="560" y="228" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:10px">students.group_id nullable</text>
+<rect x="40" y="258" width="150" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="115.0" y="280" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">DVD</text>
+<rect x="340" y="258" width="200" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="440.0" y="280" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">PERSON</text>
+<path d="M190 275 L265.0 275" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M265.0 275 L340 275" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M204 275 L190 267" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 275 L190 275" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 275 L190 283" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="206" y="269" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">owned by</text>
+<text x="332" y="289" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">own</text>
+<g class="en"><text x="560" y="273" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">zero or more</text></g><g class="ar"><text x="760" y="273" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏صفر أو أكثر</text></g>
+<text x="560" y="290" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:10px">dvds.owner_id nullable</text>
+<rect x="40" y="326" width="720" height="56" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="347" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">The half at the child (left) says whether the foreign key may be null.</text></g><g class="ar"><text x="744" y="347" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏النصف عند الابن (يسارًا) يقول هل يجوز أن يكون المفتاح الأجنبي null.</text></g>
+<g class="en"><text x="56" y="366" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The half at the parent (right) says whether many starts at zero or at one.</text></g><g class="ar"><text x="744" y="366" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏والنصف عند الأب (يمينًا) يقول هل يبدأ المتعدّد من الصفر أم من الواحد.</text></g></svg>

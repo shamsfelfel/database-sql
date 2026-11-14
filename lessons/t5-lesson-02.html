@@ -39,15 +39,771 @@
 <link rel="stylesheet" href="../assets/theory/css/base.css">
 <link rel="stylesheet" href="../assets/theory/css/chrome.css">
 <link rel="stylesheet" href="../assets/theory/css/components.css">
+<link rel="stylesheet" href="../assets/theory/css/diagram.css">
+<link rel="stylesheet" href="../assets/css/widget.css">
 </head>
 <body data-chapter="t5" data-page="t5-lesson-02" data-kind="lesson" data-path="lessons/t5-lesson-02.html">
 <main>
 <section class="page" id="t5-lesson-02">
 <nav class="crumbs"></nav>
 
-  <span class="kicker">lesson</span>
+
+  <span class="kicker">Lesson 2</span>
   <h1><span class="en">One-to-Many</span><span class="ar">واحد إلى متعدّد</span></h1>
-  <p class="en">Being written.</p><p class="ar">قيد الكتابة.</p>
+  <p class="lede en">By the end of this lesson you will be able to recognise a one-to-many relationship on any ERD, say whether its "many" means one-or-more or zero-or-more, read the same line as many-to-one from the other end, and name the table that receives its foreign key.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تتعرّف علاقة «واحد إلى متعدّد» في أيّ مخطّط، وأن تقول هل «المتعدّد» فيها يعني «واحدًا أو أكثر» أم «صفرًا أو أكثر»، وأن تقرأ الخط نفسه «متعدّدًا إلى واحد» من الطرف الآخر، وأن تسمّي الجدول الذي يستقبل مفتاحها الأجنبي.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> <a href="../lessons/t5-lesson-01.html#t5-lesson-01">Lesson 1</a> asked whether a link can move. This lesson stops asking about one line and starts naming whole relationships by their shape. The cases are the slides' <code>CUSTOMER</code> and <code>SALES REPRESENTATIVE</code>, the slides' <code>PERSON</code> and <code>DVD</code>, and the school lines you already drew.</p>
+    <p class="ar"><strong>السياق.</strong> سأل <a href="../lessons/t5-lesson-01.html#t5-lesson-01">الدرس 1</a> هل يمكن نقل الارتباط. أمّا هذا الدرس فيكفّ عن السؤال عن خطّ واحد، ويبدأ بتسمية العلاقات كاملةً بحسب شكلها. والحالات هي <code>CUSTOMER</code> و<code>SALES REPRESENTATIVE</code> من الشرائح، و<code>PERSON</code> و<code>DVD</code> من الشرائح، وخطوط المدرسة التي رسمتها من قبل.</p>
+    <p class="en">You need Chapter 3's <a href="../lessons/t3-lesson-02.html#t3-lesson-02">optionality</a> (solid or dashed half) and <a href="../lessons/t3-lesson-03.html#t3-lesson-03">cardinality</a> (single toe or crow's foot) at your fingertips.</p>
+    <p class="ar">تحتاج أن تكون <a href="../lessons/t3-lesson-02.html#t3-lesson-02">الإلزامية</a> (نصف متّصل أو متقطّع) و<a href="../lessons/t3-lesson-03.html#t3-lesson-03">التعدّدية</a> (إصبع واحدة أو رِجل غراب) من الفصل 3 حاضرتين في ذهنك.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Name a relationship's type &mdash; 1:1, 1:M or M:M &mdash; from the symbols at its two ends.</li>
+      <li class="ar">تسمية نوع العلاقة &mdash; <bdi>1:1</bdi> أو <bdi>1:M</bdi> أو <bdi>M:M</bdi> &mdash; من الرمزين عند طرفيها.</li>
+      <li class="en">Recognise and give examples of a one-to-many relationship, and write its two ERDish sentences.</li>
+      <li class="ar">التعرّف على علاقة «واحد إلى متعدّد» وإعطاء أمثلة عليها، وكتابة جملتَي ERDish لها.</li>
+      <li class="en">Say whether the "many" of a 1:M means one-or-more or zero-or-more, from the optionality.</li>
+      <li class="ar">تحديد هل «المتعدّد» في <bdi>1:M</bdi> يعني «واحدًا أو أكثر» أم «صفرًا أو أكثر»، انطلاقًا من الإلزامية.</li>
+      <li class="en">Read the same relationship as M:1 from the other end, and explain why it is not a different type.</li>
+      <li class="ar">قراءة العلاقة نفسها <bdi>M:1</bdi> من الطرف الآخر، وتفسير لماذا ليست نوعًا مختلفًا.</li>
+      <li class="en">Put the foreign key of a 1:M in the right table, and decide <code>NOT NULL</code> or nullable.</li>
+      <li class="ar">وضع المفتاح الأجنبي لعلاقة <bdi>1:M</bdi> في الجدول الصحيح، وتقرير <code>NOT NULL</code> أو قابليته لـ null.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t5l2-h1"><span class="en">1 · The most common line in a model</span><span class="ar">١ · أكثر الخطوط شيوعًا في النموذج</span></h2>
+
+  <div class="problem">
+    <p class="en">Look back at every line you drew in Lesson 1: <code>STUDENT</code>&ndash;<code>STUDY GROUP</code>, <code>RECEIPT</code>&ndash;<code>STUDENT</code>, <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code>. Each has a crow's foot at one end and a single toe at the other. They are not three coincidences. They are one shape, and it needs a name.</p>
+    <p class="ar">انظر إلى كل خط رسمته في الدرس 1: <code>STUDENT</code>&ndash;<code>STUDY GROUP</code>، و<code>RECEIPT</code>&ndash;<code>STUDENT</code>، و<code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code>. لكلٍّ منها رِجل غراب عند طرف وإصبع واحدة عند الآخر. ليست ثلاث مصادفات، بل شكل واحد، ويحتاج إلى اسم.</p>
+  </div>
+
+  <p class="en">The slides name three <span class="term" data-term="relationship-type">relationship types</span>: one-to-one (1:1), one-to-many (1:M) and many-to-many (M:M). Of the three, the slides say, the various types of 1:M relationships are the most common in an ER model &mdash; and you have seen several already.</p>
+  <p class="ar">تسمّي الشرائح ثلاثة <span class="term" data-term="relationship-type">أنواع للعلاقات</span> (Relationship types): واحد إلى واحد (<bdi>1:1</bdi>)، وواحد إلى متعدّد (<bdi>1:M</bdi>)، ومتعدّد إلى متعدّد (<bdi>M:M</bdi>). ومن بين الثلاثة، تقول الشرائح، فإن أشكال علاقات <bdi>1:M</bdi> هي الأكثر شيوعًا في نموذج الكيانات والعلاقات &mdash; وقد رأيت عدّة أمثلة منها.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="one-to-many">one-to-many (1:M)</span> relationship has cardinality of one or more in one direction and one and only one in the other.</p>
+    <p class="ar"><strong>تعريف.</strong> علاقة <span class="term" data-term="one-to-many">واحد إلى متعدّد (One-to-many, <bdi>1:M</bdi>)</span> تعدّديتها «واحد أو أكثر» في اتجاه، و«واحد فقط لا غير» في الاتجاه الآخر.</p>
+  </div>
+
+  <h3 id="t5l2-s1"><span class="en">Only the two ends decide the type</span><span class="ar">الطرفان وحدهما يقرّران النوع</span></h3>
+
+  <p class="en">The type is read from the two ends of the line and nothing else. Toe and toe is 1:1. Toe and crow's foot is 1:M. Crow's foot and crow's foot is M:M. The halves (solid or dashed) and the diamond do not change the type; they add other facts to it.</p>
+  <p class="ar">يُقرأ النوع من طرفَي الخط ولا شيء غيرهما. إصبع وإصبع: <bdi>1:1</bdi>. إصبع ورِجل غراب: <bdi>1:M</bdi>. رِجل غراب ورِجل غراب: <bdi>M:M</bdi>. أمّا النصفان (متّصل أو متقطّع) والمعيَّن فلا يغيّران النوع، بل يضيفان إليه حقائق أخرى.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">End 1</th><th class="ar">الطرف 1</th><th class="en">End 2</th><th class="ar">الطرف 2</th><th class="en">Type</th><th class="ar">النوع</th><th class="en">Taught in</th><th class="ar">يُدرَّس في</th></tr></thead>
+      <tbody>
+        <tr><td class="en">single toe</td><td class="ar">إصبع واحدة</td><td class="en">single toe</td><td class="ar">إصبع واحدة</td><td class="en">1:1</td><td class="ar">1:1</td><td class="en"><a href="../lessons/t5-lesson-03.html#t5-lesson-03">Lesson 3</a></td><td class="ar"><a href="../lessons/t5-lesson-03.html#t5-lesson-03">الدرس 3</a></td></tr>
+        <tr><td class="en">single toe</td><td class="ar">إصبع واحدة</td><td class="en">crow's foot</td><td class="ar">رِجل غراب</td><td class="en">1:M</td><td class="ar">1:M</td><td class="en">this lesson</td><td class="ar">هذا الدرس</td></tr>
+        <tr><td class="en">crow's foot</td><td class="ar">رِجل غراب</td><td class="en">crow's foot</td><td class="ar">رِجل غراب</td><td class="en">M:M</td><td class="ar">M:M</td><td class="en"><a href="../lessons/t5-lesson-04.html#t5-lesson-04">Lesson 4</a></td><td class="ar"><a href="../lessons/t5-lesson-04.html#t5-lesson-04">الدرس 4</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">A 1:M is the line a foreign key was made for. One column on the many side holds one parent id per row &mdash; <code>students.group_id</code>, <code>receipts.student_id</code>, <code>employees.department_id</code>. Each of Lesson 1's tables already had exactly one such column for exactly one 1:M line.</p>
+    <p class="ar">علاقة <bdi>1:M</bdi> هي الخط الذي صُنع له المفتاح الأجنبي. عمود واحد في جهة المتعدّد يحمل معرّف أبٍ واحدًا في كل صفّ &mdash; <code>students.group_id</code> و<code>receipts.student_id</code> و<code>employees.department_id</code>. وكان في كل جدول من جداول الدرس 1 عمود واحد كهذا بالضبط، لخطّ <bdi>1:M</bdi> واحد بالضبط.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A line meets <code>RECEIPT</code> with a crow's foot and <code>STUDENT</code> with a single toe, and carries a diamond. What type is it?</p>
+    <p class="q ar">يلتقي خطّ بـ <code>RECEIPT</code> برِجل غراب، وبـ <code>STUDENT</code> بإصبع واحدة، ويحمل معيَّنًا. ما نوعه؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">1:M &mdash; the diamond does not change the type</span><span class="ar">1:M &mdash; المعيَّن لا يغيّر النوع</span></button></li>
+      <li><button class="opt"><span class="en">1:1 &mdash; a receipt is issued to one student only</span><span class="ar">1:1 &mdash; فالإيصال يصدر لطالب واحد فقط</span></button></li>
+      <li><button class="opt"><span class="en">A fourth type: nontransferable</span><span class="ar">نوع رابع: غير قابلة للنقل</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Toe at one end, crow's foot at the other: 1:M. The diamond answers transferability, a separate question. "One student per receipt" is only one direction; the other direction says one student may have many receipts.</p>
+      <p class="ar">إصبع عند طرف ورِجل غراب عند الآخر: <bdi>1:M</bdi>. والمعيَّن يجيب عن قابلية النقل، وهو سؤال منفصل. و«طالب واحد لكل إيصال» اتجاه واحد فقط؛ أمّا الاتجاه الآخر فيقول إن الطالب الواحد قد يكون له إيصالات كثيرة.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which pair of ends makes a relationship one-to-many?</p>
+    <p class="q ar">أيّ زوج من الطرفين يجعل العلاقة «واحدًا إلى متعدّد»؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A solid half and a dashed half</span><span class="ar">نصف متّصل ونصف متقطّع</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A single toe and a crow's foot</span><span class="ar">إصبع واحدة ورِجل غراب</span></button></li>
+      <li><button class="opt"><span class="en">Two crow's feet</span><span class="ar">رِجلا غراب</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The type lives at the ends: one toe, one crow's foot. Solid and dashed are optionality, which this lesson uses later to say what "many" means &mdash; but they never decide the type.</p>
+      <p class="ar">النوع يسكن الطرفين: إصبع واحدة ورِجل غراب واحدة. أمّا المتّصل والمتقطّع فهما الإلزامية، التي يستعملها هذا الدرس لاحقًا ليقول ماذا يعني «المتعدّد» &mdash; لكنهما لا يقرّران النوع أبدًا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t5l2-h2"><span class="en">2 · Reading a one-to-many: customers and their representative</span><span class="ar">٢ · قراءة علاقة «واحد إلى متعدّد»: الزبائن ومندوبهم</span></h2>
+
+  <div class="problem">
+    <p class="en">A wholesaler sends sales representatives to visit its shops. Hana Saleh already visits Al-Noor Bakery. The manager now gives her Gaza Books and Blue Sea Cafe too. A first-draft model refuses: it says a representative can be assigned to one customer only. The business has a rule; the model drew a different one.</p>
+    <p class="ar">يرسل تاجر جملة مندوبي مبيعات لزيارة متاجره. Hana Saleh تزور Al-Noor Bakery من قبل. والآن يسند إليها المدير Gaza Books وBlue Sea Cafe أيضًا. فيرفض نموذج المسودّة الأولى: يقول إن المندوب لا يُسند إلا إلى زبون واحد. للعمل قاعدة، والنموذج رسم قاعدة غيرها.</p>
+  </div>
+
+  <p class="en">The slides give the business rules for this exact pair. Each <code>CUSTOMER</code> must be visited by one and only one <code>SALES REPRESENTATIVE</code>. Each <code>SALES REPRESENTATIVE</code> may be assigned to one or more <code>CUSTOMER</code>s. One or more in one direction, one and only one in the other: a 1:M.</p>
+  <p class="ar">تعطي الشرائح قواعد العمل لهذا الزوج بعينه. يجب أن يزور كلَّ <code>CUSTOMER</code> (زبون) مندوبٌ <code>SALES REPRESENTATIVE</code> (مندوب مبيعات) واحد فقط لا غير. وقد يُسند كلُّ <code>SALES REPRESENTATIVE</code> إلى <code>CUSTOMER</code> واحد أو أكثر. «واحد أو أكثر» في اتجاه، و«واحد فقط لا غير» في الآخر: إنها <bdi>1:M</bdi>.</p>
+
+  <div class="evolve" id="t5l2-e1">
+    <div class="ver" data-title-en="Version 1 — a single toe at both ends" data-title-ar="الإصدار 1 — إصبع واحدة عند الطرفين">
+      <figure class="diagram" data-diagram="t5-sales-v1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 311" direction="ltr" role="img" aria-labelledby="t5-sales-v1-t">
+<title id="t5-sales-v1-t">CUSTOMER visited by / SALES REPRESENTATIVE assigned to, drawn wrongly with a single toe at both ends: a one-to-one / CUSTOMER visited by / SALES REPRESENTATIVE assigned to، مرسومة خطأً بإصبع واحدة عند الطرفين: علاقة واحد إلى واحد</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1: a single toe at both ends</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 1: إصبع واحدة عند الطرفين</text></g>
+<rect x="40" y="50" width="210" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CUSTOMER</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="510" y="50" width="230" height="95" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="625.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SALES REPRESENTATIVE</text>
+<text x="524" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="524" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="524" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<path d="M250 95 L380.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M380.0 95 L510 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<text x="270" y="87" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">visited by</text>
+<text x="502" y="113" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">assigned to</text>
+<rect x="40" y="169" width="700" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="192" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each CUSTOMER must be visited by one and only one SALES REPRESENTATIVE.</text>
+<text x="56" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each SALES REPRESENTATIVE may be assigned to one and only one CUSTOMER.</text>
+<rect x="40" y="241" width="700" height="56" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="262" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Defect: this is 1:1. Hana already visits Al-Noor Bakery, so Gaza Books cannot be given to her.</text></g><g class="ar"><text x="724" y="262" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏العيب: هذه علاقة ‎1:1. فـ Hana تزور Al-Noor Bakery، فلا يمكن إسناد Gaza Books إليها.</text></g>
+<g class="en"><text x="56" y="281" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The business needs one representative for many customers.</text></g><g class="ar"><text x="724" y="281" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏والعمل يحتاج إلى مندوب واحد لزبائن كثيرين.</text></g></svg>
+</figure>
+      <p class="en">Defect: wrong cardinality at <code>CUSTOMER</code>. With a toe at both ends the line is 1:1, so Hana may be assigned to one customer only. Gaza Books and Blue Sea Cafe are refused, although the business allows a representative many customers.</p>
+      <p class="ar">العيب: تعدّدية خاطئة عند <code>CUSTOMER</code>. مع إصبع عند الطرفين يصير الخط <bdi>1:1</bdi>، فلا تُسند Hana إلا إلى زبون واحد. ويُرفض Gaza Books وBlue Sea Cafe، مع أن العمل يسمح للمندوب بزبائن كثيرين.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — a crow's foot at CUSTOMER" data-title-ar="الإصدار 2 — رِجل غراب عند CUSTOMER">
+      <figure class="diagram" data-diagram="t5-sales">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 311" direction="ltr" role="img" aria-labelledby="t5-sales-t">
+<title id="t5-sales-t">CUSTOMER visited by / SALES REPRESENTATIVE assigned to: solid at CUSTOMER, dashed at SALES REPRESENTATIVE, crow's foot at CUSTOMER: one-to-many / CUSTOMER visited by / SALES REPRESENTATIVE assigned to: متّصل عند CUSTOMER، متقطّع عند SALES REPRESENTATIVE، رِجل غراب عند CUSTOMER: واحد إلى متعدّد</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">The slides' one-to-many: one representative, many customers</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏علاقة «واحد إلى متعدّد» في الشرائح: مندوب واحد، وزبائن كثيرون</text></g>
+<rect x="40" y="50" width="210" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CUSTOMER</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="510" y="50" width="230" height="95" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="625.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SALES REPRESENTATIVE</text>
+<text x="524" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="524" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="524" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<path d="M250 95 L380.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M380.0 95 L510 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M264 95 L250 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 95 L250 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 95 L250 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="270" y="87" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">visited by</text>
+<text x="502" y="113" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">assigned to</text>
+<rect x="40" y="169" width="700" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="192" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each CUSTOMER must be visited by one and only one SALES REPRESENTATIVE.</text>
+<text x="56" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each SALES REPRESENTATIVE may be assigned to one or more CUSTOMERs.</text>
+<rect x="40" y="241" width="700" height="56" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="262" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">One or more in one direction, one and only one in the other: that is 1:M.</text></g><g class="ar"><text x="724" y="262" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏«واحد أو أكثر» في اتجاه، و«واحد فقط لا غير» في الآخر: هذه هي ‎1:M.</text></g>
+<g class="en"><text x="56" y="281" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The crow's foot is at CUSTOMER, the many end; the dashed half makes that many zero or more.</text></g><g class="ar"><text x="724" y="281" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏رِجل الغراب عند CUSTOMER، الطرف المتعدّد؛ والنصف المتقطّع يجعل هذا المتعدّد «صفرًا أو أكثر».</text></g></svg>
+</figure>
+      <p class="en">Fixed: the slides' model. The crow's foot at <code>CUSTOMER</code> lets one representative have one or more customers; the toe at <code>SALES REPRESENTATIVE</code> still gives each customer exactly one. The halves did not change. This is the recommended form.</p>
+      <p class="ar">أُصلح: نموذج الشرائح. رِجل الغراب عند <code>CUSTOMER</code> تسمح للمندوب الواحد بزبون واحد أو أكثر، والإصبع عند <code>SALES REPRESENTATIVE</code> ما زالت تعطي كل زبون مندوبًا واحدًا بالضبط. ولم يتغيّر النصفان. وهذا هو الشكل الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t5l2-s2"><span class="en">The one end and the many end</span><span class="ar">طرف الواحد والطرف المتعدّد</span></h3>
+
+  <p class="en">The <span class="term" data-term="many-end">many end</span> of a 1:M is the end with the crow's foot; the <span class="term" data-term="one-end">one end</span> is the end with the single toe. The entity at the one end is the <span class="term" data-term="parent-entity">parent entity</span>; the entity at the many end is the <span class="term" data-term="child-entity">child entity</span>. Here, <code>SALES REPRESENTATIVE</code> is the parent and <code>CUSTOMER</code> the child.</p>
+  <p class="ar"><span class="term" data-term="many-end">الطرف المتعدّد</span> (Many end) في علاقة <bdi>1:M</bdi> هو الطرف الذي عليه رِجل الغراب، و<span class="term" data-term="one-end">طرف الواحد</span> (One end) هو الطرف الذي عليه الإصبع الواحدة. والكيان عند طرف الواحد هو <span class="term" data-term="parent-entity">الكيان الأب</span> (Parent entity)، والكيان عند الطرف المتعدّد هو <span class="term" data-term="child-entity">الكيان الابن</span> (Child entity). وهنا <code>SALES REPRESENTATIVE</code> هو الأب، و<code>CUSTOMER</code> هو الابن.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The foreign key goes in the child's table: <code>customers.rep_id</code>, declared <code>NOT NULL</code> because the <code>CUSTOMER</code> half is solid. Each customer row names its one representative; Hana's id simply appears in three rows. Run it:</p>
+    <p class="ar">يذهب المفتاح الأجنبي إلى جدول الابن: <code>customers.rep_id</code>، ويُعلَن <code>NOT NULL</code> لأن نصف <code>CUSTOMER</code> متّصل. كل صفّ زبون يسمّي مندوبه الواحد، ومعرّف Hana يظهر ببساطة في ثلاثة صفوف. شغّله:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE sales_reps (rep_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL)","INSERT INTO sales_reps VALUES (21,'Hana','Saleh'), (22,'Karim','Odeh'), (23,'Nadia','Rami')","CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(30) NOT NULL, rep_id NUMBER NOT NULL)","INSERT INTO customers VALUES (501,'Al-Noor Bakery',21), (502,'Gaza Books',21), (503,'Sunrise Pharmacy',22), (504,'Blue Sea Cafe',21), (505,'Olive Market',22)"],"sql":"SELECT c.customer_id, c.name, r.first_name AS visited_by\nFROM customers c JOIN sales_reps r ON c.rep_id = r.rep_id\nORDER BY c.customer_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>customer_id</code></th><th><code>name</code></th><th><code>visited_by</code></th></tr></thead>
+          <tbody>
+            <tr><td>501</td><td>Al-Noor Bakery</td><td>Hana</td></tr>
+            <tr><td>502</td><td>Gaza Books</td><td>Hana</td></tr>
+            <tr><td>503</td><td>Sunrise Pharmacy</td><td>Karim</td></tr>
+            <tr><td>504</td><td>Blue Sea Cafe</td><td>Hana</td></tr>
+            <tr><td>505</td><td>Olive Market</td><td>Karim</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Each customer appears once, with one name in <code>visited_by</code>; each representative may appear many times. Put the key the other way round &mdash; a <code>customer_id</code> column in <code>sales_reps</code> &mdash; and Hana's row could hold only one customer: version 1 again.</p>
+    <p class="ar">يظهر كل زبون مرّة واحدة، باسم واحد في <code>visited_by</code>؛ أمّا المندوب فقد يظهر مرّات كثيرة. ولو وضعت المفتاح بالعكس &mdash; عمود <code>customer_id</code> في <code>sales_reps</code> &mdash; لما اتّسع صفّ Hana إلا لزبون واحد: الإصدار 1 من جديد.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the slides' model, which entity is the child, and which table gets the foreign key?</p>
+    <p class="q ar">في نموذج الشرائح، أيّ الكيانين هو الابن، وأيّ جدول يأخذ المفتاح الأجنبي؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>SALES REPRESENTATIVE</code>; <code>sales_reps.customer_id</code></span><span class="ar"><code>SALES REPRESENTATIVE</code>؛ <code>sales_reps.customer_id</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>CUSTOMER</code>; <code>customers.rep_id</code></span><span class="ar"><code>CUSTOMER</code>؛ <code>customers.rep_id</code></span></button></li>
+      <li><button class="opt"><span class="en">Neither; a <bdi>1:M</bdi> needs a third table</span><span class="ar">لا هذا ولا ذاك؛ علاقة <bdi>1:M</bdi> تحتاج إلى جدول ثالث</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The crow's foot is at <code>CUSTOMER</code>, so it is the child, and its table carries one parent id per row. A third table is what an M:M will need, in Lesson 5 &mdash; never a 1:M.</p>
+      <p class="ar">رِجل الغراب عند <code>CUSTOMER</code>، فهو الابن، ويحمل جدوله معرّف أبٍ واحدًا في كل صفّ. أمّا الجدول الثالث فهو ما ستحتاج إليه <bdi>M:M</bdi> في الدرس 5 &mdash; ولا تحتاج إليه <bdi>1:M</bdi> أبدًا.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Version 1 is replaced by version 2. Which defect does version 2 close?</p>
+    <p class="q ar">حلّ الإصدار 2 محلّ الإصدار 1. أيّ عيب يُغلقه الإصدار 2؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A customer could have no representative</span><span class="ar">كان يمكن أن يبقى الزبون بلا مندوب</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A representative could be assigned to one customer only</span><span class="ar">كان المندوب لا يُسند إلا إلى زبون واحد</span></button></li>
+      <li><button class="opt"><span class="en">A customer could be moved to another representative</span><span class="ar">كان يمكن نقل الزبون إلى مندوب آخر</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Only the end at <code>CUSTOMER</code> changed, from toe to crow's foot: a representative may now have one or more customers. The solid <code>CUSTOMER</code> half was already there in version 1, and neither version has a diamond.</p>
+      <p class="ar">لم يتغيّر إلا الطرف عند <code>CUSTOMER</code>، من إصبع إلى رِجل غراب: فصار للمندوب زبون واحد أو أكثر. أمّا نصف <code>CUSTOMER</code> المتّصل فكان موجودًا في الإصدار 1، ولا معيَّن في أيّ من الإصدارين.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t5l2-h3"><span class="en">3 · What "many" means</span><span class="ar">٣ · ماذا يعني «المتعدّد»</span></h2>
+
+  <div class="problem">
+    <p class="en">Nadia Rami joins the sales team today. No customer has been handed to her yet. A colleague's model says each representative <em>must</em> be assigned to one or more customers, so Nadia cannot be recorded until somebody gives her a shop. H.R. cannot even enter her name.</p>
+    <p class="ar">تنضمّ Nadia Rami إلى فريق المبيعات اليوم، ولم يُسلَّم إليها أيّ زبون بعد. يقول نموذج أحد الزملاء إن كل مندوب <em>يجب</em> أن يُسند إلى زبون واحد أو أكثر، فلا يمكن تسجيل Nadia حتى يعطيها أحدٌ متجرًا. ولا يستطيع قسم الموارد البشرية حتى أن يُدخل اسمها.</p>
+  </div>
+
+  <p class="en">The crow's foot says the maximum is many. It does not say the minimum. The slides put it in one line: "many" can mean one-or-more or zero-or-more, depending on the optionality. The minimum comes from the half next to the parent &mdash; the half you read when you start the sentence from the parent.</p>
+  <p class="ar">رِجل الغراب تقول إن الحدّ الأعلى «كثير»، ولا تقول الحدّ الأدنى. وتقولها الشرائح في سطر واحد: «المتعدّد» قد يعني «واحدًا أو أكثر» أو «صفرًا أو أكثر»، بحسب الإلزامية. والحدّ الأدنى يأتي من النصف المجاور للأب &mdash; النصف الذي تقرؤه حين تبدأ الجملة من الأب.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="many-one-or-more">one-or-more many</span> is a many end whose parent half is solid: each parent <em>must</em> have at least one child.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="many-one-or-more">المتعدّد «واحد أو أكثر»</span> (One-or-more many) طرف متعدّد نصفُه المجاور للأب متّصل: <em>يجب</em> أن يكون لكل أب ابن واحد على الأقل.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="many-zero-or-more">zero-or-more many</span> is a many end whose parent half is dashed: a parent <em>may</em> have no children at all.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="many-zero-or-more">المتعدّد «صفر أو أكثر»</span> (Zero-or-more many) طرف متعدّد نصفُه المجاور للأب متقطّع: <em>قد</em> لا يكون للأب أيّ ابن.</p>
+  </div>
+
+  <div class="evolve" id="t5l2-e2">
+    <div class="ver" data-title-en="Version 1 — must be assigned to one or more" data-title-ar="الإصدار 1 — must be assigned to one or more">
+      <figure class="diagram" data-diagram="t5-sales-v2">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 311" direction="ltr" role="img" aria-labelledby="t5-sales-v2-t">
+<title id="t5-sales-v2-t">CUSTOMER visited by / SALES REPRESENTATIVE assigned to: solid at both ends, crow's foot at CUSTOMER: a one-to-many whose many is one or more / CUSTOMER visited by / SALES REPRESENTATIVE assigned to: متّصل عند الطرفين، رِجل غراب عند CUSTOMER: علاقة واحد إلى متعدّد متعدّدها واحد أو أكثر</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">A one-to-many whose many is one or more</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏علاقة «واحد إلى متعدّد» متعدّدها «واحد أو أكثر»</text></g>
+<rect x="40" y="50" width="210" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CUSTOMER</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="510" y="50" width="230" height="95" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="625.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SALES REPRESENTATIVE</text>
+<text x="524" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="524" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="524" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<path d="M250 95 L380.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M380.0 95 L510 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 95 L250 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 95 L250 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 95 L250 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="270" y="87" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">visited by</text>
+<text x="502" y="113" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">assigned to</text>
+<rect x="40" y="169" width="700" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="192" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each CUSTOMER must be visited by one and only one SALES REPRESENTATIVE.</text>
+<text x="56" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each SALES REPRESENTATIVE must be assigned to one or more CUSTOMERs.</text>
+<rect x="40" y="241" width="700" height="56" rx="6" style="fill:var(--dg-warn-soft, var(--surface));stroke:var(--dg-warn, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="262" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Still 1:M, but the solid half at SALES REPRESENTATIVE says every representative must have a customer.</text></g><g class="ar"><text x="724" y="262" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏ما زالت ‎1:M، لكن النصف المتّصل عند SALES REPRESENTATIVE يقول إن لكل مندوب زبونًا لا بدّ.</text></g>
+<g class="en"><text x="56" y="281" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Nadia, hired today, has no customer yet: this model says she cannot exist.</text></g><g class="ar"><text x="724" y="281" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏Nadia عُيّنت اليوم وليس لها زبون بعد: وهذا النموذج يقول إنها لا يمكن أن توجد.</text></g></svg>
+</figure>
+      <p class="en">Defect: the many is one-or-more, but the business needs zero-or-more. The solid half at <code>SALES REPRESENTATIVE</code> says no representative may exist without a customer, so a new hire like Nadia cannot be recorded.</p>
+      <p class="ar">العيب: المتعدّد «واحد أو أكثر»، والعمل يحتاج إلى «صفر أو أكثر». النصف المتّصل عند <code>SALES REPRESENTATIVE</code> يقول إنه لا يجوز وجود مندوب بلا زبون، فلا يمكن تسجيل موظّفة جديدة مثل Nadia.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — may be assigned to one or more" data-title-ar="الإصدار 2 — may be assigned to one or more">
+      <figure class="diagram" data-diagram="t5-sales">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 311" direction="ltr" role="img" aria-labelledby="t5-sales-t">
+<title id="t5-sales-t">CUSTOMER visited by / SALES REPRESENTATIVE assigned to: solid at CUSTOMER, dashed at SALES REPRESENTATIVE, crow's foot at CUSTOMER: one-to-many / CUSTOMER visited by / SALES REPRESENTATIVE assigned to: متّصل عند CUSTOMER، متقطّع عند SALES REPRESENTATIVE، رِجل غراب عند CUSTOMER: واحد إلى متعدّد</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">The slides' one-to-many: one representative, many customers</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏علاقة «واحد إلى متعدّد» في الشرائح: مندوب واحد، وزبائن كثيرون</text></g>
+<rect x="40" y="50" width="210" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CUSTOMER</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="510" y="50" width="230" height="95" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="625.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SALES REPRESENTATIVE</text>
+<text x="524" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="524" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="524" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<path d="M250 95 L380.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M380.0 95 L510 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M264 95 L250 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 95 L250 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 95 L250 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="270" y="87" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">visited by</text>
+<text x="502" y="113" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">assigned to</text>
+<rect x="40" y="169" width="700" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="192" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each CUSTOMER must be visited by one and only one SALES REPRESENTATIVE.</text>
+<text x="56" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each SALES REPRESENTATIVE may be assigned to one or more CUSTOMERs.</text>
+<rect x="40" y="241" width="700" height="56" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="262" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">One or more in one direction, one and only one in the other: that is 1:M.</text></g><g class="ar"><text x="724" y="262" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏«واحد أو أكثر» في اتجاه، و«واحد فقط لا غير» في الآخر: هذه هي ‎1:M.</text></g>
+<g class="en"><text x="56" y="281" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The crow's foot is at CUSTOMER, the many end; the dashed half makes that many zero or more.</text></g><g class="ar"><text x="724" y="281" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏رِجل الغراب عند CUSTOMER، الطرف المتعدّد؛ والنصف المتقطّع يجعل هذا المتعدّد «صفرًا أو أكثر».</text></g></svg>
+</figure>
+      <p class="en">Fixed: the slides' wording, <em>may</em> be assigned to. The parent half is dashed, so the many is zero-or-more and Nadia exists with no customers. The ends did not change: it was 1:M before and it is 1:M now. This is the recommended form.</p>
+      <p class="ar">أُصلح: صياغة الشرائح، <em>may</em> be assigned to. نصف الأب متقطّع، فالمتعدّد «صفر أو أكثر»، وتوجد Nadia بلا زبائن. ولم يتغيّر الطرفان: كانت <bdi>1:M</bdi> وما زالت <bdi>1:M</bdi>. وهذا هو الشكل الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t5l2-s3"><span class="en">Two halves, two different jobs</span><span class="ar">نصفان، ولكلٍّ عمل مختلف</span></h3>
+
+  <p class="en">Every 1:M has two halves, and each can be solid or dashed, so there are four forms. The half at the child says whether a child must have a parent. The half at the parent says whether many starts at one or at zero. All four forms below are 1:M.</p>
+  <p class="ar">لكل علاقة <bdi>1:M</bdi> نصفان، وكلٌّ منهما قد يكون متّصلًا أو متقطّعًا، فهناك أربعة أشكال. النصف عند الابن يقول هل يجب أن يكون للابن أب. والنصف عند الأب يقول هل يبدأ المتعدّد من الواحد أم من الصفر. والأشكال الأربعة أدناه كلها <bdi>1:M</bdi>.</p>
+
+  <figure class="diagram" data-diagram="t5-many-four">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 396" direction="ltr" role="img" aria-labelledby="t5-many-four-t">
+<title id="t5-many-four-t">Four one-to-many relationships with the crow's foot at the left entity: ORDER/CUSTOMER solid-solid, CUSTOMER/SALES REPRESENTATIVE solid-dashed, STUDENT/STUDY GROUP dashed-solid, DVD/PERSON dashed-dashed / أربع علاقات واحد إلى متعدّد ورِجل الغراب عند الكيان الأيسر: ORDER/CUSTOMER متّصل-متّصل، CUSTOMER/SALES REPRESENTATIVE متّصل-متقطّع، STUDENT/STUDY GROUP متقطّع-متّصل، DVD/PERSON متقطّع-متقطّع</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Four one-to-many lines: the same crow's foot, two meanings of many</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏أربعة خطوط «واحد إلى متعدّد»: رِجل الغراب نفسها، ومعنيان للمتعدّد</text></g>
+<g class="en"><text x="40" y="58" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">many end (child)</text></g><g class="ar"><text x="210" y="58" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">‏الطرف المتعدّد (الابن)</text></g>
+<g class="en"><text x="340" y="58" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">one end (parent)</text></g><g class="ar"><text x="540" y="58" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">‏طرف الواحد (الأب)</text></g>
+<g class="en"><text x="560" y="58" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">many means …</text></g><g class="ar"><text x="760" y="58" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">‏المتعدّد يعني …</text></g>
+<rect x="40" y="72" width="150" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="115.0" y="94" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">ORDER</text>
+<rect x="340" y="72" width="200" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="440.0" y="94" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">CUSTOMER</text>
+<path d="M190 89 L265.0 89" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M265.0 89 L340 89" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 89 L190 81" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 89 L190 89" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 89 L190 97" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="206" y="83" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">placed by</text>
+<text x="332" y="103" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">place</text>
+<g class="en"><text x="560" y="87" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">one or more</text></g><g class="ar"><text x="760" y="87" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏واحد أو أكثر</text></g>
+<text x="560" y="104" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:10px">orders.customer_id NOT NULL</text>
+<rect x="40" y="134" width="150" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="115.0" y="156" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">CUSTOMER</text>
+<rect x="340" y="134" width="200" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="440.0" y="156" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">SALES REPRESENTATIVE</text>
+<path d="M190 151 L265.0 151" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M265.0 151 L340 151" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M204 151 L190 143" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 151 L190 151" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 151 L190 159" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="206" y="145" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">visited by</text>
+<text x="332" y="165" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">assigned to</text>
+<g class="en"><text x="560" y="149" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">zero or more</text></g><g class="ar"><text x="760" y="149" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏صفر أو أكثر</text></g>
+<text x="560" y="166" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:10px">customers.rep_id NOT NULL</text>
+<rect x="40" y="196" width="150" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="115.0" y="218" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">STUDENT</text>
+<rect x="340" y="196" width="200" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="440.0" y="218" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">STUDY GROUP</text>
+<path d="M190 213 L265.0 213" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M265.0 213 L340 213" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 213 L190 205" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 213 L190 213" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 213 L190 221" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="206" y="207" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">join</text>
+<text x="332" y="227" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">have</text>
+<g class="en"><text x="560" y="211" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">one or more</text></g><g class="ar"><text x="760" y="211" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏واحد أو أكثر</text></g>
+<text x="560" y="228" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:10px">students.group_id nullable</text>
+<rect x="40" y="258" width="150" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="115.0" y="280" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">DVD</text>
+<rect x="340" y="258" width="200" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="440.0" y="280" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">PERSON</text>
+<path d="M190 275 L265.0 275" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M265.0 275 L340 275" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M204 275 L190 267" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 275 L190 275" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M204 275 L190 283" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="206" y="269" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">owned by</text>
+<text x="332" y="289" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:10.5px">own</text>
+<g class="en"><text x="560" y="273" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">zero or more</text></g><g class="ar"><text x="760" y="273" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏صفر أو أكثر</text></g>
+<text x="560" y="290" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:10px">dvds.owner_id nullable</text>
+<rect x="40" y="326" width="720" height="56" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="347" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">The half at the child (left) says whether the foreign key may be null.</text></g><g class="ar"><text x="744" y="347" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏النصف عند الابن (يسارًا) يقول هل يجوز أن يكون المفتاح الأجنبي null.</text></g>
+<g class="en"><text x="56" y="366" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The half at the parent (right) says whether many starts at zero or at one.</text></g><g class="ar"><text x="744" y="366" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏والنصف عند الأب (يمينًا) يقول هل يبدأ المتعدّد من الصفر أم من الواحد.</text></g></svg>
+<figcaption><span class="en">The same crow's foot four times. Read the left half for the foreign key's <code>NOT NULL</code>, and the right half for whether "many" starts at zero. <code>ORDER</code>&ndash;<code>CUSTOMER</code> is Chapter 3's restaurant; <code>STUDENT</code>&ndash;<code>STUDY GROUP</code> is Lesson 1's.</span><span class="ar">رِجل الغراب نفسها أربع مرّات. اقرأ النصف الأيسر لتعرف <code>NOT NULL</code> على المفتاح الأجنبي، والنصف الأيمن لتعرف هل يبدأ «المتعدّد» من الصفر. <code>ORDER</code>&ndash;<code>CUSTOMER</code> من مطعم الفصل 3، و<code>STUDENT</code>&ndash;<code>STUDY GROUP</code> من الدرس 1.</span></figcaption></figure>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">A zero-or-more many is visible in the data: a parent row that no child row points to. Count customers per representative with a <code>LEFT JOIN</code>, which keeps a parent even when it has no children:</p>
+    <p class="ar">المتعدّد «صفر أو أكثر» يظهر في البيانات: صفّ أب لا يشير إليه أيّ صفّ ابن. عُدّ الزبائن لكل مندوب بـ <code>LEFT JOIN</code>، الذي يُبقي الأب حتى لو لم يكن له أبناء:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE sales_reps (rep_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL)","INSERT INTO sales_reps VALUES (21,'Hana','Saleh'), (22,'Karim','Odeh'), (23,'Nadia','Rami')","CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(30) NOT NULL, rep_id NUMBER NOT NULL)","INSERT INTO customers VALUES (501,'Al-Noor Bakery',21), (502,'Gaza Books',21), (503,'Sunrise Pharmacy',22), (504,'Blue Sea Cafe',21), (505,'Olive Market',22)"],"sql":"SELECT r.first_name, COUNT(c.customer_id) AS customers\nFROM sales_reps r LEFT JOIN customers c ON c.rep_id = r.rep_id\nGROUP BY r.first_name\nORDER BY r.first_name;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>first_name</code></th><th><code>customers</code></th></tr></thead>
+          <tbody>
+            <tr><td>Hana</td><td>3</td></tr>
+            <tr><td>Karim</td><td>2</td></tr>
+            <tr><td>Nadia</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Nadia's 0 is legal because the many is zero-or-more. A one-or-more many would make that 0 a broken rule &mdash; and no foreign key can stop it. The key sits in the child's table; it can force each child to have a parent, never each parent to have a child.</p>
+    <p class="ar">الصفر عند Nadia مشروع لأن المتعدّد «صفر أو أكثر». ولو كان المتعدّد «واحدًا أو أكثر» لكان هذا الصفر خرقًا للقاعدة &mdash; ولا يستطيع أيّ مفتاح أجنبي منعه. فالمفتاح يسكن جدول الابن؛ يستطيع أن يُلزم كل ابن بأب، ولا يستطيع أبدًا أن يُلزم كل أب بابن.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapters 3 and 5</span><span class="ar">خيط · الفصلان 3 و5 في SQL</span></h4>
+    <p class="en">On the SQL track, <a href="../chapters/chapter-3.html">Chapter 3 &mdash; Relationships</a> joins a child table to its parent, and <a href="../chapters/chapter-5.html">Chapter 5 &mdash; Aggregation</a> counts children per parent with <code>GROUP BY</code>. They take the 1:M as given. This lesson says which side holds the key, and whether a count of 0 is allowed at all.</p>
+    <p class="ar">في مسار SQL، يربط <a href="../chapters/chapter-3.html">الفصل 3 &mdash; العلاقات</a> جدول الابن بأبيه، ويعدّ <a href="../chapters/chapter-5.html">الفصل 5 &mdash; التجميع</a> الأبناء لكل أب بـ <code>GROUP BY</code>. وكلاهما يأخذ علاقة <bdi>1:M</bdi> مسلَّمًا بها. أمّا هذا الدرس فيقول أيّ جهة تحمل المفتاح، وهل يجوز أصلًا أن يكون العدد 0.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">"Each <code>STUDY GROUP</code> must have one or more <code>STUDENT</code>s." What does the "many" at <code>STUDENT</code> mean here?</p>
+    <p class="q ar">«Each <code>STUDY GROUP</code> must have one or more <code>STUDENT</code>s.» ماذا يعني «المتعدّد» عند <code>STUDENT</code> هنا؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">One or more: a group cannot exist with no students</span><span class="ar">واحد أو أكثر: لا يمكن أن توجد مجموعة بلا طلاب</span></button></li>
+      <li><button class="opt"><span class="en">Zero or more: a group may be empty</span><span class="ar">صفر أو أكثر: قد تكون المجموعة فارغة</span></button></li>
+      <li><button class="opt"><span class="en">Exactly one: each group has one student</span><span class="ar">واحد بالضبط: لكل مجموعة طالب واحد</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><em>must</em>, read from the parent, makes the half at <code>STUDY GROUP</code> solid and the many one-or-more. Contrast the slides' representative, who <em>may</em> be assigned: zero-or-more.</p>
+      <p class="ar"><em>must</em>، مقروءةً من الأب، تجعل النصف عند <code>STUDY GROUP</code> متّصلًا والمتعدّد «واحدًا أو أكثر». وقارن بمندوب الشرائح الذي <em>may</em> be assigned: «صفر أو أكثر».</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the four-forms diagram, the <code>DVD</code>&ndash;<code>PERSON</code> row has both halves dashed. Which two facts follow?</p>
+    <p class="q ar">في مخطّط الأشكال الأربعة، نصفا صفّ <code>DVD</code>&ndash;<code>PERSON</code> متقطّعان. أيّ حقيقتين تنتجان؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">It is not a <bdi>1:M</bdi>, because nothing is mandatory</span><span class="ar">ليست <bdi>1:M</bdi>، لأن لا شيء إلزامي</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>dvds.owner_id</code> is nullable, and a person may own no DVDs</span><span class="ar"><code>dvds.owner_id</code> يقبل null، وقد لا يملك الشخص أيّ قرص</span></button></li>
+      <li><button class="opt"><span class="en"><code>dvds.owner_id</code> is <code>NOT NULL</code>, and every person owns at least one DVD</span><span class="ar"><code>dvds.owner_id</code> هو <code>NOT NULL</code>، وكل شخص يملك قرصًا واحدًا على الأقل</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Dashed at the child: the key may be null. Dashed at the parent: many is zero-or-more. The ends are still toe and crow's foot, so it is still 1:M.</p>
+      <p class="ar">متقطّع عند الابن: قد يكون المفتاح null. ومتقطّع عند الأب: المتعدّد «صفر أو أكثر». والطرفان ما زالا إصبعًا ورِجل غراب، فهي ما زالت <bdi>1:M</bdi>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t5l2-h4"><span class="en">4 · <bdi>M:1</bdi> is the same line read backwards</span><span class="ar">٤ · <bdi>M:1</bdi> هي الخط نفسه مقروءًا بالعكس</span></h2>
+
+  <div class="problem">
+    <p class="en">Two students describe the slides' diagram. One says "customers to representative is many-to-one". The other says "representative to customers is one-to-many". They argue about who drew the wrong relationship. Neither did: they are standing at different ends of the same line.</p>
+    <p class="ar">يصف طالبان مخطّط الشرائح. يقول أحدهما: «من الزبائن إلى المندوب: متعدّد إلى واحد». ويقول الآخر: «من المندوب إلى الزبائن: واحد إلى متعدّد». ويتجادلان أيّهما رسم العلاقة الخاطئة. لم يخطئ أحد: كلٌّ منهما يقف عند طرف مختلف من الخط نفسه.</p>
+  </div>
+
+  <p class="en">The slides title it "Many-to-One and One-to-Many Relationships" and write <em>1:M, or many-to-one (M:1)</em>. Every relationship is read in both directions, as you learned in <a href="../lessons/t3-lesson-05.html#t3-lesson-05">Chapter 3</a>. Read from the child, a 1:M is a <span class="term" data-term="many-to-one">many-to-one</span>.</p>
+  <p class="ar">تعنون الشرائح: «علاقات متعدّد إلى واحد وواحد إلى متعدّد»، وتكتب <em>1:M، أو متعدّد إلى واحد (<bdi>M:1</bdi>)</em>. فكل علاقة تُقرأ في الاتجاهين، كما تعلّمت في <a href="../lessons/t3-lesson-05.html#t3-lesson-05">الفصل 3</a>. ومقروءةً من الابن تصير <bdi>1:M</bdi> علاقة <span class="term" data-term="many-to-one">متعدّد إلى واحد</span> (Many-to-one).</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="many-to-one">Many-to-one (M:1)</span> is the name of a one-to-many relationship when it is read from the many end towards the one end.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="many-to-one">متعدّد إلى واحد (<bdi>M:1</bdi>)</span> اسمُ علاقة «واحد إلى متعدّد» حين تُقرأ من الطرف المتعدّد نحو طرف الواحد.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t5-m1-reading">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 307" direction="ltr" role="img" aria-labelledby="t5-m1-reading-t">
+<title id="t5-m1-reading-t">CUSTOMER / SALES REPRESENTATIVE read left to right as many-to-one and right to left as one-to-many / CUSTOMER / SALES REPRESENTATIVE تُقرأ من اليسار إلى اليمين متعدّدًا إلى واحد، ومن اليمين إلى اليسار واحدًا إلى متعدّد</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">One line, read from each end</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏خطّ واحد، يُقرأ من كل طرف</text></g>
+<path d="M150 62 L630 62" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M630 62 L620 57 L620 67 Z" style="fill:var(--dg-line, var(--text-soft));stroke:none"/>
+<g class="en"><text x="150" y="52" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">From CUSTOMER: many customers to one representative, many-to-one (M:1)</text></g><g class="ar"><text x="630" y="52" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏من CUSTOMER: زبائن كثيرون لمندوب واحد، متعدّد إلى واحد (‎M:1)</text></g>
+<rect x="40" y="78" width="210" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="100" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CUSTOMER</text>
+<text x="54" y="122" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="510" y="78" width="230" height="95" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="625.0" y="100" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">SALES REPRESENTATIVE</text>
+<text x="524" y="122" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="524" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="524" y="160" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<path d="M250 123 L380.0 123" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M380.0 123 L510 123" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M264 123 L250 115" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 123 L250 123" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 123 L250 131" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="270" y="115" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">visited by</text>
+<text x="502" y="141" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">assigned to</text>
+<path d="M630 199 L150 199" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M150 199 L160 194 L160 204 Z" style="fill:var(--dg-line, var(--text-soft));stroke:none"/>
+<g class="en"><text x="150" y="219" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">From SALES REPRESENTATIVE: one representative to many customers, one-to-many (1:M)</text></g><g class="ar"><text x="630" y="219" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏من SALES REPRESENTATIVE: مندوب واحد لزبائن كثيرين، واحد إلى متعدّد (‎1:M)</text></g>
+<rect x="40" y="237" width="700" height="56" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="258" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Nothing on the line changes: same halves, same crow's foot, same names.</text></g><g class="ar"><text x="724" y="258" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏لا شيء على الخط يتغيّر: النصفان أنفسهما، ورِجل الغراب نفسها، والاسمان أنفسهما.</text></g>
+<g class="en"><text x="56" y="277" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Same foreign key too: customers.rep_id. One relationship, two readings.</text></g><g class="ar"><text x="724" y="277" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏والمفتاح الأجنبي نفسه أيضًا: customers.rep_id. علاقة واحدة بقراءتين.</text></g></svg>
+<figcaption><span class="en">Read left to right, from <code>CUSTOMER</code>: many-to-one. Read right to left, from <code>SALES REPRESENTATIVE</code>: one-to-many. Nothing on the line differs between the two readings.</span><span class="ar">من اليسار إلى اليمين، بدءًا من <code>CUSTOMER</code>: متعدّد إلى واحد. ومن اليمين إلى اليسار، بدءًا من <code>SALES REPRESENTATIVE</code>: واحد إلى متعدّد. ولا شيء على الخط يختلف بين القراءتين.</span></figcaption></figure>
+
+  <h3 id="t5l2-s4"><span class="en">One foreign key answers both questions</span><span class="ar">مفتاح أجنبي واحد يجيب عن السؤالين</span></h3>
+
+  <p class="en">The two ERDish sentences are the two readings. "Each <code>CUSTOMER</code> must be visited by one and only one <code>SALES REPRESENTATIVE</code>" is the M:1 reading. "Each <code>SALES REPRESENTATIVE</code> may be assigned to one or more <code>CUSTOMER</code>s" is the 1:M reading. Two sentences, one relationship.</p>
+  <p class="ar">جملتا ERDish هما القراءتان. «Each <code>CUSTOMER</code> must be visited by one and only one <code>SALES REPRESENTATIVE</code>» هي قراءة <bdi>M:1</bdi>. و«Each <code>SALES REPRESENTATIVE</code> may be assigned to one or more <code>CUSTOMER</code>s» هي قراءة <bdi>1:M</bdi>. جملتان، وعلاقة واحدة.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Both readings are answered by the same column, <code>customers.rep_id</code>. The M:1 question &mdash; who visits Gaza Books? &mdash; returns one row:</p>
+    <p class="ar">يجيب العمود نفسه، <code>customers.rep_id</code>، عن القراءتين. سؤال <bdi>M:1</bdi> &mdash; من يزور Gaza Books؟ &mdash; يُرجع صفًّا واحدًا:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE sales_reps (rep_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL)","INSERT INTO sales_reps VALUES (21,'Hana','Saleh'), (22,'Karim','Odeh'), (23,'Nadia','Rami')","CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(30) NOT NULL, rep_id NUMBER NOT NULL)","INSERT INTO customers VALUES (501,'Al-Noor Bakery',21), (502,'Gaza Books',21), (503,'Sunrise Pharmacy',22), (504,'Blue Sea Cafe',21), (505,'Olive Market',22)"],"sql":"SELECT r.first_name, r.last_name\nFROM customers c JOIN sales_reps r ON c.rep_id = r.rep_id\nWHERE c.customer_id = 502;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>first_name</code></th><th><code>last_name</code></th></tr></thead>
+          <tbody>
+            <tr><td>Hana</td><td>Saleh</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">The 1:M question &mdash; whom does Hana visit? &mdash; reads the same column from the other side and may return many rows:</p>
+    <p class="ar">وسؤال <bdi>1:M</bdi> &mdash; مَن تزور Hana؟ &mdash; يقرأ العمود نفسه من الجهة الأخرى، وقد يُرجع صفوفًا كثيرة:</p>
+    <pre class="code" data-lang="sql"><code>SELECT name
+FROM customers
+WHERE rep_id = 21
+ORDER BY name;</code></pre>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>name</code></th></tr></thead>
+          <tbody>
+            <tr><td>Al-Noor Bakery</td></tr>
+            <tr><td>Blue Sea Cafe</td></tr>
+            <tr><td>Gaza Books</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A designer draws <code>CUSTOMER</code>&ndash;<code>SALES REPRESENTATIVE</code> as an M:1 and a colleague redraws it as a 1:M. How many foreign keys does the database need?</p>
+    <p class="q ar">يرسم مصمّم <code>CUSTOMER</code>&ndash;<code>SALES REPRESENTATIVE</code> علاقة <bdi>M:1</bdi>، ويعيد زميل رسمها <bdi>1:M</bdi>. كم مفتاحًا أجنبيًا تحتاج قاعدة البيانات؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Two: one for each reading</span><span class="ar">اثنين: واحد لكل قراءة</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">One: <code>customers.rep_id</code>, whichever way it is read</span><span class="ar">واحدًا: <code>customers.rep_id</code>، بأيّ اتجاه قُرئت</span></button></li>
+      <li><button class="opt"><span class="en">It depends on which designer is right</span><span class="ar">يتوقّف على أيّ المصمّمَين محقّ</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Both drawings are the same line &mdash; same toe, same crow's foot, same halves. M:1 and 1:M are two readings of one relationship, so there is one foreign key, in the child.</p>
+      <p class="ar">الرسمان خطّ واحد &mdash; الإصبع نفسها، ورِجل الغراب نفسها، والنصفان نفساهما. فـ <bdi>M:1</bdi> و1:M قراءتان لعلاقة واحدة، وفيها مفتاح أجنبي واحد، في الابن.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">"Each <code>RECEIPT</code> must be issued to one and only one <code>STUDENT</code>." Which reading of the <code>RECEIPT</code>&ndash;<code>STUDENT</code> relationship is this sentence?</p>
+    <p class="q ar">«Each <code>RECEIPT</code> must be issued to one and only one <code>STUDENT</code>.» أيّ قراءة لعلاقة <code>RECEIPT</code>&ndash;<code>STUDENT</code> هذه الجملة؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">The many-to-one reading, from the child</span><span class="ar">قراءة «متعدّد إلى واحد»، من الابن</span></button></li>
+      <li><button class="opt"><span class="en">The one-to-many reading, from the parent</span><span class="ar">قراءة «واحد إلى متعدّد»، من الأب</span></button></li>
+      <li><button class="opt"><span class="en">A one-to-one, since it says "one and only one"</span><span class="ar">«واحد إلى واحد»، لأنها تقول «one and only one»</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">It starts at <code>RECEIPT</code>, the many end, and arrives at the one end: M:1. One sentence shows only one direction; the other sentence ("may be issued one or more <code>RECEIPT</code>s") shows why the relationship is not 1:1.</p>
+      <p class="ar">تبدأ من <code>RECEIPT</code>، الطرف المتعدّد، وتصل إلى طرف الواحد: <bdi>M:1</bdi>. والجملة الواحدة لا تُظهر إلا اتجاهًا واحدًا؛ أمّا الجملة الأخرى («may be issued one or more <code>RECEIPT</code>s») فتُظهر لماذا ليست العلاقة <bdi>1:1</bdi>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t5l2-h5"><span class="en">5 · Asking the two questions: PERSON and DVD</span><span class="ar">٥ · طرح السؤالين: PERSON وDVD</span></h2>
+
+  <div class="problem">
+    <p class="en">A family DVD library is being modelled. The designer draws <code>PERSON</code> and <code>DVD</code> and connects them, then stops: which ends get a crow's foot? Guess wrong now and the tables are wrong later &mdash; and a table full of data is far harder to change than a sketch.</p>
+    <p class="ar">يُنمذَج نظام لمكتبة أقراص DVD عائلية. يرسم المصمّم <code>PERSON</code> و<code>DVD</code> ويصل بينهما، ثم يتوقّف: أيّ الطرفين يأخذ رِجل غراب؟ إن أخطأ التخمين الآن فستخطئ الجداول لاحقًا &mdash; والجدول المليء بالبيانات أصعب تغييرًا بكثير من رسم أوّلي.</p>
+  </div>
+
+  <p class="en">The slides open the lesson with two questions. Can one <code>PERSON</code> own many <code>DVD</code>s, or only one? Can one <code>DVD</code> be owned by many <code>PERSON</code>s? As we refine the model, the relationships must match the business rules; thinking the details through early avoids costly mistakes later.</p>
+  <p class="ar">تفتتح الشرائح الدرس بسؤالين. هل يملك <code>PERSON</code> (شخص) واحد أقراص <code>DVD</code> كثيرة، أم قرصًا واحدًا فقط؟ وهل يمكن أن يملك قرصَ <code>DVD</code> واحدًا أشخاصٌ <code>PERSON</code> كثيرون؟ فبينما نحسّن النموذج يجب أن تطابق العلاقاتُ قواعدَ العمل؛ والتفكير في التفاصيل مبكرًا يجنّبنا أخطاء مكلفة لاحقًا.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">One person owns …</th><th class="ar">الشخص الواحد يملك …</th><th class="en">One DVD is owned by …</th><th class="ar">القرص الواحد يملكه …</th><th class="en">Type</th><th class="ar">النوع</th></tr></thead>
+      <tbody>
+        <tr><td class="en">only one DVD</td><td class="ar">قرصًا واحدًا فقط</td><td class="en">only one person</td><td class="ar">شخص واحد فقط</td><td class="en">1:1</td><td class="ar">1:1</td></tr>
+        <tr><td class="en">many DVDs</td><td class="ar">أقراصًا كثيرة</td><td class="en">only one person</td><td class="ar">شخص واحد فقط</td><td class="en">1:M</td><td class="ar">1:M</td></tr>
+        <tr><td class="en">many DVDs</td><td class="ar">أقراصًا كثيرة</td><td class="en">many persons</td><td class="ar">أشخاص كثيرون</td><td class="en">M:M</td><td class="ar">M:M</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure class="diagram" data-diagram="t5-person-dvd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 292" direction="ltr" role="img" aria-labelledby="t5-person-dvd-t">
+<title id="t5-person-dvd-t">DVD owned by / PERSON own: dashed at both ends, crow's foot at DVD: a one-to-many / DVD owned by / PERSON own: متقطّع عند الطرفين، رِجل غراب عند DVD: واحد إلى متعدّد</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Can one PERSON own many DVDs? Can one DVD be owned by many PERSONs?</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏هل يملك PERSON واحد أقراص DVD كثيرة؟ وهل يملك القرصَ الواحد أشخاصٌ كثيرون؟</text></g>
+<rect x="40" y="50" width="210" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">DVD</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Title</text>
+<rect x="530" y="50" width="210" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="635.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PERSON</text>
+<text x="544" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="544" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M250 95 L390.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M390.0 95 L530 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M264 95 L250 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 95 L250 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 95 L250 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="270" y="87" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">owned by</text>
+<text x="522" y="113" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">own</text>
+<rect x="40" y="150" width="700" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="173" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each DVD may be owned by one and only one PERSON.</text>
+<text x="56" y="194" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each PERSON may own one or more DVDs.</text>
+<rect x="40" y="222" width="700" height="56" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="243" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">The family library's answer: many DVDs per person, one owner per DVD. So: 1:M.</text></g><g class="ar"><text x="724" y="243" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏جواب مكتبة العائلة: أقراص كثيرة للشخص، ومالك واحد للقرص. إذن: ‎1:M.</text></g>
+<g class="en"><text x="56" y="262" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">If a DVD could have many owners, both ends would be crow's feet: a many-to-many, Lesson 4.</text></g><g class="ar"><text x="724" y="262" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏ولو جاز أن يكون للقرص مالكون كثيرون لصار الطرفان رِجلَي غراب: متعدّد إلى متعدّد، الدرس 4.</text></g></svg>
+<figcaption><span class="en">The family's answers: many DVDs per person, one owner per DVD &mdash; so the crow's foot goes at <code>DVD</code>. Both halves are dashed: a DVD may have no recorded owner, and a person may own none.</span><span class="ar">أجوبة العائلة: أقراص كثيرة للشخص، ومالك واحد للقرص &mdash; فتوضع رِجل الغراب عند <code>DVD</code>. والنصفان متقطّعان: قد يكون القرص بلا مالك مسجَّل، وقد لا يملك الشخص أيّ قرص.</span></figcaption></figure>
+
+  <h3 id="t5l2-s5"><span class="en">The crow's foot goes where the answer is "many"</span><span class="ar">رِجل الغراب توضع حيث الجواب «كثير»</span></h3>
+
+  <p class="en">Each question puts a symbol at the far end. "How many DVDs can one person own?" &mdash; many &mdash; puts a crow's foot at <code>DVD</code>. "How many persons can own one DVD?" &mdash; one &mdash; puts a single toe at <code>PERSON</code>. Asked in this order, the two questions draw the type for you.</p>
+  <p class="ar">كل سؤال يضع رمزًا عند الطرف البعيد. «كم قرصًا يملك الشخص الواحد؟» &mdash; كثيرة &mdash; يضع رِجل غراب عند <code>DVD</code>. و«كم شخصًا يملك القرص الواحد؟» &mdash; واحد &mdash; يضع إصبعًا واحدة عند <code>PERSON</code>. وإذا طُرح السؤالان بهذا الترتيب رسما لك النوع.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The 1:M answer becomes one column in the child: <code>dvds.owner_id</code>, nullable because the <code>DVD</code> half is dashed. Here is why the second question matters:</p>
+    <p class="ar">يصير جواب <bdi>1:M</bdi> عمودًا واحدًا في الابن: <code>dvds.owner_id</code>، يقبل null لأن نصف <code>DVD</code> متقطّع. وهذا سبب أهمية السؤال الثاني:</p>
+    <pre class="code" data-lang="sql"><code>CREATE TABLE dvds (
+  dvd_id    NUMBER PRIMARY KEY,
+  title     VARCHAR(40) NOT NULL,
+  owner_id  NUMBER                  -- one owner per DVD, or none
+);</code></pre>
+    <p class="en"><code>owner_id</code> holds one value per row. If the family later says a DVD can be co-owned, no single column can hold two owners &mdash; the relationship has become M:M, and the tables must be redesigned. That is the costly mistake the slides warn about.</p>
+    <p class="ar"><code>owner_id</code> يحمل قيمة واحدة في كل صفّ. فإن قالت العائلة لاحقًا إن القرص قد يملكه أكثر من شخص، فلا يتّسع عمود واحد لمالكَين &mdash; وتكون العلاقة قد صارت <bdi>M:M</bdi>، ويجب إعادة تصميم الجداول. وهذا هو الخطأ المكلف الذي تحذّر منه الشرائح.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A second family says: "a DVD can belong to several of us, and each of us owns several DVDs." What type is <code>PERSON</code>&ndash;<code>DVD</code> for them?</p>
+    <p class="q ar">تقول عائلة ثانية: «قد يملك القرصَ عدّةٌ منّا، وكلٌّ منّا يملك عدّة أقراص.» ما نوع <code>PERSON</code>&ndash;<code>DVD</code> عندها؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">1:M, as for the first family</span><span class="ar">1:M، كما عند العائلة الأولى</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">M:M &mdash; "many" in both directions</span><span class="ar">M:M &mdash; «كثير» في الاتجاهين</span></button></li>
+      <li><button class="opt"><span class="en">M:1 &mdash; read from <code>DVD</code></span><span class="ar">M:1 &mdash; مقروءةً من <code>DVD</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Same entities, different business, different type. Both answers are "many", so both ends are crow's feet. Lesson 4 shows what such a relationship hides, and Lesson 5 how to resolve it.</p>
+      <p class="ar">الكيانات نفسها، والعمل مختلف، فالنوع مختلف. الجوابان كلاهما «كثير»، فالطرفان رِجلا غراب. ويبيّن الدرس 4 ما تخفيه علاقة كهذه، والدرس 5 كيف تُحلّ.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which of these school relationships is <em>not</em> a one-to-many?</p>
+    <p class="q ar">أيّ علاقات المدرسة التالية <em>ليست</em> «واحدًا إلى متعدّد»؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>STUDENT</code> join / have <code>STUDY GROUP</code></span><span class="ar"><code>STUDENT</code> join / have <code>STUDY GROUP</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>RECEIPT</code> issued to / issued <code>STUDENT</code></span><span class="ar"><code>RECEIPT</code> issued to / issued <code>STUDENT</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>STUDENT</code> studies / studied by <code>SUBJECT</code></span><span class="ar"><code>STUDENT</code> studies / studied by <code>SUBJECT</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A student may study one or more subjects, and a subject may be studied by one or more students: "many" both ways, so M:M. The other two have one toe and one crow's foot.</p>
+      <p class="ar">قد يدرس الطالب مادة واحدة أو أكثر، وقد يدرس المادةَ طالب واحد أو أكثر: «كثير» في الاتجاهين، فهي <bdi>M:M</bdi>. أمّا الأخريان فلكلٍّ منهما إصبع واحدة ورِجل غراب واحدة.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t5l2-h6"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Name the type</span><span class="ar">تمرين 1 · سمِّ النوع</span></h4>
+    <p class="en">Each line gives the symbol at each end. Name the type, and for every 1:M name the child entity.</p>
+    <p class="ar">كل سطر يعطي الرمز عند كل طرف. سمِّ النوع، وسمِّ الكيان الابن في كل علاقة <bdi>1:M</bdi>.</p>
+    <pre class="code" data-lang="text"><code>1  EMPLOYEE  crow's foot  |  single toe   DEPARTMENT
+2  COMPUTER  single toe   |  single toe   MOTHERBOARD
+3  STUDENT   crow's foot  |  crow's foot  TEACHER
+4  RECEIPT   crow's foot  |  single toe   STUDENT    (with a diamond)
+5  DVD       crow's foot  |  single toe   PERSON</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">1: 1:M, child <code>EMPLOYEE</code>. 2: 1:1 (Lesson 3). 3: M:M (Lesson 4). 4: 1:M, child <code>RECEIPT</code> &mdash; the diamond does not change the type. 5: 1:M, child <code>DVD</code>.</p>
+      <p class="ar">1: علاقة <bdi>1:M</bdi>، والابن <code>EMPLOYEE</code>. 2: علاقة <bdi>1:1</bdi> (الدرس 3). 3: علاقة <bdi>M:M</bdi> (الدرس 4). 4: علاقة <bdi>1:M</bdi>، والابن <code>RECEIPT</code> &mdash; والمعيَّن لا يغيّر النوع. 5: علاقة <bdi>1:M</bdi>، والابن <code>DVD</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Write the two sentences</span><span class="ar">تمرين 2 · اكتب الجملتين</span></h4>
+    <p class="en">A <code>CLASS</code> must be allocated to one teacher; a <code>TEACHER</code> may be responsible for several classes. Write both ERDish sentences, label which is the 1:M reading and which the M:1 reading, and say what "many" means here.</p>
+    <p class="ar">يجب أن تُسند <code>CLASS</code> (الشعبة) إلى معلّم واحد، وقد يكون <code>TEACHER</code> (المعلّم) مسؤولًا عن عدّة شعب. اكتب جملتَي ERDish، وبيّن أيّتهما قراءة <bdi>1:M</bdi> وأيّتهما قراءة <bdi>M:1</bdi>، وقل ماذا يعني «المتعدّد» هنا.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="erdish"><code>Each CLASS must be allocated to one and only one TEACHER.       -- M:1 reading
+Each TEACHER may be responsible for one or more CLASSes.        -- 1:M reading</code></pre>
+      <p class="en">The parent half (<code>TEACHER</code>) is dashed, so "many" is zero-or-more: a new teacher may have no class yet. The child half is solid, so <code>classes.teacher_id</code> is <code>NOT NULL</code>.</p>
+      <p class="ar">نصف الأب (<code>TEACHER</code>) متقطّع، فـ«المتعدّد» هنا «صفر أو أكثر»: قد لا تكون للمعلّم الجديد شعبة بعد. ونصف الابن متّصل، فـ <code>classes.teacher_id</code> هو <code>NOT NULL</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Fix the draft</span><span class="ar">تمرين 3 · أصلح المسودّة</span></h4>
+    <p class="en">A classmate drew the wholesaler like this. The business is the slides'. Which lines are wrong, and how should each be fixed?</p>
+    <p class="ar">رسم زميل نموذج تاجر الجملة هكذا. والعمل هو عمل الشرائح. أيّ الأسطر خاطئة، وكيف يُصلَح كلٌّ منها؟</p>
+    <pre class="code" data-lang="text"><code>1  end at CUSTOMER:              single toe
+2  end at SALES REPRESENTATIVE:  single toe
+3  half at CUSTOMER:             solid
+4  half at SALES REPRESENTATIVE: solid
+5  foreign key:                  sales_reps.customer_id</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Line 1: crow's foot &mdash; a representative may have one or more customers. Line 4: dashed &mdash; the slides say <em>may</em> be assigned, so a new representative may have none. Line 5: <code>customers.rep_id</code> &mdash; the key goes in the child. Lines 2 and 3 are right.</p>
+      <p class="ar">السطر 1: رِجل غراب &mdash; فقد يكون للمندوب زبون واحد أو أكثر. والسطر 4: متقطّع &mdash; فالشرائح تقول <em>may</em> be assigned، فقد لا يكون للمندوب الجديد أحد. والسطر 5: <code>customers.rep_id</code> &mdash; فالمفتاح يذهب إلى الابن. والسطران 2 و3 صحيحان.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Representatives with no customers</span><span class="ar">تمرين 4 · مندوبون بلا زبائن</span></h4>
+    <p class="en">Using the <code>sales_reps</code> and <code>customers</code> tables of section 3, write a query that lists the first name of every representative who has no customers. Which kind of "many" makes such a row legal?</p>
+    <p class="ar">مستعملًا جدولَي <code>sales_reps</code> و<code>customers</code> في القسم 3، اكتب استعلامًا يسرد الاسم الأول لكل مندوب ليس له زبائن. وأيّ نوع من «المتعدّد» يجعل مثل هذا الصف مشروعًا؟</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT r.first_name
+FROM sales_reps r LEFT JOIN customers c ON c.rep_id = r.rep_id
+WHERE c.customer_id IS NULL;</code></pre>
+      <div class="output">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th><code>first_name</code></th></tr></thead>
+            <tbody><tr><td>Nadia</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="en">Only a zero-or-more many allows Nadia's row. If the model said one-or-more, this query would be a check for broken rules &mdash; the foreign key cannot prevent them.</p>
+      <p class="ar">لا يسمح بصفّ Nadia إلا المتعدّد «صفر أو أكثر». ولو قال النموذج «واحد أو أكثر» لكان هذا الاستعلام فحصًا عن خروقات للقاعدة &mdash; فالمفتاح الأجنبي لا يستطيع منعها.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Ask the two questions</span><span class="ar">تمرين 5 · اطرح السؤالين</span></h4>
+    <p class="en">For each pair, ask the two "how many?" questions, answer them for the business given, and name the type: (a) <code>STUDENT</code> and <code>RECEIPT</code> at this school; (b) <code>EMPLOYEE</code> and <code>DEPARTMENT</code> in Chapter 3's company; (c) <code>MEMBERSHIP</code> and <code>PERSON</code> at a club where each membership is held by one person.</p>
+    <p class="ar">لكل زوج، اطرح سؤالَي «كم؟»، وأجب عنهما للعمل المعطى، وسمِّ النوع: (أ) <code>STUDENT</code> و<code>RECEIPT</code> في هذه المدرسة؛ (ب) <code>EMPLOYEE</code> و<code>DEPARTMENT</code> في شركة الفصل 3؛ (ج) <code>MEMBERSHIP</code> و<code>PERSON</code> في نادٍ تُحمل فيه كل عضوية من شخص واحد.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) A student may be issued many receipts; a receipt is issued to one student: 1:M, child <code>RECEIPT</code>. (b) A department is responsible for many employees; an employee is assigned to one department: 1:M, child <code>EMPLOYEE</code>. (c) A person may hold many memberships; a membership is held by one person: 1:M, child <code>MEMBERSHIP</code>.</p>
+      <p class="ar">(أ) قد يُصدَر للطالب إيصالات كثيرة، ويصدر الإيصال لطالب واحد: <bdi>1:M</bdi>، والابن <code>RECEIPT</code>. (ب) القسم مسؤول عن موظّفين كثيرين، والموظّف يُعيَّن في قسم واحد: <bdi>1:M</bdi>، والابن <code>EMPLOYEE</code>. (ج) قد يحمل الشخص عضويات كثيرة، وتُحمل العضوية من شخص واحد: <bdi>1:M</bdi>، والابن <code>MEMBERSHIP</code>.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">There are three relationship types &mdash; 1:1, 1:M, M:M &mdash; and the type is read from the two ends only.</li>
+      <li class="ar">هناك ثلاثة أنواع للعلاقات &mdash; <bdi>1:1</bdi> و1:M وM:M &mdash; ويُقرأ النوع من الطرفين فقط.</li>
+      <li class="en">1:M is the most common type: one or more in one direction, one and only one in the other.</li>
+      <li class="ar">علاقة <bdi>1:M</bdi> هي النوع الأكثر شيوعًا: «واحد أو أكثر» في اتجاه، و«واحد فقط لا غير» في الآخر.</li>
+      <li class="en">"Many" means one-or-more or zero-or-more depending on the optionality of the half at the parent.</li>
+      <li class="ar">«المتعدّد» يعني «واحدًا أو أكثر» أو «صفرًا أو أكثر» بحسب إلزامية النصف عند الأب.</li>
+      <li class="en">M:1 is the same relationship read from the many end: same line, same foreign key.</li>
+      <li class="ar">علاقة <bdi>M:1</bdi> هي العلاقة نفسها مقروءةً من الطرف المتعدّد: الخط نفسه، والمفتاح الأجنبي نفسه.</li>
+      <li class="en">The foreign key goes in the child's table; the child half decides <code>NOT NULL</code>. A one-or-more many cannot be enforced by the key.</li>
+      <li class="ar">المفتاح الأجنبي يذهب إلى جدول الابن، ونصف الابن يقرّر <code>NOT NULL</code>. أمّا المتعدّد «واحد أو أكثر» فلا يستطيع المفتاح فرضه.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Reading the type from the halves: solid and dashed never make a line 1:1 or M:M.</li>
+      <li class="ar">قراءة النوع من النصفين: المتّصل والمتقطّع لا يجعلان الخط <bdi>1:1</bdi> أو <bdi>M:M</bdi> أبدًا.</li>
+      <li class="en">Treating M:1 and 1:M as two relationships, or giving them two foreign keys.</li>
+      <li class="ar">معاملة <bdi>M:1</bdi> و1:M على أنهما علاقتان، أو إعطاؤهما مفتاحين أجنبيين.</li>
+      <li class="en">Putting the foreign key in the parent: one row cannot hold many children.</li>
+      <li class="ar">وضع المفتاح الأجنبي في الأب: فالصف الواحد لا يتّسع لأبناء كثيرين.</li>
+      <li class="en">Assuming "many" means at least one: check the parent half first.</li>
+      <li class="ar">افتراض أن «المتعدّد» يعني واحدًا على الأقل: افحص نصف الأب أوّلًا.</li>
+      <li class="en">Asking only one "how many?" question: one sentence cannot tell 1:M from 1:1 or M:M.</li>
+      <li class="ar">طرح سؤال «كم؟» واحد فقط: فالجملة الواحدة لا تميّز <bdi>1:M</bdi> من <bdi>1:1</bdi> أو <bdi>M:M</bdi>.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="../tests/t5-test-02.html#t5-test-02">Test 2 &mdash; One-to-Many</a>. Then <a href="../lessons/t5-lesson-03.html#t5-lesson-03">Lesson 3 &mdash; One-to-One</a> puts a single toe at both ends: <code>COMPUTER</code> and <code>MOTHERBOARD</code>, and a <code>PERSON</code> acting in a role.</p>
+    <p class="ar">اختبر نفسك بـ<a href="../tests/t5-test-02.html#t5-test-02">اختبار 2 &mdash; واحد إلى متعدّد</a>. ثم يضع <a href="../lessons/t5-lesson-03.html#t5-lesson-03">الدرس 3 &mdash; واحد إلى واحد</a> إصبعًا واحدة عند الطرفين: <code>COMPUTER</code> و<code>MOTHERBOARD</code>، و<code>PERSON</code> يؤدّي دورًا.</p>
+  </div>
 
 </section>
 <nav class="pager"></nav>
@@ -69,6 +825,9 @@
 <script src="../assets/theory/js/anchors.js"></script>
 <script src="../assets/theory/js/chrome.js"></script>
 <script src="../assets/theory/js/code.js"></script>
+<script src="../assets/vendor/alasql/alasql.min.js"></script>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/widget.js"></script>
 <script src="../assets/theory/js/app.js"></script>
 </body>
 </html>
