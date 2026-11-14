@@ -68,6 +68,186 @@ window.DBTGlossary["t3"] = [
   ]
  },
  {
+  "id": "dashed-line",
+  "term": {
+   "en": "Dashed half (of a relationship line)",
+   "ar": "النصف المتقطّع (من خط العلاقة)"
+  },
+  "def": {
+   "en": "The broken half of a relationship line, also called dotted, next to an entity whose end is optional.",
+   "ar": "نصف خط العلاقة المنقطع، ويُسمّى أيضًا منقّطًا، المجاور لكيان طرفُه اختياري."
+  },
+  "cat": {
+   "en": "Relationships",
+   "ar": "العلاقات"
+  },
+  "see": [
+   "solid-line",
+   "optional-relationship",
+   "relationship-line"
+  ],
+  "used": [
+   "t3l2-s2"
+  ]
+ },
+ {
+  "id": "mandatory-relationship",
+  "term": {
+   "en": "Mandatory (relationship end)",
+   "ar": "إلزامي (طرف العلاقة)"
+  },
+  "def": {
+   "en": "An end at which every instance of the entity must be related to at least one instance of the other; drawn solid and read with must.",
+   "ar": "طرف يجب فيه أن ترتبط كل نسخة من الكيان بنسخة واحدة على الأقل من الآخر؛ ويُرسم متّصلًا ويُقرأ بـ must."
+  },
+  "cat": {
+   "en": "Relationships",
+   "ar": "العلاقات"
+  },
+  "see": [
+   "optionality",
+   "solid-line",
+   "must-be"
+  ],
+  "used": [
+   "t3l2-h1"
+  ]
+ },
+ {
+  "id": "mandatory-foreign-key",
+  "term": {
+   "en": "Mandatory foreign key",
+   "ar": "المفتاح الأجنبي الإلزامي"
+  },
+  "def": {
+   "en": "A foreign key column declared NOT NULL because the entity whose table holds it has a solid half, such as employees.job_id.",
+   "ar": "عمود مفتاح أجنبي مُعلَن NOT NULL لأن للكيان الذي يحمله جدولُه نصفًا متّصلًا، مثل employees.job_id."
+  },
+  "cat": {
+   "en": "Keys",
+   "ar": "المفاتيح"
+  },
+  "see": [
+   "optional-foreign-key",
+   "solid-line"
+  ],
+  "used": [
+   "t3l2-h6"
+  ]
+ },
+ {
+  "id": "may-be",
+  "term": {
+   "en": "May (be)",
+   "ar": "May (be) — قد"
+  },
+  "def": {
+   "en": "The wording of an optional end in a business rule sentence: may before a verb, may be before a name such as held by.",
+   "ar": "صياغة الطرف الاختياري في جملة قاعدة العمل: may قبل الفعل، وmay be قبل اسم مثل held by."
+  },
+  "cat": {
+   "en": "Relationships",
+   "ar": "العلاقات"
+  },
+  "see": [
+   "must-be",
+   "optional-relationship"
+  ],
+  "used": [
+   "t3l2-h3"
+  ]
+ },
+ {
+  "id": "must-be",
+  "term": {
+   "en": "Must (be)",
+   "ar": "Must (be) — يجب"
+  },
+  "def": {
+   "en": "The wording of a mandatory end in a business rule sentence: must before a verb, must be before a name such as placed by.",
+   "ar": "صياغة الطرف الإلزامي في جملة قاعدة العمل: must قبل الفعل، وmust be قبل اسم مثل placed by."
+  },
+  "cat": {
+   "en": "Relationships",
+   "ar": "العلاقات"
+  },
+  "see": [
+   "may-be",
+   "mandatory-relationship"
+  ],
+  "used": [
+   "t3l2-h3"
+  ]
+ },
+ {
+  "id": "optional-relationship",
+  "term": {
+   "en": "Optional (relationship end)",
+   "ar": "اختياري (طرف العلاقة)"
+  },
+  "def": {
+   "en": "An end at which an instance of the entity may have zero matching records in the other; drawn dashed and read with may.",
+   "ar": "طرف يجوز فيه ألّا يكون لنسخة الكيان أيّ سجلّ مطابق في الآخر؛ ويُرسم متقطّعًا ويُقرأ بـ may."
+  },
+  "cat": {
+   "en": "Relationships",
+   "ar": "العلاقات"
+  },
+  "see": [
+   "optionality",
+   "dashed-line",
+   "may-be"
+  ],
+  "used": [
+   "t3l2-h1"
+  ]
+ },
+ {
+  "id": "optional-foreign-key",
+  "term": {
+   "en": "Optional foreign key",
+   "ar": "المفتاح الأجنبي الاختياري"
+  },
+  "def": {
+   "en": "A foreign key column that allows null because the entity whose table holds it has a dashed half, such as employees.manager_id.",
+   "ar": "عمود مفتاح أجنبي يقبل null لأن للكيان الذي يحمله جدولُه نصفًا متقطّعًا، مثل employees.manager_id."
+  },
+  "cat": {
+   "en": "Keys",
+   "ar": "المفاتيح"
+  },
+  "see": [
+   "mandatory-foreign-key",
+   "dashed-line"
+  ],
+  "used": [
+   "t3l2-h6"
+  ]
+ },
+ {
+  "id": "optionality",
+  "term": {
+   "en": "Optionality",
+   "ar": "الإلزامية"
+  },
+  "def": {
+   "en": "Whether an instance of an entity must take part in a relationship or only may; decided separately for each end, and drawn as a solid or dashed half of the line.",
+   "ar": "هل يجب على نسخة الكيان أن تشارك في العلاقة أم أنها قد تشارك فقط؛ وتُقرَّر لكل طرف على حدة، وتُرسم نصفًا متّصلًا أو متقطّعًا من الخط."
+  },
+  "cat": {
+   "en": "Relationships",
+   "ar": "العلاقات"
+  },
+  "see": [
+   "mandatory-relationship",
+   "optional-relationship",
+   "relationship-end"
+  ],
+  "used": [
+   "t3l2-h1"
+  ]
+ },
+ {
   "id": "recursive-relationship",
   "term": {
    "en": "Recursive relationship",
@@ -200,6 +380,29 @@ window.DBTGlossary["t3"] = [
   ],
   "used": [
    "t3l1-h1"
+  ]
+ },
+ {
+  "id": "solid-line",
+  "term": {
+   "en": "Solid half (of a relationship line)",
+   "ar": "النصف المتّصل (من خط العلاقة)"
+  },
+  "def": {
+   "en": "The unbroken half of a relationship line next to an entity whose end is mandatory.",
+   "ar": "نصف خط العلاقة غير المنقطع، المجاور لكيان طرفُه إلزامي."
+  },
+  "cat": {
+   "en": "Relationships",
+   "ar": "العلاقات"
+  },
+  "see": [
+   "dashed-line",
+   "mandatory-relationship",
+   "relationship-line"
+  ],
+  "used": [
+   "t3l2-s2"
   ]
  }
 ];

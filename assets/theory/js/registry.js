@@ -339,7 +339,7 @@ window.DBT_REGISTRY = {
       "ar": "طرفًا بطرف: هل يجب أن يكون لكل موظف وظيفة؟ الخط المتصل والخط المتقطّع قاعدتا عمل مختلفتان."
      },
      "href": "lessons/t3-lesson-02.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t3-test-02",

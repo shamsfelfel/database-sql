@@ -1,0 +1,581 @@
+<section class="page" id="t3-lesson-02">
+
+  <span class="kicker">Lesson 2</span>
+  <h1><span class="en">Optionality — must or may</span><span class="ar">الإلزامية — «يجب» أم «قد»</span></h1>
+  <p class="lede en">By the end of this lesson you will be able to decide, one end at a time, whether a relationship is mandatory or optional, draw that answer as a solid or a dashed half of the line, say it with <em>must</em> or <em>may</em>, and predict which foreign key column becomes <code>NOT NULL</code>.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تقرّر، طرفًا بعد طرف، هل العلاقة إلزامية أم اختيارية، وأن ترسم الجواب نصفًا متّصلًا أو متقطّعًا من الخط، وأن تقوله بكلمة <em>must</em> أو <em>may</em>، وأن تتوقّع أيّ عمود مفتاح أجنبي يصبح <code>NOT NULL</code>.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> <a href="#t3-lesson-01">Lesson 1</a> showed that every relationship is named at both ends and carries two more things: optionality and cardinality. This lesson reads the first of them &mdash; the halves of the line. The cases are the H.R. system (<code>EMPLOYEE</code>, <code>JOB</code>, <code>DEPARTMENT</code>) and the restaurant (<code>CUSTOMER</code>, <code>ORDER</code>).</p>
+    <p class="ar"><strong>السياق.</strong> أظهر <a href="#t3-lesson-01">الدرس 1</a> أن كل علاقة مسمّاة عند طرفيها، وتحمل شيئين آخرين: الإلزامية والتعدّدية. وهذا الدرس يقرأ أوّلهما &mdash; نصفَي الخط. والحالتان هما نظام الموارد البشرية (<code>EMPLOYEE</code> و<code>JOB</code> و<code>DEPARTMENT</code>) والمطعم (<code>CUSTOMER</code> و<code>ORDER</code>).</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Define optionality, and tell a mandatory end from an optional one by asking about instances.</li>
+      <li class="ar">تعريف الإلزامية، والتمييز بين طرف إلزامي وطرف اختياري بالسؤال عن النُّسَخ.</li>
+      <li class="en">Answer the optionality question separately for each end of one relationship.</li>
+      <li class="ar">الإجابة عن سؤال الإلزامية لكل طرف من طرفَي العلاقة الواحدة على حدة.</li>
+      <li class="en">Draw a mandatory end as a solid half and an optional end as a dashed half, on the correct side.</li>
+      <li class="ar">رسم الطرف الإلزامي نصفًا متّصلًا والطرف الاختياري نصفًا متقطّعًا، في الجهة الصحيحة.</li>
+      <li class="en">Read the halves aloud with <em>must (be)</em> and <em>may (be)</em>.</li>
+      <li class="ar">قراءة النصفين بصوت عالٍ بعبارتي <em>must (be)</em> و<em>may (be)</em>.</li>
+      <li class="en">Say which foreign key column a solid half makes <code>NOT NULL</code>, and which <em>must</em> no column can hold.</li>
+      <li class="ar">تحديد عمود المفتاح الأجنبي الذي يجعله النصف المتّصل <code>NOT NULL</code>، و«يجب» التي لا يستطيع أيّ عمود أن يحملها.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t3l2-h1"><span class="en">1 · Must, or may?</span><span class="ar">١ · «يجب» أم «قد»؟</span></h2>
+
+  <div class="problem">
+    <p class="en">H.R. creates a new job, Stock Clerk, before anyone is hired for it. The system refuses: "every job must have an employee". The same week a new employee, Omar Haddad, is entered with no job at all, and payroll cannot check his salary against any range. One rule was too strict, another too loose.</p>
+    <p class="ar">ينشئ قسم الموارد البشرية وظيفة جديدة، أمين مخزن (Stock Clerk)، قبل أن يُعيَّن فيها أحد. فيرفض النظام: «يجب أن يكون لكل وظيفة موظّف». وفي الأسبوع نفسه يُدخَل موظّف جديد، Omar Haddad، بلا وظيفة على الإطلاق، فلا يستطيع قسم الرواتب أن يقارن راتبه بأيّ حدود. قاعدة كانت أشدّ ممّا يجب، وأخرى أرخى ممّا يجب.</p>
+  </div>
+
+  <p class="en">The slides open this lesson with one sentence: relationships are either <strong>mandatory</strong> or <strong>optional</strong>. Which one is a business rule, and you find it by asking about instances &mdash; real employees, real jobs &mdash; not about the boxes.</p>
+  <p class="ar">تفتتح الشرائح هذا الدرس بجملة واحدة: العلاقات إمّا <strong>إلزامية</strong> (Mandatory) وإمّا <strong>اختيارية</strong> (Optional). وأيّهما هي قاعدة عمل، وتجدها بالسؤال عن النُّسَخ &mdash; موظّفين حقيقيين ووظائف حقيقية &mdash; لا عن الصناديق.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="optionality">Optionality</span> says whether an instance of an entity must take part in a relationship, or only may.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="optionality">الإلزامية</span> (Optionality) تقول هل يجب على نسخة الكيان أن تشارك في العلاقة، أم أنها قد تشارك فقط.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A relationship is <span class="term" data-term="mandatory-relationship">mandatory</span> for an entity when every instance of it must be related &mdash; at least one matching record, always.</p>
+    <p class="ar"><strong>تعريف.</strong> تكون العلاقة <span class="term" data-term="mandatory-relationship">إلزامية</span> (Mandatory) لكيانٍ حين يجب أن ترتبط كل نسخة منه &mdash; سجلّ مطابق واحد على الأقل، دائمًا.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A relationship is <span class="term" data-term="optional-relationship">optional</span> for an entity when an instance of it may have zero matching records.</p>
+    <p class="ar"><strong>تعريف.</strong> تكون العلاقة <span class="term" data-term="optional-relationship">اختيارية</span> (Optional) لكيانٍ حين يجوز ألّا يكون لنسخة منه أيّ سجلّ مطابق.</p>
+  </div>
+
+  <h3 id="t3l2-s1"><span class="en">The slides' two questions</span><span class="ar">سؤالا الشرائح</span></h3>
+
+  <p class="en">For <code>EMPLOYEE</code> and <code>JOB</code> the slides ask two questions. <strong>Must every employee have a job?</strong> &mdash; is this mandatory or optional for an employee? <strong>Must every job be assigned to an employee?</strong> &mdash; is it mandatory or optional for a job? The lecturer's note answers both: an employee generally has a job; some jobs are vacant or obsolete.</p>
+  <p class="ar">في <code>EMPLOYEE</code> و<code>JOB</code> تطرح الشرائح سؤالين. <strong>هل يجب أن يكون لكل موظّف وظيفة؟</strong> &mdash; أي: هل العلاقة إلزامية أم اختيارية للموظّف؟ <strong>وهل يجب أن تُسنَد كل وظيفة إلى موظّف؟</strong> &mdash; أي: هل هي إلزامية أم اختيارية للوظيفة؟ وتجيب ملاحظة المحاضِرة عن السؤالين: الموظّف عمومًا له وظيفة، وبعض الوظائف شاغرة أو ملغاة.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The two answers land in different places. "Every employee must have a job" becomes <code>employees.job_id</code> declared <code>NOT NULL</code> &mdash; Omar cannot be saved without one. "A job may have no employee" needs nothing at all: a row in <code>jobs</code> that no <code>employees.job_id</code> points to, such as <code>ST_CLERK</code>, is simply allowed.</p>
+    <p class="ar">يستقرّ الجوابان في مكانين مختلفين. «يجب أن يكون لكل موظّف وظيفة» يصبح <code>employees.job_id</code> مُعلَنًا <code>NOT NULL</code> &mdash; فلا يمكن حفظ Omar بلا وظيفة. أمّا «قد لا يكون للوظيفة موظّف» فلا يحتاج إلى شيء: الصفّ في <code>jobs</code> الذي لا يشير إليه أيّ <code>employees.job_id</code>، مثل <code>ST_CLERK</code>، مسموح ببساطة.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The Stock Clerk job exists and nobody holds it. Which end of <code>EMPLOYEE</code>&ndash;<code>JOB</code> does that fact settle?</p>
+    <p class="q ar">وظيفة أمين المخزن موجودة ولا يشغلها أحد. أيّ طرف من <code>EMPLOYEE</code>&ndash;<code>JOB</code> تحسمه هذه الحقيقة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The <code>EMPLOYEE</code> end: an employee may have no job</span><span class="ar">طرف <code>EMPLOYEE</code>: قد لا يكون للموظّف وظيفة</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The <code>JOB</code> end: a job may be held by no employee</span><span class="ar">طرف <code>JOB</code>: قد لا يشغل الوظيفةَ أيُّ موظّف</span></button></li>
+      <li><button class="opt"><span class="en">Both ends at once: the whole relationship is optional</span><span class="ar">الطرفان معًا: العلاقة كلها اختيارية</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A vacant job is an instance of <code>JOB</code> with zero employees, so it answers the question asked of a job. It says nothing about employees: that is the other question.</p>
+      <p class="ar">الوظيفة الشاغرة نسخة من <code>JOB</code> بلا أيّ موظّف، فهي تجيب عن السؤال المطروح عن الوظيفة. ولا تقول شيئًا عن الموظّفين: فذاك هو السؤال الآخر.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which question decides whether the relationship is mandatory <em>for an employee</em>?</p>
+    <p class="q ar">أيّ سؤال يقرّر هل العلاقة إلزامية <em>للموظّف</em>؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">Can there ever be an employee with no job?</span><span class="ar">هل يمكن أن يوجد يومًا موظّف بلا وظيفة؟</span></button></li>
+      <li><button class="opt"><span class="en">Can there ever be a job with no employee?</span><span class="ar">هل يمكن أن توجد يومًا وظيفة بلا موظّف؟</span></button></li>
+      <li><button class="opt"><span class="en">How many jobs can one employee hold?</span><span class="ar">كم وظيفة يستطيع الموظّف الواحد أن يشغل؟</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Optionality for an employee asks about an employee instance: must it be related? "How many" is a different question &mdash; cardinality, in <a href="#t3-lesson-03">Lesson 3</a>.</p>
+      <p class="ar">الإلزامية للموظّف تسأل عن نسخة موظّف: هل يجب أن ترتبط؟ أمّا «كم» فسؤال آخر &mdash; التعدّدية، في <a href="#t3-lesson-03">الدرس 3</a>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t3l2-h2"><span class="en">2 · One end at a time</span><span class="ar">٢ · طرفًا بعد طرف</span></h2>
+
+  <div class="problem">
+    <p class="en">A designer answers the first question &mdash; "yes, every employee must have a job" &mdash; and draws the whole line as mandatory. The model now also says every job must be held. Stock Clerk is refused again, and nobody ever asked the second question.</p>
+    <p class="ar">يجيب مصمّم عن السؤال الأول &mdash; «نعم، يجب أن يكون لكل موظّف وظيفة» &mdash; ويرسم الخط كلّه إلزاميًّا. فصار النموذج يقول أيضًا إن كل وظيفة يجب أن تُشغَل. وتُرفض وظيفة أمين المخزن مرّة أخرى، ولم يسأل أحد السؤال الثاني قطّ.</p>
+  </div>
+
+  <p class="en">A relationship is bi-directional, so it has two optionalities, one per end, and they are independent. The slides draw each answer on its own half of the line: "The relationship line on the diagram is either solid (mandatory) or dashed (optional)."</p>
+  <p class="ar">العلاقة ثنائية الاتجاه، فلها إلزاميتان، واحدة لكل طرف، وهما مستقلّتان. وترسم الشرائح كل جواب على نصفه الخاص من الخط: «خط العلاقة في المخطّط إمّا متّصل (إلزامي) وإمّا متقطّع (اختياري).»</p>
+
+  <div class="evolve" id="t3l2-e1">
+    <div class="ver" data-title-en="Version 1 — one answer for the whole line" data-title-ar="الإصدار 1 — جواب واحد للخط كلّه">
+      <figure class="diagram" data-diagram="t3-job-v1"></figure>
+      <p class="en">Defect: an invented rule. The <code>JOB</code> half is solid, so every job must be held by an employee. The business never said so, and a vacant job such as Stock Clerk cannot be recorded.</p>
+      <p class="ar">العيب: قاعدة مختلَقة. نصف <code>JOB</code> متّصل، فيجب أن يشغل كلَّ وظيفة موظّفٌ. ولم يقل العمل ذلك قطّ، ولا يمكن تسجيل وظيفة شاغرة مثل أمين المخزن.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — each end answered on its own half" data-title-ar="الإصدار 2 — كل طرف يُجاب عنه في نصفه">
+      <figure class="diagram" data-diagram="t3-job-v2"></figure>
+      <p class="en">Fixed: the half next to <code>EMPLOYEE</code> stays solid (an employee must hold a job); the half next to <code>JOB</code> is dashed (a job may be held). This is the slides' own rule, and the recommended model.</p>
+      <p class="ar">أُصلح: النصف المجاور لـ <code>EMPLOYEE</code> يبقى متّصلًا (يجب أن يشغل الموظّف وظيفة)، والنصف المجاور لـ <code>JOB</code> متقطّع (قد تُشغَل الوظيفة). وهذه قاعدة الشرائح نفسها، وهو النموذج الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t3l2-s2"><span class="en">Solid and dashed: which half?</span><span class="ar">متّصل ومتقطّع: أيّ نصف؟</span></h3>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="solid-line">solid</span> half of a relationship line marks a mandatory end: the entity it touches <em>must</em> be related.</p>
+    <p class="ar"><strong>تعريف.</strong> النصف <span class="term" data-term="solid-line">المتّصل</span> (Solid) من خط العلاقة يعلّم طرفًا إلزاميًّا: الكيان الذي يلامسه <em>يجب</em> أن يرتبط.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="dashed-line">dashed</span> half marks an optional end: the entity it touches <em>may</em> be related. The slides also call it dotted.</p>
+    <p class="ar"><strong>تعريف.</strong> النصف <span class="term" data-term="dashed-line">المتقطّع</span> (Dashed) يعلّم طرفًا اختياريًّا: الكيان الذي يلامسه <em>قد</em> يرتبط. وتسمّيه الشرائح أيضًا منقّطًا (dotted).</p>
+  </div>
+
+  <p class="en">The half belongs to the entity it touches. Start at <code>EMPLOYEE</code>, look at the half beside it: solid, so <em>must</em>. Start at <code>JOB</code>: dashed, so <em>may</em>. All four combinations occur &mdash; three are below.</p>
+  <p class="ar">النصف يخصّ الكيان الذي يلامسه. ابدأ من <code>EMPLOYEE</code> وانظر إلى النصف المجاور له: متّصل، إذن <em>يجب</em>. وابدأ من <code>JOB</code>: متقطّع، إذن <em>قد</em>. والتركيبات الأربع كلها موجودة &mdash; ثلاث منها أدناه.</p>
+
+  <figure class="diagram" data-diagram="t3-line-halves"><figcaption><span class="en">Three lines from the slides. Read each half from the entity it touches. <code>CUSTOMER</code>&ndash;<code>ORDER</code> is solid twice; <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code> is solid then dashed; <code>TRAVELER</code>&ndash;<code>COUNTRY</code> (from Lesson 6's travel agency) is dashed twice. Ignore the ends of the lines for now: they are cardinality.</span><span class="ar">ثلاثة خطوط من الشرائح. اقرأ كل نصف من الكيان الذي يلامسه. <code>CUSTOMER</code>&ndash;<code>ORDER</code> متّصل مرّتين؛ و<code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code> متّصل ثم متقطّع؛ و<code>TRAVELER</code>&ndash;<code>COUNTRY</code> (من وكالة السفر في الدرس 6) متقطّع مرّتين. تجاهل طرفَي الخطوط الآن: فهما التعدّدية.</span></figcaption></figure>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 2's dashed <code>JOB</code> half is what lets this query return a row. <code>employees.job_id</code> is <code>NOT NULL</code>; <code>jobs</code> has no rule about being used. Which jobs does nobody hold?</p>
+    <p class="ar">النصف المتقطّع عند <code>JOB</code> في الإصدار 2 هو ما يسمح لهذا الاستعلام بأن يعيد صفًّا. فالعمود <code>employees.job_id</code> هو <code>NOT NULL</code>، أمّا <code>jobs</code> فلا قاعدة فيه عن الاستعمال. أيّ الوظائف لا يشغلها أحد؟</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE jobs (job_id VARCHAR(10) PRIMARY KEY, title VARCHAR(30) NOT NULL)","INSERT INTO jobs VALUES ('AD_PRES','President'), ('AC_MGR','Accounting Manager'), ('AC_ACCOUNT','Accountant'), ('SA_REP','Sales Representative'), ('IT_PROG','Programmer'), ('ST_CLERK','Stock Clerk')","CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, job_id VARCHAR(10) NOT NULL, manager_id NUMBER)","INSERT INTO employees (employee_id, first_name, last_name, job_id) VALUES (100,'Dana','Smith','AD_PRES')","INSERT INTO employees VALUES (310,'Tyler','Adams','SA_REP',100), (210,'Lawrence','Chen','AC_MGR',100), (405,'Carlos','Gomez','AC_ACCOUNT',210), (378,'Neil','Loungani','IT_PROG',100)"],"sql":"SELECT job_id, title\nFROM jobs\nWHERE job_id NOT IN (SELECT job_id FROM employees)\nORDER BY job_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>job_id</code></th><th><code>title</code></th></tr></thead>
+          <tbody>
+            <tr><td>ST_CLERK</td><td>Stock Clerk</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">One vacant job, stored without complaint. Under version 1 this row would be a broken rule; under version 2 it is a fact the business wanted to keep.</p>
+    <p class="ar">وظيفة شاغرة واحدة، مخزّنة دون اعتراض. في الإصدار 1 يكون هذا الصفّ خرقًا لقاعدة، وفي الإصدار 2 هو حقيقة أراد العمل الاحتفاظ بها.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In version 2, which half of the <code>EMPLOYEE</code>&ndash;<code>JOB</code> line is dashed, and why?</p>
+    <p class="q ar">في الإصدار 2، أيّ نصف من خط <code>EMPLOYEE</code>&ndash;<code>JOB</code> متقطّع، ولماذا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The half next to <code>EMPLOYEE</code>, because there are many employees</span><span class="ar">النصف المجاور لـ <code>EMPLOYEE</code>، لأن الموظّفين كثيرون</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The half next to <code>JOB</code>, because a job may be held by no one</span><span class="ar">النصف المجاور لـ <code>JOB</code>، لأن الوظيفة قد لا يشغلها أحد</span></button></li>
+      <li><button class="opt"><span class="en">Neither: a line is solid or dashed as a whole</span><span class="ar">لا هذا ولا ذاك: الخط متّصل أو متقطّع كلّه</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Each half carries the answer for the entity it touches. The job's answer is <em>may</em>, so the job's half is dashed. "Many" is cardinality, drawn at the line's end, not on its halves.</p>
+      <p class="ar">كل نصف يحمل الجواب الخاص بالكيان الذي يلامسه. وجواب الوظيفة «قد»، فنصف الوظيفة متقطّع. أمّا «كثير» فهي التعدّدية، وتُرسم عند طرف الخط لا على نصفيه.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the figure, start at <code>COUNTRY</code>. What does the half beside it tell you?</p>
+    <p class="q ar">في الشكل، ابدأ من <code>COUNTRY</code>. ماذا يخبرك النصف المجاور له؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A country must be visited by a traveler</span><span class="ar">يجب أن يزور البلدَ مسافرٌ</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A country may be visited by a traveler &mdash; some have no visitors yet</span><span class="ar">قد يزور البلدَ مسافرٌ &mdash; فبعض البلدان لم يزرها أحد بعد</span></button></li>
+      <li><button class="opt"><span class="en">Nothing: the half next to the other entity decides</span><span class="ar">لا شيء: النصف المجاور للكيان الآخر هو الذي يقرّر</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The half next to <code>COUNTRY</code> is dashed: "Each COUNTRY may be visited by one or more TRAVELERs", exactly as the slides read it.</p>
+      <p class="ar">النصف المجاور لـ <code>COUNTRY</code> متقطّع: «Each COUNTRY may be visited by one or more TRAVELERs»، تمامًا كما تقرؤها الشرائح.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t3l2-h3"><span class="en">3 · Saying it: must be, or may be</span><span class="ar">٣ · قولها: «must be» أم «may be»</span></h2>
+
+  <div class="problem">
+    <p class="en">A manager reads the H.R. line aloud: "employees work in departments, departments are responsible for employees". Every word is true, and the two business rules on the line have vanished. Can an employee be in no department? Can a department be empty? The sentence does not say.</p>
+    <p class="ar">يقرأ مدير خط الموارد البشرية بصوت عالٍ: «الموظّفون يعملون في أقسام، والأقسام مسؤولة عن موظّفين». كل كلمة صحيحة، وقد اختفت قاعدتا العمل اللتان على الخط. هل يمكن أن يكون موظّف بلا قسم؟ وهل يمكن أن يكون قسم فارغًا؟ الجملة لا تقول.</p>
+  </div>
+
+  <p class="en">So optionality gets its own words. The slides: for an optional end use <strong>"may be"</strong> or <strong>"may"</strong>; for a mandatory end use <strong>"must be"</strong> or <strong>"must"</strong>. Whether you need <em>be</em> depends only on the relationship name that follows: <em>must hold</em>, but <em>must be placed by</em>.</p>
+  <p class="ar">لذلك تأخذ الإلزامية كلماتها الخاصة. تقول الشرائح: للطرف الاختياري استعمل <strong>«may be»</strong> أو <strong>«may»</strong>، وللطرف الإلزامي استعمل <strong>«must be»</strong> أو <strong>«must»</strong>. وحاجتك إلى <em>be</em> لا تتوقّف إلا على اسم العلاقة الذي يليها: <em>must hold</em>، لكن <em>must be placed by</em>.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="must-be"><em>Must (be)</em></span> is the word a business rule uses for a mandatory end, read from a solid half.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="must-be"><em>Must (be)</em></span> هي الكلمة التي تستعملها قاعدة العمل للطرف الإلزامي، وتُقرأ من نصف متّصل.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="may-be"><em>May (be)</em></span> is the word a business rule uses for an optional end, read from a dashed half.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="may-be"><em>May (be)</em></span> هي الكلمة التي تستعملها قاعدة العمل للطرف الاختياري، وتُقرأ من نصف متقطّع.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t3-rel-anatomy"><figcaption><span class="en">Lesson 1's figure, read again. The half next to <code>EMPLOYEE</code> is solid, so its sentence says <em>must</em>; the half next to <code>DEPARTMENT</code> is dashed, so its sentence says <em>may be</em>.</span><span class="ar">شكل الدرس 1، مقروءًا مرّة أخرى. النصف المجاور لـ <code>EMPLOYEE</code> متّصل، فجملته تقول <em>must</em>؛ والنصف المجاور لـ <code>DEPARTMENT</code> متقطّع، فجملته تقول <em>may be</em>.</span></figcaption></figure>
+
+  <h3 id="t3l2-s3"><span class="en">The word comes from the half you start beside</span><span class="ar">الكلمة تأتي من النصف الذي تبدأ بجانبه</span></h3>
+
+  <p class="en">The slides read the line from both ends, and mark where each word comes from: <em>must</em> "(optionality, solid line)", <em>may be</em> "(optionality, dotted line)". The same holds for their library example:</p>
+  <p class="ar">تقرأ الشرائح الخط من طرفيه، وتعلّم مصدر كل كلمة: <em>must</em> «(الإلزامية، خط متّصل)»، و<em>may be</em> «(الإلزامية، خط منقّط)». والأمر نفسه في مثال المكتبة عندها:</p>
+
+  <pre class="code" data-lang="erdish"><code>Each EMPLOYEE   must            work in          one and only one DEPARTMENT.
+Each DEPARTMENT may be          responsible for  one or more EMPLOYEEs.
+Each BOOK       must be         written by       one and only one AUTHOR.
+Each AUTHOR     may be          the author of    one or more BOOKs.
+                ^ optionality: solid half -> must, dashed half -> may</code></pre>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Of the two <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code> sentences, only the <em>must</em> reaches a column: <code>employees.department_id NUMBER NOT NULL</code>. The <em>may be</em> needs no declaration &mdash; a <code>departments</code> row with no employees is legal on its own. Likewise <code>books.author_id</code> is <code>NOT NULL</code>, and an author with no books is just a row.</p>
+    <p class="ar">من جملتَي <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code>، لا تصل إلى العمود إلا «must»: <code>employees.department_id NUMBER NOT NULL</code>. أمّا «may be» فلا تحتاج إلى إعلان &mdash; فصفّ في <code>departments</code> بلا موظّفين مقبول بذاته. وكذلك <code>books.author_id</code> هو <code>NOT NULL</code>، والمؤلّف الذي لا كتب له مجرّد صفّ.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Complete from a solid half next to <code>ORDER</code>: "Each <code>ORDER</code> ____ placed by one and only one <code>CUSTOMER</code>."</p>
+    <p class="q ar">أكمل انطلاقًا من نصف متّصل مجاور لـ <code>ORDER</code>: «Each <code>ORDER</code> ____ placed by one and only one <code>CUSTOMER</code>.»</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>may be</code></span><span class="ar"><code>may be</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>must be</code></span><span class="ar"><code>must be</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>must</code></span><span class="ar"><code>must</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Solid means <em>must</em>, and the name <code>placed by</code> needs <em>be</em> in front of it: "must be placed by". Plain "must placed by" is not a sentence.</p>
+      <p class="ar">المتّصل يعني «must»، والاسم <code>placed by</code> يحتاج إلى <em>be</em> قبله: «must be placed by». أمّا «must placed by» فليست جملة.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">"Each <code>AUTHOR</code> may be the author of one or more <code>BOOK</code>s." What does the line look like beside <code>AUTHOR</code>?</p>
+    <p class="q ar">«Each <code>AUTHOR</code> may be the author of one or more <code>BOOK</code>s.» كيف يبدو الخط بجانب <code>AUTHOR</code>؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">Dashed</span><span class="ar">متقطّع</span></button></li>
+      <li><button class="opt"><span class="en">Solid</span><span class="ar">متّصل</span></button></li>
+      <li><button class="opt"><span class="en">You cannot tell from one sentence</span><span class="ar">لا يمكن معرفة ذلك من جملة واحدة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The sentence starts at <code>AUTHOR</code> and says <em>may be</em>, so the half beside <code>AUTHOR</code> is dashed. One sentence fixes exactly one half; the other half needs the other sentence.</p>
+      <p class="ar">الجملة تبدأ من <code>AUTHOR</code> وتقول «may be»، فالنصف المجاور لـ <code>AUTHOR</code> متقطّع. الجملة الواحدة تحدّد نصفًا واحدًا بالضبط، والنصف الآخر يحتاج إلى الجملة الأخرى.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t3l2-h4"><span class="en">4 · The restaurant: deciding each end from the scenario</span><span class="ar">٤ · المطعم: حسم كل طرف من السيناريو</span></h2>
+
+  <div class="problem">
+    <p class="en">A cautious designer draws the restaurant with every half dashed, "so nothing is ever refused". A week later order 105 is in the system with no customer. The kitchen cooked it; nobody owns it, and nobody pays for it.</p>
+    <p class="ar">يرسم مصمّم حذِر المطعمَ وكل أنصافه متقطّعة، «حتى لا يُرفض شيء أبدًا». وبعد أسبوع يكون الطلب 105 في النظام بلا زبون. طهاه المطبخ، ولا يملكه أحد، ولا يدفع ثمنه أحد.</p>
+  </div>
+
+  <p class="en">Dashed is not the safe default. It is a business rule like solid, and a wrong <em>may</em> lets bad data in just as a wrong <em>must</em> keeps good data out. The scenario decides: "the mother is the customer who owns the order and is responsible for payment". On the slides: "Optionality = Must or may?"</p>
+  <p class="ar">المتقطّع ليس الخيار الآمن الافتراضي. إنه قاعدة عمل مثل المتّصل، و«قد» الخاطئة تُدخل بيانات فاسدة كما تُبعد «يجب» الخاطئةُ بيانات سليمة. والسيناريو هو الذي يقرّر: «الأمّ هي الزبون الذي يملك الطلب ويتحمّل مسؤولية الدفع». وعلى الشرائح: «Optionality = Must or may?»</p>
+
+  <div class="evolve" id="t3l2-e2">
+    <div class="ver" data-title-en="Version 1 — every half dashed" data-title-ar="الإصدار 1 — كل الأنصاف متقطّعة">
+      <figure class="diagram" data-diagram="t3-order-v1"></figure>
+      <p class="en">Defect: an order with no owner. The <code>ORDER</code> half says <em>may</em>, so order 105 can be saved with no customer &mdash; against the scenario, which makes a customer own and pay for every order.</p>
+      <p class="ar">العيب: طلب بلا مالك. نصف <code>ORDER</code> يقول «قد»، فيمكن حفظ الطلب 105 بلا زبون &mdash; خلافًا للسيناريو الذي يجعل لكل طلب زبونًا يملكه ويدفع ثمنه.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — the ORDER half made solid" data-title-ar="الإصدار 2 — نصف ORDER صار متّصلًا">
+      <figure class="diagram" data-diagram="t3-order-v2"></figure>
+      <p class="en">Fixed: each order must be placed by one customer. Still open: the <code>CUSTOMER</code> half says <em>may</em>, so the model stores customers who never ordered &mdash; a walk-up counter only learns of a customer when they order.</p>
+      <p class="ar">أُصلح: يجب أن يضع كلَّ طلب زبونٌ واحد. وما زال مفتوحًا: نصف <code>CUSTOMER</code> يقول «قد»، فيخزّن النموذج زبائن لم يطلبوا شيئًا قطّ &mdash; والمنضدة لا تعرف الزبون إلا حين يطلب.</p>
+    </div>
+    <div class="ver" data-title-en="Version 3 — solid at both halves" data-title-ar="الإصدار 3 — النصفان متّصلان">
+      <figure class="diagram" data-diagram="t3-customer-order"></figure>
+      <p class="en">Fixed: the slides' model. Each <code>ORDER</code> must be placed by one and only one <code>CUSTOMER</code>; each <code>CUSTOMER</code> must place one or more <code>ORDER</code>s. Both halves solid. This is the recommended form.</p>
+      <p class="ar">أُصلح: نموذج الشرائح. يجب أن يوضع كل <code>ORDER</code> من قِبل <code>CUSTOMER</code> واحد فقط لا غير، ويجب أن يضع كل <code>CUSTOMER</code> واحدًا أو أكثر من <code>ORDER</code>. النصفان متّصلان. وهذا هو الشكل الموصى به.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Here is version 1 as tables: <code>orders.customer_id</code> is nullable, and order 105 was saved without one. The evening bill run joins each order to the customer who pays:</p>
+    <p class="ar">هذا هو الإصدار 1 جداولَ: العمود <code>orders.customer_id</code> يقبل null، وقد حُفظ الطلب 105 بدونه. وعملية الفوترة المسائية تربط كل طلب بالزبون الذي يدفع:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Krishna'), (3,'Mel')","CREATE TABLE orders (order_no NUMBER PRIMARY KEY, customer_id NUMBER)","INSERT INTO orders VALUES (10,1), (102,1), (77,2), (100,3)","INSERT INTO orders (order_no) VALUES (105)"],"sql":"SELECT o.order_no, c.name\nFROM orders o JOIN customers c ON o.customer_id = c.customer_id\nORDER BY o.order_no;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>order_no</code></th><th><code>name</code></th></tr></thead>
+          <tbody>
+            <tr><td>10</td><td>Linda</td></tr>
+            <tr><td>77</td><td>Krishna</td></tr>
+            <tr><td>100</td><td>Mel</td></tr>
+            <tr><td>102</td><td>Linda</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Five orders, four bills. Order 105 silently drops out; <code>SELECT order_no FROM orders WHERE customer_id IS NULL;</code> finds it. A solid <code>ORDER</code> half would have made the column <code>NOT NULL</code>, and 105 could never have been saved.</p>
+    <p class="ar">خمسة طلبات، وأربع فواتير. يسقط الطلب 105 بصمت، ويجده الاستعلام <code>SELECT order_no FROM orders WHERE customer_id IS NULL;</code>. ولو كان نصف <code>ORDER</code> متّصلًا لصار العمود <code>NOT NULL</code>، ولما أمكن حفظ الطلب 105 أصلًا.</p>
+  </div>
+
+  <h3 id="t3l2-s4"><span class="en">The business decides, not the designer</span><span class="ar">العمل يقرّر، لا المصمّم</span></h3>
+
+  <p class="en">The same two entities can carry different halves in another business. A restaurant that takes walk-up orders and phone orders from unknown callers might truly say an order <em>may</em> have a customer. The designer's job is to ask, then draw what the business answered.</p>
+  <p class="ar">قد يحمل الكيانان أنفسهما نصفين مختلفين في عمل آخر. فالمطعم الذي يقبل طلبات المنضدة وطلبات هاتفية من متّصلين مجهولين قد يقول فعلًا إن الطلب <em>قد</em> يكون له زبون. وعمل المصمّم أن يسأل، ثم يرسم ما أجاب به العمل.</p>
+
+  <div class="quiz">
+    <p class="q en">Why is version 1 of the restaurant <em>not</em> the safe choice?</p>
+    <p class="q ar">لماذا <em>ليس</em> الإصدار 1 للمطعم هو الخيار الآمن؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Dashed lines are harder to draw</span><span class="ar">لأن الخطوط المتقطّعة أصعب في الرسم</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A wrong <em>may</em> lets in data the business forbids, such as an order nobody pays for</span><span class="ar">لأن «قد» الخاطئة تُدخل بيانات يمنعها العمل، مثل طلب لا يدفع ثمنه أحد</span></button></li>
+      <li><button class="opt"><span class="en">An ERD must have at least one solid half</span><span class="ar">لأن مخطّط ERD يجب أن يحوي نصفًا متّصلًا واحدًا على الأقل</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Optional is a rule, not an absence of rules. Version 1's <em>may</em> at the <code>ORDER</code> half contradicts the scenario and let order 105 in.</p>
+      <p class="ar">الاختياري قاعدة، لا غياب للقواعد. و«قد» في نصف <code>ORDER</code> في الإصدار 1 تناقض السيناريو، وقد أدخلت الطلب 105.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which version of the restaurant matches the slides' two sentences?</p>
+    <p class="q ar">أيّ إصدار للمطعم يطابق جملتَي الشرائح؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Version 1 &mdash; dashed, dashed</span><span class="ar">الإصدار 1 &mdash; متقطّع، متقطّع</span></button></li>
+      <li><button class="opt"><span class="en">Version 2 &mdash; dashed at <code>CUSTOMER</code>, solid at <code>ORDER</code></span><span class="ar">الإصدار 2 &mdash; متقطّع عند <code>CUSTOMER</code>، متّصل عند <code>ORDER</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Version 3 &mdash; solid, solid</span><span class="ar">الإصدار 3 &mdash; متّصل، متّصل</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"Each ORDER <em>must</em> be placed by one and only one CUSTOMER. Each CUSTOMER <em>must</em> place one or more ORDERs." Two <em>must</em>s, two solid halves.</p>
+      <p class="ar">«Each ORDER <em>must</em> be placed by one and only one CUSTOMER. Each CUSTOMER <em>must</em> place one or more ORDERs.» كلمتا «must»، ونصفان متّصلان.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t3l2-h5"><span class="en">5 · May at both ends: the manager line</span><span class="ar">٥ · «قد» عند الطرفين: خط المدير</span></h2>
+
+  <div class="problem">
+    <p class="en">Lesson 1 related <code>EMPLOYEE</code> to itself: managed by, manager of. Suppose both halves were solid. Then every employee must manage someone &mdash; yet Tyler manages nobody &mdash; and every employee must have a manager above them, all the way up, with no top.</p>
+    <p class="ar">ربط الدرس 1 الكيان <code>EMPLOYEE</code> بنفسه: managed by وmanager of. افترض أن النصفين متّصلان. عندئذٍ يجب أن يدير كل موظّف أحدًا &mdash; لكنّ Tyler لا يدير أحدًا &mdash; ويجب أن يكون لكل موظّف مدير فوقه، صعودًا بلا نهاية ولا قمّة.</p>
+  </div>
+
+  <p class="en">The slides read both ends with <em>may</em>: "Each EMPLOYEE <em>may</em> be managed by one and only one EMPLOYEE. Each EMPLOYEE <em>may</em> manage one or more EMPLOYEEs." Most employees manage nobody, and someone sits at the top. Even when the scenario says the managing director manages him/herself, the drawn rule stays <em>may</em>.</p>
+  <p class="ar">تقرأ الشرائح الطرفين بـ «may»: «Each EMPLOYEE <em>may</em> be managed by one and only one EMPLOYEE. Each EMPLOYEE <em>may</em> manage one or more EMPLOYEEs.» فمعظم الموظّفين لا يديرون أحدًا، وثمّة من يجلس في القمّة. وحتى حين يقول السيناريو إن المدير العام يدير نفسه، تبقى القاعدة المرسومة «قد».</p>
+
+  <figure class="diagram" data-diagram="t3-recursive"><figcaption><span class="en">Lesson 1's recursive relationship. Both halves of the loop are dashed: each end is optional, read from the same entity.</span><span class="ar">العلاقة الذاتية من الدرس 1. نصفا الحلقة متقطّعان: كل طرف اختياري، ويُقرأ من الكيان نفسه.</span></figcaption></figure>
+
+  <h3 id="t3l2-s5"><span class="en">Two optional ends, one nullable column</span><span class="ar">طرفان اختياريان، وعمود واحد يقبل null</span></h3>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The <em>may be managed by</em> end is why <code>employees.manager_id</code> has no <code>NOT NULL</code>: Dana's is empty. The <em>may manage</em> end needs no column at all &mdash; it shows up as employees whose id appears in nobody's <code>manager_id</code>:</p>
+    <p class="ar">طرف «may be managed by» هو سبب خلوّ <code>employees.manager_id</code> من <code>NOT NULL</code>: فقيمته عند Dana فارغة. أمّا طرف «may manage» فلا يحتاج إلى عمود أصلًا &mdash; ويظهر في الموظّفين الذين لا يرد رقمهم في <code>manager_id</code> عند أحد:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, job_id VARCHAR(10) NOT NULL, manager_id NUMBER)","INSERT INTO employees (employee_id, first_name, last_name, job_id) VALUES (100,'Dana','Smith','AD_PRES')","INSERT INTO employees VALUES (310,'Tyler','Adams','SA_REP',100), (210,'Lawrence','Chen','AC_MGR',100), (405,'Carlos','Gomez','AC_ACCOUNT',210), (378,'Neil','Loungani','IT_PROG',100)"],"sql":"SELECT employee_id, first_name, last_name\nFROM employees\nWHERE employee_id NOT IN (SELECT manager_id FROM employees WHERE manager_id IS NOT NULL)\nORDER BY employee_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>employee_id</code></th><th><code>first_name</code></th><th><code>last_name</code></th></tr></thead>
+          <tbody>
+            <tr><td>310</td><td>Tyler</td><td>Adams</td></tr>
+            <tr><td>378</td><td>Neil</td><td>Loungani</td></tr>
+            <tr><td>405</td><td>Carlos</td><td>Gomez</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Three employees manage nobody &mdash; the <em>may</em> at the <code>manager of</code> end, in rows. Change the query to <code>WHERE manager_id IS NULL</code> and it returns one row, 100 Dana Smith: the <em>may</em> at the other end.</p>
+    <p class="ar">ثلاثة موظّفين لا يديرون أحدًا &mdash; وهذه «قد» عند طرف <code>manager of</code>، في صفوف. وغيّر الاستعلام إلى <code>WHERE manager_id IS NULL</code> فيعيد صفًّا واحدًا، 100 Dana Smith: وهذه «قد» عند الطرف الآخر.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">If the <code>managed by</code> half were solid, what would the database have to refuse?</p>
+    <p class="q ar">لو كان نصف <code>managed by</code> متّصلًا، فماذا كان على قاعدة البيانات أن ترفض؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">Any employee row with an empty <code>manager_id</code> &mdash; Dana's included</span><span class="ar">أيّ صفّ موظّف عموده <code>manager_id</code> فارغ &mdash; ومنه صفّ Dana</span></button></li>
+      <li><button class="opt"><span class="en">Any employee who manages nobody, such as Tyler</span><span class="ar">أيّ موظّف لا يدير أحدًا، مثل Tyler</span></button></li>
+      <li><button class="opt"><span class="en">Nothing: recursive relationships cannot be mandatory</span><span class="ar">لا شيء: العلاقات الذاتية لا يمكن أن تكون إلزامية</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"Must be managed by" would make <code>manager_id</code> <code>NOT NULL</code>, so the top of the tree would have to manage herself (<code>manager_id = 100</code>). Tyler belongs to the other end, <code>manager of</code>.</p>
+      <p class="ar">«must be managed by» تجعل <code>manager_id</code> عمودًا <code>NOT NULL</code>، فيكون على من في القمّة أن تدير نفسها (<code>manager_id = 100</code>). أمّا Tyler فيخصّ الطرف الآخر، <code>manager of</code>.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Read the recursive line starting at the <code>manager of</code> end. Which sentence is right?</p>
+    <p class="q ar">اقرأ الخط الذاتي بدءًا من طرف <code>manager of</code>. أيّ جملة صحيحة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Each EMPLOYEE must be the manager of one or more EMPLOYEEs.</span><span class="ar">Each EMPLOYEE must be the manager of one or more EMPLOYEEs.</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Each EMPLOYEE may be the manager of one or more EMPLOYEEs.</span><span class="ar">Each EMPLOYEE may be the manager of one or more EMPLOYEEs.</span></button></li>
+      <li><button class="opt"><span class="en">Each MANAGER may manage one or more EMPLOYEEs.</span><span class="ar">Each MANAGER may manage one or more EMPLOYEEs.</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The half beside that end is dashed, so <em>may be</em>; and there is no <code>MANAGER</code> entity &mdash; both ends are <code>EMPLOYEE</code>.</p>
+      <p class="ar">النصف المجاور لذلك الطرف متقطّع، إذن «may be»؛ ولا يوجد كيان <code>MANAGER</code> &mdash; فالطرفان كلاهما <code>EMPLOYEE</code>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 6 -->
+  <h2 id="t3l2-h6"><span class="en">6 · From the half to the column</span><span class="ar">٦ · من النصف إلى العمود</span></h2>
+
+  <div class="problem">
+    <p class="en">The database administrator who will build the H.R. tables asks one thing about each foreign key column: <code>NULL</code> or <code>NOT NULL</code>? The ERD has the answer, but only if you know which half of which line to look at.</p>
+    <p class="ar">يسأل مدير قاعدة البيانات الذي سيبني جداول الموارد البشرية سؤالًا واحدًا عن كل عمود مفتاح أجنبي: <code>NULL</code> أم <code>NOT NULL</code>؟ والجواب في مخطّط ERD، لكن بشرط أن تعرف إلى أيّ نصف من أيّ خط تنظر.</p>
+  </div>
+
+  <p class="en">The foreign key sits in the table at the crow's-foot end (Lesson 3 explains why). Look at <em>that</em> entity's half. Solid: the key column is <code>NOT NULL</code>. Dashed: it may be left empty.</p>
+  <p class="ar">يقع المفتاح الأجنبي في الجدول الذي عند طرف قدم الغراب (يشرح الدرس 3 السبب). انظر إلى نصف <em>ذلك</em> الكيان. متّصل: عمود المفتاح <code>NOT NULL</code>. متقطّع: يجوز أن يبقى فارغًا.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="mandatory-foreign-key">mandatory foreign key</span> is a foreign key column declared <code>NOT NULL</code>, because the entity that holds it has a solid half.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="mandatory-foreign-key">المفتاح الأجنبي الإلزامي</span> (Mandatory Foreign Key) عمود مفتاح أجنبي مُعلَن <code>NOT NULL</code>، لأن للكيان الذي يحمله نصفًا متّصلًا.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="optional-foreign-key">optional foreign key</span> is a foreign key column that allows null, because the entity that holds it has a dashed half.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="optional-foreign-key">المفتاح الأجنبي الاختياري</span> (Optional Foreign Key) عمود مفتاح أجنبي يقبل null، لأن للكيان الذي يحمله نصفًا متقطّعًا.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Half beside the key's table</th><th class="ar">النصف المجاور لجدول المفتاح</th><th class="en">Column</th><th class="ar">العمود</th></tr></thead>
+      <tbody>
+        <tr><td class="en"><code>EMPLOYEE</code> must hold &mdash; solid</td><td class="ar"><code>EMPLOYEE</code> must hold &mdash; متّصل</td><td class="en"><code>employees.job_id NOT NULL</code></td><td class="ar"><code>employees.job_id NOT NULL</code></td></tr>
+        <tr><td class="en"><code>EMPLOYEE</code> must work in &mdash; solid</td><td class="ar"><code>EMPLOYEE</code> must work in &mdash; متّصل</td><td class="en"><code>employees.department_id NOT NULL</code></td><td class="ar"><code>employees.department_id NOT NULL</code></td></tr>
+        <tr><td class="en"><code>ORDER</code> must be placed by &mdash; solid</td><td class="ar"><code>ORDER</code> must be placed by &mdash; متّصل</td><td class="en"><code>orders.customer_id NOT NULL</code></td><td class="ar"><code>orders.customer_id NOT NULL</code></td></tr>
+        <tr><td class="en"><code>EMPLOYEE</code> may be managed by &mdash; dashed</td><td class="ar"><code>EMPLOYEE</code> may be managed by &mdash; متقطّع</td><td class="en"><code>employees.manager_id</code> (nullable)</td><td class="ar"><code>employees.manager_id</code> (يقبل null)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="t3l2-s6"><span class="en">The must that no column can hold</span><span class="ar">«يجب» التي لا يحملها أيّ عمود</span></h3>
+
+  <p class="en">"Each <code>CUSTOMER</code> must place one or more <code>ORDER</code>s" is a solid half too, but at the other end. <code>customers</code> has no order column to declare <code>NOT NULL</code>. That rule stays on the ERD, and the application keeps it &mdash; for example by saving a new customer only together with their first order.</p>
+  <p class="ar">«Each <code>CUSTOMER</code> must place one or more <code>ORDER</code>s» نصف متّصل أيضًا، لكن عند الطرف الآخر. وليس في <code>customers</code> عمود للطلب يُعلَن <code>NOT NULL</code>. فتبقى هذه القاعدة في مخطّط ERD، ويحفظها التطبيق &mdash; مثلًا بألّا يحفظ زبونًا جديدًا إلا مع طلبه الأول.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Try to hire Omar without a job. Run it as it is, then replace <code>NULL</code> with <code>'ST_CLERK'</code> and run it again:</p>
+    <p class="ar">حاول تعيين Omar بلا وظيفة. شغّل الأمر كما هو، ثم استبدل <code>NULL</code> بـ <code>'ST_CLERK'</code> وشغّله مرّة أخرى:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"explore","objects":true,"dataset":{},"setup":["CREATE TABLE jobs (job_id VARCHAR(10) PRIMARY KEY, title VARCHAR(30) NOT NULL)","INSERT INTO jobs VALUES ('AD_PRES','President'), ('AC_MGR','Accounting Manager'), ('AC_ACCOUNT','Accountant'), ('SA_REP','Sales Representative'), ('IT_PROG','Programmer'), ('ST_CLERK','Stock Clerk')","CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, job_id VARCHAR(10) NOT NULL, manager_id NUMBER)","INSERT INTO employees (employee_id, first_name, last_name, job_id) VALUES (100,'Dana','Smith','AD_PRES')","INSERT INTO employees VALUES (310,'Tyler','Adams','SA_REP',100), (210,'Lawrence','Chen','AC_MGR',100), (405,'Carlos','Gomez','AC_ACCOUNT',210), (378,'Neil','Loungani','IT_PROG',100)"],"sql":"INSERT INTO employees VALUES (420, 'Omar', 'Haddad', NULL, 210);"}
+      </script>
+    </div>
+    <p class="en">The first run fails with <code>Wrong NULL value in NOT NULL column job_id</code> &mdash; the solid <code>EMPLOYEE</code> half, enforced. With <code>'ST_CLERK'</code> the row is saved, and the vacant job is vacant no more. Leaving <code>manager_id</code> empty instead would succeed: that half is dashed.</p>
+    <p class="ar">يفشل التشغيل الأول برسالة <code>Wrong NULL value in NOT NULL column job_id</code> &mdash; إنه نصف <code>EMPLOYEE</code> المتّصل، مُطبَّقًا. ومع <code>'ST_CLERK'</code> يُحفظ الصفّ، ولا تعود الوظيفة الشاغرة شاغرة. أمّا ترك <code>manager_id</code> فارغًا فينجح: فذلك النصف متقطّع.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapter 3</span><span class="ar">خيط · الفصل 3 في SQL</span></h4>
+    <p class="en">On the SQL track, <a href="@/chapters/chapter-3.html">Chapter 3 &mdash; Relationships</a> adds foreign key columns and inserts rows through them. It treats <code>NOT NULL</code> on a key as a choice you make while typing. This lesson says where the choice comes from: one half of one line, decided by the business before any table exists.</p>
+    <p class="ar">في مسار SQL، يضيف <a href="@/chapters/chapter-3.html">الفصل 3 &mdash; العلاقات</a> أعمدة مفاتيح أجنبية ويُدخل الصفوف من خلالها، ويعامل <code>NOT NULL</code> على المفتاح خيارًا تتّخذه وأنت تكتب. أمّا هذا الدرس فيقول من أين يأتي الخيار: نصف واحد من خط واحد، يقرّره العمل قبل أن يوجد أيّ جدول.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">"Each <code>DEPARTMENT</code> may be responsible for one or more <code>EMPLOYEE</code>s." What does that dashed half change in the tables?</p>
+    <p class="q ar">«Each <code>DEPARTMENT</code> may be responsible for one or more <code>EMPLOYEE</code>s.» ماذا يغيّر هذا النصف المتقطّع في الجداول؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>employees.department_id</code> becomes nullable</span><span class="ar">يصبح <code>employees.department_id</code> قابلًا لـ null</span></button></li>
+      <li><button class="opt"><span class="en"><code>departments</code> gets a nullable <code>employee_id</code> column</span><span class="ar">يأخذ <code>departments</code> عمود <code>employee_id</code> يقبل null</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Nothing needs declaring: a department with no employees is simply allowed</span><span class="ar">لا شيء يحتاج إلى إعلان: القسم بلا موظّفين مسموح ببساطة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The key lives in <code>employees</code>, so only the <code>EMPLOYEE</code> half (solid) touches a column. The <code>DEPARTMENT</code> half is dashed, and an unreferenced department row is already legal.</p>
+      <p class="ar">المفتاح يعيش في <code>employees</code>، فلا يلامس عمودًا إلا نصف <code>EMPLOYEE</code> (المتّصل). ونصف <code>DEPARTMENT</code> متقطّع، وصفّ القسم الذي لا يشير إليه أحد مقبول أصلًا.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which rule can a <code>NOT NULL</code> constraint <em>not</em> enforce?</p>
+    <p class="q ar">أيّ قاعدة <em>لا</em> يستطيع قيد <code>NOT NULL</code> أن يفرضها؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Each ORDER must be placed by one and only one CUSTOMER.</span><span class="ar">Each ORDER must be placed by one and only one CUSTOMER.</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Each CUSTOMER must place one or more ORDERs.</span><span class="ar">Each CUSTOMER must place one or more ORDERs.</span></button></li>
+      <li><button class="opt"><span class="en">Each EMPLOYEE must hold one and only one JOB.</span><span class="ar">Each EMPLOYEE must hold one and only one JOB.</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The other two land on a key column (<code>orders.customer_id</code>, <code>employees.job_id</code>). A customer's orders are not a column of <code>customers</code>, so that <em>must</em> has to be kept outside the constraint.</p>
+      <p class="ar">القاعدتان الأخريان تستقرّان على عمود مفتاح (<code>orders.customer_id</code> و<code>employees.job_id</code>). أمّا طلبات الزبون فليست عمودًا في <code>customers</code>، فلا بدّ أن تُحفظ تلك «يجب» خارج القيد.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t3l2-h7"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Ask the two questions</span><span class="ar">تمرين 1 · اطرح السؤالين</span></h4>
+    <p class="en">For each pair, write the two optionality questions, answer each from the business described, and say which half is solid and which dashed. (a) <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code>: "each employee reports to a department"; a new department is set up before anyone joins. (b) <code>BOOK</code>&ndash;<code>AUTHOR</code>, in the slides' library. (c) <code>PRODUCT</code>&ndash;<code>PRODUCT TYPE</code>: every product is classified; a new type may have no products yet.</p>
+    <p class="ar">لكل زوج، اكتب سؤالَي الإلزامية، وأجب عن كلٍّ منهما من العمل الموصوف، وقل أيّ نصف متّصل وأيّه متقطّع. (a) <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code>: «يتبع كل موظّف قسمًا»، ويُنشأ قسم جديد قبل أن ينضمّ إليه أحد. (b) <code>BOOK</code>&ndash;<code>AUTHOR</code>، في مكتبة الشرائح. (c) <code>PRODUCT</code>&ndash;<code>PRODUCT TYPE</code>: كل منتج مصنَّف، وقد لا يكون لنوع جديد أيّ منتج بعد.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) Must every employee be in a department? Yes &mdash; solid at <code>EMPLOYEE</code>. Must every department have employees? No &mdash; dashed at <code>DEPARTMENT</code>. (b) Must every book be written by an author? Yes &mdash; solid at <code>BOOK</code>. Must every author have a book? No &mdash; dashed at <code>AUTHOR</code>. (c) Solid at <code>PRODUCT</code> ("must be classified by"), dashed at <code>PRODUCT TYPE</code> ("may classify") &mdash; the slides' own example.</p>
+      <p class="ar">(a) هل يجب أن يكون كل موظّف في قسم؟ نعم &mdash; متّصل عند <code>EMPLOYEE</code>. وهل يجب أن يكون لكل قسم موظّفون؟ لا &mdash; متقطّع عند <code>DEPARTMENT</code>. (b) هل يجب أن يكون لكل كتاب مؤلّف؟ نعم &mdash; متّصل عند <code>BOOK</code>. وهل يجب أن يكون لكل مؤلّف كتاب؟ لا &mdash; متقطّع عند <code>AUTHOR</code>. (c) متّصل عند <code>PRODUCT</code> («must be classified by»)، ومتقطّع عند <code>PRODUCT TYPE</code> («may classify») &mdash; وهو مثال الشرائح نفسه.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Fill in the word</span><span class="ar">تمرين 2 · املأ الكلمة</span></h4>
+    <p class="en">Each line describes one half. Write the full optionality word &mdash; <em>must</em>, <em>must be</em>, <em>may</em> or <em>may be</em>.</p>
+    <p class="ar">كل سطر يصف نصفًا واحدًا. اكتب كلمة الإلزامية كاملة &mdash; <em>must</em> أو <em>must be</em> أو <em>may</em> أو <em>may be</em>.</p>
+    <pre class="code" data-lang="erdish"><code>1  Each JOB        ____ held by one or more EMPLOYEEs.        (half beside JOB: dashed)
+2  Each PRODUCT    ____ classified by one and only one PRODUCT TYPE.   (solid)
+3  Each CUSTOMER   ____ place one or more ORDERs.             (solid)
+4  Each EMPLOYEE   ____ manage one or more EMPLOYEEs.         (dashed)</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">1 <em>may be</em> held by. 2 <em>must be</em> classified by. 3 <em>must</em> place. 4 <em>may</em> manage. The half gives must or may; the name decides whether <em>be</em> follows.</p>
+      <p class="ar">1 <em>may be</em> held by. و2 <em>must be</em> classified by. و3 <em>must</em> place. و4 <em>may</em> manage. النصف يعطي must أو may، والاسم يقرّر هل تليها <em>be</em>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Find the wrong half</span><span class="ar">تمرين 3 · جِد النصف الخاطئ</span></h4>
+    <p class="en">A classmate's H.R. draft, written as text. The business rules are those of this lesson. Which lines have a wrong half, and what should each be?</p>
+    <p class="ar">مسوّدة زميل للموارد البشرية، مكتوبة نصًّا. وقواعد العمل هي قواعد هذا الدرس. أيّ الأسطر فيها نصف خاطئ، وماذا يجب أن يكون كلٌّ منها؟</p>
+    <pre class="code" data-lang="text"><code>1  EMPLOYEE  [solid]  hold        |  held by          [solid]   JOB
+2  EMPLOYEE  [solid]  works in    |  responsible for  [dashed]  DEPARTMENT
+3  CUSTOMER  [dashed] place       |  placed by        [dashed]  ORDER
+4  EMPLOYEE  [dashed] managed by  |  manager of       [dashed]  EMPLOYEE</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Line 1: the <code>JOB</code> half must be dashed &mdash; vacant jobs exist. Line 3: both halves must be solid &mdash; every order has its paying customer, and a customer is someone who has ordered. Lines 2 and 4 are right.</p>
+      <p class="ar">السطر 1: يجب أن يكون نصف <code>JOB</code> متقطّعًا &mdash; فالوظائف الشاغرة موجودة. والسطر 3: يجب أن يكون النصفان متّصلين &mdash; فلكل طلب زبونه الذي يدفع، والزبون هو مَن طلب. والسطران 2 و4 صحيحان.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · NULL or NOT NULL?</span><span class="ar">تمرين 4 · NULL أم NOT NULL؟</span></h4>
+    <p class="en">Write the <code>CREATE TABLE</code> for <code>orders (order_no, customer_id)</code> under version 3 of the restaurant, and say what happens to <code>INSERT INTO orders (order_no) VALUES (105);</code>. Then say where the <code>CUSTOMER</code> half's <em>must</em> is kept.</p>
+    <p class="ar">اكتب أمر <code>CREATE TABLE</code> للجدول <code>orders (order_no, customer_id)</code> بحسب الإصدار 3 للمطعم، وقل ماذا يحدث للأمر <code>INSERT INTO orders (order_no) VALUES (105);</code>. ثم قل أين تُحفظ «must» الخاصة بنصف <code>CUSTOMER</code>.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE orders (
+  order_no    NUMBER PRIMARY KEY,
+  customer_id NUMBER NOT NULL      -- the ORDER half is solid
+);</code></pre>
+      <p class="en">The insert fails: in alasql the message is <code>Wrong NULL value in NOT NULL column customer_id</code>. The <code>CUSTOMER</code> half's <em>must</em> has no column; it stays on the ERD and is kept by the application.</p>
+      <p class="ar">يفشل الإدخال: ورسالته في alasql هي <code>Wrong NULL value in NOT NULL column customer_id</code>. أمّا «must» الخاصة بنصف <code>CUSTOMER</code> فلا عمود لها؛ فتبقى في مخطّط ERD ويحفظها التطبيق.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Same entities, another business</span><span class="ar">تمرين 5 · الكيانات نفسها، وعمل آخر</span></h4>
+    <p class="en">A temp agency says: "Every job we advertise is filled the day it is posted, but our staff sit on the bench between jobs." Draw the <code>EMPLOYEE</code>&ndash;<code>JOB</code> halves for this agency, write both sentences, and compare with version 2 of section 2.</p>
+    <p class="ar">تقول وكالة توظيف مؤقّت: «كل وظيفة نعلن عنها تُشغَل يوم نشرها، لكن موظّفينا ينتظرون بلا عمل بين وظيفة وأخرى.» ارسم نصفَي <code>EMPLOYEE</code>&ndash;<code>JOB</code> لهذه الوكالة، واكتب الجملتين، وقارن بالإصدار 2 في القسم 2.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Dashed at <code>EMPLOYEE</code>, solid at <code>JOB</code> &mdash; the exact reverse of version 2. "Each EMPLOYEE may hold one and only one JOB. Each JOB must be held by one or more EMPLOYEEs." Same entities, same names, opposite halves: the business decides. Here <code>employees.job_id</code> would allow null.</p>
+      <p class="ar">متقطّع عند <code>EMPLOYEE</code>، ومتّصل عند <code>JOB</code> &mdash; عكس الإصدار 2 تمامًا. «Each EMPLOYEE may hold one and only one JOB. Each JOB must be held by one or more EMPLOYEEs.» الكيانات نفسها، والأسماء نفسها، والنصفان معكوسان: العمل هو الذي يقرّر. وهنا يقبل <code>employees.job_id</code> القيمة null.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">Optionality asks whether an instance must take part in a relationship, or only may. It is a business rule.</li>
+      <li class="ar">الإلزامية تسأل هل يجب على النسخة أن تشارك في العلاقة، أم أنها قد تشارك فقط. وهي قاعدة عمل.</li>
+      <li class="en">Every relationship has two optionalities, one per end, and they are independent: ask both questions.</li>
+      <li class="ar">لكل علاقة إلزاميتان، واحدة لكل طرف، وهما مستقلّتان: اطرح السؤالين كليهما.</li>
+      <li class="en">A solid half means mandatory (<em>must</em>, <em>must be</em>); a dashed half means optional (<em>may</em>, <em>may be</em>).</li>
+      <li class="ar">النصف المتّصل يعني إلزاميًّا (<em>must</em> و<em>must be</em>)، والنصف المتقطّع يعني اختياريًّا (<em>may</em> و<em>may be</em>).</li>
+      <li class="en">Each half belongs to the entity it touches; read the half beside the entity you start from.</li>
+      <li class="ar">كل نصف يخصّ الكيان الذي يلامسه؛ فاقرأ النصف المجاور للكيان الذي تبدأ منه.</li>
+      <li class="en">A solid half at the table that holds the key makes that foreign key <code>NOT NULL</code>; a dashed one leaves it nullable.</li>
+      <li class="ar">النصف المتّصل عند الجدول الذي يحمل المفتاح يجعل المفتاح الأجنبي <code>NOT NULL</code>، والمتقطّع يتركه قابلًا لـ null.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Answering one question and drawing the whole line with it.</li>
+      <li class="ar">الإجابة عن سؤال واحد ورسم الخط كلّه بجوابه.</li>
+      <li class="en">Putting the dashed half next to the wrong entity.</li>
+      <li class="ar">وضع النصف المتقطّع بجانب الكيان الخطأ.</li>
+      <li class="en">Drawing every half dashed "to be safe": a wrong <em>may</em> lets forbidden data in.</li>
+      <li class="ar">رسم كل الأنصاف متقطّعة «احتياطًا»: فـ «قد» الخاطئة تُدخل بيانات ممنوعة.</li>
+      <li class="en">Confusing optionality (must or may) with cardinality (one or many).</li>
+      <li class="ar">الخلط بين الإلزامية («يجب» أم «قد») والتعدّدية (واحد أم أكثر).</li>
+      <li class="en">Writing "must placed by": the name decides whether <em>be</em> is needed.</li>
+      <li class="ar">كتابة «must placed by»: فالاسم هو الذي يقرّر هل تلزم <em>be</em>.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="#t3-test-02">Test 2 &mdash; Optionality</a>. Then <a href="#t3-lesson-03">Lesson 3 &mdash; Cardinality</a> reads the ends of the line: one toe or a crow's foot, one and only one or one or more.</p>
+    <p class="ar">اختبر نفسك بـ<a href="#t3-test-02">اختبار 2 &mdash; الإلزامية</a>. ثم يقرأ <a href="#t3-lesson-03">الدرس 3 &mdash; التعدّدية</a> طرفَي الخط: إصبع واحدة أم قدم غراب، واحد فقط لا غير أم واحد أو أكثر.</p>
+  </div>
+
+</section>

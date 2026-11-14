@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 420" direction="ltr" role="img" aria-labelledby="t3-line-halves-t">
+<title id="t3-line-halves-t">Three relationships showing both halves solid (CUSTOMER and ORDER), one solid and one dashed (EMPLOYEE and DEPARTMENT), and both dashed (TRAVELER and COUNTRY), each with its two readings / ثلاث علاقات: نصفان متّصلان (CUSTOMER وORDER)، ونصف متّصل ونصف متقطّع (EMPLOYEE وDEPARTMENT)، ونصفان متقطّعان (TRAVELER وCOUNTRY)، ولكلٍّ قراءتاها</title>
+<g class="en"><text x="410.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Which half is solid? The half next to the entity whose rule is must</text></g><g class="ar"><text x="410.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">أيّ نصف متّصل؟ النصف المجاور للكيان الذي قاعدته «يجب»</text></g>
+<g class="en"><text x="40" y="56" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">Line</text></g><g class="ar"><text x="440" y="56" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">الخط</text></g>
+<g class="en"><text x="470" y="56" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">Read from the left entity, then from the right</text></g><g class="ar"><text x="470" y="56" text-anchor="end" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">القراءة من الكيان الأيسر، ثم من الأيمن</text></g>
+<rect x="40" y="78" width="110" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="95" y="100" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">CUSTOMER</text>
+<rect x="320" y="78" width="120" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="380" y="100" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">ORDER</text>
+<path d="M150 95 L235.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M235.0 95 L320 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M306 95 L320 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M306 95 L320 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M306 95 L320 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="158" y="87" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">place</text>
+<text x="300" y="113" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">placed by</text>
+<text x="470" y="92" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">Each CUSTOMER must place …</text>
+<text x="470" y="112" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">Each ORDER must be placed by …</text>
+<g class="en"><text x="192" y="134" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">solid: must</text></g><g class="ar"><text x="192" y="134" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">متّصل: يجب</text></g>
+<g class="en"><text x="278" y="134" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">solid: must</text></g><g class="ar"><text x="278" y="134" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">متّصل: يجب</text></g>
+<rect x="40" y="166" width="110" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="95" y="188" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">EMPLOYEE</text>
+<rect x="320" y="166" width="120" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="380" y="188" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">DEPARTMENT</text>
+<path d="M150 183 L235.0 183" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M235.0 183 L320 183" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M164 183 L150 175" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M164 183 L150 183" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M164 183 L150 191" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="170" y="175" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">works in</text>
+<text x="312" y="201" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">responsible for</text>
+<text x="470" y="180" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">Each EMPLOYEE must work in …</text>
+<text x="470" y="200" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">Each DEPARTMENT may be responsible for …</text>
+<g class="en"><text x="192" y="222" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">solid: must</text></g><g class="ar"><text x="192" y="222" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">متّصل: يجب</text></g>
+<g class="en"><text x="278" y="222" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">dashed: may</text></g><g class="ar"><text x="278" y="222" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">متقطّع: قد</text></g>
+<rect x="40" y="254" width="110" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="95" y="276" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">TRAVELER</text>
+<rect x="320" y="254" width="120" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="380" y="276" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">COUNTRY</text>
+<path d="M150 271 L235.0 271" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M235.0 271 L320 271" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M164 271 L150 263" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M164 271 L150 271" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M164 271 L150 279" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M306 271 L320 263" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M306 271 L320 271" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M306 271 L320 279" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="170" y="263" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">visit</text>
+<text x="300" y="289" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">visited by</text>
+<text x="470" y="268" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">Each TRAVELER may visit …</text>
+<text x="470" y="288" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">Each COUNTRY may be visited by …</text>
+<g class="en"><text x="192" y="310" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">dashed: may</text></g><g class="ar"><text x="192" y="310" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">متقطّع: قد</text></g>
+<g class="en"><text x="278" y="310" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">dashed: may</text></g><g class="ar"><text x="278" y="310" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">متقطّع: قد</text></g>
+<rect x="40" y="348" width="740" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="371" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px">Each end is answered on its own half. Start at an entity, look at the half beside it: solid says must, dashed says may.</text></g><g class="ar"><text x="764" y="371" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px">يُجاب عن كل طرف في نصفه الخاص. ابدأ من كيان، وانظر إلى النصف المجاور له: المتّصل يقول «يجب»، والمتقطّع يقول «قد».</text></g>
+<g class="en"><text x="56" y="392" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11.5px">The ends of the line (one toe, three toes) are cardinality: Lesson 3.</text></g><g class="ar"><text x="764" y="392" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12.5px">أمّا طرفا الخط (إصبع واحدة أو ثلاث) فهما التعدّدية: الدرس 3.</text></g></svg>

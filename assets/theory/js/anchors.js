@@ -159,6 +159,21 @@ window.DBTAnchors = {
 "t3l1-s4": "lessons/t3-lesson-01.html",
 "t3l1-s5": "lessons/t3-lesson-01.html",
 "t3l1-s6": "lessons/t3-lesson-01.html",
+"t3l2-e1": "lessons/t3-lesson-02.html",
+"t3l2-e2": "lessons/t3-lesson-02.html",
+"t3l2-h1": "lessons/t3-lesson-02.html",
+"t3l2-h2": "lessons/t3-lesson-02.html",
+"t3l2-h3": "lessons/t3-lesson-02.html",
+"t3l2-h4": "lessons/t3-lesson-02.html",
+"t3l2-h5": "lessons/t3-lesson-02.html",
+"t3l2-h6": "lessons/t3-lesson-02.html",
+"t3l2-h7": "lessons/t3-lesson-02.html",
+"t3l2-s1": "lessons/t3-lesson-02.html",
+"t3l2-s2": "lessons/t3-lesson-02.html",
+"t3l2-s3": "lessons/t3-lesson-02.html",
+"t3l2-s4": "lessons/t3-lesson-02.html",
+"t3l2-s5": "lessons/t3-lesson-02.html",
+"t3l2-s6": "lessons/t3-lesson-02.html",
 "t4-chapter": "chapters/t4.html",
 "t4-exam-a": "exams/t4-exam-a.html",
 "t4-exam-b": "exams/t4-exam-b.html",
@@ -595,6 +610,58 @@ window.DBTHeadings = {
 "t3l1-s6": {
 "ar": "ثلاثة مكوّنات، نظرة أولى",
 "en": "Three components, previewed"
+},
+"t3l2-h1": {
+"ar": "١ · «يجب» أم «قد»؟",
+"en": "1 · Must, or may?"
+},
+"t3l2-h2": {
+"ar": "٢ · طرفًا بعد طرف",
+"en": "2 · One end at a time"
+},
+"t3l2-h3": {
+"ar": "٣ · قولها: «must be» أم «may be»",
+"en": "3 · Saying it: must be, or may be"
+},
+"t3l2-h4": {
+"ar": "٤ · المطعم: حسم كل طرف من السيناريو",
+"en": "4 · The restaurant: deciding each end from the scenario"
+},
+"t3l2-h5": {
+"ar": "٥ · «قد» عند الطرفين: خط المدير",
+"en": "5 · May at both ends: the manager line"
+},
+"t3l2-h6": {
+"ar": "٦ · من النصف إلى العمود",
+"en": "6 · From the half to the column"
+},
+"t3l2-h7": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t3l2-s1": {
+"ar": "سؤالا الشرائح",
+"en": "The slides' two questions"
+},
+"t3l2-s2": {
+"ar": "متّصل ومتقطّع: أيّ نصف؟",
+"en": "Solid and dashed: which half?"
+},
+"t3l2-s3": {
+"ar": "الكلمة تأتي من النصف الذي تبدأ بجانبه",
+"en": "The word comes from the half you start beside"
+},
+"t3l2-s4": {
+"ar": "العمل يقرّر، لا المصمّم",
+"en": "The business decides, not the designer"
+},
+"t3l2-s5": {
+"ar": "طرفان اختياريان، وعمود واحد يقبل null",
+"en": "Two optional ends, one nullable column"
+},
+"t3l2-s6": {
+"ar": "«يجب» التي لا يحملها أيّ عمود",
+"en": "The must that no column can hold"
 },
 "t4idx-h1": {
 "ar": "الدروس",

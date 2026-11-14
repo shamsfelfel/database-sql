@@ -1,0 +1,20 @@
+/* Topic tags of T3 lesson 2 -- Optionality: must or may. */
+window.DBTTopics = window.DBTTopics || {};
+window.DBTTopics["t3-optionality"] = { en: "Optionality", ar: "الإلزامية", href: "t3l2-h1" };
+window.DBTTopics["t3-mandatory-end"] = { en: "Mandatory relationship end", ar: "طرف علاقة إلزامي", href: "t3l2-h1" };
+window.DBTTopics["t3-optional-end"] = { en: "Optional relationship end", ar: "طرف علاقة اختياري", href: "t3l2-h1" };
+window.DBTTopics["t3-optionality-questions"] = { en: "The two optionality questions", ar: "سؤالا الإلزامية", href: "t3l2-s1" };
+window.DBTTopics["t3-optionality-per-end"] = { en: "Optionality is decided per end", ar: "الإلزامية تُقرَّر لكل طرف", href: "t3l2-h2" };
+window.DBTTopics["t3-solid-line"] = { en: "Solid half: mandatory", ar: "النصف المتّصل: إلزامي", href: "t3l2-s2" };
+window.DBTTopics["t3-dashed-line"] = { en: "Dashed half: optional", ar: "النصف المتقطّع: اختياري", href: "t3l2-s2" };
+window.DBTTopics["t3-which-half"] = { en: "Which half belongs to which entity", ar: "أيّ نصف يخصّ أيّ كيان", href: "t3l2-s2" };
+window.DBTTopics["t3-vacant-job"] = { en: "A vacant job: JOB may be held", ar: "الوظيفة الشاغرة: JOB قد تُشغَل", href: "t3l2-s2" };
+window.DBTTopics["t3-must-may-wording"] = { en: "Saying it: must (be) / may (be)", ar: "قولها: must (be) / may (be)", href: "t3l2-h3" };
+window.DBTTopics["t3-word-from-half"] = { en: "The word comes from the starting half", ar: "الكلمة تأتي من نصف البداية", href: "t3l2-s3" };
+window.DBTTopics["t3-optionality-from-scenario"] = { en: "Deciding optionality from a scenario", ar: "حسم الإلزامية من السيناريو", href: "t3l2-h4" };
+window.DBTTopics["t3-dashed-not-safe"] = { en: "Dashed is not the safe default", ar: "المتقطّع ليس الخيار الآمن", href: "t3l2-h4" };
+window.DBTTopics["t3-business-decides-optionality"] = { en: "The business decides optionality", ar: "العمل يقرّر الإلزامية", href: "t3l2-s4" };
+window.DBTTopics["t3-recursive-optionality"] = { en: "Optionality of a recursive relationship", ar: "إلزامية العلاقة الذاتية", href: "t3l2-h5" };
+window.DBTTopics["t3-nullable-manager-id"] = { en: "manager_id is nullable", ar: "manager_id يقبل null", href: "t3l2-s5" };
+window.DBTTopics["t3-optionality-to-not-null"] = { en: "Solid half to NOT NULL foreign key", ar: "من النصف المتّصل إلى مفتاح أجنبي NOT NULL", href: "t3l2-h6" };
+window.DBTTopics["t3-must-without-column"] = { en: "A must no column can hold", ar: "«يجب» لا يحملها أيّ عمود", href: "t3l2-s6" };
