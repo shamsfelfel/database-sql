@@ -39,15 +39,691 @@
 <link rel="stylesheet" href="../assets/theory/css/base.css">
 <link rel="stylesheet" href="../assets/theory/css/chrome.css">
 <link rel="stylesheet" href="../assets/theory/css/components.css">
+<link rel="stylesheet" href="../assets/theory/css/diagram.css">
+<link rel="stylesheet" href="../assets/css/widget.css">
 </head>
 <body data-chapter="t5" data-page="t5-lesson-03" data-kind="lesson" data-path="lessons/t5-lesson-03.html">
 <main>
 <section class="page" id="t5-lesson-03">
 <nav class="crumbs"></nav>
 
-  <span class="kicker">lesson</span>
+
+  <span class="kicker">Lesson 3</span>
   <h1><span class="en">One-to-One</span><span class="ar">واحد إلى واحد</span></h1>
-  <p class="en">Being written.</p><p class="ar">قيد الكتابة.</p>
+  <p class="lede en">By the end of this lesson you will be able to recognise a one-to-one relationship, write its two sentences, model a person's roles with it, make a table enforce it, and tell when a one-to-one is really one entity drawn twice.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تتعرّف علاقة «واحد إلى واحد»، وأن تكتب جملتيها، وأن تنمذج بها أدوار الشخص، وأن تجعل الجدول يفرضها، وأن تميّز متى تكون علاقة «واحد إلى واحد» كيانًا واحدًا رُسم مرّتين.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> <a href="../lessons/t5-lesson-02.html#t5-lesson-02">Lesson 2</a> named the most common shape, one toe and one crow's foot. This lesson puts a single toe at both ends. The cases are the slides' <code>COMPUTER</code> and <code>MOTHERBOARD</code>, and the school's <code>PERSON</code> acting as <code>TEACHER</code> and as <code>STUDENT</code>.</p>
+    <p class="ar"><strong>السياق.</strong> سمّى <a href="../lessons/t5-lesson-02.html#t5-lesson-02">الدرس 2</a> الشكل الأكثر شيوعًا: إصبع واحدة ورِجل غراب واحدة. أمّا هذا الدرس فيضع إصبعًا واحدة عند الطرفين. والحالات هي <code>COMPUTER</code> و<code>MOTHERBOARD</code> من الشرائح، و<code>PERSON</code> في المدرسة وهو يؤدّي دور <code>TEACHER</code> ودور <code>STUDENT</code>.</p>
+    <p class="en">You need Lesson 2's rule that the type is read from the two ends only, and Chapter 2's <a href="../lessons/t2-lesson-01.html#t2-lesson-01">update anomaly</a>.</p>
+    <p class="ar">تحتاج قاعدة الدرس 2: النوع يُقرأ من الطرفين فقط، وتحتاج <a href="../lessons/t2-lesson-01.html#t2-lesson-01">شذوذ التحديث</a> من الفصل 2.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Recognise and give examples of a one-to-one relationship, and write its two ERDish sentences.</li>
+      <li class="ar">التعرّف على علاقة «واحد إلى واحد» وإعطاء أمثلة عليها، وكتابة جملتَي ERDish لها.</li>
+      <li class="en">Model a person's roles as 1:1 relationships, mandatory at the role end only.</li>
+      <li class="ar">نمذجة أدوار الشخص علاقاتِ <bdi>1:1</bdi>، إلزاميةً عند طرف الدور وحده.</li>
+      <li class="en">Enforce a 1:1 in tables with a foreign key declared <code>UNIQUE</code>, in the right table.</li>
+      <li class="ar">فرض علاقة <bdi>1:1</bdi> في الجداول بمفتاح أجنبي مُعلَن <code>UNIQUE</code>، في الجدول الصحيح.</li>
+      <li class="en">Spot a 1:1 that is one entity drawn as two, and merge it.</li>
+      <li class="ar">اكتشاف علاقة <bdi>1:1</bdi> هي كيان واحد رُسم كيانين، ودمجه.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t5l3-h1"><span class="en">1 · One and only one, in both directions</span><span class="ar">١ · واحد فقط لا غير، في الاتجاهين</span></h2>
+
+  <div class="problem">
+    <p class="en">The school's computer lab keeps an inventory. When a motherboard fails, the technician needs to know which computer it was in &mdash; and when a computer will not start, which motherboard it holds. Each question has exactly one answer. Neither end of this line is "many".</p>
+    <p class="ar">يحتفظ مختبر الحاسوب في المدرسة بسجلّ للأجهزة. حين تتعطّل لوحة أمّ يحتاج الفنّي أن يعرف في أيّ حاسوب كانت &mdash; وحين لا يعمل حاسوب، أيّ لوحة أمّ يحمل. ولكل سؤال جواب واحد بالضبط. لا طرف من طرفَي هذا الخط «كثير».</p>
+  </div>
+
+  <p class="en">The slides give the business rules for this pair. Each <code>COMPUTER</code> must contain one and only one <code>MOTHERBOARD</code>. Each <code>MOTHERBOARD</code> must be contained in one and only one <code>COMPUTER</code>. Both sentences end in "one and only one", so both ends are a single toe.</p>
+  <p class="ar">تعطي الشرائح قواعد العمل لهذا الزوج. يجب أن يحتوي كلُّ <code>COMPUTER</code> (حاسوب) لوحةً <code>MOTHERBOARD</code> (لوحة أمّ) واحدة فقط لا غير. ويجب أن تكون كلُّ <code>MOTHERBOARD</code> داخل <code>COMPUTER</code> واحد فقط لا غير. والجملتان تنتهيان بـ«واحد فقط لا غير»، فالطرفان كلاهما إصبع واحدة.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="one-to-one">one-to-one (1:1)</span> relationship has cardinality of one and only one in both directions.</p>
+    <p class="ar"><strong>تعريف.</strong> علاقة <span class="term" data-term="one-to-one">واحد إلى واحد (One-to-one, <bdi>1:1</bdi>)</span> تعدّديتها «واحد فقط لا غير» في الاتجاهين كليهما.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t5-computer">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 311" direction="ltr" role="img" aria-labelledby="t5-computer-t">
+<title id="t5-computer-t">COMPUTER contain / MOTHERBOARD contained in: solid at both ends, single toe at both ends: one-to-one / COMPUTER contain / MOTHERBOARD contained in: متّصل عند الطرفين، وإصبع واحدة عند الطرفين: علاقة واحد إلى واحد</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">The slides' one-to-one: one computer, one motherboard</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏علاقة «واحد إلى واحد» في الشرائح: حاسوب واحد، ولوحة أمّ واحدة</text></g>
+<rect x="40" y="50" width="210" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">COMPUTER</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Label</text>
+<rect x="510" y="50" width="230" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="625.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MOTHERBOARD</text>
+<text x="524" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Serial Number</text>
+<text x="524" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Model</text>
+<path d="M250 95 L380.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M380.0 95 L510 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="258" y="87" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">contain</text>
+<text x="502" y="113" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">contained in</text>
+<rect x="40" y="169" width="700" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="192" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each COMPUTER must contain one and only one MOTHERBOARD.</text>
+<text x="56" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each MOTHERBOARD must be contained in one and only one COMPUTER.</text>
+<rect x="40" y="241" width="700" height="56" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="262" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">One and only one in both directions: that is 1:1.</text></g><g class="ar"><text x="724" y="262" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏«واحد فقط لا غير» في الاتجاهين: هذه هي ‎1:1.</text></g>
+<g class="en"><text x="56" y="281" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">A single toe at both ends; both halves solid, because both sentences say must.</text></g><g class="ar"><text x="724" y="281" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏إصبع واحدة عند الطرفين؛ والنصفان متّصلان لأن الجملتين تقولان must.</text></g></svg>
+<figcaption><span class="en">A single toe at both ends makes the line 1:1. Both halves are solid because both sentences say <em>must</em>: no computer without a motherboard, no motherboard outside a computer.</span><span class="ar">إصبع واحدة عند الطرفين تجعل الخط <bdi>1:1</bdi>. والنصفان متّصلان لأن الجملتين تقولان <em>must</em>: لا حاسوب بلا لوحة أمّ، ولا لوحة أمّ خارج حاسوب.</span></figcaption></figure>
+
+  <h3 id="t5l3-s1"><span class="en">Two sentences, both "one and only one"</span><span class="ar">جملتان، وكلتاهما «واحد فقط لا غير»</span></h3>
+
+  <p class="en">In a 1:M, one sentence ended in "one or more". In a 1:1, neither does. That is the only test of the type. The halves still say <em>must</em> or <em>may</em> independently, so a 1:1 can be solid, dashed or mixed, exactly like a 1:M.</p>
+  <p class="ar">في علاقة <bdi>1:M</bdi> كانت إحدى الجملتين تنتهي بـ«واحد أو أكثر». أمّا في <bdi>1:1</bdi> فلا تنتهي أيّ منهما بذلك. وهذا هو الاختبار الوحيد للنوع. والنصفان ما زالا يقولان <em>must</em> أو <em>may</em> كلٌّ على حدة، فقد تكون <bdi>1:1</bdi> متّصلة أو متقطّعة أو مختلطة، تمامًا مثل <bdi>1:M</bdi>.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">A 1:1 still needs only one foreign key, in one of the two tables: say <code>motherboards.computer_id</code>, <code>NOT NULL</code> because the <code>MOTHERBOARD</code> half is solid. But a plain foreign key lets many rows hold the same value &mdash; that is a 1:M. Section 2 adds the second toe.</p>
+    <p class="ar">ما زالت علاقة <bdi>1:1</bdi> تحتاج إلى مفتاح أجنبي واحد فقط، في أحد الجدولين: لنقل <code>motherboards.computer_id</code>، وهو <code>NOT NULL</code> لأن نصف <code>MOTHERBOARD</code> متّصل. لكن المفتاح الأجنبي العادي يسمح لصفوف كثيرة أن تحمل القيمة نفسها &mdash; وهذه <bdi>1:M</bdi>. ويضيف القسم 2 الإصبعَ الثانية.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A line meets <code>COMPUTER</code> with a single toe and <code>MOTHERBOARD</code> with a single toe. Its <code>COMPUTER</code> half is dashed. What type is it?</p>
+    <p class="q ar">يلتقي خطّ بـ <code>COMPUTER</code> بإصبع واحدة، وبـ <code>MOTHERBOARD</code> بإصبع واحدة، ونصف <code>COMPUTER</code> منه متقطّع. ما نوعه؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">1:M &mdash; the dashed half makes one side many</span><span class="ar">1:M &mdash; النصف المتقطّع يجعل أحد الطرفين كثيرًا</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">1:1 &mdash; the halves never change the type</span><span class="ar">1:1 &mdash; النصفان لا يغيّران النوع أبدًا</span></button></li>
+      <li><button class="opt"><span class="en">Not a relationship: a 1:1 must be solid at both ends</span><span class="ar">ليست علاقة: علاقة 1:1 يجب أن تكون متّصلة عند الطرفين</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Toe and toe is 1:1, whatever the halves say. The dashed half only means a computer <em>may</em> have no motherboard &mdash; a computer waiting for a repair, say.</p>
+      <p class="ar">إصبع وإصبع: <bdi>1:1</bdi>، أيًّا كان ما يقوله النصفان. والنصف المتقطّع يعني فقط أن الحاسوب <em>قد</em> يكون بلا لوحة أمّ &mdash; حاسوب ينتظر الإصلاح مثلًا.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which pair of sentences describes a one-to-one?</p>
+    <p class="q ar">أيّ زوج من الجمل يصف علاقة «واحد إلى واحد»؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Each <code>CUSTOMER</code> must be visited by one and only one <code>SALES REPRESENTATIVE</code>; each <code>SALES REPRESENTATIVE</code> may be assigned to one or more <code>CUSTOMER</code>s.</span><span class="ar">Each <code>CUSTOMER</code> must be visited by one and only one <code>SALES REPRESENTATIVE</code>; each <code>SALES REPRESENTATIVE</code> may be assigned to one or more <code>CUSTOMER</code>s.</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Each <code>COMPUTER</code> must contain one and only one <code>MOTHERBOARD</code>; each <code>MOTHERBOARD</code> must be contained in one and only one <code>COMPUTER</code>.</span><span class="ar">Each <code>COMPUTER</code> must contain one and only one <code>MOTHERBOARD</code>; each <code>MOTHERBOARD</code> must be contained in one and only one <code>COMPUTER</code>.</span></button></li>
+      <li><button class="opt"><span class="en">Each <code>RECEIPT</code> must be issued to one and only one <code>STUDENT</code>. (Nothing else is known.)</span><span class="ar">Each <code>RECEIPT</code> must be issued to one and only one <code>STUDENT</code>. (ولا يُعرف شيء غير ذلك.)</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Only the second pair says "one and only one" in both directions. The first is Lesson 2's 1:M. The third is one direction only &mdash; it cannot tell 1:1 from 1:M until you ask the other question.</p>
+      <p class="ar">الزوج الثاني وحده يقول «واحد فقط لا غير» في الاتجاهين. أمّا الأول فهو علاقة <bdi>1:M</bdi> من الدرس 2. والثالث اتجاه واحد فقط &mdash; لا يميّز <bdi>1:1</bdi> من <bdi>1:M</bdi> حتى تطرح السؤال الآخر.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t5l3-h2"><span class="en">2 · Keeping it one-to-one</span><span class="ar">٢ · إبقاؤها «واحدًا إلى واحد»</span></h2>
+
+  <div class="problem">
+    <p class="en">A technician replaces the motherboard in <code>LAB-01</code> and records the new one, but forgets to remove the old record. The inventory now says <code>LAB-01</code> contains two motherboards. The first-draft model did not object, because it was not a 1:1 at all.</p>
+    <p class="ar">يستبدل فنّيّ اللوحة الأمّ في <code>LAB-01</code> ويسجّل الجديدة، لكنه ينسى حذف سجلّ القديمة. فيقول السجلّ الآن إن <code>LAB-01</code> يحتوي لوحتين أمّين. ولم يعترض نموذج المسودّة الأولى، لأنه لم يكن <bdi>1:1</bdi> أصلًا.</p>
+  </div>
+
+  <div class="evolve" id="t5l3-e1">
+    <div class="ver" data-title-en="Version 1 — a crow's foot at MOTHERBOARD" data-title-ar="الإصدار 1 — رِجل غراب عند MOTHERBOARD">
+      <figure class="diagram" data-diagram="t5-computer-v1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 311" direction="ltr" role="img" aria-labelledby="t5-computer-v1-t">
+<title id="t5-computer-v1-t">COMPUTER contain / MOTHERBOARD contained in, drawn wrongly with a crow's foot at MOTHERBOARD: a one-to-many / COMPUTER contain / MOTHERBOARD contained in، مرسومة خطأً برِجل غراب عند MOTHERBOARD: علاقة واحد إلى متعدّد</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1: a crow's foot at MOTHERBOARD</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 1: رِجل غراب عند MOTHERBOARD</text></g>
+<rect x="40" y="50" width="210" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">COMPUTER</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Label</text>
+<rect x="510" y="50" width="230" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="625.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MOTHERBOARD</text>
+<text x="524" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Serial Number</text>
+<text x="524" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Model</text>
+<path d="M250 95 L380.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M380.0 95 L510 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M496 95 L510 87" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M496 95 L510 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M496 95 L510 103" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="258" y="87" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">contain</text>
+<text x="490" y="113" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">contained in</text>
+<rect x="40" y="169" width="700" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="192" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each COMPUTER must contain one or more MOTHERBOARDs.</text>
+<text x="56" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each MOTHERBOARD must be contained in one and only one COMPUTER.</text>
+<rect x="40" y="241" width="700" height="56" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="262" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Defect: this is 1:M. Nothing stops a second motherboard being recorded in LAB-01.</text></g><g class="ar"><text x="724" y="262" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏العيب: هذه علاقة ‎1:M. فلا شيء يمنع تسجيل لوحة أمّ ثانية في LAB-01.</text></g>
+<g class="en"><text x="56" y="281" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The business says a computer contains exactly one motherboard.</text></g><g class="ar"><text x="724" y="281" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏والعمل يقول إن الحاسوب يحتوي لوحة أمّ واحدة بالضبط.</text></g></svg>
+</figure>
+      <p class="en">Defect: wrong cardinality at <code>MOTHERBOARD</code>. The crow's foot makes the line 1:M, so a computer may contain one or more motherboards. The technician's mistake is a legal instance of this model.</p>
+      <p class="ar">العيب: تعدّدية خاطئة عند <code>MOTHERBOARD</code>. رِجل الغراب تجعل الخط <bdi>1:M</bdi>، فقد يحتوي الحاسوب لوحة أمّ واحدة أو أكثر. وخطأ الفنّي نسخة مشروعة في هذا النموذج.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — a single toe at both ends" data-title-ar="الإصدار 2 — إصبع واحدة عند الطرفين">
+      <figure class="diagram" data-diagram="t5-computer">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 311" direction="ltr" role="img" aria-labelledby="t5-computer-t">
+<title id="t5-computer-t">COMPUTER contain / MOTHERBOARD contained in: solid at both ends, single toe at both ends: one-to-one / COMPUTER contain / MOTHERBOARD contained in: متّصل عند الطرفين، وإصبع واحدة عند الطرفين: علاقة واحد إلى واحد</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">The slides' one-to-one: one computer, one motherboard</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏علاقة «واحد إلى واحد» في الشرائح: حاسوب واحد، ولوحة أمّ واحدة</text></g>
+<rect x="40" y="50" width="210" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">COMPUTER</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Label</text>
+<rect x="510" y="50" width="230" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="625.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">MOTHERBOARD</text>
+<text x="524" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Serial Number</text>
+<text x="524" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Model</text>
+<path d="M250 95 L380.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M380.0 95 L510 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="258" y="87" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">contain</text>
+<text x="502" y="113" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">contained in</text>
+<rect x="40" y="169" width="700" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="192" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each COMPUTER must contain one and only one MOTHERBOARD.</text>
+<text x="56" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each MOTHERBOARD must be contained in one and only one COMPUTER.</text>
+<rect x="40" y="241" width="700" height="56" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="262" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">One and only one in both directions: that is 1:1.</text></g><g class="ar"><text x="724" y="262" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏«واحد فقط لا غير» في الاتجاهين: هذه هي ‎1:1.</text></g>
+<g class="en"><text x="56" y="281" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">A single toe at both ends; both halves solid, because both sentences say must.</text></g><g class="ar"><text x="724" y="281" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏إصبع واحدة عند الطرفين؛ والنصفان متّصلان لأن الجملتين تقولان must.</text></g></svg>
+</figure>
+      <p class="en">Fixed: the slides' model. The toe at <code>MOTHERBOARD</code> allows exactly one motherboard per computer, and a second record for <code>LAB-01</code> breaks the rule. The halves did not change. This is the recommended form.</p>
+      <p class="ar">أُصلح: نموذج الشرائح. الإصبع عند <code>MOTHERBOARD</code> لا تسمح إلا بلوحة أمّ واحدة لكل حاسوب، وأيّ سجلّ ثانٍ لـ <code>LAB-01</code> يخرق القاعدة. ولم يتغيّر النصفان. وهذا هو الشكل الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t5l3-s2"><span class="en"><code>UNIQUE</code> is the second toe</span><span class="ar"><code>UNIQUE</code> هي الإصبع الثانية</span></h3>
+
+  <p class="en">A foreign key already gives each motherboard one computer: one value per row. What it does not stop is two rows holding the same computer. Declaring the column <span class="term" data-term="unique-foreign-key">unique</span> stops exactly that.</p>
+  <p class="ar">المفتاح الأجنبي يعطي كل لوحة أمّ حاسوبًا واحدًا من قبل: قيمة واحدة في كل صفّ. أمّا ما لا يمنعه فهو أن يحمل صفّان الحاسوبَ نفسه. وإعلان العمود <span class="term" data-term="unique-foreign-key">فريدًا (UNIQUE)</span> يمنع هذا بالضبط.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="unique-foreign-key">unique foreign key</span> is a foreign key column also declared <code>UNIQUE</code>, so no two rows may point at the same parent &mdash; the table form of a 1:1.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="unique-foreign-key">المفتاح الأجنبي الفريد</span> (Unique foreign key) عمود مفتاح أجنبي مُعلَن أيضًا <code>UNIQUE</code>، فلا يجوز لصفّين أن يشيرا إلى الأب نفسه &mdash; وهو صورة <bdi>1:1</bdi> في الجداول.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en"><code>motherboards.computer_id</code> is <code>NOT NULL</code> (solid half) and <code>UNIQUE</code> (toe at <code>MOTHERBOARD</code>). Three computers and three motherboards are loaded. Run the technician's mistake &mdash; a second motherboard for computer 1:</p>
+    <p class="ar"><code>motherboards.computer_id</code> هو <code>NOT NULL</code> (نصف متّصل) و<code>UNIQUE</code> (إصبع عند <code>MOTHERBOARD</code>). حُمّلت ثلاثة حواسيب وثلاث لوحات أمّ. شغّل خطأ الفنّي &mdash; لوحة أمّ ثانية للحاسوب 1:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE computers (computer_id NUMBER PRIMARY KEY, label VARCHAR(20) NOT NULL)","INSERT INTO computers VALUES (1,'LAB-01'), (2,'LAB-02'), (3,'LAB-03')","CREATE TABLE motherboards (serial_no VARCHAR(12) PRIMARY KEY, model VARCHAR(20) NOT NULL, computer_id NUMBER NOT NULL UNIQUE)","INSERT INTO motherboards VALUES ('MB-7731','B450',1), ('MB-7732','B450',2), ('MB-7745','H610',3)"],"sql":"INSERT INTO motherboards VALUES ('MB-9001','H610',1);"}
+      </script>
+    </div>
+    <p class="en">It fails with <code>Cannot insert record, because it already exists in unique index</code>. Declared without <code>UNIQUE</code>, the same column accepts the same row: the table has quietly become version 1. Now list each computer with its motherboard:</p>
+    <p class="ar">يفشل برسالة <code>Cannot insert record, because it already exists in unique index</code>. ولو أُعلن العمود نفسه بلا <code>UNIQUE</code> لقَبِل الصفّ نفسه: فيكون الجدول قد صار بصمتٍ الإصدارَ 1. والآن اسرد كل حاسوب مع لوحته الأمّ:</p>
+    <pre class="code" data-lang="sql"><code>SELECT c.label, m.serial_no, m.model
+FROM computers c JOIN motherboards m ON m.computer_id = c.computer_id
+ORDER BY c.label;</code></pre>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>label</code></th><th><code>serial_no</code></th><th><code>model</code></th></tr></thead>
+          <tbody>
+            <tr><td>LAB-01</td><td>MB-7731</td><td>B450</td></tr>
+            <tr><td>LAB-02</td><td>MB-7732</td><td>B450</td></tr>
+            <tr><td>LAB-03</td><td>MB-7745</td><td>H610</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">One row per computer, and one per motherboard: the join of a 1:1 never multiplies rows.</p>
+    <p class="ar">صفّ واحد لكل حاسوب، وصفّ واحد لكل لوحة أمّ: فالربط في علاقة <bdi>1:1</bdi> لا يضاعف الصفوف أبدًا.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Version 1 is replaced by version 2. Which defect does version 2 close?</p>
+    <p class="q ar">حلّ الإصدار 2 محلّ الإصدار 1. أيّ عيب يُغلقه الإصدار 2؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A motherboard could exist outside any computer</span><span class="ar">كان يمكن أن توجد لوحة أمّ خارج أيّ حاسوب</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A computer could contain more than one motherboard</span><span class="ar">كان يمكن أن يحتوي الحاسوب أكثر من لوحة أمّ</span></button></li>
+      <li><button class="opt"><span class="en">A motherboard could be moved to another computer</span><span class="ar">كان يمكن نقل لوحة أمّ إلى حاسوب آخر</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Only the end at <code>MOTHERBOARD</code> changed, from crow's foot to toe. Both halves were solid in both versions, and transferability is a diamond question that neither version answers.</p>
+      <p class="ar">لم يتغيّر إلا الطرف عند <code>MOTHERBOARD</code>، من رِجل غراب إلى إصبع. والنصفان كانا متّصلين في الإصدارين، وقابلية النقل سؤال المعيَّن، ولا يجيب عنه أيّ من الإصدارين.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A table has <code>motherboards.computer_id NUMBER NOT NULL</code> with no <code>UNIQUE</code>. Which relationship does the table really enforce?</p>
+    <p class="q ar">في جدولٍ العمودُ <code>motherboards.computer_id NUMBER NOT NULL</code> بلا <code>UNIQUE</code>. أيّ علاقة يفرضها الجدول حقًّا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">1:1, because each row names one computer</span><span class="ar">1:1، لأن كل صفّ يسمّي حاسوبًا واحدًا</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">1:M &mdash; one computer may appear in many motherboard rows</span><span class="ar">1:M &mdash; قد يظهر الحاسوب الواحد في صفوف لوحات أمّ كثيرة</span></button></li>
+      <li><button class="opt"><span class="en">M:M, because nothing is unique</span><span class="ar">M:M، لأن لا شيء فريد</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"One computer per row" is only one direction. Without <code>UNIQUE</code>, the same <code>computer_id</code> may repeat, which is the crow's foot of version 1. M:M would need two values per row, which one column cannot hold.</p>
+      <p class="ar">«حاسوب واحد لكل صفّ» اتجاه واحد فقط. وبلا <code>UNIQUE</code> قد يتكرّر <code>computer_id</code> نفسه، وهذه رِجل الغراب في الإصدار 1. أمّا <bdi>M:M</bdi> فتحتاج إلى قيمتين في الصفّ، ولا يتّسع لهما عمود واحد.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t5l3-h3"><span class="en">3 · One-to-one for roles</span><span class="ar">٣ · «واحد إلى واحد» للأدوار</span></h2>
+
+  <div class="problem">
+    <p class="en">Rana Saad teaches Maths at the school. This year she also signed up for an evening course there, so she is a student too. The school's model has a <code>TEACHER</code> entity and a <code>STUDENT</code> entity, each with a name and a phone. Rana is now in both, typed twice.</p>
+    <p class="ar">تدرّس Rana Saad الرياضيات في المدرسة. وهذه السنة سجّلت أيضًا في دورة مسائية فيها، فصارت طالبة كذلك. وفي نموذج المدرسة كيانا <code>TEACHER</code> و<code>STUDENT</code>، ولكلٍّ منهما اسم وهاتف. فـ Rana الآن في الاثنين، مكتوبةً مرّتين.</p>
+  </div>
+
+  <p class="en">The slides answer with a <code>PERSON</code> entity and two lines: <code>PERSON</code> <em>acting as</em> <code>TEACHER</code>, and <code>PERSON</code> <em>acting as</em> <code>STUDENT</code>, each named <em>role of</em> at the other end. A teacher is not a different human being from a person; it is one <span class="term" data-term="role">role</span> a person plays.</p>
+  <p class="ar">تجيب الشرائح بكيان <code>PERSON</code> وخطّين: <code>PERSON</code> <em>acting as</em> <code>TEACHER</code>، و<code>PERSON</code> <em>acting as</em> <code>STUDENT</code>، ولكلٍّ منهما الاسم <em>role of</em> عند الطرف الآخر. فالمعلّم ليس إنسانًا غير الشخص؛ إنه <span class="term" data-term="role">دور</span> (Role) واحد يؤدّيه الشخص.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="role">role</span> is a part that an instance of one entity plays, modelled as a separate entity linked to it by a 1:1 relationship.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="role">الدور</span> (Role) جزءٌ تؤدّيه نسخة من كيانٍ ما، ويُنمذَج كيانًا مستقلًّا يرتبط بها بعلاقة <bdi>1:1</bdi>.</p>
+  </div>
+
+  <div class="evolve" id="t5l3-e2">
+    <div class="ver" data-title-en="Version 1 — TEACHER and STUDENT, each with a name" data-title-ar="الإصدار 1 — TEACHER وSTUDENT، لكلٍّ منهما اسم">
+      <figure class="diagram" data-diagram="t5-roles-v1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 355" direction="ltr" role="img" aria-labelledby="t5-roles-v1-t">
+<title id="t5-roles-v1-t">TEACHER and STUDENT drawn as two unrelated entities, each with its own name and phone: Rana Saad is stored twice / TEACHER وSTUDENT مرسومان كيانين منفصلين، لكلٍّ منهما اسمه وهاتفه: Rana Saad مخزّنة مرّتين</title>
+<g class="en"><text x="430" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1: one person, stored as two strangers</text></g><g class="ar"><text x="430" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 1: شخص واحد، مخزَّن غريبَين</text></g>
+<rect x="60" y="50" width="260" height="133" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="190.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">TEACHER</text>
+<text x="74" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="74" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="74" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<text x="74" y="151" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Phone</text>
+<text x="74" y="170" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Hire Date</text>
+<rect x="540" y="50" width="260" height="133" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="670.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="554" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="554" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="554" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<text x="554" y="151" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Phone</text>
+<text x="554" y="170" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Start Date</text>
+<rect x="60" y="200" width="740" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="76" y="223" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">TEACHER  31    Rana  Saad  0599-120120  2019-09-01</text>
+<text x="76" y="244" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">STUDENT  1005  Rana  Saad  0599-120120  2026-10-01</text>
+<rect x="60" y="266" width="740" height="75" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="76" y="287" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Defect: the same person's name and phone are stored twice.</text></g><g class="ar"><text x="784" y="287" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏العيب: اسم الشخص نفسه وهاتفه مخزّنان مرّتين.</text></g>
+<g class="en"><text x="76" y="306" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Rana changes her phone; one row is updated and the other is not: an update anomaly.</text></g><g class="ar"><text x="784" y="306" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏تغيّر Rana هاتفها، فيُحدَّث صفّ ولا يُحدَّث الآخر: شذوذ تحديث.</text></g>
+<g class="en"><text x="76" y="325" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">And nothing in the model says the two rows are one person.</text></g><g class="ar"><text x="784" y="325" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏ولا شيء في النموذج يقول إن الصفّين شخص واحد.</text></g></svg>
+</figure>
+      <p class="en">Defect: the person's own attributes are stored once per role. When Rana changes her phone, one row is updated and the other is forgotten &mdash; Chapter 2's update anomaly. And no line says rows 31 and 1005 are one human being.</p>
+      <p class="ar">العيب: خصائص الشخص نفسه تُخزَّن مرّة لكل دور. فحين تغيّر Rana هاتفها يُحدَّث صفّ ويُنسى الآخر &mdash; شذوذ التحديث من الفصل 2. ولا خطّ يقول إن الصفّين 31 و1005 إنسان واحد.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — PERSON acting as TEACHER and as STUDENT" data-title-ar="الإصدار 2 — PERSON acting as TEACHER وacting as STUDENT">
+      <figure class="diagram" data-diagram="t5-roles">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 348" direction="ltr" role="img" aria-labelledby="t5-roles-t">
+<title id="t5-roles-t">PERSON acting as TEACHER and acting as STUDENT: two one-to-one relationships, each solid at the role and dashed at PERSON / PERSON acting as TEACHER وacting as STUDENT: علاقتا واحد إلى واحد، كلٌّ منهما متّصلة عند الدور ومتقطّعة عند PERSON</title>
+<g class="en"><text x="430" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">The slides' roles: two 1:1 lines, mandatory at one end</text></g><g class="ar"><text x="430" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏أدوار الشرائح: خطّا ‎1:1، إلزاميان عند طرف واحد</text></g>
+<rect x="30" y="70" width="190" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="125.0" y="92" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">TEACHER</text>
+<text x="44" y="114" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="44" y="133" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Hire Date</text>
+<rect x="335" y="50" width="190" height="114" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="430.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PERSON</text>
+<text x="349" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="349" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="349" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<text x="349" y="151" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Phone</text>
+<rect x="640" y="70" width="190" height="76" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="735.0" y="92" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="654" y="114" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="654" y="133" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Start Date</text>
+<path d="M220 115 L277.5 115" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M277.5 115 L335 115" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<text x="228" y="107" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">role of</text>
+<text x="327" y="133" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">acting as</text>
+<path d="M525 115 L582.5 115" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M582.5 115 L640 115" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="533" y="107" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">acting as</text>
+<text x="632" y="133" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">role of</text>
+<rect x="30" y="192" width="800" height="79" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="46" y="215" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each TEACHER must be the role of one and only one PERSON.</text>
+<text x="46" y="236" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each PERSON may be acting as one and only one TEACHER.</text>
+<text x="46" y="257" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">(and the same pair of sentences for STUDENT)</text>
+<rect x="30" y="278" width="800" height="56" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="46" y="299" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Name and phone live once, in PERSON. Each role holds only what belongs to the role.</text></g><g class="ar"><text x="814" y="299" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏الاسم والهاتف يُخزَّنان مرّة واحدة، في PERSON. وكل دور يحمل ما يخصّ الدور فقط.</text></g>
+<g class="en"><text x="46" y="318" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Solid at the role: no teacher without a person. Dashed at PERSON: not every person teaches.</text></g><g class="ar"><text x="814" y="318" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏متّصل عند الدور: لا معلّم بلا شخص. ومتقطّع عند PERSON: ليس كل شخص معلّمًا.</text></g></svg>
+</figure>
+      <p class="en">Fixed: the slides' model. Name and phone move to <code>PERSON</code>, once. <code>TEACHER</code> keeps only <span class="term" data-term="role-attribute">role attributes</span> such as <code>Hire Date</code>. Each line is 1:1, solid at the role, dashed at <code>PERSON</code>. This is the recommended form.</p>
+      <p class="ar">أُصلح: نموذج الشرائح. ينتقل الاسم والهاتف إلى <code>PERSON</code>، مرّة واحدة. ولا يبقى في <code>TEACHER</code> إلا <span class="term" data-term="role-attribute">خصائص الدور</span> (Role attributes) مثل <code>Hire Date</code>. وكل خطّ <bdi>1:1</bdi>، متّصل عند الدور ومتقطّع عند <code>PERSON</code>. وهذا هو الشكل الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t5l3-s3"><span class="en">Mandatory at one end</span><span class="ar">إلزامية عند طرف واحد</span></h3>
+
+  <p class="en">The slides say that a 1:1 <span class="term" data-term="mandatory-at-one-end">mandatory at one end</span> commonly occurs when roles are modelled. Read both sentences and you see why. Each <code>TEACHER</code> <em>must</em> be the role of one and only one <code>PERSON</code>: no teacher exists without a person. Each <code>PERSON</code> <em>may</em> be acting as one and only one <code>TEACHER</code>: most people are not teachers.</p>
+  <p class="ar">تقول الشرائح إن علاقة <bdi>1:1</bdi> <span class="term" data-term="mandatory-at-one-end">الإلزامية عند طرف واحد</span> (Mandatory at one end) شائعة حين تُنمذَج الأدوار. اقرأ الجملتين فترى السبب. يجب أن يكون كلُّ <code>TEACHER</code> دورًا لـ <code>PERSON</code> واحد فقط لا غير: لا معلّم بلا شخص. وقد يؤدّي كلُّ <code>PERSON</code> دور <code>TEACHER</code> واحد فقط لا غير: فمعظم الناس ليسوا معلّمين.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Each role table carries <code>person_id NUMBER NOT NULL UNIQUE</code>: <code>NOT NULL</code> for the solid half at the role, <code>UNIQUE</code> for the toe at the role. Rana's name is stored once, in <code>persons</code>. Find everyone who is both a teacher and a student:</p>
+    <p class="ar">يحمل كل جدول دور العمود <code>person_id NUMBER NOT NULL UNIQUE</code>: <code>NOT NULL</code> للنصف المتّصل عند الدور، و<code>UNIQUE</code> للإصبع عند الدور. واسم Rana مخزّن مرّة واحدة، في <code>persons</code>. ابحث عن كل من هو معلّم وطالب معًا:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE persons (person_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, phone VARCHAR(12) NOT NULL)","INSERT INTO persons VALUES (1,'Sara','Hamdan','0599-100100'), (2,'Omar','Khalil','0599-200200'), (3,'Rana','Saad','0599-120120'), (4,'Lina','Nasser','0599-400400'), (5,'Khaled','Odeh','0599-500500')","CREATE TABLE teachers (teacher_id NUMBER PRIMARY KEY, hire_date VARCHAR(10) NOT NULL, person_id NUMBER NOT NULL UNIQUE)","INSERT INTO teachers VALUES (31,'2019-09-01',3), (32,'2021-02-01',5)","CREATE TABLE students (student_id NUMBER PRIMARY KEY, start_date VARCHAR(10) NOT NULL, person_id NUMBER NOT NULL UNIQUE)","INSERT INTO students VALUES (1001,'2025-09-01',1), (1002,'2025-09-01',2), (1003,'2025-09-01',4), (1005,'2026-10-01',3)"],"sql":"SELECT p.first_name, p.last_name, t.teacher_id, s.student_id\nFROM persons p\n  JOIN teachers t ON t.person_id = p.person_id\n  JOIN students s ON s.person_id = p.person_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>first_name</code></th><th><code>last_name</code></th><th><code>teacher_id</code></th><th><code>student_id</code></th></tr></thead>
+          <tbody>
+            <tr><td>Rana</td><td>Saad</td><td>31</td><td>1005</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">In version 1 this question was a guess: match on names and hope no two people share one. Now it is a join on one id. Try <code>INSERT INTO teachers VALUES (33,'2026-11-01',3)</code> &mdash; a second teacher row for Rana &mdash; and <code>UNIQUE</code> refuses it.</p>
+    <p class="ar">في الإصدار 1 كان هذا السؤال تخمينًا: تطابق على الأسماء وتأمل ألّا يشترك شخصان في اسم. أمّا الآن فهو ربط على معرّف واحد. وجرّب <code>INSERT INTO teachers VALUES (33,'2026-11-01',3)</code> &mdash; صفّ معلّم ثانيًا لـ Rana &mdash; فترفضه <code>UNIQUE</code>.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapter 3</span><span class="ar">خيط · الفصل 3 في SQL</span></h4>
+    <p class="en">On the SQL track, <a href="../chapters/chapter-3.html">Chapter 3 &mdash; Relationships</a> joins tables through foreign keys and treats every join the same. It never asks whether a key may repeat. This lesson says when it must not &mdash; and that one word, <code>UNIQUE</code>, is the whole difference between a 1:M and a 1:1.</p>
+    <p class="ar">في مسار SQL، يربط <a href="../chapters/chapter-3.html">الفصل 3 &mdash; العلاقات</a> الجداولَ عبر المفاتيح الأجنبية، ويعامل كل ربط بالطريقة نفسها، ولا يسأل أبدًا هل يجوز للمفتاح أن يتكرّر. أمّا هذا الدرس فيقول متى لا يجوز &mdash; وإن كلمة واحدة، <code>UNIQUE</code>، هي كل الفرق بين <bdi>1:M</bdi> و<bdi>1:1</bdi>.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the slides' role model, which half of the <code>PERSON</code>&ndash;<code>STUDENT</code> line is solid?</p>
+    <p class="q ar">في نموذج الأدوار في الشرائح، أيّ نصفَي خط <code>PERSON</code>&ndash;<code>STUDENT</code> متّصل؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">The half at <code>STUDENT</code>: every student must be a person</span><span class="ar">النصف عند <code>STUDENT</code>: كل طالب يجب أن يكون شخصًا</span></button></li>
+      <li><button class="opt"><span class="en">The half at <code>PERSON</code>: every person must be a student</span><span class="ar">النصف عند <code>PERSON</code>: كل شخص يجب أن يكون طالبًا</span></button></li>
+      <li><button class="opt"><span class="en">Both halves, because a 1:1 is always mandatory</span><span class="ar">النصفان، لأن 1:1 إلزامية دائمًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Mandatory at one end: the role end. A student cannot exist without a person; a person &mdash; Khaled, a teacher &mdash; may be no student at all. Solid at both ends would force every teacher to enrol in a course.</p>
+      <p class="ar">إلزامية عند طرف واحد: طرف الدور. فلا يوجد طالب بلا شخص؛ أمّا الشخص &mdash; Khaled، وهو معلّم &mdash; فقد لا يكون طالبًا أصلًا. ولو كان النصفان متّصلين لأُجبر كل معلّم على التسجيل في دورة.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Where does the attribute <code>Hire Date</code> belong in version 2?</p>
+    <p class="q ar">أين تنتمي الخاصية <code>Hire Date</code> في الإصدار 2؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>PERSON</code>, with the name and phone</span><span class="ar"><code>PERSON</code>، مع الاسم والهاتف</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>TEACHER</code>: it describes the role, not the person</span><span class="ar"><code>TEACHER</code>: فهي تصف الدور لا الشخص</span></button></li>
+      <li><button class="opt"><span class="en">Both, to save a join</span><span class="ar">في الاثنين، توفيرًا للربط</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Sara is a person with no hire date; only teachers are hired. An attribute that only some persons have, because of a role they play, is a role attribute and lives in the role. Storing it twice is version 1's defect again.</p>
+      <p class="ar">Sara شخص بلا تاريخ تعيين؛ فالمعلّمون وحدهم يُعيَّنون. والخاصية التي لا يملكها إلا بعض الأشخاص، بسبب دور يؤدّونه، هي خاصية دور، ومكانها الدور. وتخزينها مرّتين هو عيب الإصدار 1 من جديد.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t5l3-h4"><span class="en">4 · Which table gets the key</span><span class="ar">٤ · أيّ جدول يأخذ المفتاح</span></h2>
+
+  <div class="problem">
+    <p class="en">A colleague builds the role model with the key the other way round: a <code>teacher_id</code> column in <code>persons</code>. It works &mdash; but of five persons only two are teachers, so the column is null in three rows, and nothing stops a <code>TEACHER</code> row that no person points to.</p>
+    <p class="ar">يبني زميلٌ نموذج الأدوار بالمفتاح معكوسًا: عمود <code>teacher_id</code> في <code>persons</code>. ينجح الأمر &mdash; لكن من خمسة أشخاص معلّمان فقط، فيبقى العمود null في ثلاثة صفوف، ولا شيء يمنع وجود صفّ <code>TEACHER</code> لا يشير إليه أيّ شخص.</p>
+  </div>
+
+  <p class="en">In a 1:M there was no choice: the key goes in the child. A 1:1 has a toe at both ends, so either table could hold it. The solid half decides. Put the key in the table whose half is solid &mdash; the <span class="term" data-term="key-side">key side</span> &mdash; and the column can be <code>NOT NULL</code>.</p>
+  <p class="ar">في علاقة <bdi>1:M</bdi> لم يكن هناك خيار: المفتاح يذهب إلى الابن. أمّا <bdi>1:1</bdi> فعلى طرفيها إصبعان، فيستطيع أيّ الجدولين حمله. والنصف المتّصل هو الذي يقرّر. ضع المفتاح في الجدول الذي نصفه متّصل &mdash; <span class="term" data-term="key-side">جهة المفتاح</span> (Key side) &mdash; فيمكن أن يكون العمود <code>NOT NULL</code>.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Halves of the 1:1</th><th class="ar">نصفا علاقة 1:1</th><th class="en">Where the key goes</th><th class="ar">أين يذهب المفتاح</th><th class="en">Example</th><th class="ar">مثال</th></tr></thead>
+      <tbody>
+        <tr><td class="en">solid at one end only</td><td class="ar">متّصل عند طرف واحد فقط</td><td class="en">the solid end, <code>NOT NULL UNIQUE</code></td><td class="ar">الطرف المتّصل، <code>NOT NULL UNIQUE</code></td><td class="en"><code>teachers.person_id</code></td><td class="ar"><code>teachers.person_id</code></td></tr>
+        <tr><td class="en">solid at both ends</td><td class="ar">متّصل عند الطرفين</td><td class="en">either end, <code>NOT NULL UNIQUE</code></td><td class="ar">أيّ الطرفين، <code>NOT NULL UNIQUE</code></td><td class="en"><code>motherboards.computer_id</code></td><td class="ar"><code>motherboards.computer_id</code></td></tr>
+        <tr><td class="en">dashed at both ends</td><td class="ar">متقطّع عند الطرفين</td><td class="en">either end, nullable <code>UNIQUE</code></td><td class="ar">أيّ الطرفين، <code>UNIQUE</code> يقبل null</td><td class="en">&mdash;</td><td class="ar">&mdash;</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="t5l3-s4"><span class="en">Why you will draw only a few</span><span class="ar">لماذا لن ترسم منها إلا القليل</span></h3>
+
+  <p class="en">The slides say that usually you will find just a few 1:1 relationships in every ER model. Most lines, asked the two "how many?" questions, have "many" somewhere. A 1:1 is a strong claim &mdash; one, both ways &mdash; and it is worth asking once more whether the business really means it.</p>
+  <p class="ar">تقول الشرائح إنك ستجد في العادة قليلًا فقط من علاقات <bdi>1:1</bdi> في كل نموذج كيانات وعلاقات. فمعظم الخطوط، إذا طُرح عليها سؤالا «كم؟»، فيها «كثير» في مكان ما. و<bdi>1:1</bdi> ادّعاء قويّ &mdash; واحد، في الاتجاهين &mdash; ويستحقّ أن تسأل مرّة أخرى هل يعنيه العمل حقًّا.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">With the key in <code>teachers</code>, every row of that column is filled, and the database itself guarantees each teacher a person. With the key in <code>persons</code>, the column is mostly null, and a <code>teachers</code> row with no person is legal &mdash; the solid half is no longer enforced by anything.</p>
+    <p class="ar">حين يكون المفتاح في <code>teachers</code> يمتلئ كل صفّ في ذلك العمود، وتضمن قاعدة البيانات نفسها لكل معلّم شخصًا. وحين يكون في <code>persons</code> يكون العمود null في معظمه، ويصير صفّ في <code>teachers</code> بلا شخص مشروعًا &mdash; فلا شيء يفرض النصف المتّصل بعد الآن.</p>
+    <pre class="code" data-lang="sql"><code>CREATE TABLE teachers (
+  teacher_id  NUMBER PRIMARY KEY,
+  hire_date   VARCHAR(10) NOT NULL,
+  person_id   NUMBER NOT NULL UNIQUE   -- solid half, toe at TEACHER
+);</code></pre>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A 1:1 between <code>PERSON</code> and <code>STUDENT</code> is solid at <code>STUDENT</code> and dashed at <code>PERSON</code>. Which column is right?</p>
+    <p class="q ar">علاقة <bdi>1:1</bdi> بين <code>PERSON</code> و<code>STUDENT</code> متّصلة عند <code>STUDENT</code> ومتقطّعة عند <code>PERSON</code>. أيّ عمود صحيح؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>persons.student_id NUMBER NOT NULL UNIQUE</code></span><span class="ar"><code>persons.student_id NUMBER NOT NULL UNIQUE</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>students.person_id NUMBER NOT NULL</code></span><span class="ar"><code>students.person_id NUMBER NOT NULL</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>students.person_id NUMBER NOT NULL UNIQUE</code></span><span class="ar"><code>students.person_id NUMBER NOT NULL UNIQUE</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The key goes on the solid side, <code>students</code>. <code>NOT NULL</code> is the solid half; <code>UNIQUE</code> is the toe at <code>STUDENT</code>. Without <code>UNIQUE</code> one person could be two students &mdash; a 1:M. The first option would force every person to be a student.</p>
+      <p class="ar">المفتاح يذهب إلى الجهة المتّصلة، <code>students</code>. فـ <code>NOT NULL</code> هي النصف المتّصل، و<code>UNIQUE</code> هي الإصبع عند <code>STUDENT</code>. وبلا <code>UNIQUE</code> قد يكون الشخص الواحد طالبَين &mdash; أي <bdi>1:M</bdi>. أمّا الخيار الأول فيُجبر كل شخص على أن يكون طالبًا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t5l3-h5"><span class="en">5 · When a one-to-one means one entity</span><span class="ar">٥ · حين تعني «واحد إلى واحد» كيانًا واحدًا</span></h2>
+
+  <div class="problem">
+    <p class="en">A first draft of the school model has <code>STUDENT</code> and <code>STUDENT CONTACT</code>, joined by a 1:1 that is solid at both ends. Every list of students needs a join to show a phone number. Every new student needs two rows, inserted together. Nobody has ever asked for a contact on its own.</p>
+    <p class="ar">في مسودّة أولى لنموذج المدرسة كيانا <code>STUDENT</code> و<code>STUDENT CONTACT</code>، تربطهما علاقة <bdi>1:1</bdi> متّصلة عند الطرفين. فكل قائمة طلاب تحتاج إلى ربط لتُظهر رقم هاتف، وكل طالب جديد يحتاج إلى صفّين يُدرَجان معًا. ولم يطلب أحدٌ قطّ بيانات اتصال وحدها.</p>
+  </div>
+
+  <p class="en">Go back to Chapter 2's test for an entity: something of significance to the business, about which it keeps data. <code>STUDENT CONTACT</code> fails it. It has no life apart from its student; it is the student's phone and email, put in a second box. That is a <span class="term" data-term="split-entity">split entity</span>.</p>
+  <p class="ar">ارجع إلى اختبار الفصل 2 للكيان: شيء ذو أهمية للعمل، يحتفظ العمل ببيانات عنه. و<code>STUDENT CONTACT</code> يسقط فيه. فلا حياة له بعيدًا عن طالبه؛ إنه هاتف الطالب وبريده، وُضعا في صندوق ثانٍ. وهذا <span class="term" data-term="split-entity">كيان مشطور</span> (Split entity).</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="split-entity">split entity</span> is one entity drawn as two boxes joined by a 1:1, usually mandatory at both ends, where the second box has no significance of its own.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="split-entity">الكيان المشطور</span> (Split entity) كيان واحد رُسم صندوقين تربطهما علاقة <bdi>1:1</bdi>، إلزامية عادةً عند الطرفين، ولا أهمية للصندوق الثاني بذاته.</p>
+  </div>
+
+  <div class="evolve" id="t5l3-e3">
+    <div class="ver" data-title-en="Version 1 — STUDENT has STUDENT CONTACT" data-title-ar="الإصدار 1 — STUDENT has STUDENT CONTACT">
+      <figure class="diagram" data-diagram="t5-student-split">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 300" direction="ltr" role="img" aria-labelledby="t5-student-split-t">
+<title id="t5-student-split-t">STUDENT has / STUDENT CONTACT belongs to: a one-to-one mandatory at both ends, where both boxes describe the same student / STUDENT has / STUDENT CONTACT belongs to: علاقة واحد إلى واحد إلزامية عند الطرفين، والصندوقان يصفان الطالب نفسه</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1: one student, drawn as two entities</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 1: طالب واحد، مرسوم كيانين</text></g>
+<rect x="40" y="50" width="210" height="95" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="510" y="50" width="230" height="95" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="625.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT CONTACT</text>
+<text x="524" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="524" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Phone</text>
+<text x="524" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Email</text>
+<path d="M250 95 L380.0 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M380.0 95 L510 95" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="258" y="87" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">has</text>
+<text x="502" y="113" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">belongs to</text>
+<rect x="40" y="160" width="700" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="183" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each STUDENT must have one and only one STUDENT CONTACT.</text>
+<text x="56" y="204" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each STUDENT CONTACT must belong to one and only one STUDENT.</text>
+<rect x="40" y="232" width="700" height="56" rx="6" style="fill:var(--dg-warn-soft, var(--surface));stroke:var(--dg-warn, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="253" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Suspicious: 1:1, mandatory both ways, and STUDENT CONTACT means nothing on its own.</text></g><g class="ar"><text x="724" y="253" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏مريب: ‎1:1، إلزامية في الاتجاهين، وSTUDENT CONTACT لا معنى له وحده.</text></g>
+<g class="en"><text x="56" y="272" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Both boxes are created together, deleted together, and describe one thing.</text></g><g class="ar"><text x="724" y="272" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏الصندوقان يُنشآن معًا، ويُحذفان معًا، ويصفان شيئًا واحدًا.</text></g></svg>
+</figure>
+      <p class="en">Defect: a split entity. The two boxes are created together, deleted together and identify the same student, so the 1:1 adds a second UID and a join while recording nothing that one box could not.</p>
+      <p class="ar">العيب: كيان مشطور. الصندوقان يُنشآن معًا، ويُحذفان معًا، ويعرّفان الطالب نفسه، فتضيف علاقة <bdi>1:1</bdi> معرّفًا ثانيًا وربطًا دون أن تسجّل شيئًا لا يستطيع صندوق واحد تسجيله.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — one STUDENT" data-title-ar="الإصدار 2 — STUDENT واحد">
+      <figure class="diagram" data-diagram="t5-student-merged">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 285" direction="ltr" role="img" aria-labelledby="t5-student-merged-t">
+<title id="t5-student-merged-t">STUDENT as one entity with ID, first name, last name, phone and email: the one-to-one has disappeared / STUDENT كيانًا واحدًا بمعرّف واسم أول واسم عائلة وهاتف وبريد: اختفت علاقة واحد إلى واحد</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2: one entity, one box</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 2: كيان واحد، صندوق واحد</text></g>
+<rect x="275" y="50" width="230" height="133" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="390.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="289" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="289" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="289" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<text x="289" y="151" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Phone</text>
+<text x="289" y="170" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Email</text>
+<rect x="40" y="160" width="700" height="37" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="183" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">STUDENT  1001  Sara  Hamdan  0599-100100  sara@school.ps</text>
+<rect x="40" y="211" width="700" height="56" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="232" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Phone and Email were attributes of STUDENT all along: they move into the box.</text></g><g class="ar"><text x="724" y="232" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏كان Phone وEmail خاصّيتين لـ STUDENT منذ البداية: فتنتقلان إلى الصندوق.</text></g>
+<g class="en"><text x="56" y="251" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">No line, no second UID, nothing to join. One student, one instance.</text></g><g class="ar"><text x="724" y="251" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏لا خطّ، ولا معرّف ثانٍ، ولا شيء يُربط. طالب واحد، ونسخة واحدة.</text></g></svg>
+</figure>
+      <p class="en">Fixed: <span class="term" data-term="merge-entities">merge the entities</span>. <code>Phone</code> and <code>Email</code> become attributes of <code>STUDENT</code>, and the line disappears. This is the recommended form.</p>
+      <p class="ar">أُصلح: <span class="term" data-term="merge-entities">دمج الكيانين</span> (Merge the entities). يصير <code>Phone</code> و<code>Email</code> خاصّيتين لـ <code>STUDENT</code>، ويختفي الخط. وهذا هو الشكل الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t5l3-s5"><span class="en">Why COMPUTER and MOTHERBOARD stay apart</span><span class="ar">لماذا يبقى COMPUTER وMOTHERBOARD منفصلين</span></h3>
+
+  <p class="en">The computer line is also 1:1 and solid at both ends, yet the slides keep two entities. Ask the same question. A motherboard has its own serial number and model; the technician tracks it as a thing in itself. It is significant on its own, so it is an entity.</p>
+  <p class="ar">خطّ الحاسوب أيضًا <bdi>1:1</bdi> ومتّصل عند الطرفين، ومع ذلك تُبقي الشرائح كيانين. اطرح السؤال نفسه. للّوحة الأمّ رقمها التسلسلي وطرازها، ويتابعها الفنّي شيئًا قائمًا بذاته. فهي ذات أهمية بذاتها، ولذلك هي كيان.</p>
+  <p class="en">So a 1:1 is a question, not a verdict. A role passes: a teacher has attributes a person does not, and most persons have no such role. A contact record fails. When the second box has nothing of its own, merge it.</p>
+  <p class="ar">إذن علاقة <bdi>1:1</bdi> سؤال، لا حكم. والدور ينجح في الاختبار: فللمعلّم خصائص ليست للشخص، ومعظم الأشخاص لا يؤدّون هذا الدور. أمّا سجلّ الاتصال فيسقط. وحين لا يكون للصندوق الثاني شيء خاصّ به، فادمجه.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 1 becomes two tables and a join for every phone list. Version 2 is one table, and the same list is a plain <code>SELECT</code>:</p>
+    <p class="ar">يصير الإصدار 1 جدولين وربطًا في كل قائمة هواتف. أمّا الإصدار 2 فجدول واحد، والقائمة نفسها <code>SELECT</code> بسيط:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE students (student_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, phone VARCHAR(12) NOT NULL, email VARCHAR(30) NOT NULL)","INSERT INTO students VALUES (1001,'Sara','Hamdan','0599-100100','sara@school.ps'), (1002,'Omar','Khalil','0599-200200','omar@school.ps'), (1003,'Lina','Nasser','0599-400400','lina@school.ps')"],"sql":"SELECT first_name, phone, email\nFROM students\nORDER BY student_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>first_name</code></th><th><code>phone</code></th><th><code>email</code></th></tr></thead>
+          <tbody>
+            <tr><td>Sara</td><td>0599-100100</td><td>sara@school.ps</td></tr>
+            <tr><td>Omar</td><td>0599-200200</td><td>omar@school.ps</td></tr>
+            <tr><td>Lina</td><td>0599-400400</td><td>lina@school.ps</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">A mandatory-both-ends 1:1 also has a table problem: each row must exist before the other can point at it. One table has no such puzzle.</p>
+    <p class="ar">ولعلاقة <bdi>1:1</bdi> الإلزامية عند الطرفين مشكلة في الجداول أيضًا: كل صفّ يجب أن يوجد قبل أن يشير إليه الآخر. أمّا الجدول الواحد فلا لغز فيه.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Version 1 is replaced by version 2. What did the change remove?</p>
+    <p class="q ar">حلّ الإصدار 2 محلّ الإصدار 1. ماذا أزال التغيير؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The student's phone and email</span><span class="ar">هاتف الطالب وبريده</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A second box, a second UID and a 1:1 line that recorded nothing new</span><span class="ar">صندوقًا ثانيًا، ومعرّفًا ثانيًا، وخطّ <bdi>1:1</bdi> لم يسجّل شيئًا جديدًا</span></button></li>
+      <li><button class="opt"><span class="en">The rule that each student has one phone</span><span class="ar">قاعدة أن لكل طالب هاتفًا واحدًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Nothing the business knows was lost: phone and email are now attributes, still mandatory and single-valued. What went is the split itself &mdash; the extra entity, its UID and the join it forced.</p>
+      <p class="ar">لم يضِع شيء ممّا يعرفه العمل: فالهاتف والبريد صارا خاصّيتين، وما زالا إلزاميين أحاديَّي القيمة. أمّا ما ذهب فهو الشطر نفسه &mdash; الكيان الزائد، ومعرّفه، والربط الذي فرضه.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which 1:1 should be merged into one entity?</p>
+    <p class="q ar">أيّ علاقة <bdi>1:1</bdi> يجب دمجها في كيان واحد؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>COMPUTER</code>&ndash;<code>MOTHERBOARD</code>: the motherboard has its own serial number and is tracked by the technician</span><span class="ar"><code>COMPUTER</code>&ndash;<code>MOTHERBOARD</code>: للّوحة الأمّ رقم تسلسلي خاصّ، ويتابعها الفنّي</span></button></li>
+      <li><button class="opt"><span class="en"><code>PERSON</code>&ndash;<code>TEACHER</code>: only some persons teach, and a teacher has a hire date</span><span class="ar"><code>PERSON</code>&ndash;<code>TEACHER</code>: بعض الأشخاص فقط يدرّسون، وللمعلّم تاريخ تعيين</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>STUDENT</code>&ndash;<code>STUDENT PHOTO</code>: one photo per student, mandatory both ways, never used alone</span><span class="ar"><code>STUDENT</code>&ndash;<code>STUDENT PHOTO</code>: صورة واحدة لكل طالب، إلزامية في الاتجاهين، ولا تُستعمل وحدها أبدًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The photo is one more attribute of the student, created and deleted with it: a split entity. The motherboard is significant on its own, and the teacher is a role mandatory at one end only.</p>
+      <p class="ar">الصورة خاصية أخرى للطالب، تُنشأ وتُحذف معه: كيان مشطور. أمّا اللوحة الأمّ فذات أهمية بذاتها، والمعلّم دور إلزامي عند طرف واحد فقط.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t5l3-h6"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Name the type</span><span class="ar">تمرين 1 · سمِّ النوع</span></h4>
+    <p class="en">For each business, ask the two "how many?" questions and name the type.</p>
+    <p class="ar">لكل عمل، اطرح سؤالَي «كم؟» وسمِّ النوع.</p>
+    <pre class="code" data-lang="text"><code>1  COMPUTER - MOTHERBOARD   a computer contains one; a motherboard sits in one
+2  PERSON - TEACHER         a person acts as at most one teacher; a teacher is one person
+3  CUSTOMER - SALES REP     a rep may visit many customers; a customer has one rep
+4  STUDENT - SUBJECT        a student studies many; a subject is studied by many
+5  CLASS - CLASSROOM        each class meets in one room; each room hosts one class</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">1: 1:1. 2: 1:1 (a role). 3: 1:M, child <code>CUSTOMER</code>. 4: M:M (Lesson 4). 5: 1:1, for this school &mdash; a school whose rooms host several classes a day would make it 1:M.</p>
+      <p class="ar">1: <bdi>1:1</bdi>. 2: <bdi>1:1</bdi> (دور). 3: <bdi>1:M</bdi>، والابن <code>CUSTOMER</code>. 4: <bdi>M:M</bdi> (الدرس 4). 5: <bdi>1:1</bdi>، في هذه المدرسة &mdash; أمّا مدرسة تستضيف قاعاتُها عدّة شعب في اليوم فتجعلها <bdi>1:M</bdi>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Write the role sentences</span><span class="ar">تمرين 2 · اكتب جمل الدور</span></h4>
+    <p class="en">Write both ERDish sentences for <code>PERSON</code> and <code>STUDENT</code> in the slides' role model, and say which half is solid.</p>
+    <p class="ar">اكتب جملتَي ERDish لـ <code>PERSON</code> و<code>STUDENT</code> في نموذج الأدوار في الشرائح، وقل أيّ النصفين متّصل.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="erdish"><code>Each STUDENT must be the role of one and only one PERSON.
+Each PERSON may be acting as one and only one STUDENT.</code></pre>
+      <p class="en">The half at <code>STUDENT</code> is solid (<em>must</em>), the half at <code>PERSON</code> dashed (<em>may</em>): mandatory at one end, as the slides say roles commonly are. Both sentences end in "one and only one", so it is 1:1.</p>
+      <p class="ar">النصف عند <code>STUDENT</code> متّصل (<em>must</em>)، والنصف عند <code>PERSON</code> متقطّع (<em>may</em>): إلزامية عند طرف واحد، كما تقول الشرائح إن الأدوار تكون عادةً. والجملتان تنتهيان بـ«واحد فقط لا غير»، فهي <bdi>1:1</bdi>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Fix the draft</span><span class="ar">تمرين 3 · أصلح المسودّة</span></h4>
+    <p class="en">A classmate drew the role model like this. Which lines are wrong, and how should each be fixed?</p>
+    <p class="ar">رسم زميل نموذج الأدوار هكذا. أيّ الأسطر خاطئة، وكيف يُصلَح كلٌّ منها؟</p>
+    <pre class="code" data-lang="text"><code>1  end at TEACHER:          crow's foot
+2  end at PERSON:           single toe
+3  half at TEACHER:         solid
+4  half at PERSON:          solid
+5  TEACHER attributes:      # ID, * First Name, * Phone, * Hire Date
+6  foreign key:             teachers.person_id NOT NULL</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Line 1: single toe &mdash; a person acts as one teacher at most. Line 4: dashed &mdash; not every person teaches. Line 5: <code># ID, * Hire Date</code> &mdash; name and phone belong to <code>PERSON</code>. Line 6: add <code>UNIQUE</code>, or the table is 1:M. Lines 2 and 3 are right.</p>
+      <p class="ar">السطر 1: إصبع واحدة &mdash; فالشخص يؤدّي دور معلّم واحد على الأكثر. والسطر 4: متقطّع &mdash; فليس كل شخص يدرّس. والسطر 5: <code># ID, * Hire Date</code> &mdash; فالاسم والهاتف ينتميان إلى <code>PERSON</code>. والسطر 6: أضف <code>UNIQUE</code>، وإلّا صار الجدول <bdi>1:M</bdi>. والسطران 2 و3 صحيحان.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Teachers who are not students</span><span class="ar">تمرين 4 · معلّمون ليسوا طلابًا</span></h4>
+    <p class="en">Using the <code>persons</code>, <code>teachers</code> and <code>students</code> tables of section 3, write a query listing the first name of every teacher who is not also a student.</p>
+    <p class="ar">مستعملًا جداول <code>persons</code> و<code>teachers</code> و<code>students</code> في القسم 3، اكتب استعلامًا يسرد الاسم الأول لكل معلّم ليس طالبًا أيضًا.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT p.first_name
+FROM persons p
+  JOIN teachers t ON t.person_id = p.person_id
+  LEFT JOIN students s ON s.person_id = p.person_id
+WHERE s.student_id IS NULL;</code></pre>
+      <div class="output">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th><code>first_name</code></th></tr></thead>
+            <tbody><tr><td>Khaled</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="en">Khaled is legal because the half at <code>PERSON</code> on the student line is dashed: a person may be acting as no student at all.</p>
+      <p class="ar">صفّ Khaled مشروع لأن النصف عند <code>PERSON</code> في خطّ الطالب متقطّع: فقد لا يؤدّي الشخص دور طالب أصلًا.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Keep or merge?</span><span class="ar">تمرين 5 · إبقاء أم دمج؟</span></h4>
+    <p class="en">Each pair is drawn as a 1:1. Say whether to keep two entities or merge them into one, and why: (a) <code>STUDENT</code> and <code>STUDENT ADDRESS</code>, created and deleted together; (b) <code>COMPUTER</code> and <code>MONITOR</code>, where monitors have serial numbers and are swapped between desks; (c) <code>PERSON</code> and <code>STUDENT</code>.</p>
+    <p class="ar">كل زوج مرسوم علاقة <bdi>1:1</bdi>. قل هل تُبقي كيانين أم تدمجهما في واحد، ولماذا: (أ) <code>STUDENT</code> و<code>STUDENT ADDRESS</code>، يُنشآن ويُحذفان معًا؛ (ب) <code>COMPUTER</code> و<code>MONITOR</code>، وللشاشات أرقام تسلسلية وتُبادَل بين المكاتب؛ (ج) <code>PERSON</code> و<code>STUDENT</code>.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) Merge: the address has no life apart from the student &mdash; a split entity. (b) Keep: a monitor is significant on its own, with its own serial number. (c) Keep: <code>STUDENT</code> is a role, with attributes such as <code>Start Date</code>, and most persons do not play it.</p>
+      <p class="ar">(أ) ادمج: فلا حياة للعنوان بعيدًا عن الطالب &mdash; كيان مشطور. (ب) أبقِ: فالشاشة ذات أهمية بذاتها، ولها رقمها التسلسلي. (ج) أبقِ: فـ <code>STUDENT</code> دور، له خصائص مثل <code>Start Date</code>، ومعظم الأشخاص لا يؤدّونه.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">A 1:1 has cardinality of one and only one in both directions: a single toe at both ends.</li>
+      <li class="ar">علاقة <bdi>1:1</bdi> تعدّديتها «واحد فقط لا غير» في الاتجاهين: إصبع واحدة عند الطرفين.</li>
+      <li class="en">In tables, a 1:1 is one foreign key declared <code>UNIQUE</code>; without <code>UNIQUE</code> it is a 1:M.</li>
+      <li class="ar">في الجداول، علاقة <bdi>1:1</bdi> مفتاح أجنبي واحد مُعلَن <code>UNIQUE</code>؛ وبلا <code>UNIQUE</code> تكون <bdi>1:M</bdi>.</li>
+      <li class="en">Roles are 1:1, mandatory at one end: each role must belong to a person; a person may play it.</li>
+      <li class="ar">الأدوار علاقات <bdi>1:1</bdi> إلزامية عند طرف واحد: كل دور يجب أن يعود إلى شخص، والشخص قد يؤدّيه.</li>
+      <li class="en">Put the key on the solid side, so it can be <code>NOT NULL</code>.</li>
+      <li class="ar">ضع المفتاح في الجهة المتّصلة، ليكون <code>NOT NULL</code>.</li>
+      <li class="en">You will find only a few 1:1s in a model; when the second box has no significance of its own, merge it.</li>
+      <li class="ar">لن تجد في النموذج إلا القليل من علاقات <bdi>1:1</bdi>؛ وحين لا تكون للصندوق الثاني أهمية بذاته، فادمجه.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Calling a line 1:1 from one sentence: "one and only one" must hold in both directions.</li>
+      <li class="ar">تسمية الخط <bdi>1:1</bdi> من جملة واحدة: يجب أن تصحّ «واحد فقط لا غير» في الاتجاهين.</li>
+      <li class="en">Forgetting <code>UNIQUE</code> on the foreign key, so the table quietly becomes 1:M.</li>
+      <li class="ar">نسيان <code>UNIQUE</code> على المفتاح الأجنبي، فيصير الجدول <bdi>1:M</bdi> بصمت.</li>
+      <li class="en">Drawing a role solid at both ends, which forces every person into the role.</li>
+      <li class="ar">رسم الدور متّصلًا عند الطرفين، فيُجبر كل شخص على أداء الدور.</li>
+      <li class="en">Storing a person's name and phone again in each role.</li>
+      <li class="ar">تخزين اسم الشخص وهاتفه من جديد في كل دور.</li>
+      <li class="en">Keeping a split entity: two boxes, two UIDs and a join for what is one thing.</li>
+      <li class="ar">الإبقاء على كيان مشطور: صندوقان، ومعرّفان، وربط، لما هو شيء واحد.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="../tests/t5-test-03.html#t5-test-03">Test 3 &mdash; One-to-One</a>. Then <a href="../lessons/t5-lesson-04.html#t5-lesson-04">Lesson 4 &mdash; Many-to-Many</a> puts a crow's foot at both ends: <code>STUDENT</code> and <code>SUBJECT</code>, and the grade that belongs to neither.</p>
+    <p class="ar">اختبر نفسك بـ<a href="../tests/t5-test-03.html#t5-test-03">اختبار 3 &mdash; واحد إلى واحد</a>. ثم يضع <a href="../lessons/t5-lesson-04.html#t5-lesson-04">الدرس 4 &mdash; متعدّد إلى متعدّد</a> رِجل غراب عند الطرفين: <code>STUDENT</code> و<code>SUBJECT</code>، والدرجة التي لا تنتمي إلى أيّ منهما.</p>
+  </div>
 
 </section>
 <nav class="pager"></nav>
@@ -69,6 +745,9 @@
 <script src="../assets/theory/js/anchors.js"></script>
 <script src="../assets/theory/js/chrome.js"></script>
 <script src="../assets/theory/js/code.js"></script>
+<script src="../assets/vendor/alasql/alasql.min.js"></script>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/widget.js"></script>
 <script src="../assets/theory/js/app.js"></script>
 </body>
 </html>

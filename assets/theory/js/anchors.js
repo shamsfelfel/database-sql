@@ -377,6 +377,20 @@ window.DBTAnchors = {
 "t5l2-s3": "lessons/t5-lesson-02.html",
 "t5l2-s4": "lessons/t5-lesson-02.html",
 "t5l2-s5": "lessons/t5-lesson-02.html",
+"t5l3-e1": "lessons/t5-lesson-03.html",
+"t5l3-e2": "lessons/t5-lesson-03.html",
+"t5l3-e3": "lessons/t5-lesson-03.html",
+"t5l3-h1": "lessons/t5-lesson-03.html",
+"t5l3-h2": "lessons/t5-lesson-03.html",
+"t5l3-h3": "lessons/t5-lesson-03.html",
+"t5l3-h4": "lessons/t5-lesson-03.html",
+"t5l3-h5": "lessons/t5-lesson-03.html",
+"t5l3-h6": "lessons/t5-lesson-03.html",
+"t5l3-s1": "lessons/t5-lesson-03.html",
+"t5l3-s2": "lessons/t5-lesson-03.html",
+"t5l3-s3": "lessons/t5-lesson-03.html",
+"t5l3-s4": "lessons/t5-lesson-03.html",
+"t5l3-s5": "lessons/t5-lesson-03.html",
 "track-theory": "theory/index.html"
 };
 window.DBTHeadings = {
@@ -1407,6 +1421,50 @@ window.DBTHeadings = {
 "t5l2-s5": {
 "ar": "رِجل الغراب توضع حيث الجواب «كثير»",
 "en": "The crow's foot goes where the answer is \"many\""
+},
+"t5l3-h1": {
+"ar": "١ · واحد فقط لا غير، في الاتجاهين",
+"en": "1 · One and only one, in both directions"
+},
+"t5l3-h2": {
+"ar": "٢ · إبقاؤها «واحدًا إلى واحد»",
+"en": "2 · Keeping it one-to-one"
+},
+"t5l3-h3": {
+"ar": "٣ · «واحد إلى واحد» للأدوار",
+"en": "3 · One-to-one for roles"
+},
+"t5l3-h4": {
+"ar": "٤ · أيّ جدول يأخذ المفتاح",
+"en": "4 · Which table gets the key"
+},
+"t5l3-h5": {
+"ar": "٥ · حين تعني «واحد إلى واحد» كيانًا واحدًا",
+"en": "5 · When a one-to-one means one entity"
+},
+"t5l3-h6": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t5l3-s1": {
+"ar": "جملتان، وكلتاهما «واحد فقط لا غير»",
+"en": "Two sentences, both \"one and only one\""
+},
+"t5l3-s2": {
+"ar": "UNIQUE هي الإصبع الثانية",
+"en": "UNIQUE is the second toe"
+},
+"t5l3-s3": {
+"ar": "إلزامية عند طرف واحد",
+"en": "Mandatory at one end"
+},
+"t5l3-s4": {
+"ar": "لماذا لن ترسم منها إلا القليل",
+"en": "Why you will draw only a few"
+},
+"t5l3-s5": {
+"ar": "لماذا يبقى COMPUTER وMOTHERBOARD منفصلين",
+"en": "Why COMPUTER and MOTHERBOARD stay apart"
 },
 "track-theory": {
 "ar": "النظري — تصميم قواعد البيانات",

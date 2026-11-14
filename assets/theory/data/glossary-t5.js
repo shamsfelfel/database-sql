@@ -68,6 +68,50 @@ window.DBTGlossary["t5"] = [
   ]
  },
  {
+  "id": "key-side",
+  "term": {
+   "en": "Key side (of a 1:1)",
+   "ar": "جهة المفتاح (في ‎1:1)"
+  },
+  "def": {
+   "en": "The table that receives the foreign key of a one-to-one: the one whose half is solid, so the column can be NOT NULL.",
+   "ar": "الجدول الذي يستقبل المفتاح الأجنبي لعلاقة «واحد إلى واحد»: الجدول الذي نصفه متّصل، ليكون العمود NOT NULL."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "unique-foreign-key",
+   "mandatory-at-one-end"
+  ],
+  "used": [
+   "t5l3-h4"
+  ]
+ },
+ {
+  "id": "mandatory-at-one-end",
+  "term": {
+   "en": "Mandatory at one end",
+   "ar": "إلزامية عند طرف واحد"
+  },
+  "def": {
+   "en": "A one-to-one whose half is solid at one end and dashed at the other; the common form when roles are modelled.",
+   "ar": "علاقة «واحد إلى واحد» نصفها متّصل عند طرف ومتقطّع عند الآخر؛ وهي الشكل الشائع حين تُنمذَج الأدوار."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "role",
+   "key-side"
+  ],
+  "used": [
+   "t5l3-s3"
+  ]
+ },
+ {
   "id": "many-end",
   "term": {
    "en": "Many end",
@@ -109,6 +153,27 @@ window.DBTGlossary["t5"] = [
   ],
   "used": [
    "t5l2-h4"
+  ]
+ },
+ {
+  "id": "merge-entities",
+  "term": {
+   "en": "Merge the entities",
+   "ar": "دمج الكيانين"
+  },
+  "def": {
+   "en": "The repair for a split entity: the second box's attributes move into the first, and the one-to-one line disappears.",
+   "ar": "إصلاح الكيان المشطور: تنتقل خصائص الصندوق الثاني إلى الأول، ويختفي خط «واحد إلى واحد»."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "split-entity"
+  ],
+  "used": [
+   "t5l3-h5"
   ]
  },
  {
@@ -202,6 +267,29 @@ window.DBTGlossary["t5"] = [
   ]
  },
  {
+  "id": "one-to-one",
+  "term": {
+   "en": "One-to-one (1:1)",
+   "ar": "واحد إلى واحد (‎1:1)"
+  },
+  "def": {
+   "en": "A relationship with cardinality of one and only one in both directions, drawn with a single toe at both ends.",
+   "ar": "علاقة تعدّديتها «واحد فقط لا غير» في الاتجاهين، تُرسم بإصبع واحدة عند الطرفين."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "relationship-type",
+   "unique-foreign-key",
+   "role"
+  ],
+  "used": [
+   "t5l3-h1"
+  ]
+ },
+ {
   "id": "parent-entity",
   "term": {
    "en": "Parent entity",
@@ -291,6 +379,72 @@ window.DBTGlossary["t5"] = [
   ]
  },
  {
+  "id": "role",
+  "term": {
+   "en": "Role",
+   "ar": "الدور"
+  },
+  "def": {
+   "en": "A part that an instance of one entity plays, such as a person acting as a teacher, modelled as a separate entity linked to it by a one-to-one.",
+   "ar": "جزءٌ تؤدّيه نسخة من كيانٍ ما، مثل شخص يؤدّي دور معلّم، ويُنمذَج كيانًا مستقلًّا يرتبط بها بعلاقة «واحد إلى واحد»."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "role-attribute",
+   "mandatory-at-one-end",
+   "one-to-one"
+  ],
+  "used": [
+   "t5l3-h3"
+  ]
+ },
+ {
+  "id": "role-attribute",
+  "term": {
+   "en": "Role attribute",
+   "ar": "خاصية الدور"
+  },
+  "def": {
+   "en": "An attribute that describes a role rather than the person playing it, such as a teacher's hire date, and so lives in the role entity.",
+   "ar": "خاصية تصف الدور لا الشخص الذي يؤدّيه، مثل تاريخ تعيين المعلّم، فمكانها كيان الدور."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "role"
+  ],
+  "used": [
+   "t5l3-h3"
+  ]
+ },
+ {
+  "id": "split-entity",
+  "term": {
+   "en": "Split entity",
+   "ar": "الكيان المشطور"
+  },
+  "def": {
+   "en": "One entity drawn as two boxes joined by a one-to-one, usually mandatory at both ends, where the second box has no significance of its own.",
+   "ar": "كيان واحد رُسم صندوقين تربطهما علاقة «واحد إلى واحد»، إلزامية عادةً عند الطرفين، ولا أهمية للصندوق الثاني بذاته."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "merge-entities",
+   "one-to-one"
+  ],
+  "used": [
+   "t5l3-h5"
+  ]
+ },
+ {
   "id": "transfer",
   "term": {
    "en": "Transfer",
@@ -356,6 +510,28 @@ window.DBTGlossary["t5"] = [
   ],
   "used": [
    "t5l1-h1"
+  ]
+ },
+ {
+  "id": "unique-foreign-key",
+  "term": {
+   "en": "Unique foreign key",
+   "ar": "المفتاح الأجنبي الفريد"
+  },
+  "def": {
+   "en": "A foreign key column also declared UNIQUE, so no two rows may point at the same parent; the table form of a one-to-one.",
+   "ar": "عمود مفتاح أجنبي مُعلَن أيضًا UNIQUE، فلا يجوز لصفّين أن يشيرا إلى الأب نفسه؛ وهو صورة «واحد إلى واحد» في الجداول."
+  },
+  "cat": {
+   "en": "Relationship types",
+   "ar": "أنواع العلاقات"
+  },
+  "see": [
+   "one-to-one",
+   "key-side"
+  ],
+  "used": [
+   "t5l3-s2"
   ]
  },
  {
