@@ -42,6 +42,20 @@ window.DBTAnchors = {
 "t2l1-s2": "lessons/t2-lesson-01.html",
 "t2l1-s3": "lessons/t2-lesson-01.html",
 "t2l1-s4": "lessons/t2-lesson-01.html",
+"t2l2-e1": "lessons/t2-lesson-02.html",
+"t2l2-e2": "lessons/t2-lesson-02.html",
+"t2l2-e3": "lessons/t2-lesson-02.html",
+"t2l2-h1": "lessons/t2-lesson-02.html",
+"t2l2-h2": "lessons/t2-lesson-02.html",
+"t2l2-h3": "lessons/t2-lesson-02.html",
+"t2l2-h4": "lessons/t2-lesson-02.html",
+"t2l2-h5": "lessons/t2-lesson-02.html",
+"t2l2-h6": "lessons/t2-lesson-02.html",
+"t2l2-h7": "lessons/t2-lesson-02.html",
+"t2l2-s1": "lessons/t2-lesson-02.html",
+"t2l2-s2": "lessons/t2-lesson-02.html",
+"t2l2-s3": "lessons/t2-lesson-02.html",
+"t2l2-s4": "lessons/t2-lesson-02.html",
 "t3-chapter": "chapters/t3.html",
 "t3-exam-a": "exams/t3-exam-a.html",
 "t3-exam-b": "exams/t3-exam-b.html",
@@ -174,6 +188,50 @@ window.DBTHeadings = {
 "t2l1-s4": {
 "ar": "ما الذي تكسبه قاعدة البيانات متعدّدة الجداول",
 "en": "What a multi-table database buys"
+},
+"t2l2-h1": {
+"ar": "١ · الجداول والأعمدة والصفوف",
+"en": "1 · Tables, columns and rows"
+},
+"t2l2-h2": {
+"ar": "٢ · المفتاح الأساسي",
+"en": "2 · The primary key"
+},
+"t2l2-h3": {
+"ar": "٣ · المفتاح الأجنبي",
+"en": "3 · The foreign key"
+},
+"t2l2-h4": {
+"ar": "٤ · المفتاح الفريد",
+"en": "4 · The unique key"
+},
+"t2l2-h5": {
+"ar": "٥ · القواعد السبع",
+"en": "5 · The seven rules"
+},
+"t2l2-h6": {
+"ar": "٦ · لماذا لا يهمّ الترتيب",
+"en": "6 · Why order is insignificant"
+},
+"t2l2-h7": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t2l2-s1": {
+"ar": "الحقل: قيمة واحدة",
+"en": "The field: one value"
+},
+"t2l2-s2": {
+"ar": "علاقة مصنوعة من مفتاح",
+"en": "A relationship, made of a key"
+},
+"t2l2-s3": {
+"ar": "أساسي أم فريد؟",
+"en": "Primary or unique?"
+},
+"t2l2-s4": {
+"ar": "قيم مفردة، من النوع نفسه",
+"en": "Single values, of the same kind"
 },
 "t3idx-h1": {
 "ar": "الدروس",

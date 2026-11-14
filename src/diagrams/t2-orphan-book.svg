@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 320" direction="ltr" role="img" aria-labelledby="t2-orphan-book-t">
+<title id="t2-orphan-book-t">A book row whose AUTHOR_ID matches no author / صفّ كتاب لا يطابق AUTHOR_ID فيه أيّ مؤلف</title>
+<g class="en"><text x="430" y="22" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">BK005 points at an author who does not exist</text></g><g class="ar"><text x="430" y="22" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">BK005 يشير إلى مؤلف غير موجود</text></g>
+<text x="30" y="62" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR</text>
+<rect x="30" y="70" width="120" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="38" y="89" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_ID</text>
+<rect x="30" y="98" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="117" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0001</text>
+<rect x="30" y="126" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="145" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0002</text>
+<rect x="30" y="154" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="173" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="30" y="182" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="201" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0004</text>
+<rect x="150" y="70" width="180" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="158" y="89" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_NAME</text>
+<rect x="150" y="98" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="117" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oscar Wilde</text>
+<rect x="150" y="126" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="145" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Leo Tolstoy</text>
+<rect x="150" y="154" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="173" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oliver Goldsmith</text>
+<rect x="150" y="182" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="201" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Jane Austen</text>
+<text x="420" y="62" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">BOOK</text>
+<rect x="420" y="70" width="90" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="428" y="89" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">BOOK_ID</text>
+<rect x="420" y="98" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="117" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK001</text>
+<rect x="420" y="126" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="145" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK002</text>
+<rect x="420" y="154" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="173" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK003</text>
+<rect x="420" y="182" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="201" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK004</text>
+<rect x="420" y="210" width="90" height="28" style="fill:var(--dg-bad-soft, var(--bad-soft));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="428" y="229" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK005</text>
+<rect x="510" y="70" width="210" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="518" y="89" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">TITLE</text>
+<rect x="510" y="98" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="117" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">A Vision</text>
+<rect x="510" y="126" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="145" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">War and Peace</text>
+<rect x="510" y="154" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="173" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Citizen of the World</text>
+<rect x="510" y="182" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="201" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Androcles and the Lion</text>
+<rect x="510" y="210" width="210" height="28" style="fill:var(--dg-bad-soft, var(--bad-soft));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="518" y="229" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Emma</text>
+<rect x="720" y="70" width="110" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="728" y="89" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_ID</text>
+<rect x="720" y="98" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="117" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0001</text>
+<rect x="720" y="126" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="145" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0002</text>
+<rect x="720" y="154" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="173" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="720" y="182" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="201" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="720" y="210" width="110" height="28" style="fill:var(--dg-bad-soft, var(--bad-soft));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="728" y="229" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0009</text>
+<rect x="30" y="210" width="300" height="28" style="fill:none;stroke:var(--dg-bad, var(--bad));stroke-width:1.5;stroke-dasharray:5 4"/>
+<text x="38" y="229" text-anchor="start" style="fill:var(--dg-bad, var(--bad));font-family:var(--mono, monospace);font-size:13px">AD0009  ?</text>
+<path d="M414 224 L336 224" style="fill:none;stroke:var(--dg-bad, var(--bad));stroke-width:1.5;stroke-dasharray:6 4"/>
+<path d="M344 218 L336 224 L344 230" style="fill:none;stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<g class="en"><text x="180" y="266" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:13px">no such row in AUTHOR</text></g><g class="ar"><text x="180" y="266" text-anchor="middle" direction="rtl" style="fill:var(--dg-bad, var(--bad));font-family:var(--font-ar, sans-serif);font-size:14px">لا يوجد صفّ كهذا في AUTHOR</text></g>
+<g class="en"><text x="625" y="266" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:13px">the book has no real author</text></g><g class="ar"><text x="625" y="266" text-anchor="middle" direction="rtl" style="fill:var(--dg-bad, var(--bad));font-family:var(--font-ar, sans-serif);font-size:14px">الكتاب بلا مؤلف حقيقي</text></g>
+<g class="en"><text x="430" y="294" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Who wrote Emma? The database cannot say.</text></g><g class="ar"><text x="430" y="294" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">من كتب Emma؟ لا تستطيع قاعدة البيانات أن تقول.</text></g>
+</svg>

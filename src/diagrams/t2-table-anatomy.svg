@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 270" direction="ltr" role="img" aria-labelledby="t2-table-anatomy-t">
+<title id="t2-table-anatomy-t">Anatomy of a relational table: table, column, row, field / تشريح الجدول العلائقي: الجدول والعمود والصفّ والحقل</title>
+<g class="en"><text x="410" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">One table, four words</text></g><g class="ar"><text x="410" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">جدول واحد، وأربع كلمات</text></g>
+<text x="260" y="72" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR</text>
+<rect x="260" y="80" width="120" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="268" y="99" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_ID</text>
+<rect x="260" y="108" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="268" y="127" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0001</text>
+<rect x="260" y="136" width="120" height="28" style="fill:var(--dg-warn-soft, var(--warn-soft));stroke:var(--dg-warn, var(--warn));stroke-width:1.5"/>
+<text x="268" y="155" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0002</text>
+<rect x="260" y="164" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="268" y="183" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="260" y="192" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="268" y="211" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0004</text>
+<rect x="380" y="80" width="180" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="388" y="99" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_NAME</text>
+<rect x="380" y="108" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="388" y="127" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oscar Wilde</text>
+<rect x="380" y="136" width="180" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="388" y="155" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Leo Tolstoy</text>
+<rect x="380" y="164" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="388" y="183" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oliver Goldsmith</text>
+<rect x="380" y="192" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="388" y="211" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Jane Austen</text>
+<rect x="380" y="80" width="180" height="140" style="fill:none;stroke:var(--dg-accent, var(--accent));stroke-width:2;stroke-dasharray:6 4"/>
+<path d="M256 72 L230 64 L180 64" style="fill:none;stroke:var(--dg-text-soft, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="120" y="68" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px">table name</text></g><g class="ar"><text x="120" y="68" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px">اسم الجدول</text></g>
+<path d="M258 150 L190 150" style="fill:none;stroke:var(--dg-text-soft, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="120" y="146" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">row</text></g><g class="ar"><text x="120" y="146" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">صفّ</text></g>
+<g class="en"><text x="120" y="164" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">one record</text></g><g class="ar"><text x="120" y="164" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">سجلّ واحد</text></g>
+<path d="M562 94 L610 94" style="fill:none;stroke:var(--dg-text-soft, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="700" y="90" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">column</text></g><g class="ar"><text x="700" y="90" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">عمود</text></g>
+<g class="en"><text x="700" y="108" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">one kind of information</text></g><g class="ar"><text x="700" y="108" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">نوع واحد من المعلومات</text></g>
+<path d="M562 150 L610 160" style="fill:none;stroke:var(--dg-text-soft, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="700" y="158" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">field</text></g><g class="ar"><text x="700" y="158" text-anchor="middle" direction="rtl" style="fill:var(--dg-good, var(--good));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">حقل</text></g>
+<g class="en"><text x="700" y="176" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">the one value where row meets column</text></g><g class="ar"><text x="700" y="176" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">القيمة الواحدة حيث يلتقي الصفّ بالعمود</text></g>
+<g class="en"><text x="410" y="252" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Row AD0002 × column AUTHOR_NAME = the field Leo Tolstoy</text></g><g class="ar"><text x="410" y="252" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">الصفّ AD0002 × العمود AUTHOR_NAME = الحقل Leo Tolstoy</text></g>
+</svg>

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 330" direction="ltr" role="img" aria-labelledby="t2-library-keys-t">
+<title id="t2-library-keys-t">AUTHOR and BOOK with their primary, foreign and unique keys / AUTHOR وBOOK مع مفاتيحهما الأساسية والأجنبية والفريدة</title>
+<g class="en"><text x="430" y="22" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Keys, and the relationship they make</text></g><g class="ar"><text x="430" y="22" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">المفاتيح، والعلاقة التي تصنعها</text></g>
+<text x="30" y="102" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR</text>
+<rect x="30" y="110" width="120" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="38" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_ID</text>
+<rect x="30" y="138" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0001</text>
+<rect x="30" y="166" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0002</text>
+<rect x="30" y="194" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="30" y="222" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="241" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0004</text>
+<rect x="150" y="110" width="180" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="158" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_NAME</text>
+<rect x="150" y="138" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oscar Wilde</text>
+<rect x="150" y="166" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Leo Tolstoy</text>
+<rect x="150" y="194" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oliver Goldsmith</text>
+<rect x="150" y="222" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="241" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Jane Austen</text>
+<text x="420" y="102" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">BOOK</text>
+<rect x="420" y="110" width="90" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="428" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">BOOK_ID</text>
+<rect x="420" y="138" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK001</text>
+<rect x="420" y="166" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK002</text>
+<rect x="420" y="194" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK003</text>
+<rect x="420" y="222" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="241" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK004</text>
+<rect x="510" y="110" width="210" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="518" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">TITLE</text>
+<rect x="510" y="138" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">A Vision</text>
+<rect x="510" y="166" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">War and Peace</text>
+<rect x="510" y="194" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Citizen of the World</text>
+<rect x="510" y="222" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="241" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Androcles and the Lion</text>
+<rect x="720" y="110" width="110" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="728" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_ID</text>
+<rect x="720" y="138" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0001</text>
+<rect x="720" y="166" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0002</text>
+<rect x="720" y="194" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="720" y="222" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="241" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<path d="M110 88 C 110 48, 775 48, 775 106" style="fill:none;stroke:var(--dg-accent, var(--accent));stroke-width:2;stroke-dasharray:6 4"/>
+<rect x="380" y="46" width="110" height="22" rx="6" style="fill:var(--dg-label-bg, var(--surface))"/>
+<g class="en"><text x="435" y="62" text-anchor="middle" style="fill:var(--dg-accent, var(--accent));font-family:var(--font, sans-serif);font-size:13px">relationship</text></g><g class="ar"><text x="435" y="62" text-anchor="middle" direction="rtl" style="fill:var(--dg-accent, var(--accent));font-family:var(--font-ar, sans-serif);font-size:14px">علاقة</text></g>
+<rect x="73" y="258" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-accent, var(--accent));stroke-width:1.2"/>
+<text x="90" y="271" text-anchor="middle" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:11px;font-weight:700">PK</text>
+<rect x="448" y="258" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-accent, var(--accent));stroke-width:1.2"/>
+<text x="465" y="271" text-anchor="middle" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:11px;font-weight:700">PK</text>
+<rect x="598" y="258" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.2"/>
+<text x="615" y="271" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--mono, monospace);font-size:11px;font-weight:700">UK</text>
+<rect x="758" y="258" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.2"/>
+<text x="775" y="271" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--mono, monospace);font-size:11px;font-weight:700">FK</text>
+<g class="en"><text x="90" y="296" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">primary key</text></g><g class="ar"><text x="90" y="296" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">مفتاح أساسي</text></g>
+<g class="en"><text x="465" y="296" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">primary key</text></g><g class="ar"><text x="465" y="296" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">مفتاح أساسي</text></g>
+<g class="en"><text x="615" y="296" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:12px">unique key</text></g><g class="ar"><text x="615" y="296" text-anchor="middle" direction="rtl" style="fill:var(--dg-good, var(--good));font-family:var(--font-ar, sans-serif);font-size:13px">مفتاح فريد</text></g>
+<g class="en"><text x="775" y="296" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:12px">foreign key</text></g><g class="ar"><text x="775" y="296" text-anchor="middle" direction="rtl" style="fill:var(--dg-bad, var(--bad));font-family:var(--font-ar, sans-serif);font-size:13px">مفتاح أجنبي</text></g>
+<g class="en"><text x="775" y="314" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">→ AUTHOR.AUTHOR_ID</text></g><g class="ar"><text x="775" y="314" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">يشير إلى AUTHOR.AUTHOR_ID</text></g>
+</svg>

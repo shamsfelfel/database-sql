@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 330" direction="ltr" role="img" aria-labelledby="t2-employees-keys-t">
+<title id="t2-employees-keys-t">The lecturer&#x27;s EMPLOYEES table: primary, foreign and unique key columns / جدول EMPLOYEES من المحاضرة: أعمدة المفتاح الأساسي والأجنبي والفريد</title>
+<g class="en"><text x="430" y="22" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">EMPLOYEES — three kinds of key in one table</text></g><g class="ar"><text x="430" y="22" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">EMPLOYEES — ثلاثة أنواع من المفاتيح في جدول واحد</text></g>
+<rect x="120" y="92" width="120" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="128" y="111" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">EMPLOYEE_ID</text>
+<rect x="120" y="120" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="128" y="139" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">100</text>
+<rect x="120" y="148" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="128" y="167" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">310</text>
+<rect x="120" y="176" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="128" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">210</text>
+<rect x="120" y="204" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="128" y="223" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">405</text>
+<rect x="120" y="232" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="128" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">378</text>
+<rect x="240" y="92" width="110" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="248" y="111" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">LAST_NAME</text>
+<rect x="240" y="120" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="139" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">SMITH</text>
+<rect x="240" y="148" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="167" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">ADAMS</text>
+<rect x="240" y="176" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">CHEN</text>
+<rect x="240" y="204" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="223" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">GOMEZ</text>
+<rect x="240" y="232" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">LOUNGANI</text>
+<rect x="350" y="92" width="110" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="358" y="111" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">FIRST_NAME</text>
+<rect x="350" y="120" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="139" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">DANA</text>
+<rect x="350" y="148" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="167" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">TYLER</text>
+<rect x="350" y="176" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">LAWRENCE</text>
+<rect x="350" y="204" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="223" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">CARLOS</text>
+<rect x="350" y="232" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">NEIL</text>
+<rect x="460" y="92" width="130" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="468" y="111" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">DEPARTMENT_ID</text>
+<rect x="460" y="120" width="130" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="468" y="139" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">10</text>
+<rect x="460" y="148" width="130" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="468" y="167" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">15</text>
+<rect x="460" y="176" width="130" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="468" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">10</text>
+<rect x="460" y="204" width="130" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="468" y="223" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">10</text>
+<rect x="460" y="232" width="130" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="468" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">22</text>
+<rect x="590" y="92" width="110" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="598" y="111" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">PAYROLL_ID</text>
+<rect x="590" y="120" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="598" y="139" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">21215</text>
+<rect x="590" y="148" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="598" y="167" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">59877</text>
+<rect x="590" y="176" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="598" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">1101</text>
+<rect x="590" y="204" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="598" y="223" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">52</text>
+<rect x="590" y="232" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="598" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">90386</text>
+<rect x="700" y="92" width="100" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="708" y="111" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">NICKNAME</text>
+<rect x="700" y="120" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="708" y="139" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Dana</text>
+<rect x="700" y="148" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="708" y="167" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Ty</text>
+<rect x="700" y="176" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="708" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Larry</text>
+<rect x="700" y="204" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="708" y="223" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Chaz</text>
+<rect x="700" y="232" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="708" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Neil</text>
+<rect x="163" y="62" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-accent, var(--accent));stroke-width:1.2"/>
+<text x="180" y="75" text-anchor="middle" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:11px;font-weight:700">PK</text>
+<rect x="508" y="62" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.2"/>
+<text x="525" y="75" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--mono, monospace);font-size:11px;font-weight:700">FK</text>
+<rect x="628" y="62" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.2"/>
+<text x="645" y="75" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--mono, monospace);font-size:11px;font-weight:700">UK</text>
+<path d="M180 81 L180 92" style="fill:none;stroke:var(--dg-accent, var(--accent));stroke-width:1"/>
+<path d="M525 81 L525 92" style="fill:none;stroke:var(--dg-bad, var(--bad));stroke-width:1"/>
+<path d="M645 81 L645 92" style="fill:none;stroke:var(--dg-good, var(--good));stroke-width:1"/>
+<path d="M108 120 L100 120 L100 260 L108 260" style="fill:none;stroke:var(--dg-text-soft, var(--text-soft));stroke-width:1.2"/>
+<g class="en"><text x="60" y="194" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">rows</text></g><g class="ar"><text x="60" y="194" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">صفوف</text></g>
+<path d="M120 266 L120 272 L800 272 L800 266" style="fill:none;stroke:var(--dg-text-soft, var(--text-soft));stroke-width:1.2"/>
+<g class="en"><text x="460" y="290" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">columns</text></g><g class="ar"><text x="460" y="290" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">أعمدة</text></g>
+<g class="en"><text x="430" y="316" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">PK = primary key · FK = foreign key · UK = unique key</text></g><g class="ar"><text x="430" y="316" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">PK = مفتاح أساسي · FK = مفتاح أجنبي · UK = مفتاح فريد</text></g>
+</svg>

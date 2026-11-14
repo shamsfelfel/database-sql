@@ -39,15 +39,1121 @@
 <link rel="stylesheet" href="../assets/theory/css/base.css">
 <link rel="stylesheet" href="../assets/theory/css/chrome.css">
 <link rel="stylesheet" href="../assets/theory/css/components.css">
+<link rel="stylesheet" href="../assets/theory/css/diagram.css">
+<link rel="stylesheet" href="../assets/css/widget.css">
 </head>
 <body data-chapter="t2" data-page="t2-lesson-02" data-kind="lesson" data-path="lessons/t2-lesson-02.html">
 <main>
 <section class="page" id="t2-lesson-02">
 <nav class="crumbs"></nav>
 
-  <span class="kicker">lesson</span>
+
+  <span class="kicker">Lesson 2</span>
   <h1><span class="en">The Relational Answer</span><span class="ar">الجواب العلائقي</span></h1>
-  <p class="en">Being written.</p><p class="ar">قيد الكتابة.</p>
+  <p class="lede en">By the end of this lesson you will be able to name every part of a relational table, say what a primary, foreign and unique key each guarantee, and check any table against the seven rules it must obey before it counts as relational at all.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تسمّي كل جزء من أجزاء الجدول العلائقي، وأن تقول ما الذي يضمنه كلّ من المفتاح الأساسي والأجنبي والفريد، وأن تفحص أيّ جدول بالقواعد السبع التي يجب أن يلتزم بها قبل أن يُعدّ علائقيًّا أصلًا.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> <a href="../lessons/t2-lesson-01.html#t2-lesson-01">Lesson 1</a> ended with Matt splitting the department's book list into two tables, <code>AUTHOR</code> and <code>BOOK</code>, joined by a common field, <code>AUTHOR_ID</code>. This lesson gives each part of that design its proper name, and the rules that make it work. Read lesson 1 first.</p>
+    <p class="ar"><strong>السياق.</strong> انتهى <a href="../lessons/t2-lesson-01.html#t2-lesson-01">الدرس 1</a> بأن قسّم مات قائمة كتب القسم إلى جدولين، <code>AUTHOR</code> و<code>BOOK</code>، يربط بينهما حقل مشترك هو <code>AUTHOR_ID</code>. يعطي هذا الدرس كل جزء من ذلك التصميم اسمه الصحيح، والقواعد التي تجعله يعمل. اقرأ الدرس 1 أولًا.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Point to a table, a column, a row and a field, and say how a field differs from a column.</li>
+      <li class="ar">الإشارة إلى الجدول والعمود والصفّ والحقل، وقول الفرق بين الحقل والعمود.</li>
+      <li class="en">Pick the primary key of a table and explain why a name is a poor one.</li>
+      <li class="ar">اختيار المفتاح الأساسي لجدول، وشرح لماذا يكون الاسم مفتاحًا ضعيفًا.</li>
+      <li class="en">Explain how a foreign key relates two tables, and what it refuses.</li>
+      <li class="ar">شرح كيف يربط المفتاح الأجنبي بين جدولين، وما الذي يرفضه.</li>
+      <li class="en">Tell a unique key from a primary key in a given table.</li>
+      <li class="ar">التمييز بين المفتاح الفريد والمفتاح الأساسي في جدول معطى.</li>
+      <li class="en">Check a table against the seven rules and name each rule it breaks.</li>
+      <li class="ar">فحص جدول بالقواعد السبع، وتسمية كل قاعدة يكسرها.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t2l2-h1"><span class="en">1 · Tables, columns and rows</span><span class="ar">١ · الجداول والأعمدة والصفوف</span></h2>
+
+  <div class="problem">
+    <p class="en">A librarian says: "Fix the Tolstoy entry." Does she mean his whole line in <code>AUTHOR</code>, just his name, or the list of every name? Three different things, one vague word. A design cannot be discussed until its parts have names.</p>
+    <p class="ar">يقول أمين المكتبة: «صحّح مُدخَل Tolstoy». هل يقصد سطره كلّه في <code>AUTHOR</code>، أم اسمه فقط، أم قائمة الأسماء كلّها؟ ثلاثة أشياء مختلفة، وكلمة واحدة غامضة. ولا يمكن مناقشة تصميم قبل أن يكون لأجزائه أسماء.</p>
+  </div>
+
+  <p class="en">Lesson 1's answer to the flat file was "more than one table". That is the heart of the relational model: information is presented in tables, and the tables are tied together by a field they share.</p>
+  <p class="ar">كان جواب الدرس 1 عن الملف المسطّح «أكثر من جدول واحد». وهذا قلب النموذج العلائقي: تُعرض المعلومات في جداول، وتُربط الجداول ببعضها عبر حقل تشترك فيه.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="relational-database">relational database</span> presents information in tables with rows and columns, and relates the tables to one another through a common field.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="relational-database">قاعدة البيانات العلائقية</span> (Relational Database) تعرض المعلومات في جداول ذات صفوف وأعمدة، وتربط الجداول ببعضها عبر حقل مشترك.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-table-anatomy">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 270" direction="ltr" role="img" aria-labelledby="t2-table-anatomy-t">
+<title id="t2-table-anatomy-t">Anatomy of a relational table: table, column, row, field / تشريح الجدول العلائقي: الجدول والعمود والصفّ والحقل</title>
+<g class="en"><text x="410" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">One table, four words</text></g><g class="ar"><text x="410" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">جدول واحد، وأربع كلمات</text></g>
+<text x="260" y="72" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR</text>
+<rect x="260" y="80" width="120" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="268" y="99" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_ID</text>
+<rect x="260" y="108" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="268" y="127" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0001</text>
+<rect x="260" y="136" width="120" height="28" style="fill:var(--dg-warn-soft, var(--warn-soft));stroke:var(--dg-warn, var(--warn));stroke-width:1.5"/>
+<text x="268" y="155" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0002</text>
+<rect x="260" y="164" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="268" y="183" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="260" y="192" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="268" y="211" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0004</text>
+<rect x="380" y="80" width="180" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="388" y="99" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_NAME</text>
+<rect x="380" y="108" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="388" y="127" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oscar Wilde</text>
+<rect x="380" y="136" width="180" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="388" y="155" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Leo Tolstoy</text>
+<rect x="380" y="164" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="388" y="183" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oliver Goldsmith</text>
+<rect x="380" y="192" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="388" y="211" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Jane Austen</text>
+<rect x="380" y="80" width="180" height="140" style="fill:none;stroke:var(--dg-accent, var(--accent));stroke-width:2;stroke-dasharray:6 4"/>
+<path d="M256 72 L230 64 L180 64" style="fill:none;stroke:var(--dg-text-soft, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="120" y="68" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px">table name</text></g><g class="ar"><text x="120" y="68" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px">اسم الجدول</text></g>
+<path d="M258 150 L190 150" style="fill:none;stroke:var(--dg-text-soft, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="120" y="146" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">row</text></g><g class="ar"><text x="120" y="146" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">صفّ</text></g>
+<g class="en"><text x="120" y="164" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">one record</text></g><g class="ar"><text x="120" y="164" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">سجلّ واحد</text></g>
+<path d="M562 94 L610 94" style="fill:none;stroke:var(--dg-text-soft, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="700" y="90" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">column</text></g><g class="ar"><text x="700" y="90" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">عمود</text></g>
+<g class="en"><text x="700" y="108" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">one kind of information</text></g><g class="ar"><text x="700" y="108" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">نوع واحد من المعلومات</text></g>
+<path d="M562 150 L610 160" style="fill:none;stroke:var(--dg-text-soft, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="700" y="158" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">field</text></g><g class="ar"><text x="700" y="158" text-anchor="middle" direction="rtl" style="fill:var(--dg-good, var(--good));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">حقل</text></g>
+<g class="en"><text x="700" y="176" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">the one value where row meets column</text></g><g class="ar"><text x="700" y="176" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">القيمة الواحدة حيث يلتقي الصفّ بالعمود</text></g>
+<g class="en"><text x="410" y="252" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Row AD0002 × column AUTHOR_NAME = the field Leo Tolstoy</text></g><g class="ar"><text x="410" y="252" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">الصفّ AD0002 × العمود AUTHOR_NAME = الحقل Leo Tolstoy</text></g>
+</svg>
+<figcaption><span class="en">Lesson 1's <code>AUTHOR</code> table with its parts labelled. The dashed box is one column; the shaded line is one row; where they cross sits exactly one field.</span><span class="ar">جدول <code>AUTHOR</code> من الدرس 1 وقد وُسمت أجزاؤه. الإطار المتقطّع عمود واحد، والسطر المظلّل صفّ واحد، وحيث يتقاطعان يقع حقل واحد بالضبط.</span></figcaption></figure>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="table">table</span> is the basic storage structure: a named set of rows and columns.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="table">الجدول</span> (Table) هو بنية التخزين الأساسية: مجموعة مسمّاة من الصفوف والأعمدة.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="column">column</span> holds one particular type of information, the same for every row, such as <code>AUTHOR_NAME</code>.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="column">العمود</span> (Column) يحمل نوعًا واحدًا محدّدًا من المعلومات، هو نفسه لكل صفّ، مثل <code>AUTHOR_NAME</code>.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="row">row</span> is the data for one instance of what the table lists &mdash; one record, such as one author.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="row">الصفّ</span> (Row) هو بيانات حالة واحدة ممّا يسرده الجدول &mdash; سجلّ واحد، كمؤلف واحد.</p>
+  </div>
+
+  <h3 id="t2l2-s1"><span class="en">The field: one value</span><span class="ar">الحقل: قيمة واحدة</span></h3>
+
+  <p class="en">The smallest part of a table is the single value where one row crosses one column. "Leo Tolstoy" is not a row and not a column; it is the field in row <code>AD0002</code>, column <code>AUTHOR_NAME</code>.</p>
+  <p class="ar">أصغر جزء في الجدول هو القيمة الواحدة حيث يتقاطع صفّ واحد مع عمود واحد. «Leo Tolstoy» ليس صفًّا ولا عمودًا؛ إنه الحقل في الصفّ <code>AD0002</code> والعمود <code>AUTHOR_NAME</code>.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="field">field</span> is the one value found at the intersection of a row and a column.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="field">الحقل</span> (Field) هو القيمة الواحدة الموجودة عند تقاطع صفّ مع عمود.</p>
+  </div>
+
+  <div class="tip">
+    <p class="en">The slides use "field" twice. One slide says each column represents a field; the key-terms slide says a field is the one value at a row and column. This lesson uses the key-terms meaning. When you read "a common field", think "a column both tables have".</p>
+    <p class="ar">تستعمل الشرائح كلمة «حقل» مرّتين. شريحة تقول إن كل عمود يمثّل حقلًا، وشريحة المصطلحات تقول إن الحقل هو القيمة الواحدة عند صفّ وعمود. يستعمل هذا الدرس معنى شريحة المصطلحات. وحين تقرأ «حقل مشترك» ففكّر في «عمود موجود في الجدولين».</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Each part has its own place in a query. <code>FROM</code> names the table, <code>SELECT</code> names the column, <code>WHERE</code> picks the row &mdash; and what comes back is one field. Run it:</p>
+    <p class="ar">لكل جزء مكانه في الاستعلام. <code>FROM</code> تسمّي الجدول، و<code>SELECT</code> تسمّي العمود، و<code>WHERE</code> تختار الصفّ &mdash; والذي يعود حقل واحد. شغّله:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{"authors":[{"author_id":"AD0001","author_name":"Oscar Wilde"},{"author_id":"AD0002","author_name":"Leo Tolstoy"},{"author_id":"AD0003","author_name":"Oliver Goldsmith"},{"author_id":"AD0004","author_name":"Jane Austen"}]},"sql":"SELECT author_name\nFROM authors\nWHERE author_id = 'AD0002';"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>author_name</code></th></tr></thead>
+          <tbody><tr><td>Leo Tolstoy</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · the SQL track</span><span class="ar">خيط · مسار SQL</span></h4>
+    <p class="en"><a href="../chapters/chapter-1.html">SQL Chapter 1 &mdash; First Steps</a> creates a table and fills its rows; <a href="../chapters/chapter-2.html">Chapter 2 &mdash; Multiple Columns</a> gives each column a type. They show how to build a table. This lesson says what a table must be before it deserves the name "relational".</p>
+    <p class="ar">ينشئ <a href="../chapters/chapter-1.html">الفصل 1 من مسار SQL &mdash; الخطوات الأولى</a> جدولًا ويملأ صفوفه، ويعطي <a href="../chapters/chapter-2.html">الفصل 2 &mdash; أعمدة متعدّدة</a> كل عمود نوعه. يُريانك كيف تبني جدولًا. أمّا هذا الدرس فيقول ما يجب أن يكون عليه الجدول قبل أن يستحقّ اسم «علائقي».</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the <code>AUTHOR</code> table above, what is <code>Jane Austen</code>?</p>
+    <p class="q ar">في جدول <code>AUTHOR</code> أعلاه، ما <code>Jane Austen</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A column</span><span class="ar">عمود</span></button></li>
+      <li><button class="opt"><span class="en">A row</span><span class="ar">صفّ</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A field</span><span class="ar">حقل</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">It is one value: the field where row <code>AD0004</code> meets column <code>AUTHOR_NAME</code>. The row is the whole line <code>AD0004 &middot; Jane Austen</code>; the column is every author's name.</p>
+      <p class="ar">إنه قيمة واحدة: الحقل حيث يلتقي الصفّ <code>AD0004</code> بالعمود <code>AUTHOR_NAME</code>. أمّا الصفّ فهو السطر كلّه <code>AD0004 &middot; Jane Austen</code>، والعمود هو أسماء المؤلفين كلّهم.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t2l2-h2"><span class="en">2 · The primary key</span><span class="ar">٢ · المفتاح الأساسي</span></h2>
+
+  <div class="problem">
+    <p class="en">Two members join the library on the same day. Both are called Omar Saleh, and both live in Khan Younis. A week later one of them cancels. Which row does the librarian delete?</p>
+    <p class="ar">انضمّ عضوان إلى المكتبة في اليوم نفسه. كلاهما اسمه Omar Saleh، وكلاهما يسكن خان يونس. وبعد أسبوع ألغى أحدهما عضويته. أيّ صفّ يحذف أمين المكتبة؟</p>
+  </div>
+
+  <p class="en">Names are not unique, and neither are cities. A table needs one column whose value is different in every row, so that any one row can be picked out without doubt. The slides call such a unique field a <span class="term" data-term="key">key</span>.</p>
+  <p class="ar">الأسماء ليست فريدة، ولا المدن. يحتاج الجدول إلى عمود قيمته مختلفة في كل صفّ، حتى يمكن انتقاء أيّ صفّ دون شكّ. وتسمّي الشرائح هذا الحقل الفريد <span class="term" data-term="key">مفتاحًا</span> (Key).</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="primary-key">primary key</span> is the unique identifier for each row of a table.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="primary-key">المفتاح الأساسي</span> (Primary Key) هو المعرِّف الفريد لكل صفّ في الجدول.</p>
+  </div>
+
+  <div class="evolve" id="t2l2-e1">
+    <div class="ver" data-title-en="Version 1 — members known by name" data-title-ar="النسخة 1 — أعضاء يُعرَفون بأسمائهم">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>NAME</code></th><th><code>CITY</code></th></tr></thead>
+          <tbody>
+            <tr><td>Sara Hamdan</td><td>Gaza</td></tr>
+            <tr><td>Omar Saleh</td><td>Khan Younis</td></tr>
+            <tr><td>Omar Saleh</td><td>Khan Younis</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="en">Defect: rows 2 and 3 are identical. "Delete Omar Saleh" deletes both members, and a loan cannot say which Omar borrowed the book. Nothing in the row tells them apart.</p>
+      <p class="ar">العيب: الصفّان 2 و3 متطابقان. «احذف Omar Saleh» تحذف العضوين معًا، والإعارة لا تستطيع أن تقول أيّ عمر استعار الكتاب. لا شيء في الصفّ يميّز أحدهما عن الآخر.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — a MEMBER_ID for every row" data-title-ar="النسخة 2 — MEMBER_ID لكل صفّ">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>MEMBER_ID</code> (PK)</th><th><code>NAME</code></th><th><code>CITY</code></th></tr></thead>
+          <tbody>
+            <tr><td><code>M01</code></td><td>Sara Hamdan</td><td>Gaza</td></tr>
+            <tr><td><code>M02</code></td><td>Omar Saleh</td><td>Khan Younis</td></tr>
+            <tr><td><code>M03</code></td><td>Omar Saleh</td><td>Khan Younis</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="en">Fixed: <code>M02</code> and <code>M03</code> are two members with the same name, and the table can say so. "Delete <code>M03</code>" removes exactly one row, and a loan records <code>M02</code> or <code>M03</code>, never a guess.</p>
+      <p class="ar">أُصلح: <code>M02</code> و<code>M03</code> عضوان بالاسم نفسه، والجدول يستطيع أن يقول ذلك. «احذف <code>M03</code>» تزيل صفًّا واحدًا بالضبط، والإعارة تسجّل <code>M02</code> أو <code>M03</code>، لا تخمينًا.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Declared as <code>PRIMARY KEY</code>, <code>member_id</code> is guarded by the database itself. The two Omars are already in. Now a new member, Lina, is given <code>M02</code> by mistake. Run it, then change <code>M02</code> to <code>M04</code> and run it again.</p>
+    <p class="ar">حين يُعلَن <code>member_id</code> مفتاحًا أساسيًّا <code>PRIMARY KEY</code> تحرسه قاعدة البيانات نفسها. العمَران موجودان أصلًا. والآن أُعطيت عضو جديدة، لينا، الرقم <code>M02</code> خطأً. شغّل الجملة، ثم غيّر <code>M02</code> إلى <code>M04</code> وشغّلها مرّة أخرى.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE members (member_id VARCHAR(3) PRIMARY KEY, first_name VARCHAR(20), last_name VARCHAR(20), city VARCHAR(20))","INSERT INTO members VALUES ('M01','Sara','Hamdan','Gaza'), ('M02','Omar','Saleh','Khan Younis'), ('M03','Omar','Saleh','Khan Younis')"],"sql":"INSERT INTO members VALUES ('M02', 'Lina', 'Odeh', 'Gaza');"}
+      </script>
+    </div>
+    <div class="output">
+      <pre class="code" data-lang="text"><code>Cannot insert record, because it already exists in primary key index</code></pre>
+    </div>
+    <p class="en">Notice what the key does <em>not</em> stop: two rows named Omar Saleh are fine. Only a repeated <code>member_id</code> is refused.</p>
+    <p class="ar">لاحظ ما لا يمنعه المفتاح: صفّان باسم Omar Saleh لا بأس بهما. وحده تكرار <code>member_id</code> هو المرفوض.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Version 2 of <code>MEMBER</code> has the columns <code>MEMBER_ID</code>, <code>NAME</code> and <code>CITY</code>. Which one can be the primary key?</p>
+    <p class="q ar">في النسخة 2 من <code>MEMBER</code> الأعمدة <code>MEMBER_ID</code> و<code>NAME</code> و<code>CITY</code>. أيّها يصلح مفتاحًا أساسيًّا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>NAME</code> &mdash; it is what people use</span><span class="ar"><code>NAME</code> &mdash; فهو ما يستعمله الناس</span></button></li>
+      <li><button class="opt"><span class="en"><code>CITY</code></span><span class="ar"><code>CITY</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>MEMBER_ID</code></span><span class="ar"><code>MEMBER_ID</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Only <code>MEMBER_ID</code> is different in every row. <code>NAME</code> already repeats (two Omar Salehs), and many members share a city. A primary key must identify each row on its own.</p>
+      <p class="ar"><code>MEMBER_ID</code> وحده مختلف في كل صفّ. أمّا <code>NAME</code> فيتكرّر أصلًا (عمران باسم Omar Saleh)، وكثير من الأعضاء يشتركون في مدينة. يجب أن يحدّد المفتاح الأساسي كل صفّ وحده.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t2l2-h3"><span class="en">3 · The foreign key</span><span class="ar">٣ · المفتاح الأجنبي</span></h2>
+
+  <div class="problem">
+    <p class="en">The library orders <em>Emma</em>. A librarian adds it to <code>BOOK</code> as <code>BK005</code> and types its author as <code>AD0009</code> &mdash; a slip for <code>AD0004</code>. There is no author <code>AD0009</code>. Who wrote <em>Emma</em>, according to the database?</p>
+    <p class="ar">طلبت المكتبة <em>Emma</em>. أضافه أمين المكتبة إلى <code>BOOK</code> بالرقم <code>BK005</code>، وكتب مؤلفه <code>AD0009</code> &mdash; زلّة يد بدل <code>AD0004</code>. ولا يوجد مؤلف <code>AD0009</code>. فمن كتب <em>Emma</em> بحسب قاعدة البيانات؟</p>
+  </div>
+
+  <p class="en">In lesson 1, <code>BOOK.AUTHOR_ID</code> was only a common field. Nothing promised that its value exists in <code>AUTHOR</code>. Turning it into a foreign key makes that promise: the primary key of one table is placed in a related table, and every value there must point at a real row.</p>
+  <p class="ar">في الدرس 1 كان <code>BOOK.AUTHOR_ID</code> مجرّد حقل مشترك، ولا شيء يَعِد بأن قيمته موجودة في <code>AUTHOR</code>. وتحويله إلى مفتاح أجنبي يقطع هذا الوعد: يوضع المفتاح الأساسي لجدول في جدول مرتبط به، ويجب أن تشير كل قيمة فيه إلى صفّ حقيقي.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="foreign-key">foreign key</span> is a column that refers to a primary key column in another table.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="foreign-key">المفتاح الأجنبي</span> (Foreign Key) عمود يشير إلى عمود مفتاح أساسي في جدول آخر.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-library-keys">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 330" direction="ltr" role="img" aria-labelledby="t2-library-keys-t">
+<title id="t2-library-keys-t">AUTHOR and BOOK with their primary, foreign and unique keys / AUTHOR وBOOK مع مفاتيحهما الأساسية والأجنبية والفريدة</title>
+<g class="en"><text x="430" y="22" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Keys, and the relationship they make</text></g><g class="ar"><text x="430" y="22" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">المفاتيح، والعلاقة التي تصنعها</text></g>
+<text x="30" y="102" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR</text>
+<rect x="30" y="110" width="120" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="38" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_ID</text>
+<rect x="30" y="138" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0001</text>
+<rect x="30" y="166" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0002</text>
+<rect x="30" y="194" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="30" y="222" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="241" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0004</text>
+<rect x="150" y="110" width="180" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="158" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_NAME</text>
+<rect x="150" y="138" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oscar Wilde</text>
+<rect x="150" y="166" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Leo Tolstoy</text>
+<rect x="150" y="194" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oliver Goldsmith</text>
+<rect x="150" y="222" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="241" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Jane Austen</text>
+<text x="420" y="102" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">BOOK</text>
+<rect x="420" y="110" width="90" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="428" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">BOOK_ID</text>
+<rect x="420" y="138" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK001</text>
+<rect x="420" y="166" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK002</text>
+<rect x="420" y="194" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK003</text>
+<rect x="420" y="222" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="241" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK004</text>
+<rect x="510" y="110" width="210" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="518" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">TITLE</text>
+<rect x="510" y="138" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">A Vision</text>
+<rect x="510" y="166" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">War and Peace</text>
+<rect x="510" y="194" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Citizen of the World</text>
+<rect x="510" y="222" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="241" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Androcles and the Lion</text>
+<rect x="720" y="110" width="110" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="728" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_ID</text>
+<rect x="720" y="138" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0001</text>
+<rect x="720" y="166" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0002</text>
+<rect x="720" y="194" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="720" y="222" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="241" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<path d="M110 88 C 110 48, 775 48, 775 106" style="fill:none;stroke:var(--dg-accent, var(--accent));stroke-width:2;stroke-dasharray:6 4"/>
+<rect x="380" y="46" width="110" height="22" rx="6" style="fill:var(--dg-label-bg, var(--surface))"/>
+<g class="en"><text x="435" y="62" text-anchor="middle" style="fill:var(--dg-accent, var(--accent));font-family:var(--font, sans-serif);font-size:13px">relationship</text></g><g class="ar"><text x="435" y="62" text-anchor="middle" direction="rtl" style="fill:var(--dg-accent, var(--accent));font-family:var(--font-ar, sans-serif);font-size:14px">علاقة</text></g>
+<rect x="73" y="258" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-accent, var(--accent));stroke-width:1.2"/>
+<text x="90" y="271" text-anchor="middle" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:11px;font-weight:700">PK</text>
+<rect x="448" y="258" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-accent, var(--accent));stroke-width:1.2"/>
+<text x="465" y="271" text-anchor="middle" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:11px;font-weight:700">PK</text>
+<rect x="598" y="258" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.2"/>
+<text x="615" y="271" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--mono, monospace);font-size:11px;font-weight:700">UK</text>
+<rect x="758" y="258" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.2"/>
+<text x="775" y="271" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--mono, monospace);font-size:11px;font-weight:700">FK</text>
+<g class="en"><text x="90" y="296" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">primary key</text></g><g class="ar"><text x="90" y="296" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">مفتاح أساسي</text></g>
+<g class="en"><text x="465" y="296" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">primary key</text></g><g class="ar"><text x="465" y="296" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">مفتاح أساسي</text></g>
+<g class="en"><text x="615" y="296" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:12px">unique key</text></g><g class="ar"><text x="615" y="296" text-anchor="middle" direction="rtl" style="fill:var(--dg-good, var(--good));font-family:var(--font-ar, sans-serif);font-size:13px">مفتاح فريد</text></g>
+<g class="en"><text x="775" y="296" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:12px">foreign key</text></g><g class="ar"><text x="775" y="296" text-anchor="middle" direction="rtl" style="fill:var(--dg-bad, var(--bad));font-family:var(--font-ar, sans-serif);font-size:13px">مفتاح أجنبي</text></g>
+<g class="en"><text x="775" y="314" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">→ AUTHOR.AUTHOR_ID</text></g><g class="ar"><text x="775" y="314" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">يشير إلى AUTHOR.AUTHOR_ID</text></g>
+</svg>
+<figcaption><span class="en">Each table has its own primary key (<code>AUTHOR_ID</code>, <code>BOOK_ID</code>). <code>BOOK.AUTHOR_ID</code> is a foreign key: it holds <code>AUTHOR</code>'s primary key, and that link is the relationship between the two tables.</span><span class="ar">لكل جدول مفتاحه الأساسي (<code>AUTHOR_ID</code> و<code>BOOK_ID</code>). و<code>BOOK.AUTHOR_ID</code> مفتاح أجنبي: يحمل المفتاح الأساسي لـ <code>AUTHOR</code>، وهذا الرابط هو العلاقة بين الجدولين.</span></figcaption></figure>
+
+  <h3 id="t2l2-s2"><span class="en">A relationship, made of a key</span><span class="ar">علاقة مصنوعة من مفتاح</span></h3>
+
+  <p class="en">The slides show the same idea with <code>STUDENTS</code> and <code>COURSES</code>: <code>STUDENTS.COURSE_ID</code> is a foreign key to <code>COURSES.ID</code>. That one column is the relationship. It is what lets you ask which course a student is attending.</p>
+  <p class="ar">تعرض الشرائح الفكرة نفسها بجدولَي <code>STUDENTS</code> و<code>COURSES</code>: العمود <code>STUDENTS.COURSE_ID</code> مفتاح أجنبي إلى <code>COURSES.ID</code>. هذا العمود الواحد هو العلاقة، وهو ما يتيح لك أن تسأل أيّ مقرّر يحضره الطالب.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="common-field">common field</span> is a column that appears in two tables and relates them; declared properly, it is a primary key on one side and a foreign key on the other.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="common-field">الحقل المشترك</span> (Common Field) عمود يظهر في جدولين ويربط بينهما؛ وحين يُعلَن كما يجب يكون مفتاحًا أساسيًّا في جهة ومفتاحًا أجنبيًّا في الأخرى.</p>
+  </div>
+
+  <div class="evolve" id="t2l2-e2">
+    <div class="ver" data-title-en="Version 1 — AUTHOR_ID is just a column" data-title-ar="النسخة 1 — AUTHOR_ID مجرّد عمود">
+      <figure class="diagram" data-diagram="t2-orphan-book">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 320" direction="ltr" role="img" aria-labelledby="t2-orphan-book-t">
+<title id="t2-orphan-book-t">A book row whose AUTHOR_ID matches no author / صفّ كتاب لا يطابق AUTHOR_ID فيه أيّ مؤلف</title>
+<g class="en"><text x="430" y="22" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">BK005 points at an author who does not exist</text></g><g class="ar"><text x="430" y="22" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">BK005 يشير إلى مؤلف غير موجود</text></g>
+<text x="30" y="62" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR</text>
+<rect x="30" y="70" width="120" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="38" y="89" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_ID</text>
+<rect x="30" y="98" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="117" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0001</text>
+<rect x="30" y="126" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="145" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0002</text>
+<rect x="30" y="154" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="173" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="30" y="182" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="201" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0004</text>
+<rect x="150" y="70" width="180" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="158" y="89" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_NAME</text>
+<rect x="150" y="98" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="117" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oscar Wilde</text>
+<rect x="150" y="126" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="145" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Leo Tolstoy</text>
+<rect x="150" y="154" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="173" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oliver Goldsmith</text>
+<rect x="150" y="182" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="201" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Jane Austen</text>
+<text x="420" y="62" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">BOOK</text>
+<rect x="420" y="70" width="90" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="428" y="89" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">BOOK_ID</text>
+<rect x="420" y="98" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="117" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK001</text>
+<rect x="420" y="126" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="145" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK002</text>
+<rect x="420" y="154" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="173" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK003</text>
+<rect x="420" y="182" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="201" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK004</text>
+<rect x="420" y="210" width="90" height="28" style="fill:var(--dg-bad-soft, var(--bad-soft));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="428" y="229" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK005</text>
+<rect x="510" y="70" width="210" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="518" y="89" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">TITLE</text>
+<rect x="510" y="98" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="117" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">A Vision</text>
+<rect x="510" y="126" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="145" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">War and Peace</text>
+<rect x="510" y="154" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="173" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Citizen of the World</text>
+<rect x="510" y="182" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="201" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Androcles and the Lion</text>
+<rect x="510" y="210" width="210" height="28" style="fill:var(--dg-bad-soft, var(--bad-soft));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="518" y="229" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Emma</text>
+<rect x="720" y="70" width="110" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="728" y="89" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_ID</text>
+<rect x="720" y="98" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="117" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0001</text>
+<rect x="720" y="126" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="145" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0002</text>
+<rect x="720" y="154" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="173" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="720" y="182" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="201" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="720" y="210" width="110" height="28" style="fill:var(--dg-bad-soft, var(--bad-soft));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="728" y="229" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0009</text>
+<rect x="30" y="210" width="300" height="28" style="fill:none;stroke:var(--dg-bad, var(--bad));stroke-width:1.5;stroke-dasharray:5 4"/>
+<text x="38" y="229" text-anchor="start" style="fill:var(--dg-bad, var(--bad));font-family:var(--mono, monospace);font-size:13px">AD0009  ?</text>
+<path d="M414 224 L336 224" style="fill:none;stroke:var(--dg-bad, var(--bad));stroke-width:1.5;stroke-dasharray:6 4"/>
+<path d="M344 218 L336 224 L344 230" style="fill:none;stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<g class="en"><text x="180" y="266" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:13px">no such row in AUTHOR</text></g><g class="ar"><text x="180" y="266" text-anchor="middle" direction="rtl" style="fill:var(--dg-bad, var(--bad));font-family:var(--font-ar, sans-serif);font-size:14px">لا يوجد صفّ كهذا في AUTHOR</text></g>
+<g class="en"><text x="625" y="266" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:13px">the book has no real author</text></g><g class="ar"><text x="625" y="266" text-anchor="middle" direction="rtl" style="fill:var(--dg-bad, var(--bad));font-family:var(--font-ar, sans-serif);font-size:14px">الكتاب بلا مؤلف حقيقي</text></g>
+<g class="en"><text x="430" y="294" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Who wrote Emma? The database cannot say.</text></g><g class="ar"><text x="430" y="294" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">من كتب Emma؟ لا تستطيع قاعدة البيانات أن تقول.</text></g>
+</svg>
+</figure>
+      <p class="en">Defect: the table accepts <code>AD0009</code>, because to it <code>AUTHOR_ID</code> is just text. <em>Emma</em> now points at no author, and any list of books with their authors silently leaves it out.</p>
+      <p class="ar">العيب: يقبل الجدول <code>AD0009</code>، لأن <code>AUTHOR_ID</code> بالنسبة إليه مجرّد نصّ. صار <em>Emma</em> يشير إلى لا مؤلف، وأيّ قائمة للكتب مع مؤلفيها تُسقطه بصمت.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — AUTHOR_ID declared a foreign key" data-title-ar="النسخة 2 — AUTHOR_ID مُعلَن مفتاحًا أجنبيًّا">
+      <figure class="diagram" data-diagram="t2-library-keys">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 330" direction="ltr" role="img" aria-labelledby="t2-library-keys-t">
+<title id="t2-library-keys-t">AUTHOR and BOOK with their primary, foreign and unique keys / AUTHOR وBOOK مع مفاتيحهما الأساسية والأجنبية والفريدة</title>
+<g class="en"><text x="430" y="22" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Keys, and the relationship they make</text></g><g class="ar"><text x="430" y="22" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">المفاتيح، والعلاقة التي تصنعها</text></g>
+<text x="30" y="102" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR</text>
+<rect x="30" y="110" width="120" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="38" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_ID</text>
+<rect x="30" y="138" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0001</text>
+<rect x="30" y="166" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0002</text>
+<rect x="30" y="194" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="30" y="222" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="241" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0004</text>
+<rect x="150" y="110" width="180" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="158" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_NAME</text>
+<rect x="150" y="138" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oscar Wilde</text>
+<rect x="150" y="166" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Leo Tolstoy</text>
+<rect x="150" y="194" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Oliver Goldsmith</text>
+<rect x="150" y="222" width="180" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="158" y="241" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Jane Austen</text>
+<text x="420" y="102" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">BOOK</text>
+<rect x="420" y="110" width="90" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="428" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">BOOK_ID</text>
+<rect x="420" y="138" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK001</text>
+<rect x="420" y="166" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK002</text>
+<rect x="420" y="194" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK003</text>
+<rect x="420" y="222" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="428" y="241" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">BK004</text>
+<rect x="510" y="110" width="210" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="518" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">TITLE</text>
+<rect x="510" y="138" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">A Vision</text>
+<rect x="510" y="166" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">War and Peace</text>
+<rect x="510" y="194" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Citizen of the World</text>
+<rect x="510" y="222" width="210" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="518" y="241" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Androcles and the Lion</text>
+<rect x="720" y="110" width="110" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="728" y="129" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">AUTHOR_ID</text>
+<rect x="720" y="138" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="157" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0001</text>
+<rect x="720" y="166" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="185" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0002</text>
+<rect x="720" y="194" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<rect x="720" y="222" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="728" y="241" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">AD0003</text>
+<path d="M110 88 C 110 48, 775 48, 775 106" style="fill:none;stroke:var(--dg-accent, var(--accent));stroke-width:2;stroke-dasharray:6 4"/>
+<rect x="380" y="46" width="110" height="22" rx="6" style="fill:var(--dg-label-bg, var(--surface))"/>
+<g class="en"><text x="435" y="62" text-anchor="middle" style="fill:var(--dg-accent, var(--accent));font-family:var(--font, sans-serif);font-size:13px">relationship</text></g><g class="ar"><text x="435" y="62" text-anchor="middle" direction="rtl" style="fill:var(--dg-accent, var(--accent));font-family:var(--font-ar, sans-serif);font-size:14px">علاقة</text></g>
+<rect x="73" y="258" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-accent, var(--accent));stroke-width:1.2"/>
+<text x="90" y="271" text-anchor="middle" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:11px;font-weight:700">PK</text>
+<rect x="448" y="258" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-accent, var(--accent));stroke-width:1.2"/>
+<text x="465" y="271" text-anchor="middle" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:11px;font-weight:700">PK</text>
+<rect x="598" y="258" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.2"/>
+<text x="615" y="271" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--mono, monospace);font-size:11px;font-weight:700">UK</text>
+<rect x="758" y="258" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.2"/>
+<text x="775" y="271" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--mono, monospace);font-size:11px;font-weight:700">FK</text>
+<g class="en"><text x="90" y="296" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">primary key</text></g><g class="ar"><text x="90" y="296" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">مفتاح أساسي</text></g>
+<g class="en"><text x="465" y="296" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">primary key</text></g><g class="ar"><text x="465" y="296" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">مفتاح أساسي</text></g>
+<g class="en"><text x="615" y="296" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:12px">unique key</text></g><g class="ar"><text x="615" y="296" text-anchor="middle" direction="rtl" style="fill:var(--dg-good, var(--good));font-family:var(--font-ar, sans-serif);font-size:13px">مفتاح فريد</text></g>
+<g class="en"><text x="775" y="296" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:12px">foreign key</text></g><g class="ar"><text x="775" y="296" text-anchor="middle" direction="rtl" style="fill:var(--dg-bad, var(--bad));font-family:var(--font-ar, sans-serif);font-size:13px">مفتاح أجنبي</text></g>
+<g class="en"><text x="775" y="314" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">→ AUTHOR.AUTHOR_ID</text></g><g class="ar"><text x="775" y="314" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">يشير إلى AUTHOR.AUTHOR_ID</text></g>
+</svg>
+</figure>
+      <p class="en">Fixed: <code>BOOK.AUTHOR_ID</code> must match an <code>AUTHOR.AUTHOR_ID</code>. The slip <code>AD0009</code> is refused the moment it is typed, so the librarian corrects it to <code>AD0004</code> before any harm is done.</p>
+      <p class="ar">أُصلح: يجب أن يطابق <code>BOOK.AUTHOR_ID</code> قيمةً في <code>AUTHOR.AUTHOR_ID</code>. فتُرفَض الزلّة <code>AD0009</code> لحظة كتابتها، فيصحّحها الأمين إلى <code>AD0004</code> قبل أن يقع أيّ ضرر.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 2 in SQL: <code>author_id</code> in <code>books</code> is declared with <code>REFERENCES authors(author_id)</code>. Run the librarian's slip and watch it bounce:</p>
+    <p class="ar">النسخة 2 في SQL: يُعلَن <code>author_id</code> في <code>books</code> بعبارة <code>REFERENCES authors(author_id)</code>. شغّل زلّة الأمين وشاهدها تُرَدّ:</p>
+    <pre class="code" data-lang="sql"><code>CREATE TABLE books (
+  book_id   VARCHAR(5)  PRIMARY KEY,
+  title     VARCHAR(60),
+  author_id VARCHAR(6)  REFERENCES authors(author_id)
+);</code></pre>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE authors (author_id VARCHAR(6) PRIMARY KEY, author_name VARCHAR(40))","INSERT INTO authors VALUES ('AD0001','Oscar Wilde'), ('AD0002','Leo Tolstoy'), ('AD0003','Oliver Goldsmith'), ('AD0004','Jane Austen')","CREATE TABLE books (book_id VARCHAR(5) PRIMARY KEY, title VARCHAR(60), author_id VARCHAR(6) REFERENCES authors(author_id))","INSERT INTO books VALUES ('BK001','A Vision','AD0001'), ('BK002','War and Peace','AD0002'), ('BK003','Citizen of the World','AD0003'), ('BK004','Androcles and the Lion','AD0003')"],"sql":"INSERT INTO books VALUES ('BK005', 'Emma', 'AD0009');"}
+      </script>
+    </div>
+    <div class="output">
+      <pre class="code" data-lang="text"><code>Foreign key "AD0009" not found in table "authors"</code></pre>
+    </div>
+    <p class="en">The same key answers questions. "Which books did <code>AD0003</code> write?" is a filter on the foreign key column:</p>
+    <p class="ar">والمفتاح نفسه يجيب عن الأسئلة. «ما الكتب التي كتبها <code>AD0003</code>؟» تصفية على عمود المفتاح الأجنبي:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE authors (author_id VARCHAR(6) PRIMARY KEY, author_name VARCHAR(40))","INSERT INTO authors VALUES ('AD0001','Oscar Wilde'), ('AD0002','Leo Tolstoy'), ('AD0003','Oliver Goldsmith'), ('AD0004','Jane Austen')","CREATE TABLE books (book_id VARCHAR(5) PRIMARY KEY, title VARCHAR(60), author_id VARCHAR(6) REFERENCES authors(author_id))","INSERT INTO books VALUES ('BK001','A Vision','AD0001'), ('BK002','War and Peace','AD0002'), ('BK003','Citizen of the World','AD0003'), ('BK004','Androcles and the Lion','AD0003')"],"sql":"SELECT book_id, title\nFROM books\nWHERE author_id = 'AD0003';"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>book_id</code></th><th><code>title</code></th></tr></thead>
+          <tbody>
+            <tr><td><code>BK003</code></td><td>Citizen of the World</td></tr>
+            <tr><td><code>BK004</code></td><td>Androcles and the Lion</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In <code>BOOK(BOOK_ID, TITLE, AUTHOR_ID)</code>, what is <code>AUTHOR_ID</code>?</p>
+    <p class="q ar">في <code>BOOK(BOOK_ID, TITLE, AUTHOR_ID)</code>، ما <code>AUTHOR_ID</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The primary key of <code>BOOK</code></span><span class="ar">المفتاح الأساسي لـ <code>BOOK</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A foreign key to <code>AUTHOR</code></span><span class="ar">مفتاح أجنبي إلى <code>AUTHOR</code></span></button></li>
+      <li><button class="opt"><span class="en">Not a key &mdash; it repeats, so it is redundancy</span><span class="ar">ليس مفتاحًا &mdash; إنه يتكرّر، فهو تكرار بيانات</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>BOOK</code>'s own primary key is <code>BOOK_ID</code>. <code>AUTHOR_ID</code> refers to <code>AUTHOR</code>'s primary key. It does repeat (<code>AD0003</code> twice), and that is fine: repeating a short key is how two of Goldsmith's books point at his <em>one</em> stored name.</p>
+      <p class="ar">المفتاح الأساسي لـ <code>BOOK</code> نفسه هو <code>BOOK_ID</code>. أمّا <code>AUTHOR_ID</code> فيشير إلى المفتاح الأساسي لـ <code>AUTHOR</code>. وهو يتكرّر فعلًا (<code>AD0003</code> مرّتين)، ولا بأس: فتكرار مفتاح قصير هو الطريقة التي يشير بها كتابا Goldsmith إلى اسمه المخزّن <em>مرّة واحدة</em>.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">With the foreign key declared, the librarian types <code>INSERT INTO books VALUES ('BK005', 'Emma', 'AD0009')</code>. What happens?</p>
+    <p class="q ar">بعد إعلان المفتاح الأجنبي، كتب الأمين <code>INSERT INTO books VALUES ('BK005', 'Emma', 'AD0009')</code>. ماذا يحدث؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The book is saved with no author</span><span class="ar">يُحفظ الكتاب بلا مؤلف</span></button></li>
+      <li><button class="opt"><span class="en">An author <code>AD0009</code> is created automatically</span><span class="ar">يُنشأ المؤلف <code>AD0009</code> تلقائيًّا</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The row is refused; nothing is saved</span><span class="ar">يُرفض الصفّ، ولا يُحفظ شيء</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A foreign key never invents the row it points at; it only checks that the row exists. <code>AD0009</code> is not in <code>authors</code>, so the insert fails and <code>books</code> keeps its four rows.</p>
+      <p class="ar">المفتاح الأجنبي لا يخترع الصفّ الذي يشير إليه أبدًا، بل يتحقّق فقط من وجوده. و<code>AD0009</code> غير موجود في <code>authors</code>، فتفشل الإضافة ويبقى في <code>books</code> صفوفه الأربعة.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t2l2-h4"><span class="en">4 · The unique key</span><span class="ar">٤ · المفتاح الفريد</span></h2>
+
+  <div class="problem">
+    <p class="en">A second librarian, not knowing <em>War and Peace</em> is already listed, adds it again as <code>BK005</code>. The primary key is happy &mdash; <code>BK005</code> is new. But the library now lists one title twice, which is lesson 1's redundancy back again.</p>
+    <p class="ar">أمين مكتبة ثانٍ، لا يعلم أن <em>War and Peace</em> مسجّل أصلًا، أضافه من جديد بالرقم <code>BK005</code>. المفتاح الأساسي راضٍ &mdash; فـ <code>BK005</code> جديد. لكنّ المكتبة صارت تسرد عنوانًا واحدًا مرّتين، وهذا تكرار الدرس 1 يعود من جديد.</p>
+  </div>
+
+  <p class="en">A primary key only promises that the <em>key</em> is different in every row. Sometimes another column must be different in every row too. In Matt's model a <code>BOOK</code> is a title, not a physical copy, so his physical model marks <code>Title</code> as unique.</p>
+  <p class="ar">المفتاح الأساسي يَعِد فقط بأن <em>المفتاح</em> مختلف في كل صفّ. وأحيانًا يجب أن يكون عمود آخر مختلفًا في كل صفّ أيضًا. في نموذج مات يمثّل <code>BOOK</code> عنوانًا لا نسخة ورقية، لذا يَسِم نموذجه المادي <code>Title</code> بأنه فريد.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="unique-key">unique key</span> is a column in which the system does not allow two rows to have the same value.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="unique-key">المفتاح الفريد</span> (Unique Key) عمود لا يسمح فيه النظام بأن يحمل صفّان القيمة نفسها.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-employees-keys">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 330" direction="ltr" role="img" aria-labelledby="t2-employees-keys-t">
+<title id="t2-employees-keys-t">The lecturer&#x27;s EMPLOYEES table: primary, foreign and unique key columns / جدول EMPLOYEES من المحاضرة: أعمدة المفتاح الأساسي والأجنبي والفريد</title>
+<g class="en"><text x="430" y="22" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">EMPLOYEES — three kinds of key in one table</text></g><g class="ar"><text x="430" y="22" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">EMPLOYEES — ثلاثة أنواع من المفاتيح في جدول واحد</text></g>
+<rect x="120" y="92" width="120" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="128" y="111" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">EMPLOYEE_ID</text>
+<rect x="120" y="120" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="128" y="139" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">100</text>
+<rect x="120" y="148" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="128" y="167" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">310</text>
+<rect x="120" y="176" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="128" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">210</text>
+<rect x="120" y="204" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="128" y="223" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">405</text>
+<rect x="120" y="232" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="128" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">378</text>
+<rect x="240" y="92" width="110" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="248" y="111" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">LAST_NAME</text>
+<rect x="240" y="120" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="139" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">SMITH</text>
+<rect x="240" y="148" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="167" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">ADAMS</text>
+<rect x="240" y="176" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">CHEN</text>
+<rect x="240" y="204" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="223" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">GOMEZ</text>
+<rect x="240" y="232" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">LOUNGANI</text>
+<rect x="350" y="92" width="110" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="358" y="111" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">FIRST_NAME</text>
+<rect x="350" y="120" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="139" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">DANA</text>
+<rect x="350" y="148" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="167" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">TYLER</text>
+<rect x="350" y="176" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">LAWRENCE</text>
+<rect x="350" y="204" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="223" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">CARLOS</text>
+<rect x="350" y="232" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">NEIL</text>
+<rect x="460" y="92" width="130" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="468" y="111" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">DEPARTMENT_ID</text>
+<rect x="460" y="120" width="130" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="468" y="139" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">10</text>
+<rect x="460" y="148" width="130" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="468" y="167" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">15</text>
+<rect x="460" y="176" width="130" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="468" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">10</text>
+<rect x="460" y="204" width="130" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="468" y="223" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">10</text>
+<rect x="460" y="232" width="130" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="468" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">22</text>
+<rect x="590" y="92" width="110" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="598" y="111" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">PAYROLL_ID</text>
+<rect x="590" y="120" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="598" y="139" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">21215</text>
+<rect x="590" y="148" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="598" y="167" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">59877</text>
+<rect x="590" y="176" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="598" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">1101</text>
+<rect x="590" y="204" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="598" y="223" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">52</text>
+<rect x="590" y="232" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="598" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">90386</text>
+<rect x="700" y="92" width="100" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="708" y="111" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">NICKNAME</text>
+<rect x="700" y="120" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="708" y="139" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Dana</text>
+<rect x="700" y="148" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="708" y="167" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Ty</text>
+<rect x="700" y="176" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="708" y="195" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Larry</text>
+<rect x="700" y="204" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="708" y="223" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Chaz</text>
+<rect x="700" y="232" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="708" y="251" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Neil</text>
+<rect x="163" y="62" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-accent, var(--accent));stroke-width:1.2"/>
+<text x="180" y="75" text-anchor="middle" style="fill:var(--dg-accent, var(--accent));font-family:var(--mono, monospace);font-size:11px;font-weight:700">PK</text>
+<rect x="508" y="62" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.2"/>
+<text x="525" y="75" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--mono, monospace);font-size:11px;font-weight:700">FK</text>
+<rect x="628" y="62" width="34" height="18" rx="5" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.2"/>
+<text x="645" y="75" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--mono, monospace);font-size:11px;font-weight:700">UK</text>
+<path d="M180 81 L180 92" style="fill:none;stroke:var(--dg-accent, var(--accent));stroke-width:1"/>
+<path d="M525 81 L525 92" style="fill:none;stroke:var(--dg-bad, var(--bad));stroke-width:1"/>
+<path d="M645 81 L645 92" style="fill:none;stroke:var(--dg-good, var(--good));stroke-width:1"/>
+<path d="M108 120 L100 120 L100 260 L108 260" style="fill:none;stroke:var(--dg-text-soft, var(--text-soft));stroke-width:1.2"/>
+<g class="en"><text x="60" y="194" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">rows</text></g><g class="ar"><text x="60" y="194" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">صفوف</text></g>
+<path d="M120 266 L120 272 L800 272 L800 266" style="fill:none;stroke:var(--dg-text-soft, var(--text-soft));stroke-width:1.2"/>
+<g class="en"><text x="460" y="290" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">columns</text></g><g class="ar"><text x="460" y="290" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">أعمدة</text></g>
+<g class="en"><text x="430" y="316" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">PK = primary key · FK = foreign key · UK = unique key</text></g><g class="ar"><text x="430" y="316" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">PK = مفتاح أساسي · FK = مفتاح أجنبي · UK = مفتاح فريد</text></g>
+</svg>
+<figcaption><span class="en">The lecturer's own example. <code>EMPLOYEE_ID</code> is the primary key, <code>DEPARTMENT_ID</code> a foreign key to a <code>DEPARTMENTS</code> table, and <code>PAYROLL_ID</code> a unique key. Notice that <code>DEPARTMENT_ID</code> repeats &mdash; three employees are in department 10.</span><span class="ar">مثال المحاضِرة نفسها. <code>EMPLOYEE_ID</code> المفتاح الأساسي، و<code>DEPARTMENT_ID</code> مفتاح أجنبي إلى جدول <code>DEPARTMENTS</code>، و<code>PAYROLL_ID</code> مفتاح فريد. لاحظ أن <code>DEPARTMENT_ID</code> يتكرّر &mdash; ثلاثة موظفين في القسم 10.</span></figcaption></figure>
+
+  <h3 id="t2l2-s3"><span class="en">Primary or unique?</span><span class="ar">أساسي أم فريد؟</span></h3>
+
+  <p class="en">Both refuse duplicates. The difference is the job. A table has one primary key, and it is the identifier every foreign key points at. A unique key is any other column that must also never repeat, like <code>PAYROLL_ID</code> or a book's <code>TITLE</code>.</p>
+  <p class="ar">كلاهما يرفض التكرار. والفرق في الوظيفة. للجدول مفتاح أساسي واحد، وهو المعرِّف الذي تشير إليه كل المفاتيح الأجنبية. أمّا المفتاح الفريد فهو أيّ عمود آخر يجب ألّا يتكرّر أبدًا كذلك، مثل <code>PAYROLL_ID</code> أو <code>TITLE</code> الكتاب.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Key</th><th class="ar">المفتاح</th><th class="en">May it repeat?</th><th class="ar">هل يتكرّر؟</th><th class="en">In <code>EMPLOYEES</code></th><th class="ar">في <code>EMPLOYEES</code></th></tr></thead>
+      <tbody>
+        <tr><td class="en">Primary key (PK)</td><td class="ar">المفتاح الأساسي (PK)</td><td class="en">Never</td><td class="ar">أبدًا</td><td class="en"><code>EMPLOYEE_ID</code></td><td class="ar"><code>EMPLOYEE_ID</code></td></tr>
+        <tr><td class="en">Unique key (UK)</td><td class="ar">المفتاح الفريد (UK)</td><td class="en">Never</td><td class="ar">أبدًا</td><td class="en"><code>PAYROLL_ID</code></td><td class="ar"><code>PAYROLL_ID</code></td></tr>
+        <tr><td class="en">Foreign key (FK)</td><td class="ar">المفتاح الأجنبي (FK)</td><td class="en">Yes &mdash; many rows may point at one</td><td class="ar">نعم &mdash; قد تشير صفوف كثيرة إلى صفّ واحد</td><td class="en"><code>DEPARTMENT_ID</code></td><td class="ar"><code>DEPARTMENT_ID</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">A unique key is the word <code>UNIQUE</code> on the column. With <code>title VARCHAR(60) UNIQUE</code>, the second librarian's duplicate is refused even though its <code>book_id</code> is new:</p>
+    <p class="ar">المفتاح الفريد هو كلمة <code>UNIQUE</code> على العمود. ومع <code>title VARCHAR(60) UNIQUE</code> يُرفض تكرار الأمين الثاني مع أن <code>book_id</code> الخاص به جديد:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE authors (author_id VARCHAR(6) PRIMARY KEY, author_name VARCHAR(40))","INSERT INTO authors VALUES ('AD0001','Oscar Wilde'), ('AD0002','Leo Tolstoy'), ('AD0003','Oliver Goldsmith'), ('AD0004','Jane Austen')","CREATE TABLE books (book_id VARCHAR(5) PRIMARY KEY, title VARCHAR(60) UNIQUE, author_id VARCHAR(6) REFERENCES authors(author_id))","INSERT INTO books VALUES ('BK001','A Vision','AD0001'), ('BK002','War and Peace','AD0002'), ('BK003','Citizen of the World','AD0003'), ('BK004','Androcles and the Lion','AD0003')"],"sql":"INSERT INTO books VALUES ('BK005', 'War and Peace', 'AD0002');"}
+      </script>
+    </div>
+    <div class="output">
+      <pre class="code" data-lang="text"><code>Cannot insert record, because it already exists in unique index</code></pre>
+    </div>
+    <p class="en">Change the title to <code>'Emma'</code> and the author to <code>'AD0004'</code>, add <code>SELECT * FROM books;</code> on the next line, and run it: all three keys are satisfied, and <code>BK005</code> is saved.</p>
+    <p class="ar">غيّر العنوان إلى <code>'Emma'</code> والمؤلف إلى <code>'AD0004'</code>، وأضف <code>SELECT * FROM books;</code> في السطر التالي، وشغّلها: تتحقّق المفاتيح الثلاثة كلّها، ويُحفظ <code>BK005</code>.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the lecturer's <code>EMPLOYEES</code> table, which key column is <em>allowed</em> to hold the same value in several rows?</p>
+    <p class="q ar">في جدول <code>EMPLOYEES</code> من المحاضرة، أيّ عمود مفتاح <em>يُسمح</em> له بحمل القيمة نفسها في عدّة صفوف؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>EMPLOYEE_ID</code></span><span class="ar"><code>EMPLOYEE_ID</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>DEPARTMENT_ID</code></span><span class="ar"><code>DEPARTMENT_ID</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>PAYROLL_ID</code></span><span class="ar"><code>PAYROLL_ID</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>DEPARTMENT_ID</code> is a foreign key: Smith, Chen and Gomez all work in department 10. The primary key and the unique key may never repeat.</p>
+      <p class="ar"><code>DEPARTMENT_ID</code> مفتاح أجنبي: Smith وChen وGomez يعملون جميعًا في القسم 10. أمّا المفتاح الأساسي والمفتاح الفريد فلا يتكرّران أبدًا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t2l2-h5"><span class="en">5 · The seven rules</span><span class="ar">٥ · القواعد السبع</span></h2>
+
+  <div class="problem">
+    <p class="en">The front desk hands Matt their member sheet: "Just load this in." It has rows and columns, so it looks like a table. Is it a relational one? Before Matt builds on it, he checks it against seven rules.</p>
+    <p class="ar">سلّم مكتب الاستقبال مات جدول الأعضاء لديه: «حمّله فقط». فيه صفوف وأعمدة، فهو يبدو جدولًا. لكن هل هو جدول علائقي؟ قبل أن يبني مات عليه، يفحصه بسبع قواعد.</p>
+  </div>
+
+  <p class="en">The slides give the rules every relational table must obey. Read them once, then use them as a checklist:</p>
+  <p class="ar">تعطي الشرائح القواعد التي يجب أن يلتزم بها كل جدول علائقي. اقرأها مرّة، ثم استعملها قائمةَ فحص:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>#</th><th class="en">Rule</th><th class="ar">القاعدة</th><th class="en">In the library</th><th class="ar">في المكتبة</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td class="en">Each table has a distinct name.</td><td class="ar">لكل جدول اسم مميّز.</td><td class="en">One <code>BOOK</code>, one <code>AUTHOR</code>, one <code>MEMBER</code></td><td class="ar"><code>BOOK</code> واحد، و<code>AUTHOR</code> واحد، و<code>MEMBER</code> واحد</td></tr>
+        <tr><td>2</td><td class="en">Each table may contain multiple rows.</td><td class="ar">يجوز أن يحتوي كل جدول صفوفًا متعدّدة.</td><td class="en"><code>AUTHOR</code> has four rows, and can have more</td><td class="ar">في <code>AUTHOR</code> أربعة صفوف، ويمكن أن يزيد</td></tr>
+        <tr><td>3</td><td class="en">Each table has a value to uniquely identify the rows.</td><td class="ar">لكل جدول قيمة تحدّد صفوفه تحديدًا فريدًا.</td><td class="en">The primary key: <code>MEMBER_ID</code>, <code>BOOK_ID</code></td><td class="ar">المفتاح الأساسي: <code>MEMBER_ID</code> و<code>BOOK_ID</code></td></tr>
+        <tr><td>4</td><td class="en">Each column in a table has a unique name.</td><td class="ar">لكل عمود في الجدول اسم فريد.</td><td class="en"><code>FIRST_NAME</code> and <code>LAST_NAME</code>, never <code>NAME</code> twice</td><td class="ar"><code>FIRST_NAME</code> و<code>LAST_NAME</code>، لا <code>NAME</code> مرّتين</td></tr>
+        <tr><td>5</td><td class="en">Entries in columns are single values.</td><td class="ar">مُدخَلات الأعمدة قيم مفردة.</td><td class="en">One city in each <code>CITY</code> field</td><td class="ar">مدينة واحدة في كل حقل من <code>CITY</code></td></tr>
+        <tr><td>6</td><td class="en">Entries in columns are of the same kind.</td><td class="ar">مُدخَلات العمود الواحد من النوع نفسه.</td><td class="en"><code>JOINED</code> holds dates and only dates</td><td class="ar"><code>JOINED</code> يحمل تواريخ، ولا شيء غيرها</td></tr>
+        <tr><td>7</td><td class="en">Order of rows and columns is insignificant.</td><td class="ar">ترتيب الصفوف والأعمدة غير مهمّ.</td><td class="en">Sorting <code>BOOK</code> by title changes nothing it means</td><td class="ar">فرز <code>BOOK</code> بالعنوان لا يغيّر شيئًا من معناه</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="evolve" id="t2l2-e3">
+    <div class="ver" data-title-en="Version 1 — the front desk's sheet" data-title-ar="النسخة 1 — جدول مكتب الاستقبال">
+      <figure class="diagram" data-diagram="t2-member-broken">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 300" direction="ltr" role="img" aria-labelledby="t2-member-broken-t">
+<title id="t2-member-broken-t">A MEMBER table that breaks rules 3, 4, 5 and 6 / جدول MEMBER يكسر القواعد 3 و4 و5 و6</title>
+<g class="en"><text x="430" y="22" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Spot the broken rules</text></g><g class="ar"><text x="430" y="22" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">اكتشف القواعد المكسورة</text></g>
+<text x="30" y="58" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">MEMBER</text>
+<rect x="30" y="66" width="100" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="38" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">MEMBER_ID</text>
+<rect x="30" y="94" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">M01</text>
+<rect x="30" y="122" width="100" height="28" style="fill:var(--dg-bad-soft, var(--bad-soft));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="38" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">M02</text>
+<rect x="30" y="150" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">M03</text>
+<rect x="30" y="178" width="100" height="28" style="fill:var(--dg-bad-soft, var(--bad-soft));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="38" y="197" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">M02</text>
+<rect x="130" y="66" width="90" height="28" style="fill:var(--dg-bad-soft, var(--bad-soft));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="138" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">NAME</text>
+<rect x="130" y="94" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="138" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Sara</text>
+<rect x="130" y="122" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="138" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Omar</text>
+<rect x="130" y="150" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="138" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Lina</text>
+<rect x="130" y="178" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="138" y="197" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Huda</text>
+<rect x="220" y="66" width="90" height="28" style="fill:var(--dg-bad-soft, var(--bad-soft));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="228" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">NAME</text>
+<rect x="220" y="94" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="228" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Hamdan</text>
+<rect x="220" y="122" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="228" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Saleh</text>
+<rect x="220" y="150" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="228" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Odeh</text>
+<rect x="220" y="178" width="90" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="228" y="197" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Nasser</text>
+<rect x="310" y="66" width="140" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="318" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">CITY</text>
+<rect x="310" y="94" width="140" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="318" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Gaza</text>
+<rect x="310" y="122" width="140" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="318" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Khan Younis</text>
+<rect x="310" y="150" width="140" height="28" style="fill:var(--dg-bad-soft, var(--bad-soft));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="318" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Gaza, Rafah</text>
+<rect x="310" y="178" width="140" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="318" y="197" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Rafah</text>
+<rect x="450" y="66" width="130" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="458" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">JOINED</text>
+<rect x="450" y="94" width="130" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="458" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">2025-09-01</text>
+<rect x="450" y="122" width="130" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="458" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">2025-09-03</text>
+<rect x="450" y="150" width="130" height="28" style="fill:var(--dg-bad-soft, var(--bad-soft));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="458" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">last spring</text>
+<rect x="450" y="178" width="130" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="458" y="197" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">2026-01-10</text>
+<circle cx="118" cy="192" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="118" y="196" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">3</text>
+<circle cx="438" cy="164" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="438" y="168" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">5</text>
+<circle cx="568" cy="164" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="568" y="168" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">6</text>
+<circle cx="298" cy="80" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="298" y="84" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">4</text>
+<circle cx="670" cy="92" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="670" y="96" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">3</text>
+<g class="en"><text x="690" y="96" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">two rows share M02</text></g><g class="ar"><text x="690" y="96" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">صفّان يشتركان في M02</text></g>
+<circle cx="670" cy="136" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="670" y="140" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">4</text>
+<g class="en"><text x="690" y="140" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">two columns named NAME</text></g><g class="ar"><text x="690" y="140" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">عمودان باسم NAME</text></g>
+<circle cx="670" cy="180" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="670" y="184" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">5</text>
+<g class="en"><text x="690" y="184" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">two values in one field</text></g><g class="ar"><text x="690" y="184" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">قيمتان في حقل واحد</text></g>
+<circle cx="670" cy="224" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-bad, var(--bad));stroke-width:1.5"/>
+<text x="670" y="228" text-anchor="middle" style="fill:var(--dg-bad, var(--bad));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">6</text>
+<g class="en"><text x="690" y="228" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">a phrase in a date column</text></g><g class="ar"><text x="690" y="228" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">عبارة في عمود تواريخ</text></g>
+<g class="en"><text x="430" y="268" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">A spreadsheet, not yet a relational table: four of the seven rules are broken.</text></g><g class="ar"><text x="430" y="268" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">جدول بيانات، لا جدول علائقي بعد: أربع من القواعد السبع مكسورة.</text></g>
+</svg>
+</figure>
+      <p class="en">Defects: <code>M02</code> is used twice (rule 3); two columns are called <code>NAME</code> (rule 4); Lina's city field holds two cities (rule 5); her join date is a phrase, not a date (rule 6).</p>
+      <p class="ar">العيوب: استُعمل <code>M02</code> مرّتين (القاعدة 3)؛ وعمودان اسمهما <code>NAME</code> (القاعدة 4)؛ وحقل مدينة لينا يحمل مدينتين (القاعدة 5)؛ وتاريخ انضمامها عبارة لا تاريخ (القاعدة 6).</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — the same members, as a relational table" data-title-ar="النسخة 2 — الأعضاء أنفسهم، في جدول علائقي">
+      <figure class="diagram" data-diagram="t2-member-fixed">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 300" direction="ltr" role="img" aria-labelledby="t2-member-fixed-t">
+<title id="t2-member-fixed-t">The same MEMBER table, repaired / جدول MEMBER نفسه بعد الإصلاح</title>
+<g class="en"><text x="430" y="22" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">The same members, as a relational table</text></g><g class="ar"><text x="430" y="22" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الأعضاء أنفسهم، في جدول علائقي</text></g>
+<text x="30" y="58" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">MEMBER</text>
+<rect x="30" y="66" width="100" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="38" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">MEMBER_ID</text>
+<rect x="30" y="94" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">M01</text>
+<rect x="30" y="122" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">M02</text>
+<rect x="30" y="150" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">M03</text>
+<rect x="30" y="178" width="100" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="38" y="197" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">M04</text>
+<rect x="130" y="66" width="110" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="138" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">FIRST_NAME</text>
+<rect x="130" y="94" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="138" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Sara</text>
+<rect x="130" y="122" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="138" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Omar</text>
+<rect x="130" y="150" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="138" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Lina</text>
+<rect x="130" y="178" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="138" y="197" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Huda</text>
+<rect x="240" y="66" width="110" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="248" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">LAST_NAME</text>
+<rect x="240" y="94" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Hamdan</text>
+<rect x="240" y="122" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Saleh</text>
+<rect x="240" y="150" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Odeh</text>
+<rect x="240" y="178" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="197" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Nasser</text>
+<rect x="350" y="66" width="120" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="358" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">CITY</text>
+<rect x="350" y="94" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Gaza</text>
+<rect x="350" y="122" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Khan Younis</text>
+<rect x="350" y="150" width="120" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="358" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Gaza</text>
+<rect x="350" y="178" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="197" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Rafah</text>
+<rect x="470" y="66" width="110" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="478" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">JOINED</text>
+<rect x="470" y="94" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="478" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">2025-09-01</text>
+<rect x="470" y="122" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="478" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">2025-09-03</text>
+<rect x="470" y="150" width="110" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="478" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">2025-10-15</text>
+<rect x="470" y="178" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="478" y="197" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">2026-01-10</text>
+<circle cx="118" cy="192" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="118" y="196" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">3</text>
+<circle cx="458" cy="164" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="458" y="168" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">5</text>
+<circle cx="568" cy="164" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="568" y="168" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">6</text>
+<circle cx="338" cy="80" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="338" y="84" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">4</text>
+<circle cx="670" cy="92" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="670" y="96" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">3</text>
+<g class="en"><text x="690" y="96" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">every MEMBER_ID different</text></g><g class="ar"><text x="690" y="96" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">كل MEMBER_ID مختلف</text></g>
+<circle cx="670" cy="136" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="670" y="140" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">4</text>
+<g class="en"><text x="690" y="140" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">every column name different</text></g><g class="ar"><text x="690" y="140" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">كل اسم عمود مختلف</text></g>
+<circle cx="670" cy="180" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="670" y="184" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">5</text>
+<g class="en"><text x="690" y="184" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">one city in each field</text></g><g class="ar"><text x="690" y="184" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">مدينة واحدة في كل حقل</text></g>
+<circle cx="670" cy="224" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="670" y="228" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">6</text>
+<g class="en"><text x="690" y="228" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">JOINED holds only dates</text></g><g class="ar"><text x="690" y="228" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">JOINED لا يحمل إلا تواريخ</text></g>
+<g class="en"><text x="430" y="268" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Every rule now holds, so MEMBER is a relational table.</text></g><g class="ar"><text x="430" y="268" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">كل القواعد متحقّقة الآن، فـ MEMBER جدول علائقي.</text></g>
+</svg>
+</figure>
+      <p class="en">Fixed: Huda gets her own <code>M04</code>; the columns become <code>FIRST_NAME</code> and <code>LAST_NAME</code>; Lina is asked and one city is stored; "last spring" is replaced by her real join date.</p>
+      <p class="ar">أُصلح: أخذت هدى رقمها الخاص <code>M04</code>؛ وصار العمودان <code>FIRST_NAME</code> و<code>LAST_NAME</code>؛ وسُئلت لينا فخُزّنت مدينة واحدة؛ واستُبدل بعبارة «last spring» تاريخ انضمامها الحقيقي.</p>
+    </div>
+  </div>
+
+  <h3 id="t2l2-s4"><span class="en">Single values, of the same kind</span><span class="ar">قيم مفردة، من النوع نفسه</span></h3>
+
+  <p class="en">Rules 5 and 6 are about the field. "Gaza, Rafah" looks harmless, but a search for members in Rafah will not find Lina unless it hunts inside the text. And a column that mixes dates and phrases cannot be sorted or compared by date.</p>
+  <p class="ar">القاعدتان 5 و6 تخصّان الحقل. تبدو «Gaza, Rafah» بريئة، لكنّ البحث عن أعضاء رفح لن يجد لينا إلا إذا فتّش داخل النصّ. والعمود الذي يخلط التواريخ بالعبارات لا يمكن فرزه ولا مقارنته بالتاريخ.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">In SQL, rule 6 becomes the column's data type (<code>joined DATE</code>) and rule 3 becomes <code>PRIMARY KEY</code>. Rule 4 is one most database servers enforce themselves. The small engine in this page does not, which shows exactly why the rule exists. Run it and look for Sara's first name:</p>
+    <p class="ar">في SQL تصبح القاعدة 6 نوعَ بيانات العمود (<code>joined DATE</code>)، وتصبح القاعدة 3 <code>PRIMARY KEY</code>. أمّا القاعدة 4 فتفرضها معظم خوادم قواعد البيانات بنفسها. والمحرّك الصغير في هذه الصفحة لا يفرضها، وهذا يُظهر بالضبط لماذا وُجدت القاعدة. شغّلها وابحث عن الاسم الأول لسارة:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE members_sheet (member_id VARCHAR(3), name VARCHAR(20), name VARCHAR(20), city VARCHAR(30))"],"sql":"INSERT INTO members_sheet VALUES ('M01', 'Sara', 'Hamdan', 'Gaza');\n\nSELECT * FROM members_sheet;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>member_id</code></th><th><code>name</code></th><th><code>city</code></th></tr></thead>
+          <tbody><tr><td><code>M01</code></td><td>Hamdan</td><td>Gaza</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">"Sara" is gone. Two columns with one name means one of them cannot be addressed, so its value was lost without a word.</p>
+    <p class="ar">اختفت «Sara». عمودان باسم واحد يعني أن أحدهما لا يمكن الوصول إليه، فضاعت قيمته دون أيّ تنبيه.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Lina's <code>CITY</code> field holds "Gaza, Rafah". Which rule does that break?</p>
+    <p class="q ar">حقل <code>CITY</code> عند لينا يحمل «Gaza, Rafah». أيّ قاعدة يكسر؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Rule 3 &mdash; a value to identify the rows</span><span class="ar">القاعدة 3 &mdash; قيمة تحدّد الصفوف</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Rule 5 &mdash; entries are single values</span><span class="ar">القاعدة 5 &mdash; المُدخَلات قيم مفردة</span></button></li>
+      <li><button class="opt"><span class="en">Rule 6 &mdash; entries are of the same kind</span><span class="ar">القاعدة 6 &mdash; المُدخَلات من النوع نفسه</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Both are cities, so the kind is right (rule 6 holds). The trouble is that one field holds two values. A field is <em>the one value</em> at a row and column.</p>
+      <p class="ar">كلتاهما مدينة، فالنوع صحيح (القاعدة 6 متحقّقة). المشكلة أن حقلًا واحدًا يحمل قيمتين. والحقل هو <em>القيمة الواحدة</em> عند صفّ وعمود.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which version of <code>MEMBER</code> in the evolve block above can be loaded into a relational database as it is?</p>
+    <p class="q ar">أيّ نسخة من <code>MEMBER</code> في المراحل أعلاه يمكن تحميلها في قاعدة بيانات علائقية كما هي؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Version 1 &mdash; it has rows and columns</span><span class="ar">النسخة 1 &mdash; فيها صفوف وأعمدة</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Version 2 &mdash; it obeys all seven rules</span><span class="ar">النسخة 2 &mdash; تلتزم بالقواعد السبع كلّها</span></button></li>
+      <li><button class="opt"><span class="en">Neither &mdash; members need two tables</span><span class="ar">ولا واحدة &mdash; الأعضاء يحتاجون جدولين</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Rows and columns make a grid, not a relational table. Version 1 breaks rules 3, 4, 5 and 6; version 2 repairs each one, and one table is enough for members.</p>
+      <p class="ar">الصفوف والأعمدة تصنع شبكة، لا جدولًا علائقيًّا. النسخة 1 تكسر القواعد 3 و4 و5 و6، والنسخة 2 تُصلح كلًّا منها، وجدول واحد يكفي للأعضاء.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 6 -->
+  <h2 id="t2l2-h6"><span class="en">6 · Why order is insignificant</span><span class="ar">٦ · لماذا لا يهمّ الترتيب</span></h2>
+
+  <div class="problem">
+    <p class="en">A librarian's note reads: "<em>Citizen of the World</em> &mdash; third row of <code>BOOK</code>." A colleague sorts the list by title, from Z to A. Is the third row still <em>Citizen of the World</em>?</p>
+    <p class="ar">تقول ملاحظة أحد الأمناء: «<em>Citizen of the World</em> &mdash; الصفّ الثالث في <code>BOOK</code>». ثم فرز زميله القائمة بالعنوان من Z إلى A. هل ما زال الصفّ الثالث <em>Citizen of the World</em>؟</p>
+  </div>
+
+  <p class="en">Rule 7 says the order of rows and columns carries no meaning. A table is a set of rows, not a numbered list. Any query may hand the rows back in a different order, so "the third row" names nothing.</p>
+  <p class="ar">تقول القاعدة 7 إن ترتيب الصفوف والأعمدة لا يحمل أيّ معنى. فالجدول مجموعة صفوف، لا قائمة مرقّمة. وأيّ استعلام قد يُعيد الصفوف بترتيب مختلف، فعبارة «الصفّ الثالث» لا تسمّي شيئًا.</p>
+  <p class="en">That is why rule 3 matters. A row is found by its key, which never moves: <code>BK003</code> is <em>Citizen of the World</em> in every order. Columns too are found by name, never by "the second column".</p>
+  <p class="ar">ولهذا تهمّ القاعدة 3. يُعثَر على الصفّ بمفتاحه، والمفتاح لا يتحرّك: <code>BK003</code> هو <em>Citizen of the World</em> بأيّ ترتيب. والأعمدة كذلك يُعثَر عليها بأسمائها، لا بعبارة «العمود الثاني».</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Sort the books by title, last to first. The third row is now a different book:</p>
+    <p class="ar">افرز الكتب بالعنوان من الآخر إلى الأول. صار الصفّ الثالث كتابًا آخر:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{"books":[{"book_id":"BK001","title":"A Vision","author_id":"AD0001"},{"book_id":"BK002","title":"War and Peace","author_id":"AD0002"},{"book_id":"BK003","title":"Citizen of the World","author_id":"AD0003"},{"book_id":"BK004","title":"Androcles and the Lion","author_id":"AD0003"}]},"sql":"SELECT book_id, title\nFROM books\nORDER BY title DESC;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>book_id</code></th><th><code>title</code></th></tr></thead>
+          <tbody>
+            <tr><td><code>BK002</code></td><td>War and Peace</td></tr>
+            <tr><td><code>BK003</code></td><td>Citizen of the World</td></tr>
+            <tr><td><code>BK004</code></td><td>Androcles and the Lion</td></tr>
+            <tr><td><code>BK001</code></td><td>A Vision</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Ask by key instead, and the answer is the same whatever the order: <code>SELECT title FROM books WHERE book_id = 'BK003';</code> returns <em>Citizen of the World</em>. When a report needs an order, it asks for one with <code>ORDER BY</code>; it never relies on how rows happen to be stored.</p>
+    <p class="ar">اسأل بالمفتاح بدلًا من ذلك، يكن الجواب نفسه أيًّا كان الترتيب: <code>SELECT title FROM books WHERE book_id = 'BK003';</code> تُرجع <em>Citizen of the World</em>. وحين يحتاج تقرير إلى ترتيب يطلبه بـ <code>ORDER BY</code>، ولا يعتمد أبدًا على الترتيب الذي صادف أن خُزّنت به الصفوف.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">What is the reliable way to find <em>Citizen of the World</em> in <code>BOOK</code>?</p>
+    <p class="q ar">ما الطريقة الموثوقة للعثور على <em>Citizen of the World</em> في <code>BOOK</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Take the third row</span><span class="ar">خذ الصفّ الثالث</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Ask for <code>BOOK_ID = 'BK003'</code></span><span class="ar">اطلب <code>BOOK_ID = 'BK003'</code></span></button></li>
+      <li><button class="opt"><span class="en">Sort by title, then take the third row</span><span class="ar">افرز بالعنوان، ثم خذ الصفّ الثالث</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Positions change with every sort; the primary key does not. Sorting by title first still gives a position, and adding one book would move it. Rules 3 and 7 work as a pair.</p>
+      <p class="ar">المواقع تتغيّر مع كل فرز، والمفتاح الأساسي لا يتغيّر. والفرز بالعنوان أولًا يعطي موقعًا أيضًا، وإضافة كتاب واحد تحرّكه. القاعدتان 3 و7 تعملان معًا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t2l2-h7"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Name the parts</span><span class="ar">تمرين 1 · سمِّ الأجزاء</span></h4>
+    <p class="en">Use the lecturer's <code>EMPLOYEES</code> table in section 4. (a) How many columns and how many rows does it have? (b) What is the field in row <code>210</code>, column <code>NICKNAME</code>? (c) Dana Smith works in department 10. Where do you look to learn more about her department?</p>
+    <p class="ar">استعمل جدول <code>EMPLOYEES</code> من المحاضرة في القسم 4. (أ) كم عمودًا وكم صفًّا فيه؟ (ب) ما الحقل في الصفّ <code>210</code> والعمود <code>NICKNAME</code>؟ (ج) تعمل Dana Smith في القسم 10. أين تبحث لتعرف المزيد عن قسمها؟</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) Six columns and five rows. (b) <code>Larry</code>. (c) <code>DEPARTMENT_ID</code> is a foreign key, so you look in the <code>DEPARTMENTS</code> table for the row whose primary key is <code>10</code>.</p>
+      <p class="ar">(أ) ستة أعمدة وخمسة صفوف. (ب) <code>Larry</code>. (ج) <code>DEPARTMENT_ID</code> مفتاح أجنبي، فتبحث في جدول <code>DEPARTMENTS</code> عن الصفّ الذي مفتاحه الأساسي <code>10</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Students and courses</span><span class="ar">تمرين 2 · الطلاب والمقرّرات</span></h4>
+    <p class="en">The slides show <code>STUDENTS(ID, LAST_NAME, DATE_OF_BIRTH, ADDRESS, COURSE_ID)</code> and <code>COURSES(ID, NAME, DURATION)</code>. Name the primary key of each table, the foreign key, and the column that forms the relationship. Which course is student <code>7</code> attending if their <code>COURSE_ID</code> is <code>3</code>?</p>
+    <p class="ar">تعرض الشرائح <code>STUDENTS(ID, LAST_NAME, DATE_OF_BIRTH, ADDRESS, COURSE_ID)</code> و<code>COURSES(ID, NAME, DURATION)</code>. سمِّ المفتاح الأساسي لكل جدول، والمفتاح الأجنبي، والعمود الذي يكوّن العلاقة. أيّ مقرّر يحضره الطالب <code>7</code> إذا كان <code>COURSE_ID</code> عنده <code>3</code>؟</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en"><code>STUDENTS.ID</code> and <code>COURSES.ID</code> are the primary keys. <code>STUDENTS.COURSE_ID</code> is the foreign key, and it is the relationship. Student 7 attends the course in the <code>COURSES</code> row whose <code>ID</code> is <code>3</code>.</p>
+      <p class="ar"><code>STUDENTS.ID</code> و<code>COURSES.ID</code> هما المفتاحان الأساسيان. و<code>STUDENTS.COURSE_ID</code> هو المفتاح الأجنبي، وهو العلاقة. يحضر الطالب 7 المقرّر الموجود في صفّ <code>COURSES</code> الذي <code>ID</code> فيه <code>3</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Primary or unique?</span><span class="ar">تمرين 3 · أساسي أم فريد؟</span></h4>
+    <p class="en">In <code>BOOK(BOOK_ID, TITLE, AUTHOR_ID)</code>, both <code>BOOK_ID</code> and <code>TITLE</code> are different in every row. (a) Why can only one of them be the primary key? (b) What does the other become, and what would be lost if it were not declared at all?</p>
+    <p class="ar">في <code>BOOK(BOOK_ID, TITLE, AUTHOR_ID)</code> كلّ من <code>BOOK_ID</code> و<code>TITLE</code> مختلف في كل صفّ. (أ) لماذا لا يكون المفتاحَ الأساسي إلا واحد منهما؟ (ب) وماذا يصبح الآخر، وما الذي يضيع لو لم يُعلَن أصلًا؟</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) A table has one primary key: the single identifier other tables' foreign keys point at. Matt chose <code>BOOK_ID</code>. (b) <code>TITLE</code> becomes a unique key. Without it, the same title could be entered twice under two new <code>BOOK_ID</code>s, and the redundancy of lesson 1 would return.</p>
+      <p class="ar">(أ) للجدول مفتاح أساسي واحد: المعرِّف الوحيد الذي تشير إليه المفاتيح الأجنبية في الجداول الأخرى. واختار مات <code>BOOK_ID</code>. (ب) يصبح <code>TITLE</code> مفتاحًا فريدًا. ومن دونه يمكن إدخال العنوان نفسه مرّتين برقمَي <code>BOOK_ID</code> جديدين، فيعود تكرار الدرس 1.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Which rule?</span><span class="ar">تمرين 4 · أيّ قاعدة؟</span></h4>
+    <p class="en">Name the rule each case breaks. (a) The database has two tables both called <code>BOOK</code>. (b) A <code>PHONE</code> field holds two phone numbers. (c) A <code>JOINED</code> column holds "2025-09-01" in one row and "Sara's birthday" in another. (d) A report says "the member in the first row joined first".</p>
+    <p class="ar">سمِّ القاعدة التي تكسرها كل حالة. (أ) في قاعدة البيانات جدولان كلاهما اسمه <code>BOOK</code>. (ب) حقل <code>PHONE</code> يحمل رقمَي هاتف. (ج) عمود <code>JOINED</code> يحمل «2025-09-01» في صفّ و«عيد ميلاد سارة» في آخر. (د) تقرير يقول «العضو في الصفّ الأول انضمّ أولًا».</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) Rule 1, distinct table names. (b) Rule 5, single values. (c) Rule 6, entries of the same kind. (d) Rule 7: row order means nothing. To know who joined first, compare the <code>JOINED</code> dates.</p>
+      <p class="ar">(أ) القاعدة 1، أسماء جداول مميّزة. (ب) القاعدة 5، قيم مفردة. (ج) القاعدة 6، مُدخَلات من النوع نفسه. (د) القاعدة 7: ترتيب الصفوف لا معنى له. ولتعرف من انضمّ أولًا قارن تواريخ <code>JOINED</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Keys for the loan list</span><span class="ar">تمرين 5 · مفاتيح لقائمة الإعارات</span></h4>
+    <p class="en">Lesson 1's exercise 5 split the loans into <code>MEMBER(MEMBER_ID, MEMBER_NAME, CITY)</code> and <code>LOAN(MEMBER_ID, TITLE, LOAN_DATE)</code>. Give each table its primary key and mark the foreign key. Hint: Sara has two loans, so look hard at rule 3 for <code>LOAN</code>. Then write the two <code>CREATE TABLE</code> statements and try them here.</p>
+    <p class="ar">قسّم التمرين 5 من الدرس 1 الإعارات إلى <code>MEMBER(MEMBER_ID, MEMBER_NAME, CITY)</code> و<code>LOAN(MEMBER_ID, TITLE, LOAN_DATE)</code>. أعطِ كل جدول مفتاحه الأساسي، وحدّد المفتاح الأجنبي. تلميح: لسارة إعارتان، فتأمّل القاعدة 3 جيّدًا في <code>LOAN</code>. ثم اكتب جملتَي <code>CREATE TABLE</code> وجرّبهما هنا.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"explore","objects":true,"dataset":{},"sql":""}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en"><code>MEMBER_ID</code> is <code>MEMBER</code>'s primary key. In <code>LOAN</code>, <code>MEMBER_ID</code> is a foreign key &mdash; and it repeats, so it cannot also be <code>LOAN</code>'s primary key. No column of <code>LOAN</code> is unique, so rule 3 asks for one: add <code>LOAN_ID</code>.</p>
+      <p class="ar"><code>MEMBER_ID</code> هو المفتاح الأساسي لـ <code>MEMBER</code>. وفي <code>LOAN</code> يكون <code>MEMBER_ID</code> مفتاحًا أجنبيًّا &mdash; وهو يتكرّر، فلا يمكن أن يكون أيضًا المفتاح الأساسي لـ <code>LOAN</code>. ولا عمود في <code>LOAN</code> فريد، فالقاعدة 3 تطلب واحدًا: أضف <code>LOAN_ID</code>.</p>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE members (
+  member_id   VARCHAR(3)  PRIMARY KEY,
+  member_name VARCHAR(40),
+  city        VARCHAR(30)
+);
+
+CREATE TABLE loans (
+  loan_id   INT         PRIMARY KEY,
+  member_id VARCHAR(3)  REFERENCES members(member_id),
+  title     VARCHAR(60),
+  loan_date DATE
+);
+
+INSERT INTO members VALUES ('M01', 'Sara Hamdan', 'Gaza');
+INSERT INTO loans VALUES (1, 'M01', 'A Vision', '2026-03-01');
+INSERT INTO loans VALUES (2, 'M01', 'Citizen of the World', '2026-03-05');
+SELECT * FROM loans;</code></pre>
+      <p class="en">Both of Sara's loans are saved: <code>member_id</code> repeats, <code>loan_id</code> does not. Try a loan for <code>'M09'</code> and the foreign key refuses it.</p>
+      <p class="ar">تُحفظ إعارتا سارة كلتاهما: <code>member_id</code> يتكرّر، و<code>loan_id</code> لا يتكرّر. جرّب إعارة لـ <code>'M09'</code> فيرفضها المفتاح الأجنبي.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">A relational database presents information in tables of rows and columns, related through a common field.</li>
+      <li class="ar">قاعدة البيانات العلائقية تعرض المعلومات في جداول من صفوف وأعمدة، مرتبطة عبر حقل مشترك.</li>
+      <li class="en">A column is one kind of information, a row is one record, a field is the one value where they meet.</li>
+      <li class="ar">العمود نوع واحد من المعلومات، والصفّ سجلّ واحد، والحقل القيمة الواحدة حيث يلتقيان.</li>
+      <li class="en">The primary key identifies each row; a foreign key refers to another table's primary key; a unique key is any other column that must never repeat.</li>
+      <li class="ar">المفتاح الأساسي يحدّد كل صفّ، والمفتاح الأجنبي يشير إلى المفتاح الأساسي لجدول آخر، والمفتاح الفريد أيّ عمود آخر يجب ألّا يتكرّر أبدًا.</li>
+      <li class="en">A foreign key is the relationship: it lets you ask across tables, and it refuses values that point nowhere.</li>
+      <li class="ar">المفتاح الأجنبي هو العلاقة: يتيح لك السؤال عبر الجداول، ويرفض القيم التي لا تشير إلى شيء.</li>
+      <li class="en">Seven rules: distinct table name, many rows, a unique identifier, unique column names, single values, one kind per column, order insignificant.</li>
+      <li class="ar">القواعد السبع: اسم جدول مميّز، وصفوف متعدّدة، ومعرِّف فريد، وأسماء أعمدة فريدة، وقيم مفردة، ونوع واحد لكل عمود، والترتيب غير مهمّ.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Using a name as a primary key &mdash; two members called Omar Saleh are enough to break it.</li>
+      <li class="ar">استعمال الاسم مفتاحًا أساسيًّا &mdash; يكفي عضوان اسمهما Omar Saleh لكسره.</li>
+      <li class="en">Thinking a foreign key must be unique. It repeats whenever many rows point at one.</li>
+      <li class="ar">الظنّ بأن المفتاح الأجنبي يجب أن يكون فريدًا. إنه يتكرّر كلّما أشارت صفوف كثيرة إلى صفّ واحد.</li>
+      <li class="en">Calling a column a "field" when you mean one value &mdash; and the other way round.</li>
+      <li class="ar">تسمية العمود «حقلًا» وأنت تقصد قيمة واحدة &mdash; أو العكس.</li>
+      <li class="en">Finding a row by its position ("the third row") instead of by its key.</li>
+      <li class="ar">العثور على صفّ بموقعه («الصفّ الثالث») بدل مفتاحه.</li>
+      <li class="en">Squeezing two values into one field ("Gaza, Rafah") to save a row or a column.</li>
+      <li class="ar">حشر قيمتين في حقل واحد («Gaza, Rafah») لتوفير صفّ أو عمود.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="../tests/t2-test-02.html#t2-test-02">Test 2 &mdash; The Relational Answer</a>. Then <a href="../lessons/t2-lesson-03.html#t2-lesson-03">Lesson 3 &mdash; Three Models, One Database</a> steps back from tables to the models a design passes through before any table exists.</p>
+    <p class="ar">اختبر نفسك بـ<a href="../tests/t2-test-02.html#t2-test-02">الاختبار 2 &mdash; الجواب العلائقي</a>. ثم يعود <a href="../lessons/t2-lesson-03.html#t2-lesson-03">الدرس 3 &mdash; ثلاثة نماذج، قاعدة بيانات واحدة</a> خطوةً إلى الوراء، من الجداول إلى النماذج التي يمرّ بها التصميم قبل وجود أيّ جدول.</p>
+  </div>
 
 </section>
 <nav class="pager"></nav>
@@ -69,6 +1175,9 @@
 <script src="../assets/theory/js/anchors.js"></script>
 <script src="../assets/theory/js/chrome.js"></script>
 <script src="../assets/theory/js/code.js"></script>
+<script src="../assets/vendor/alasql/alasql.min.js"></script>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/widget.js"></script>
 <script src="../assets/theory/js/app.js"></script>
 </body>
 </html>

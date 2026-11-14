@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 300" direction="ltr" role="img" aria-labelledby="t2-member-fixed-t">
+<title id="t2-member-fixed-t">The same MEMBER table, repaired / جدول MEMBER نفسه بعد الإصلاح</title>
+<g class="en"><text x="430" y="22" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">The same members, as a relational table</text></g><g class="ar"><text x="430" y="22" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الأعضاء أنفسهم، في جدول علائقي</text></g>
+<text x="30" y="58" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">MEMBER</text>
+<rect x="30" y="66" width="100" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="38" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">MEMBER_ID</text>
+<rect x="30" y="94" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">M01</text>
+<rect x="30" y="122" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">M02</text>
+<rect x="30" y="150" width="100" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="38" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">M03</text>
+<rect x="30" y="178" width="100" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="38" y="197" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">M04</text>
+<rect x="130" y="66" width="110" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="138" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">FIRST_NAME</text>
+<rect x="130" y="94" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="138" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Sara</text>
+<rect x="130" y="122" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="138" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Omar</text>
+<rect x="130" y="150" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="138" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Lina</text>
+<rect x="130" y="178" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="138" y="197" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Huda</text>
+<rect x="240" y="66" width="110" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="248" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">LAST_NAME</text>
+<rect x="240" y="94" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Hamdan</text>
+<rect x="240" y="122" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Saleh</text>
+<rect x="240" y="150" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Odeh</text>
+<rect x="240" y="178" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="248" y="197" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Nasser</text>
+<rect x="350" y="66" width="120" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="358" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">CITY</text>
+<rect x="350" y="94" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Gaza</text>
+<rect x="350" y="122" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Khan Younis</text>
+<rect x="350" y="150" width="120" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="358" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Gaza</text>
+<rect x="350" y="178" width="120" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="358" y="197" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">Rafah</text>
+<rect x="470" y="66" width="110" height="28" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="478" y="85" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:600">JOINED</text>
+<rect x="470" y="94" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="478" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">2025-09-01</text>
+<rect x="470" y="122" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="478" y="141" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">2025-09-03</text>
+<rect x="470" y="150" width="110" height="28" style="fill:var(--dg-good-soft, var(--good-soft));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="478" y="169" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">2025-10-15</text>
+<rect x="470" y="178" width="110" height="28" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="478" y="197" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px">2026-01-10</text>
+<circle cx="118" cy="192" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="118" y="196" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">3</text>
+<circle cx="458" cy="164" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="458" y="168" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">5</text>
+<circle cx="568" cy="164" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="568" y="168" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">6</text>
+<circle cx="338" cy="80" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="338" y="84" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">4</text>
+<circle cx="670" cy="92" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="670" y="96" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">3</text>
+<g class="en"><text x="690" y="96" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">every MEMBER_ID different</text></g><g class="ar"><text x="690" y="96" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">كل MEMBER_ID مختلف</text></g>
+<circle cx="670" cy="136" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="670" y="140" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">4</text>
+<g class="en"><text x="690" y="140" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">every column name different</text></g><g class="ar"><text x="690" y="140" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">كل اسم عمود مختلف</text></g>
+<circle cx="670" cy="180" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="670" y="184" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">5</text>
+<g class="en"><text x="690" y="184" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">one city in each field</text></g><g class="ar"><text x="690" y="184" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">مدينة واحدة في كل حقل</text></g>
+<circle cx="670" cy="224" r="9" style="fill:var(--dg-label-bg, var(--surface));stroke:var(--dg-good, var(--good));stroke-width:1.5"/>
+<text x="670" y="228" text-anchor="middle" style="fill:var(--dg-good, var(--good));font-family:var(--font, sans-serif);font-size:11px;font-weight:700">6</text>
+<g class="en"><text x="690" y="228" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">JOINED holds only dates</text></g><g class="ar"><text x="690" y="228" text-anchor="end" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">JOINED لا يحمل إلا تواريخ</text></g>
+<g class="en"><text x="430" y="268" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Every rule now holds, so MEMBER is a relational table.</text></g><g class="ar"><text x="430" y="268" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">كل القواعد متحقّقة الآن، فـ MEMBER جدول علائقي.</text></g>
+</svg>

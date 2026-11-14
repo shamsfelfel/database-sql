@@ -25,6 +25,50 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "column",
+  "term": {
+   "en": "Column",
+   "ar": "العمود"
+  },
+  "def": {
+   "en": "One particular type of information held for every row of a table, such as AUTHOR_NAME.",
+   "ar": "نوع واحد محدّد من المعلومات يُحفظ لكل صفّ في الجدول، مثل AUTHOR_NAME."
+  },
+  "cat": {
+   "en": "Relational tables",
+   "ar": "الجداول العلائقية"
+  },
+  "see": [
+   "row",
+   "field"
+  ],
+  "used": [
+   "t2l2-h1"
+  ]
+ },
+ {
+  "id": "common-field",
+  "term": {
+   "en": "Common field",
+   "ar": "الحقل المشترك"
+  },
+  "def": {
+   "en": "A column that appears in two tables and relates them; declared properly, it is a primary key on one side and a foreign key on the other.",
+   "ar": "عمود يظهر في جدولين ويربط بينهما؛ وحين يُعلَن كما يجب يكون مفتاحًا أساسيًّا في جهة ومفتاحًا أجنبيًّا في الأخرى."
+  },
+  "cat": {
+   "en": "Keys",
+   "ar": "المفاتيح"
+  },
+  "see": [
+   "primary-key",
+   "foreign-key"
+  ],
+  "used": [
+   "t2l2-s2"
+  ]
+ },
+ {
   "id": "data-inconsistency",
   "term": {
    "en": "Data inconsistency",
@@ -91,6 +135,28 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "field",
+  "term": {
+   "en": "Field",
+   "ar": "الحقل"
+  },
+  "def": {
+   "en": "The one value found at the intersection of a row and a column.",
+   "ar": "القيمة الواحدة الموجودة عند تقاطع صفّ مع عمود."
+  },
+  "cat": {
+   "en": "Relational tables",
+   "ar": "الجداول العلائقية"
+  },
+  "see": [
+   "row",
+   "column"
+  ],
+  "used": [
+   "t2l2-s1"
+  ]
+ },
+ {
   "id": "flat-file",
   "term": {
    "en": "Flat file database",
@@ -110,6 +176,28 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l1-h1"
+  ]
+ },
+ {
+  "id": "foreign-key",
+  "term": {
+   "en": "Foreign key (FK)",
+   "ar": "المفتاح الأجنبي (FK)"
+  },
+  "def": {
+   "en": "A column that refers to a primary key column in another table; it may repeat, but every value must match a real row there.",
+   "ar": "عمود يشير إلى عمود مفتاح أساسي في جدول آخر؛ قد يتكرّر، لكن يجب أن تطابق كل قيمة فيه صفًّا حقيقيًّا هناك."
+  },
+  "cat": {
+   "en": "Keys",
+   "ar": "المفاتيح"
+  },
+  "see": [
+   "primary-key",
+   "common-field"
+  ],
+  "used": [
+   "t2l2-h3"
   ]
  },
  {
@@ -135,6 +223,28 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "key",
+  "term": {
+   "en": "Key",
+   "ar": "المفتاح"
+  },
+  "def": {
+   "en": "A unique field used to identify each record in a relational database.",
+   "ar": "حقل فريد يُستعمل لتحديد كل سجلّ في قاعدة بيانات علائقية."
+  },
+  "cat": {
+   "en": "Keys",
+   "ar": "المفاتيح"
+  },
+  "see": [
+   "primary-key",
+   "unique-key"
+  ],
+  "used": [
+   "t2l2-h2"
+  ]
+ },
+ {
   "id": "multi-user-access",
   "term": {
    "en": "Multi-user access",
@@ -156,6 +266,29 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "primary-key",
+  "term": {
+   "en": "Primary key (PK)",
+   "ar": "المفتاح الأساسي (PK)"
+  },
+  "def": {
+   "en": "The unique identifier for each row of a table; a table has exactly one, and its value never repeats.",
+   "ar": "المعرِّف الفريد لكل صفّ في الجدول؛ للجدول مفتاح أساسي واحد بالضبط، ولا تتكرّر قيمته أبدًا."
+  },
+  "cat": {
+   "en": "Keys",
+   "ar": "المفاتيح"
+  },
+  "see": [
+   "foreign-key",
+   "unique-key",
+   "key"
+  ],
+  "used": [
+   "t2l2-h2"
+  ]
+ },
+ {
   "id": "record",
   "term": {
    "en": "Record",
@@ -174,6 +307,96 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l1-s1"
+  ]
+ },
+ {
+  "id": "relational-database",
+  "term": {
+   "en": "Relational database",
+   "ar": "قاعدة البيانات العلائقية"
+  },
+  "def": {
+   "en": "A database that presents information in tables with rows and columns, and relates the tables to one another through a common field.",
+   "ar": "قاعدة بيانات تعرض المعلومات في جداول ذات صفوف وأعمدة، وتربط الجداول ببعضها عبر حقل مشترك."
+  },
+  "cat": {
+   "en": "Relational tables",
+   "ar": "الجداول العلائقية"
+  },
+  "see": [
+   "table",
+   "common-field",
+   "flat-file"
+  ],
+  "used": [
+   "t2l2-h1"
+  ]
+ },
+ {
+  "id": "row",
+  "term": {
+   "en": "Row",
+   "ar": "الصفّ"
+  },
+  "def": {
+   "en": "The data for one instance of what a table lists: one record.",
+   "ar": "بيانات حالة واحدة ممّا يسرده الجدول: سجلّ واحد."
+  },
+  "cat": {
+   "en": "Relational tables",
+   "ar": "الجداول العلائقية"
+  },
+  "see": [
+   "record",
+   "column",
+   "primary-key"
+  ],
+  "used": [
+   "t2l2-h1"
+  ]
+ },
+ {
+  "id": "table",
+  "term": {
+   "en": "Table",
+   "ar": "الجدول"
+  },
+  "def": {
+   "en": "The basic storage structure: a named set of rows and columns.",
+   "ar": "بنية التخزين الأساسية: مجموعة مسمّاة من الصفوف والأعمدة."
+  },
+  "cat": {
+   "en": "Relational tables",
+   "ar": "الجداول العلائقية"
+  },
+  "see": [
+   "row",
+   "column"
+  ],
+  "used": [
+   "t2l2-h1"
+  ]
+ },
+ {
+  "id": "unique-key",
+  "term": {
+   "en": "Unique key (UK)",
+   "ar": "المفتاح الفريد (UK)"
+  },
+  "def": {
+   "en": "A column, other than the primary key, in which the system does not allow two rows to have the same value.",
+   "ar": "عمود، غير المفتاح الأساسي، لا يسمح فيه النظام بأن يحمل صفّان القيمة نفسها."
+  },
+  "cat": {
+   "en": "Keys",
+   "ar": "المفاتيح"
+  },
+  "see": [
+   "primary-key",
+   "key"
+  ],
+  "used": [
+   "t2l2-h4"
   ]
  },
  {
