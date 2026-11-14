@@ -569,7 +569,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 1 — حين يكون الكيان الواحد عدّة كيانات"
      },
      "href": "tests/t4-test-01.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t4-lesson-02",
