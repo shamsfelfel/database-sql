@@ -501,7 +501,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار الفصل ب — التطبيقي"
      },
      "href": "exams/t3-exam-b.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t3-exam-c",
