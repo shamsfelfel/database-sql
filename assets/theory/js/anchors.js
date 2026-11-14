@@ -138,8 +138,12 @@ window.DBTAnchors = {
 "t3-test-04": "tests/t3-test-04.html",
 "t3-test-05": "tests/t3-test-05.html",
 "t3-test-06": "tests/t3-test-06.html",
+"t3idx-before": "chapters/t3.html",
+"t3idx-domain": "chapters/t3.html",
 "t3idx-h1": "chapters/t3.html",
 "t3idx-h2": "chapters/t3.html",
+"t3idx-how": "chapters/t3.html",
+"t3idx-why": "chapters/t3.html",
 "t4-chapter": "chapters/t4.html",
 "t4-exam-a": "exams/t4-exam-a.html",
 "t4-exam-b": "exams/t4-exam-b.html",
@@ -501,6 +505,14 @@ window.DBTHeadings = {
 "ar": "٦ · وحدك: PUBLISHER",
 "en": "6 · On your own: PUBLISHER"
 },
+"t3idx-before": {
+"ar": "ما يجب أن تعرفه مسبقًا",
+"en": "What you should already know"
+},
+"t3idx-domain": {
+"ar": "نظام الموارد البشرية والمطعم",
+"en": "The H.R. system and the restaurant"
+},
 "t3idx-h1": {
 "ar": "الدروس",
 "en": "The lessons"
@@ -508,6 +520,14 @@ window.DBTHeadings = {
 "t3idx-h2": {
 "ar": "تأكّد ممّا رسخ",
 "en": "Check what stuck"
+},
+"t3idx-how": {
+"ar": "كيف بُني هذا الفصل",
+"en": "How the chapter is put together"
+},
+"t3idx-why": {
+"ar": "لماذا تهمّ الخطوط قبل أي SQL",
+"en": "Why the lines matter before any SQL"
 },
 "t4idx-h1": {
 "ar": "الدروس",

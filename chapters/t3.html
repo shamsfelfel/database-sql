@@ -39,17 +39,208 @@
 <link rel="stylesheet" href="../assets/theory/css/base.css">
 <link rel="stylesheet" href="../assets/theory/css/chrome.css">
 <link rel="stylesheet" href="../assets/theory/css/components.css">
+<link rel="stylesheet" href="../assets/theory/css/diagram.css">
 </head>
 <body data-chapter="t3" data-page="t3-chapter" data-kind="chapter" data-path="chapters/t3.html">
 <main>
 <section class="page" id="t3-chapter">
 <nav class="crumbs"></nav>
 
+
   <span class="kicker">Theory &middot; Chapter 3</span>
   <h1><span class="en">Reading and Drawing Relationships</span><span class="ar">قراءة العلاقات ورسمها</span></h1>
-  <p class="lede en">Optionality, cardinality and the conventions that let any two designers read the same diagram the same way — plus the matrix that finds the relationships you missed.</p>
-  <p class="lede ar">الإلزامية والتعدّدية والأعراف التي تجعل أيّ مصمّمَين يقرآن المخطط نفسه بالطريقة نفسها — مع المصفوفة التي تكشف العلاقات التي فاتتك.</p>
-  <h2 id="t3idx-h1"><span class="en">The lessons</span><span class="ar">الدروس</span></h2>
+  <p class="lede en">Chapter 2 gave you the boxes. This chapter is about the lines between them: what a relationship is, whether it is a <em>must</em> or a <em>may</em>, whether it means one or many, how every designer draws it the same way, and how to say it aloud in one precise sentence.</p>
+  <p class="lede ar">أعطاك الفصل 2 الصناديق، وهذا الفصل عن الخطوط التي بينها: ما العلاقة، وهل هي «يجب» أم «قد»، وهل تعني واحدًا أم أكثر، وكيف يرسمها كل مصمّم بالطريقة نفسها، وكيف تقولها بصوت عالٍ في جملة واحدة دقيقة.</p>
+
+  <h2 id="t3idx-why"><span class="en">Why the lines matter before any SQL</span><span class="ar">لماذا تهمّ الخطوط قبل أي SQL</span></h2>
+
+  <div class="problem">
+    <p class="en">You finished Chapter 2 with this ERD of the H.R. department. You can read every box. But look at the line between <code>EMPLOYEE</code> and <code>JOB</code>: half solid, half dashed, a plain end and a three-pronged end. Each of those marks is a business rule, and you cannot read them yet.</p>
+    <p class="ar">أنهيت الفصل 2 بمخطّط ERD هذا لقسم الموارد البشرية، وتستطيع قراءة كل صندوق فيه. لكن انظر إلى الخط بين <code>EMPLOYEE</code> و<code>JOB</code>: نصفه متّصل ونصفه متقطّع، وله طرف بسيط وطرف بثلاث شُعَب. كل علامة من هذه قاعدة عمل (business rule)، ولا تستطيع قراءتها بعد.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-hr-erd">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1010 520" direction="ltr" role="img" aria-labelledby="t2-hr-erd-t">
+<title id="t2-hr-erd-t">The H.R. department ERD: EMPLOYEE, JOB, DEPARTMENT, LOCATION, COUNTRY and REGION with their attributes, UIDs and six named relationships / مخطط ERD لقسم الموارد البشرية: EMPLOYEE وJOB وDEPARTMENT وLOCATION وCOUNTRY وREGION بخصائصها ومعرّفاتها الفريدة وست علاقات مسمّاة</title>
+<g class="en"><text x="505.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">The H.R. Department ERD</text></g><g class="ar"><text x="505.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">مخطط ERD لقسم الموارد البشرية</text></g>
+<rect x="360" y="60" width="200" height="154" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="460.0" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">EMPLOYEE</text>
+<text x="374" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Employee ID</text>
+<text x="374" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="374" y="142" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<text x="374" y="161" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Hire Date</text>
+<text x="374" y="180" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Salary</text>
+<text x="374" y="199" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Commission</text>
+<rect x="40" y="60" width="180" height="116" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="130.0" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">JOB</text>
+<text x="54" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Job ID</text>
+<text x="54" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Title</text>
+<text x="54" y="142" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Max Salary</text>
+<text x="54" y="161" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Min Salary</text>
+<rect x="760" y="60" width="200" height="78" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="860.0" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">DEPARTMENT</text>
+<text x="774" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Department ID</text>
+<text x="774" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="760" y="290" width="220" height="135" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="870.0" y="312" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">LOCATION</text>
+<text x="774" y="334" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Location ID</text>
+<text x="774" y="353" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Street Address</text>
+<text x="774" y="372" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Postal Code</text>
+<text x="774" y="391" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* City</text>
+<text x="774" y="410" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* State Province</text>
+<rect x="430" y="320" width="200" height="78" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="530.0" y="342" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">COUNTRY</text>
+<text x="444" y="364" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Country ID</text>
+<text x="444" y="383" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Country Name</text>
+<rect x="60" y="320" width="200" height="78" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="160.0" y="342" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">REGION</text>
+<text x="74" y="364" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Region ID</text>
+<text x="74" y="383" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Region Name</text>
+<path d="M560 110 L660 110" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M660 110 L760 110" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M574 110 L560 102" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M574 110 L560 110" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M574 110 L560 118" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="580" y="102" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">works in</text>
+<text x="752" y="128" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">responsible for</text>
+<path d="M220 110 L290 110" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M290 110 L360 110" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M346 110 L360 102" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M346 110 L360 110" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M346 110 L360 118" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="228" y="128" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">assigned to</text>
+<text x="346" y="102" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">assigned</text>
+<path d="M860 138 L860 214" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M860 214 L860 290" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M860 152 L852 138" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M860 152 L860 138" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M860 152 L868 138" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="870" y="164" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">located in</text>
+<text x="870" y="282" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">address of</text>
+<path d="M630 359 L695 359" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M695 359 L760 359" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M746 359 L760 351" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M746 359 L760 359" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M746 359 L760 367" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="750" y="351" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">situated</text>
+<text x="638" y="377" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">site of</text>
+<path d="M260 359 L345 359" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M345 359 L430 359" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M416 359 L430 351" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M416 359 L430 359" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M416 359 L430 367" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="420" y="351" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">part of</text>
+<text x="268" y="377" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">comprised of</text>
+<path d="M420 214 L420 262 L460 262" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M460 262 L500 262 L500 214" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M420 228 L412 214" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M420 228 L420 214" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M420 228 L428 214" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="412" y="240" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">managed by</text>
+<text x="508" y="240" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">manager of</text>
+<rect x="30" y="445" width="950" height="62" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="46" y="468" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px"># unique identifier · * mandatory · o optional · each line is named at both ends: read the name nearest the entity you start from</text></g><g class="ar"><text x="964" y="468" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px"># المعرّف الفريد · * إلزامية · o اختيارية · كل خط مسمّى عند طرفيه: اقرأ الاسم الأقرب إلى الكيان الذي تبدأ منه</text></g>
+<g class="en"><text x="46" y="492" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Dashed lines, single toes and crow’s feet record optionality and cardinality — chapter T3 teaches you to read them.</text></g><g class="ar"><text x="964" y="492" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">الخطوط المتقطّعة والطرف المفرد وقدم الغراب تسجّل الإلزامية والعدد — ويعلّمك الفصل T3 قراءتها.</text></g>
+</svg>
+
+    <figcaption><span class="en">The H.R. ERD from <a href="../lessons/t2-lesson-06.html#t2-lesson-06">Chapter 2, Lesson 6</a>. Notice that every line is named at both ends &mdash; and that the lines are not all drawn alike.</span><span class="ar">مخطّط الموارد البشرية من <a href="../lessons/t2-lesson-06.html#t2-lesson-06">الفصل 2، الدرس 6</a>. لاحظ أن كل خط مسمّى عند طرفيه &mdash; وأن الخطوط لا تُرسم كلها بالشكل نفسه.</span></figcaption>
+  </figure>
+
+  <p class="en">Those marks answer two questions the business must settle: must every employee have a job, and how many employees can hold one job? SQL cannot answer them for you. It will build whatever table you give it; the answers decide which column you add and whether it may be left empty.</p>
+  <p class="ar">تجيب هذه العلامات عن سؤالين على المؤسسة أن تحسمهما: هل يجب أن يكون لكل موظف وظيفة؟ وكم موظفًا يمكن أن يشغل وظيفة واحدة؟ لا تستطيع SQL أن تجيب عنهما نيابةً عنك، فهي تبني أي جدول تعطيها إياه؛ أمّا الجوابان فيقرّران أيّ عمود تضيف، وهل يجوز أن يبقى فارغًا.</p>
+
+  <div class="quiz">
+    <p class="q en">The slides note that some jobs are vacant or obsolete, so no employee holds them. What does that tell you about the <code>JOB</code> end of the relationship?</p>
+    <p class="q ar">تذكر الشرائح أن بعض الوظائف شاغرة أو ملغاة، فلا يشغلها أي موظف. ماذا يخبرك ذلك عن طرف <code>JOB</code> في العلاقة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Every job must be held by at least one employee</span><span class="ar">يجب أن يشغل كلَّ وظيفة موظفٌ واحد على الأقل</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A job <em>may</em> be held by employees &mdash; it is optional</span><span class="ar">«قد» يشغل الوظيفةَ موظفون &mdash; فهي اختيارية</span></button></li>
+      <li><button class="opt"><span class="en">Nothing &mdash; vacant jobs should be deleted</span><span class="ar">لا شيء &mdash; يجب حذف الوظائف الشاغرة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A job can exist with nobody in it, so from the job's side the relationship is a <em>may</em>. From the employee's side it is usually a <em>must</em>. Each end has its own rule &mdash; Lesson 2 teaches exactly this.</p>
+      <p class="ar">قد توجد وظيفة لا يشغلها أحد، فالعلاقة من جهة الوظيفة «قد». ومن جهة الموظف هي غالبًا «يجب». لكل طرف قاعدته الخاصة &mdash; وهذا بالضبط ما يعلّمه الدرس 2.</p>
+    </div>
+  </div>
+
+  <h2 id="t3idx-before"><span class="en">What you should already know</span><span class="ar">ما يجب أن تعرفه مسبقًا</span></h2>
+
+  <div class="callout prereq">
+    <p class="en">This chapter builds directly on Chapter 2. You should be able to name an entity and its instances (<a href="../lessons/t2-lesson-04.html#t2-lesson-04">Lesson 4</a>), read the <code>*</code> and <code>o</code> marks on attributes (<a href="../lessons/t2-lesson-05.html#t2-lesson-05">Lesson 5</a>), and spot the <code>#</code> unique identifier in a box (<a href="../lessons/t2-lesson-06.html#t2-lesson-06">Lesson 6</a>).</p>
+    <p class="ar">يقوم هذا الفصل مباشرةً على الفصل 2. عليك أن تعرف كيف تسمّي كيانًا ونُسَخه (<a href="../lessons/t2-lesson-04.html#t2-lesson-04">الدرس 4</a>)، وكيف تقرأ العلامتين <code>*</code> و<code>o</code> على الخصائص (<a href="../lessons/t2-lesson-05.html#t2-lesson-05">الدرس 5</a>)، وكيف تميّز المعرّف الفريد <code>#</code> داخل الصندوق (<a href="../lessons/t2-lesson-06.html#t2-lesson-06">الدرس 6</a>).</p>
+    <p class="en">The lab at the end turns relationships into foreign keys, so revisit <a href="../lessons/t2-lesson-02.html#t2l2-h3">the foreign key</a> if it is hazy. On the SQL track, <a href="../chapters/chapter-3.html">Chapter 3 &mdash; Relationships</a> joins tables through those keys; this chapter decides where they go.</p>
+    <p class="ar">يحوّل المختبر في آخر الفصل العلاقاتِ إلى مفاتيح أجنبية، فراجع <a href="../lessons/t2-lesson-02.html#t2l2-h3">المفتاح الأجنبي</a> إن لم يكن واضحًا لك. وفي مسار SQL، يربط <a href="../chapters/chapter-3.html">الفصل 3 &mdash; العلاقات</a> الجداولَ عبر هذه المفاتيح؛ أمّا هذا الفصل فيقرّر أين توضع.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A quick self-check. In the H.R. ERD, <code>EMPLOYEE</code> lists <code>o Commission</code>. What does the <code>o</code> mean?</p>
+    <p class="q ar">فحص سريع لنفسك. في مخطّط الموارد البشرية، يضمّ <code>EMPLOYEE</code> السطر <code>o Commission</code>. ماذا تعني <code>o</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">It is the unique identifier</span><span class="ar">أنها المعرّف الفريد</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">It is optional: an employee may have no value for it</span><span class="ar">أنها اختيارية: قد لا تكون لها قيمة عند موظف ما</span></button></li>
+      <li><button class="opt"><span class="en">It is mandatory: every employee must have one</span><span class="ar">أنها إلزامية: يجب أن تكون لكل موظف</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Only employees on commission have a commission, so the attribute is optional. <code>#</code> marks the UID and <code>*</code> a mandatory attribute. This chapter applies the same must/may idea to relationships.</p>
+      <p class="ar">لا تكون العمولة إلا للموظفين الذين يعملون بالعمولة، فالخاصية اختيارية. أمّا <code>#</code> فتعلّم المعرّف الفريد، و<code>*</code> الخاصيةَ الإلزامية. وهذا الفصل يطبّق فكرة «يجب/قد» نفسها على العلاقات.</p>
+    </div>
+  </div>
+
+  <h2 id="t3idx-domain"><span class="en">The H.R. system and the restaurant</span><span class="ar">نظام الموارد البشرية والمطعم</span></h2>
+
+  <p class="en">Most of the chapter stays in the company you already know. The same names come back in every lesson:</p>
+  <p class="ar">يبقى معظم الفصل في الشركة التي تعرفها، وتتكرّر الأسماء نفسها في كل درس:</p>
+
+  <ul>
+    <li class="en"><code>EMPLOYEE</code> &mdash; first name, last name, hire date, salary, and an optional commission.</li>
+    <li class="ar"><code>EMPLOYEE</code> &mdash; الاسم الأول واسم العائلة وتاريخ التعيين والراتب، وعمولة اختيارية.</li>
+    <li class="en"><code>DEPARTMENT</code> &mdash; accounting, sales, development; each employee works in one.</li>
+    <li class="ar"><code>DEPARTMENT</code> &mdash; المحاسبة والمبيعات والتطوير؛ ويعمل كل موظف في قسم منها.</li>
+    <li class="en"><code>JOB</code> &mdash; a title with a minimum and maximum salary, assigned to employees.</li>
+    <li class="ar"><code>JOB</code> &mdash; مسمّى وظيفي له حدّ أدنى وحدّ أعلى للراتب، يُسنَد إلى الموظفين.</li>
+    <li class="en"><code>EMPLOYEE</code> again, as manager &mdash; a relationship from an entity to itself.</li>
+    <li class="ar"><code>EMPLOYEE</code> مرّة أخرى، بصفته مديرًا &mdash; علاقة من الكيان إلى نفسه.</li>
+  </ul>
+
+  <p class="en">The second case is a restaurant. A customer walks up to the counter and places an order, for themselves alone or for others too. When Linda orders for herself and her children, Linda is the customer who owns the order and pays. Lesson 6 adds a travel agency, to find relationships with a matrix.</p>
+  <p class="ar">الحالة الثانية مطعم: يتقدّم الزبون إلى المنضدة ويضع طلبه، لنفسه وحده أو له ولغيره. وحين تطلب ليندا لنفسها ولأطفالها، فليندا هي الزبون الذي يملك الطلب ويدفع ثمنه. ويضيف الدرس 6 وكالة سفر، لاكتشاف العلاقات بالمصفوفة.</p>
+
+  <div class="quiz">
+    <p class="q en">Linda orders an apple pie for herself and two meals for her children. How many <code>CUSTOMER</code>s does that one order have?</p>
+    <p class="q ar">تطلب ليندا فطيرة تفاح لنفسها ووجبتين لطفليها. كم <code>CUSTOMER</code> لهذا الطلب الواحد؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">One &mdash; Linda, who owns it and pays</span><span class="ar">واحد &mdash; ليندا، التي تملكه وتدفع ثمنه</span></button></li>
+      <li><button class="opt"><span class="en">Three &mdash; one for each person eating</span><span class="ar">ثلاثة &mdash; واحد لكل شخص يأكل</span></button></li>
+      <li><button class="opt"><span class="en">None &mdash; children cannot be customers</span><span class="ar">لا أحد &mdash; الأطفال لا يكونون زبائن</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The business decides the mother is the customer. So each <code>ORDER</code> must be placed by one and only one <code>CUSTOMER</code> &mdash; a sentence you will learn to read and draw in Lessons 2, 3 and 5.</p>
+      <p class="ar">قرّرت المؤسسة أن الأمّ هي الزبون. إذن يجب أن يوضع كل <code>ORDER</code> من قِبل <code>CUSTOMER</code> واحد فقط لا غير &mdash; وهي جملة ستتعلّم قراءتها ورسمها في الدروس 2 و3 و5.</p>
+    </div>
+  </div>
+
+  <h2 id="t3idx-how"><span class="en">How the chapter is put together</span><span class="ar">كيف بُني هذا الفصل</span></h2>
+
+  <p class="en">Six lessons in three steps. Lessons 1&ndash;3 take a relationship apart: what it is, its optionality (must or may) and its cardinality (one or many). Lessons 4&ndash;5 give you the shared way to draw it and the precise way to say it, ERDish. Lesson 6 makes sure you missed none.</p>
+  <p class="ar">ستة دروس في ثلاث خطوات. الدروس 1&ndash;3 تفكّك العلاقة: ما هي، وإلزاميتها (Optionality) &mdash; «يجب» أم «قد» &mdash;، وتعدّديتها (Cardinality) &mdash; واحد أم أكثر. والدرسان 4&ndash;5 يعطيانك الطريقة المشتركة لرسمها والطريقة الدقيقة لقولها: لغة ERDish. والدرس 6 يتأكّد من أنه لم تفُتك علاقة.</p>
+  <p class="en">Each lesson opens with a problem, explains briefly, draws, and asks you something every few minutes; a test follows it. The lab then turns the lines into foreign keys and lets you insert rows that break them. Three chapter tests close the chapter. Start with <a href="../lessons/t3-lesson-01.html#t3-lesson-01">Lesson 1</a>.</p>
+  <p class="ar">يبدأ كل درس بمشكلة، ويشرح باختصار، ويرسم، ويسألك شيئًا كل بضع دقائق، ويليه اختبار. ثم يحوّل المختبر الخطوطَ إلى مفاتيح أجنبية ويتيح لك إدخال صفوف تخالفها. وتختم الفصلَ ثلاثةُ اختبارات. ابدأ بـ<a href="../lessons/t3-lesson-01.html#t3-lesson-01">الدرس 1</a>.</p>
+
+  <div class="quiz">
+    <p class="q en">Each <code>EMPLOYEE</code> must work in one and only one <code>DEPARTMENT</code>; each <code>DEPARTMENT</code> may be responsible for one or more <code>EMPLOYEE</code>s. In the lab, which table carries the foreign key?</p>
+    <p class="q ar">يجب أن يعمل كل <code>EMPLOYEE</code> في <code>DEPARTMENT</code> واحد فقط لا غير، وقد يكون كل <code>DEPARTMENT</code> مسؤولًا عن <code>EMPLOYEE</code> واحد أو أكثر. في المختبر، أيّ جدول يحمل المفتاح الأجنبي؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en"><code>employees</code>, as a <code>department_id</code> column</span><span class="ar"><code>employees</code>، في عمود <code>department_id</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>departments</code>, as an <code>employee_id</code> column</span><span class="ar"><code>departments</code>، في عمود <code>employee_id</code></span></button></li>
+      <li><button class="opt"><span class="en">Neither &mdash; a relationship is only a line on paper</span><span class="ar">لا هذا ولا ذاك &mdash; العلاقة مجرّد خط على الورق</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">An employee has one department, so one column holds it; a department has many employees, which no single column could hold. The crow's foot points at the table that gets the key, and the solid line makes it <code>NOT NULL</code>.</p>
+      <p class="ar">للموظف قسم واحد، فيكفي عمود واحد لحفظه؛ أمّا القسم فله موظفون كثيرون لا يتّسع لهم عمود واحد. قدم الغراب (crow's foot) تشير إلى الجدول الذي يأخذ المفتاح، والخط المتّصل يجعله <code>NOT NULL</code>.</p>
+    </div>
+  </div>
+
+<h2 id="t3idx-h1"><span class="en">The lessons</span><span class="ar">الدروس</span></h2>
 <div class="grid">
 <a class="lesson-card" href="../lessons/t3-lesson-01.html#t3-lesson-01">
   <span class="n">01</span><span class="state" data-page-state="t3-lesson-01" hidden></span>
@@ -104,7 +295,6 @@
 <a class="side-card exam" href="../exams/t3-exam-b.html#t3-exam-b"><span class="ic">★</span><span class="t"><span class="en">Chapter Test B — Applied</span><span class="ar">اختبار الفصل ب — التطبيقي</span></span><span class="state" data-page-state="t3-exam-b" hidden></span></a>
 <a class="side-card exam" href="../exams/t3-exam-c.html#t3-exam-c"><span class="ic">★</span><span class="t"><span class="en">Chapter Test C — Advanced</span><span class="ar">اختبار الفصل ج — المتقدّم</span></span><span class="state" data-page-state="t3-exam-c" hidden></span></a>
 </div>
-
 </section>
 <nav class="pager"></nav>
 </main>
