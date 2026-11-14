@@ -10,6 +10,30 @@ live against a real (small, in-browser) database through a reusable SQL widget.
 The SQL engine is [alasql](https://github.com/alasql/alasql), running entirely in
 your browser. There is **no server, no database, and no build step**.
 
+## Two tracks
+
+The site carries the two halves of *Introduction to Database* side by side.
+
+| Track | What it teaches | Where |
+|---|---|---|
+| **Practical — SQL** | writing SQL against a live in-browser database, chapters 1–7 (8–9 reserved) | `index.html`, `chapters/chapter-N.html` |
+| **Theory — Database Design** | how a database is designed before any SQL is written: the relational model, entities and attributes, unique identifiers, ER diagrams, relationships, supertypes and subtypes, resolving many-to-many — chapters 2–5 | `theory/index.html`, `chapters/tN.html` |
+
+The theory track keeps the lecturer's own chapter numbers (2, 3, 4, 5); chapter 1 is
+reserved for the *Introduction* deck. Unlike the SQL chapters, its pages are
+**generated** from sources in `src/` by `build-theory.py` — see
+[docs/THEORY-AUTHORING.md](docs/THEORY-AUTHORING.md). Everything it owns is namespaced
+(`assets/theory/…`, `dbt.*` in `localStorage`, `DBT*` globals) so the two tracks share
+one site, one set of fonts, one icon set and one SQL widget without colliding.
+
+Each theory chapter ends in a **lab** that turns that chapter's ERD into real tables in
+the same widget the SQL track uses, which is what ties the two halves together.
+
+Plan and contract: [docs/THEORY-CONTENT-PLAN.md](docs/THEORY-CONTENT-PLAN.md) ·
+[docs/THEORY-LESSON-BRIEF.md](docs/THEORY-LESSON-BRIEF.md) ·
+[docs/THEORY-QUESTION-BRIEF.md](docs/THEORY-QUESTION-BRIEF.md) ·
+[docs/THEORY-BUILD-RUNNER.md](docs/THEORY-BUILD-RUNNER.md).
+
 ## What's here
 
 ```
@@ -25,9 +49,21 @@ sw.js                   service worker: precaches the whole site for offline / i
   /vendor/fonts         self-hosted IBM Plex woff2 files + fonts.css
 /data/case-a|b|c        the three case databases, one JSON snapshot per chapter
                         (source of truth; bundled into assets/js/data.js)
-/chapters               one index page per chapter
-/lessons                one page per lesson (three tabs)
+/chapters               one index page per chapter (chapter-N = SQL, tN = theory)
+/lessons                one page per lesson (SQL: three tabs; theory: generated)
 /tests                  the chapter-end tests (added with each chapter build)
+
+  — the theory track adds —
+build-theory.py         the theory-track generator: src/ -> pages (never edit a built page)
+/src/registry.json      the track, its chapters, every page, titles and reading order
+/src/content/tN         authored lessons, chapter home and lab
+/src/diagrams           one ERD per file, authored SVG, both languages inside
+/src/glossary/tN        the terms each lesson introduces
+/src/source             the lecturer's four decks, transcribed slide by slide
+/theory/index.html      the theory track's home
+/labs /glossary         the per-chapter SQL lab and glossary pages
+/assets/theory          the theory track's own css, js and question banks
+/tools                  build-theory's verifier, the build runner and its watchdog
 ```
 
 The three cases — **Bright Books Library** (Explanation), **Orbit Electronics**
@@ -274,3 +310,26 @@ Chapter 7 also adds `assets/css/normalize.css` (normal-form chips, stage boxes, 
 click-to-reveal solutions, dependency diagrams). alasql quirk found: a correlated subquery in
 `UPDATE … SET col = (SELECT …)` fails, so cross-table updates keep the Chapter 3 form
 `WHERE … IN (SELECT …)`.
+
+### Building the theory track
+
+Theory pages are generated, so nothing under `chapters/t*.html`, `lessons/t*.html`,
+`tests/t*.html`, `exams/t*.html`, `labs/`, `glossary/` or `theory/` is ever edited by
+hand. Edit the sources in `src/` and rebuild:
+
+```bash
+python build-theory.py                 # src/ + registry -> every theory page
+python scripts/build-sw.py             # the precache list (run it last)
+python tools/verify_chapter.py         # structure, links, parity, banks, cadence
+python tools/verify_chapter.py --scope t2-lesson-01    # just one page
+```
+
+The verifier enforces the two rules that make this track what it is: short
+explanations, and **no concept section without something to do** in it. It fails a
+lesson whose `h2` section carries no inline check, exercise, SQL box or evolve block,
+and wants at least six checks and four exercises per lesson.
+
+The chapters themselves are written one page at a time by
+`tools/theory_runner.py`, unattended, on a development server, committing after each
+page — [docs/THEORY-BUILD-RUNNER.md](docs/THEORY-BUILD-RUNNER.md) covers the runner,
+the watchdog and how to resume it.
