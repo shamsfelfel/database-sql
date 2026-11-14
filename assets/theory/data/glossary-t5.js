@@ -131,7 +131,8 @@ window.DBTGlossary["t5"] = [
    "duplicate-pair"
   ],
   "used": [
-   "t5l6-h5"
+   "t5l6-h5",
+   "t5lab-h4"
   ]
  },
  {
@@ -400,7 +401,8 @@ window.DBTGlossary["t5"] = [
    "hidden-attribute"
   ],
   "used": [
-   "t5l4-h1"
+   "t5l4-h1",
+   "t5lab-h2"
   ]
  },
  {
@@ -755,7 +757,8 @@ window.DBTGlossary["t5"] = [
    "misplaced-attribute"
   ],
   "used": [
-   "t5l4-h3"
+   "t5l4-h3",
+   "t5lab-h2"
   ]
  },
  {

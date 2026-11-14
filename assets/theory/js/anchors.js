@@ -427,6 +427,14 @@ window.DBTAnchors = {
 "t5l6-s1": "lessons/t5-lesson-06.html",
 "t5l6-s2": "lessons/t5-lesson-06.html",
 "t5l6-s3": "lessons/t5-lesson-06.html",
+"t5lab-h1": "labs/t5-lab.html",
+"t5lab-h2": "labs/t5-lab.html",
+"t5lab-h3": "labs/t5-lab.html",
+"t5lab-h4": "labs/t5-lab.html",
+"t5lab-h5": "labs/t5-lab.html",
+"t5lab-h6": "labs/t5-lab.html",
+"t5lab-h7": "labs/t5-lab.html",
+"t5lab-h8": "labs/t5-lab.html",
 "track-theory": "theory/index.html"
 };
 window.DBTHeadings = {
@@ -1613,6 +1621,38 @@ window.DBTHeadings = {
 "t5l6-s3": {
 "ar": "فريد مجتمعًا، لا متفرّقًا",
 "en": "Unique together, not apart"
+},
+"t5lab-h1": {
+"ar": "١ · المخطّط، والقواعد التي يحملها",
+"en": "1 · The diagram, and the rules it carries"
+},
+"t5lab-h2": {
+"ar": "٢ · لماذا لا جدول للمسوّدة الأولى",
+"en": "2 · Why the first draft has no table"
+},
+"t5lab-h3": {
+"ar": "٣ · الأبوان أوّلًا",
+"en": "3 · The parents first"
+},
+"t5lab-h4": {
+"ar": "٤ · جدول التقاطع",
+"en": "4 · The intersection table"
+},
+"t5lab-h5": {
+"ar": "٥ · اكسر القواعد عمدًا",
+"en": "5 · Break the rules on purpose"
+},
+"t5lab-h6": {
+"ar": "٦ · مَن نال A في الرياضيات؟",
+"en": "6 · Which students got an A in Maths?"
+},
+"t5lab-h7": {
+"ar": "٧ · العدّ عبر التقاطع",
+"en": "7 · Counting across the intersection"
+},
+"t5lab-h8": {
+"ar": "٨ · وحدك: جدول التنظيف",
+"en": "8 · On your own: the cleaning schedule"
 },
 "track-theory": {
 "ar": "النظري — تصميم قواعد البيانات",

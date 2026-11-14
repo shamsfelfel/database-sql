@@ -932,7 +932,7 @@ window.DBT_REGISTRY = {
       "ar": "مختبر SQL — حلّ علاقة متعدّد إلى متعدّد عمليًا"
      },
      "href": "labs/t5-lab.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t5-glossary",
