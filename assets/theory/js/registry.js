@@ -432,7 +432,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 5 — التحدّث بلغة ERDish"
      },
      "href": "tests/t3-test-05.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t3-lesson-06",
