@@ -1,0 +1,118 @@
+<section class="page" id="t5-chapter">
+
+  <span class="kicker">Theory &middot; Chapter 5</span>
+  <h1><span class="en">Relationship Types, and Resolving Them</span><span class="ar">أنواع العلاقات وحلّها</span></h1>
+  <p class="lede en">Chapter 3 taught you to read one line: must or may, one or many. This chapter looks at whole relationships. Can the link move to another parent? Is it one-to-one, one-to-many or many-to-many? And when it is many-to-many, what is it hiding, and how do you set it free?</p>
+  <p class="lede ar">علّمك الفصل 3 أن تقرأ خطًا واحدًا: «يجب» أم «قد»، وواحد أم أكثر. أمّا هذا الفصل فينظر إلى العلاقة كاملة: هل يمكن نقل الارتباط إلى أبٍ آخر؟ وهل هي «واحد إلى واحد» أم «واحد إلى متعدّد» أم «متعدّد إلى متعدّد»؟ وإن كانت «متعدّد إلى متعدّد»، فماذا تخفي، وكيف تحرّره؟</p>
+
+  <h2 id="t5idx-why"><span class="en">Why this matters before any SQL</span><span class="ar">لماذا يهمّ هذا قبل أي SQL</span></h2>
+
+  <div class="problem">
+    <p class="en">In a school, each <code>STUDENT</code> may study one or more <code>SUBJECT</code>s, and each <code>SUBJECT</code> may be studied by one or more <code>STUDENT</code>s. Now the school wants to record the grade a student gets in a subject. Put <code>Grade</code> in <code>STUDENT</code>, and you cannot tell which subject it is for. Put it in <code>SUBJECT</code>, and you cannot tell which student got it.</p>
+    <p class="ar">في مدرسة، «قد» يدرس كلُّ <code>STUDENT</code> مادةً <code>SUBJECT</code> واحدة أو أكثر، و«قد» يدرس كلَّ <code>SUBJECT</code> طالبٌ واحد أو أكثر. والآن تريد المدرسة أن تسجّل الدرجة التي ينالها الطالب في المادة. ضع <code>Grade</code> في <code>STUDENT</code> فلن تعرف لأي مادة هي، وضعها في <code>SUBJECT</code> فلن تعرف أيّ طالب نالها.</p>
+  </div>
+
+  <pre class="code" data-lang="erdish"><code>Each STUDENT may study one or more SUBJECTs.
+Each SUBJECT may be studied by one or more STUDENTs.</code></pre>
+
+  <p class="en">The grade belongs to neither entity: it belongs to the pair. A many-to-many relationship has nowhere to keep it, and SQL cannot store it either &mdash; there is no column a many-to-many line can become. The model has to change before a single table is created.</p>
+  <p class="ar">لا تنتمي الدرجة إلى أيّ من الكيانين، بل إلى الزوج نفسه. وعلاقة «متعدّد إلى متعدّد» لا مكان فيها لحفظها، ولا تستطيع SQL حفظها أيضًا &mdash; فلا يوجد عمود يمكن أن يتحوّل إليه خطّ «متعدّد إلى متعدّد». يجب أن يتغيّر النموذج قبل أن يُنشأ أي جدول.</p>
+
+  <div class="note">
+    <p class="en">An <strong>intersection entity</strong> is a third entity added between the two entities of a many-to-many relationship, so that the relationship becomes two one-to-many relationships.</p>
+    <p class="ar"><strong>كيان التقاطع (Intersection entity)</strong> كيانٌ ثالث يُضاف بين كيانَي علاقة «متعدّد إلى متعدّد»، فتصير العلاقةُ علاقتَين من نوع «واحد إلى متعدّد».</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The slides resolve <code>STUDENT</code> and <code>SUBJECT</code> with a third entity, <code>ENROLLMENT</code>. Where does <code>Grade</code> go?</p>
+    <p class="q ar">تحلّ الشرائح علاقة <code>STUDENT</code> و<code>SUBJECT</code> بكيان ثالث هو <code>ENROLLMENT</code>. أين توضع <code>Grade</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">In <code>STUDENT</code>, as before</span><span class="ar">في <code>STUDENT</code>، كما كانت</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">In <code>ENROLLMENT</code>: one enrollment is one student in one subject</span><span class="ar">في <code>ENROLLMENT</code>: فالتسجيل الواحد طالبٌ واحد في مادة واحدة</span></button></li>
+      <li><button class="opt"><span class="en">In both <code>STUDENT</code> and <code>SUBJECT</code></span><span class="ar">في <code>STUDENT</code> و<code>SUBJECT</code> معًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Each instance of <code>ENROLLMENT</code> is exactly one student taking exactly one subject, so a grade stored there is unambiguous. Lessons 4 and 5 take you from the hidden attribute to the intersection entity step by step.</p>
+      <p class="ar">كل نسخة من <code>ENROLLMENT</code> هي طالب واحد بالضبط في مادة واحدة بالضبط، فالدرجة المحفوظة فيها لا لبس فيها. ويأخذك الدرسان 4 و5 خطوةً خطوة من الخاصية المخفية إلى كيان التقاطع.</p>
+    </div>
+  </div>
+
+  <h2 id="t5idx-before"><span class="en">What you should already know</span><span class="ar">ما يجب أن تعرفه مسبقًا</span></h2>
+
+  <div class="callout prereq">
+    <p class="en">From Chapter 2: the <code>#</code> unique identifier, and the idea that a UID can be <a href="#t2l6-h2">a combination of attributes</a> &mdash; the intersection entity's UID is exactly that. From Chapter 3: optionality (<a href="#t3-lesson-02">Lesson 2</a>), cardinality and the crow's foot (<a href="#t3-lesson-03">Lesson 3</a>), and reading a line in ERDish (<a href="#t3-lesson-05">Lesson 5</a>).</p>
+    <p class="ar">من الفصل 2: المعرّف الفريد <code>#</code>، وفكرة أن المعرّف قد يكون <a href="#t2l6-h2">تركيبًا من عدّة خصائص</a> &mdash; ومعرّف كيان التقاطع هو هذا بالضبط. ومن الفصل 3: الإلزامية (<a href="#t3-lesson-02">الدرس 2</a>)، والتعدّدية ورِجل الغراب (<a href="#t3-lesson-03">الدرس 3</a>)، وقراءة الخط بلغة ERDish (<a href="#t3-lesson-05">الدرس 5</a>).</p>
+    <p class="en">The lab turns the resolved model into tables joined by <a href="#t2l2-h3">foreign keys</a>. On the SQL track, <a href="@/chapters/chapter-3.html">Chapter 3 &mdash; Relationships</a> joins such tables, and <a href="@/chapters/chapter-5.html">Chapter 5 &mdash; Aggregation</a> counts and averages across them; this chapter decides what those tables are.</p>
+    <p class="ar">يحوّل المختبر النموذجَ المحلول إلى جداول تربطها <a href="#t2l2-h3">مفاتيح أجنبية</a>. وفي مسار SQL، يربط <a href="@/chapters/chapter-3.html">الفصل 3 &mdash; العلاقات</a> مثل هذه الجداول، ويعدّ <a href="@/chapters/chapter-5.html">الفصل 5 &mdash; التجميع</a> ويحسب المتوسّطات عبرها؛ أمّا هذا الفصل فيقرّر ما هي هذه الجداول.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A quick self-check. The slides review this rule: <code>Each EMPLOYEE must be assigned to one and only one DEPARTMENT</code>. How is the line drawn at the <code>EMPLOYEE</code> end and at the <code>DEPARTMENT</code> end?</p>
+    <p class="q ar">فحص سريع لنفسك. تراجع الشرائح هذه القاعدة: <code>Each EMPLOYEE must be assigned to one and only one DEPARTMENT</code>. كيف يُرسم الخط عند طرف <code>EMPLOYEE</code> وعند طرف <code>DEPARTMENT</code>؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">Solid next to <code>EMPLOYEE</code>; a single toe at <code>DEPARTMENT</code></span><span class="ar">متّصل بجوار <code>EMPLOYEE</code>؛ وإصبع واحدة عند <code>DEPARTMENT</code></span></button></li>
+      <li><button class="opt"><span class="en">Dashed next to <code>EMPLOYEE</code>; a crow's foot at <code>DEPARTMENT</code></span><span class="ar">متقطّع بجوار <code>EMPLOYEE</code>؛ ورِجل غراب عند <code>DEPARTMENT</code></span></button></li>
+      <li><button class="opt"><span class="en">Solid next to <code>EMPLOYEE</code>; a crow's foot at <code>DEPARTMENT</code></span><span class="ar">متّصل بجوار <code>EMPLOYEE</code>؛ ورِجل غراب عند <code>DEPARTMENT</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>must</code> makes the employee's half solid, and <code>one and only one</code> means the line meets <code>DEPARTMENT</code> as a single toe. If either was unclear, revisit <a href="#t3-lesson-02">Chapter 3, Lessons 2</a> and <a href="#t3-lesson-03">3</a> before Lesson 1.</p>
+      <p class="ar">تجعل <code>must</code> نصفَ الموظف متّصلًا، و<code>one and only one</code> تعني أن الخط يلتقي <code>DEPARTMENT</code> بإصبع واحدة. إن لم يكن أحدهما واضحًا فراجع <a href="#t3-lesson-02">الفصل 3، الدرسين 2</a> و<a href="#t3-lesson-03">3</a> قبل الدرس 1.</p>
+    </div>
+  </div>
+
+  <h2 id="t5idx-domain"><span class="en">Students and subjects, TV shows, and cleaning contracts</span><span class="ar">الطلاب والمواد، وبرامج التلفزيون، وعقود النظافة</span></h2>
+
+  <p class="en">The school carries the chapter, and the same names come back in every lesson:</p>
+  <p class="ar">تحمل المدرسةُ الفصلَ، وتتكرّر الأسماء نفسها في كل درس:</p>
+
+  <ul>
+    <li class="en"><code>STUDENT</code> &mdash; ID, first name, last name; joins a <code>STUDY GROUP</code> and is issued a <code>RECEIPT</code> for fees.</li>
+    <li class="ar"><code>STUDENT</code> &mdash; المعرّف والاسم الأول واسم العائلة؛ ينضمّ إلى <code>STUDY GROUP</code> (مجموعة دراسة)، ويُصدَر له <code>RECEIPT</code> (إيصال) عن الرسوم.</li>
+    <li class="en"><code>SUBJECT</code> &mdash; ID and name; studied by many students.</li>
+    <li class="ar"><code>SUBJECT</code> &mdash; المعرّف والاسم؛ يدرسها طلاب كثيرون.</li>
+    <li class="en"><code>ENROLLMENT</code> &mdash; one student in one subject, with an optional grade.</li>
+    <li class="ar"><code>ENROLLMENT</code> &mdash; طالب واحد في مادة واحدة، مع درجة اختيارية.</li>
+    <li class="en"><code>PERSON</code> &mdash; acting in the role of <code>TEACHER</code> or of <code>STUDENT</code>.</li>
+    <li class="ar"><code>PERSON</code> &mdash; يؤدّي دور <code>TEACHER</code> (معلّم) أو دور <code>STUDENT</code> (طالب).</li>
+  </ul>
+
+  <p class="en">The lecturer's other examples appear where they teach best: <code>COMPUTER</code> and <code>MOTHERBOARD</code> for one-to-one, <code>CUSTOMER</code> and <code>SALES REPRESENTATIVE</code> for one-to-many. Two more resolutions close the chapter: <code>TV SHOW</code> and <code>PERSON</code> through <code>VIEWING RECORD</code>, and <code>CLEANING COMPANY</code> and <code>CLEANING SERVICE</code> through <code>CLEANING SCHEDULE</code>.</p>
+  <p class="ar">وتظهر أمثلة المحاضِرة الأخرى حيث تفيد أكثر: <code>COMPUTER</code> و<code>MOTHERBOARD</code> لعلاقة «واحد إلى واحد»، و<code>CUSTOMER</code> و<code>SALES REPRESENTATIVE</code> لعلاقة «واحد إلى متعدّد». ويختم الفصلَ حلّان آخران: <code>TV SHOW</code> و<code>PERSON</code> عبر <code>VIEWING RECORD</code>، و<code>CLEANING COMPANY</code> و<code>CLEANING SERVICE</code> عبر <code>CLEANING SCHEDULE</code>.</p>
+
+  <div class="quiz">
+    <p class="q en">A student pays the bookstore and is issued a <code>RECEIPT</code>. Later the school finds it was written to the wrong student. According to the slides, what happens?</p>
+    <p class="q ar">دفع طالب ثمن مشترياته في المكتبة وصدر له <code>RECEIPT</code>. ثم وجدت المدرسة أنه كُتب لطالب آخر خطأً. ماذا يحدث بحسب الشرائح؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The receipt is moved to the right student</span><span class="ar">يُنقل الإيصال إلى الطالب الصحيح</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The receipt is cancelled and a new one is written up</span><span class="ar">يُلغى الإيصال ويُكتب إيصال جديد</span></button></li>
+      <li><button class="opt"><span class="en">Both students share the receipt</span><span class="ar">يتشارك الطالبان الإيصال</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Once issued, a receipt cannot be transferred to another student: the relationship is <em>nontransferable</em>, drawn with a diamond on the line. A student in a study group, by contrast, may move to another group. Lesson 1 teaches the difference.</p>
+      <p class="ar">بعد إصدار الإيصال لا يمكن نقله إلى طالب آخر: فالعلاقة <em>غير قابلة للنقل (nontransferable)</em>، وتُرسم بمعيَّن على الخط. أمّا الطالب في مجموعة دراسة فقد ينتقل إلى مجموعة أخرى. ويعلّم الدرس 1 الفرق.</p>
+    </div>
+  </div>
+
+  <h2 id="t5idx-how"><span class="en">How the chapter is put together</span><span class="ar">كيف بُني هذا الفصل</span></h2>
+
+  <p class="en">Six lessons in three steps. Lesson 1 asks whether a link can move, and draws the diamond. Lessons 2 to 4 name the three relationship types &mdash; one-to-many, one-to-one, many-to-many &mdash; and show how to remove a redundant relationship. Lessons 5 and 6 resolve the many-to-many with an intersection entity and give it a composite UID through barred relationships.</p>
+  <p class="ar">ستة دروس في ثلاث خطوات. يسأل الدرس 1 هل يمكن نقل الارتباط، ويرسم المعيَّن. وتسمّي الدروس من 2 إلى 4 أنواع العلاقات الثلاثة &mdash; «واحد إلى متعدّد» و«واحد إلى واحد» و«متعدّد إلى متعدّد» &mdash; وتبيّن كيف تُزال علاقة زائدة (redundant). ويحلّ الدرسان 5 و6 علاقة «متعدّد إلى متعدّد» بكيان تقاطع، ويعطيانه معرّفًا مركّبًا (composite UID) عبر العلاقات المقضّبة (barred relationships).</p>
+  <p class="en">Each lesson opens with a problem, explains briefly, draws, and asks you something every few minutes; a test follows it. The lab builds <code>enrollments(student_id, subject_id, grade)</code> in real SQL and answers a question with a join. Three chapter tests close the chapter. Start with <a href="#t5-lesson-01">Lesson 1</a>.</p>
+  <p class="ar">يبدأ كل درس بمشكلة، ويشرح باختصار، ويرسم، ويسألك شيئًا كل بضع دقائق، ويليه اختبار. ثم يبني المختبر الجدول <code>enrollments(student_id, subject_id, grade)</code> في SQL حقيقية، ويجيب عن سؤال بربط (join). وتختم الفصلَ ثلاثةُ اختبارات. ابدأ بـ<a href="#t5-lesson-01">الدرس 1</a>.</p>
+
+  <div class="quiz">
+    <p class="q en">In the lab, the primary key of <code>enrollments</code> is the pair <code>(student_id, subject_id)</code>. What does that key forbid?</p>
+    <p class="q ar">في المختبر، المفتاح الأساسي للجدول <code>enrollments</code> هو الزوج <code>(student_id, subject_id)</code>. ماذا يمنع هذا المفتاح؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A student enrolled in more than one subject</span><span class="ar">أن يُسجَّل الطالب في أكثر من مادة</span></button></li>
+      <li><button class="opt"><span class="en">A subject with more than one student</span><span class="ar">أن يكون في المادة أكثر من طالب</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The same student enrolled in the same subject twice</span><span class="ar">أن يُسجَّل الطالب نفسه في المادة نفسها مرّتين</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Each column alone may repeat; only the combination must be unique. That is the composite UID the bars draw on the ERD, made real as a composite primary key. Lesson 6 reads it on the diagram; the lab builds it.</p>
+      <p class="ar">كل عمود وحده قد يتكرّر؛ أمّا التركيب منهما فيجب أن يكون فريدًا. هذا هو المعرّف المركّب الذي ترسمه القضبان على المخطّط، وقد صار مفتاحًا أساسيًا مركّبًا حقيقيًا. يقرؤه الدرس 6 على المخطّط، ويبنيه المختبر.</p>
+    </div>
+  </div>
+
+<!--GEN:index-->
+</section>

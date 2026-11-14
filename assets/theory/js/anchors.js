@@ -343,8 +343,12 @@ window.DBTAnchors = {
 "t5-test-04": "tests/t5-test-04.html",
 "t5-test-05": "tests/t5-test-05.html",
 "t5-test-06": "tests/t5-test-06.html",
+"t5idx-before": "chapters/t5.html",
+"t5idx-domain": "chapters/t5.html",
 "t5idx-h1": "chapters/t5.html",
 "t5idx-h2": "chapters/t5.html",
+"t5idx-how": "chapters/t5.html",
+"t5idx-why": "chapters/t5.html",
 "track-theory": "theory/index.html"
 };
 window.DBTHeadings = {
@@ -1256,6 +1260,14 @@ window.DBTHeadings = {
 "ar": "٦ · وصلت طريقة رابعة",
 "en": "6 · A fourth method arrives"
 },
+"t5idx-before": {
+"ar": "ما يجب أن تعرفه مسبقًا",
+"en": "What you should already know"
+},
+"t5idx-domain": {
+"ar": "الطلاب والمواد، وبرامج التلفزيون، وعقود النظافة",
+"en": "Students and subjects, TV shows, and cleaning contracts"
+},
 "t5idx-h1": {
 "ar": "الدروس",
 "en": "The lessons"
@@ -1263,6 +1275,14 @@ window.DBTHeadings = {
 "t5idx-h2": {
 "ar": "تأكّد ممّا رسخ",
 "en": "Check what stuck"
+},
+"t5idx-how": {
+"ar": "كيف بُني هذا الفصل",
+"en": "How the chapter is put together"
+},
+"t5idx-why": {
+"ar": "لماذا يهمّ هذا قبل أي SQL",
+"en": "Why this matters before any SQL"
 },
 "track-theory": {
 "ar": "النظري — تصميم قواعد البيانات",

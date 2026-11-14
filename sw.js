@@ -25,7 +25,7 @@
    that ships changes. A rebuild that changes nothing keeps the name,
    and this file stays byte-identical, so an installed reader
    re-downloads nothing: there are no timestamps in here on purpose. */
-var CACHE = 'sqllab-77e16f5f707d';
+var CACHE = 'sqllab-59dd20aedabd';
 
 /* THE INVARIANT ON THIS ORIGIN.
 
@@ -113,6 +113,7 @@ var PRECACHE = [
   "assets/theory/data/questions/t3-test-06.js",
   "assets/theory/data/questions/t4-exam-a.js",
   "assets/theory/data/questions/t4-exam-b.js",
+  "assets/theory/data/questions/t4-exam-c.js",
   "assets/theory/data/questions/t4-test-01.js",
   "assets/theory/data/questions/t4-test-02.js",
   "assets/theory/data/questions/t4-test-03.js",
@@ -355,6 +356,7 @@ var HASHES = [
   '760f79169f52',
   '172b5465af59',
   'ae72478281e6',
+  '664fc079aad6',
   'fee17f243756',
   '331326f84c63',
   'e0c456dda69f',
@@ -377,7 +379,7 @@ var HASHES = [
   'ebae27ef8f54',
   'b99e8c3f957b',
   'e492565cb891',
-  'f69db6e073e3',
+  '8e70e8e6fca2',
   '602ea144d39d',
   'a6fbe9e1421b',
   'e77ceea3fce6',
@@ -414,7 +416,7 @@ var HASHES = [
   'a2ce6643fe8d',
   '58cf8c98e6ec',
   '9b90ba9683b4',
-  '1af592a528c8',
+  'b7feba07bf29',
   'a810377f5fd8',
   '90572b55e200',
   'a53445f57807',
