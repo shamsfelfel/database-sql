@@ -1,0 +1,7 @@
+[Unit]
+Description=Restart the theory-track build when it stalls
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/work/shams/database-sql
+ExecStart=/usr/bin/env bash tools/theory_watchdog.sh

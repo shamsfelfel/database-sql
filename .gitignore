@@ -19,3 +19,6 @@ __pycache__/
 .claude/
 .tmp/
 blob-report/
+
+# the unattended build runner keeps its state here
+.build/

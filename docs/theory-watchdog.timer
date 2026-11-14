@@ -1,0 +1,11 @@
+[Unit]
+Description=Check the theory-track build every five minutes
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=5min
+AccumulatedUsageSec=0
+Unit=theory-watchdog.service
+
+[Install]
+WantedBy=timers.target

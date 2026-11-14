@@ -2,7 +2,10 @@
 
 **Course:** *Introduction to Database* — Computer Engineering Dept., UCAS (Eng. Noor A. Nashwan)
 **Source material:** Oracle Academy *Database Foundations* (DFo) and *Database Design* (DDS),
-as delivered in `db ch2.pptx`, `db ch3.pptx`, `db ch4.pptx`, `db ch5.pdf`.
+as delivered in `db ch2.pptx`, `db ch3.pptx`, `db ch4.pptx` and `db ch5.pdf`. Those four
+files are not in the repository; **`src/source/` holds a transcript of every slide of
+each of them**, and that transcript is what an author reads. Chapter 2's deck is almost
+entirely photographs of slides, so its transcript was written by reading the images.
 **Lives in:** this repository (SQL Lab), as a **second track** beside the existing SQL chapters.
 
 ---
@@ -60,7 +63,8 @@ Inherited from the sibling course's `SPEC.md`, with the two changes you asked fo
 
 *Sources: DFo 2-1 "Relational Databases", DFo 1-3 (development process), DFo 2-2
 "Conceptual and Physical Data Models", DDS 2-2 "Entities, Instances, Attributes and
-Identifiers", DDS 2-3 "Entity Relationship Modeling and ERDs".*
+Identifiers", DDS 2-3 "Entity Relationship Modeling and ERDs" — transcribed slide by
+slide in [`src/source/ch2-relational-and-conceptual.md`](../src/source/ch2-relational-and-conceptual.md).*
 
 **Domain carried through the chapter:** a small **school library** (the Oracle case:
 MEMBER, BOOK, AUTHOR, PUBLISHER, BOOK TRANSACTION).
@@ -76,7 +80,8 @@ MEMBER, BOOK, AUTHOR, PUBLISHER, BOOK TRANSACTION).
 
 ### T3 — Reading and Drawing Relationships
 
-*Sources: DDS 3-1 … 3-4, DFo 2-5 / 3-6.*
+*Sources: DDS 3-1 … 3-4, DFo 2-5 / 3-6 — in
+[`src/source/ch3-identifying-relationships.md`](../src/source/ch3-identifying-relationships.md).*
 
 **Domain:** the HR system (EMPLOYEE, DEPARTMENT, JOB, LOCATION) plus the restaurant
 CUSTOMER/ORDER scenario.
@@ -92,7 +97,9 @@ CUSTOMER/ORDER scenario.
 
 ### T4 — Supertypes and Subtypes
 
-*Source: DDS 4-1.* **Five lessons, not six** — this is one Oracle lesson; a sixth would be
+*Source: DDS 4-1 — in
+[`src/source/ch4-supertypes-and-subtypes.md`](../src/source/ch4-supertypes-and-subtypes.md).*
+**Five lessons, not six** — this is one Oracle lesson; a sixth would be
 padding. The depth comes from practice, not from more topics.
 
 **Domain:** PAYMENT (cash / cheque / credit card), then WALL COVERING and SNOW SPORT.
@@ -107,7 +114,8 @@ padding. The depth comes from practice, not from more topics.
 
 ### T5 — Relationship Types, and Resolving Them
 
-*Sources: DDS 5-1, 5-2, 5-3.*
+*Sources: DDS 5-1, 5-2, 5-3 — in
+[`src/source/ch5-relationship-types.md`](../src/source/ch5-relationship-types.md).*
 
 **Domain:** STUDENT / SUBJECT / ENROLLMENT, with TV SHOW and CLEANING SERVICE as the
 second and third worked resolutions.
