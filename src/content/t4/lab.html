@@ -1,0 +1,591 @@
+<section class="page" id="t4-lab">
+
+  <span class="kicker">Lab &middot; Chapter 4</span>
+  <h1><span class="en">SQL Lab &mdash; three ways to store a hierarchy</span><span class="ar">مختبر SQL &mdash; ثلاث طرق لتخزين تسلسل هرمي</span></h1>
+  <p class="lede en">The shop's <code>PAYMENT</code> hierarchy is finished: one supertype, three subtypes, one customer line on two of them. A diagram does not say which tables to build. In this lab you build the hierarchy three ways, ask each the same two questions, and see which rules each way keeps and which it drops.</p>
+  <p class="lede ar">اكتمل تسلسل <code>PAYMENT</code> في المتجر: نوع أعلى واحد، وثلاثة أنواع فرعية، وخطّ زبون واحد على اثنين منها. لكن المخطّط لا يقول أيّ الجداول تُبنى. في هذا المختبر تبني التسلسل بثلاث طرق، وتسأل كلًّا منها السؤالين نفسيهما، وترى أيّ القواعد تحفظها كل طريقة وأيّها تُسقطها.</p>
+
+  <div class="note">
+    <p class="en">You need <a href="#t4-lesson-02">Lesson 2</a> (supertype, subtype, inheritance) and <a href="#t4-lesson-03">Lesson 3</a> (the three rules), plus the <a href="#t3-lab">Chapter 3 lab</a>, where a line became a foreign key. <strong>Run</strong> executes your SQL; <strong>Check answer</strong> grades it on a fresh database, so earlier runs never count against you.</p>
+    <p class="ar">تحتاج إلى <a href="#t4-lesson-02">الدرس 2</a> (النوع الأعلى والنوع الفرعي والوراثة) و<a href="#t4-lesson-03">الدرس 3</a> (القواعد الثلاث)، ومعهما <a href="#t3-lab">مختبر الفصل 3</a> الذي صار فيه الخطّ مفتاحًا أجنبيًّا. زرّ <strong>Run</strong> ينفّذ SQL التي كتبتها، وزرّ <strong>Check answer</strong> يصحّحها على قاعدة بيانات جديدة، فلا تُحسب عليك محاولاتك السابقة.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Read off the payment ERD every rule a set of tables must keep.</li>
+      <li class="ar">استخراج كل قاعدة يجب أن تحفظها الجداول من مخطّط المدفوعات.</li>
+      <li class="en">Build the hierarchy as one table with a type column, as a table per subtype, and as a supertype table plus subtype tables.</li>
+      <li class="ar">بناء التسلسل جدولًا واحدًا فيه عمود للنوع، ثم جدولًا لكل نوع فرعي، ثم جدولًا للنوع الأعلى مع جداول للأنواع الفرعية.</li>
+      <li class="en">Answer the same two questions in all three, and say what each answer costs.</li>
+      <li class="ar">الإجابة عن السؤالين نفسيهما في الطرق الثلاث، وبيان كلفة كل إجابة.</li>
+      <li class="en">Find, with a query, the payments that break the exhaustive or the mutually exclusive rule.</li>
+      <li class="ar">العثور، باستعلام، على المدفوعات التي تكسر قاعدة الشمول أو قاعدة التنافي.</li>
+    </ul>
+  </div>
+
+  <h2 id="t4lab-h1"><span class="en">1 · The diagram, and the rules it carries</span><span class="ar">١ · المخطّط، والقواعد التي يحملها</span></h2>
+
+  <div class="problem">
+    <p class="en">The manager asks two things every week: <em>what did we take on 3 March?</em> and <em>which card payments came from which customer?</em> The first is about every payment. The second is about one kind only. Whatever tables we build must answer both, and must refuse the rows the business forbids.</p>
+    <p class="ar">يسأل المدير كل أسبوع سؤالين: <em>كم قبضنا يوم 3 مارس؟</em> و<em>أيّ دفعات البطاقة جاءت من أيّ زبون؟</em> الأوّل عن كل المدفوعات، والثاني عن نوع واحد فقط. وأيًّا كانت الجداول التي نبنيها، فعليها أن تجيب عن السؤالين، وأن ترفض الصفوف التي يمنعها العمل.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t4-pay-subtypes"><figcaption><span class="en">The chapter's finished model from Lesson 2. Read it for rules, not for tables: what every payment has, what only one kind has, and which kinds have a customer.</span><span class="ar">النموذج المكتمل للفصل من الدرس 2. اقرأه بحثًا عن القواعد لا عن الجداول: ما الذي تملكه كل دفعة، وما الذي يملكه نوع واحد فقط، وأيّ الأنواع لها زبون.</span></figcaption></figure>
+
+  <div class="note">
+    <p class="en"><strong>The task:</strong> any set of tables for this model must keep the five rules below. A rule a table does not keep is a rule some clerk will break.</p>
+    <p class="ar"><strong>المهمّة:</strong> أيّ مجموعة جداول لهذا النموذج يجب أن تحفظ القواعد الخمس أدناه. والقاعدة التي لا يحفظها الجدول قاعدةٌ سيكسرها موظّف ما.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th><span class="en">On the ERD</span><span class="ar">في المخطّط</span></th><th><span class="en">The rule</span><span class="ar">القاعدة</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">R1 · <code>* Payment Date</code>, <code>* Amount</code> in <code>PAYMENT</code></span><span class="ar">R1 · <code>* Payment Date</code> و<code>* Amount</code> في <code>PAYMENT</code></span></td><td><span class="en">every payment, of any kind, has a date and an amount</span><span class="ar">لكل دفعة، من أيّ نوع، تاريخ ومبلغ</span></td></tr>
+        <tr><td><span class="en">R2 · <code>* Card Number</code> inside <code>CREDIT CARD</code></span><span class="ar">R2 · <code>* Card Number</code> داخل <code>CREDIT CARD</code></span></td><td><span class="en">a card payment must have a card number; no other kind has one</span><span class="ar">يجب أن يكون لدفعة البطاقة رقم بطاقة، ولا رقم لأيّ نوع آخر</span></td></tr>
+        <tr><td><span class="en">R3 · <code>made by</code>, solid at <code>CHECK</code> and <code>CREDIT CARD</code></span><span class="ar">R3 · <code>made by</code>، متّصل عند <code>CHECK</code> و<code>CREDIT CARD</code></span></td><td><span class="en">a cheque or card payment must be made by one existing customer</span><span class="ar">يجب أن يقوم بدفعة الشيك أو البطاقة زبون واحد موجود</span></td></tr>
+        <tr><td><span class="en">R4 · no line on <code>CASH</code></span><span class="ar">R4 · لا خطّ على <code>CASH</code></span></td><td><span class="en">a cash payment records no customer</span><span class="ar">دفعة النقد لا تسجّل زبونًا</span></td></tr>
+        <tr><td><span class="en">R5 · three boxes inside <code>PAYMENT</code></span><span class="ar">R5 · ثلاثة صناديق داخل <code>PAYMENT</code></span></td><td><span class="en">each payment is exactly one kind: exhaustive and mutually exclusive</span><span class="ar">كل دفعة من نوع واحد بالضبط: شمول (exhaustive) وتنافٍ (mutually exclusive)</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Payment 4 is fifteen in cash. Which values must its row carry, by the diagram?</p>
+    <p class="q ar">الدفعة 4 خمسة عشر نقدًا. ما القيم التي يجب أن يحملها صفّها، بحسب المخطّط؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">ID, date, amount and a customer</span><span class="ar">الرقم والتاريخ والمبلغ وزبون</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">ID, date and amount &mdash; nothing else</span><span class="ar">الرقم والتاريخ والمبلغ &mdash; ولا شيء غيرها</span></button></li>
+      <li><button class="opt"><span class="en">Only the ID; <code>CASH</code> lists no attributes</span><span class="ar">الرقم فقط؛ فـ <code>CASH</code> لا يذكر أيّ خاصية</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>CASH</code> lists nothing of its own, but it inherits <code>PAYMENT</code>'s three attributes (R1). It has no customer line, so it carries no customer (R4).</p>
+      <p class="ar">لا يذكر <code>CASH</code> شيئًا خاصًّا به، لكنه يرث خصائص <code>PAYMENT</code> الثلاث (R1). وليس له خطّ زبون، فلا يحمل زبونًا (R4).</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which rule is drawn by the <em>layout</em> of the boxes, not by any <code>#</code>, <code>*</code> or line?</p>
+    <p class="q ar">أيّ قاعدة يرسمها <em>ترتيب</em> الصناديق، لا أيّ <code>#</code> أو <code>*</code> أو خطّ؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">R2 &mdash; the card number</span><span class="ar">R2 &mdash; رقم البطاقة</span></button></li>
+      <li><button class="opt"><span class="en">R3 &mdash; the customer</span><span class="ar">R3 &mdash; الزبون</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">R5 &mdash; exactly one kind per payment</span><span class="ar">R5 &mdash; نوع واحد بالضبط لكل دفعة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">R5 comes from Lesson 3's two rules, which hold because the subtypes sit side by side inside one supertype. Keep an eye on it: it is the rule that no column can hold.</p>
+      <p class="ar">تأتي R5 من قاعدتَي الدرس 3، وهما قائمتان لأن الأنواع الفرعية متجاورة داخل نوع أعلى واحد. راقبها جيّدًا: إنها القاعدة التي لا يستطيع أيّ عمود أن يحملها.</p>
+    </div>
+  </div>
+
+  <h2 id="t4lab-h2"><span class="en">2 · Way 1: one table, a type column</span><span class="ar">٢ · الطريقة 1: جدول واحد، وعمود للنوع</span></h2>
+
+  <div class="note">
+    <p class="en"><strong>One table:</strong> the supertype becomes a single table, a <code>method</code> column says which subtype each row is, and every subtype's own column is made nullable.</p>
+    <p class="ar"><strong>الجدول الواحد:</strong> يصير النوع الأعلى جدولًا واحدًا، ويقول عمود <code>method</code> من أيّ نوع فرعي كل صفّ، ويُجعل كل عمود خاصّ بنوع فرعي قابلًا لـ null.</p>
+  </div>
+
+  <p class="en">This is Lesson 1's one-entity model, and it had a defect: <code>card_number</code> cannot be <code>NOT NULL</code>, because cash rows have none. So R2, R3 and R4 cannot sit on single columns. They depend on <code>method</code>, and a rule across columns is a table-level <code>CHECK</code>.</p>
+  <p class="ar">هذا هو نموذج الكيان الواحد في الدرس 1، وكان فيه عيب: لا يمكن أن يكون <code>card_number</code> بقيد <code>NOT NULL</code>، لأن صفوف النقد بلا رقم. لذلك لا تستطيع R2 وR3 وR4 أن تجلس على أعمدة منفردة. فهي تعتمد على <code>method</code>، والقاعدة التي تربط أعمدة عدّة قيد <code>CHECK</code> على مستوى الجدول.</p>
+
+  <div class="exercise">
+    <h4><span class="en">Step 2a · Write <code>payments</code>, rules and all</span><span class="ar">الخطوة 2أ · اكتب <code>payments</code> بقواعدها كلها</span></h4>
+    <p class="en"><code>customers(customer_id, name)</code> exists. Create <code>payments</code> with <code>payment_id</code>, <code>payment_date</code> (<code>DATE</code>), <code>amount</code>, <code>method</code> (<code>VARCHAR(11)</code>: <code>'CASH'</code>, <code>'CHECK'</code> or <code>'CREDIT CARD'</code>), <code>card_number</code> (<code>VARCHAR(19)</code>) and <code>customer_id</code>. The check inserts eleven rows, three legal and eight that break R1&ndash;R4, and wants exactly the three legal ones accepted.</p>
+    <p class="ar">الجدول <code>customers(customer_id, name)</code> موجود. أنشئ <code>payments</code> بالأعمدة <code>payment_id</code>، و<code>payment_date</code> (<code>DATE</code>)، و<code>amount</code>، و<code>method</code> (<code>VARCHAR(11)</code>: <code>'CASH'</code> أو <code>'CHECK'</code> أو <code>'CREDIT CARD'</code>)، و<code>card_number</code> (<code>VARCHAR(19)</code>)، و<code>customer_id</code>. يُدخل التصحيح أحد عشر صفًّا، ثلاثة منها سليمة وثمانية تكسر R1&ndash;R4، ولا يقبل إلا أن تُقبَل الثلاثة السليمة وحدها.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')"],"sql":"","placeholder":"CREATE TABLE payments ( ... );","grade":{"mode":"state","check":"SELECT ``(function(){return [\"INSERT INTO payments (payment_id, payment_date, amount, method, card_number, customer_id) VALUES (93,'2026-03-05',60,'CREDIT CARD','4111 1111 1111 1111',2)\",\"INSERT INTO payments (payment_id, payment_date, amount, method) VALUES (91,'2026-03-05',40,'CASH')\",\"INSERT INTO payments (payment_id, payment_date, amount, method, customer_id) VALUES (92,'2026-03-05',50,'CHECK',1)\",\"INSERT INTO payments (payment_id, payment_date, amount, method, customer_id) VALUES (94,'2026-03-05',60,'CREDIT CARD',1)\",\"INSERT INTO payments (payment_id, payment_date, amount, method, card_number) VALUES (95,'2026-03-05',25,'CASH','4111 1111 1111 1111')\",\"INSERT INTO payments (payment_id, payment_date, amount, method) VALUES (96,'2026-03-05',75,'CHECK')\",\"INSERT INTO payments (payment_id, payment_date, amount, method, customer_id) VALUES (97,'2026-03-05',30,'CASH',1)\",\"INSERT INTO payments (payment_id, payment_date, amount, method, customer_id) VALUES (98,'2026-03-05',75,'WALLET',2)\",\"INSERT INTO payments (payment_id, payment_date, amount, method, customer_id) VALUES (99,'2026-03-05',75,'CHECK',9)\",\"INSERT INTO payments (payment_id, payment_date, amount, method, card_number) VALUES (100,'2026-03-05',60,'CREDIT CARD','5500 0000 0000 0004')\",\"INSERT INTO payments (payment_id, payment_date, method) VALUES (101,'2026-03-05','CASH')\"].map(function(q){try{alasql(q);return 'Y'}catch(e){return 'N'}}).join('')})()`` AS verdict","expected":[{"verdict":"YYYNNNNNNNN"}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE payments (
+  payment_id   NUMBER       PRIMARY KEY,
+  payment_date DATE         NOT NULL,
+  amount       NUMBER       NOT NULL,
+  method       VARCHAR(11)  NOT NULL
+               CHECK (method IN ('CASH', 'CHECK', 'CREDIT CARD')),
+  card_number  VARCHAR(19),
+  customer_id  NUMBER
+               REFERENCES customers(customer_id),
+  CHECK (   (method = 'CASH'        AND card_number IS NULL     AND customer_id IS NULL)
+         OR (method = 'CHECK'       AND card_number IS NULL     AND customer_id IS NOT NULL)
+         OR (method = 'CREDIT CARD' AND card_number IS NOT NULL AND customer_id IS NOT NULL))
+);</code></pre>
+      <p class="en">One line of the last <code>CHECK</code> per subtype box: each says what that kind must have and must not have. The <code>IN</code> list is R5, but only for a single row: it lets no payment be two kinds, because one cell holds one value.</p>
+      <p class="ar">سطر واحد في قيد <code>CHECK</code> الأخير لكل صندوق نوع فرعي: كلٌّ منها يقول ما يجب أن يملكه ذلك النوع وما لا يجوز أن يملكه. وقائمة <code>IN</code> هي R5، لكن لصفّ واحد فقط: فلا تسمح لدفعة بأن تكون نوعين، لأن الخلية الواحدة تحمل قيمة واحدة.</p>
+    </details>
+  </div>
+
+  <p class="en">The finished table holds the chapter's six payments. A clerk records payment 7 on Linda's card and forgets the number:</p>
+  <p class="ar">يحمل الجدول المكتمل مدفوعات الفصل الست. يسجّل موظّف الدفعة 7 على بطاقة Linda وينسى الرقم:</p>
+  <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, method VARCHAR(11) NOT NULL CHECK (method IN ('CASH','CHECK','CREDIT CARD')), card_number VARCHAR(19), customer_id NUMBER REFERENCES customers(customer_id), CHECK ((method = 'CASH' AND card_number IS NULL AND customer_id IS NULL) OR (method = 'CHECK' AND card_number IS NULL AND customer_id IS NOT NULL) OR (method = 'CREDIT CARD' AND card_number IS NOT NULL AND customer_id IS NOT NULL)))","INSERT INTO payments (payment_id, payment_date, amount, method) VALUES (1,'2026-03-02',40,'CASH'), (4,'2026-03-03',15,'CASH')","INSERT INTO payments (payment_id, payment_date, amount, method, customer_id) VALUES (2,'2026-03-02',125,'CHECK',1), (6,'2026-03-04',90,'CHECK',2)","INSERT INTO payments VALUES (3,'2026-03-03',310,'CREDIT CARD','4111 1111 1111 1111',2), (5,'2026-03-04',220,'CREDIT CARD','5500 0000 0000 0004',1)"],"sql":"INSERT INTO payments (payment_id, payment_date, amount, method, customer_id)\nVALUES (7, '2026-03-05', 60, 'CREDIT CARD', 1);"}
+      </script>
+    </div>
+  <div class="output">
+    <pre class="code" data-lang="text"><code>Violation of CHECK constraint</code></pre>
+  </div>
+  <p class="en">R2 held. Now the manager's first question costs nothing: every payment is in one table. Run it:</p>
+  <p class="ar">صمدت R2. والآن لا يكلّف سؤال المدير الأوّل شيئًا: كل الدفعات في جدول واحد. شغّله:</p>
+  <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, method VARCHAR(11) NOT NULL CHECK (method IN ('CASH','CHECK','CREDIT CARD')), card_number VARCHAR(19), customer_id NUMBER REFERENCES customers(customer_id), CHECK ((method = 'CASH' AND card_number IS NULL AND customer_id IS NULL) OR (method = 'CHECK' AND card_number IS NULL AND customer_id IS NOT NULL) OR (method = 'CREDIT CARD' AND card_number IS NOT NULL AND customer_id IS NOT NULL)))","INSERT INTO payments (payment_id, payment_date, amount, method) VALUES (1,'2026-03-02',40,'CASH'), (4,'2026-03-03',15,'CASH')","INSERT INTO payments (payment_id, payment_date, amount, method, customer_id) VALUES (2,'2026-03-02',125,'CHECK',1), (6,'2026-03-04',90,'CHECK',2)","INSERT INTO payments VALUES (3,'2026-03-03',310,'CREDIT CARD','4111 1111 1111 1111',2), (5,'2026-03-04',220,'CREDIT CARD','5500 0000 0000 0004',1)"],"sql":"SELECT COUNT(*) AS payments, SUM(amount) AS taken\nFROM payments\nWHERE payment_date = '2026-03-03';"}
+      </script>
+    </div>
+  <div class="output">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th><code>payments</code></th><th><code>taken</code></th></tr></thead>
+        <tbody><tr><td>2</td><td>325</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Step 2b · The second question, in one table</span><span class="ar">الخطوة 2ب · السؤال الثاني، في جدول واحد</span></h4>
+    <p class="en">List every credit card payment with its <code>payment_id</code>, <code>amount</code>, <code>card_number</code> and the customer's <code>name</code>. Use exactly those four column names.</p>
+    <p class="ar">اعرض كل دفعة بطاقة ائتمان مع <code>payment_id</code> و<code>amount</code> و<code>card_number</code> واسم الزبون <code>name</code>. استعمل أسماء الأعمدة الأربعة هذه بالضبط.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, method VARCHAR(11) NOT NULL CHECK (method IN ('CASH','CHECK','CREDIT CARD')), card_number VARCHAR(19), customer_id NUMBER REFERENCES customers(customer_id), CHECK ((method = 'CASH' AND card_number IS NULL AND customer_id IS NULL) OR (method = 'CHECK' AND card_number IS NULL AND customer_id IS NOT NULL) OR (method = 'CREDIT CARD' AND card_number IS NOT NULL AND customer_id IS NOT NULL)))","INSERT INTO payments (payment_id, payment_date, amount, method) VALUES (1,'2026-03-02',40,'CASH'), (4,'2026-03-03',15,'CASH')","INSERT INTO payments (payment_id, payment_date, amount, method, customer_id) VALUES (2,'2026-03-02',125,'CHECK',1), (6,'2026-03-04',90,'CHECK',2)","INSERT INTO payments VALUES (3,'2026-03-03',310,'CREDIT CARD','4111 1111 1111 1111',2), (5,'2026-03-04',220,'CREDIT CARD','5500 0000 0000 0004',1)"],"sql":"","placeholder":"SELECT payment_id, amount, card_number, name ...","grade":{"mode":"result","expected":"SELECT p.payment_id, p.amount, p.card_number, c.name FROM payments p JOIN customers c ON c.customer_id = p.customer_id WHERE p.method = 'CREDIT CARD'"}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT p.payment_id, p.amount, p.card_number, c.name
+FROM payments p
+JOIN customers c ON c.customer_id = p.customer_id
+WHERE p.method = 'CREDIT CARD';</code></pre>
+      <p class="en">Without the <code>WHERE</code>, the two cheques join to their customers too and four rows come back. In one table, asking about one kind always means filtering on the type column.</p>
+      <p class="ar">من دون <code>WHERE</code> يرتبط الشيكان بزبونيهما أيضًا، فتعود أربعة صفوف. وفي الجدول الواحد، السؤال عن نوع واحد يعني دائمًا التصفية على عمود النوع.</p>
+    </details>
+  </div>
+
+  <div class="warn">
+    <p class="en">This browser engine stores a <code>NULL</code> typed into a <code>NUMBER</code> column as a value that is not null, so the <code>CHECK</code> above refuses <code>VALUES (..., 'CASH', NULL, NULL)</code>. This lab leaves such columns out of the column list instead. Oracle treats the typed <code>NULL</code> as null and accepts the row.</p>
+    <p class="ar">يخزّن محرّك المتصفّح هذا قيمة <code>NULL</code> المكتوبة في عمود <code>NUMBER</code> على أنها قيمة غير فارغة، فيرفض قيد <code>CHECK</code> أعلاه الصفّ <code>VALUES (..., 'CASH', NULL, NULL)</code>. لذلك يُسقط هذا المختبر هذه الأعمدة من قائمة الأعمدة بدلًا من ذلك. أمّا Oracle فيعامل <code>NULL</code> المكتوبة على أنها فارغة ويقبل الصفّ.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In way 1, where does R2, "a card payment must have a card number", live?</p>
+    <p class="q ar">في الطريقة 1، أين تعيش R2، «يجب أن يكون لدفعة البطاقة رقم بطاقة»؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">On <code>card_number</code>, as <code>NOT NULL</code></span><span class="ar">على <code>card_number</code>، بقيد <code>NOT NULL</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">In the table-level <code>CHECK</code>, tied to <code>method</code></span><span class="ar">في قيد <code>CHECK</code> على مستوى الجدول، مربوطةً بـ <code>method</code></span></button></li>
+      <li><button class="opt"><span class="en">Nowhere; one table cannot hold it</span><span class="ar">في لا مكان؛ فالجدول الواحد لا يستطيع حملها</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>NOT NULL</code> would refuse every cash and cheque row. The <code>*</code> belongs to one subtype, so in one table it can only be stated together with the column that names the subtype.</p>
+      <p class="ar">قيد <code>NOT NULL</code> سيرفض كل صفوف النقد والشيكات. فعلامة <code>*</code> تخصّ نوعًا فرعيًّا واحدًا، ولذلك لا يمكن قولها في جدول واحد إلا مع العمود الذي يسمّي النوع الفرعي.</p>
+    </div>
+  </div>
+
+  <h2 id="t4lab-h3"><span class="en">3 · Way 2: a table per subtype</span><span class="ar">٣ · الطريقة 2: جدول لكل نوع فرعي</span></h2>
+
+  <div class="problem">
+    <p class="en">Way 1's rules hide in one long <code>CHECK</code>, and every column a new kind brings is empty for all the others. What if each kind had its own table, where its <code>*</code> is just <code>NOT NULL</code>?</p>
+    <p class="ar">قواعد الطريقة 1 مختبئة في قيد <code>CHECK</code> طويل واحد، وكل عمود يأتي به نوع جديد يبقى فارغًا في كل الأنواع الأخرى. فماذا لو كان لكل نوع جدوله، فتصير علامة <code>*</code> فيه مجرّد <code>NOT NULL</code>؟</p>
+  </div>
+
+  <div class="note">
+    <p class="en"><strong>A table per subtype:</strong> each subtype becomes its own table, repeating the supertype's columns, and no table stands for the supertype at all.</p>
+    <p class="ar"><strong>جدول لكل نوع فرعي:</strong> يصير كل نوع فرعي جدولًا مستقلًّا يكرّر أعمدة النوع الأعلى، ولا يمثّل النوع الأعلى أيُّ جدول على الإطلاق.</p>
+  </div>
+
+  <p class="en">This is Lesson 1's three separate entities. Each table now states its own rules plainly, and <code>cash_payments</code> has no customer column at all, so R4 needs no constraint.</p>
+  <p class="ar">هذه هي الكيانات الثلاثة المنفصلة في الدرس 1. صار كل جدول يقول قواعده بوضوح، وليس في <code>cash_payments</code> عمود زبون أصلًا، فلا تحتاج R4 إلى أيّ قيد.</p>
+
+  <div class="exercise">
+    <h4><span class="en">Step 3a · Write <code>card_payments</code></span><span class="ar">الخطوة 3أ · اكتب <code>card_payments</code></span></h4>
+    <p class="en"><code>customers</code>, <code>cash_payments</code> and <code>check_payments</code> exist. Create <code>card_payments</code> with <code>payment_id</code>, <code>payment_date</code>, <code>amount</code>, <code>card_number</code> and <code>customer_id</code>. Read every mark: what the box inherits and what it adds.</p>
+    <p class="ar">الجداول <code>customers</code> و<code>cash_payments</code> و<code>check_payments</code> موجودة. أنشئ <code>card_payments</code> بالأعمدة <code>payment_id</code> و<code>payment_date</code> و<code>amount</code> و<code>card_number</code> و<code>customer_id</code>. اقرأ كل علامة: ما الذي يرثه الصندوق وما الذي يضيفه.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)","CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO cash_payments VALUES (1,'2026-03-02',40), (4,'2026-03-03',15)","INSERT INTO check_payments VALUES (2,'2026-03-02',125,1), (6,'2026-03-04',90,2)"],"sql":"","placeholder":"CREATE TABLE card_payments ( ... );","grade":{"mode":"state","check":"SELECT ``(alasql.tables.card_payments||alasql.tables.CARD_PAYMENTS).columns.map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS cols, ``((alasql.tables.card_payments||alasql.tables.CARD_PAYMENTS).pk?(alasql.tables.card_payments||alasql.tables.CARD_PAYMENTS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).join(',')`` AS pk, ``(alasql.tables.card_payments||alasql.tables.CARD_PAYMENTS).columns.filter(function(c){return c.notnull&&((alasql.tables.card_payments||alasql.tables.CARD_PAYMENTS).pk?(alasql.tables.card_payments||alasql.tables.CARD_PAYMENTS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).indexOf(c.columnid.toLowerCase())<0}).map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS not_null, ``(alasql.tables.card_payments||alasql.tables.CARD_PAYMENTS).columns.filter(function(c){return c.foreignkey}).map(function(c){return c.columnid.toLowerCase()+'>'+String(c.foreignkey.tableid).toLowerCase()+'.'+String(c.foreignkey.columnid).toLowerCase()}).sort().join(',')`` AS fk","expected":[{"cols":"amount,card_number,customer_id,payment_date,payment_id","pk":"payment_id","not_null":"amount,card_number,customer_id,payment_date","fk":"customer_id>customers.customer_id"}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE card_payments (
+  payment_id   NUMBER      PRIMARY KEY,
+  payment_date DATE        NOT NULL,
+  amount       NUMBER      NOT NULL,
+  card_number  VARCHAR(19) NOT NULL,
+  customer_id  NUMBER      NOT NULL
+               REFERENCES customers(customer_id)
+);</code></pre>
+      <p class="en">Inherited from <code>PAYMENT</code>: the ID, the date and the amount, each written again. Its own: <code>* Card Number</code>, and the solid <code>made by</code> half as a <code>NOT NULL</code> key. No <code>CHECK</code> anywhere.</p>
+      <p class="ar">الموروث من <code>PAYMENT</code>: الرقم والتاريخ والمبلغ، وكلٌّ منها مكتوب من جديد. والخاصّ به: <code>* Card Number</code>، ونصف <code>made by</code> المتّصل مفتاحًا بقيد <code>NOT NULL</code>. ولا <code>CHECK</code> في أيّ مكان.</p>
+    </details>
+  </div>
+
+  <p class="en">The second question is now the easy one: <code>card_payments</code> holds only card payments, so no filter is needed.</p>
+  <p class="ar">صار السؤال الثاني هو السهل: لا يحمل <code>card_payments</code> إلا دفعات البطاقة، فلا حاجة إلى أيّ تصفية.</p>
+  <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)","CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO cash_payments VALUES (1,'2026-03-02',40), (4,'2026-03-03',15)","INSERT INTO check_payments VALUES (2,'2026-03-02',125,1), (6,'2026-03-04',90,2)","INSERT INTO card_payments VALUES (3,'2026-03-03',310,'4111 1111 1111 1111',2), (5,'2026-03-04',220,'5500 0000 0000 0004',1)"],"sql":"SELECT k.payment_id, k.amount, k.card_number, c.name\nFROM card_payments k\nJOIN customers c ON c.customer_id = k.customer_id;"}
+      </script>
+    </div>
+  <div class="output">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th><code>payment_id</code></th><th><code>amount</code></th><th><code>card_number</code></th><th><code>name</code></th></tr></thead>
+        <tbody>
+          <tr><td>3</td><td>310</td><td>4111 1111 1111 1111</td><td>Omar</td></tr>
+          <tr><td>5</td><td>220</td><td>5500 0000 0000 0004</td><td>Linda</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Step 3b · The first question, across three tables</span><span class="ar">الخطوة 3ب · السؤال الأوّل، عبر ثلاثة جداول</span></h4>
+    <p class="en">How many payments were taken on 3 March, and how much? Return one row with columns <code>payments</code> and <code>taken</code>. There is no table of all payments any more.</p>
+    <p class="ar">كم دفعة قُبضت يوم 3 مارس، وبكم؟ أعِد صفًّا واحدًا بعمودين <code>payments</code> و<code>taken</code>. لم يعد هناك جدول لكل المدفوعات.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)","CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO cash_payments VALUES (1,'2026-03-02',40), (4,'2026-03-03',15)","INSERT INTO check_payments VALUES (2,'2026-03-02',125,1), (6,'2026-03-04',90,2)","INSERT INTO card_payments VALUES (3,'2026-03-03',310,'4111 1111 1111 1111',2), (5,'2026-03-04',220,'5500 0000 0000 0004',1)"],"sql":"","placeholder":"SELECT COUNT(*) AS payments, SUM(amount) AS taken\nFROM ( ... ) AS k\nWHERE payment_date = '2026-03-03';","grade":{"mode":"result","expected":[{"payments":2,"taken":325}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT COUNT(*) AS payments, SUM(amount) AS taken
+FROM (SELECT payment_date, amount FROM cash_payments
+      UNION ALL
+      SELECT payment_date, amount FROM check_payments
+      UNION ALL
+      SELECT payment_date, amount FROM card_payments) AS k
+WHERE payment_date = '2026-03-03';</code></pre>
+      <p class="en">The supertype has to be rebuilt inside the query before it can be asked anything. <code>UNION ALL</code>, not <code>UNION</code>: two cash payments of the same amount on the same day are two payments, and <code>UNION</code> would merge them into one.</p>
+      <p class="ar">يجب أن يُعاد بناء النوع الأعلى داخل الاستعلام قبل أن يُسأل عن أيّ شيء. <code>UNION ALL</code> لا <code>UNION</code>: فدفعتا نقد بالمبلغ نفسه في اليوم نفسه دفعتان، و<code>UNION</code> تدمجهما في واحدة.</p>
+    </details>
+  </div>
+
+  <p class="en">And there is a price nobody sees until it is paid. Payment 3 is a card payment. A clerk types a sixty-pound cash payment and reuses the number <code>3</code>:</p>
+  <p class="ar">وهناك ثمن لا يراه أحد حتى يُدفع. الدفعة 3 دفعة بطاقة. يكتب موظّف دفعة نقدية بستين ويعيد استعمال الرقم <code>3</code>:</p>
+  <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)","CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO cash_payments VALUES (1,'2026-03-02',40), (4,'2026-03-03',15)","INSERT INTO check_payments VALUES (2,'2026-03-02',125,1), (6,'2026-03-04',90,2)","INSERT INTO card_payments VALUES (3,'2026-03-03',310,'4111 1111 1111 1111',2), (5,'2026-03-04',220,'5500 0000 0000 0004',1)"],"sql":"INSERT INTO cash_payments VALUES (3, '2026-03-05', 60);\nSELECT 'cash' AS kind, payment_id, payment_date, amount FROM cash_payments WHERE payment_id = 3\nUNION ALL\nSELECT 'credit card', payment_id, payment_date, amount FROM card_payments WHERE payment_id = 3;"}
+      </script>
+    </div>
+  <div class="output">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th><code>kind</code></th><th><code>payment_id</code></th><th><code>payment_date</code></th><th><code>amount</code></th></tr></thead>
+        <tbody>
+          <tr><td>cash</td><td>3</td><td>2026-03-05</td><td>60</td></tr>
+          <tr><td>credit card</td><td>3</td><td>2026-03-03</td><td>310</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="en">Both rows stand. Each primary key is unique only inside its own table, so "payment 3" now names two payments of two kinds. R5 is gone, and so is the <code># Payment ID</code> of <code>PAYMENT</code>.</p>
+  <p class="ar">بقي الصفّان كلاهما. فكل مفتاح أساسي فريد داخل جدوله وحده، وصار «الدفعة 3» اسمًا لدفعتين من نوعين. ذهبت R5، وذهب معها <code># Payment ID</code> الخاصّ بـ <code>PAYMENT</code>.</p>
+
+  <div class="quiz">
+    <p class="q en">Way 2 made R2, R3 and R4 simple column constraints. What did it pay for that?</p>
+    <p class="q ar">جعلت الطريقة 2 القواعد R2 وR3 وR4 قيودًا بسيطة على الأعمدة. ما الثمن الذي دفعته مقابل ذلك؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Card numbers can now be left empty</span><span class="ar">صار يمكن ترك أرقام البطاقات فارغة</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">No table is <code>PAYMENT</code>: questions about all payments rebuild it, and an ID can repeat across kinds</span><span class="ar">لا جدول هو <code>PAYMENT</code>: الأسئلة عن كل المدفوعات تعيد بناءه، والرقم يمكن أن يتكرّر بين الأنواع</span></button></li>
+      <li><button class="opt"><span class="en">Cash payments now need a customer</span><span class="ar">صارت دفعات النقد تحتاج إلى زبون</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The supertype exists only on the diagram. Its attributes are written three times, its identifier is three separate keys, and R5 has no table to stand in.</p>
+      <p class="ar">النوع الأعلى موجود في المخطّط وحده. خصائصه مكتوبة ثلاث مرّات، ومعرّفه ثلاثة مفاتيح منفصلة، وليس لـ R5 جدول تقف فيه.</p>
+    </div>
+  </div>
+
+  <h2 id="t4lab-h4"><span class="en">4 · Way 3: a supertype table plus subtype tables</span><span class="ar">٤ · الطريقة 3: جدول للنوع الأعلى مع جداول للأنواع الفرعية</span></h2>
+
+  <div class="problem">
+    <p class="en">Way 1 kept <code>PAYMENT</code> and lost the plain constraints. Way 2 kept the plain constraints and lost <code>PAYMENT</code>. The diagram has both: one outer box, and boxes inside it. Build what is drawn.</p>
+    <p class="ar">حفظت الطريقة 1 <code>PAYMENT</code> وخسرت القيود البسيطة. وحفظت الطريقة 2 القيود البسيطة وخسرت <code>PAYMENT</code>. أمّا المخطّط ففيه الاثنان: صندوق خارجي واحد، وصناديق داخله. ابنِ ما هو مرسوم.</p>
+  </div>
+
+  <div class="note">
+    <p class="en"><strong>Supertype plus subtypes:</strong> a table for the supertype holds the common columns, and each subtype table holds only its own, with a primary key that is also a foreign key to the supertype.</p>
+    <p class="ar"><strong>النوع الأعلى مع الأنواع الفرعية:</strong> جدول للنوع الأعلى يحمل الأعمدة المشتركة، وكل جدول نوع فرعي يحمل ما يخصّه وحده، بمفتاح أساسي هو أيضًا مفتاح أجنبي إلى النوع الأعلى.</p>
+  </div>
+
+  <p class="en">This is the build Lesson 2 queried. Inheritance becomes a join on <code>payment_id</code>: a <code>card_payments</code> row gets its date and amount back from the <code>payments</code> row with the same key.</p>
+  <p class="ar">هذا هو البناء الذي استعلم منه الدرس 2. تصير الوراثة (inheritance) ربطًا على <code>payment_id</code>: يستعيد صفّ <code>card_payments</code> تاريخه ومبلغه من صفّ <code>payments</code> الذي يحمل المفتاح نفسه.</p>
+
+  <div class="exercise">
+    <h4><span class="en">Step 4a · Write <code>card_payments</code> again</span><span class="ar">الخطوة 4أ · اكتب <code>card_payments</code> من جديد</span></h4>
+    <p class="en"><code>customers</code>, <code>payments(payment_id, payment_date, amount)</code>, <code>cash_payments</code> and <code>check_payments</code> exist. Create <code>card_payments</code> with <code>payment_id</code>, <code>card_number</code> and <code>customer_id</code> &mdash; and nothing the supertype already holds. The check reads both keys.</p>
+    <p class="ar">الجداول <code>customers</code> و<code>payments(payment_id, payment_date, amount)</code> و<code>cash_payments</code> و<code>check_payments</code> موجودة. أنشئ <code>card_payments</code> بالأعمدة <code>payment_id</code> و<code>card_number</code> و<code>customer_id</code> &mdash; ولا شيء ممّا يحمله النوع الأعلى. يقرأ التصحيح المفتاحين كليهما.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)","INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90)","CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))","INSERT INTO cash_payments VALUES (1), (4)","CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO check_payments VALUES (2,1), (6,2)"],"sql":"","placeholder":"CREATE TABLE card_payments ( ... );","grade":{"mode":"state","check":"SELECT ``(alasql.tables.card_payments||alasql.tables.CARD_PAYMENTS).columns.map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS cols, ``((alasql.tables.card_payments||alasql.tables.CARD_PAYMENTS).pk?(alasql.tables.card_payments||alasql.tables.CARD_PAYMENTS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).join(',')`` AS pk, ``(alasql.tables.card_payments||alasql.tables.CARD_PAYMENTS).columns.filter(function(c){return c.notnull&&((alasql.tables.card_payments||alasql.tables.CARD_PAYMENTS).pk?(alasql.tables.card_payments||alasql.tables.CARD_PAYMENTS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).indexOf(c.columnid.toLowerCase())<0}).map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS not_null, ``(alasql.tables.card_payments||alasql.tables.CARD_PAYMENTS).columns.filter(function(c){return c.foreignkey}).map(function(c){return c.columnid.toLowerCase()+'>'+String(c.foreignkey.tableid).toLowerCase()+'.'+String(c.foreignkey.columnid).toLowerCase()}).sort().join(',')`` AS fk","expected":[{"cols":"card_number,customer_id,payment_id","pk":"payment_id","not_null":"card_number,customer_id","fk":"customer_id>customers.customer_id,payment_id>payments.payment_id"}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE card_payments (
+  payment_id  NUMBER      PRIMARY KEY
+              REFERENCES payments(payment_id),
+  card_number VARCHAR(19) NOT NULL,
+  customer_id NUMBER      NOT NULL
+              REFERENCES customers(customer_id)
+);</code></pre>
+      <p class="en"><code>payment_id</code> does two jobs. As the primary key, a payment is a card payment at most once. As a foreign key, every card payment is a payment that exists. Adding <code>payment_date</code> here fails the check: the date is drawn once, in <code>PAYMENT</code>.</p>
+      <p class="ar">يؤدّي <code>payment_id</code> عملين. بوصفه مفتاحًا أساسيًّا، لا تكون الدفعة دفعة بطاقة أكثر من مرّة. وبوصفه مفتاحًا أجنبيًّا، تكون كل دفعة بطاقة دفعةً موجودة. وإضافة <code>payment_date</code> هنا تُفشل التصحيح: فالتاريخ مرسوم مرّة واحدة، في <code>PAYMENT</code>.</p>
+    </details>
+  </div>
+
+  <p class="en">The first question is back to one table, exactly as in way 1:</p>
+  <p class="ar">عاد السؤال الأوّل إلى جدول واحد، تمامًا كما في الطريقة 1:</p>
+  <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)","INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90)","CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))","INSERT INTO cash_payments VALUES (1), (4)","CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO check_payments VALUES (2,1), (6,2)","CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111',2), (5,'5500 0000 0000 0004',1)"],"sql":"SELECT COUNT(*) AS payments, SUM(amount) AS taken\nFROM payments\nWHERE payment_date = '2026-03-03';"}
+      </script>
+    </div>
+  <div class="output">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th><code>payments</code></th><th><code>taken</code></th></tr></thead>
+        <tbody><tr><td>2</td><td>325</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Step 4b · The second question, as inheritance</span><span class="ar">الخطوة 4ب · السؤال الثاني، على شكل وراثة</span></h4>
+    <p class="en">The same list as step 2b: <code>payment_id</code>, <code>amount</code>, <code>card_number</code> and <code>name</code> for every credit card payment. The amount lives in one table, the card number in another, the name in a third.</p>
+    <p class="ar">القائمة نفسها كما في الخطوة 2ب: <code>payment_id</code> و<code>amount</code> و<code>card_number</code> و<code>name</code> لكل دفعة بطاقة ائتمان. المبلغ في جدول، ورقم البطاقة في آخر، والاسم في ثالث.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)","INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90)","CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))","INSERT INTO cash_payments VALUES (1), (4)","CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO check_payments VALUES (2,1), (6,2)","CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111',2), (5,'5500 0000 0000 0004',1)"],"sql":"","placeholder":"SELECT p.payment_id, p.amount, k.card_number, c.name ...","grade":{"mode":"result","expected":"SELECT p.payment_id, p.amount, k.card_number, c.name FROM payments p JOIN card_payments k ON k.payment_id = p.payment_id JOIN customers c ON c.customer_id = k.customer_id"}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT p.payment_id, p.amount, k.card_number, c.name
+FROM payments p
+JOIN card_payments k ON k.payment_id = p.payment_id
+JOIN customers c     ON c.customer_id = k.customer_id;</code></pre>
+      <p class="en">No <code>WHERE</code>: joining to <code>card_payments</code> is the filter, because only card payments have a row there. The first join is the inheritance; the second is the subtype's own relationship.</p>
+      <p class="ar">لا <code>WHERE</code>: فالربط مع <code>card_payments</code> هو التصفية، لأن دفعات البطاقة وحدها لها صفّ هناك. الربط الأوّل هو الوراثة، والثاني علاقة النوع الفرعي الخاصّة.</p>
+    </details>
+  </div>
+
+  <p class="en">The shared key also guards the other direction. A clerk files card details for payment <code>9</code>, which was never taken:</p>
+  <p class="ar">والمفتاح المشترك يحرس الاتجاه الآخر أيضًا. يسجّل موظّف بيانات بطاقة للدفعة <code>9</code>، ولم تُقبض هذه الدفعة قطّ:</p>
+  <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)","INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90)","CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))","INSERT INTO cash_payments VALUES (1), (4)","CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO check_payments VALUES (2,1), (6,2)","CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111',2), (5,'5500 0000 0000 0004',1)"],"sql":"INSERT INTO card_payments VALUES (9, '4000 0566 5566 5556', 1);"}
+      </script>
+    </div>
+  <div class="output">
+    <pre class="code" data-lang="text"><code>Foreign key "9" not found in table "payments"</code></pre>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Read Lesson 2's sentence <em>every CREDIT CARD is a PAYMENT</em> in way 3. Which piece of SQL enforces it?</p>
+    <p class="q ar">اقرأ جملة الدرس 2 <em>every CREDIT CARD is a PAYMENT</em> في الطريقة 3. أيّ جزء من SQL يفرضها؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>card_number NOT NULL</code></span><span class="ar"><code>card_number NOT NULL</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>card_payments.payment_id REFERENCES payments(payment_id)</code></span><span class="ar"><code>card_payments.payment_id REFERENCES payments(payment_id)</code></span></button></li>
+      <li><button class="opt"><span class="en">The join in step 4b</span><span class="ar">الربط في الخطوة 4ب</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Inwards-out, as Lesson 2 read it: no card row without its payment row. The join only reads the rule; the foreign key refused payment 9.</p>
+      <p class="ar">من الداخل إلى الخارج، كما قرأها الدرس 2: لا صفّ بطاقة دون صفّ دفعته. أمّا الربط فيقرأ القاعدة فقط، والمفتاح الأجنبي هو الذي رفض الدفعة 9.</p>
+    </div>
+  </div>
+
+  <h2 id="t4lab-h5"><span class="en">5 · The rule no column holds</span><span class="ar">٥ · القاعدة التي لا يحملها أيّ عمود</span></h2>
+
+  <div class="problem">
+    <p class="en">Way 3 guards inwards-out. Outwards-in &mdash; <em>every PAYMENT is a CASH, a CHECK or a CREDIT CARD</em> &mdash; is R5, and nothing guards it. Payment 7 is entered and never filed under a kind; payment 4, already cash, is filed as a cheque too:</p>
+    <p class="ar">تحرس الطريقة 3 الاتجاه من الداخل إلى الخارج. أمّا من الخارج إلى الداخل &mdash; <em>every PAYMENT is a CASH, a CHECK or a CREDIT CARD</em> &mdash; فهي R5، ولا شيء يحرسها. تُدخَل الدفعة 7 ولا تُصنَّف تحت أيّ نوع، وتُسجَّل الدفعة 4، وهي نقدية أصلًا، شيكًا أيضًا:</p>
+  </div>
+
+  <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)","INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90)","CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))","INSERT INTO cash_payments VALUES (1), (4)","CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO check_payments VALUES (2,1), (6,2)","CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111',2), (5,'5500 0000 0000 0004',1)"],"sql":"INSERT INTO payments VALUES (7, '2026-03-05', 60);\nINSERT INTO check_payments VALUES (4, 1);\nSELECT COUNT(*) AS payments FROM payments;"}
+      </script>
+    </div>
+  <div class="output">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th><code>payments</code></th></tr></thead>
+        <tbody><tr><td>7</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="en">Both inserts succeed. Each key looks at one subtype table and one supertype row; no constraint here looks across the three subtype tables at once. So R5 is kept by an audit query, run by whoever owns the data.</p>
+  <p class="ar">نجحت الجملتان كلتاهما. فكل مفتاح ينظر إلى جدول نوع فرعي واحد وإلى صفّ واحد في النوع الأعلى، ولا قيد هنا ينظر عبر جداول الأنواع الفرعية الثلاثة معًا. لذلك تُحفظ R5 باستعلام تدقيق، يشغّله مَن يملك البيانات.</p>
+
+  <div class="exercise">
+    <h4><span class="en">Step 5a · Audit the hierarchy</span><span class="ar">الخطوة 5أ · دقّق التسلسل</span></h4>
+    <p class="en">This box holds the two bad rows above. Write a query that returns, for every payment that is <em>not</em> in exactly one subtype table, its <code>payment_id</code> and <code>kinds</code>, the number of subtype tables it is in.</p>
+    <p class="ar">يحمل هذا الصندوق الصفّين الخاطئين أعلاه. اكتب استعلامًا يُعيد، لكل دفعة <em>ليست</em> في جدول نوع فرعي واحد بالضبط، رقمها <code>payment_id</code> و<code>kinds</code>، أي عدد جداول الأنواع الفرعية التي هي فيها.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)","INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90), (7,'2026-03-05',60)","CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))","INSERT INTO cash_payments VALUES (1), (4)","CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO check_payments VALUES (2,1), (6,2)","CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111',2), (5,'5500 0000 0000 0004',1)","INSERT INTO check_payments VALUES (4,1)"],"sql":"","placeholder":"SELECT payment_id, kinds ...","grade":{"mode":"result","expected":[{"payment_id":4,"kinds":2},{"payment_id":7,"kinds":0}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT payment_id, kinds
+FROM (SELECT p.payment_id,
+             (SELECT COUNT(*) FROM cash_payments  s WHERE s.payment_id = p.payment_id)
+           + (SELECT COUNT(*) FROM check_payments s WHERE s.payment_id = p.payment_id)
+           + (SELECT COUNT(*) FROM card_payments  s WHERE s.payment_id = p.payment_id) AS kinds
+      FROM payments p) AS t
+WHERE kinds &lt;&gt; 1;</code></pre>
+      <p class="en">It returns payment 4 with <code>2</code> and payment 7 with <code>0</code>. Start from <code>payments</code>, not from the subtype tables: a payment filed nowhere appears in no subtype table, so a query that starts there can never find it.</p>
+      <p class="ar">يُعيد الدفعة 4 بالقيمة <code>2</code> والدفعة 7 بالقيمة <code>0</code>. ابدأ من <code>payments</code> لا من جداول الأنواع الفرعية: فالدفعة التي لم تُصنَّف في أيّ مكان لا تظهر في أيّ جدول نوع فرعي، والاستعلام الذي يبدأ من هناك لن يجدها أبدًا.</p>
+    </details>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Match the audit's two rows to Lesson 3's rules. Which is right?</p>
+    <p class="q ar">طابق صفَّي التدقيق مع قواعد الدرس 3. أيّ الإجابات صحيحة؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en"><code>kinds = 0</code> breaks exhaustive; <code>kinds = 2</code> breaks mutually exclusive</span><span class="ar"><code>kinds = 0</code> تكسر الشمول؛ و<code>kinds = 2</code> تكسر التنافي</span></button></li>
+      <li><button class="opt"><span class="en"><code>kinds = 0</code> breaks mutually exclusive; <code>kinds = 2</code> breaks exhaustive</span><span class="ar"><code>kinds = 0</code> تكسر التنافي؛ و<code>kinds = 2</code> تكسر الشمول</span></button></li>
+      <li><button class="opt"><span class="en">Both break "is a kind of"</span><span class="ar">كلاهما يكسر «نوع من»</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Payment 7 has no box to go to &mdash; the subtypes did not cover it. Payment 4 sits in two boxes at once. Way 1 could not even store payment 4's mistake: one <code>method</code> cell holds one kind.</p>
+      <p class="ar">ليس للدفعة 7 صندوق تذهب إليه &mdash; فالأنواع الفرعية لم تشملها. والدفعة 4 تجلس في صندوقين معًا. أمّا الطريقة 1 فلم تكن لتستطيع حتى تخزين خطأ الدفعة 4: فخلية <code>method</code> الواحدة تحمل نوعًا واحدًا.</p>
+    </div>
+  </div>
+
+  <h2 id="t4lab-h6"><span class="en">6 · A fourth method arrives</span><span class="ar">٦ · وصلت طريقة رابعة</span></h2>
+
+  <div class="problem">
+    <p class="en">In April the shop takes mobile-wallet payments. Lesson 1 asked the slides' question &mdash; <em>what happens if we introduce a fourth method?</em> &mdash; on the diagram. Now ask it of each set of tables.</p>
+    <p class="ar">في أبريل صار المتجر يقبل الدفع بالمحفظة الإلكترونية. طرح الدرس 1 سؤال الشرائح &mdash; <em>ماذا يحدث إذا أدخلنا طريقة رابعة؟</em> &mdash; على المخطّط. والآن اطرحه على كل مجموعة جداول.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t4-pay-fourth"><figcaption><span class="en">Lesson 1's answer on the diagram: one new box with <code>* Wallet ID</code>, and one new <code>made by</code> line, solid at <code>WALLET</code>.</span><span class="ar">جواب الدرس 1 على المخطّط: صندوق جديد واحد فيه <code>* Wallet ID</code>، وخطّ <code>made by</code> جديد واحد، متّصل عند <code>WALLET</code>.</span></figcaption></figure>
+
+  <div class="exercise">
+    <h4><span class="en">Step 6a · Add <code>WALLET</code> to way 3</span><span class="ar">الخطوة 6أ · أضف <code>WALLET</code> إلى الطريقة 3</span></h4>
+    <p class="en">This box holds way 3 as you built it. Create <code>wallet_payments</code> with <code>payment_id</code>, <code>wallet_id</code> (<code>VARCHAR(20)</code>) and <code>customer_id</code>. Touch nothing that exists.</p>
+    <p class="ar">يحمل هذا الصندوق الطريقة 3 كما بنيتها. أنشئ <code>wallet_payments</code> بالأعمدة <code>payment_id</code> و<code>wallet_id</code> (<code>VARCHAR(20)</code>) و<code>customer_id</code>. ولا تمسّ شيئًا موجودًا.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"exercise","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)","INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90)","CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))","INSERT INTO cash_payments VALUES (1), (4)","CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO check_payments VALUES (2,1), (6,2)","CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111',2), (5,'5500 0000 0000 0004',1)"],"sql":"","placeholder":"CREATE TABLE wallet_payments ( ... );","grade":{"mode":"state","check":"SELECT ``(alasql.tables.wallet_payments||alasql.tables.WALLET_PAYMENTS).columns.map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS cols, ``((alasql.tables.wallet_payments||alasql.tables.WALLET_PAYMENTS).pk?(alasql.tables.wallet_payments||alasql.tables.WALLET_PAYMENTS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).join(',')`` AS pk, ``(alasql.tables.wallet_payments||alasql.tables.WALLET_PAYMENTS).columns.filter(function(c){return c.notnull&&((alasql.tables.wallet_payments||alasql.tables.WALLET_PAYMENTS).pk?(alasql.tables.wallet_payments||alasql.tables.WALLET_PAYMENTS).pk.columns:[]).map(function(s){return String(s).split(' ')[0].toLowerCase()}).indexOf(c.columnid.toLowerCase())<0}).map(function(c){return c.columnid.toLowerCase()}).sort().join(',')`` AS not_null, ``(alasql.tables.wallet_payments||alasql.tables.WALLET_PAYMENTS).columns.filter(function(c){return c.foreignkey}).map(function(c){return c.columnid.toLowerCase()+'>'+String(c.foreignkey.tableid).toLowerCase()+'.'+String(c.foreignkey.columnid).toLowerCase()}).sort().join(',')`` AS fk","expected":[{"cols":"customer_id,payment_id,wallet_id","pk":"payment_id","not_null":"customer_id,wallet_id","fk":"customer_id>customers.customer_id,payment_id>payments.payment_id"}]}}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE wallet_payments (
+  payment_id  NUMBER      PRIMARY KEY
+              REFERENCES payments(payment_id),
+  wallet_id   VARCHAR(20) NOT NULL,
+  customer_id NUMBER      NOT NULL
+              REFERENCES customers(customer_id)
+);</code></pre>
+      <p class="en">The same shape as <code>card_payments</code>: a shared key, the new box's own attribute, and its solid customer line as a <code>NOT NULL</code> key. One new table, as on the diagram one new box.</p>
+      <p class="ar">الشكل نفسه الذي لـ <code>card_payments</code>: مفتاح مشترك، وخاصية الصندوق الجديد، وخطّ زبونه المتّصل مفتاحًا بقيد <code>NOT NULL</code>. جدول جديد واحد، كما في المخطّط صندوق جديد واحد.</p>
+    </details>
+  </div>
+
+  <p class="en">Payment 7, seventy-five by Omar's wallet on 2 April, is now in. Ask way 3 the first question for that day &mdash; the query is the 3 March one with only the date changed:</p>
+  <p class="ar">دخلت الدفعة 7، خمسة وسبعون من محفظة Omar يوم 2 أبريل. اسأل الطريقة 3 السؤال الأوّل عن ذلك اليوم &mdash; والاستعلام هو استعلام 3 مارس بعد تغيير التاريخ وحده:</p>
+  <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)","INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90)","CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))","INSERT INTO cash_payments VALUES (1), (4)","CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO check_payments VALUES (2,1), (6,2)","CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111',2), (5,'5500 0000 0000 0004',1)","CREATE TABLE wallet_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), wallet_id VARCHAR(20) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO payments VALUES (7,'2026-04-02',75)","INSERT INTO wallet_payments VALUES (7,'WAL-55120',2)"],"sql":"SELECT COUNT(*) AS payments, SUM(amount) AS taken\nFROM payments\nWHERE payment_date = '2026-04-02';"}
+      </script>
+    </div>
+  <div class="output">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th><code>payments</code></th><th><code>taken</code></th></tr></thead>
+        <tbody><tr><td>1</td><td>75</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="en">Way 2 got its <code>wallet_payments</code> table too, with its own date and amount, and the same payment in it. Its step 3b query, date changed, was not touched:</p>
+  <p class="ar">وحصلت الطريقة 2 على جدول <code>wallet_payments</code> أيضًا، بتاريخه ومبلغه الخاصّين، وفيه الدفعة نفسها. أمّا استعلام الخطوة 3ب، بعد تغيير التاريخ، فلم يمسّه أحد:</p>
+  <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)","CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO cash_payments VALUES (1,'2026-03-02',40), (4,'2026-03-03',15)","INSERT INTO check_payments VALUES (2,'2026-03-02',125,1), (6,'2026-03-04',90,2)","INSERT INTO card_payments VALUES (3,'2026-03-03',310,'4111 1111 1111 1111',2), (5,'2026-03-04',220,'5500 0000 0000 0004',1)","CREATE TABLE wallet_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, wallet_id VARCHAR(20) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))","INSERT INTO wallet_payments VALUES (7,'2026-04-02',75,'WAL-55120',2)"],"sql":"SELECT COUNT(*) AS payments, SUM(amount) AS taken\nFROM (SELECT payment_date, amount FROM cash_payments\n      UNION ALL SELECT payment_date, amount FROM check_payments\n      UNION ALL SELECT payment_date, amount FROM card_payments) AS k\nWHERE payment_date = '2026-04-02';"}
+      </script>
+    </div>
+  <div class="output">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th><code>payments</code></th><th><code>taken</code></th></tr></thead>
+        <tbody><tr><td>0</td><td>0</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+  <p class="en">No error, and a wrong answer: the wallet payment is in a table the query never lists. In way 2, every query about all payments must be found and given a fourth branch. In way 1, the <code>IN</code> list and the long <code>CHECK</code> must both be rewritten, and a nullable <code>wallet_id</code> joins the table.</p>
+  <p class="ar">لا خطأ، وجواب خاطئ: دفعة المحفظة في جدول لا يذكره الاستعلام أبدًا. في الطريقة 2 يجب العثور على كل استعلام عن كل المدفوعات وإعطاؤه فرعًا رابعًا. وفي الطريقة 1 يجب إعادة كتابة قائمة <code>IN</code> وقيد <code>CHECK</code> الطويل كليهما، وينضمّ إلى الجدول عمود <code>wallet_id</code> يقبل null.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th><span class="en">Way</span><span class="ar">الطريقة</span></th><th><span class="en">"All payments" query</span><span class="ar">استعلام «كل المدفوعات»</span></th><th><span class="en">"One kind" query</span><span class="ar">استعلام «نوع واحد»</span></th><th><span class="en">R5</span><span class="ar">R5</span></th><th><span class="en">A fourth kind</span><span class="ar">نوع رابع</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="en">1 · one table</span><span class="ar">1 · جدول واحد</span></td><td><span class="en">one table</span><span class="ar">جدول واحد</span></td><td><span class="en">filter on <code>method</code></span><span class="ar">تصفية على <code>method</code></span></td><td><span class="en">kept by one cell</span><span class="ar">تحفظها خلية واحدة</span></td><td><span class="en">new column, rewritten <code>CHECK</code></span><span class="ar">عمود جديد، و<code>CHECK</code> معاد كتابته</span></td></tr>
+        <tr><td><span class="en">2 · table per subtype</span><span class="ar">2 · جدول لكل نوع فرعي</span></td><td><span class="en"><code>UNION ALL</code> of every table</span><span class="ar"><code>UNION ALL</code> لكل الجداول</span></td><td><span class="en">one table</span><span class="ar">جدول واحد</span></td><td><span class="en">lost; IDs can repeat</span><span class="ar">ضائعة؛ والأرقام قد تتكرّر</span></td><td><span class="en">new table, every "all" query edited</span><span class="ar">جدول جديد، وتعديل كل استعلام «للكل»</span></td></tr>
+        <tr><td><span class="en">3 · supertype + subtypes</span><span class="ar">3 · نوع أعلى + أنواع فرعية</span></td><td><span class="en">one table</span><span class="ar">جدول واحد</span></td><td><span class="en">one join</span><span class="ar">ربط واحد</span></td><td><span class="en">kept by an audit query</span><span class="ar">يحفظها استعلام تدقيق</span></td><td><span class="en">new table, nothing else</span><span class="ar">جدول جديد، ولا شيء غيره</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which way is built most like the diagram, so that one new box is one new table and nothing else?</p>
+    <p class="q ar">أيّ طريقة مبنيّة على صورة المخطّط أكثر من غيرها، بحيث يكون الصندوق الجديد الواحد جدولًا جديدًا واحدًا ولا شيء غيره؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Way 1 &mdash; it has the fewest tables</span><span class="ar">الطريقة 1 &mdash; ففيها أقلّ عدد من الجداول</span></button></li>
+      <li><button class="opt"><span class="en">Way 2 &mdash; each box has its own table</span><span class="ar">الطريقة 2 &mdash; فلكل صندوق جدوله</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Way 3 &mdash; the outer box is a table, and so is each inner box</span><span class="ar">الطريقة 3 &mdash; فالصندوق الخارجي جدول، وكذلك كل صندوق داخلي</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Way 2 has a table per inner box but none for the outer one, which is why its "all payments" query broke. Way 3 mirrors both, and pays with an audit for R5 and a join for every subtype question.</p>
+      <p class="ar">في الطريقة 2 جدول لكل صندوق داخلي لكن لا جدول للصندوق الخارجي، ولهذا انكسر استعلام «كل المدفوعات» فيها. أمّا الطريقة 3 فتعكس الاثنين، وتدفع ثمن ذلك تدقيقًا لـ R5 وربطًا لكل سؤال عن نوع فرعي.</p>
+    </div>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Step 6b · Choose a way for <code>WALL COVERING</code></span><span class="ar">الخطوة 6ب · اختر طريقة لـ <code>WALL COVERING</code></span></h4>
+    <p class="en">The paint shop of Lesson 3 sells <code>PAINT</code> (<code>* Litres</code>), <code>WALLPAPER</code> (<code>* Roll Length</code>), <code>FABRIC</code> (<code>* Material</code>) and <code>OTHER</code>, all with a code, a description and a price. Its most frequent question is "every product under 30". Which way would you build, and what must you run to keep R5?</p>
+    <p class="ar">يبيع متجر الدهانات في الدرس 3 الأنواع <code>PAINT</code> (<code>* Litres</code>) و<code>WALLPAPER</code> (<code>* Roll Length</code>) و<code>FABRIC</code> (<code>* Material</code>) و<code>OTHER</code>، ولها كلها رمز ووصف وسعر. وأكثر أسئلته تكرارًا: «كل منتج سعره أقلّ من 30». أيّ طريقة تبني، وماذا يجب أن تشغّل لتحفظ R5؟</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Way 3: <code>wall_coverings(code, description, price)</code> plus <code>paints</code>, <code>wallpapers</code> and <code>fabrics</code>, each keyed by <code>code</code>. The frequent question reads one table, because Lesson 5 lifted <code>* Price</code> into the supertype. <code>OTHER</code> gets a table too, <code>others(code)</code>, so that every code is filed somewhere; the audit then wants each code in exactly one of the four.</p>
+      <p class="ar">الطريقة 3: <code>wall_coverings(code, description, price)</code> مع <code>paints</code> و<code>wallpapers</code> و<code>fabrics</code>، وكلٌّ منها مفتاحه <code>code</code>. السؤال المتكرّر يقرأ جدولًا واحدًا، لأن الدرس 5 رفع <code>* Price</code> إلى النوع الأعلى. ويحصل <code>OTHER</code> على جدول أيضًا، <code>others(code)</code>، كي يُصنَّف كل رمز في مكان ما؛ ثم يطلب التدقيق أن يكون كل رمز في واحد فقط من الجداول الأربعة.</p>
+    </details>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · the SQL track</span><span class="ar">خيط · مسار SQL</span></h4>
+    <p class="en"><a href="@/chapters/chapter-7.html">SQL Chapter 7 &mdash; Normalization</a> also splits a table, but by dependency. Way 1's <code>payments</code> passes that test &mdash; <code>card_number</code> depends on <code>payment_id</code> alone &mdash; so normalization never asks for ways 2 or 3. The diagram does: here the split follows the subtype boxes, and it protects R2 to R5.</p>
+    <p class="ar">يقسم <a href="@/chapters/chapter-7.html">الفصل 7 من مسار SQL &mdash; التطبيع</a> الجدول أيضًا، لكن بحسب الاعتماد. وجدول <code>payments</code> في الطريقة 1 يجتاز ذلك الاختبار &mdash; فـ <code>card_number</code> يعتمد على <code>payment_id</code> وحده &mdash; ولذلك لا يطلب التطبيع الطريقة 2 أو 3 أبدًا. أمّا المخطّط فيطلبهما: فالتقسيم هنا يتبع صناديق الأنواع الفرعية، ويحمي القواعد من R2 إلى R5.</p>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">A supertype and its subtypes have three builds: one table with a type column, a table per subtype, or a supertype table plus subtype tables.</li>
+      <li class="ar">للنوع الأعلى وأنواعه الفرعية ثلاثة أبنية: جدول واحد بعمود للنوع، أو جدول لكل نوع فرعي، أو جدول للنوع الأعلى مع جداول للأنواع الفرعية.</li>
+      <li class="en">In one table, a subtype's <code>*</code> becomes a <code>CHECK</code> tied to the type column, never a plain <code>NOT NULL</code>.</li>
+      <li class="ar">في الجدول الواحد تصير علامة <code>*</code> الخاصّة بنوع فرعي قيد <code>CHECK</code> مربوطًا بعمود النوع، ولا تصير أبدًا <code>NOT NULL</code> بسيطًا.</li>
+      <li class="en">A table per subtype drops the supertype: "all payments" needs <code>UNION ALL</code>, and IDs can repeat across kinds.</li>
+      <li class="ar">الجدول لكل نوع فرعي يُسقط النوع الأعلى: «كل المدفوعات» تحتاج إلى <code>UNION ALL</code>، والأرقام قد تتكرّر بين الأنواع.</li>
+      <li class="en">In supertype-plus-subtypes, the subtype's primary key is also a foreign key to the supertype; inheritance is a join on it.</li>
+      <li class="ar">في بناء النوع الأعلى مع الأنواع الفرعية، المفتاح الأساسي للنوع الفرعي مفتاح أجنبي إلى النوع الأعلى أيضًا، والوراثة ربط عليه.</li>
+      <li class="en">Exhaustive and mutually exclusive across tables are kept by an audit query that starts from the supertype.</li>
+      <li class="ar">الشمول والتنافي عبر الجداول يحفظهما استعلام تدقيق يبدأ من النوع الأعلى.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Declaring <code>card_number NOT NULL</code> in the single table &mdash; every cash payment is refused.</li>
+      <li class="ar">إعلان <code>card_number NOT NULL</code> في الجدول الواحد &mdash; فتُرفض كل دفعة نقدية.</li>
+      <li class="en">Using <code>UNION</code> to rebuild the supertype &mdash; two equal payments become one.</li>
+      <li class="ar">استعمال <code>UNION</code> لإعادة بناء النوع الأعلى &mdash; فتصير الدفعتان المتساويتان دفعة واحدة.</li>
+      <li class="en">Repeating <code>payment_date</code> in a subtype table of way 3 &mdash; the inherited attribute is stored twice and can disagree.</li>
+      <li class="ar">تكرار <code>payment_date</code> في جدول نوع فرعي في الطريقة 3 &mdash; فتُخزَّن الخاصية الموروثة مرّتين وقد تختلف القيمتان.</li>
+      <li class="en">Auditing from the subtype tables &mdash; a payment filed nowhere is never found.</li>
+      <li class="ar">التدقيق انطلاقًا من جداول الأنواع الفرعية &mdash; فلا يُعثر أبدًا على الدفعة التي لم تُصنَّف في أيّ مكان.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Next: the chapter's <a href="#t4-glossary">glossary</a>, then <a href="#t4-exam-a">Chapter Test A</a>. Chapter 5 meets a relationship that hides an attribute &mdash; and its lab gives that attribute a table of its own.</p>
+    <p class="ar">التالي: <a href="#t4-glossary">قاموس المصطلحات</a> الخاص بالفصل، ثم <a href="#t4-exam-a">اختبار الفصل أ</a>. ويلتقي الفصل 5 بعلاقة تخفي خاصية &mdash; ويعطي مختبره تلك الخاصية جدولًا خاصًّا بها.</p>
+  </div>
+
+</section>

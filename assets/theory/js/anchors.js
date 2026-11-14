@@ -319,6 +319,12 @@ window.DBTAnchors = {
 "t4l5-s3": "lessons/t4-lesson-05.html",
 "t4l5-s4": "lessons/t4-lesson-05.html",
 "t4l5-s5": "lessons/t4-lesson-05.html",
+"t4lab-h1": "labs/t4-lab.html",
+"t4lab-h2": "labs/t4-lab.html",
+"t4lab-h3": "labs/t4-lab.html",
+"t4lab-h4": "labs/t4-lab.html",
+"t4lab-h5": "labs/t4-lab.html",
+"t4lab-h6": "labs/t4-lab.html",
 "t5-chapter": "chapters/t5.html",
 "t5-exam-a": "exams/t5-exam-a.html",
 "t5-exam-b": "exams/t5-exam-b.html",
@@ -1225,6 +1231,30 @@ window.DBTHeadings = {
 "t4l5-s5": {
 "ar": "الشاهد الآخر، وماذا تعني النتيجة الفارغة",
 "en": "The other witness, and what no rows means"
+},
+"t4lab-h1": {
+"ar": "١ · المخطّط، والقواعد التي يحملها",
+"en": "1 · The diagram, and the rules it carries"
+},
+"t4lab-h2": {
+"ar": "٢ · الطريقة 1: جدول واحد، وعمود للنوع",
+"en": "2 · Way 1: one table, a type column"
+},
+"t4lab-h3": {
+"ar": "٣ · الطريقة 2: جدول لكل نوع فرعي",
+"en": "3 · Way 2: a table per subtype"
+},
+"t4lab-h4": {
+"ar": "٤ · الطريقة 3: جدول للنوع الأعلى مع جداول للأنواع الفرعية",
+"en": "4 · Way 3: a supertype table plus subtype tables"
+},
+"t4lab-h5": {
+"ar": "٥ · القاعدة التي لا يحملها أيّ عمود",
+"en": "5 · The rule no column holds"
+},
+"t4lab-h6": {
+"ar": "٦ · وصلت طريقة رابعة",
+"en": "6 · A fourth method arrives"
 },
 "t5idx-h1": {
 "ar": "الدروس",

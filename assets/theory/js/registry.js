@@ -687,7 +687,7 @@ window.DBT_REGISTRY = {
       "ar": "مختبر SQL — ثلاث طرق لتخزين تسلسل هرمي"
      },
      "href": "labs/t4-lab.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t4-glossary",
