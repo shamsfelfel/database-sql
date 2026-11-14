@@ -160,7 +160,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 4 — الكيانات والنُسخ"
      },
      "href": "tests/t2-test-04.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t2-lesson-05",
