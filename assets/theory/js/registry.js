@@ -895,7 +895,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 5 — كيان التقاطع"
      },
      "href": "tests/t5-test-05.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t5-lesson-06",
