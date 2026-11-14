@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 300" direction="ltr" role="img" aria-labelledby="t3-card-order-v2-t">
+<title id="t3-card-order-v2-t">Version 2: CUSTOMER place / placed by ORDER with a crow's foot at both ends: plural both ways / الإصدار 2: علاقة CUSTOMER place / placed by ORDER بقدم غراب عند الطرفين: جمع في الاتجاهين</title>
+<g class="en"><text x="390.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — plural at both ends</text></g><g class="ar"><text x="390.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 2 — جمع عند الطرفين</text></g>
+<rect x="40" y="60" width="210" height="82" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CUSTOMER</text>
+<text x="54" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Customer ID</text>
+<text x="54" y="123" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="530" y="60" width="210" height="63" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="635.0" y="82" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ORDER</text>
+<text x="544" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Order No</text>
+<path d="M250 96 L390.0 96" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M390.0 96 L530 96" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 96 L250 88" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 96 L250 96" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 96 L250 104" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M516 96 L530 88" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M516 96 L530 96" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M516 96 L530 104" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="270" y="88" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">place</text>
+<text x="522" y="114" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">placed by</text>
+<rect x="40" y="150" width="700" height="56" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="172" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each CUSTOMER must place one or more ORDERs.</text>
+<text x="56" y="192" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each ORDER must be placed by one or more CUSTOMERs.</text>
+<rect x="40" y="222" width="700" height="56" rx="6" style="fill:var(--dg-warn-soft, var(--surface));stroke:var(--dg-warn, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="244" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Linda's two orders now fit. But order 10 may now have several customers: who owns it and pays?</text></g><g class="ar"><text x="724" y="244" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">صار طلبا Linda يتّسعان. لكن الطلب 10 قد يكون له الآن عدّة زبائن: فمن يملكه ويدفع ثمنه؟</text></g>
+<g class="en"><text x="56" y="264" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The scenario: the mother is the one customer who owns the order and pays for it.</text></g><g class="ar"><text x="724" y="264" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">والسيناريو: الأمّ هي الزبون الواحد الذي يملك الطلب ويدفع ثمنه.</text></g>
+</svg>

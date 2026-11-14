@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" direction="ltr" role="img" aria-labelledby="t3-card-instances-t">
+<title id="t3-card-instances-t">How many? Six employees each hold exactly one job; the Sales Representative job is held by two employees and Stock Clerk by none, so the JOB end is singular and the EMPLOYEE end plural / كم؟ كل موظّف من الستّة يشغل وظيفة واحدة بالضبط، ووظيفة مندوب المبيعات يشغلها موظّفان وأمين المخزن لا أحد، فطرف JOB مفرد وطرف EMPLOYEE جمع</title>
+<g class="en"><text x="450.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Count the links: one per employee, sometimes two per job</text></g><g class="ar"><text x="450.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">عُدّ الروابط: واحد لكل موظّف، وأحيانًا اثنان لكل وظيفة</text></g>
+<g class="en"><text x="95" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">EMPLOYEE instances</text></g><g class="ar"><text x="95" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">نُسَخ EMPLOYEE</text></g>
+<g class="en"><text x="325" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">JOB instances</text></g><g class="ar"><text x="325" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">نُسَخ JOB</text></g>
+<rect x="40" y="70" width="110" height="26" rx="6" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="95.0" y="87" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">100 Dana</text>
+<rect x="40" y="110" width="110" height="26" rx="6" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="95.0" y="127" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">210 Lawrence</text>
+<rect x="40" y="150" width="110" height="26" rx="6" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="95.0" y="167" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">310 Tyler</text>
+<rect x="40" y="190" width="110" height="26" rx="6" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="95.0" y="207" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">315 Mariam</text>
+<rect x="40" y="230" width="110" height="26" rx="6" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="95.0" y="247" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">378 Neil</text>
+<rect x="40" y="270" width="110" height="26" rx="6" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1"/>
+<text x="95.0" y="287" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">405 Carlos</text>
+<rect x="270" y="70" width="110" height="26" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="325.0" y="87" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">AD_PRES</text>
+<rect x="270" y="110" width="110" height="26" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="325.0" y="127" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">AC_MGR</text>
+<rect x="270" y="150" width="110" height="26" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="325.0" y="167" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">AC_ACCOUNT</text>
+<rect x="270" y="190" width="110" height="26" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="325.0" y="207" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">SA_REP</text>
+<rect x="270" y="230" width="110" height="26" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="325.0" y="247" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">IT_PROG</text>
+<rect x="270" y="270" width="110" height="26" rx="6" style="fill:var(--dg-row-odd, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="325.0" y="287" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">ST_CLERK</text>
+<path d="M150 83 L270 83" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<path d="M150 123 L270 123" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<path d="M150 163 L270 203" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<path d="M150 203 L270 203" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<path d="M150 243 L270 243" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<path d="M150 283 L270 163" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.2;fill:none"/>
+<text x="392" y="208" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px;font-weight:700">×2</text>
+<text x="392" y="288" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:12px;font-weight:700">×0</text>
+<path d="M430 44 L430 320" style="stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1;fill:none;stroke-dasharray:2 4"/>
+<g class="en"><text x="665" y="56" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px;font-weight:600">The relationship</text></g><g class="ar"><text x="665" y="56" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px;font-weight:600">العلاقة</text></g>
+<rect x="470" y="90" width="140" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="540.0" y="112" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">EMPLOYEE</text>
+<rect x="730" y="90" width="140" height="34" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="800.0" y="112" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">JOB</text>
+<path d="M610 107 L670.0 107" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M670.0 107 L730 107" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M624 107 L610 99" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M624 107 L610 107" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M624 107 L610 115" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="618" y="99" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">hold</text>
+<text x="722" y="125" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">held by</text>
+<g class="en"><text x="470" y="162" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">How many JOBs can one EMPLOYEE hold?</text></g><g class="ar"><text x="870" y="162" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">كم وظيفة يستطيع الموظّف الواحد أن يشغل؟</text></g>
+<g class="en"><text x="470" y="182" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">One only → singular → single toe at JOB</text></g><g class="ar"><text x="870" y="182" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">واحدة فقط ← مفرد ← إصبع واحدة عند JOB</text></g>
+<g class="en"><text x="470" y="214" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">How many EMPLOYEEs can hold one JOB?</text></g><g class="ar"><text x="870" y="214" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">كم موظّفًا يستطيع أن يشغل الوظيفة الواحدة؟</text></g>
+<g class="en"><text x="470" y="234" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">More than one → plural → crow's foot at EMPLOYEE</text></g><g class="ar"><text x="870" y="234" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">أكثر من واحد ← جمع ← قدم غراب عند EMPLOYEE</text></g>
+<rect x="40" y="330" width="830" height="56" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="352" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Every employee sends out exactly one line; SA_REP receives two. That difference is the whole of cardinality.</text></g><g class="ar"><text x="854" y="352" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">كل موظّف يخرج منه خط واحد بالضبط، وSA_REP يصل إليه خطّان. وهذا الفرق هو التعدّدية كلّها.</text></g>
+<g class="en"><text x="56" y="372" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The answer is one or more-than-one. Nobody asks whether it is two, or fifty.</text></g><g class="ar"><text x="854" y="372" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">الجواب: واحد أم أكثر من واحد. ولا يسأل أحد هل هو اثنان أم خمسون.</text></g>
+</svg>

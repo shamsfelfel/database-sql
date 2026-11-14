@@ -366,7 +366,7 @@ window.DBT_REGISTRY = {
       "ar": "واحد فقط لا غير، أو واحد فأكثر. «الإصبع المفردة» و«قدم الغراب» تجيبان عن المفرد أو الجمع، لا عن عدد بعينه."
      },
      "href": "lessons/t3-lesson-03.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t3-test-03",

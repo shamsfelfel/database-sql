@@ -1,0 +1,535 @@
+<section class="page" id="t3-lesson-03">
+
+  <span class="kicker">Lesson 3</span>
+  <h1><span class="en">Cardinality — how many</span><span class="ar">التعدّدية — كم واحدًا؟</span></h1>
+  <p class="lede en">By the end of this lesson you will be able to ask "how many?" at each end of a relationship, answer it with <em>one and only one</em> or <em>one or more</em>, draw the answer as a single toe or a crow's foot at the correct end, and say which table receives the foreign key because of it.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تسأل «كم؟» عند كل طرف من طرفَي العلاقة، وأن تجيب بعبارة <em>one and only one</em> أو <em>one or more</em>، وأن ترسم الجواب إصبعًا واحدة أو قدم غراب عند الطرف الصحيح، وأن تحدّد أيّ جدول يستقبل المفتاح الأجنبي بسببه.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> <a href="#t3-lesson-02">Lesson 2</a> read the halves of the line: solid for <em>must</em>, dashed for <em>may</em>. This lesson reads its <em>ends</em> &mdash; the second thing every relationship carries. The cases stay the same: the H.R. system (<code>EMPLOYEE</code>, <code>JOB</code>, <code>DEPARTMENT</code>) and the restaurant (<code>CUSTOMER</code>, <code>ORDER</code>).</p>
+    <p class="ar"><strong>السياق.</strong> قرأ <a href="#t3-lesson-02">الدرس 2</a> نصفَي الخط: المتّصل لـ «يجب» والمتقطّع لـ «قد». وهذا الدرس يقرأ <em>طرفيه</em> &mdash; الشيء الثاني الذي تحمله كل علاقة. والحالتان كما هما: نظام الموارد البشرية (<code>EMPLOYEE</code> و<code>JOB</code> و<code>DEPARTMENT</code>) والمطعم (<code>CUSTOMER</code> و<code>ORDER</code>).</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Define cardinality, and ask the "how many?" question once for each end of a relationship.</li>
+      <li class="ar">تعريف التعدّدية، وطرح سؤال «كم؟» مرّة لكل طرف من طرفَي العلاقة.</li>
+      <li class="en">Answer it with one of only two values: one and only one (singular) or one or more (plural).</li>
+      <li class="ar">الإجابة عنه بإحدى قيمتين فقط: واحد فقط لا غير (مفرد) أو واحد أو أكثر (جمع).</li>
+      <li class="en">Draw a single toe or a crow's foot at the correct end, and read it from the far entity.</li>
+      <li class="ar">رسم إصبع واحدة أو قدم غراب عند الطرف الصحيح، وقراءتها من الكيان البعيد.</li>
+      <li class="en">Combine optionality and cardinality into the minimum and maximum of one reading.</li>
+      <li class="ar">جمع الإلزامية والتعدّدية في الحدّ الأدنى والحدّ الأعلى لقراءة واحدة.</li>
+      <li class="en">Say which table carries the foreign key, from where the crow's foot is.</li>
+      <li class="ar">تحديد الجدول الذي يحمل المفتاح الأجنبي، من موضع قدم الغراب.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t3l3-h1"><span class="en">1 · How many?</span><span class="ar">١ · كم؟</span></h2>
+
+  <div class="problem">
+    <p class="en">Mariam Odeh is hired as a second Sales Representative, beside Tyler. H.R. asks the designer: can a job have two holders? Can Tyler, while we are at it, hold two jobs? Lesson 2's halves cannot answer. They say whether a link <em>must</em> exist, not how many links there may be.</p>
+    <p class="ar">تُعيَّن Mariam Odeh مندوبةَ مبيعات ثانية، إلى جانب Tyler. فيسأل قسم الموارد البشرية المصمّم: هل يمكن أن يكون للوظيفة شاغلان؟ وهل يمكن، ما دمنا في ذلك، أن يشغل Tyler وظيفتين؟ أنصاف الدرس 2 لا تجيب. فهي تقول هل <em>يجب</em> أن يوجد الرابط، لا كم رابطًا يجوز أن يوجد.</p>
+  </div>
+
+  <p class="en">The slides give this second question its own name. Cardinality "measures the quantity of something": it says how far one entity is related to another by answering "How many?" The lecturer's note puts it in two words: <em>singular or plural</em> &mdash; مفرد أو جمع.</p>
+  <p class="ar">تعطي الشرائح هذا السؤال الثاني اسمه الخاص. التعدّدية (Cardinality) «تقيس كمّية الشيء»: فهي تقول إلى أيّ حدّ يرتبط كيان بآخر بالإجابة عن «كم؟». وتختصرها ملاحظة المحاضِرة في كلمتين: <em>مفرد أو جمع</em> (singular or plural).</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="cardinality">Cardinality</span> says how many instances of one entity can be related to one instance of the other: one, or more than one.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="cardinality">التعدّدية</span> (Cardinality) تقول كم نسخة من كيانٍ يمكن أن ترتبط بنسخة واحدة من الكيان الآخر: واحدة، أم أكثر من واحدة.</p>
+  </div>
+
+  <h3 id="t3l3-s1"><span class="en">The slides' two questions, and only two answers</span><span class="ar">سؤالا الشرائح، وجوابان فقط</span></h3>
+
+  <p class="en">For <code>EMPLOYEE</code> and <code>JOB</code> the slides ask: <strong>How many jobs can one employee hold?</strong> One job only, or more than one? And: <strong>How many employees can hold one specific job?</strong> One only, or more than one? Each question has exactly two possible answers.</p>
+  <p class="ar">في <code>EMPLOYEE</code> و<code>JOB</code> تسأل الشرائح: <strong>كم وظيفة يستطيع الموظّف الواحد أن يشغل؟</strong> وظيفة واحدة فقط، أم أكثر من واحدة؟ وتسأل: <strong>كم موظّفًا يستطيع أن يشغل وظيفة واحدة بعينها؟</strong> واحدًا فقط، أم أكثر من واحد؟ ولكل سؤال جوابان ممكنان بالضبط.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="one-and-only-one"><em>One and only one</em></span> is the singular answer: exactly one matching instance at most, never two.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="one-and-only-one"><em>One and only one</em></span> (واحد فقط لا غير) هو الجواب المفرد: نسخة مطابقة واحدة على الأكثر، لا اثنتان أبدًا.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="one-or-more"><em>One or more</em></span> is the plural answer: any number of matching instances above one is allowed.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="one-or-more"><em>One or more</em></span> (واحد أو أكثر) هو الجواب الجمع: أيّ عدد من النُّسَخ المطابقة فوق الواحد مسموح.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t3-card-instances"><figcaption><span class="en">Count the thin lines. Each employee sends out exactly one, so an employee holds <em>one and only one</em> job. <code>SA_REP</code> receives two, so a job is held by <em>one or more</em> employees. <code>ST_CLERK</code> receives none &mdash; that is optionality, Lesson 2's question.</span><span class="ar">عُدّ الخطوط الرفيعة. يخرج من كل موظّف خط واحد بالضبط، فالموظّف يشغل وظيفة <em>واحدة فقط لا غير</em>. ويصل إلى <code>SA_REP</code> خطّان، فالوظيفة يشغلها <em>موظّف أو أكثر</em>. ولا يصل إلى <code>ST_CLERK</code> أيّ خط &mdash; وهذه هي الإلزامية، سؤال الدرس 2.</span></figcaption></figure>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The two answers show up as counts. Mariam (315) is in the table now. How many employees hold each job?</p>
+    <p class="ar">يظهر الجوابان أعدادًا. فـ Mariam (315) صارت في الجدول الآن. كم موظّفًا يشغل كل وظيفة؟</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE jobs (job_id VARCHAR(10) PRIMARY KEY, title VARCHAR(30) NOT NULL)","INSERT INTO jobs VALUES ('AD_PRES','President'), ('AC_MGR','Accounting Manager'), ('AC_ACCOUNT','Accountant'), ('SA_REP','Sales Representative'), ('IT_PROG','Programmer'), ('ST_CLERK','Stock Clerk')","CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, job_id VARCHAR(10) NOT NULL, manager_id NUMBER)","INSERT INTO employees (employee_id, first_name, last_name, job_id) VALUES (100,'Dana','Smith','AD_PRES')","INSERT INTO employees VALUES (310,'Tyler','Adams','SA_REP',100), (210,'Lawrence','Chen','AC_MGR',100), (405,'Carlos','Gomez','AC_ACCOUNT',210), (378,'Neil','Loungani','IT_PROG',100), (315,'Mariam','Odeh','SA_REP',100)"],"sql":"SELECT j.job_id, j.title, COUNT(e.employee_id) AS holders\nFROM jobs j LEFT JOIN employees e ON e.job_id = j.job_id\nGROUP BY j.job_id, j.title\nORDER BY j.job_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>job_id</code></th><th><code>title</code></th><th><code>holders</code></th></tr></thead>
+          <tbody>
+            <tr><td>AC_ACCOUNT</td><td>Accountant</td><td>1</td></tr>
+            <tr><td>AC_MGR</td><td>Accounting Manager</td><td>1</td></tr>
+            <tr><td>AD_PRES</td><td>President</td><td>1</td></tr>
+            <tr><td>IT_PROG</td><td>Programmer</td><td>1</td></tr>
+            <tr><td>SA_REP</td><td>Sales Representative</td><td>2</td></tr>
+            <tr><td>ST_CLERK</td><td>Stock Clerk</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">One row reaches 2, so the <code>JOB</code>-to-<code>EMPLOYEE</code> answer is plural. The other way needs no query: <code>employees.job_id</code> is one column, so each employee row can name one job and never two.</p>
+    <p class="ar">صفّ واحد يبلغ 2، فجواب الاتجاه من <code>JOB</code> إلى <code>EMPLOYEE</code> جمع. أمّا الاتجاه الآخر فلا يحتاج إلى استعلام: <code>employees.job_id</code> عمود واحد، فلا يستطيع صفّ الموظّف أن يسمّي إلا وظيفة واحدة، لا اثنتين أبدًا.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">"How many employees can hold one specific job?" Mariam and Tyler both hold <code>SA_REP</code>. What is the answer?</p>
+    <p class="q ar">«كم موظّفًا يستطيع أن يشغل وظيفة واحدة بعينها؟» يشغل Mariam وTyler كلاهما <code>SA_REP</code>. ما الجواب؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">One and only one</span><span class="ar">واحد فقط لا غير</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">One or more</span><span class="ar">واحد أو أكثر</span></button></li>
+      <li><button class="opt"><span class="en">Two</span><span class="ar">اثنان</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">One job with two holders is enough to make the answer plural: <em>one or more</em>. "Two" is a count from today's data, and cardinality never answers with a number.</p>
+      <p class="ar">وظيفة واحدة لها شاغلان تكفي لجعل الجواب جمعًا: <em>واحد أو أكثر</em>. أمّا «اثنان» فعدد من بيانات اليوم، والتعدّدية لا تجيب برقم أبدًا.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which question is a cardinality question, not an optionality one?</p>
+    <p class="q ar">أيّ سؤال هو سؤال تعدّدية، لا سؤال إلزامية؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Must every employee have a job?</span><span class="ar">هل يجب أن يكون لكل موظّف وظيفة؟</span></button></li>
+      <li><button class="opt"><span class="en">Can a job exist with nobody in it?</span><span class="ar">هل يمكن أن توجد وظيفة لا يشغلها أحد؟</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Can one employee hold more than one job?</span><span class="ar">هل يستطيع الموظّف الواحد أن يشغل أكثر من وظيفة؟</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"More than one?" is "how many?" &mdash; cardinality. The other two ask whether a link must exist at all, which is optionality from <a href="#t3-lesson-02">Lesson 2</a>.</p>
+      <p class="ar">«أكثر من واحدة؟» هو سؤال «كم؟» &mdash; التعدّدية. أمّا السؤالان الآخران فيسألان هل يجب أن يوجد الرابط أصلًا، وهذه الإلزامية من <a href="#t3-lesson-02">الدرس 2</a>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t3l3-h2"><span class="en">2 · Single toe and crow's foot</span><span class="ar">٢ · الإصبع الواحدة وقدم الغراب</span></h2>
+
+  <div class="problem">
+    <p class="en">A designer hears "one employee, many employees per job" and draws the crow's foot beside <code>JOB</code>, because "jobs are the many side". The model now refuses Mariam, and lets Tyler hold three jobs with three salary ranges. Same symbol, wrong end.</p>
+    <p class="ar">يسمع مصمّم «موظّف واحد، وموظّفون كثيرون لكل وظيفة» فيرسم قدم الغراب بجانب <code>JOB</code>، لأن «الوظائف هي جهة الكثير». فصار النموذج يرفض Mariam، ويسمح لـ Tyler بأن يشغل ثلاث وظائف بثلاث حدود رواتب. الرمز نفسه، والطرف خطأ.</p>
+  </div>
+
+  <p class="en">The slides: relationship lines "terminate in either a single toe (one instance) or a crow's foot (one or more instances)". The symbol sits where the line meets an entity, and it tells you how many of <em>that</em> entity &mdash; the one it touches.</p>
+  <p class="ar">تقول الشرائح: خطوط العلاقات «تنتهي إمّا بإصبع واحدة (نسخة واحدة) وإمّا بقدم غراب (نسخة أو أكثر)». يقع الرمز حيث يلتقي الخط بالكيان، ويخبرك كم من <em>ذلك</em> الكيان &mdash; الكيان الذي يلامسه.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="single-toe">single toe</span> is a line that meets the entity as one plain stroke; it reads <em>one and only one</em> of that entity.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="single-toe">الإصبع الواحدة</span> (Single Toe) خطّ يلتقي بالكيان ضربةً واحدة بسيطة، وتُقرأ <em>واحد فقط لا غير</em> من ذلك الكيان.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="crows-foot">crow's foot</span> is a line that meets the entity as three spread strokes; it reads <em>one or more</em> of that entity.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="crows-foot">قدم الغراب</span> (Crow's Foot) خطّ يلتقي بالكيان ثلاثَ ضربات متفرّقة، وتُقرأ <em>واحد أو أكثر</em> من ذلك الكيان.</p>
+  </div>
+
+  <div class="evolve" id="t3l3-e1">
+    <div class="ver" data-title-en="Version 1 — the crow's foot beside JOB" data-title-ar="الإصدار 1 — قدم الغراب بجانب JOB">
+      <figure class="diagram" data-diagram="t3-card-job-v1"></figure>
+      <p class="en">Defect: the symbols are swapped. The crow's foot at <code>JOB</code> says an employee holds <em>one or more</em> jobs; the single toe at <code>EMPLOYEE</code> says a job has <em>one and only one</em> holder. Mariam is refused, and Tyler's salary range is ambiguous.</p>
+      <p class="ar">العيب: الرمزان معكوسان. قدم الغراب عند <code>JOB</code> تقول إن الموظّف يشغل <em>وظيفة أو أكثر</em>، والإصبع الواحدة عند <code>EMPLOYEE</code> تقول إن للوظيفة شاغلًا <em>واحدًا فقط لا غير</em>. فتُرفض Mariam، وتصبح حدود راتب Tyler ملتبسة.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — each symbol at the end it counts" data-title-ar="الإصدار 2 — كل رمز عند الطرف الذي يعدّه">
+      <figure class="diagram" data-diagram="t3-card-job-v2"></figure>
+      <p class="en">Fixed: the crow's foot moves to <code>EMPLOYEE</code> (a job is held by one or more employees) and the single toe to <code>JOB</code> (an employee holds one and only one job). The halves have not changed. This is the slides' model.</p>
+      <p class="ar">أُصلح: انتقلت قدم الغراب إلى <code>EMPLOYEE</code> (يشغل الوظيفةَ موظّف أو أكثر)، والإصبع الواحدة إلى <code>JOB</code> (يشغل الموظّف وظيفة واحدة فقط لا غير). ولم يتغيّر النصفان. وهذا نموذج الشرائح.</p>
+    </div>
+  </div>
+
+  <h3 id="t3l3-s2"><span class="en">Read the end at the far entity</span><span class="ar">اقرأ الطرف عند الكيان البعيد</span></h3>
+
+  <p class="en">Here is the trap. Lesson 2's half is read beside the entity you <em>start</em> from. The end symbol is read at the entity you <em>arrive</em> at. "Each <code>EMPLOYEE</code> must hold one and only one <code>JOB</code>": <em>must</em> from the half beside <code>EMPLOYEE</code>, <em>one and only one</em> from the toe at <code>JOB</code>.</p>
+  <p class="ar">وهنا الفخّ. نصف الدرس 2 يُقرأ بجانب الكيان الذي <em>تبدأ</em> منه. أمّا رمز الطرف فيُقرأ عند الكيان الذي <em>تصل</em> إليه. «Each <code>EMPLOYEE</code> must hold one and only one <code>JOB</code>»: كلمة <em>must</em> من النصف المجاور لـ <code>EMPLOYEE</code>، و<em>one and only one</em> من الإصبع عند <code>JOB</code>.</p>
+
+  <pre class="code" data-lang="erdish"><code>Each EMPLOYEE   must     hold            one and only one  JOB.
+Each JOB        may be   held by         one or more       EMPLOYEEs.
+                ^ half beside the start                    ^ symbol at the far entity</code></pre>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Moving the symbols moves a column. Built faithfully, version 1 puts one <code>employee_id</code> in each <code>jobs</code> row, so <code>SA_REP</code> can name only Tyler &mdash; section 5 runs exactly that and watches Mariam fail. Version 2 is the table you already have: one <code>employees.job_id</code> per row, which any number of rows may share.</p>
+    <p class="ar">نقل الرمزين ينقل عمودًا. فالإصدار 1، إذا بُني بأمانة، يضع <code>employee_id</code> واحدًا في كل صفّ من <code>jobs</code>، فلا يستطيع <code>SA_REP</code> أن يسمّي إلا Tyler &mdash; والقسم 5 يشغّل ذلك بالضبط ويرى Mariam تفشل. أمّا الإصدار 2 فهو الجدول الذي لديك: <code>employees.job_id</code> واحد في كل صفّ، ويجوز أن يتشاركه أيّ عدد من الصفوف.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">"Each <code>JOB</code> may be held by one or more <code>EMPLOYEE</code>s." Where on the line is the crow's foot that says "one or more"?</p>
+    <p class="q ar">«Each <code>JOB</code> may be held by one or more <code>EMPLOYEE</code>s.» أين على الخط قدم الغراب التي تقول «one or more»؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Where the line meets <code>JOB</code>, because the sentence starts there</span><span class="ar">حيث يلتقي الخط بـ <code>JOB</code>، لأن الجملة تبدأ هناك</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Where the line meets <code>EMPLOYEE</code>, the entity being counted</span><span class="ar">حيث يلتقي الخط بـ <code>EMPLOYEE</code>، الكيان الذي يُعَدّ</span></button></li>
+      <li><button class="opt"><span class="en">In the middle of the line</span><span class="ar">في منتصف الخط</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The sentence counts employees, so the crow's foot is at <code>EMPLOYEE</code>. Starting at <code>JOB</code> gives you the <em>may be</em> &mdash; from the dashed half beside <code>JOB</code> &mdash; not the symbol.</p>
+      <p class="ar">الجملة تعدّ الموظّفين، فقدم الغراب عند <code>EMPLOYEE</code>. والبدء من <code>JOB</code> يعطيك <em>may be</em> &mdash; من النصف المتقطّع المجاور لـ <code>JOB</code> &mdash; لا الرمز.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which version of <code>EMPLOYEE</code>&ndash;<code>JOB</code> lets the database store Mariam as a second Sales Representative, and why?</p>
+    <p class="q ar">أيّ إصدار من <code>EMPLOYEE</code>&ndash;<code>JOB</code> يسمح لقاعدة البيانات بتخزين Mariam مندوبةَ مبيعات ثانية، ولماذا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Version 1: its crow's foot means "many" jobs</span><span class="ar">الإصدار 1: لأن قدم الغراب فيه تعني وظائف «كثيرة»</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Version 2: the crow's foot at <code>EMPLOYEE</code> allows one or more holders per job</span><span class="ar">الإصدار 2: قدم الغراب عند <code>EMPLOYEE</code> تسمح بشاغل أو أكثر لكل وظيفة</span></button></li>
+      <li><button class="opt"><span class="en">Both: cardinality does not affect what can be stored</span><span class="ar">كلاهما: التعدّدية لا تؤثّر فيما يمكن تخزينه</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Version 1 has a single toe at <code>EMPLOYEE</code>: one and only one holder per job, so a second <code>SA_REP</code> is refused. Version 2 moves the crow's foot to the entity that really is plural.</p>
+      <p class="ar">في الإصدار 1 إصبع واحدة عند <code>EMPLOYEE</code>: شاغل واحد فقط لا غير لكل وظيفة، فيُرفض <code>SA_REP</code> ثانٍ. أمّا الإصدار 2 فينقل قدم الغراب إلى الكيان الذي هو جمع فعلًا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t3l3-h3"><span class="en">3 · Singular or plural, never a number</span><span class="ar">٣ · مفرد أو جمع، لا رقم أبدًا</span></h2>
+
+  <div class="problem">
+    <p class="en">The Accounting manager asks for a rule on the ERD: "each department holds at most twenty employees". The designer looks for a symbol meaning twenty. There is none. Only a toe and a crow's foot exist, and twenty is neither.</p>
+    <p class="ar">يطلب مدير المحاسبة قاعدة على مخطّط ERD: «يضمّ كل قسم عشرين موظّفًا على الأكثر». فيبحث المصمّم عن رمز يعني عشرين. لا يوجد. لا يوجد إلا الإصبع وقدم الغراب، والعشرون ليست أيًّا منهما.</p>
+  </div>
+
+  <p class="en">That is by design. The slides say it outright: "The cardinality of a relationship only answers whether the number is singular or plural; it does not answer with a specific plural number." A crow's foot means two, or twenty, or two thousand &mdash; all the same.</p>
+  <p class="ar">وهذا مقصود. تقولها الشرائح صراحة: «تعدّدية العلاقة لا تجيب إلا عن كون العدد مفردًا أو جمعًا؛ ولا تجيب بعدد جمع محدّد.» فقدم الغراب تعني اثنين، أو عشرين، أو ألفين &mdash; كلّها سواء.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="singular-or-plural">Singular or plural</span> is the whole range of a cardinality answer: one, or more than one &mdash; never a specific count.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="singular-or-plural">مفرد أو جمع</span> (Singular or Plural) هو كل مدى جواب التعدّدية: واحد، أو أكثر من واحد &mdash; لا عدد محدّد أبدًا.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The numbers live in the rows, and they change every week. The design only promised "one or more employees" per department:</p>
+    <p class="ar">الأعداد تعيش في الصفوف، وتتغيّر كل أسبوع. والتصميم لم يَعِد إلا بـ «موظّف أو أكثر» لكل قسم:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE departments (department_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO departments VALUES (10,'Accounting'), (15,'Sales'), (22,'Development')","CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, department_id NUMBER NOT NULL, manager_id NUMBER)","INSERT INTO employees VALUES (100,'Dana','Smith',10,NULL), (310,'Tyler','Adams',15,100), (210,'Lawrence','Chen',10,100), (405,'Carlos','Gomez',10,210), (378,'Neil','Loungani',22,100)"],"sql":"SELECT d.name, COUNT(*) AS employees\nFROM departments d JOIN employees e ON e.department_id = d.department_id\nGROUP BY d.name\nORDER BY d.name;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>name</code></th><th><code>employees</code></th></tr></thead>
+          <tbody>
+            <tr><td>Accounting</td><td>3</td></tr>
+            <tr><td>Development</td><td>1</td></tr>
+            <tr><td>Sales</td><td>1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Three, one, one: one crow's foot covers them all. A cap of twenty is a separate business rule, kept outside the ERD &mdash; by the application, not by the line.</p>
+    <p class="ar">ثلاثة، وواحد، وواحد: قدم غراب واحدة تشملها كلها. أمّا سقف العشرين فقاعدة عمل منفصلة، تُحفظ خارج مخطّط ERD &mdash; يحفظها التطبيق، لا الخط.</p>
+  </div>
+
+  <h3 id="t3l3-s3"><span class="en">Minimum and maximum: the half and the end together</span><span class="ar">الحدّ الأدنى والأعلى: النصف والطرف معًا</span></h3>
+
+  <p class="en">The slides list cardinality as "the minimum and maximum number of values in the relationship", and optionality as optional (zero matching records) or mandatory (at least one). Put together, one reading has a minimum from its half and a maximum from its end. That is why the lecturer writes that a job "may be held by <em>zero or more</em> employees".</p>
+  <p class="ar">تذكر الشرائح التعدّدية بوصفها «الحدّ الأدنى والحدّ الأعلى لعدد القيم في العلاقة»، والإلزامية بوصفها اختيارية (صفر سجلّات مطابقة) أو إلزامية (واحد على الأقل). وإذا جُمعتا، فللقراءة الواحدة حدّ أدنى من نصفها وحدّ أعلى من طرفها. ولهذا تكتب المحاضِرة أن الوظيفة «قد يشغلها <em>صفر أو أكثر</em> من الموظّفين».</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="zero-or-more">Zero or more</span> is what a <em>may</em> half and a crow's foot say together: none, one, or many.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="zero-or-more">صفر أو أكثر</span> (Zero or More) هو ما يقوله معًا نصف «قد» وقدم الغراب: لا شيء، أو واحد، أو كثير.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="zero-or-one">Zero or one</span> is what a <em>may</em> half and a single toe say together: none, or exactly one.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="zero-or-one">صفر أو واحد</span> (Zero or One) هو ما يقوله معًا نصف «قد» والإصبع الواحدة: لا شيء، أو واحد بالضبط.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t3-card-ends"><figcaption><span class="en">The four ways one reading can end, each with a sentence from the slides. The half beside <code>A</code> gives the minimum (must = 1, may = 0); the symbol at <code>B</code> gives the maximum (toe = 1, crow's foot = many).</span><span class="ar">الطرق الأربع التي تنتهي بها القراءة الواحدة، ولكلٍّ جملة من الشرائح. النصف المجاور لـ <code>A</code> يعطي الحدّ الأدنى (يجب = 1، قد = 0)، والرمز عند <code>B</code> يعطي الحدّ الأعلى (الإصبع = 1، قدم الغراب = كثير).</span></figcaption></figure>
+
+  <div class="quiz">
+    <p class="q en">"Each <code>EMPLOYEE</code> may be managed by one and only one <code>EMPLOYEE</code>." How many managers can one employee have?</p>
+    <p class="q ar">«Each <code>EMPLOYEE</code> may be managed by one and only one <code>EMPLOYEE</code>.» كم مديرًا يمكن أن يكون للموظّف الواحد؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Exactly one</span><span class="ar">واحد بالضبط</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Zero or one</span><span class="ar">صفر أو واحد</span></button></li>
+      <li><button class="opt"><span class="en">Zero or more</span><span class="ar">صفر أو أكثر</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><em>May</em> sets the minimum at zero (Dana has no manager); <em>one and only one</em> sets the maximum at one. Together: zero or one.</p>
+      <p class="ar">«may» تجعل الحدّ الأدنى صفرًا (فـ Dana لا مدير لها)، و«one and only one» تجعل الحدّ الأعلى واحدًا. ومعًا: صفر أو واحد.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A manager wants "each department has between 2 and 20 employees" drawn on the ERD. What can the line show?</p>
+    <p class="q ar">يريد مدير أن يُرسم على مخطّط ERD أن «لكل قسم ما بين 2 و20 موظّفًا». ماذا يستطيع الخط أن يُظهر؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A crow's foot labelled "2..20"</span><span class="ar">قدم غراب مكتوب عليها «2..20»</span></button></li>
+      <li><button class="opt"><span class="en">Two crow's feet, one for the minimum and one for the maximum</span><span class="ar">قدما غراب، واحدة للحدّ الأدنى وأخرى للحدّ الأعلى</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Only "one or more"; the numbers 2 and 20 are kept as a separate rule</span><span class="ar">«واحد أو أكثر» فقط؛ ويُحفظ العددان 2 و20 قاعدةً منفصلة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Cardinality answers singular or plural, never a specific number. The crow's foot says plural; the exact limits live outside the diagram.</p>
+      <p class="ar">التعدّدية تجيب بمفرد أو جمع، لا بعدد محدّد أبدًا. قدم الغراب تقول «جمع»، والحدود الدقيقة تعيش خارج المخطّط.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t3l3-h4"><span class="en">4 · The restaurant: deciding each end from the scenario</span><span class="ar">٤ · المطعم: حسم كل طرف من السيناريو</span></h2>
+
+  <div class="problem">
+    <p class="en">Linda comes back on Friday and orders again &mdash; order 102. The system refuses: "this customer already has an order". The cashier creates a second Linda to get the order through. Now the restaurant has two Lindas, and neither one's history is complete.</p>
+    <p class="ar">تعود Linda يوم الجمعة وتطلب مرّة أخرى &mdash; الطلب 102. فيرفض النظام: «لهذا الزبون طلب من قبل». فينشئ أمين الصندوق Linda ثانية ليمرّ الطلب. وصار في المطعم الآن Linda اثنتان، وتاريخ كلٍّ منهما ناقص.</p>
+  </div>
+
+  <p class="en">The scenario answers both "how many?" questions. "Over a period of time, a customer can place as many orders as he wants" &mdash; plural at <code>ORDER</code>. "We consider the mother to be the customer who owns the order and is responsible for payment" &mdash; singular at <code>CUSTOMER</code>, even when she orders for her children too.</p>
+  <p class="ar">يجيب السيناريو عن سؤالَي «كم؟» كليهما. «على مدى فترة من الزمن، يستطيع الزبون أن يضع من الطلبات ما يشاء» &mdash; جمع عند <code>ORDER</code>. «ونعدّ الأمّ هي الزبون الذي يملك الطلب ويتحمّل مسؤولية الدفع» &mdash; مفرد عند <code>CUSTOMER</code>، حتى حين تطلب لأطفالها أيضًا.</p>
+
+  <div class="evolve" id="t3l3-e2">
+    <div class="ver" data-title-en="Version 1 — a single toe at both ends" data-title-ar="الإصدار 1 — إصبع واحدة عند الطرفين">
+      <figure class="diagram" data-diagram="t3-card-order-v1"></figure>
+      <p class="en">Defect: too few. "Each <code>CUSTOMER</code> must place one and only one <code>ORDER</code>" refuses Linda's second order, and the workaround &mdash; a second Linda &mdash; is the redundancy chapter T2 warned about.</p>
+      <p class="ar">العيب: أقلّ ممّا يلزم. «Each <code>CUSTOMER</code> must place one and only one <code>ORDER</code>» ترفض طلب Linda الثاني، والحيلة البديلة &mdash; Linda ثانية &mdash; هي التكرار الذي حذّر منه الفصل T2.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — a crow's foot at both ends" data-title-ar="الإصدار 2 — قدم غراب عند الطرفين">
+      <figure class="diagram" data-diagram="t3-card-order-v2"></figure>
+      <p class="en">Fixed: Linda can place orders 10 and 102. New defect: too many. "Each <code>ORDER</code> must be placed by one or more <code>CUSTOMER</code>s" lets an order belong to the mother and her children at once &mdash; and nobody is the one who pays.</p>
+      <p class="ar">أُصلح: تستطيع Linda أن تضع الطلبين 10 و102. وعيب جديد: أكثر ممّا يلزم. «Each <code>ORDER</code> must be placed by one or more <code>CUSTOMER</code>s» تسمح بأن يخصّ الطلب الأمَّ وأطفالها معًا &mdash; ولا يكون أحد هو الذي يدفع.</p>
+    </div>
+    <div class="ver" data-title-en="Version 3 — crow's foot at ORDER, single toe at CUSTOMER" data-title-ar="الإصدار 3 — قدم غراب عند ORDER، وإصبع واحدة عند CUSTOMER">
+      <figure class="diagram" data-diagram="t3-customer-order"></figure>
+      <p class="en">Fixed: the slides' model. Each <code>CUSTOMER</code> must place one or more <code>ORDER</code>s; each <code>ORDER</code> must be placed by one and only one <code>CUSTOMER</code>. Plural where the scenario said "as many as he wants", singular where it named one owner. Recommended.</p>
+      <p class="ar">أُصلح: نموذج الشرائح. يجب أن يضع كل <code>CUSTOMER</code> واحدًا أو أكثر من <code>ORDER</code>، ويجب أن يوضع كل <code>ORDER</code> من قِبل <code>CUSTOMER</code> واحد فقط لا غير. جمع حيث قال السيناريو «ما يشاء»، ومفرد حيث سمّى مالكًا واحدًا. وهو الموصى به.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 1 as a table makes <code>orders.customer_id</code> <code>UNIQUE</code>: one order per customer. Linda (1) already has order 10. Run Friday's order:</p>
+    <p class="ar">الإصدار 1 جدولًا يجعل <code>orders.customer_id</code> عمودًا <code>UNIQUE</code>: طلب واحد لكل زبون. ولـ Linda (1) الطلب 10 من قبل. شغّل طلب الجمعة:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"explore","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Krishna'), (3,'Mel')","CREATE TABLE orders (order_no NUMBER PRIMARY KEY, customer_id NUMBER NOT NULL UNIQUE)","INSERT INTO orders VALUES (10,1), (77,2), (100,3)"],"sql":"INSERT INTO orders VALUES (102, 1);"}
+      </script>
+    </div>
+    <p class="en">It fails with <code>Cannot insert record, because it already exists in unique index</code> &mdash; the single toe at <code>ORDER</code>, enforced. In version 3 the column is plain <code>customer_id NUMBER NOT NULL</code>, and counting gives Krishna 1, Linda 2, Mel 1: plural at <code>ORDER</code>, one owner per order.</p>
+    <p class="ar">يفشل برسالة <code>Cannot insert record, because it already exists in unique index</code> &mdash; إنها الإصبع الواحدة عند <code>ORDER</code>، مُطبَّقة. وفي الإصدار 3 يكون العمود <code>customer_id NUMBER NOT NULL</code> فحسب، ويعطي العدّ: Krishna 1، وLinda 2، وMel 1: جمع عند <code>ORDER</code>، ومالك واحد لكل طلب.</p>
+  </div>
+
+  <h3 id="t3l3-s4"><span class="en">Two questions, two symbols, one scenario</span><span class="ar">سؤالان، ورمزان، وسيناريو واحد</span></h3>
+
+  <p class="en">Version 1 answered "singular" twice without asking; version 2 answered "plural" twice to be safe. Neither is safe. Ask each end separately, find the sentence in the scenario that answers it, and draw that answer at the entity being counted.</p>
+  <p class="ar">أجاب الإصدار 1 «مفرد» مرّتين دون أن يسأل، وأجاب الإصدار 2 «جمع» مرّتين احتياطًا. وليس أيّ منهما آمنًا. اسأل عن كل طرف على حدة، وجِد في السيناريو الجملة التي تجيب عنه، وارسم ذلك الجواب عند الكيان الذي يُعَدّ.</p>
+
+  <div class="quiz">
+    <p class="q en">Which sentence of the scenario puts the single toe at <code>CUSTOMER</code>?</p>
+    <p class="q ar">أيّ جملة من السيناريو تضع الإصبع الواحدة عند <code>CUSTOMER</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">"A customer can place as many orders as he wants."</span><span class="ar">«يستطيع الزبون أن يضع من الطلبات ما يشاء.»</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">"The mother is the customer who owns the order and is responsible for payment."</span><span class="ar">«الأمّ هي الزبون الذي يملك الطلب ويتحمّل مسؤولية الدفع.»</span></button></li>
+      <li><button class="opt"><span class="en">"A customer walks up to the counter and places their order."</span><span class="ar">«يتقدّم الزبون إلى المنضدة ويضع طلبه.»</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">It names one owner per order, even when the food is for several people: "one and only one CUSTOMER". The first sentence decides the other end, the crow's foot at <code>ORDER</code>.</p>
+      <p class="ar">إنها تسمّي مالكًا واحدًا لكل طلب، حتى حين يكون الطعام لعدّة أشخاص: «one and only one CUSTOMER». أمّا الجملة الأولى فتقرّر الطرف الآخر، قدم الغراب عند <code>ORDER</code>.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">What is wrong with version 2, the crow's foot at both ends?</p>
+    <p class="q ar">ما الخطأ في الإصدار 2، قدم الغراب عند الطرفين؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">It refuses Linda's second order</span><span class="ar">يرفض طلب Linda الثاني</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">An order may have several customers, so it has no single owner who pays</span><span class="ar">قد يكون للطلب عدّة زبائن، فلا يكون له مالك واحد يدفع</span></button></li>
+      <li><button class="opt"><span class="en">Its halves should be dashed</span><span class="ar">نصفاه يجب أن يكونا متقطّعين</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Version 2 fixed Linda's orders but made <code>ORDER</code>-to-<code>CUSTOMER</code> plural, against the scenario. The halves are a separate question, and they are right: solid at both.</p>
+      <p class="ar">أصلح الإصدار 2 طلبات Linda لكنه جعل الاتجاه من <code>ORDER</code> إلى <code>CUSTOMER</code> جمعًا، خلافًا للسيناريو. أمّا النصفان فسؤال منفصل، وهما صحيحان: متّصلان كلاهما.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t3l3-h5"><span class="en">5 · The crow's foot decides where the key goes</span><span class="ar">٥ · قدم الغراب تقرّر أين يذهب المفتاح</span></h2>
+
+  <div class="problem">
+    <p class="en">The database administrator builds <code>EMPLOYEE</code>&ndash;<code>JOB</code> by adding <code>employee_id</code> to <code>jobs</code>. It works for Tyler. Then Mariam needs the same <code>SA_REP</code> row to name her too, and a cell holds one value.</p>
+    <p class="ar">يبني مدير قاعدة البيانات <code>EMPLOYEE</code>&ndash;<code>JOB</code> بإضافة <code>employee_id</code> إلى <code>jobs</code>. فينجح ذلك مع Tyler. ثم تحتاج Mariam إلى أن يسمّيها صفّ <code>SA_REP</code> نفسه أيضًا، والخليّة لا تحمل إلا قيمة واحدة.</p>
+  </div>
+
+  <p class="en">A foreign key column holds one value per row, so it can only express the singular. Put it in the table whose rows each point to <em>one</em> of the other: the entity at the crow's-foot end. Each employee row names one job; a job row could not name many employees.</p>
+  <p class="ar">عمود المفتاح الأجنبي يحمل قيمة واحدة في كل صفّ، فلا يستطيع أن يعبّر إلا عن المفرد. ضعه في الجدول الذي يشير كل صفّ فيه إلى <em>واحد</em> من الآخر: الكيان الذي عند طرف قدم الغراب. فصفّ الموظّف يسمّي وظيفة واحدة، وصفّ الوظيفة ما كان ليسمّي موظّفين كثيرين.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="crows-foot-end">crow's-foot end</span> of a one-and-many relationship is the entity whose table carries the foreign key.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="crows-foot-end">طرف قدم الغراب</span> (Crow's-Foot End) في علاقة بين واحد وكثير هو الكيان الذي يحمل جدولُه المفتاحَ الأجنبي.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Relationship</th><th class="ar">العلاقة</th><th class="en">Crow's foot at</th><th class="ar">قدم الغراب عند</th><th class="en">Key column</th><th class="ar">عمود المفتاح</th></tr></thead>
+      <tbody>
+        <tr><td class="en"><code>EMPLOYEE</code> hold / held by <code>JOB</code></td><td class="ar"><code>EMPLOYEE</code> hold / held by <code>JOB</code></td><td class="en"><code>EMPLOYEE</code></td><td class="ar"><code>EMPLOYEE</code></td><td class="en"><code>employees.job_id</code></td><td class="ar"><code>employees.job_id</code></td></tr>
+        <tr><td class="en"><code>EMPLOYEE</code> work in / responsible for <code>DEPARTMENT</code></td><td class="ar"><code>EMPLOYEE</code> work in / responsible for <code>DEPARTMENT</code></td><td class="en"><code>EMPLOYEE</code></td><td class="ar"><code>EMPLOYEE</code></td><td class="en"><code>employees.department_id</code></td><td class="ar"><code>employees.department_id</code></td></tr>
+        <tr><td class="en"><code>CUSTOMER</code> place / placed by <code>ORDER</code></td><td class="ar"><code>CUSTOMER</code> place / placed by <code>ORDER</code></td><td class="en"><code>ORDER</code></td><td class="ar"><code>ORDER</code></td><td class="en"><code>orders.customer_id</code></td><td class="ar"><code>orders.customer_id</code></td></tr>
+        <tr><td class="en"><code>PRODUCT</code> classified by / classify <code>PRODUCT TYPE</code></td><td class="ar"><code>PRODUCT</code> classified by / classify <code>PRODUCT TYPE</code></td><td class="en"><code>PRODUCT</code></td><td class="ar"><code>PRODUCT</code></td><td class="en"><code>products.product_type_id</code></td><td class="ar"><code>products.product_type_id</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Here is the administrator's design: the key at the single-toe end. Tyler is in. Now add Mariam to <code>SA_REP</code>:</p>
+    <p class="ar">هذا تصميم مدير قاعدة البيانات: المفتاح عند طرف الإصبع الواحدة. Tyler موجود. أضف الآن Mariam إلى <code>SA_REP</code>:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"explore","objects":true,"dataset":{},"setup":["CREATE TABLE jobs (job_id VARCHAR(10) PRIMARY KEY, title VARCHAR(30) NOT NULL, employee_id NUMBER)","INSERT INTO jobs VALUES ('SA_REP','Sales Representative',310)"],"sql":"INSERT INTO jobs VALUES ('SA_REP', 'Sales Representative', 315);"}
+      </script>
+    </div>
+    <p class="en">It fails with <code>Cannot insert record, because it already exists in primary key index</code>. The only way round is a second <code>SA_REP</code> row &mdash; a job stored twice, the T2 anomaly again. With <code>job_id</code> in <code>employees</code>, the section 1 query showed both holders with no trouble.</p>
+    <p class="ar">يفشل برسالة <code>Cannot insert record, because it already exists in primary key index</code>. ولا مخرج إلا بصفّ <code>SA_REP</code> ثانٍ &mdash; وظيفة مخزّنة مرّتين، وهو شذوذ T2 من جديد. أمّا مع <code>job_id</code> في <code>employees</code>، فقد أظهر استعلام القسم 1 الشاغلَين دون أيّ عناء.</p>
+  </div>
+
+  <h3 id="t3l3-s5"><span class="en">The manager line: both ends in one table</span><span class="ar">خط المدير: الطرفان في جدول واحد</span></h3>
+
+  <p class="en">The recursive relationship follows the same rule. "Each EMPLOYEE may be managed by one and only one EMPLOYEE": singular, so it fits in a column &mdash; <code>employees.manager_id</code>. "May manage one or more EMPLOYEEs": plural, so it is never a column; it is every row whose <code>manager_id</code> names you.</p>
+  <p class="ar">العلاقة الذاتية تتبع القاعدة نفسها. «Each EMPLOYEE may be managed by one and only one EMPLOYEE»: مفرد، فيتّسع له عمود &mdash; <code>employees.manager_id</code>. و«may manage one or more EMPLOYEEs»: جمع، فلا يكون عمودًا أبدًا؛ بل هو كل صفّ يسمّيك عمود <code>manager_id</code> فيه.</p>
+
+  <figure class="diagram" data-diagram="t3-recursive"><figcaption><span class="en">Lesson 1's recursive relationship. Dana manages three employees (plural, read from the rows); each employee names at most one manager (singular, one column).</span><span class="ar">العلاقة الذاتية من الدرس 1. تدير Dana ثلاثة موظّفين (جمع، يُقرأ من الصفوف)، وكل موظّف يسمّي مديرًا واحدًا على الأكثر (مفرد، عمود واحد).</span></figcaption></figure>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapter 3</span><span class="ar">خيط · الفصل 3 في SQL</span></h4>
+    <p class="en">On the SQL track, <a href="@/chapters/chapter-3.html">Chapter 3 &mdash; Relationships</a> joins tables through a foreign key that is already there. It never asks which table should have received it. This lesson answers: the table at the crow's-foot end, because a column can only hold the singular side.</p>
+    <p class="ar">في مسار SQL، يربط <a href="@/chapters/chapter-3.html">الفصل 3 &mdash; العلاقات</a> الجداول عبر مفتاح أجنبي موجود أصلًا، ولا يسأل أبدًا أيّ جدول كان يجب أن يستقبله. وهذا الدرس يجيب: الجدول الذي عند طرف قدم الغراب، لأن العمود لا يحمل إلا جهة المفرد.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">"Each <code>PRODUCT</code> must be classified by one and only one <code>PRODUCT TYPE</code>. Each <code>PRODUCT TYPE</code> may classify one or more <code>PRODUCT</code>s." Which table gets the foreign key?</p>
+    <p class="q ar">«Each <code>PRODUCT</code> must be classified by one and only one <code>PRODUCT TYPE</code>. Each <code>PRODUCT TYPE</code> may classify one or more <code>PRODUCT</code>s.» أيّ جدول يأخذ المفتاح الأجنبي؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en"><code>products</code>, as <code>product_type_id</code></span><span class="ar"><code>products</code>، بوصفه <code>product_type_id</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>product_types</code>, as <code>product_id</code></span><span class="ar"><code>product_types</code>، بوصفه <code>product_id</code></span></button></li>
+      <li><button class="opt"><span class="en">Both tables, one key each</span><span class="ar">الجدولان، مفتاح لكلٍّ منهما</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The crow's foot is at <code>PRODUCT</code>, and each product names one and only one type &mdash; a single value per row. A type naming its products would need many values in one cell.</p>
+      <p class="ar">قدم الغراب عند <code>PRODUCT</code>، وكل منتج يسمّي نوعًا واحدًا فقط لا غير &mdash; قيمة واحدة في كل صفّ. أمّا النوع الذي يسمّي منتجاته فيحتاج إلى قيم كثيرة في خليّة واحدة.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why is there no "employees I manage" column in <code>employees</code>?</p>
+    <p class="q ar">لماذا لا يوجد عمود «الموظّفون الذين أديرهم» في <code>employees</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Because that end is optional</span><span class="ar">لأن ذلك الطرف اختياري</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Because that end is plural, and a column holds one value per row</span><span class="ar">لأن ذلك الطرف جمع، والعمود يحمل قيمة واحدة في كل صفّ</span></button></li>
+      <li><button class="opt"><span class="en">Because recursive relationships have no foreign key</span><span class="ar">لأن العلاقات الذاتية لا مفتاح أجنبي لها</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"May manage one or more" is plural, so it cannot be a column. The singular end, "managed by one and only one", is the column: <code>manager_id</code>. Optionality only decides whether that column may be empty.</p>
+      <p class="ar">«may manage one or more» جمع، فلا يمكن أن تكون عمودًا. أمّا الطرف المفرد، «managed by one and only one»، فهو العمود: <code>manager_id</code>. والإلزامية لا تقرّر إلا هل يجوز أن يبقى ذلك العمود فارغًا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t3l3-h6"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Ask "how many?" twice</span><span class="ar">تمرين 1 · اسأل «كم؟» مرّتين</span></h4>
+    <p class="en">For each pair, write both cardinality questions, answer each with <em>one and only one</em> or <em>one or more</em>, and say where the crow's foot goes. (a) <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code>: "each employee reports to a department". (b) <code>BOOK</code>&ndash;<code>AUTHOR</code>, in the slides' library. (c) <code>PRODUCT</code>&ndash;<code>PRODUCT TYPE</code>.</p>
+    <p class="ar">لكل زوج، اكتب سؤالَي التعدّدية، وأجب عن كلٍّ منهما بـ <em>one and only one</em> أو <em>one or more</em>، وقل أين تذهب قدم الغراب. (a) <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code>: «يتبع كل موظّف قسمًا». (b) <code>BOOK</code>&ndash;<code>AUTHOR</code>، في مكتبة الشرائح. (c) <code>PRODUCT</code>&ndash;<code>PRODUCT TYPE</code>.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) How many departments per employee? One and only one &mdash; toe at <code>DEPARTMENT</code>. How many employees per department? One or more &mdash; crow's foot at <code>EMPLOYEE</code>. (b) One and only one author per book (toe at <code>AUTHOR</code>); one or more books per author (crow's foot at <code>BOOK</code>). (c) Toe at <code>PRODUCT TYPE</code>, crow's foot at <code>PRODUCT</code>.</p>
+      <p class="ar">(a) كم قسمًا لكل موظّف؟ واحد فقط لا غير &mdash; إصبع عند <code>DEPARTMENT</code>. وكم موظّفًا لكل قسم؟ واحد أو أكثر &mdash; قدم غراب عند <code>EMPLOYEE</code>. (b) مؤلّف واحد فقط لا غير لكل كتاب (إصبع عند <code>AUTHOR</code>)، وكتاب أو أكثر لكل مؤلّف (قدم غراب عند <code>BOOK</code>). (c) إصبع عند <code>PRODUCT TYPE</code>، وقدم غراب عند <code>PRODUCT</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Fill in the cardinality</span><span class="ar">تمرين 2 · املأ التعدّدية</span></h4>
+    <p class="en">Each line says what the line looks like where it meets the far entity. Write <em>one and only one</em> or <em>one or more</em>.</p>
+    <p class="ar">كل سطر يقول كيف يبدو الخط حيث يلتقي بالكيان البعيد. اكتب <em>one and only one</em> أو <em>one or more</em>.</p>
+    <pre class="code" data-lang="erdish"><code>1  Each DEPARTMENT may be responsible for ____ EMPLOYEEs.   (crow's foot at EMPLOYEE)
+2  Each ORDER      must be placed by       ____ CUSTOMER.    (single toe at CUSTOMER)
+3  Each AUTHOR     may be the author of    ____ BOOKs.       (crow's foot at BOOK)
+4  Each EMPLOYEE   may be managed by       ____ EMPLOYEE.    (single toe at the manager end)</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">1 one or more. 2 one and only one. 3 one or more. 4 one and only one. The symbol is read at the entity the sentence arrives at; the plural <em>s</em> on the entity name follows the crow's foot.</p>
+      <p class="ar">1 one or more. و2 one and only one. و3 one or more. و4 one and only one. الرمز يُقرأ عند الكيان الذي تصل إليه الجملة، وحرف الجمع <em>s</em> على اسم الكيان يتبع قدم الغراب.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Find the wrong end</span><span class="ar">تمرين 3 · جِد الطرف الخاطئ</span></h4>
+    <p class="en">A classmate's draft, written as text: <code>[toe]</code> or <code>[crow]</code> is the symbol where the line meets that entity. The business rules are those of this lesson. Which lines are wrong, and how should each be fixed?</p>
+    <p class="ar">مسوّدة زميل، مكتوبة نصًّا: <code>[toe]</code> أو <code>[crow]</code> هو الرمز حيث يلتقي الخط بذلك الكيان. وقواعد العمل هي قواعد هذا الدرس. أيّ الأسطر خاطئة، وكيف يُصلح كلٌّ منها؟</p>
+    <pre class="code" data-lang="text"><code>1  [crow] EMPLOYEE    hold     |  held by          JOB         [toe]
+2  [toe]  EMPLOYEE    work in  |  responsible for  DEPARTMENT  [crow]
+3  [crow] CUSTOMER    place    |  placed by        ORDER       [crow]
+4  [crow] PRODUCT     classified by | classify     PRODUCT TYPE [toe]</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Line 2 is swapped: an employee works in one and only one department, so the toe belongs at <code>DEPARTMENT</code> and the crow's foot at <code>EMPLOYEE</code>. Line 3 is version 2 of the restaurant: <code>CUSTOMER</code> needs a toe &mdash; one owner per order. Lines 1 and 4 are right.</p>
+      <p class="ar">السطر 2 معكوس: يعمل الموظّف في قسم واحد فقط لا غير، فالإصبع مكانها عند <code>DEPARTMENT</code> وقدم الغراب عند <code>EMPLOYEE</code>. والسطر 3 هو الإصدار 2 للمطعم: يحتاج <code>CUSTOMER</code> إلى إصبع &mdash; مالك واحد لكل طلب. والسطران 1 و4 صحيحان.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Minimum and maximum</span><span class="ar">تمرين 4 · الحدّ الأدنى والأعلى</span></h4>
+    <p class="en">Give the minimum and maximum for each reading, then name it (exactly one, zero or one, one or more, zero or more). (a) Each <code>JOB</code> may be held by one or more <code>EMPLOYEE</code>s. (b) Each <code>ORDER</code> must be placed by one and only one <code>CUSTOMER</code>. (c) Each <code>CUSTOMER</code> must place one or more <code>ORDER</code>s. (d) Each <code>EMPLOYEE</code> may be managed by one and only one <code>EMPLOYEE</code>.</p>
+    <p class="ar">أعطِ الحدّ الأدنى والأعلى لكل قراءة، ثم سمِّها (واحد بالضبط، صفر أو واحد، واحد أو أكثر، صفر أو أكثر). (a) Each <code>JOB</code> may be held by one or more <code>EMPLOYEE</code>s. (b) Each <code>ORDER</code> must be placed by one and only one <code>CUSTOMER</code>. (c) Each <code>CUSTOMER</code> must place one or more <code>ORDER</code>s. (d) Each <code>EMPLOYEE</code> may be managed by one and only one <code>EMPLOYEE</code>.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) 0 and many: zero or more &mdash; Stock Clerk has 0, <code>SA_REP</code> has 2. (b) 1 and 1: exactly one. (c) 1 and many: one or more. (d) 0 and 1: zero or one &mdash; Dana has none. <em>Must/may</em> sets the minimum, the symbol the maximum.</p>
+      <p class="ar">(a) 0 وكثير: صفر أو أكثر &mdash; لأمين المخزن 0، ولـ <code>SA_REP</code> اثنان. (b) 1 و1: واحد بالضبط. (c) 1 وكثير: واحد أو أكثر. (d) 0 و1: صفر أو واحد &mdash; لا مدير لـ Dana. «must/may» تحدّد الحدّ الأدنى، والرمز يحدّد الأعلى.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Put the key in the right table</span><span class="ar">تمرين 5 · ضع المفتاح في الجدول الصحيح</span></h4>
+    <p class="en">Write <code>CREATE TABLE</code> for <code>departments (department_id, name)</code> and <code>employees (employee_id, first_name, last_name, …)</code> so that the <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code> relationship fits: one and only one department per employee, one or more employees per department. Say which end decided where the key went.</p>
+    <p class="ar">اكتب <code>CREATE TABLE</code> للجدولين <code>departments (department_id, name)</code> و<code>employees (employee_id, first_name, last_name, …)</code> بحيث تتّسع علاقة <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code>: قسم واحد فقط لا غير لكل موظّف، وموظّف أو أكثر لكل قسم. وقل أيّ طرف قرّر أين يذهب المفتاح.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE departments (
+  department_id NUMBER PRIMARY KEY,
+  name          VARCHAR(20) NOT NULL
+);
+CREATE TABLE employees (
+  employee_id   NUMBER PRIMARY KEY,
+  first_name    VARCHAR(20) NOT NULL,
+  last_name     VARCHAR(20) NOT NULL,
+  department_id NUMBER NOT NULL   -- crow's foot at EMPLOYEE: the key lives here
+);</code></pre>
+      <p class="en">The crow's foot at <code>EMPLOYEE</code> puts <code>department_id</code> in <code>employees</code>: each row names one department, and Accounting is named by three rows. <code>NOT NULL</code> comes from the solid <code>EMPLOYEE</code> half &mdash; Lesson 2.</p>
+      <p class="ar">قدم الغراب عند <code>EMPLOYEE</code> تضع <code>department_id</code> في <code>employees</code>: كل صفّ يسمّي قسمًا واحدًا، والمحاسبة تسمّيها ثلاثة صفوف. أمّا <code>NOT NULL</code> فيأتي من نصف <code>EMPLOYEE</code> المتّصل &mdash; الدرس 2.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">Cardinality answers "how many?" for each end of a relationship, separately.</li>
+      <li class="ar">التعدّدية تجيب عن «كم؟» لكل طرف من طرفَي العلاقة، على حدة.</li>
+      <li class="en">There are only two answers: one and only one (singular) or one or more (plural) &mdash; never a specific number.</li>
+      <li class="ar">ليس هناك إلا جوابان: واحد فقط لا غير (مفرد) أو واحد أو أكثر (جمع) &mdash; لا عدد محدّد أبدًا.</li>
+      <li class="en">A single toe means one and only one; a crow's foot means one or more. The symbol counts the entity it touches.</li>
+      <li class="ar">الإصبع الواحدة تعني واحد فقط لا غير، وقدم الغراب تعني واحد أو أكثر. والرمز يعدّ الكيان الذي يلامسه.</li>
+      <li class="en">In a sentence, <em>must/may</em> comes from the half beside the start; <em>one and only one/one or more</em> from the symbol at the far entity.</li>
+      <li class="ar">في الجملة، تأتي <em>must/may</em> من النصف المجاور للبداية، و<em>one and only one/one or more</em> من الرمز عند الكيان البعيد.</li>
+      <li class="en">Optionality gives the minimum, cardinality the maximum: zero or one, exactly one, zero or more, one or more.</li>
+      <li class="ar">الإلزامية تعطي الحدّ الأدنى، والتعدّدية الحدّ الأعلى: صفر أو واحد، واحد بالضبط، صفر أو أكثر، واحد أو أكثر.</li>
+      <li class="en">The foreign key goes in the table at the crow's-foot end, because a column holds only the singular side.</li>
+      <li class="ar">المفتاح الأجنبي يذهب إلى الجدول الذي عند طرف قدم الغراب، لأن العمود لا يحمل إلا جهة المفرد.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Drawing the crow's foot beside the entity the sentence starts from.</li>
+      <li class="ar">رسم قدم الغراب بجانب الكيان الذي تبدأ منه الجملة.</li>
+      <li class="en">Writing a number ("2", "20", "2..20") where only singular or plural is allowed.</li>
+      <li class="ar">كتابة رقم («2» أو «20» أو «2..20») حيث لا يُسمح إلا بمفرد أو جمع.</li>
+      <li class="en">Drawing crow's feet at both ends "to be safe": a wrong plural loses the single owner.</li>
+      <li class="ar">رسم قدم الغراب عند الطرفين «احتياطًا»: فالجمع الخاطئ يُضيّع المالك الواحد.</li>
+      <li class="en">Confusing cardinality (one or many) with optionality (must or may).</li>
+      <li class="ar">الخلط بين التعدّدية (واحد أم كثير) والإلزامية («يجب» أم «قد»).</li>
+      <li class="en">Putting the foreign key at the single-toe end, where one row would need many values.</li>
+      <li class="ar">وضع المفتاح الأجنبي عند طرف الإصبع الواحدة، حيث يحتاج الصفّ الواحد إلى قيم كثيرة.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="#t3-test-03">Test 3 &mdash; Cardinality</a>. Then <a href="#t3-lesson-04">Lesson 4 &mdash; Diagramming Conventions</a> gathers every mark you have met &mdash; softbox, <code>#</code> <code>*</code> <code>o</code>, halves and ends &mdash; into the one shared convention.</p>
+    <p class="ar">اختبر نفسك بـ<a href="#t3-test-03">اختبار 3 &mdash; التعدّدية</a>. ثم يجمع <a href="#t3-lesson-04">الدرس 4 &mdash; أعراف الرسم</a> كل علامة قابلتها &mdash; الصندوق المستدير، و<code>#</code> و<code>*</code> و<code>o</code>، والأنصاف والأطراف &mdash; في العُرف المشترك الواحد.</p>
+  </div>
+
+</section>

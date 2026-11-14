@@ -174,6 +174,19 @@ window.DBTAnchors = {
 "t3l2-s4": "lessons/t3-lesson-02.html",
 "t3l2-s5": "lessons/t3-lesson-02.html",
 "t3l2-s6": "lessons/t3-lesson-02.html",
+"t3l3-e1": "lessons/t3-lesson-03.html",
+"t3l3-e2": "lessons/t3-lesson-03.html",
+"t3l3-h1": "lessons/t3-lesson-03.html",
+"t3l3-h2": "lessons/t3-lesson-03.html",
+"t3l3-h3": "lessons/t3-lesson-03.html",
+"t3l3-h4": "lessons/t3-lesson-03.html",
+"t3l3-h5": "lessons/t3-lesson-03.html",
+"t3l3-h6": "lessons/t3-lesson-03.html",
+"t3l3-s1": "lessons/t3-lesson-03.html",
+"t3l3-s2": "lessons/t3-lesson-03.html",
+"t3l3-s3": "lessons/t3-lesson-03.html",
+"t3l3-s4": "lessons/t3-lesson-03.html",
+"t3l3-s5": "lessons/t3-lesson-03.html",
 "t4-chapter": "chapters/t4.html",
 "t4-exam-a": "exams/t4-exam-a.html",
 "t4-exam-b": "exams/t4-exam-b.html",
@@ -662,6 +675,50 @@ window.DBTHeadings = {
 "t3l2-s6": {
 "ar": "«يجب» التي لا يحملها أيّ عمود",
 "en": "The must that no column can hold"
+},
+"t3l3-h1": {
+"ar": "١ · كم؟",
+"en": "1 · How many?"
+},
+"t3l3-h2": {
+"ar": "٢ · الإصبع الواحدة وقدم الغراب",
+"en": "2 · Single toe and crow's foot"
+},
+"t3l3-h3": {
+"ar": "٣ · مفرد أو جمع، لا رقم أبدًا",
+"en": "3 · Singular or plural, never a number"
+},
+"t3l3-h4": {
+"ar": "٤ · المطعم: حسم كل طرف من السيناريو",
+"en": "4 · The restaurant: deciding each end from the scenario"
+},
+"t3l3-h5": {
+"ar": "٥ · قدم الغراب تقرّر أين يذهب المفتاح",
+"en": "5 · The crow's foot decides where the key goes"
+},
+"t3l3-h6": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t3l3-s1": {
+"ar": "سؤالا الشرائح، وجوابان فقط",
+"en": "The slides' two questions, and only two answers"
+},
+"t3l3-s2": {
+"ar": "اقرأ الطرف عند الكيان البعيد",
+"en": "Read the end at the far entity"
+},
+"t3l3-s3": {
+"ar": "الحدّ الأدنى والأعلى: النصف والطرف معًا",
+"en": "Minimum and maximum: the half and the end together"
+},
+"t3l3-s4": {
+"ar": "سؤالان، ورمزان، وسيناريو واحد",
+"en": "Two questions, two symbols, one scenario"
+},
+"t3l3-s5": {
+"ar": "خط المدير: الطرفان في جدول واحد",
+"en": "The manager line: both ends in one table"
 },
 "t4idx-h1": {
 "ar": "الدروس",
