@@ -7,9 +7,12 @@ Type=simple
 WorkingDirectory=%h/work/shams/database-sql
 Environment=THEORY_MODEL=opus
 ExecStart=/usr/bin/python3 tools/theory_runner.py
-# The runner is resumable: it skips every page whose source already exists, so a
-# restart costs at most the page that was in flight.
-Restart=always
+# Restart=on-failure, not always: the runner exits 0 when every page is
+# written or blocked, and restarting then would just rescan every minute.
+# The watchdog starts it again if it dies with work left. It is resumable --
+# it skips every page whose source already exists -- so a restart costs at
+# most the page that was in flight.
+Restart=on-failure
 RestartSec=60
 # One page at a time, politely: this box runs other people's work too.
 Nice=10
