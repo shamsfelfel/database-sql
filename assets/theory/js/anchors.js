@@ -349,6 +349,21 @@ window.DBTAnchors = {
 "t5idx-h2": "chapters/t5.html",
 "t5idx-how": "chapters/t5.html",
 "t5idx-why": "chapters/t5.html",
+"t5l1-e1": "lessons/t5-lesson-01.html",
+"t5l1-e2": "lessons/t5-lesson-01.html",
+"t5l1-h1": "lessons/t5-lesson-01.html",
+"t5l1-h2": "lessons/t5-lesson-01.html",
+"t5l1-h3": "lessons/t5-lesson-01.html",
+"t5l1-h4": "lessons/t5-lesson-01.html",
+"t5l1-h5": "lessons/t5-lesson-01.html",
+"t5l1-h6": "lessons/t5-lesson-01.html",
+"t5l1-h7": "lessons/t5-lesson-01.html",
+"t5l1-s1": "lessons/t5-lesson-01.html",
+"t5l1-s2": "lessons/t5-lesson-01.html",
+"t5l1-s3": "lessons/t5-lesson-01.html",
+"t5l1-s4": "lessons/t5-lesson-01.html",
+"t5l1-s5": "lessons/t5-lesson-01.html",
+"t5l1-s6": "lessons/t5-lesson-01.html",
 "track-theory": "theory/index.html"
 };
 window.DBTHeadings = {
@@ -1283,6 +1298,58 @@ window.DBTHeadings = {
 "t5idx-why": {
 "ar": "لماذا يهمّ هذا قبل أي SQL",
 "en": "Why this matters before any SQL"
+},
+"t5l1-h1": {
+"ar": "١ · هل يمكن نقل الارتباط؟",
+"en": "1 · Can the link move?"
+},
+"t5l1-h2": {
+"ar": "٢ · السؤال الثالث عن الخط",
+"en": "2 · The third question about a line"
+},
+"t5l1-h3": {
+"ar": "٣ · قابلة للنقل: مجموعة الدراسة",
+"en": "3 · Transferable: the study group"
+},
+"t5l1-h4": {
+"ar": "٤ · غير قابلة للنقل: الإيصال والمعيَّن",
+"en": "4 · Nontransferable: the receipt and the diamond"
+},
+"t5l1-h5": {
+"ar": "٥ · الأخطاء تُلغى، ولا تُنقل",
+"en": "5 · Mistakes are cancelled, not moved"
+},
+"t5l1-h6": {
+"ar": "٦ · العمل هو الذي يقرّر",
+"en": "6 · The business decides"
+},
+"t5l1-h7": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t5l1-s1": {
+"ar": "النقل ليس كالبدء من جديد",
+"en": "Moving is not the same as starting again"
+},
+"t5l1-s2": {
+"ar": "أين يُرسم كل جواب",
+"en": "Where each answer is drawn"
+},
+"t5l1-s3": {
+"ar": "غياب الرمز يعني أنه يمكن النقل",
+"en": "No symbol means it can move"
+},
+"t5l1-s4": {
+"ar": "قول المعيَّن بصوت عالٍ",
+"en": "Saying the diamond aloud"
+},
+"t5l1-s5": {
+"ar": "لماذا نُبقي الإيصال الملغى",
+"en": "Why keep the cancelled receipt"
+},
+"t5l1-s6": {
+"ar": "المعيَّن الخاطئ يكلّف بقدر المعيَّن الغائب",
+"en": "A wrong diamond costs as much as a missing one"
 },
 "track-theory": {
 "ar": "النظري — تصميم قواعد البيانات",

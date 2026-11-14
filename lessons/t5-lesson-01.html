@@ -39,15 +39,811 @@
 <link rel="stylesheet" href="../assets/theory/css/base.css">
 <link rel="stylesheet" href="../assets/theory/css/chrome.css">
 <link rel="stylesheet" href="../assets/theory/css/components.css">
+<link rel="stylesheet" href="../assets/theory/css/diagram.css">
+<link rel="stylesheet" href="../assets/css/widget.css">
 </head>
 <body data-chapter="t5" data-page="t5-lesson-01" data-kind="lesson" data-path="lessons/t5-lesson-01.html">
 <main>
 <section class="page" id="t5-lesson-01">
 <nav class="crumbs"></nav>
 
-  <span class="kicker">lesson</span>
+
+  <span class="kicker">Lesson 1</span>
   <h1><span class="en">Transferability</span><span class="ar">قابلية النقل</span></h1>
-  <p class="en">Being written.</p><p class="ar">قيد الكتابة.</p>
+  <p class="lede en">By the end of this lesson you will be able to ask the third question about any relationship &mdash; can the link move to another parent? &mdash; tell a transferable relationship from a nontransferable one, draw the diamond that marks the second, and say what each answer means for a foreign key column.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تطرح السؤال الثالث عن أيّ علاقة &mdash; هل يمكن نقل الارتباط إلى أبٍ آخر؟ &mdash; وأن تميّز العلاقة القابلة للنقل من غير القابلة للنقل، وأن ترسم المعيَّن الذي يعلّم الثانية، وأن تقول ماذا يعني كل جواب لعمود المفتاح الأجنبي.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> Chapter 3 taught you two things about a line: its halves say <em>must</em> or <em>may</em> (<a href="../lessons/t3-lesson-02.html#t3-lesson-02">optionality</a>) and its ends say one or many (<a href="../lessons/t3-lesson-03.html#t3-lesson-03">cardinality</a>). This lesson adds a third. The cases are the school &mdash; <code>STUDENT</code>, <code>STUDY GROUP</code>, <code>RECEIPT</code> &mdash; and the H.R. line <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code> you already know.</p>
+    <p class="ar"><strong>السياق.</strong> علّمك الفصل 3 أمرين عن الخط: نصفاه يقولان «يجب» أو «قد» (<a href="../lessons/t3-lesson-02.html#t3-lesson-02">الإلزامية</a>)، وطرفاه يقولان واحدًا أو أكثر (<a href="../lessons/t3-lesson-03.html#t3-lesson-03">التعدّدية</a>). وهذا الدرس يضيف أمرًا ثالثًا. والحالات هي المدرسة &mdash; <code>STUDENT</code> و<code>STUDY GROUP</code> و<code>RECEIPT</code> &mdash; وخط الموارد البشرية <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code> الذي تعرفه.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Describe relationship transferability and give an example of each kind.</li>
+      <li class="ar">وصف قابلية نقل العلاقة، وإعطاء مثال على كل نوع منها.</li>
+      <li class="en">Ask the three questions of one relationship &mdash; optionality, cardinality, transferability &mdash; and say where each answer is drawn.</li>
+      <li class="ar">طرح الأسئلة الثلاثة على علاقة واحدة &mdash; الإلزامية والتعدّدية وقابلية النقل &mdash; وتحديد مكان رسم كل جواب.</li>
+      <li class="en">Draw a nontransferable relationship on an ERD with the diamond, and leave a transferable one unmarked.</li>
+      <li class="ar">رسم علاقة غير قابلة للنقل في المخطّط بالمعيَّن، وترك العلاقة القابلة للنقل بلا علامة.</li>
+      <li class="en">Correct a mistake on a nontransferable link by cancelling and writing up a new instance, not by moving it.</li>
+      <li class="ar">تصحيح خطأ في ارتباط غير قابل للنقل بالإلغاء وكتابة نسخة جديدة، لا بنقله.</li>
+      <li class="en">Say which foreign key columns may be updated and which are set once, from the diamond.</li>
+      <li class="ar">تحديد أعمدة المفاتيح الأجنبية التي يجوز تعديلها وتلك التي تُضبط مرّة واحدة، انطلاقًا من المعيَّن.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t5l1-h1"><span class="en">1 · Can the link move?</span><span class="ar">١ · هل يمكن نقل الارتباط؟</span></h2>
+
+  <div class="problem">
+    <p class="en">The Year 10 Maths class is allocated to Mr Saleh. In mid-semester he falls sick. The school wants Ms Rana to take the class over &mdash; same students, same timetable, same marks so far. If the model says a class can never change teacher, the only way out is to close the class and open a new one.</p>
+    <p class="ar">أُسندت شعبة الرياضيات للصف العاشر إلى الأستاذ صالح. وفي منتصف الفصل الدراسي مرض. تريد المدرسة أن تتسلّم الأستاذة رنا الشعبة &mdash; الطلاب أنفسهم، والجدول نفسه، والعلامات حتى الآن نفسها. فإن قال النموذج إن الشعبة لا يتغيّر معلّمها أبدًا، فلا مخرج إلا إغلاق الشعبة وفتح شعبة جديدة.</p>
+  </div>
+
+  <p class="en">The slides open with exactly this question: once a class has been allocated to a teacher, can it later be transferred to another teacher, possibly in mid-semester? Usually yes &mdash; otherwise, what would we do if the original teacher became sick?</p>
+  <p class="ar">تفتتح الشرائح بهذا السؤال نفسه: بعد إسناد الشعبة إلى معلّم، هل يمكن نقلها لاحقًا إلى معلّم آخر، ربما في منتصف الفصل؟ غالبًا نعم &mdash; وإلّا فماذا نفعل إن مرض المعلّم الأصلي؟</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="transferability">Transferability</span> says whether an instance, once linked through a relationship, may later be moved to a different instance of the other entity.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="transferability">قابلية النقل</span> (Transferability) تقول هل يجوز للنسخة، بعد أن ترتبط عبر علاقة، أن تُنقل لاحقًا إلى نسخة أخرى من الكيان الآخر.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="transferable-relationship">transferable relationship</span> is one whose link may be moved: a class may pass from one teacher to another.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="transferable-relationship">العلاقة القابلة للنقل</span> (Transferable) علاقةٌ يجوز نقل ارتباطها: فقد تنتقل الشعبة من معلّم إلى آخر.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="nontransferable-relationship">nontransferable relationship</span> is one whose link, once made, can never be moved to another instance.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="nontransferable-relationship">العلاقة غير القابلة للنقل</span> (Nontransferable) علاقةٌ لا يمكن أبدًا نقل ارتباطها، بعد أن يُعقد، إلى نسخة أخرى.</p>
+  </div>
+
+  <h3 id="t5l1-s1"><span class="en">Moving is not the same as starting again</span><span class="ar">النقل ليس كالبدء من جديد</span></h3>
+
+  <p class="en">A <span class="term" data-term="transfer">transfer</span> keeps the instance and changes only whom it is linked to. The Maths class stays the same class, with its students and marks; only its teacher changes. Mr Saleh is its <span class="term" data-term="parent-instance">parent instance</span> before, Ms Rana after.</p>
+  <p class="ar"><span class="term" data-term="transfer">النقل</span> (Transfer) يُبقي النسخة نفسها، ولا يغيّر إلا ما ترتبط به. فشعبة الرياضيات تبقى الشعبة نفسها، بطلابها وعلاماتها؛ ولا يتغيّر إلا معلّمها. الأستاذ صالح هو <span class="term" data-term="parent-instance">النسخة الأب</span> (Parent instance) قبل النقل، والأستاذة رنا بعده.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">A transfer is one <code>UPDATE</code> of a foreign key. The class row keeps its primary key, and every row that points at it keeps pointing at it:</p>
+    <p class="ar">النقل أمر <code>UPDATE</code> واحد على مفتاح أجنبي. يحتفظ صفّ الشعبة بمفتاحه الأساسي، وكل صفّ يشير إليه يبقى مشيرًا إليه:</p>
+    <pre class="code" data-lang="sql"><code>UPDATE classes
+SET    teacher_id = 7        -- Ms Rana, instead of 3 (Mr Saleh)
+WHERE  class_id = 'M10A';</code></pre>
+    <p class="en">A nontransferable relationship means exactly this statement must never run against that column. The column is filled once, by the <code>INSERT</code>, and then left alone.</p>
+    <p class="ar">والعلاقة غير القابلة للنقل تعني أن هذا الأمر بالذات يجب ألّا يُنفَّذ أبدًا على ذلك العمود. فالعمود يُملأ مرّة واحدة، بأمر <code>INSERT</code>، ثم يُترك.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which of these is a <em>transfer</em> of the class&ndash;teacher link?</p>
+    <p class="q ar">أيّ ممّا يلي <em>نقلٌ</em> لارتباط الشعبة بالمعلّم؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">Class <code>M10A</code> keeps its id and students, and its teacher changes from 3 to 7</span><span class="ar">تحتفظ الشعبة <code>M10A</code> بمعرّفها وطلابها، ويتغيّر معلّمها من 3 إلى 7</span></button></li>
+      <li><button class="opt"><span class="en">Class <code>M10A</code> is closed and a new class <code>M10B</code> is opened for teacher 7</span><span class="ar">تُغلق الشعبة <code>M10A</code> وتُفتح شعبة جديدة <code>M10B</code> للمعلّم 7</span></button></li>
+      <li><button class="opt"><span class="en">Class <code>M10A</code> is renamed to "Advanced Maths"</span><span class="ar">يُغيَّر اسم الشعبة <code>M10A</code> إلى «رياضيات متقدّمة»</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A transfer moves an existing instance to a new parent. Closing and reopening creates a different instance; renaming changes an attribute, not the link.</p>
+      <p class="ar">النقل ينقل نسخة موجودة إلى أبٍ جديد. أمّا الإغلاق وإعادة الفتح فيُنشئان نسخة مختلفة، وتغيير الاسم يغيّر خاصية لا ارتباطًا.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The slides: a person places an order with an internet company. Once the order is placed by someone, can that relationship change?</p>
+    <p class="q ar">من الشرائح: يضع شخص طلبًا لدى شركة على الإنترنت. بعد أن يضع أحدٌ الطلب، هل يمكن أن تتغيّر هذه العلاقة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Yes: it is transferable, like a class and its teacher</span><span class="ar">نعم: فهي قابلة للنقل، مثل الشعبة ومعلّمها</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">No: it is nontransferable</span><span class="ar">لا: فهي غير قابلة للنقل</span></button></li>
+      <li><button class="opt"><span class="en">Only if the order is optional</span><span class="ar">فقط إن كان الطلب اختياريًّا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The slides say it directly: once the order is placed by someone, that relationship cannot change. And transferability is a separate question from optionality &mdash; one does not decide the other.</p>
+      <p class="ar">تقولها الشرائح صراحةً: بعد أن يضع أحدٌ الطلب، لا يمكن أن تتغيّر تلك العلاقة. وقابلية النقل سؤال منفصل عن الإلزامية &mdash; فلا يقرّر أحدهما الآخر.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t5l1-h2"><span class="en">2 · The third question about a line</span><span class="ar">٢ · السؤال الثالث عن الخط</span></h2>
+
+  <div class="problem">
+    <p class="en">Carlos Gomez works in Accounting and asks to move to Development. Chapter 3's H.R. diagram says every employee must be assigned to one and only one department. It says nothing about whether that one department may later be a different one. The ERD is silent exactly where H.R. needs an answer.</p>
+    <p class="ar">يعمل Carlos Gomez في قسم المحاسبة ويطلب الانتقال إلى التطوير. يقول مخطّط الموارد البشرية في الفصل 3 إن كل موظّف يجب أن يُعيَّن في قسم واحد فقط لا غير. ولا يقول شيئًا عن جواز أن يصير ذلك القسم الواحد قسمًا آخر لاحقًا. المخطّط صامت حيث يحتاج قسم الموارد البشرية إلى جواب بالضبط.</p>
+  </div>
+
+  <p class="en">The slides review this very relationship by asking three questions, one after the other. The first two are Chapter 3's; the third is new. Together they are the <span class="term" data-term="relationship-review">relationship review</span>.</p>
+  <p class="ar">تراجع الشرائح هذه العلاقة نفسها بطرح ثلاثة أسئلة، واحدًا بعد الآخر. السؤالان الأوّلان من الفصل 3، والثالث جديد. ومعًا هي <span class="term" data-term="relationship-review">مراجعة العلاقة</span> (Relationship review).</p>
+
+  <pre class="code" data-lang="text"><code>Optionality     Must every EMPLOYEE be assigned to a DEPARTMENT?
+                Must every DEPARTMENT be responsible for an employee?
+Cardinality     How many EMPLOYEEs can a DEPARTMENT be responsible for?
+                How many DEPARTMENTs can an EMPLOYEE be assigned to?
+Transferability Can an EMPLOYEE be transferred from one DEPARTMENT to another?</code></pre>
+
+  <figure class="diagram" data-diagram="t5-emp-dept">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 366" direction="ltr" role="img" aria-labelledby="t5-emp-dept-t">
+<title id="t5-emp-dept-t">EMPLOYEE assigned to / responsible for DEPARTMENT: solid at EMPLOYEE, dashed at DEPARTMENT, crow's foot at EMPLOYEE, no diamond, so transferable / EMPLOYEE assigned to / responsible for DEPARTMENT: متّصل عند EMPLOYEE، متقطّع عند DEPARTMENT، رِجل غراب عند EMPLOYEE، بلا معيَّن، فهي قابلة للنقل</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">One relationship, three questions</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏علاقة واحدة، وثلاثة أسئلة</text></g>
+<rect x="40" y="50" width="210" height="156" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">EMPLOYEE</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<text x="54" y="151" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Hire Date</text>
+<text x="54" y="170" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Salary</text>
+<text x="54" y="189" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Commission</text>
+<rect x="530" y="50" width="210" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="635.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">DEPARTMENT</text>
+<text x="544" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="544" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M250 112 L390.0 112" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M390.0 112 L530 112" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M264 112 L250 104" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 112 L250 112" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 112 L250 120" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="270" y="104" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">assigned to</text>
+<text x="522" y="130" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">responsible for</text>
+<g class="en"><text x="320" y="150" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">optionality: the halves</text></g><g class="ar"><text x="320" y="150" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">‏الإلزامية: النصفان</text></g>
+<g class="en"><text x="460" y="150" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">cardinality: the ends</text></g><g class="ar"><text x="460" y="150" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">‏التعدّدية: الطرفان</text></g>
+<g class="en"><text x="390" y="170" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">transferability: the middle (no diamond)</text></g><g class="ar"><text x="390" y="170" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">‏قابلية النقل: المنتصف (لا معيَّن)</text></g>
+<rect x="40" y="230" width="700" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="253" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each EMPLOYEE must be assigned to one and only one DEPARTMENT.</text>
+<text x="56" y="274" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each DEPARTMENT may be responsible for one or more EMPLOYEEs.</text>
+<rect x="40" y="302" width="700" height="50" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="323" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Can an EMPLOYEE be transferred to another DEPARTMENT? Yes: the line carries no diamond.</text></g><g class="ar"><text x="724" y="323" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏هل يمكن نقل EMPLOYEE إلى DEPARTMENT آخر؟ نعم: لا معيَّن على الخط.</text></g>
+<g class="en"><text x="56" y="342" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The ERDish sentences cover only the first two questions; the third is read off the line.</text></g><g class="ar"><text x="724" y="342" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏جملتا ERDish تغطّيان السؤالين الأوّلين فقط؛ أمّا الثالث فيُقرأ من الخط.</text></g></svg>
+<figcaption><span class="en">The slides' <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code> line with all three answers on it. The halves give optionality, the ends give cardinality, and the middle of the line &mdash; empty here &mdash; gives transferability.</span><span class="ar">خط <code>EMPLOYEE</code>&ndash;<code>DEPARTMENT</code> من الشرائح، وعليه الأجوبة الثلاثة. النصفان يعطيان الإلزامية، والطرفان يعطيان التعدّدية، ومنتصف الخط &mdash; الفارغ هنا &mdash; يعطي قابلية النقل.</span></figcaption></figure>
+
+  <h3 id="t5l1-s2"><span class="en">Where each answer is drawn</span><span class="ar">أين يُرسم كل جواب</span></h3>
+
+  <p class="en">Each question has its own place on the line. Optionality lives on the two halves, solid or dashed. Cardinality lives at the two ends, single toe or crow's foot. Transferability lives in the middle: a diamond there means nontransferable, and nothing there means transferable.</p>
+  <p class="ar">لكل سؤال مكانه على الخط. الإلزامية تسكن النصفين، متّصلًا أو متقطّعًا. والتعدّدية تسكن الطرفين، إصبعًا واحدة أو رِجل غراب. وقابلية النقل تسكن المنتصف: المعيَّن هناك يعني غير قابلة للنقل، ولا شيء هناك يعني قابلة للنقل.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">A person may change departments within a company, the slides say, so this line is transferable and carries no diamond. In the tables, Carlos's transfer is one <code>UPDATE</code> of <code>employees.department_id</code>. Run it:</p>
+    <p class="ar">تقول الشرائح إن الشخص قد يغيّر قسمه داخل الشركة، فهذا الخط قابل للنقل ولا يحمل معيَّنًا. وفي الجداول، نقل Carlos أمر <code>UPDATE</code> واحد على <code>employees.department_id</code>. شغّله:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE departments (department_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO departments VALUES (10,'Accounting'), (15,'Sales'), (22,'Development')","CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, department_id NUMBER NOT NULL, manager_id NUMBER)","INSERT INTO employees VALUES (100,'Dana','Smith',10,NULL), (310,'Tyler','Adams',15,100), (210,'Lawrence','Chen',10,100), (405,'Carlos','Gomez',10,210), (378,'Neil','Loungani',22,100)"],"sql":"UPDATE employees\nSET department_id = 22\nWHERE employee_id = 405;\n\nSELECT e.employee_id, e.first_name, d.name AS department\nFROM employees e JOIN departments d ON e.department_id = d.department_id\nORDER BY e.employee_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>employee_id</code></th><th><code>first_name</code></th><th><code>department</code></th></tr></thead>
+          <tbody>
+            <tr><td>100</td><td>Dana</td><td>Accounting</td></tr>
+            <tr><td>210</td><td>Lawrence</td><td>Accounting</td></tr>
+            <tr><td>310</td><td>Tyler</td><td>Sales</td></tr>
+            <tr><td>378</td><td>Neil</td><td>Development</td></tr>
+            <tr><td>405</td><td>Carlos</td><td>Development</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Carlos is still employee 405 &mdash; same row, same hire date, same salary &mdash; now in Development. The <code>NOT NULL</code> on <code>department_id</code> came from the solid half; the permission to update it comes from the empty middle.</p>
+    <p class="ar">ما زال Carlos هو الموظّف 405 &mdash; الصفّ نفسه، وتاريخ التعيين نفسه، والراتب نفسه &mdash; لكنه الآن في التطوير. قيد <code>NOT NULL</code> على <code>department_id</code> جاء من النصف المتّصل، أمّا الإذن بتعديله فيأتي من المنتصف الفارغ.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">On an Oracle ERD, where do you look to answer the transferability question?</p>
+    <p class="q ar">في مخطّط Oracle، أين تنظر لتجيب عن سؤال قابلية النقل؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">At the two halves of the line: solid or dashed</span><span class="ar">إلى نصفَي الخط: متّصل أم متقطّع</span></button></li>
+      <li><button class="opt"><span class="en">At the ends of the line: single toe or crow's foot</span><span class="ar">إلى طرفَي الخط: إصبع واحدة أم رِجل غراب</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">On the relationship itself: is there a diamond on the line?</span><span class="ar">إلى العلاقة نفسها: هل على الخط معيَّن؟</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Halves are optionality and ends are cardinality. Transferability is marked on the relationship line by the diamond &mdash; or by its absence.</p>
+      <p class="ar">النصفان للإلزامية، والطرفان للتعدّدية. أمّا قابلية النقل فتُعلَّم على خط العلاقة بالمعيَّن &mdash; أو بغيابه.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">"Each EMPLOYEE must be assigned to one and only one DEPARTMENT." Which of the three questions does this sentence <em>not</em> answer?</p>
+    <p class="q ar">«Each EMPLOYEE must be assigned to one and only one DEPARTMENT.» أيّ الأسئلة الثلاثة <em>لا</em> تجيب عنه هذه الجملة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Optionality</span><span class="ar">الإلزامية</span></button></li>
+      <li><button class="opt"><span class="en">Cardinality</span><span class="ar">التعدّدية</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Transferability</span><span class="ar">قابلية النقل</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><em>must</em> answers optionality and <em>one and only one</em> answers cardinality. "One and only one" means one at a time; whether it may become a different one is not in the sentence.</p>
+      <p class="ar"><em>must</em> تجيب عن الإلزامية، و<em>one and only one</em> تجيب عن التعدّدية. و«واحد فقط لا غير» تعني واحدًا في كل وقت؛ أمّا جواز أن يصير واحدًا آخر فليس في الجملة.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t5l1-h3"><span class="en">3 · Transferable: the study group</span><span class="ar">٣ · قابلة للنقل: مجموعة الدراسة</span></h2>
+
+  <div class="problem">
+    <p class="en">Sara Hamdan joined the Algebra Circle in September. In October she wants to switch to the Data Club, which meets on a day she is free. Nobody wants to delete Sara and enter her again; she should simply belong to a different group from today.</p>
+    <p class="ar">انضمّت Sara Hamdan إلى Algebra Circle في أيلول. وفي تشرين الأول تريد الانتقال إلى Data Club التي تجتمع في يوم تكون فيه متفرّغة. لا أحد يريد حذف Sara وإدخالها من جديد؛ يجب ببساطة أن تنتمي إلى مجموعة مختلفة من اليوم.</p>
+  </div>
+
+  <p class="en">The slides' first example: a <code>STUDENT</code> being allowed to move from one <code>STUDY GROUP</code> to another. The relationship between <code>STUDENT</code> and <code>STUDY GROUP</code> is transferable.</p>
+  <p class="ar">مثال الشرائح الأول: <code>STUDENT</code> مسموح له أن ينتقل من <code>STUDY GROUP</code> (مجموعة دراسة) إلى أخرى. فالعلاقة بين <code>STUDENT</code> و<code>STUDY GROUP</code> قابلة للنقل.</p>
+
+  <figure class="diagram" data-diagram="t5-study-group">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 316" direction="ltr" role="img" aria-labelledby="t5-study-group-t">
+<title id="t5-study-group-t">STUDENT join / have STUDY GROUP: dashed at STUDENT, solid at STUDY GROUP, crow's foot at STUDENT, no diamond: a transferable relationship / STUDENT join / have STUDY GROUP: متقطّع عند STUDENT، متّصل عند STUDY GROUP، رِجل غراب عند STUDENT، بلا معيَّن: علاقة قابلة للنقل</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Transferable: a student may move to another group</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏قابلة للنقل: قد ينتقل الطالب إلى مجموعة أخرى</text></g>
+<rect x="40" y="50" width="210" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="530" y="50" width="210" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="635.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDY GROUP</text>
+<text x="544" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="544" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M250 100 L390.0 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M390.0 100 L530 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 100 L250 92" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 100 L250 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 100 L250 108" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="270" y="92" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">join</text>
+<text x="522" y="118" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">have</text>
+<rect x="40" y="180" width="700" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="203" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each STUDENT may join one and only one STUDY GROUP.</text>
+<text x="56" y="224" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each STUDY GROUP must have one or more STUDENTs.</text>
+<rect x="40" y="252" width="700" height="50" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="273" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">No diamond on the line: Sara can leave the Algebra Circle and join the Data Club.</text></g><g class="ar"><text x="724" y="273" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏لا معيَّن على الخط: تستطيع Sara أن تترك Algebra Circle وتنضمّ إلى Data Club.</text></g>
+<g class="en"><text x="56" y="292" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Transferable is the default: it needs no symbol.</text></g><g class="ar"><text x="724" y="292" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏القابلية للنقل هي الأصل: فلا تحتاج إلى رمز.</text></g></svg>
+<figcaption><span class="en">The slides' transferable relationship, named <code>join</code> / <code>have</code>. Notice what is <em>not</em> there: no diamond. A transferable relationship is drawn exactly as every line in Chapter 3 was drawn.</span><span class="ar">العلاقة القابلة للنقل في الشرائح، باسمَي <code>join</code> و<code>have</code>. لاحظ ما <em>ليس</em> موجودًا: لا معيَّن. فالعلاقة القابلة للنقل تُرسم تمامًا كما رُسم كل خط في الفصل 3.</span></figcaption></figure>
+
+  <h3 id="t5l1-s3"><span class="en">No symbol means it can move</span><span class="ar">غياب الرمز يعني أنه يمكن النقل</span></h3>
+
+  <p class="en">The slides give a symbol only to the nontransferable case. So transferable is the default: every relationship you drew in Chapter 3 was transferable, without anyone saying so. You add a mark only when the business forbids the move.</p>
+  <p class="ar">لا تعطي الشرائح رمزًا إلا للحالة غير القابلة للنقل. فالقابلية للنقل هي الأصل: كل علاقة رسمتها في الفصل 3 كانت قابلة للنقل دون أن يقول أحد ذلك. ولا تضيف علامة إلا حين يمنع العمل النقل.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The crow's foot is at <code>STUDENT</code>, so the key is <code>students.group_id</code>; the dashed <code>STUDENT</code> half leaves it nullable. Moving Sara (1001) is one update:</p>
+    <p class="ar">رِجل الغراب عند <code>STUDENT</code>، فالمفتاح هو <code>students.group_id</code>، والنصف المتقطّع عند <code>STUDENT</code> يتركه قابلًا لـ null. ونقل Sara (1001) أمر تعديل واحد:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE study_groups (group_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO study_groups VALUES (1,'Algebra Circle'), (2,'Data Club')","CREATE TABLE students (student_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, group_id NUMBER)","INSERT INTO students VALUES (1001,'Sara','Hamdan',1), (1002,'Omar','Khalil',1), (1003,'Lina','Nasser',2), (1004,'Yousef','Odeh',NULL)"],"sql":"UPDATE students\nSET group_id = 2\nWHERE student_id = 1001;\n\nSELECT s.student_id, s.first_name, g.name AS study_group\nFROM students s LEFT JOIN study_groups g ON s.group_id = g.group_id\nORDER BY s.student_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>student_id</code></th><th><code>first_name</code></th><th><code>study_group</code></th></tr></thead>
+          <tbody>
+            <tr><td>1001</td><td>Sara</td><td>Data Club</td></tr>
+            <tr><td>1002</td><td>Omar</td><td>Algebra Circle</td></tr>
+            <tr><td>1003</td><td>Lina</td><td>Data Club</td></tr>
+            <tr><td>1004</td><td>Yousef</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Sara moved; her row did not. Yousef has no group at all &mdash; that is optionality (the dashed half), a different question from whether Sara may move.</p>
+    <p class="ar">انتقلت Sara، ولم يتغيّر صفّها. أمّا Yousef فلا مجموعة له أصلًا &mdash; وهذه الإلزامية (النصف المتقطّع)، وهي سؤال غير سؤال جواز انتقال Sara.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The <code>STUDENT</code>&ndash;<code>STUDY GROUP</code> line has no diamond. What does that tell you?</p>
+    <p class="q ar">لا معيَّن على خط <code>STUDENT</code>&ndash;<code>STUDY GROUP</code>. ماذا يخبرك ذلك؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The designer has not decided transferability yet</span><span class="ar">أن المصمّم لم يقرّر قابلية النقل بعد</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The relationship is transferable: a student may move to another group</span><span class="ar">أن العلاقة قابلة للنقل: قد ينتقل الطالب إلى مجموعة أخرى</span></button></li>
+      <li><button class="opt"><span class="en">A student may belong to no study group</span><span class="ar">أن الطالب قد لا ينتمي إلى أيّ مجموعة دراسة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Only nontransferable gets a symbol, so no diamond reads as transferable. "May belong to no group" is true too, but it is read from the dashed half, not from the missing diamond.</p>
+      <p class="ar">لا يأخذ رمزًا إلا غيرُ القابل للنقل، فغياب المعيَّن يُقرأ «قابلة للنقل». و«قد لا ينتمي إلى مجموعة» صحيحة أيضًا، لكنها تُقرأ من النصف المتقطّع لا من غياب المعيَّن.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t5l1-h4"><span class="en">4 · Nontransferable: the receipt and the diamond</span><span class="ar">٤ · غير قابلة للنقل: الإيصال والمعيَّن</span></h2>
+
+  <div class="problem">
+    <p class="en">Omar Khalil pays 40 at the school bookstore and takes home receipt 5003. A week later a clerk edits receipt 5003 in the system and sets its student to Lina. Omar's paper says Omar; the database says Lina. Nothing in the database shows that anything changed.</p>
+    <p class="ar">يدفع Omar Khalil مبلغ 40 في مكتبة المدرسة ويأخذ معه الإيصال 5003. وبعد أسبوع يعدّل موظّف الإيصال 5003 في النظام ويجعل طالبه Lina. ورقة Omar تقول Omar، وقاعدة البيانات تقول Lina. ولا شيء في قاعدة البيانات يُظهر أن شيئًا تغيّر.</p>
+  </div>
+
+  <p class="en">The slides: a <code>STUDENT</code> can be issued a <code>RECEIPT</code> for paying tuition fees, taking a certification exam or purchasing items at the bookstore. Once a <code>RECEIPT</code> has been issued, it cannot be transferred to another <code>STUDENT</code>. The relationship is nontransferable.</p>
+  <p class="ar">تقول الشرائح: قد يُصدَر لـ <code>STUDENT</code> إيصال <code>RECEIPT</code> عن دفع الرسوم الدراسية، أو تقديم امتحان شهادة، أو شراء أغراض من المكتبة. وبعد إصدار <code>RECEIPT</code> لا يمكن نقله إلى <code>STUDENT</code> آخر. فالعلاقة غير قابلة للنقل.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="nontransferable-diamond">diamond</span> is the symbol on a relationship line that marks it nontransferable.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="nontransferable-diamond">المعيَّن</span> (Diamond) هو الرمز على خط العلاقة الذي يعلّمها غير قابلة للنقل.</p>
+  </div>
+
+  <div class="evolve" id="t5l1-e1">
+    <div class="ver" data-title-en="Version 1 — the receipt line with no diamond" data-title-ar="الإصدار 1 — خط الإيصال بلا معيَّن">
+      <figure class="diagram" data-diagram="t5-receipt-v1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 326" direction="ltr" role="img" aria-labelledby="t5-receipt-v1-t">
+<title id="t5-receipt-v1-t">Version 1: RECEIPT issued to / issued STUDENT with no diamond, so the model allows a receipt to move to another student / الإصدار 1: RECEIPT issued to / issued STUDENT بلا معيَّن، فيسمح النموذج بنقل الإيصال إلى طالب آخر</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1 — no diamond</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 1 — بلا معيَّن</text></g>
+<rect x="40" y="50" width="210" height="118" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">RECEIPT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Number</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Issue Date</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Amount</text>
+<text x="54" y="151" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Paid For</text>
+<rect x="530" y="50" width="210" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="635.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="544" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="544" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="544" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<path d="M250 100 L390.0 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M390.0 100 L530 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M264 100 L250 92" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 100 L250 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 100 L250 108" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="270" y="92" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">issued to</text>
+<text x="522" y="118" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">issued</text>
+<rect x="40" y="190" width="700" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each RECEIPT must be issued to one and only one STUDENT.</text>
+<text x="56" y="234" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each STUDENT may be issued one or more RECEIPTs.</text>
+<rect x="40" y="262" width="700" height="50" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="283" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Nothing on the line forbids a transfer: receipt 5003 could be re-pointed to another student.</text></g><g class="ar"><text x="724" y="283" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏لا شيء على الخط يمنع النقل: يمكن توجيه الإيصال 5003 إلى طالب آخر.</text></g>
+<g class="en"><text x="56" y="302" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Who paid would then be rewritten, and no record of the change would remain.</text></g><g class="ar"><text x="724" y="302" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏فيُعاد عندئذٍ كتابة من دفع، ولا يبقى أثر للتغيير.</text></g></svg>
+</figure>
+      <p class="en">Defect: the model allows a transfer the business forbids. Optionality and cardinality are right, but an empty middle says a receipt may be re-pointed to another student &mdash; exactly what the clerk did to receipt 5003.</p>
+      <p class="ar">العيب: النموذج يسمح بنقل يمنعه العمل. الإلزامية والتعدّدية صحيحتان، لكن المنتصف الفارغ يقول إن الإيصال قد يُوجَّه إلى طالب آخر &mdash; وهذا بالضبط ما فعله الموظّف بالإيصال 5003.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — the diamond added" data-title-ar="الإصدار 2 — أُضيف المعيَّن">
+      <figure class="diagram" data-diagram="t5-receipt">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 326" direction="ltr" role="img" aria-labelledby="t5-receipt-t">
+<title id="t5-receipt-t">RECEIPT issued to / issued STUDENT with a diamond on the middle of the line: a nontransferable relationship / RECEIPT issued to / issued STUDENT مع معيَّن في منتصف الخط: علاقة غير قابلة للنقل</title>
+<g class="en"><text x="390" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Nontransferable: the diamond on the relationship</text></g><g class="ar"><text x="390" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏غير قابلة للنقل: المعيَّن على العلاقة</text></g>
+<rect x="40" y="50" width="210" height="118" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="145.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">RECEIPT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Number</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Issue Date</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Amount</text>
+<text x="54" y="151" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Paid For</text>
+<rect x="530" y="50" width="210" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="635.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="544" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="544" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="544" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<path d="M250 100 L390.0 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M390.0 100 L530 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M264 100 L250 92" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 100 L250 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M264 100 L250 108" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M390.0 91 L399.0 100 L390.0 109 L381.0 100 Z" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1.8"/>
+<text x="270" y="92" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">issued to</text>
+<text x="522" y="118" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">issued</text>
+<rect x="40" y="190" width="700" height="58" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="213" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each RECEIPT must be issued to one and only one STUDENT.</text>
+<text x="56" y="234" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each STUDENT may be issued one or more RECEIPTs.</text>
+<g class="en"><text x="390" y="132" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">diamond: nontransferable</text></g><g class="ar"><text x="390" y="132" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">‏المعيَّن: غير قابلة للنقل</text></g>
+<rect x="40" y="262" width="700" height="50" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="283" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Once issued, a RECEIPT stays with its STUDENT. A mistake is cancelled, not moved.</text></g><g class="ar"><text x="724" y="283" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏بعد إصداره يبقى RECEIPT مع STUDENT الخاص به. والخطأ يُلغى، ولا يُنقل.</text></g>
+<g class="en"><text x="56" y="302" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The same line as version 1, plus one symbol in the middle.</text></g><g class="ar"><text x="724" y="302" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏الخط نفسه كما في الإصدار 1، مع رمز واحد في المنتصف.</text></g></svg>
+</figure>
+      <p class="en">Fixed: the slides' model. The same line, plus a diamond on the relationship: once issued to a student, a receipt stays with that student. This is the recommended form.</p>
+      <p class="ar">أُصلح: نموذج الشرائح. الخط نفسه، مع معيَّن على العلاقة: بعد إصدار الإيصال لطالب يبقى مع ذلك الطالب. وهذا هو الشكل الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t5l1-s4"><span class="en">Saying the diamond aloud</span><span class="ar">قول المعيَّن بصوت عالٍ</span></h3>
+
+  <p class="en">The ERDish sentence has slots for optionality and cardinality, but none for transferability. So the diamond is said as a business rule of its own, in the slides' words:</p>
+  <p class="ar">لجملة ERDish خانات للإلزامية والتعدّدية، ولا خانة فيها لقابلية النقل. لذلك يُقال المعيَّن قاعدةَ عمل مستقلّة، بكلمات الشرائح:</p>
+
+  <pre class="code" data-lang="erdish"><code>Each RECEIPT must be issued to one and only one STUDENT.
+Each STUDENT may be issued one or more RECEIPTs.
+Once a RECEIPT has been issued, it cannot be transferred to another STUDENT.</code></pre>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Here is what the clerk did, as SQL. Run it and watch the database accept it:</p>
+    <p class="ar">هذا ما فعله الموظّف، بلغة SQL. شغّله وانظر كيف تقبله قاعدة البيانات:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE students (student_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL)","INSERT INTO students VALUES (1001,'Sara','Hamdan'), (1002,'Omar','Khalil'), (1003,'Lina','Nasser')","CREATE TABLE receipts (receipt_no NUMBER PRIMARY KEY, student_id NUMBER NOT NULL, issue_date VARCHAR(10) NOT NULL, amount NUMBER NOT NULL, paid_for VARCHAR(20) NOT NULL, status VARCHAR(10) NOT NULL)","INSERT INTO receipts VALUES (5001,1001,'2026-09-01',300,'Tuition fees','ISSUED'), (5002,1002,'2026-09-01',300,'Tuition fees','ISSUED'), (5003,1002,'2026-10-05',40,'Bookstore','ISSUED')"],"sql":"UPDATE receipts\nSET student_id = 1003\nWHERE receipt_no = 5003;\n\nSELECT receipt_no, student_id, amount, paid_for\nFROM receipts\nORDER BY receipt_no;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>receipt_no</code></th><th><code>student_id</code></th><th><code>amount</code></th><th><code>paid_for</code></th></tr></thead>
+          <tbody>
+            <tr><td>5001</td><td>1001</td><td>300</td><td>Tuition fees</td></tr>
+            <tr><td>5002</td><td>1002</td><td>300</td><td>Tuition fees</td></tr>
+            <tr><td>5003</td><td>1003</td><td>40</td><td>Bookstore</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">No error. <code>CREATE TABLE</code> has no keyword for a diamond, so <code>receipts.student_id</code> accepts the update like any column. The diamond becomes a rule the application keeps: it fills <code>student_id</code> once, on <code>INSERT</code>, and never offers an update of it.</p>
+    <p class="ar">لا خطأ. ليس في <code>CREATE TABLE</code> كلمة مفتاحية للمعيَّن، فيقبل <code>receipts.student_id</code> التعديل كأيّ عمود. ويصير المعيَّن قاعدةً يحفظها التطبيق: يملأ <code>student_id</code> مرّة واحدة، عند <code>INSERT</code>، ولا يعرض تعديله أبدًا.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In version 2, what exactly does the diamond forbid?</p>
+    <p class="q ar">في الإصدار 2، ماذا يمنع المعيَّن بالضبط؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Issuing a receipt with no student</span><span class="ar">إصدار إيصال بلا طالب</span></button></li>
+      <li><button class="opt"><span class="en">Issuing more than one receipt to the same student</span><span class="ar">إصدار أكثر من إيصال للطالب نفسه</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Moving an issued receipt to a different student</span><span class="ar">نقل إيصال صادر إلى طالب مختلف</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"No student" is stopped by the solid <code>RECEIPT</code> half, and a student may have many receipts (the crow's foot). The diamond adds only one thing: the link, once made, does not move.</p>
+      <p class="ar">«بلا طالب» يمنعه النصف المتّصل عند <code>RECEIPT</code>، والطالب قد يكون له إيصالات كثيرة (رِجل الغراب). والمعيَّن لا يضيف إلا أمرًا واحدًا: الارتباط، بعد عقده، لا ينتقل.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Where is the diamond drawn?</p>
+    <p class="q ar">أين يُرسم المعيَّن؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Inside the <code>RECEIPT</code> softbox, beside the UID</span><span class="ar">داخل الصندوق الليّن لـ <code>RECEIPT</code>، بجانب المعرّف الفريد</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">On the relationship line itself</span><span class="ar">على خط العلاقة نفسه</span></button></li>
+      <li><button class="opt"><span class="en">In place of the crow's foot</span><span class="ar">مكان رِجل الغراب</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"A nontransferable relationship is represented with the diamond on the relationship." It is a property of the relationship, not of either entity, and it replaces nothing &mdash; the toes and halves stay.</p>
+      <p class="ar">«تُمثَّل العلاقة غير القابلة للنقل بالمعيَّن على العلاقة.» فهو خاصية للعلاقة لا لأيّ من الكيانين، ولا يحلّ محلّ شيء &mdash; فالأصابع والأنصاف تبقى.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t5l1-h5"><span class="en">5 · Mistakes are cancelled, not moved</span><span class="ar">٥ · الأخطاء تُلغى، ولا تُنقل</span></h2>
+
+  <div class="problem">
+    <p class="en">Clerks do make mistakes. Suppose receipt 5003 really was written to the wrong student &mdash; Lina paid, not Omar. The diamond says the receipt cannot move. Then how does the school put it right?</p>
+    <p class="ar">الموظّفون يخطئون فعلًا. افترض أن الإيصال 5003 كُتب حقًّا لطالب خطأ &mdash; Lina هي التي دفعت، لا Omar. يقول المعيَّن إن الإيصال لا يُنقل. فكيف تصحّح المدرسة الأمر؟</p>
+  </div>
+
+  <p class="en">The slides answer: if it was issued in error, it would have to be cancelled, and another <code>RECEIPT</code> would have to be written up. The wrong receipt stays with Omar, marked cancelled; a new receipt is issued to Lina.</p>
+  <p class="ar">تجيب الشرائح: إن صدر خطأً فلا بدّ من إلغائه، وكتابة <code>RECEIPT</code> آخر. فيبقى الإيصال الخاطئ مع Omar، معلَّمًا بأنه ملغى، ويُصدَر إيصال جديد لـ Lina.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="cancel-and-reissue">Cancel and reissue</span> is how a wrong nontransferable link is corrected: the old instance is cancelled where it is, and a new one is created for the right parent.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="cancel-and-reissue">الإلغاء وإعادة الإصدار</span> (Cancel and reissue) طريقة تصحيح ارتباط غير قابل للنقل وقع فيه خطأ: تُلغى النسخة القديمة في مكانها، وتُنشأ نسخة جديدة للأب الصحيح.</p>
+  </div>
+
+  <h3 id="t5l1-s5"><span class="en">Why keep the cancelled receipt</span><span class="ar">لماذا نُبقي الإيصال الملغى</span></h3>
+
+  <p class="en">Omar still holds a paper receipt numbered 5003. After cancel and reissue, that number still points to Omar in the database, and the record says it was cancelled. Every receipt anyone holds matches a row, and the mistake itself stays visible.</p>
+  <p class="ar">ما زال Omar يحمل إيصالًا ورقيًّا رقمه 5003. وبعد الإلغاء وإعادة الإصدار، يبقى هذا الرقم مشيرًا إلى Omar في قاعدة البيانات، ويقول السجلّ إنه أُلغي. فكل إيصال يحمله أحد يطابق صفًّا، ويبقى الخطأ نفسه ظاهرًا.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The slides only say "cancelled"; this table records it in a <code>status</code> column. The correction is an <code>UPDATE</code> of the status &mdash; an attribute, not the link &mdash; and an <code>INSERT</code>:</p>
+    <p class="ar">لا تقول الشرائح إلا «يُلغى»؛ وهذا الجدول يسجّل ذلك في عمود <code>status</code>. والتصحيح أمر <code>UPDATE</code> على الحالة &mdash; وهي خاصية لا ارتباط &mdash; وأمر <code>INSERT</code>:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE students (student_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL)","INSERT INTO students VALUES (1001,'Sara','Hamdan'), (1002,'Omar','Khalil'), (1003,'Lina','Nasser')","CREATE TABLE receipts (receipt_no NUMBER PRIMARY KEY, student_id NUMBER NOT NULL, issue_date VARCHAR(10) NOT NULL, amount NUMBER NOT NULL, paid_for VARCHAR(20) NOT NULL, status VARCHAR(10) NOT NULL)","INSERT INTO receipts VALUES (5001,1001,'2026-09-01',300,'Tuition fees','ISSUED'), (5002,1002,'2026-09-01',300,'Tuition fees','ISSUED'), (5003,1002,'2026-10-05',40,'Bookstore','ISSUED')"],"sql":"UPDATE receipts\nSET status = 'CANCELLED'\nWHERE receipt_no = 5003;\n\nINSERT INTO receipts\nVALUES (5004, 1003, '2026-10-05', 40, 'Bookstore', 'ISSUED');\n\nSELECT receipt_no, student_id, amount, paid_for, status\nFROM receipts\nORDER BY receipt_no;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>receipt_no</code></th><th><code>student_id</code></th><th><code>amount</code></th><th><code>paid_for</code></th><th><code>status</code></th></tr></thead>
+          <tbody>
+            <tr><td>5001</td><td>1001</td><td>300</td><td>Tuition fees</td><td>ISSUED</td></tr>
+            <tr><td>5002</td><td>1002</td><td>300</td><td>Tuition fees</td><td>ISSUED</td></tr>
+            <tr><td>5003</td><td>1002</td><td>40</td><td>Bookstore</td><td>CANCELLED</td></tr>
+            <tr><td>5004</td><td>1003</td><td>40</td><td>Bookstore</td><td>ISSUED</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Four rows, and <code>student_id</code> was never updated. Totals per student now count only issued receipts:</p>
+    <p class="ar">أربعة صفوف، ولم يُعدَّل <code>student_id</code> قطّ. ومجاميع كل طالب الآن لا تعدّ إلا الإيصالات الصادرة:</p>
+    <pre class="code" data-lang="sql"><code>SELECT s.first_name, SUM(r.amount) AS paid
+FROM receipts r JOIN students s ON r.student_id = s.student_id
+WHERE r.status = 'ISSUED'
+GROUP BY s.first_name
+ORDER BY s.first_name;</code></pre>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>first_name</code></th><th><code>paid</code></th></tr></thead>
+          <tbody>
+            <tr><td>Lina</td><td>40</td></tr>
+            <tr><td>Omar</td><td>300</td></tr>
+            <tr><td>Sara</td><td>300</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">After the correction, which statement about receipt 5003 is true?</p>
+    <p class="q ar">بعد التصحيح، أيّ عبارة عن الإيصال 5003 صحيحة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">It now belongs to Lina</span><span class="ar">صار يخصّ Lina</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">It still belongs to Omar, and it is cancelled</span><span class="ar">ما زال يخصّ Omar، وهو ملغى</span></button></li>
+      <li><button class="opt"><span class="en">It has been deleted, and 5004 replaces it</span><span class="ar">حُذف، وحلّ محلّه 5004</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Cancel and reissue never moves and never deletes. 5003 stays linked to its original student; 5004 is a new instance for Lina.</p>
+      <p class="ar">الإلغاء وإعادة الإصدار لا ينقل ولا يحذف أبدًا. يبقى 5003 مرتبطًا بطالبه الأصلي، و5004 نسخة جديدة لـ Lina.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The correction ran <code>UPDATE receipts SET status = 'CANCELLED'</code>. Why does that not break the diamond?</p>
+    <p class="q ar">نفّذ التصحيح <code>UPDATE receipts SET status = 'CANCELLED'</code>. لماذا لا يخرق ذلك المعيَّن؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">The diamond locks only the link (<code>student_id</code>); <code>status</code> is an attribute of the receipt</span><span class="ar">المعيَّن لا يقفل إلا الارتباط (<code>student_id</code>)؛ و<code>status</code> خاصية للإيصال</span></button></li>
+      <li><button class="opt"><span class="en">The diamond allows one update per receipt</span><span class="ar">المعيَّن يسمح بتعديل واحد لكل إيصال</span></button></li>
+      <li><button class="opt"><span class="en">It does break it, but the slides allow it for mistakes</span><span class="ar">بل يخرقه، لكن الشرائح تسمح بذلك عند الخطأ</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Nontransferable is about the relationship: which student the receipt is issued to. Other attributes of the receipt are not part of it.</p>
+      <p class="ar">عدم القابلية للنقل يخصّ العلاقة: أيّ طالب صدر له الإيصال. أمّا خصائص الإيصال الأخرى فليست جزءًا منها.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 6 -->
+  <h2 id="t5l1-h6"><span class="en">6 · The business decides</span><span class="ar">٦ · العمل هو الذي يقرّر</span></h2>
+
+  <div class="problem">
+    <p class="en">Two health clubs use the same diagram: <code>MEMBERSHIP</code> held by <code>PERSON</code>. A member of the first club moves abroad and hands her membership to her brother. The second club refuses the same request. Both are right &mdash; for their own club.</p>
+    <p class="ar">ناديان صحّيان يستعملان المخطّط نفسه: <code>MEMBERSHIP</code> (عضوية) يحملها <code>PERSON</code> (شخص). تسافر عضوة في النادي الأول وتتنازل عن عضويتها لأخيها. ويرفض النادي الثاني الطلب نفسه. وكلاهما محقّ &mdash; في ناديه.</p>
+  </div>
+
+  <p class="en">The slides: some health clubs allow memberships to be transferred from one person to another, but others don't. This business rule is normally determined by what is most efficient and most profitable for the club. Transferability is not a fact about the entities; it is a <a href="../lessons/t3-lesson-01.html#t3l1-h1">business rule</a>.</p>
+  <p class="ar">تقول الشرائح: بعض الأندية الصحّية تسمح بنقل العضوية من شخص إلى آخر، وبعضها لا يسمح. وتتحدّد قاعدة العمل هذه عادةً بما هو أكفأ وأربح للنادي. فقابلية النقل ليست حقيقةً عن الكيانات، بل <a href="../lessons/t3-lesson-01.html#t3l1-h1">قاعدة عمل</a>.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Relationship (from the slides)</th><th class="ar">العلاقة (من الشرائح)</th><th class="en">Transferable?</th><th class="ar">قابلة للنقل؟</th></tr></thead>
+      <tbody>
+        <tr><td class="en">A class allocated to a teacher</td><td class="ar">شعبة مُسنَدة إلى معلّم</td><td class="en">Usually yes &mdash; the teacher may fall sick</td><td class="ar">غالبًا نعم &mdash; فقد يمرض المعلّم</td></tr>
+        <tr><td class="en">A person in a department, or in a job</td><td class="ar">شخص في قسم، أو في وظيفة</td><td class="en">Yes &mdash; people change departments and jobs</td><td class="ar">نعم &mdash; فالناس يغيّرون أقسامهم ووظائفهم</td></tr>
+        <tr><td class="en">A student in a study group</td><td class="ar">طالب في مجموعة دراسة</td><td class="en">Yes</td><td class="ar">نعم</td></tr>
+        <tr><td class="en">An order placed with an internet company</td><td class="ar">طلب موضوع لدى شركة على الإنترنت</td><td class="en">No</td><td class="ar">لا</td></tr>
+        <tr><td class="en">A receipt issued to a student</td><td class="ar">إيصال صادر لطالب</td><td class="en">No &mdash; cancel and write up another</td><td class="ar">لا &mdash; يُلغى ويُكتب غيره</td></tr>
+        <tr><td class="en">A membership held by a person</td><td class="ar">عضوية يحملها شخص</td><td class="en">Depends on the club</td><td class="ar">يتوقّف على النادي</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="evolve" id="t5l1-e2">
+    <div class="ver" data-title-en="Version 1 — a diamond on every line" data-title-ar="الإصدار 1 — معيَّن على كل خط">
+      <figure class="diagram" data-diagram="t5-school-v1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 256" direction="ltr" role="img" aria-labelledby="t5-school-v1-t">
+<title id="t5-school-v1-t">Version 1: STUDY GROUP, STUDENT and RECEIPT with a diamond on both relationships, so a student can never change study group / الإصدار 1: STUDY GROUP وSTUDENT وRECEIPT مع معيَّن على العلاقتين، فلا يستطيع الطالب تغيير مجموعته أبدًا</title>
+<g class="en"><text x="450" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1 — a diamond on every line</text></g><g class="ar"><text x="450" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 1 — معيَّن على كل خط</text></g>
+<rect x="30" y="50" width="190" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="125.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDY GROUP</text>
+<text x="44" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="44" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="355" y="50" width="190" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="450.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="369" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="369" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="369" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="680" y="50" width="190" height="118" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="775.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">RECEIPT</text>
+<text x="694" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Number</text>
+<text x="694" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Issue Date</text>
+<text x="694" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Amount</text>
+<text x="694" y="151" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Paid For</text>
+<path d="M220 100 L287.5 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M287.5 100 L355 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M341 100 L355 92" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M341 100 L355 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M341 100 L355 108" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M287.5 91 L296.5 100 L287.5 109 L278.5 100 Z" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1.8"/>
+<text x="240" y="92" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">have</text>
+<text x="347" y="118" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">join</text>
+<path d="M545 100 L612.5 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M612.5 100 L680 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M666 100 L680 92" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M666 100 L680 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M666 100 L680 108" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M612.5 91 L621.5 100 L612.5 109 L603.5 100 Z" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1.8"/>
+<text x="565" y="92" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">issued</text>
+<text x="672" y="118" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">issued to</text>
+<rect x="30" y="190" width="840" height="50" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="46" y="211" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Defect: Sara can never leave the Algebra Circle. To move her, the model forces you to delete her link and lose her history.</text></g><g class="ar"><text x="854" y="211" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏العيب: لا تستطيع Sara أبدًا أن تترك Algebra Circle. ولنقلها يجبرك النموذج على حذف ارتباطها وفقدان سجلّها.</text></g>
+<g class="en"><text x="46" y="230" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">The business never asked for that: students are allowed to change groups.</text></g><g class="ar"><text x="854" y="230" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏ولم يطلب العمل ذلك: فالطلاب مسموح لهم بتغيير المجموعة.</text></g></svg>
+</figure>
+      <p class="en">Defect: an invented restriction. A designer who learned the diamond put it everywhere "to be safe". Now Sara can never leave the Algebra Circle, although the business allows students to change groups.</p>
+      <p class="ar">العيب: قيد مختلَق. مصمّم تعلّم المعيَّن فوضعه في كل مكان «احتياطًا». فصارت Sara لا تستطيع أبدًا أن تترك Algebra Circle، مع أن العمل يسمح للطلاب بتغيير المجموعة.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — a diamond only where the business says so" data-title-ar="الإصدار 2 — معيَّن حيث يقول العمل فقط">
+      <figure class="diagram" data-diagram="t5-school-v2">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 256" direction="ltr" role="img" aria-labelledby="t5-school-v2-t">
+<title id="t5-school-v2-t">Version 2: STUDY GROUP have / join STUDENT with no diamond, STUDENT issued / issued to RECEIPT with a diamond / الإصدار 2: STUDY GROUP have / join STUDENT بلا معيَّن، وSTUDENT issued / issued to RECEIPT مع معيَّن</title>
+<g class="en"><text x="450" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 2 — a diamond only where the business says so</text></g><g class="ar"><text x="450" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">‏الإصدار 2 — معيَّن حيث يقول العمل فقط</text></g>
+<rect x="30" y="50" width="190" height="80" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="125.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDY GROUP</text>
+<text x="44" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="44" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="355" y="50" width="190" height="99" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="450.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">STUDENT</text>
+<text x="369" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># ID</text>
+<text x="369" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* First Name</text>
+<text x="369" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Last Name</text>
+<rect x="680" y="50" width="190" height="118" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="775.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">RECEIPT</text>
+<text x="694" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Number</text>
+<text x="694" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Issue Date</text>
+<text x="694" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Amount</text>
+<text x="694" y="151" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Paid For</text>
+<path d="M220 100 L287.5 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M287.5 100 L355 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M341 100 L355 92" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M341 100 L355 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M341 100 L355 108" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="240" y="92" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">have</text>
+<text x="347" y="118" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">join</text>
+<path d="M545 100 L612.5 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M612.5 100 L680 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M666 100 L680 92" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M666 100 L680 100" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M666 100 L680 108" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M612.5 91 L621.5 100 L612.5 109 L603.5 100 Z" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1.8"/>
+<text x="565" y="92" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">issued</text>
+<text x="672" y="118" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">issued to</text>
+<rect x="30" y="190" width="840" height="50" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="46" y="211" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Fixed: STUDENT–STUDY GROUP is transferable (no diamond); RECEIPT–STUDENT stays nontransferable.</text></g><g class="ar"><text x="854" y="211" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‏أُصلح: STUDENT–STUDY GROUP قابلة للنقل (بلا معيَّن)، وRECEIPT–STUDENT تبقى غير قابلة للنقل.</text></g>
+<g class="en"><text x="46" y="230" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Each line answers its own question. This is the recommended model.</text></g><g class="ar"><text x="854" y="230" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">‏كل خط يجيب عن سؤاله الخاص. وهذا هو النموذج الموصى به.</text></g></svg>
+</figure>
+      <p class="en">Fixed: each line answers its own question. <code>STUDENT</code>&ndash;<code>STUDY GROUP</code> is transferable and unmarked; <code>RECEIPT</code>&ndash;<code>STUDENT</code> keeps its diamond. This is the recommended model.</p>
+      <p class="ar">أُصلح: كل خط يجيب عن سؤاله الخاص. <code>STUDENT</code>&ndash;<code>STUDY GROUP</code> قابلة للنقل وبلا علامة، و<code>RECEIPT</code>&ndash;<code>STUDENT</code> تحتفظ بمعيَّنها. وهذا هو النموذج الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t5l1-s6"><span class="en">A wrong diamond costs as much as a missing one</span><span class="ar">المعيَّن الخاطئ يكلّف بقدر المعيَّن الغائب</span></h3>
+
+  <p class="en">A missing diamond lets history be rewritten, as with receipt 5003. A wrong diamond blocks a change the business needs, and people work around it &mdash; deleting Sara and entering her again. Neither is the safe default. Ask the business.</p>
+  <p class="ar">المعيَّن الغائب يسمح بإعادة كتابة التاريخ، كما حدث للإيصال 5003. والمعيَّن الخاطئ يمنع تغييرًا يحتاجه العمل، فيلتفّ الناس عليه &mdash; بحذف Sara وإدخالها من جديد. ولا أحدهما هو الخيار الآمن الافتراضي. اسأل العمل.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 2 tells whoever writes the application which foreign keys may be updated:</p>
+    <p class="ar">يخبر الإصدار 2 من يكتب التطبيق أيّ المفاتيح الأجنبية يجوز تعديلها:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="en">Column</th><th class="ar">العمود</th><th class="en">Line</th><th class="ar">الخط</th><th class="en">The application</th><th class="ar">التطبيق</th></tr></thead>
+        <tbody>
+          <tr><td class="en"><code>students.group_id</code></td><td class="ar"><code>students.group_id</code></td><td class="en">no diamond</td><td class="ar">بلا معيَّن</td><td class="en">offers "move to another group" &mdash; an <code>UPDATE</code></td><td class="ar">يعرض «انقل إلى مجموعة أخرى» &mdash; أمر <code>UPDATE</code></td></tr>
+          <tr><td class="en"><code>employees.department_id</code></td><td class="ar"><code>employees.department_id</code></td><td class="en">no diamond</td><td class="ar">بلا معيَّن</td><td class="en">offers "transfer" &mdash; an <code>UPDATE</code></td><td class="ar">يعرض «انقل» &mdash; أمر <code>UPDATE</code></td></tr>
+          <tr><td class="en"><code>receipts.student_id</code></td><td class="ar"><code>receipts.student_id</code></td><td class="en">diamond</td><td class="ar">معيَّن</td><td class="en">sets it on <code>INSERT</code> only; offers "cancel and reissue"</td><td class="ar">يضبطه عند <code>INSERT</code> فقط، ويعرض «ألغِ وأعِد الإصدار»</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapter 3</span><span class="ar">خيط · الفصل 3 في SQL</span></h4>
+    <p class="en">On the SQL track, <a href="../chapters/chapter-3.html">Chapter 3 &mdash; Relationships</a> inserts rows through foreign keys and updates across tables. It treats every key column as updatable. This lesson says which ones should never be: those on a line with a diamond.</p>
+    <p class="ar">في مسار SQL، يُدخل <a href="../chapters/chapter-3.html">الفصل 3 &mdash; العلاقات</a> صفوفًا عبر المفاتيح الأجنبية ويعدّل عبر الجداول، ويعامل كل عمود مفتاح على أنه قابل للتعديل. أمّا هذا الدرس فيقول أيّها يجب ألّا يُعدَّل أبدًا: تلك التي على خط يحمل معيَّنًا.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The second health club never lets a membership pass to another person. How should its <code>MEMBERSHIP</code>&ndash;<code>PERSON</code> line be drawn?</p>
+    <p class="q ar">النادي الثاني لا يسمح أبدًا بانتقال العضوية إلى شخص آخر. كيف يجب أن يُرسم خط <code>MEMBERSHIP</code>&ndash;<code>PERSON</code> عنده؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">With a diamond on the relationship</span><span class="ar">بمعيَّن على العلاقة</span></button></li>
+      <li><button class="opt"><span class="en">Exactly like the first club's &mdash; it is the same entities</span><span class="ar">تمامًا كخط النادي الأول &mdash; فالكيانات نفسها</span></button></li>
+      <li><button class="opt"><span class="en">Dashed at <code>MEMBERSHIP</code></span><span class="ar">متقطّعًا عند <code>MEMBERSHIP</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Same entities, different business, different rule. The second club's line is nontransferable, so it carries the diamond; the first club's does not. A dashed half would change optionality, not transferability.</p>
+      <p class="ar">الكيانات نفسها، والعمل مختلف، فالقاعدة مختلفة. خط النادي الثاني غير قابل للنقل فيحمل المعيَّن، وخط الأول لا يحمله. أمّا النصف المتقطّع فيغيّر الإلزامية لا قابلية النقل.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which version of the school model is better, and why?</p>
+    <p class="q ar">أيّ إصدار لنموذج المدرسة أفضل، ولماذا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Version 1: more diamonds protect more data</span><span class="ar">الإصدار 1: معيَّنات أكثر تحمي بيانات أكثر</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Version 2: it marks only the move the business forbids, and allows the one it permits</span><span class="ar">الإصدار 2: يعلّم فقط النقل الذي يمنعه العمل، ويسمح بالنقل الذي يجيزه</span></button></li>
+      <li><button class="opt"><span class="en">Neither: diamonds belong only on one-to-one lines</span><span class="ar">لا هذا ولا ذاك: المعيَّنات لا توضع إلا على خطوط «واحد إلى واحد»</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Version 1 forbids Sara's legitimate move to the Data Club. A diamond is a business rule, so it goes where the business put the rule &mdash; here, on the receipt line only.</p>
+      <p class="ar">يمنع الإصدار 1 انتقال Sara المشروع إلى Data Club. والمعيَّن قاعدة عمل، فيوضع حيث وضع العمل القاعدة &mdash; وهنا على خط الإيصال فقط.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t5l1-h7"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Transferable or not?</span><span class="ar">تمرين 1 · قابلة للنقل أم لا؟</span></h4>
+    <p class="en">For each relationship, say transferable or nontransferable, and whether the line carries a diamond. Use the business described.</p>
+    <p class="ar">لكل علاقة، قل هل هي قابلة للنقل أم غير قابلة، وهل يحمل الخط معيَّنًا. استعمل العمل الموصوف.</p>
+    <pre class="code" data-lang="text"><code>1  EMPLOYEE   - JOB             a person may change jobs within the company
+2  ORDER      - CUSTOMER        an internet company; the order is placed by someone
+3  CLASS      - TEACHER         the teacher may fall sick mid-semester
+4  RECEIPT    - STUDENT         a receipt issued for a certification exam
+5  STUDENT    - STUDY GROUP     students may move between groups
+6  MEMBERSHIP - PERSON          a club that never lets a membership change hands</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Transferable, no diamond: 1, 3, 5. Nontransferable, diamond: 2, 4, 6. Line 6 is the one that depends on the business &mdash; for the first club in section 6 it would be transferable.</p>
+      <p class="ar">قابلة للنقل وبلا معيَّن: 1 و3 و5. وغير قابلة للنقل وبمعيَّن: 2 و4 و6. والسطر 6 هو الذي يتوقّف على العمل &mdash; ففي النادي الأول من القسم 6 تكون قابلة للنقل.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · The three questions</span><span class="ar">تمرين 2 · الأسئلة الثلاثة</span></h4>
+    <p class="en">For <code>CLASS</code>&ndash;<code>TEACHER</code>: each class must be allocated to one and only one teacher; a teacher may be responsible for one or more classes; a class can be handed to another teacher. Answer the three review questions and say where each answer is drawn.</p>
+    <p class="ar">في <code>CLASS</code>&ndash;<code>TEACHER</code>: يجب أن تُسنَد كل شعبة إلى معلّم واحد فقط لا غير، وقد يكون المعلّم مسؤولًا عن شعبة واحدة أو أكثر، ويمكن تسليم الشعبة إلى معلّم آخر. أجب عن أسئلة المراجعة الثلاثة، وقل أين يُرسم كل جواب.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Optionality: solid half at <code>CLASS</code> (must be allocated to), dashed half at <code>TEACHER</code> (may be responsible for). Cardinality: crow's foot at <code>CLASS</code>, single toe at <code>TEACHER</code>. Transferability: transferable, so nothing in the middle of the line. In the tables, <code>classes.teacher_id</code> is <code>NOT NULL</code> and may be updated.</p>
+      <p class="ar">الإلزامية: نصف متّصل عند <code>CLASS</code> (must be allocated to)، ونصف متقطّع عند <code>TEACHER</code> (may be responsible for). والتعدّدية: رِجل غراب عند <code>CLASS</code>، وإصبع واحدة عند <code>TEACHER</code>. وقابلية النقل: قابلة للنقل، فلا شيء في منتصف الخط. وفي الجداول يكون <code>classes.teacher_id</code> هو <code>NOT NULL</code> ويجوز تعديله.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Find the wrong diamond</span><span class="ar">تمرين 3 · جِد المعيَّن الخاطئ</span></h4>
+    <p class="en">A classmate's school model, written as text. The business rules are this lesson's. Which lines are wrong, and how should each be fixed?</p>
+    <p class="ar">نموذج مدرسة لزميل، مكتوب نصًّا. وقواعد العمل هي قواعد هذا الدرس. أيّ الأسطر خاطئة، وكيف يُصلَح كلٌّ منها؟</p>
+    <pre class="code" data-lang="text"><code>1  STUDENT   join       | have             STUDY GROUP   [diamond]
+2  RECEIPT   issued to  | issued           STUDENT       [no diamond]
+3  EMPLOYEE  assigned to| responsible for  DEPARTMENT    [no diamond]
+4  CLASS     allocated to| responsible for TEACHER       [diamond]</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Line 1: remove the diamond &mdash; students may move between groups. Line 2: add the diamond &mdash; a receipt cannot be transferred. Line 4: remove the diamond &mdash; a class is usually transferable, or the school cannot cover a sick teacher. Line 3 is right.</p>
+      <p class="ar">السطر 1: احذف المعيَّن &mdash; فالطلاب قد ينتقلون بين المجموعات. والسطر 2: أضف المعيَّن &mdash; فالإيصال لا يُنقل. والسطر 4: احذف المعيَّن &mdash; فالشعبة عادةً قابلة للنقل، وإلّا لما استطاعت المدرسة تغطية معلّم مريض. والسطر 3 صحيح.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Correct a receipt in SQL</span><span class="ar">تمرين 4 · صحّح إيصالًا بلغة SQL</span></h4>
+    <p class="en">Start from the <code>receipts</code> table of section 5 before the correction. Receipt 5001 (tuition fees, 300) was written to Sara (1001) but Lina (1003) paid it. Write the statements that correct it without breaking the diamond. Use receipt number 5005 and today's date, <code>'2026-11-14'</code>.</p>
+    <p class="ar">ابدأ من جدول <code>receipts</code> في القسم 5 قبل التصحيح. كُتب الإيصال 5001 (رسوم دراسية، 300) لـ Sara (1001) لكنّ Lina (1003) هي التي دفعت. اكتب الأوامر التي تصحّحه دون أن تخرق المعيَّن. استعمل رقم الإيصال 5005 وتاريخ اليوم <code>'2026-11-14'</code>.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>UPDATE receipts
+SET status = 'CANCELLED'
+WHERE receipt_no = 5001;
+
+INSERT INTO receipts
+VALUES (5005, 1003, '2026-11-14', 300, 'Tuition fees', 'ISSUED');</code></pre>
+      <p class="en">Receipt 5001 stays with Sara, now <code>CANCELLED</code>; 5005 is Lina's. <code>UPDATE receipts SET student_id = 1003 WHERE receipt_no = 5001</code> would also run without error &mdash; and that is exactly the statement the diamond forbids.</p>
+      <p class="ar">يبقى الإيصال 5001 مع Sara، وقد صار <code>CANCELLED</code>، و5005 لـ Lina. والأمر <code>UPDATE receipts SET student_id = 1003 WHERE receipt_no = 5001</code> سيُنفَّذ أيضًا بلا خطأ &mdash; وهذا بالضبط الأمر الذي يمنعه المعيَّن.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Same entities, two clubs</span><span class="ar">تمرين 5 · الكيانات نفسها، وناديان</span></h4>
+    <p class="en">Each <code>MEMBERSHIP</code> must be held by one and only one <code>PERSON</code>; each <code>PERSON</code> may hold one or more <code>MEMBERSHIP</code>s. Write the business rules for both clubs of section 6, including transferability, and say how their two ERDs differ.</p>
+    <p class="ar">يجب أن يحمل كلَّ <code>MEMBERSHIP</code> شخصٌ <code>PERSON</code> واحد فقط لا غير، وقد يحمل كلُّ <code>PERSON</code> عضوية واحدة أو أكثر. اكتب قواعد العمل للناديين في القسم 6، ومنها قابلية النقل، وقل كيف يختلف مخطّطاهما.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="erdish"><code>Each MEMBERSHIP must be held by one and only one PERSON.
+Each PERSON may hold one or more MEMBERSHIPs.
+Club 1: A MEMBERSHIP may be transferred to another PERSON.
+Club 2: Once a MEMBERSHIP is held by a PERSON, it cannot be transferred to another PERSON.</code></pre>
+      <p class="en">The two ERDs are identical &mdash; halves, toes, names &mdash; except for one diamond in the middle of club 2's line. The slides' reason: each club chooses what is most efficient and profitable for it.</p>
+      <p class="ar">المخطّطان متطابقان &mdash; الأنصاف والأصابع والأسماء &mdash; إلا معيَّنًا واحدًا في منتصف خط النادي الثاني. وسبب ذلك في الشرائح: كل نادٍ يختار ما هو أكفأ وأربح له.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">Transferability asks whether a linked instance may later move to another parent instance. It is the third question about a relationship, after optionality and cardinality.</li>
+      <li class="ar">قابلية النقل تسأل هل يجوز للنسخة المرتبطة أن تنتقل لاحقًا إلى نسخة أب أخرى. وهي السؤال الثالث عن العلاقة، بعد الإلزامية والتعدّدية.</li>
+      <li class="en">Transferable is the default and has no symbol: a class and its teacher, an employee and a department, a student and a study group.</li>
+      <li class="ar">القابلية للنقل هي الأصل ولا رمز لها: الشعبة ومعلّمها، والموظّف وقسمه، والطالب ومجموعة دراسته.</li>
+      <li class="en">Nontransferable is marked with a diamond on the relationship: a receipt and its student, an order and the person who placed it.</li>
+      <li class="ar">عدم القابلية للنقل يُعلَّم بمعيَّن على العلاقة: الإيصال وطالبه، والطلب ومن وضعه.</li>
+      <li class="en">A wrong nontransferable link is cancelled and a new instance written up; it is never moved.</li>
+      <li class="ar">الارتباط غير القابل للنقل إن كان خاطئًا يُلغى وتُكتب نسخة جديدة؛ ولا يُنقل أبدًا.</li>
+      <li class="en">In tables, a transfer is an <code>UPDATE</code> of the foreign key. SQL does not stop it, so a diamond is kept by the application: set on <code>INSERT</code>, never updated.</li>
+      <li class="ar">في الجداول، النقل أمر <code>UPDATE</code> على المفتاح الأجنبي. ولا تمنعه SQL، فيحفظ التطبيقُ المعيَّن: يُضبط عند <code>INSERT</code> ولا يُعدَّل أبدًا.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Reading "one and only one" as "never changes": it means one at a time.</li>
+      <li class="ar">قراءة «one and only one» على أنها «لا تتغيّر أبدًا»: فهي تعني واحدًا في كل وقت.</li>
+      <li class="en">Putting a diamond on every line "to be safe": it forbids changes the business needs.</li>
+      <li class="ar">وضع معيَّن على كل خط «احتياطًا»: فهو يمنع تغييرات يحتاجها العمل.</li>
+      <li class="en">Confusing the diamond with optionality: it changes neither the halves nor the ends.</li>
+      <li class="ar">الخلط بين المعيَّن والإلزامية: فهو لا يغيّر النصفين ولا الطرفين.</li>
+      <li class="en">Fixing a wrong receipt by changing its student instead of cancelling and reissuing.</li>
+      <li class="ar">تصحيح إيصال خاطئ بتغيير طالبه بدل إلغائه وإعادة إصداره.</li>
+      <li class="en">Deciding transferability from the entity names instead of asking the business.</li>
+      <li class="ar">تقرير قابلية النقل من أسماء الكيانات بدل سؤال العمل.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="../tests/t5-test-01.html#t5-test-01">Test 1 &mdash; Transferability</a>. Then <a href="../lessons/t5-lesson-02.html#t5-lesson-02">Lesson 2 &mdash; One-to-Many</a> names the most common type of relationship in any model, and shows that M:1 is the same line read the other way.</p>
+    <p class="ar">اختبر نفسك بـ<a href="../tests/t5-test-01.html#t5-test-01">اختبار 1 &mdash; قابلية النقل</a>. ثم يسمّي <a href="../lessons/t5-lesson-02.html#t5-lesson-02">الدرس 2 &mdash; واحد إلى متعدّد</a> أكثر أنواع العلاقات شيوعًا في أيّ نموذج، ويبيّن أن «متعدّد إلى واحد» هي الخط نفسه مقروءًا بالعكس.</p>
+  </div>
 
 </section>
 <nav class="pager"></nav>
@@ -69,6 +865,9 @@
 <script src="../assets/theory/js/anchors.js"></script>
 <script src="../assets/theory/js/chrome.js"></script>
 <script src="../assets/theory/js/code.js"></script>
+<script src="../assets/vendor/alasql/alasql.min.js"></script>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/widget.js"></script>
 <script src="../assets/theory/js/app.js"></script>
 </body>
 </html>
