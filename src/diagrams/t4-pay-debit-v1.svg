@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540" direction="ltr" role="img" aria-labelledby="t4-pay-debit-v1-t">
+<title id="t4-pay-debit-v1-t">Version 1: DEBIT CARD drawn as a fourth subtype of PAYMENT beside CREDIT CARD, repeating Card Number and the made by relationship to CUSTOMER / الإصدار 1: DEBIT CARD مرسومًا نوعًا فرعيًّا رابعًا لـ PAYMENT بجانب CREDIT CARD، يكرّر Card Number وعلاقة made by مع CUSTOMER</title>
+<g class="en"><text x="400.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Version 1 — DEBIT CARD added beside CREDIT CARD</text></g><g class="ar"><text x="400.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">الإصدار 1 — DEBIT CARD مضافًا بجانب CREDIT CARD</text></g>
+<rect x="40" y="50" width="260" height="397" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="170.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAYMENT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Payment ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Payment Date</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Amount</text>
+<rect x="60" y="153" width="220" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="170.0" y="175" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CASH</text>
+<rect x="60" y="195" width="220" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="170.0" y="217" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CHECK</text>
+<rect x="60" y="237" width="220" height="68" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="170.0" y="259" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CREDIT CARD</text>
+<text x="74" y="281" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Card Number</text>
+<text x="74" y="300" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Instalments</text>
+<rect x="60" y="317" width="220" height="68" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="170.0" y="339" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">DEBIT CARD</text>
+<text x="74" y="361" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Card Number</text>
+<text x="74" y="380" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">o Cashback Amount</text>
+<rect x="60" y="397" width="220" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="170.0" y="419" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">OTHER</text>
+<rect x="580" y="196" width="180" height="78" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="670.0" y="218" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CUSTOMER</text>
+<text x="594" y="240" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Customer ID</text>
+<text x="594" y="259" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M280 213 L400 213" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M400 213 L400 213 L580 213" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M292 213 L280 206" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M292 213 L280 213" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M292 213 L280 220" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="302" y="206" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">made by</text>
+<text x="572" y="207" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">make</text>
+<path d="M280 262 L420 262" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M420 262 L420 239 L580 239" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M292 262 L280 255" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M292 262 L280 262" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M292 262 L280 269" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="302" y="255" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">made by</text>
+<text x="572" y="233" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">make</text>
+<path d="M280 342 L440 342" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M440 342 L440 263 L580 263" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M292 342 L280 335" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M292 342 L280 342" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M292 342 L280 349" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="302" y="335" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">made by</text>
+<text x="572" y="257" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">make</text>
+<rect x="40" y="467" width="720" height="56" rx="6" style="fill:var(--dg-bad-soft, var(--surface));stroke:var(--dg-bad, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="490" text-anchor="start" style="fill:var(--dg-bad, var(--text));font-family:var(--font, sans-serif);font-size:12px">* Card Number is written twice, and a made by line is drawn for each kind of card.</text></g><g class="ar"><text x="744" y="490" text-anchor="start" direction="rtl" style="fill:var(--dg-bad, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">‎* Card Number مكتوب مرّتين، وخطّ made by مرسوم لكل نوع من البطاقات.</text></g>
+<g class="en"><text x="56" y="510" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">What the two cards share is said in two places, so a third kind of card would say it a third time.</text></g><g class="ar"><text x="744" y="510" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">ما تشترك فيه البطاقتان مقول في مكانين، فنوع ثالث من البطاقات سيقوله مرّة ثالثة.</text></g>
+</svg>

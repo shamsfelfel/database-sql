@@ -1,0 +1,598 @@
+<section class="page" id="t4-lesson-04">
+
+  <span class="kicker">Lesson 4</span>
+  <h1><span class="en">Nesting, and Knowing When to Stop</span><span class="ar">التداخل، ومتى تتوقّف</span></h1>
+  <p class="lede en">By the end of this lesson you will be able to draw and read a subtype inside a subtype, say everything a nested subtype inherits, keep a hierarchy to two levels for readability, and recognise when a box should really be an attribute or a relationship.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن ترسم نوعًا فرعيًّا داخل نوع فرعي وأن تقرأه، وأن تذكر كل ما يرثه النوع الفرعي المتداخل، وأن تُبقي التسلسل الهرمي في مستويين من أجل سهولة القراءة، وأن تعرف متى يجب أن يكون الصندوق في الحقيقة خاصيةً أو علاقة.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> The lecturer's nested <code>ANIMAL</code> slide, then the shop's <code>PAYMENT</code> again: the six March payments of <a href="#t4-lesson-01">Lesson 1</a>, the inheritance of <a href="#t4-lesson-02">Lesson 2</a> and the three rules of <a href="#t4-lesson-03">Lesson 3</a>. On 6 March the shop takes its first debit card, and the model has to grow a level.</p>
+    <p class="ar"><strong>السياق.</strong> شريحة <code>ANIMAL</code> المتداخلة للمحاضِرة، ثم <code>PAYMENT</code> المتجر من جديد: دفعات آذار الست في <a href="#t4-lesson-01">الدرس 1</a>، والوراثة في <a href="#t4-lesson-02">الدرس 2</a>، والقواعد الثلاث في <a href="#t4-lesson-03">الدرس 3</a>. وفي 6 آذار يقبض المتجر أول دفعة ببطاقة خصم مباشر، فيحتاج النموذج إلى مستوى جديد.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Draw a nested subtype and name the level of every box in a hierarchy.</li>
+      <li class="ar">رسم نوع فرعي متداخل، وتسمية مستوى كل صندوق في تسلسل هرمي.</li>
+      <li class="en">List every attribute and relationship a nested subtype inherits, from every box around it.</li>
+      <li class="ar">ذكر كل خاصية وعلاقة يرثها النوع الفرعي المتداخل، من كل صندوق يحيط به.</li>
+      <li class="en">Explain the two-level guideline, and cut a deeper hierarchy back to two levels.</li>
+      <li class="ar">شرح إرشاد المستويين، وتقليص تسلسل أعمق إلى مستويين.</li>
+      <li class="en">Decide, with four questions, whether a group becomes a subtype, an attribute or a separate entity.</li>
+      <li class="ar">الحكم، بأربعة أسئلة، هل تصبح مجموعةٌ نوعًا فرعيًّا أم خاصيةً أم كيانًا منفصلًا.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t4l4-h1"><span class="en">1 · Subtypes inside subtypes</span><span class="ar">١ · أنواع فرعية داخل أنواع فرعية</span></h2>
+
+  <div class="problem">
+    <p class="en">A zoo splits <code>ANIMAL</code> into <code>VERTEBRATE</code> and <code>INVERTEBRATE</code>. Then it wants birds, reptiles and mammals too. They are not a third, fourth and fifth kind beside <code>VERTEBRATE</code>: every bird <em>is</em> a vertebrate. Drawn as siblings, an eagle would be both a <code>VERTEBRATE</code> and a <code>BIRD</code> &mdash; rule three broken.</p>
+    <p class="ar">تقسم حديقة حيوان <code>ANIMAL</code> إلى <code>VERTEBRATE</code> (الفقاريات) و<code>INVERTEBRATE</code> (اللافقاريات). ثم تريد الطيور والزواحف والثدييات أيضًا. وهذه ليست نوعًا ثالثًا ورابعًا وخامسًا بجانب <code>VERTEBRATE</code>: فكل طائر <em>هو</em> فقاري. ولو رُسمت أخواتٍ له لكان النسر <code>VERTEBRATE</code> و<code>BIRD</code> معًا &mdash; وهذا خرق للقاعدة الثالثة.</p>
+  </div>
+
+  <p class="en">The lecturer's slide answers it: <em>you can nest subtypes</em>. <code>BIRD</code>, <code>REPTILE</code>, <code>MAMMAL</code> and <code>OTHER</code> are drawn <em>inside</em> <code>VERTEBRATE</code>, which is itself inside <code>ANIMAL</code>. A box inside a box inside a box still means one thing: "is a kind of".</p>
+  <p class="ar">شريحة المحاضِرة تجيب: <em>يمكنك أن تجعل الأنواع الفرعية متداخلة</em>. تُرسم <code>BIRD</code> و<code>REPTILE</code> و<code>MAMMAL</code> و<code>OTHER</code> <em>داخل</em> <code>VERTEBRATE</code>، وهو نفسه داخل <code>ANIMAL</code>. والصندوق داخل صندوق داخل صندوق ما زال يعني شيئًا واحدًا: «نوعٌ من».</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="nested-subtype">nested subtype</span> is a subtype drawn inside another subtype, so that it is a kind of a kind of the supertype.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="nested-subtype">النوع الفرعي المتداخل</span> (Nested subtype) نوعٌ فرعي مرسوم داخل نوع فرعي آخر، فيكون نوعًا من نوعٍ من النوع الأعلى.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="subtype-level">level</span> is one ring of nesting: subtypes drawn directly in the supertype are level 1, the subtypes inside them are level 2.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="subtype-level">المستوى</span> (Level) حلقةٌ واحدة من التداخل: الأنواع الفرعية المرسومة مباشرةً في النوع الأعلى هي المستوى 1، والأنواع الفرعية داخلها هي المستوى 2.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="intermediate-supertype">intermediate supertype</span> is a box that is a subtype of the box around it and a supertype of the boxes inside it, such as <code>VERTEBRATE</code>.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="intermediate-supertype">النوع الأعلى الوسيط</span> (Intermediate supertype) صندوقٌ هو نوع فرعي للصندوق المحيط به، ونوع أعلى للصناديق التي في داخله، مثل <code>VERTEBRATE</code>.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t4-animal-nested"><figcaption><span class="en">The lecturer's nested <code>ANIMAL</code>. The slide draws the shape only; we add the two common attributes. Notice that <code>INVERTEBRATE</code> is not subdivided at all.</span><span class="ar"><code>ANIMAL</code> المتداخل عند المحاضِرة. ترسم الشريحة الشكل وحده، ونضيف نحن الخاصيتين المشتركتين. لاحظ أن <code>INVERTEBRATE</code> غير مقسَّم أصلًا.</span></figcaption></figure>
+
+  <p class="en">Do not confuse <em>nested</em> with Lesson 3's <em>overlapping</em>. Overlapping is one instance in two boxes side by side &mdash; a defect. Nested is one box inside another &mdash; legal, and each eagle still sits in exactly one innermost box.</p>
+  <p class="ar">لا تخلط بين <em>المتداخل</em> هنا و<em>المتداخلة</em> (Overlapping) في الدرس 3. فهناك نسخة واحدة في صندوقين متجاورين &mdash; وهذا عيب. أمّا هنا فصندوق داخل صندوق آخر &mdash; وهذا مسموح، وكل نسر ما زال يقع في صندوق داخلي واحد بالضبط.</p>
+
+  <h3 id="t4l4-s1"><span class="en">The three rules, at every level</span><span class="ar">القواعد الثلاث، في كل مستوى</span></h3>
+
+  <p class="en">Lesson 3's questions are asked once per box that has boxes inside it. Inside <code>ANIMAL</code>: is every animal a vertebrate or an invertebrate, never both? Yes. Inside <code>VERTEBRATE</code>: is every vertebrate a bird, reptile, mammal or other? Yes &mdash; <code>OTHER</code> takes the fish and the frogs.</p>
+  <p class="ar">تُطرح أسئلة الدرس 3 مرّة لكل صندوق في داخله صناديق. داخل <code>ANIMAL</code>: هل كل حيوان فقاري أو لافقاري، ولا يكون الاثنين معًا؟ نعم. وداخل <code>VERTEBRATE</code>: هل كل فقاري طائر أو زاحف أو ثديي أو غير ذلك؟ نعم &mdash; فـ <code>OTHER</code> يأخذ الأسماك والضفادع.</p>
+
+  <pre class="code" data-lang="text"><code>inside ANIMAL      VERTEBRATE | INVERTEBRATE              exhaustive, exclusive
+inside VERTEBRATE  BIRD | REPTILE | MAMMAL | OTHER    exhaustive, exclusive
+inside INVERTEBRATE  (nothing)                        no rule to check</code></pre>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">One table, one type column per level. <code>animal_group</code> answers level 1; <code>vertebrate_class</code> answers level 2 and must be empty for an invertebrate. A table-level <code>CHECK</code> ties the two columns together, so the nesting is enforced, not just drawn:</p>
+    <p class="ar">جدول واحد، وعمود نوع لكل مستوى. يجيب <code>animal_group</code> عن المستوى 1، ويجيب <code>vertebrate_class</code> عن المستوى 2 ويجب أن يكون فارغًا للافقاري. وقيد <code>CHECK</code> على مستوى الجدول يربط العمودين، فيُفرض التداخل ولا يكتفي بأن يُرسم:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE animals (animal_id NUMBER PRIMARY KEY, name VARCHAR(30) NOT NULL, animal_group VARCHAR(12) NOT NULL CHECK (animal_group IN ('VERTEBRATE','INVERTEBRATE')), vertebrate_class VARCHAR(8) CHECK (vertebrate_class IN ('BIRD','REPTILE','MAMMAL','OTHER')), CHECK ((animal_group = 'VERTEBRATE' AND vertebrate_class IS NOT NULL) OR (animal_group = 'INVERTEBRATE' AND vertebrate_class IS NULL)))", "INSERT INTO animals VALUES (1,'Eagle','VERTEBRATE','BIRD'), (2,'Tortoise','VERTEBRATE','REPTILE'), (3,'Camel','VERTEBRATE','MAMMAL'), (4,'Frog','VERTEBRATE','OTHER'), (5,'Octopus','INVERTEBRATE',NULL)"], "sql": "SELECT * FROM animals ORDER BY animal_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>animal_id</code></th><th><code>name</code></th><th><code>animal_group</code></th><th><code>vertebrate_class</code></th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Eagle</td><td>VERTEBRATE</td><td>BIRD</td></tr>
+            <tr><td>2</td><td>Tortoise</td><td>VERTEBRATE</td><td>REPTILE</td></tr>
+            <tr><td>3</td><td>Camel</td><td>VERTEBRATE</td><td>MAMMAL</td></tr>
+            <tr><td>4</td><td>Frog</td><td>VERTEBRATE</td><td>OTHER</td></tr>
+            <tr><td>5</td><td>Octopus</td><td>INVERTEBRATE</td><td>&empty;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Now try <code>INSERT INTO animals VALUES (6, 'Spider', 'INVERTEBRATE', 'BIRD');</code> &mdash; a bird outside <code>VERTEBRATE</code>. alasql answers <code>Violation of CHECK constraint</code>. So does a vertebrate with no class. With <code>NULL</code> in the last column, the spider is accepted.</p>
+    <p class="ar">جرّب الآن <code>INSERT INTO animals VALUES (6, 'Spider', 'INVERTEBRATE', 'BIRD');</code> &mdash; طائرًا خارج <code>VERTEBRATE</code>. فيجيب alasql: <code>Violation of CHECK constraint</code>. وكذلك يرفض فقاريًّا بلا صنف. أمّا مع <code>NULL</code> في العمود الأخير فيُقبل العنكبوت.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the lecturer's drawing, which statement is true?</p>
+    <p class="q ar">في رسم المحاضِرة، أيّ عبارة صحيحة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>MAMMAL</code> is a level-1 subtype of <code>ANIMAL</code></span><span class="ar"><code>MAMMAL</code> نوع فرعي من المستوى 1 لـ <code>ANIMAL</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>VERTEBRATE</code> is a subtype and a supertype at the same time</span><span class="ar"><code>VERTEBRATE</code> نوع فرعي ونوع أعلى في الوقت نفسه</span></button></li>
+      <li><button class="opt"><span class="en"><code>INVERTEBRATE</code> breaks a rule because it has no subtypes inside it</span><span class="ar"><code>INVERTEBRATE</code> يخرق قاعدة لأنه لا أنواع فرعية في داخله</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>VERTEBRATE</code> is a kind of <code>ANIMAL</code> and the supertype of four boxes: an intermediate supertype. <code>MAMMAL</code> is level 2. A box with nothing inside it is fine; the rule is only that a box never has <em>exactly one</em> subtype.</p>
+      <p class="ar"><code>VERTEBRATE</code> نوعٌ من <code>ANIMAL</code>، ونوع أعلى لأربعة صناديق: إنه نوع أعلى وسيط. و<code>MAMMAL</code> في المستوى 2. والصندوق الذي ليس في داخله شيء سليم؛ فالقاعدة هي فقط ألّا يكون للصندوق نوع فرعي <em>واحد بالضبط</em>.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A keeper wants <code>FISH</code> as its own box. Where does it go?</p>
+    <p class="q ar">يريد أحد الحرّاس <code>FISH</code> صندوقًا مستقلًّا. أين يوضع؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Inside <code>ANIMAL</code>, beside <code>VERTEBRATE</code></span><span class="ar">داخل <code>ANIMAL</code>، بجانب <code>VERTEBRATE</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Inside <code>VERTEBRATE</code>, taking the fish out of <code>OTHER</code></span><span class="ar">داخل <code>VERTEBRATE</code>، ويُخرج الأسماك من <code>OTHER</code></span></button></li>
+      <li><button class="opt"><span class="en">Inside <code>BIRD</code>, since both lay eggs</span><span class="ar">داخل <code>BIRD</code>، لأن كليهما يبيض</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Every fish is a vertebrate, so beside <code>VERTEBRATE</code> it would overlap with it. It joins the level-2 boxes, and <code>OTHER</code> keeps only the vertebrates still unnamed, such as frogs. A fish is not a kind of bird.</p>
+      <p class="ar">كل سمكة فقارية، فلو وُضع بجانب <code>VERTEBRATE</code> لتداخل معه. بل ينضمّ إلى صناديق المستوى 2، ويحتفظ <code>OTHER</code> بالفقاريات التي لم تُسمَّ بعد فقط، مثل الضفادع. والسمكة ليست نوعًا من الطيور.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t4l4-h2"><span class="en">2 · Nesting in the shop: the debit card</span><span class="ar">٢ · التداخل في المتجر: بطاقة الخصم المباشر</span></h2>
+
+  <div class="problem">
+    <p class="en">On 6 March Linda pays 60 with a debit card and takes 20 cash back. A debit card has a card number and a customer, like a credit card. It has a cashback amount, which a credit card never has, and no instalments. Is it a fourth sibling of <code>CREDIT CARD</code>?</p>
+    <p class="ar">في 6 آذار تدفع Linda مبلغ 60 ببطاقة خصم مباشر (Debit card)، وتسحب 20 نقدًا. لبطاقة الخصم المباشر رقم بطاقة وزبون، كبطاقة الائتمان. ولها مبلغ سحب نقدي (Cashback) لا يكون لبطاقة الائتمان أبدًا، وليس لها أقساط. فهل هي أختٌ رابعة لـ <code>CREDIT CARD</code>؟</p>
+  </div>
+
+  <p class="en">Drawn as a sibling, the two card kinds repeat what they share. That is the same repetition Lesson 1 removed from three separate entities, one level down. The cure is the same too: give what they share a box of its own, <code>CARD</code>, and nest the two kinds inside it.</p>
+  <p class="ar">إذا رُسمت أختًا، كرّر نوعا البطاقة ما يشتركان فيه. وهذا هو التكرار نفسه الذي أزاله الدرس 1 من الكيانات الثلاثة المنفصلة، لكن في مستوى أدنى. والعلاج نفسه أيضًا: أعطِ المشترك بينهما صندوقًا خاصًّا به، <code>CARD</code>، وضع النوعين داخله.</p>
+
+  <div class="evolve" id="t4l4-e1">
+    <div class="ver" data-title-en="Version 1 — DEBIT CARD as a fourth sibling" data-title-ar="الإصدار 1 — DEBIT CARD أختًا رابعة">
+      <figure class="diagram" data-diagram="t4-pay-debit-v1"></figure>
+      <p class="en">Defect: repeated structure. <code>* Card Number</code> is listed in two boxes and <code>made by</code> is drawn twice for cards. Nothing in the drawing says that credit and debit are both cards, so a rule about cards has to be stated twice.</p>
+      <p class="ar">العيب: بنية مكرّرة. <code>* Card Number</code> مذكور في صندوقين، و<code>made by</code> مرسوم مرّتين للبطاقات. ولا شيء في الرسم يقول إن الائتمان والخصم المباشر كلاهما بطاقة، فأيّ قاعدة عن البطاقات يجب أن تُقال مرّتين.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — CARD, with two kinds nested inside" data-title-ar="الإصدار 2 — CARD، وفي داخله نوعان متداخلان">
+      <figure class="diagram" data-diagram="t4-pay-card-nested"></figure>
+      <p class="en">Fixed: <code>CARD</code> holds <code>* Card Number</code> and the <code>made by</code> line once. <code>CREDIT CARD</code> and <code>DEBIT CARD</code> keep only <code>* Instalments</code> and <code>o Cashback Amount</code>. The shop's terminal reads only these two, so they are exhaustive. This is the recommended model.</p>
+      <p class="ar">أُصلح: يحمل <code>CARD</code> الخاصية <code>* Card Number</code> وخطّ <code>made by</code> مرّة واحدة. ولا يحتفظ <code>CREDIT CARD</code> و<code>DEBIT CARD</code> إلا بـ <code>* Instalments</code> و<code>o Cashback Amount</code>. وجهاز الدفع في المتجر لا يقرأ إلا هذين النوعين، فهما شاملان. وهذا هو النموذج الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t4l4-s2"><span class="en">Reading a nested subtype in full</span><span class="ar">قراءة النوع الفرعي المتداخل كاملًا</span></h3>
+
+  <p class="en">Lesson 2's inheritance does not stop at one box. Payment 7 is a <code>DEBIT CARD</code>, so it has <code>o Cashback Amount</code>; it is a <code>CARD</code>, so it has <code>* Card Number</code> and a customer; it is a <code>PAYMENT</code>, so it has an ID, a date and an amount.</p>
+  <p class="ar">الوراثة في الدرس 2 لا تتوقّف عند صندوق واحد. الدفعة 7 من نوع <code>DEBIT CARD</code>، فلها <code>o Cashback Amount</code>؛ وهي <code>CARD</code>، فلها <code>* Card Number</code> وزبون؛ وهي <code>PAYMENT</code>، فلها معرّف وتاريخ ومبلغ.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="inheritance-chain">inheritance chain</span> is the path from a nested subtype out to the supertype; the subtype inherits every attribute and relationship of every box on that path.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="inheritance-chain">سلسلة الوراثة</span> (Inheritance chain) هي الطريق من النوع الفرعي المتداخل إلى النوع الأعلى؛ ويرث النوع الفرعي كل خاصية وعلاقة لكل صندوق على ذلك الطريق.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="innermost-subtype">innermost subtype</span> is a box with no subtypes inside it; every instance belongs to exactly one innermost subtype.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="innermost-subtype">النوع الفرعي الأعمق</span> (Innermost subtype) صندوقٌ ليس في داخله أيّ نوع فرعي؛ وكل نسخة تنتمي إلى نوع فرعي أعمق واحد بالضبط.</p>
+  </div>
+
+  <pre class="code" data-lang="text"><code>payment 7, a DEBIT CARD           from
+  # Payment ID      7                PAYMENT
+  * Payment Date    2026-03-06       PAYMENT
+  * Amount          60               PAYMENT
+  * Card Number     4000 0566 ...    CARD
+  made by           Linda            CARD
+  o Cashback Amount 20               DEBIT CARD</code></pre>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Build version 2 with a table per box, as in Lesson 2. The nesting becomes a chain of foreign keys: <code>debit_payments.payment_id</code> references <code>card_payments</code>, which references <code>payments</code>. Reading payment 7 in full walks the chain:</p>
+    <p class="ar">ابنِ الإصدار 2 بجدول لكل صندوق، كما في الدرس 2. فيصبح التداخل سلسلةً من المفاتيح الأجنبية: <code>debit_payments.payment_id</code> يشير إلى <code>card_payments</code>، الذي يشير إلى <code>payments</code>. وقراءة الدفعة 7 كاملةً تمشي على السلسلة:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)", "INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90), (7,'2026-03-06',60)", "CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL)", "INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111',2), (5,'5500 0000 0000 0004',1), (7,'4000 0566 5566 5556',1)", "CREATE TABLE credit_payments (payment_id NUMBER PRIMARY KEY REFERENCES card_payments(payment_id), instalments NUMBER NOT NULL)", "INSERT INTO credit_payments VALUES (3,3), (5,1)", "CREATE TABLE debit_payments (payment_id NUMBER PRIMARY KEY REFERENCES card_payments(payment_id), cashback NUMBER)", "INSERT INTO debit_payments VALUES (7,20)"], "sql": "SELECT p.payment_id, p.payment_date, p.amount,\n       c.card_number, c.customer_id, d.cashback\nFROM payments p\nJOIN card_payments  c ON c.payment_id = p.payment_id\nJOIN debit_payments d ON d.payment_id = c.payment_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>payment_id</code></th><th><code>payment_date</code></th><th><code>amount</code></th><th><code>card_number</code></th><th><code>customer_id</code></th><th><code>cashback</code></th></tr></thead>
+          <tbody><tr><td>7</td><td>2026-03-06</td><td>60</td><td>4000 0566 5566 5556</td><td>1</td><td>20</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Three tables for one payment: one join per level. The chain also guards the nesting. Try <code>INSERT INTO debit_payments VALUES (1, 0);</code> for cash payment 1: alasql answers <code>Foreign key "1" not found in table "card_payments"</code>. Only a card can be a debit card.</p>
+    <p class="ar">ثلاثة جداول لدفعة واحدة: ربطٌ (Join) لكل مستوى. والسلسلة تحرس التداخل أيضًا. جرّب <code>INSERT INTO debit_payments VALUES (1, 0);</code> للدفعة النقدية 1: فيجيب alasql: <code>Foreign key "1" not found in table "card_payments"</code>. فلا تكون بطاقةَ خصم مباشر إلا بطاقةٌ.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which list is everything a <code>CREDIT CARD</code> payment has in version 2?</p>
+    <p class="q ar">أيّ قائمة هي كل ما تملكه دفعة <code>CREDIT CARD</code> في الإصدار 2؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>* Instalments</code> only</span><span class="ar"><code>* Instalments</code> وحدها</span></button></li>
+      <li><button class="opt"><span class="en"><code>* Card Number</code>, <code>* Instalments</code>, <code>o Cashback Amount</code> and a customer</span><span class="ar"><code>* Card Number</code> و<code>* Instalments</code> و<code>o Cashback Amount</code> وزبون</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">ID, date, amount, <code>* Card Number</code>, a customer and <code>* Instalments</code></span><span class="ar">المعرّف والتاريخ والمبلغ و<code>* Card Number</code> وزبون و<code>* Instalments</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">It inherits from every box on its chain, <code>CARD</code> and <code>PAYMENT</code>, and adds its own. It does not inherit from its sibling <code>DEBIT CARD</code>: inheritance runs outwards-in, never sideways.</p>
+      <p class="ar">يرث من كل صندوق على سلسلته، <code>CARD</code> و<code>PAYMENT</code>، ويضيف ما يخصّه. ولا يرث من أخته <code>DEBIT CARD</code>: فالوراثة تجري من الخارج إلى الداخل، لا جانبيًّا أبدًا.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why is version 2 better than version 1?</p>
+    <p class="q ar">لماذا الإصدار 2 أفضل من الإصدار 1؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">What both cards share is stated once, in <code>CARD</code>, and inherited by both</span><span class="ar">ما تشترك فيه البطاقتان مقولٌ مرّة واحدة، في <code>CARD</code>، وترثه كلتاهما</span></button></li>
+      <li><button class="opt"><span class="en">It has fewer boxes</span><span class="ar">فيه صناديق أقلّ</span></button></li>
+      <li><button class="opt"><span class="en">Version 1 breaks the "is a kind of" rule</span><span class="ar">الإصدار 1 يخرق قاعدة «نوع من»</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Version 2 has one box <em>more</em>, and version 1 passes all three rules. Its defect is repetition: two copies of the card number and of the customer line, which can drift apart.</p>
+      <p class="ar">في الإصدار 2 صندوقٌ <em>زائد</em>، والإصدار 1 يجتاز القواعد الثلاث. وعيبه التكرار: نسختان من رقم البطاقة ومن خطّ الزبون، قد تختلفان مع الوقت.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t4l4-h3"><span class="en">3 · Two levels, for readability</span><span class="ar">٣ · مستويان، من أجل سهولة القراءة</span></h2>
+
+  <div class="problem">
+    <p class="en">Pleased with <code>CARD</code>, the designer keeps going: <code>VISA</code>, <code>MASTERCARD</code> and <code>OTHER</code> inside <code>CREDIT CARD</code>, and the same three inside <code>DEBIT CARD</code>. The diagram now needs four nested rings to show one Visa debit payment, and the boxes hold nothing.</p>
+    <p class="ar">يُعجب المصمّم بـ <code>CARD</code> فيواصل: <code>VISA</code> و<code>MASTERCARD</code> و<code>OTHER</code> داخل <code>CREDIT CARD</code>، والثلاثة نفسها داخل <code>DEBIT CARD</code>. صار المخطّط يحتاج أربع حلقات متداخلة ليعرض دفعة خصم مباشر واحدة بـ Visa، والصناديق لا تحمل شيئًا.</p>
+  </div>
+
+  <p class="en">The slide is exact about this: <em>for ease of reading &mdash; "readability" &mdash; you would usually show subtypes with only two levels, but there is no rule that would stop you from going beyond two levels.</em> A third level is legal. It has to pay for the reading it costs.</p>
+  <p class="ar">الشريحة دقيقة في هذا: <em>من أجل سهولة القراءة &mdash; «Readability» &mdash; تعرض الأنواع الفرعية عادةً في مستويين فقط، لكن لا توجد قاعدة تمنعك من تجاوز المستويين.</em> فالمستوى الثالث مسموح. لكن عليه أن يدفع ثمن القراءة التي يكلّفها.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="readability">Readability</span> is how quickly a person can read the business rules off a diagram.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="readability">سهولة القراءة</span> (Readability) هي مدى سرعة الإنسان في قراءة قواعد العمل من المخطّط.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="two-level-guideline">two-level guideline</span> is the convention of showing subtypes in at most two levels; it is advice for readability, not a rule.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="two-level-guideline">إرشاد المستويين</span> (Two-level guideline) هو العُرف بعرض الأنواع الفرعية في مستويين على الأكثر؛ وهو نصيحة من أجل سهولة القراءة، لا قاعدة.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="over-nesting">Over-nesting</span> is adding levels whose boxes have nothing of their own, so the diagram grows harder to read and says nothing new.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="over-nesting">الإفراط في التداخل</span> (Over-nesting) هو إضافة مستويات لا تحمل صناديقها شيئًا خاصًّا بها، فيصعب المخطّط على القارئ ولا يقول جديدًا.</p>
+  </div>
+
+  <h3 id="t4l4-s3"><span class="en">A question that cuts across</span><span class="ar">سؤال يقطع الأنواع عرضًا</span></h3>
+
+  <p class="en">The brand boxes appear twice because "which brand?" is not a deeper version of "credit or debit?". It is a second question, and its answers apply to both. Lesson 3 met this as a second basis side by side; here it hides one level down. Either way it becomes an attribute.</p>
+  <p class="ar">تظهر صناديق العلامة مرّتين لأن «أيّ علامة؟» ليس نسخةً أعمق من «ائتمان أم خصم مباشر؟». إنه سؤال ثانٍ، وأجوبته تنطبق على الاثنين. قابل الدرس 3 هذا أساسًا ثانيًا جنبًا إلى جنب؛ وهو هنا مختبئ في مستوى أدنى. وفي الحالتين يصبح خاصية.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="cross-cutting-attribute">cross-cutting attribute</span> is a classification that applies across sibling subtypes, so it is placed once, as an attribute of the box that encloses them.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="cross-cutting-attribute">الخاصية العابرة</span> (Cross-cutting attribute) تصنيفٌ ينطبق على أنواع فرعية شقيقة كلها، فيوضع مرّة واحدة خاصيةً في الصندوق الذي يحيط بها.</p>
+  </div>
+
+  <div class="evolve" id="t4l4-e2">
+    <div class="ver" data-title-en="Version 1 — brands as a third level" data-title-ar="الإصدار 1 — العلامات مستوًى ثالثًا">
+      <figure class="diagram" data-diagram="t4-pay-brand-v1"></figure>
+      <p class="en">Defect: over-nesting. Six level-3 boxes, none with an attribute or relationship of its own, and the same three names drawn twice. A new brand would mean two new boxes. Every rule still holds &mdash; the drawing is legal and hard to read.</p>
+      <p class="ar">العيب: إفراط في التداخل. ستة صناديق في المستوى 3، ليس لأيٍّ منها خاصية أو علاقة خاصّة به، والأسماء الثلاثة نفسها مرسومة مرّتين. والعلامة الجديدة تعني صندوقين جديدين. القواعد كلها ما زالت سليمة &mdash; فالرسم مسموح، لكنه صعب القراءة.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — two levels, * Card Brand in CARD" data-title-ar="الإصدار 2 — مستويان، و* Card Brand في CARD">
+      <figure class="diagram" data-diagram="t4-pay-brand-v2"></figure>
+      <p class="en">Fixed: the brand is a cross-cutting attribute, <code>* Card Brand</code>, listed once in <code>CARD</code> with the values <code>VISA</code>, <code>MASTERCARD</code> or <code>OTHER</code>. Two levels, each box with something of its own. This is the recommended model.</p>
+      <p class="ar">أُصلح: العلامة خاصية عابرة، <code>* Card Brand</code>، مذكورة مرّة واحدة في <code>CARD</code> بالقيم <code>VISA</code> أو <code>MASTERCARD</code> أو <code>OTHER</code>. مستويان، ولكل صندوق شيء خاصّ به. وهذا هو النموذج الموصى به.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 1 as tables would need six more tables, none with a column of its own. Version 2 is one column on <code>card_payments</code>, with a <code>CHECK</code> listing the brands. "Takings per brand" is then one <code>GROUP BY</code>, and it counts credit and debit together:</p>
+    <p class="ar">الإصدار 1 جداولَ يحتاج ستة جداول إضافية، ليس لأيٍّ منها عمود خاصّ به. أمّا الإصدار 2 فعمود واحد في <code>card_payments</code>، مع <code>CHECK</code> يعدّد العلامات. ويصبح «المقبوض لكل علامة» <code>GROUP BY</code> واحدًا، يعدّ الائتمان والخصم المباشر معًا:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)", "INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90), (7,'2026-03-06',60)", "CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL, card_brand VARCHAR(10) NOT NULL CHECK (card_brand IN ('VISA','MASTERCARD','OTHER')), customer_id NUMBER NOT NULL)", "INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111','VISA',2), (5,'5500 0000 0000 0004','MASTERCARD',1), (7,'4000 0566 5566 5556','VISA',1)"], "sql": "SELECT c.card_brand, COUNT(*) AS payments, SUM(p.amount) AS takings\nFROM payments p\nJOIN card_payments c ON c.payment_id = p.payment_id\nGROUP BY c.card_brand\nORDER BY c.card_brand;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>card_brand</code></th><th><code>payments</code></th><th><code>takings</code></th></tr></thead>
+          <tbody>
+            <tr><td>MASTERCARD</td><td>1</td><td>220</td></tr>
+            <tr><td>VISA</td><td>2</td><td>370</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Visa's 370 is credit payment 3 plus debit payment 7 &mdash; one row each, in one table. Try <code>UPDATE card_payments SET card_brand = 'AMEX' WHERE payment_id = 7;</code> and the <code>CHECK</code> refuses it: <code>Violation of CHECK constraint</code>. A new brand is a new value, not a new table.</p>
+    <p class="ar">مبلغ Visa وهو 370 هو دفعة الائتمان 3 مع دفعة الخصم المباشر 7 &mdash; صفّ لكلٍّ منهما، في جدول واحد. جرّب <code>UPDATE card_payments SET card_brand = 'AMEX' WHERE payment_id = 7;</code> فيرفضه <code>CHECK</code>: <code>Violation of CHECK constraint</code>. فالعلامة الجديدة قيمةٌ جديدة، لا جدول جديد.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A student says: "A three-level hierarchy breaks the rules." What is the right reply?</p>
+    <p class="q ar">يقول طالب: «التسلسل الهرمي ذو المستويات الثلاثة يخرق القواعد.» ما الردّ الصحيح؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Correct: the slides forbid more than two levels</span><span class="ar">صحيح: الشرائح تمنع أكثر من مستويين</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">No rule stops a third level; two is usual for readability</span><span class="ar">لا قاعدة تمنع المستوى الثالث؛ والمستويان هما المعتاد من أجل سهولة القراءة</span></button></li>
+      <li><button class="opt"><span class="en">Only if the third level has an <code>OTHER</code> box</span><span class="ar">فقط إذا كان في المستوى الثالث صندوق <code>OTHER</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The slide says it in so many words: <em>there is no rule that would stop you from going beyond two levels</em>. Two is a guideline. A deeper level is fine when its boxes really have something of their own.</p>
+      <p class="ar">تقولها الشريحة صراحةً: <em>لا توجد قاعدة تمنعك من تجاوز المستويين</em>. فالمستويان إرشاد. والمستوى الأعمق سليم حين يكون لصناديقه فعلًا شيء خاصّ بها.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">What is the clearest sign that the brand boxes in version 1 belong in an attribute?</p>
+    <p class="q ar">ما أوضح علامة على أن مكان صناديق العلامة في الإصدار 1 خاصيةٌ؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">They are at level 3</span><span class="ar">إنها في المستوى 3</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The same boxes appear under both <code>CREDIT CARD</code> and <code>DEBIT CARD</code>, holding nothing</span><span class="ar">الصناديق نفسها تظهر تحت <code>CREDIT CARD</code> و<code>DEBIT CARD</code> كليهما، ولا تحمل شيئًا</span></button></li>
+      <li><button class="opt"><span class="en">Card brands are not kinds of card</span><span class="ar">علامات البطاقات ليست أنواعًا من البطاقات</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Depth alone is legal. A Visa card <em>is</em> a kind of card, so rule one is fine. The repeat plus the emptiness says it: "which brand?" is a second question that cuts across the first.</p>
+      <p class="ar">العمق وحده مسموح. وبطاقة Visa <em>هي</em> نوعٌ من البطاقات، فالقاعدة الأولى سليمة. أمّا التكرار مع الفراغ فيقولها: «أيّ علامة؟» سؤال ثانٍ يقطع الأول عرضًا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t4l4-h4"><span class="en">4 · When subtyping is the wrong tool</span><span class="ar">٤ · متى يكون التقسيم أداةً خاطئة</span></h2>
+
+  <div class="problem">
+    <p class="en">The owner wants to watch big payments, so a designer splits <code>PAYMENT</code> into <code>SMALL</code> (under 100) and <code>LARGE</code> (100 or more). Run Lesson 3's checklist: each is a kind of payment, every payment fits one, none fits two. All three rules pass. Is it a good model?</p>
+    <p class="ar">يريد المالك أن يراقب الدفعات الكبيرة، فيقسم مصمّم <code>PAYMENT</code> إلى <code>SMALL</code> (أقلّ من 100) و<code>LARGE</code> (100 أو أكثر). طبّق قائمة الدرس 3: كلٌّ منهما نوعٌ من الدفعات، وكل دفعة تقع في أحدهما، ولا دفعة تقع في الاثنين. القواعد الثلاث كلها ناجحة. فهل هو نموذج جيّد؟</p>
+  </div>
+
+  <p class="en">No. The three rules check that subtypes are drawn <em>correctly</em>, not that they should exist. The slides give the reason to subdivide: <em>a group of instances has special properties, such as attributes or relationships that exist only for that group</em>. <code>SMALL</code> and <code>LARGE</code> have none &mdash; and the size is already in <code>* Amount</code>.</p>
+  <p class="ar">لا. القواعد الثلاث تفحص أن الأنواع الفرعية مرسومة <em>رسمًا صحيحًا</em>، لا أن وجودها لازم. والشرائح تعطي سبب التقسيم: <em>مجموعة من النُّسَخ لها سمات خاصّة، كخصائص أو علاقات لا توجد إلا لتلك المجموعة</em>. وليس لـ <code>SMALL</code> و<code>LARGE</code> شيء من ذلك &mdash; والحجم موجود أصلًا في <code>* Amount</code>.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="name-only-subtypes">Name-only subtypes</span> are subtypes that differ only in their name, with no attribute or relationship of their own; a type attribute says the same thing.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="name-only-subtypes">الأنواع الفرعية الاسمية</span> (Name-only subtypes) أنواعٌ فرعية لا تختلف إلا في اسمها، بلا خاصية أو علاقة خاصّة بها؛ وخاصيةُ نوعٍ تقول الشيء نفسه.</p>
+  </div>
+
+  <pre class="code" data-lang="text"><code>PAYMENT     # Payment ID  * Payment Date  * Amount
+  SMALL     (nothing of its own)     -- amount &lt; 100
+  LARGE     (nothing of its own)     -- amount &gt;= 100</code></pre>
+
+  <h3 id="t4l4-s4"><span class="en">Three things a box should have been instead</span><span class="ar">ثلاثة أشياء كان يجب أن يكونها الصندوق</span></h3>
+
+  <p class="en">Every wrong box in this chapter was one of three things. A group with nothing of its own is a <strong>type attribute</strong> (Lesson 1), or nothing if another attribute decides it. Something <em>related</em> to the entity is a <strong>separate entity and a line</strong> (Lesson 3's <code>CUSTOMER</code>). A second question is an <strong>attribute of the supertype</strong> (<code>ONLINE</code>, the brands).</p>
+  <p class="ar">كل صندوق خاطئ في هذا الفصل كان واحدًا من ثلاثة أشياء. المجموعة التي لا شيء خاصًّا بها <strong>خاصيةُ نوع</strong> (الدرس 1)، أو لا شيء إن كانت خاصية أخرى تحسمها. والشيء <em>المرتبط</em> بالكيان <strong>كيان منفصل وخطّ</strong> (<code>CUSTOMER</code> في الدرس 3). والسؤال الثاني <strong>خاصيةٌ في النوع الأعلى</strong> (<code>ONLINE</code>، والعلامات).</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en"><code>SMALL</code> and <code>LARGE</code> as tables would store, in a second place, a fact <code>amount</code> already holds &mdash; and a corrected amount could leave a payment in the wrong table. Asked as a query, the split needs no table at all:</p>
+    <p class="ar"><code>SMALL</code> و<code>LARGE</code> جداولَ تخزّن، في مكان ثانٍ، حقيقةً يحملها <code>amount</code> أصلًا &mdash; وتصحيح مبلغ قد يترك دفعةً في الجدول الخطأ. أمّا إذا طُرح التقسيم استعلامًا، فلا يحتاج إلى أيّ جدول:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)", "INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90), (7,'2026-03-06',60)"], "sql": "SELECT CASE WHEN amount >= 100 THEN 'LARGE' ELSE 'SMALL' END AS size_band,\n       COUNT(*) AS payments, SUM(amount) AS takings\nFROM payments\nGROUP BY CASE WHEN amount >= 100 THEN 'LARGE' ELSE 'SMALL' END\nORDER BY size_band;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>size_band</code></th><th><code>payments</code></th><th><code>takings</code></th></tr></thead>
+          <tbody>
+            <tr><td>LARGE</td><td>3</td><td>655</td></tr>
+            <tr><td>SMALL</td><td>4</td><td>205</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">The owner's question is answered, and the threshold can move from 100 to 150 by editing one query, not by moving rows between tables.</p>
+    <p class="ar">أُجيب سؤال المالك، ويمكن نقل الحدّ من 100 إلى 150 بتعديل استعلام واحد، لا بنقل صفوف بين الجداول.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapter 7</span><span class="ar">خيط · الفصل 7 في SQL</span></h4>
+    <p class="en"><a href="@/chapters/chapter-7.html">Chapter 7 &mdash; Normalization</a> removes a fact stored twice, or stored where another column already decides it. A <code>SMALL</code> table is that defect drawn as a box: its membership is decided by <code>amount</code>. Asking "does this box have anything of its own?" catches it before normalization has to.</p>
+    <p class="ar">يزيل <a href="@/chapters/chapter-7.html">الفصل 7 &mdash; التطبيع</a> الحقيقةَ المخزّنة مرّتين، أو المخزّنة حيث يحسمها عمود آخر أصلًا. وجدول <code>SMALL</code> هو هذا العيب مرسومًا صندوقًا: فعضويته يحسمها <code>amount</code>. والسؤال «هل لهذا الصندوق شيء خاصّ به؟» يكشفه قبل أن يضطرّ التطبيع إلى ذلك.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why is the <code>SMALL</code> / <code>LARGE</code> split the wrong tool, when it passes all three rules?</p>
+    <p class="q ar">لماذا يكون تقسيم <code>SMALL</code> / <code>LARGE</code> أداةً خاطئة، مع أنه يجتاز القواعد الثلاث؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">It has no <code>OTHER</code> subtype</span><span class="ar">ليس فيه نوع فرعي <code>OTHER</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Neither group has an attribute or relationship of its own; <code>* Amount</code> already decides it</span><span class="ar">ليس لأيّ من المجموعتين خاصية أو علاقة خاصّة بها؛ و<code>* Amount</code> تحسمها أصلًا</span></button></li>
+      <li><button class="opt"><span class="en">A payment can be small and large at once</span><span class="ar">يمكن أن تكون الدفعة صغيرة وكبيرة معًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The two bands cover every amount and never overlap, so no <code>OTHER</code> is needed and rule three holds. The rules check the drawing; the slides' "special properties" decide whether to draw at all.</p>
+      <p class="ar">النطاقان يغطّيان كل مبلغ ولا يتداخلان، فلا حاجة إلى <code>OTHER</code> والقاعدة الثالثة سليمة. القواعد تفحص الرسم؛ أمّا «السمات الخاصّة» في الشرائح فتقرّر هل نرسم أصلًا.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A café draws <code>ORDER</code> with <code>EAT IN</code> (<code>* Table Number</code>) and <code>TO GO</code> (<code>* Pickup Time</code>). Right tool or wrong tool?</p>
+    <p class="q ar">يرسم مقهى <code>ORDER</code> وفيه <code>EAT IN</code> (<code>* Table Number</code>) و<code>TO GO</code> (<code>* Pickup Time</code>). أداة صحيحة أم خاطئة؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">Right: each group has an attribute only it has</span><span class="ar">صحيحة: لكل مجموعة خاصية لا تملكها إلا هي</span></button></li>
+      <li><button class="opt"><span class="en">Wrong: a type attribute <code>Order Type</code> would be enough</span><span class="ar">خاطئة: تكفي خاصية نوع <code>Order Type</code></span></button></li>
+      <li><button class="opt"><span class="en">Wrong: food orders are never subtyped</span><span class="ar">خاطئة: طلبات الطعام لا تُقسَّم أبدًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">These are the slides' own food order types, and here they earn their boxes: a table number for eat-in, a pickup time for to-go. A type attribute alone would leave both columns optional for everyone.</p>
+      <p class="ar">هذه أنواع طلبات الطعام في الشرائح نفسها، وهي هنا تستحقّ صناديقها: رقم طاولة لمن يأكل في المكان، ووقت استلام للسفري. وخاصية نوع وحدها تترك العمودين اختياريين للجميع.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t4l4-h5"><span class="en">5 · Knowing when to stop</span><span class="ar">٥ · متى تتوقّف</span></h2>
+
+  <div class="problem">
+    <p class="en">The ski resort from Lesson 3 sends four requests for its <code>SNOW SPORT</code> model. (a) Put <code>INSTRUCTOR</code> inside it. (b) Split every sport into <code>BEGINNER</code> and <code>ADVANCED</code>. (c) Inside <code>SKI</code>, add <code>DOWNHILL</code> and <code>SLALOM</code>; nothing differs. (d) Snowmobile tours need <code>* Vehicle Count</code>.</p>
+    <p class="ar">يرسل منتجع التزلّج من الدرس 3 أربعة طلبات لنموذج <code>SNOW SPORT</code>. (a) ضع <code>INSTRUCTOR</code> داخله. (b) قسّم كل رياضة إلى <code>BEGINNER</code> و<code>ADVANCED</code>. (c) داخل <code>SKI</code>، أضف <code>DOWNHILL</code> و<code>SLALOM</code>؛ ولا شيء يختلف. (d) جولات عربات الثلج (Snowmobile) تحتاج <code>* Vehicle Count</code>.</p>
+  </div>
+
+  <p class="en">Each request asks for a box. Before drawing one, ask four questions in order. The first three come from the slides; the fourth is the two-level guideline. Only a group that survives all four becomes a subtype, and then Lesson 3's rules check where it goes.</p>
+  <p class="ar">كل طلب يطلب صندوقًا. وقبل أن ترسمه، اطرح أربعة أسئلة بالترتيب. الثلاثة الأولى من الشرائح، والرابع هو إرشاد المستويين. ولا تصبح نوعًا فرعيًّا إلا المجموعة التي تجتاز الأربعة، ثم تفحص قواعد الدرس 3 مكانها.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="subtype-decision">subtype decision</span> is the four-question check &mdash; a kind of? special properties? same basis? deeper than two levels? &mdash; that decides whether a group becomes a subtype, an attribute or a separate entity.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="subtype-decision">قرار التقسيم</span> (Subtype decision) هو الفحص بأربعة أسئلة &mdash; نوعٌ من؟ سمات خاصّة؟ الأساس نفسه؟ أعمق من مستويين؟ &mdash; الذي يقرّر هل تصبح المجموعة نوعًا فرعيًّا أم خاصيةً أم كيانًا منفصلًا.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t4-subtype-decision"><figcaption><span class="en">Read it top to bottom. Three exits lead away from a new box; only the path straight down draws one. Notice that question 4's exit says "try", not "forbidden".</span><span class="ar">اقرأه من الأعلى إلى الأسفل. ثلاثة مخارج تقود بعيدًا عن صندوق جديد؛ ولا يرسم صندوقًا إلا الطريق المستقيم إلى الأسفل. لاحظ أن مخرج السؤال 4 يقول «جرّب» لا «ممنوع».</span></figcaption></figure>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Each exit has its own shape in a table. Request (a) is a foreign key, <code>instructor_id</code>. Request (b) is a column, <code>difficulty</code>, with a <code>CHECK</code>. Only (d) touches the subtypes. Ask the resort's question "which beginner sports, and who teaches them?":</p>
+    <p class="ar">لكل مخرج شكله في الجدول. الطلب (a) مفتاح أجنبي، <code>instructor_id</code>. والطلب (b) عمود، <code>difficulty</code>، مع <code>CHECK</code>. ولا يمسّ الأنواعَ الفرعية إلا (d). اطرح سؤال المنتجع «ما رياضات المبتدئين، ومن يدرّسها؟»:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE instructors (instructor_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)", "INSERT INTO instructors VALUES (1,'Rana'), (2,'Karim')", "CREATE TABLE snow_sports (sport_id NUMBER PRIMARY KEY, name VARCHAR(30) NOT NULL, sport_type VARCHAR(13) NOT NULL CHECK (sport_type IN ('SKI','SNOWBOARD','CROSS COUNTRY','OTHER')), difficulty VARCHAR(8) NOT NULL CHECK (difficulty IN ('BEGINNER','ADVANCED')), instructor_id NUMBER REFERENCES instructors(instructor_id))", "INSERT INTO snow_sports VALUES (1,'Downhill slalom','SKI','ADVANCED',1), (2,'Halfpipe','SNOWBOARD','ADVANCED',2), (3,'Forest trail 10 km','CROSS COUNTRY','BEGINNER',1), (4,'Sledging','OTHER','BEGINNER',NULL), (5,'Nursery slope','SKI','BEGINNER',2)"], "sql": "SELECT s.name, s.sport_type, i.name AS instructor\nFROM snow_sports s\nLEFT JOIN instructors i ON i.instructor_id = s.instructor_id\nWHERE s.difficulty = 'BEGINNER'\nORDER BY s.sport_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>name</code></th><th><code>sport_type</code></th><th><code>instructor</code></th></tr></thead>
+          <tbody>
+            <tr><td>Forest trail 10 km</td><td>CROSS COUNTRY</td><td>Rana</td></tr>
+            <tr><td>Sledging</td><td>OTHER</td><td>&empty;</td></tr>
+            <tr><td>Nursery slope</td><td>SKI</td><td>Karim</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">One table, one join, and no <code>BEGINNER</code> box anywhere. Request (c) would be a <code>discipline</code> column if the resort ever needs it; request (d) adds a <code>SNOWMOBILE</code> subtype with its own <code>vehicle_count</code>.</p>
+    <p class="ar">جدول واحد، وربط واحد، ولا صندوق <code>BEGINNER</code> في أيّ مكان. ويكون الطلب (c) عمود <code>discipline</code> إن احتاجه المنتجع يومًا؛ ويضيف الطلب (d) نوعًا فرعيًّا <code>SNOWMOBILE</code> له <code>vehicle_count</code> خاصّ به.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which of the resort's four requests should become a new subtype?</p>
+    <p class="q ar">أيّ طلبات المنتجع الأربعة يجب أن يصبح نوعًا فرعيًّا جديدًا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">(a) <code>INSTRUCTOR</code></span><span class="ar">(a) <code>INSTRUCTOR</code></span></button></li>
+      <li><button class="opt"><span class="en">(c) <code>DOWNHILL</code> and <code>SLALOM</code></span><span class="ar">(c) <code>DOWNHILL</code> و<code>SLALOM</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">(d) <code>SNOWMOBILE</code>, at level 1</span><span class="ar">(d) <code>SNOWMOBILE</code>، في المستوى 1</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A snowmobile tour is a kind of snow sport, has <code>* Vehicle Count</code> of its own, answers "what kind of sport?" like its siblings, and sits at level 1. It leaves <code>OTHER</code>. (a) fails question 1; (c) fails question 2.</p>
+      <p class="ar">جولة عربة الثلج نوعٌ من الرياضات الثلجية، ولها <code>* Vehicle Count</code> خاصّة بها، وتجيب عن «ما نوع الرياضة؟» كأخواتها، وتقع في المستوى 1. فتخرج من <code>OTHER</code>. أمّا (a) فيخفق في السؤال 1، و(c) في السؤال 2.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">At which question does request (b), <code>BEGINNER</code> / <code>ADVANCED</code>, leave the chart?</p>
+    <p class="q ar">عند أيّ سؤال يغادر الطلب (b)، <code>BEGINNER</code> / <code>ADVANCED</code>، المخطّط؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Question 1: a beginner sport is not a snow sport</span><span class="ar">السؤال 1: رياضة المبتدئين ليست رياضة ثلجية</span></button></li>
+      <li><button class="opt"><span class="en">Question 4: it would be a third level</span><span class="ar">السؤال 4: سيكون مستوًى ثالثًا</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Question 2 or 3: nothing of its own, and "how hard?" is a second basis</span><span class="ar">السؤال 2 أو 3: لا شيء خاصّ به، و«ما صعوبتها؟» أساس ثانٍ</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A beginner ski run is both <code>SKI</code> and <code>BEGINNER</code>: two questions in one set. With no attributes of its own, it stops at question 2 already. Either way the answer is a <code>* Difficulty</code> attribute of <code>SNOW SPORT</code>.</p>
+      <p class="ar">مسار التزلّج للمبتدئين هو <code>SKI</code> و<code>BEGINNER</code> معًا: سؤالان في مجموعة واحدة. ولأنه بلا خصائص خاصّة به، يتوقّف عند السؤال 2 أصلًا. وفي الحالتين الجواب خاصية <code>* Difficulty</code> في <code>SNOW SPORT</code>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t4l4-h6"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Read a nested subtype in full</span><span class="ar">تمرين 1 · اقرأ نوعًا فرعيًّا متداخلًا كاملًا</span></h4>
+    <p class="en">Using version 2 of section 2, list every attribute and relationship of payment 3, a <code>CREDIT CARD</code>, and name the box each comes from. Then name the level of <code>CARD</code>, of <code>CREDIT CARD</code> and of <code>OTHER</code>.</p>
+    <p class="ar">مستعملًا الإصدار 2 من القسم 2، اذكر كل خاصية وعلاقة للدفعة 3، وهي <code>CREDIT CARD</code>، وسمِّ الصندوق الذي جاءت منه كلٌّ منها. ثم سمِّ مستوى <code>CARD</code> و<code>CREDIT CARD</code> و<code>OTHER</code>.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="text"><code># Payment ID, * Payment Date, * Amount     from PAYMENT
+* Card Number, made by CUSTOMER            from CARD
+* Instalments                              its own (CREDIT CARD)</code></pre>
+      <p class="en"><code>CARD</code> and <code>OTHER</code> are level 1; <code>CREDIT CARD</code> is level 2. It inherits nothing from <code>DEBIT CARD</code>, its sibling, nor from <code>CHECK</code>, whose own <code>made by</code> line is a separate relationship.</p>
+      <p class="ar"><code>CARD</code> و<code>OTHER</code> في المستوى 1؛ و<code>CREDIT CARD</code> في المستوى 2. ولا يرث شيئًا من <code>DEBIT CARD</code>، أخته، ولا من <code>CHECK</code>، الذي خطّ <code>made by</code> الخاصّ به علاقةٌ منفصلة.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Find the wrong lines</span><span class="ar">تمرين 2 · جِد الأسطر الخاطئة</span></h4>
+    <p class="en">The decorating store from Lesson 3 nests its <code>WALL COVERING</code>, written as text below. Two places are wrong. Give the lines, say what is wrong with each, and repair them.</p>
+    <p class="ar">يجعل متجر الديكور من الدرس 3 تسلسل <code>WALL COVERING</code> متداخلًا، مكتوبًا نصًّا كما يلي. هناك موضعان خاطئان. اذكر الأسطر، وقل ما الخطأ في كلٍّ منها، وأصلحها.</p>
+    <pre class="code" data-lang="text"><code>1  WALL COVERING   # Code  * Description  * Price
+2    PAINT         * Litres
+3      MATT
+4      GLOSS
+5      OTHER
+6    WALLPAPER     * Roll Length
+7      WASHABLE
+8    FABRIC        * Material
+9    OTHER</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Lines 3&ndash;5: name-only subtypes. <code>MATT</code>, <code>GLOSS</code> and <code>OTHER</code> have nothing of their own; replace them with <code>* Finish</code> on <code>PAINT</code>. Line 7: a single subtype, and "can it be washed?" is a second basis beside "what is it made of?"; replace it with <code>* Washable</code> on <code>WALLPAPER</code>.</p>
+      <p class="ar">الأسطر 3&ndash;5: أنواع فرعية اسمية. ليس لـ <code>MATT</code> و<code>GLOSS</code> و<code>OTHER</code> شيء خاصّ بها؛ فاستبدل بها <code>* Finish</code> في <code>PAINT</code>. السطر 7: نوع فرعي وحيد، و«هل يُغسل؟» أساس ثانٍ بجانب «ممّ صُنع؟»؛ فاستبدل به <code>* Washable</code> في <code>WALLPAPER</code>.</p>
+      <pre class="code" data-lang="text"><code>WALL COVERING   # Code  * Description  * Price
+  PAINT         * Litres  * Finish
+  WALLPAPER     * Roll Length  * Washable
+  FABRIC        * Material
+  OTHER</code></pre>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Subtype or not?</span><span class="ar">تمرين 3 · نوع فرعي أم لا؟</span></h4>
+    <p class="en">Run the four questions on each proposal for the shop's <code>PAYMENT</code>, and say what each becomes. (a) <code>WEEKDAY</code> and <code>WEEKEND</code> payments. (b) Inside <code>CHECK</code>: <code>POST-DATED</code> (<code>* Cash-in Date</code>) and <code>OTHER</code>. (c) <code>CASHIER</code> inside <code>PAYMENT</code>. (d) <code>LOYALTY</code> beside <code>CASH</code>, <code>CHECK</code> and <code>CARD</code>, for members of the loyalty scheme.</p>
+    <p class="ar">طبّق الأسئلة الأربعة على كل اقتراح لـ <code>PAYMENT</code> المتجر، وقل ماذا يصبح كلٌّ منها. (a) دفعات <code>WEEKDAY</code> و<code>WEEKEND</code>. (b) داخل <code>CHECK</code>: <code>POST-DATED</code> (<code>* Cash-in Date</code>) و<code>OTHER</code>. (c) <code>CASHIER</code> داخل <code>PAYMENT</code>. (d) <code>LOYALTY</code> بجانب <code>CASH</code> و<code>CHECK</code> و<code>CARD</code>، لأعضاء برنامج الولاء.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) Question 2: nothing of their own, and <code>* Payment Date</code> already decides it &mdash; no box, no attribute. (b) Passes all four: a post-dated cheque has its own date, answers "what kind of cheque?", and is level 2. A subtype. (c) Question 1: a cashier takes payments; a separate entity and a line.</p>
+      <p class="ar">(a) السؤال 2: لا شيء خاصّ بها، و<code>* Payment Date</code> تحسمها أصلًا &mdash; لا صندوق ولا خاصية. (b) يجتاز الأربعة: للشيك المؤجّل تاريخه الخاصّ، ويجيب عن «ما نوع الشيك؟»، وهو في المستوى 2. نوع فرعي. (c) السؤال 1: أمين الصندوق يقبض الدفعات؛ كيان منفصل وخطّ.</p>
+      <p class="en">(d) Question 3: a loyalty member can pay by card, so one payment would be <code>CARD</code> and <code>LOYALTY</code>. "Is the payer a member?" is a second basis; it belongs to <code>CUSTOMER</code>, as an attribute such as <code>o Loyalty Number</code>.</p>
+      <p class="ar">(d) السؤال 3: قد يدفع عضو الولاء ببطاقة، فتكون دفعة واحدة <code>CARD</code> و<code>LOYALTY</code> معًا. و«هل الدافع عضو؟» أساس ثانٍ؛ ومكانه <code>CUSTOMER</code>، خاصيةً مثل <code>o Loyalty Number</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Walk the chain in SQL</span><span class="ar">تمرين 4 · امشِ على السلسلة بـ SQL</span></h4>
+    <p class="en">The tables of section 2 are loaded below. Write a query that lists every credit card payment in full: its ID, date, amount, card number and instalments, in ID order.</p>
+    <p class="ar">جداول القسم 2 محمّلة أدناه. اكتب استعلامًا يعرض كل دفعة ببطاقة ائتمان كاملةً: معرّفها وتاريخها ومبلغها ورقم البطاقة وعدد الأقساط، مرتّبةً حسب المعرّف.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "explore", "objects": true, "dataset": {}, "setup": ["CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)", "INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90), (7,'2026-03-06',60)", "CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL)", "INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111',2), (5,'5500 0000 0000 0004',1), (7,'4000 0566 5566 5556',1)", "CREATE TABLE credit_payments (payment_id NUMBER PRIMARY KEY REFERENCES card_payments(payment_id), instalments NUMBER NOT NULL)", "INSERT INTO credit_payments VALUES (3,3), (5,1)", "CREATE TABLE debit_payments (payment_id NUMBER PRIMARY KEY REFERENCES card_payments(payment_id), cashback NUMBER)", "INSERT INTO debit_payments VALUES (7,20)"], "sql": "-- every credit card payment, in full\n"}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT p.payment_id, p.payment_date, p.amount, c.card_number, k.instalments
+FROM payments p
+JOIN card_payments   c ON c.payment_id = p.payment_id
+JOIN credit_payments k ON k.payment_id = c.payment_id
+ORDER BY p.payment_id;</code></pre>
+      <div class="output"><div class="table-wrap"><table>
+        <thead><tr><th><code>payment_id</code></th><th><code>payment_date</code></th><th><code>amount</code></th><th><code>card_number</code></th><th><code>instalments</code></th></tr></thead>
+        <tbody>
+          <tr><td>3</td><td>2026-03-03</td><td>310</td><td>4111 1111 1111 1111</td><td>3</td></tr>
+          <tr><td>5</td><td>2026-03-04</td><td>220</td><td>5500 0000 0000 0004</td><td>1</td></tr>
+        </tbody>
+      </table></div></div>
+      <p class="en">One join per level of the inheritance chain: <code>PAYMENT</code>, then <code>CARD</code>, then <code>CREDIT CARD</code>. A third level of subtypes would add a fourth table and a third join to every such query.</p>
+      <p class="ar">ربطٌ لكل مستوى في سلسلة الوراثة: <code>PAYMENT</code>، ثم <code>CARD</code>، ثم <code>CREDIT CARD</code>. ومستوى ثالث من الأنواع الفرعية يضيف جدولًا رابعًا وربطًا ثالثًا إلى كل استعلام كهذا.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Cut it back to two levels</span><span class="ar">تمرين 5 · قلّصه إلى مستويين</span></h4>
+    <p class="en">A resort intern hands in this draft. Redraw it as text, keeping every fact, so that no level holds name-only boxes and the hierarchy is at most two levels deep.</p>
+    <p class="ar">يسلّم متدرّب في المنتجع هذه المسوّدة. أعد رسمها نصًّا، محتفظًا بكل حقيقة فيها، بحيث لا يحمل أيّ مستوى صناديق اسمية، ولا يزيد عمق التسلسل على مستويين.</p>
+    <pre class="code" data-lang="text"><code>SNOW SPORT        # Sport ID  * Name
+  SKI             * Ski Length
+    DOWNHILL
+      SLALOM
+      GIANT SLALOM
+    OTHER
+  SNOWBOARD       * Board Length
+  CROSS COUNTRY   * Distance
+  OTHER</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="text"><code>SNOW SPORT        # Sport ID  * Name
+  SKI             * Ski Length  * Discipline
+  SNOWBOARD       * Board Length
+  CROSS COUNTRY   * Distance
+  OTHER</code></pre>
+      <p class="en">Levels 2 and 3 inside <code>SKI</code> list nothing of their own, so they become one attribute, <code>* Discipline</code>, with values such as slalom, giant slalom or other. The remaining level-1 boxes each have something of their own, and <code>OTHER</code> keeps the set exhaustive.</p>
+      <p class="ar">المستويان 2 و3 داخل <code>SKI</code> لا يذكران شيئًا خاصًّا بهما، فيصبحان خاصية واحدة، <code>* Discipline</code>، بقيم مثل slalom أو giant slalom أو other. ولكل صندوق باقٍ في المستوى 1 شيء خاصّ به، ويُبقي <code>OTHER</code> المجموعة شاملة.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">Subtypes can be nested: a subtype can be the supertype of the boxes inside it.</li>
+      <li class="ar">يمكن أن تتداخل الأنواع الفرعية: فقد يكون النوع الفرعي نوعًا أعلى للصناديق التي في داخله.</li>
+      <li class="en">A nested subtype inherits every attribute and relationship of every box around it, never from a sibling.</li>
+      <li class="ar">يرث النوع الفرعي المتداخل كل خاصية وعلاقة لكل صندوق يحيط به، ولا يرث من أخت أبدًا.</li>
+      <li class="en">The three rules are checked inside every box that has subtypes.</li>
+      <li class="ar">تُفحص القواعد الثلاث داخل كل صندوق فيه أنواع فرعية.</li>
+      <li class="en">Usually show two levels, for readability. There is no rule against more; a deeper box must earn its place.</li>
+      <li class="ar">اعرض عادةً مستويين، من أجل سهولة القراءة. ولا قاعدة تمنع أكثر؛ لكن الصندوق الأعمق يجب أن يستحقّ مكانه.</li>
+      <li class="en">Passing the three rules is not enough: a group needs attributes or relationships of its own to be a subtype.</li>
+      <li class="ar">اجتياز القواعد الثلاث لا يكفي: تحتاج المجموعة إلى خصائص أو علاقات خاصّة بها لتكون نوعًا فرعيًّا.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Drawing a kind of a kind beside its parent (<code>BIRD</code> beside <code>VERTEBRATE</code>), which makes them overlap.</li>
+      <li class="ar">رسم نوعٍ من نوعٍ بجانب أصله (<code>BIRD</code> بجانب <code>VERTEBRATE</code>)، فيتداخلان.</li>
+      <li class="en">Repeating shared attributes in sibling subtypes instead of nesting them under one box.</li>
+      <li class="ar">تكرار الخصائص المشتركة في أنواع فرعية شقيقة بدل جعلها متداخلة تحت صندوق واحد.</li>
+      <li class="en">Nesting a second question one level down (brands under credit and under debit).</li>
+      <li class="ar">جعل سؤال ثانٍ متداخلًا في مستوى أدنى (العلامات تحت الائتمان وتحت الخصم المباشر).</li>
+      <li class="en">Drawing name-only subtypes, or subtypes another attribute already decides (<code>SMALL</code> / <code>LARGE</code>).</li>
+      <li class="ar">رسم أنواع فرعية اسمية، أو أنواع فرعية تحسمها خاصية أخرى أصلًا (<code>SMALL</code> / <code>LARGE</code>).</li>
+      <li class="en">Calling the two-level guideline a rule.</li>
+      <li class="ar">تسمية إرشاد المستويين قاعدةً.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="#t4-test-04">Test 4 &mdash; Nesting, and Knowing When to Stop</a>. Then <a href="#t4-lesson-05">Lesson 5 &mdash; Judging a Model</a> hands you whole ERDs and asks you to find the broken hierarchy, name the rule it breaks, and repair it.</p>
+    <p class="ar">اختبر نفسك بـ<a href="#t4-test-04">اختبار 4 &mdash; التداخل، ومتى تتوقّف</a>. ثم يعطيك <a href="#t4-lesson-05">الدرس 5 &mdash; الحكم على نموذج</a> مخطّطات كاملة، ويطلب منك أن تجد التسلسل المعطوب، وتسمّي القاعدة التي يخرقها، وتصلحه.</p>
+  </div>
+
+</section>

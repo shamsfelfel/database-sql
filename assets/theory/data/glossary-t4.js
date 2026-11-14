@@ -90,6 +90,28 @@ window.DBTGlossary["t4"] = [
   ]
  },
  {
+  "id": "cross-cutting-attribute",
+  "term": {
+   "en": "Cross-cutting attribute",
+   "ar": "الخاصية العابرة"
+  },
+  "def": {
+   "en": "A classification that applies across sibling subtypes, such as card brand across credit and debit, so it is placed once as an attribute of the box that encloses them.",
+   "ar": "تصنيفٌ ينطبق على أنواع فرعية شقيقة كلها، مثل علامة البطاقة عبر الائتمان والخصم المباشر، فيوضع مرّة واحدة خاصيةً في الصندوق الذي يحيط بها."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "subdivision-basis",
+   "over-nesting"
+  ],
+  "used": [
+   "t4l4-s3"
+  ]
+ },
+ {
   "id": "exhaustive",
   "term": {
    "en": "Exhaustive",
@@ -158,6 +180,28 @@ window.DBTGlossary["t4"] = [
   ]
  },
  {
+  "id": "inheritance-chain",
+  "term": {
+   "en": "Inheritance chain",
+   "ar": "سلسلة الوراثة"
+  },
+  "def": {
+   "en": "The path from a nested subtype out to the supertype; the subtype inherits every attribute and relationship of every box on that path, and nothing from its siblings.",
+   "ar": "الطريق من النوع الفرعي المتداخل إلى النوع الأعلى؛ ويرث النوع الفرعي كل خاصية وعلاقة لكل صندوق على ذلك الطريق، ولا شيء من أخواته."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "inheritance",
+   "nested-subtype"
+  ],
+  "used": [
+   "t4l4-s2"
+  ]
+ },
+ {
   "id": "inherited-attribute",
   "term": {
    "en": "Inherited attribute",
@@ -203,6 +247,72 @@ window.DBTGlossary["t4"] = [
   ]
  },
  {
+  "id": "innermost-subtype",
+  "term": {
+   "en": "Innermost subtype",
+   "ar": "النوع الفرعي الأعمق"
+  },
+  "def": {
+   "en": "A box with no subtypes inside it; every instance belongs to exactly one innermost subtype.",
+   "ar": "صندوقٌ ليس في داخله أيّ نوع فرعي؛ وكل نسخة تنتمي إلى نوع فرعي أعمق واحد بالضبط."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "nested-subtype",
+   "mutually-exclusive"
+  ],
+  "used": [
+   "t4l4-s2"
+  ]
+ },
+ {
+  "id": "intermediate-supertype",
+  "term": {
+   "en": "Intermediate supertype",
+   "ar": "النوع الأعلى الوسيط"
+  },
+  "def": {
+   "en": "A box that is a subtype of the box around it and a supertype of the boxes inside it, such as VERTEBRATE or CARD.",
+   "ar": "صندوقٌ هو نوع فرعي للصندوق المحيط به، ونوع أعلى للصناديق التي في داخله، مثل VERTEBRATE أو CARD."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "nested-subtype",
+   "supertype"
+  ],
+  "used": [
+   "t4l4-h1"
+  ]
+ },
+ {
+  "id": "subtype-level",
+  "term": {
+   "en": "Level (of subtypes)",
+   "ar": "المستوى (في الأنواع الفرعية)"
+  },
+  "def": {
+   "en": "One ring of nesting: subtypes drawn directly in the supertype are level 1, and the subtypes inside them are level 2.",
+   "ar": "حلقةٌ واحدة من التداخل: الأنواع الفرعية المرسومة مباشرةً في النوع الأعلى هي المستوى 1، والأنواع الفرعية داخلها هي المستوى 2."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "nested-subtype",
+   "two-level-guideline"
+  ],
+  "used": [
+   "t4l4-h1"
+  ]
+ },
+ {
   "id": "mutually-exclusive",
   "term": {
    "en": "Mutually exclusive",
@@ -223,6 +333,52 @@ window.DBTGlossary["t4"] = [
   ],
   "used": [
    "t4l3-h3"
+  ]
+ },
+ {
+  "id": "name-only-subtypes",
+  "term": {
+   "en": "Name-only subtypes",
+   "ar": "الأنواع الفرعية الاسمية"
+  },
+  "def": {
+   "en": "Subtypes that differ only in their name, with no attribute or relationship of their own; a type attribute says the same thing, so they should not be drawn.",
+   "ar": "أنواعٌ فرعية لا تختلف إلا في اسمها، بلا خاصية أو علاقة خاصّة بها؛ وخاصيةُ نوعٍ تقول الشيء نفسه، فلا ينبغي رسمها."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "type-attribute",
+   "special-property",
+   "subtype-decision"
+  ],
+  "used": [
+   "t4l4-h4"
+  ]
+ },
+ {
+  "id": "nested-subtype",
+  "term": {
+   "en": "Nested subtype",
+   "ar": "النوع الفرعي المتداخل"
+  },
+  "def": {
+   "en": "A subtype drawn inside another subtype, so that it is a kind of a kind of the supertype, as BIRD sits inside VERTEBRATE inside ANIMAL.",
+   "ar": "نوعٌ فرعي مرسوم داخل نوع فرعي آخر، فيكون نوعًا من نوعٍ من النوع الأعلى، كما يقع BIRD داخل VERTEBRATE داخل ANIMAL."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "subtype-level",
+   "intermediate-supertype",
+   "subtype"
+  ],
+  "used": [
+   "t4l4-h1"
   ]
  },
  {
@@ -270,6 +426,28 @@ window.DBTGlossary["t4"] = [
   ]
  },
  {
+  "id": "over-nesting",
+  "term": {
+   "en": "Over-nesting",
+   "ar": "الإفراط في التداخل"
+  },
+  "def": {
+   "en": "Adding levels whose boxes have nothing of their own, so the diagram grows harder to read and says nothing new.",
+   "ar": "إضافة مستويات لا تحمل صناديقها شيئًا خاصًّا بها، فيصعب المخطّط على القارئ ولا يقول جديدًا."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "two-level-guideline",
+   "name-only-subtypes"
+  ],
+  "used": [
+   "t4l4-h3"
+  ]
+ },
+ {
   "id": "overlapping-subtypes",
   "term": {
    "en": "Overlapping subtypes",
@@ -289,6 +467,27 @@ window.DBTGlossary["t4"] = [
   ],
   "used": [
    "t4l3-h3"
+  ]
+ },
+ {
+  "id": "readability",
+  "term": {
+   "en": "Readability",
+   "ar": "سهولة القراءة"
+  },
+  "def": {
+   "en": "How quickly a person can read the business rules off a diagram; the slides' reason for usually showing only two levels of subtypes.",
+   "ar": "مدى سرعة الإنسان في قراءة قواعد العمل من المخطّط؛ وهي سبب الشرائح لعرض الأنواع الفرعية عادةً في مستويين فقط."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "two-level-guideline"
+  ],
+  "used": [
+   "t4l4-h3"
   ]
  },
  {
@@ -471,6 +670,29 @@ window.DBTGlossary["t4"] = [
   ]
  },
  {
+  "id": "subtype-decision",
+  "term": {
+   "en": "Subtype decision",
+   "ar": "قرار التقسيم"
+  },
+  "def": {
+   "en": "The four-question check (a kind of? special properties? same basis? deeper than two levels?) that decides whether a group becomes a subtype, an attribute or a separate entity.",
+   "ar": "الفحص بأربعة أسئلة (نوعٌ من؟ سمات خاصّة؟ الأساس نفسه؟ أعمق من مستويين؟) الذي يقرّر هل تصبح المجموعة نوعًا فرعيًّا أم خاصيةً أم كيانًا منفصلًا."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "three-questions",
+   "name-only-subtypes",
+   "two-level-guideline"
+  ],
+  "used": [
+   "t4l4-h5"
+  ]
+ },
+ {
   "id": "subtype-relationship",
   "term": {
    "en": "Subtype relationship",
@@ -558,6 +780,29 @@ window.DBTGlossary["t4"] = [
   ],
   "used": [
    "t4l3-h5"
+  ]
+ },
+ {
+  "id": "two-level-guideline",
+  "term": {
+   "en": "Two-level guideline",
+   "ar": "إرشاد المستويين"
+  },
+  "def": {
+   "en": "The convention of showing subtypes in at most two levels; it is advice for readability, and no rule stops you from going deeper.",
+   "ar": "العُرف بعرض الأنواع الفرعية في مستويين على الأكثر؛ وهو نصيحة من أجل سهولة القراءة، ولا قاعدة تمنعك من التعمّق أكثر."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "readability",
+   "subtype-level",
+   "over-nesting"
+  ],
+  "used": [
+   "t4l4-h3"
   ]
  },
  {

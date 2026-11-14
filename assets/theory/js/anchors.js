@@ -294,6 +294,18 @@ window.DBTAnchors = {
 "t4l3-s2": "lessons/t4-lesson-03.html",
 "t4l3-s3": "lessons/t4-lesson-03.html",
 "t4l3-s4": "lessons/t4-lesson-03.html",
+"t4l4-e1": "lessons/t4-lesson-04.html",
+"t4l4-e2": "lessons/t4-lesson-04.html",
+"t4l4-h1": "lessons/t4-lesson-04.html",
+"t4l4-h2": "lessons/t4-lesson-04.html",
+"t4l4-h3": "lessons/t4-lesson-04.html",
+"t4l4-h4": "lessons/t4-lesson-04.html",
+"t4l4-h5": "lessons/t4-lesson-04.html",
+"t4l4-h6": "lessons/t4-lesson-04.html",
+"t4l4-s1": "lessons/t4-lesson-04.html",
+"t4l4-s2": "lessons/t4-lesson-04.html",
+"t4l4-s3": "lessons/t4-lesson-04.html",
+"t4l4-s4": "lessons/t4-lesson-04.html",
 "t5-chapter": "chapters/t5.html",
 "t5-exam-a": "exams/t5-exam-a.html",
 "t5-exam-b": "exams/t5-exam-b.html",
@@ -1116,6 +1128,46 @@ window.DBTHeadings = {
 "t4l3-s4": {
 "ar": "ما تعنيه الأجوبة للقراءة",
 "en": "What the answers mean for the reading"
+},
+"t4l4-h1": {
+"ar": "١ · أنواع فرعية داخل أنواع فرعية",
+"en": "1 · Subtypes inside subtypes"
+},
+"t4l4-h2": {
+"ar": "٢ · التداخل في المتجر: بطاقة الخصم المباشر",
+"en": "2 · Nesting in the shop: the debit card"
+},
+"t4l4-h3": {
+"ar": "٣ · مستويان، من أجل سهولة القراءة",
+"en": "3 · Two levels, for readability"
+},
+"t4l4-h4": {
+"ar": "٤ · متى يكون التقسيم أداةً خاطئة",
+"en": "4 · When subtyping is the wrong tool"
+},
+"t4l4-h5": {
+"ar": "٥ · متى تتوقّف",
+"en": "5 · Knowing when to stop"
+},
+"t4l4-h6": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t4l4-s1": {
+"ar": "القواعد الثلاث، في كل مستوى",
+"en": "The three rules, at every level"
+},
+"t4l4-s2": {
+"ar": "قراءة النوع الفرعي المتداخل كاملًا",
+"en": "Reading a nested subtype in full"
+},
+"t4l4-s3": {
+"ar": "سؤال يقطع الأنواع عرضًا",
+"en": "A question that cuts across"
+},
+"t4l4-s4": {
+"ar": "ثلاثة أشياء كان يجب أن يكونها الصندوق",
+"en": "Three things a box should have been instead"
 },
 "t5idx-h1": {
 "ar": "الدروس",
