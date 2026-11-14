@@ -148,7 +148,7 @@ window.DBT_REGISTRY = {
       "ar": "الكيان مجموعة أشياء متشابهة يمكن عدّها؛ والنسخة واحدة منها. ملموس أو غير ملموس أو حدث — ولماذا قد يكون «كلب» هذا أو ذاك."
      },
      "href": "lessons/t2-lesson-04.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t2-test-04",

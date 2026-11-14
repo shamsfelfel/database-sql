@@ -25,6 +25,28 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "business-context",
+  "term": {
+   "en": "Business context",
+   "ar": "سياق العمل"
+  },
+  "def": {
+   "en": "The needs of the business a model is for, which decide whether a thing is an entity or an instance: DOG is an instance of ANIMAL for one business and an entity for a dog breeder.",
+   "ar": "احتياجات العمل الذي وُضع له النموذج، وهي التي تقرّر هل الشيء كيان أم نسخة: DOG نسخة من ANIMAL عند عمل، وكيان عند مربّي الكلاب."
+  },
+  "cat": {
+   "en": "Entities",
+   "ar": "الكيانات"
+  },
+  "see": [
+   "entity",
+   "instance"
+  ],
+  "used": [
+   "t2l4-h5"
+  ]
+ },
+ {
   "id": "column",
   "term": {
    "en": "Column",
@@ -201,6 +223,29 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "entity",
+  "term": {
+   "en": "Entity",
+   "ar": "الكيان"
+  },
+  "def": {
+   "en": "Something of significance to the business about which data must be known: a name for a set of similar things that you can list.",
+   "ar": "شيءٌ ذو أهمية للعمل يجب أن تُعرف عنه بيانات: اسم لمجموعة من الأشياء المتشابهة التي يمكنك سردها."
+  },
+  "cat": {
+   "en": "Entities",
+   "ar": "الكيانات"
+  },
+  "see": [
+   "instance",
+   "business-significance",
+   "conceptual-model"
+  ],
+  "used": [
+   "t2l4-h1"
+  ]
+ },
+ {
   "id": "erd",
   "term": {
    "en": "Entity relationship diagram (ERD)",
@@ -242,6 +287,28 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l3-h3"
+  ]
+ },
+ {
+  "id": "event-entity",
+  "term": {
+   "en": "Event (entity)",
+   "ar": "الحدث (كيان)"
+  },
+  "def": {
+   "en": "An entity whose instances are happenings, each taking place at a particular time, such as CONCERT or BOOK TRANSACTION.",
+   "ar": "كيانٌ نُسخه وقائع، كلٌّ منها يقع في وقت محدّد، مثل CONCERT أو BOOK TRANSACTION."
+  },
+  "cat": {
+   "en": "Entities",
+   "ar": "الكيانات"
+  },
+  "see": [
+   "tangible",
+   "intangible"
+  ],
+  "used": [
+   "t2l4-s3"
   ]
  },
  {
@@ -356,6 +423,50 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "instance",
+  "term": {
+   "en": "Instance",
+   "ar": "النسخة"
+  },
+  "def": {
+   "en": "A single occurrence of an entity; in the database, one row of the entity's table.",
+   "ar": "حدوثٌ واحد للكيان؛ وفي قاعدة البيانات صفّ واحد في جدول ذلك الكيان."
+  },
+  "cat": {
+   "en": "Entities",
+   "ar": "الكيانات"
+  },
+  "see": [
+   "entity",
+   "row"
+  ],
+  "used": [
+   "t2l4-h2"
+  ]
+ },
+ {
+  "id": "intangible",
+  "term": {
+   "en": "Intangible",
+   "ar": "غير ملموس"
+  },
+  "def": {
+   "en": "Incapable of being perceived by the senses; an intangible entity, such as SKILL LEVEL, has instances that are ideas or categories.",
+   "ar": "لا تدركه الحواسّ؛ والكيان غير الملموس، مثل SKILL LEVEL، نُسخه أفكار أو فئات."
+  },
+  "cat": {
+   "en": "Entities",
+   "ar": "الكيانات"
+  },
+  "see": [
+   "tangible",
+   "event-entity"
+  ],
+  "used": [
+   "t2l4-s2"
+  ]
+ },
+ {
   "id": "key",
   "term": {
    "en": "Key",
@@ -419,6 +530,27 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l1-s2"
+  ]
+ },
+ {
+  "id": "business-significance",
+  "term": {
+   "en": "Of significance to the business",
+   "ar": "ذو أهمية للعمل"
+  },
+  "def": {
+   "en": "Said of a thing the business must know and keep data about to do its work; only such a thing can be an entity.",
+   "ar": "وصفٌ لشيء يجب على العمل أن يعرف بيانات عنه ويحتفظ بها كي يؤدّي عمله؛ ولا يكون كيانًا إلا شيءٌ كهذا."
+  },
+  "cat": {
+   "en": "Entities",
+   "ar": "الكيانات"
+  },
+  "see": [
+   "entity"
+  ],
+  "used": [
+   "t2l4-s1"
   ]
  },
  {
@@ -558,6 +690,28 @@ window.DBTGlossary["t2"] = [
   ]
  },
  {
+  "id": "softbox",
+  "term": {
+   "en": "Softbox",
+   "ar": "الصندوق المستدير"
+  },
+  "def": {
+   "en": "The round-cornered box an ERD draws for an entity, with the entity's name, singular and uppercase, at the top; instances are never drawn.",
+   "ar": "الصندوق مستدير الزوايا الذي يرسمه الـ ERD للكيان، واسم الكيان في أعلاه مفردًا وبأحرف كبيرة؛ أمّا النُسخ فلا تُرسم أبدًا."
+  },
+  "cat": {
+   "en": "Entities",
+   "ar": "الكيانات"
+  },
+  "see": [
+   "entity",
+   "erd"
+  ],
+  "used": [
+   "t2l4-h2"
+  ]
+ },
+ {
   "id": "table",
   "term": {
    "en": "Table",
@@ -577,6 +731,28 @@ window.DBTGlossary["t2"] = [
   ],
   "used": [
    "t2l2-h1"
+  ]
+ },
+ {
+  "id": "tangible",
+  "term": {
+   "en": "Tangible",
+   "ar": "ملموس"
+  },
+  "def": {
+   "en": "Perceptible to the senses, especially to touch; a tangible entity, such as PERSON or BOOK, has instances you can touch.",
+   "ar": "تدركه الحواسّ، ولا سيّما اللمس؛ والكيان الملموس، مثل PERSON أو BOOK، له نُسخ يمكنك لمسها."
+  },
+  "cat": {
+   "en": "Entities",
+   "ar": "الكيانات"
+  },
+  "see": [
+   "intangible",
+   "event-entity"
+  ],
+  "used": [
+   "t2l4-s2"
   ]
  },
  {

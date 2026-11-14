@@ -70,6 +70,18 @@ window.DBTAnchors = {
 "t2l3-s2": "lessons/t2-lesson-03.html",
 "t2l3-s3": "lessons/t2-lesson-03.html",
 "t2l3-s4": "lessons/t2-lesson-03.html",
+"t2l4-e1": "lessons/t2-lesson-04.html",
+"t2l4-e2": "lessons/t2-lesson-04.html",
+"t2l4-e3": "lessons/t2-lesson-04.html",
+"t2l4-h1": "lessons/t2-lesson-04.html",
+"t2l4-h2": "lessons/t2-lesson-04.html",
+"t2l4-h3": "lessons/t2-lesson-04.html",
+"t2l4-h4": "lessons/t2-lesson-04.html",
+"t2l4-h5": "lessons/t2-lesson-04.html",
+"t2l4-h6": "lessons/t2-lesson-04.html",
+"t2l4-s1": "lessons/t2-lesson-04.html",
+"t2l4-s2": "lessons/t2-lesson-04.html",
+"t2l4-s3": "lessons/t2-lesson-04.html",
 "t3-chapter": "chapters/t3.html",
 "t3-exam-a": "exams/t3-exam-a.html",
 "t3-exam-b": "exams/t3-exam-b.html",
@@ -290,6 +302,42 @@ window.DBTHeadings = {
 "t2l3-s4": {
 "ar": "ما الذي يكسبه",
 "en": "What it buys"
+},
+"t2l4-h1": {
+"ar": "١ · الأشياء التي يجب أن تعرفها المكتبة",
+"en": "1 · The things the library must know about"
+},
+"t2l4-h2": {
+"ar": "٢ · الكيان ونُسخه",
+"en": "2 · An entity and its instances"
+},
+"t2l4-h3": {
+"ar": "٣ · نُسخ كثيرة أو قليلة — وليست واحدة فقط",
+"en": "3 · Many instances, a few — never just one"
+},
+"t2l4-h4": {
+"ar": "٤ · ملموس، أو غير ملموس، أو حدث",
+"en": "4 · Tangible, intangible, or an event"
+},
+"t2l4-h5": {
+"ar": "٥ · هل DOG كيان أم نسخة؟",
+"en": "5 · Is DOG an entity or an instance?"
+},
+"t2l4-h6": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t2l4-s1": {
+"ar": "اسمٌ في الغالب — لكن ليس كل اسم",
+"en": "Usually a noun — but not every noun"
+},
+"t2l4-s2": {
+"ar": "الملموس وغير الملموس",
+"en": "Tangible and intangible"
+},
+"t2l4-s3": {
+"ar": "الأحداث",
+"en": "Events"
 },
 "t3idx-h1": {
 "ar": "الدروس",

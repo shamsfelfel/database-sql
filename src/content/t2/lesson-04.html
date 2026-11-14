@@ -1,0 +1,581 @@
+<section class="page" id="t2-lesson-04">
+
+  <span class="kicker">Lesson 4</span>
+  <h1><span class="en">Entities and Instances</span><span class="ar">الكيانات والنُسخ</span></h1>
+  <p class="lede en">By the end of this lesson you will be able to find the entities in a business's description, tell an entity from one of its instances, sort entities into tangible, intangible and events, and explain why DOG is an entity for one business and an instance for another.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تجد الكيانات في وصف أيّ عمل، وأن تميّز الكيان من إحدى نُسخه، وأن تصنّف الكيانات إلى ملموسة وغير ملموسة وأحداث، وأن تشرح لماذا يكون DOG كيانًا عند عمل ونسخةً عند عمل آخر.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> <a href="#t2-lesson-03">Lesson 3</a> showed that a conceptual model holds entities and relationships, and nothing else. This lesson opens that model and looks at the first thing in it: the entity. The library is the same &mdash; Matt, the faculty member, Sara Hamdan, Omar Saleh and four books. Read lesson 3 first.</p>
+    <p class="ar"><strong>السياق.</strong> بيّن <a href="#t2-lesson-03">الدرس 3</a> أن النموذج المفاهيمي يحمل الكيانات والعلاقات، ولا شيء غيرها. يفتح هذا الدرس ذلك النموذج وينظر في أوّل ما فيه: الكيان. والمكتبة هي نفسها &mdash; مات، وعضو هيئة التدريس، وSara Hamdan وOmar Saleh، وأربعة كتب. اقرأ الدرس 3 أولًا.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Define an entity, and find the entities in a business's own sentences.</li>
+      <li class="ar">تعريف الكيان، وإيجاد الكيانات في جمل العمل نفسه.</li>
+      <li class="en">Distinguish an entity from an instance of that entity, and give examples of each.</li>
+      <li class="ar">التمييز بين الكيان ونسخة من ذلك الكيان، وإعطاء أمثلة على كلٍّ منهما.</li>
+      <li class="en">Explain why an entity with only one instance makes no sense.</li>
+      <li class="ar">شرح لماذا لا معنى لكيان ليس له إلا نسخة واحدة.</li>
+      <li class="en">Classify an entity as tangible, intangible or an event.</li>
+      <li class="ar">تصنيف الكيان: ملموس، أو غير ملموس، أو حدث.</li>
+      <li class="en">Decide, for a given business, whether a thing like DOG is an entity or an instance.</li>
+      <li class="ar">تقرير ما إذا كان شيء مثل DOG كيانًا أم نسخة، لعمل محدّد.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t2l4-h1"><span class="en">1 · The things the library must know about</span><span class="ar">١ · الأشياء التي يجب أن تعرفها المكتبة</span></h2>
+
+  <div class="problem">
+    <p class="en">The librarian sends Matt a page of sentences: "Sara Hamdan borrowed <em>A Vision</em> on 1 March. Oscar Wilde wrote <em>A Vision</em>. Riwaq Press published it. Omar Saleh borrowed <em>War and Peace</em> on 5 March&hellip;" Every sentence is true. Then the faculty member asks, "How many members do we have?" Matt has to read every line to find out.</p>
+    <p class="ar">يرسل أمين المكتبة إلى مات صفحةً من الجمل: «استعارت Sara Hamdan كتاب <em>A Vision</em> في 1 آذار. كتب Oscar Wilde كتاب <em>A Vision</em>. ونشرته Riwaq Press. واستعار Omar Saleh كتاب <em>War and Peace</em> في 5 آذار&hellip;» كل جملة صحيحة. ثم يسأل عضو هيئة التدريس: «كم عضوًا لدينا؟» فيضطرّ مات إلى قراءة كل سطر ليعرف.</p>
+  </div>
+
+  <p class="en">The slides put it this way: knowing how to organize and classify data lets you draw useful conclusions from facts that look random. Entities are the things about which we store data. A school, for example, must store data about at least STUDENTs, TEACHERs, COURSEs, ROOMs and GRADEs.</p>
+  <p class="ar">تقول الشرائح ذلك هكذا: معرفة كيفية تنظيم البيانات وتصنيفها تتيح لك أن تستخلص نتائج مفيدة من حقائق تبدو عشوائية. والكيانات هي الأشياء التي نخزّن عنها البيانات. فالمدرسة مثلًا يجب أن تخزّن بيانات عن STUDENT وTEACHER وCOURSE وROOM وGRADE على الأقلّ.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="entity">entity</span> is something of significance to the business about which data must be known: a name for a set of similar things that you can list.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="entity">الكيان</span> (Entity) شيءٌ ذو أهمية للعمل يجب أن تُعرف عنه بيانات: اسمٌ لمجموعة من الأشياء المتشابهة التي يمكنك سردها.</p>
+  </div>
+
+  <h3 id="t2l4-s1"><span class="en">Usually a noun &mdash; but not every noun</span><span class="ar">اسمٌ في الغالب &mdash; لكن ليس كل اسم</span></h3>
+
+  <p class="en">An entity is usually a noun: an object, an event or a person. So Matt underlines the nouns in the librarian's page. But a noun earns a box only if it passes the first half of the definition: it must be <span class="term" data-term="business-significance">of significance to the business</span>. "Page" and "line" are nouns too; the library keeps no data about them.</p>
+  <p class="ar">الكيان في الغالب اسم: شيء أو حدث أو شخص. لذلك يضع مات خطًّا تحت الأسماء في صفحة أمين المكتبة. لكنّ الاسم لا يستحقّ صندوقًا إلا إذا اجتاز النصف الأول من التعريف: أن يكون <span class="term" data-term="business-significance">ذا أهمية للعمل</span> (Of Significance to the Business). فـ«الصفحة» و«السطر» اسمان أيضًا، لكنّ المكتبة لا تحتفظ بأيّ بيانات عنهما.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A thing is <span class="term" data-term="business-significance">of significance to the business</span> when the business must know and keep data about it to do its work.</p>
+    <p class="ar"><strong>تعريف.</strong> يكون الشيء <span class="term" data-term="business-significance">ذا أهمية للعمل</span> حين يجب على العمل أن يعرف بيانات عنه ويحتفظ بها كي يؤدّي عمله.</p>
+  </div>
+
+  <div class="evolve" id="t2l4-e1">
+    <div class="ver" data-title-en="Version 1 — a heap of true sentences" data-title-ar="الإصدار 1 — كومة من الجمل الصحيحة">
+      <pre class="code" data-lang="text"><code>Sara Hamdan borrowed A Vision on 1 March.
+Oscar Wilde wrote A Vision.
+Riwaq Press published A Vision.
+Omar Saleh borrowed War and Peace on 5 March.
+Leo Tolstoy wrote War and Peace.
+Al-Manara Books published War and Peace.</code></pre>
+      <p class="en">Defect: nothing is grouped. "How many members?" means reading every sentence and guessing which names are members and which are authors. Sara appears once; a member who borrowed ten books appears ten times.</p>
+      <p class="ar">العيب: لا شيء مجمَّع. سؤال «كم عضوًا؟» يعني قراءة كل جملة وتخمين أيّ الأسماء أعضاء وأيّها مؤلفون. تظهر Sara مرّة واحدة، والعضو الذي استعار عشرة كتب يظهر عشر مرّات.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — five entities, each a list" data-title-ar="الإصدار 2 — خمسة كيانات، كلٌّ منها قائمة">
+      <figure class="diagram" data-diagram="t2-library-entities"></figure>
+      <p class="en">Fixed: every name now sits in one set of similar things &mdash; <code>MEMBER</code>, <code>BOOK</code>, <code>AUTHOR</code>, <code>PUBLISHER</code>, <code>BOOK TRANSACTION</code>. "How many members?" is "how long is the <code>MEMBER</code> list?" Still open: what to record about each one. That is lesson 5.</p>
+      <p class="ar">أُصلح: صار كل اسم في مجموعة واحدة من الأشياء المتشابهة &mdash; <code>MEMBER</code> و<code>BOOK</code> و<code>AUTHOR</code> و<code>PUBLISHER</code> و<code>BOOK TRANSACTION</code>. وسؤال «كم عضوًا؟» صار «كم طول قائمة <code>MEMBER</code>؟». وما زال مفتوحًا: ماذا نسجّل عن كلٍّ منها. وهذا موضوع الدرس 5.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Each entity will become one table, named after its set: <code>MEMBER</code> becomes <code>members</code>. The faculty member's question stops being a reading job and becomes one line of SQL. Run it, then add Lina Khalil and run the count again:</p>
+    <p class="ar">سيصبح كل كيان جدولًا واحدًا يحمل اسم مجموعته: <code>MEMBER</code> يصبح <code>members</code>. ولا يعود سؤال عضو هيئة التدريس مهمّة قراءة، بل سطرًا واحدًا من SQL. شغّله، ثم أضف Lina Khalil وشغّل العدّ من جديد:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE members (id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL)","INSERT INTO members VALUES (1, 'Sara', 'Hamdan'), (2, 'Omar', 'Saleh')"],"sql":"SELECT COUNT(*) AS members\nFROM members;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>members</code></th></tr></thead>
+          <tbody><tr><td>2</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">After <code>INSERT INTO members VALUES (3, 'Lina', 'Khalil');</code> the same query returns <code>3</code>. No sentence had to be re-read.</p>
+    <p class="ar">بعد <code>INSERT INTO members VALUES (3, 'Lina', 'Khalil');</code> يعيد الاستعلام نفسه <code>3</code>. ولم يكن على أحد أن يعيد قراءة أيّ جملة.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · the SQL track</span><span class="ar">خيط · مسار SQL</span></h4>
+    <p class="en"><a href="@/chapters/chapter-1.html">SQL Chapter 1 &mdash; First Steps</a> creates a table and counts its rows. It never asks why that table exists. The answer is here: someone found an entity &mdash; a set of things the business must keep data about &mdash; and the table is its home.</p>
+    <p class="ar">ينشئ <a href="@/chapters/chapter-1.html">الفصل 1 من مسار SQL &mdash; الخطوات الأولى</a> جدولًا ويعدّ صفوفه. ولا يسأل أبدًا لماذا وُجد ذلك الجدول. والجواب هنا: وجد أحدهم كيانًا &mdash; مجموعة أشياء يجب على العمل أن يحتفظ ببيانات عنها &mdash; فصار الجدول بيتًا له.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which of these, taken from the librarian's page, is an entity?</p>
+    <p class="q ar">أيّ هذه، مأخوذةً من صفحة أمين المكتبة، كيان؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en"><code>MEMBER</code></span><span class="ar"><code>MEMBER</code></span></button></li>
+      <li><button class="opt"><span class="en">Sara Hamdan</span><span class="ar">Sara Hamdan</span></button></li>
+      <li><button class="opt"><span class="en">borrowed</span><span class="ar">borrowed (استعار)</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>MEMBER</code> names a set of similar things you can list. Sara Hamdan is one thing in that set, and "borrowed" is a verb &mdash; it will become a relationship, not an entity.</p>
+      <p class="ar"><code>MEMBER</code> اسم لمجموعة من الأشياء المتشابهة يمكنك سردها. أمّا Sara Hamdan فشيء واحد في تلك المجموعة، و«borrowed» فعل &mdash; سيصبح علاقة، لا كيانًا.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The librarian's page also says: "The reading-room clock was fixed on Monday." Should <code>CLOCK</code> be an entity in the library database?</p>
+    <p class="q ar">تقول صفحة أمين المكتبة أيضًا: «أُصلحت ساعة قاعة المطالعة يوم الإثنين». هل يجب أن يكون <code>CLOCK</code> كيانًا في قاعدة بيانات المكتبة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Yes &mdash; it is a noun</span><span class="ar">نعم &mdash; إنه اسم</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">No &mdash; the faculty member asked for book details; the library need keep no data about clocks</span><span class="ar">لا &mdash; طلب عضو هيئة التدريس تفاصيل الكتب، ولا حاجة لأن تحتفظ المكتبة ببيانات عن الساعات</span></button></li>
+      <li><button class="opt"><span class="en">Yes &mdash; anything you can touch is an entity</span><span class="ar">نعم &mdash; كل ما يمكن لمسه كيان</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">An entity is usually a noun, but a noun is an entity only if it is of significance to the business. This database is for book details; the clock is not part of that.</p>
+      <p class="ar">الكيان في الغالب اسم، لكنّ الاسم لا يكون كيانًا إلا إذا كان ذا أهمية للعمل. وقاعدة البيانات هذه لتفاصيل الكتب، والساعة ليست جزءًا من ذلك.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t2l4-h2"><span class="en">2 · An entity and its instances</span><span class="ar">٢ · الكيان ونُسخه</span></h2>
+
+  <div class="problem">
+    <p class="en">A classmate draws the library with three boxes: <code>SARA HAMDAN</code>, <code>OMAR SALEH</code> and <code>BOOK</code>. Next week Lina Khalil joins, and the classmate redraws the diagram with a fourth box. A model that has to be redrawn every time someone joins is modelling the wrong thing.</p>
+    <p class="ar">يرسم زميلٌ المكتبة بثلاثة صناديق: <code>SARA HAMDAN</code> و<code>OMAR SALEH</code> و<code>BOOK</code>. وفي الأسبوع التالي تنضمّ Lina Khalil، فيعيد الزميل رسم المخطّط بصندوق رابع. النموذج الذي يجب أن يُعاد رسمه كلما انضمّ أحد ينمذج الشيء الخطأ.</p>
+  </div>
+
+  <p class="en">The slides answer it in two lines: entities have instances, and an instance is a single occurrence of an entity. The entity <code>FRUIT</code> has the instances orange, apple, peach, kiwi, cherry, lime, lemon. The entity <code>MEMBER</code> has Sara Hamdan and Omar Saleh &mdash; and now Lina Khalil, without any change to the entity.</p>
+  <p class="ar">تجيب الشرائح عن ذلك في سطرين: للكيانات نُسخ، والنسخة حدوثٌ واحد للكيان. فالكيان <code>FRUIT</code> له النُسخ orange وapple وpeach وkiwi وcherry وlime وlemon. والكيان <code>MEMBER</code> له Sara Hamdan وOmar Saleh &mdash; والآن Lina Khalil، دون أيّ تغيير في الكيان.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="instance">instance</span> is a single occurrence of an entity.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="instance">النسخة</span> (Instance) حدوثٌ واحد للكيان.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-entity-instances"><figcaption><span class="en">One <span class="term" data-term="softbox">softbox</span> &mdash; the rounded box an ERD draws for an entity &mdash; per entity, and many cards per entity. The diagram you will draw in lesson 6 shows only the softboxes: the entity stays the same while its list of instances grows and shrinks.</span><span class="ar"><span class="term" data-term="softbox">صندوق مستدير</span> (Softbox) واحد لكل كيان &mdash; وهو الصندوق مستدير الزوايا الذي يرسمه الـ ERD للكيان &mdash; وبطاقات كثيرة لكل كيان. والمخطّط الذي سترسمه في الدرس 6 لا يُظهر إلا الصناديق المستديرة: يبقى الكيان كما هو، بينما تطول قائمة نُسخه وتقصر.</span></figcaption></figure>
+
+  <p class="en">The slides give eight more pairs. Read each row left to right as "&hellip; is an instance of &hellip;" backwards: Mahatma Gandhi is an instance of <code>PERSON</code>.</p>
+  <p class="ar">تعطي الشرائح ثمانية أزواج أخرى. اقرأ كل صفّ هكذا: «&hellip; نسخةٌ من &hellip;» من اليمين إلى اليسار: Mahatma Gandhi نسخةٌ من <code>PERSON</code>.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Entity</th><th class="ar">الكيان</th><th class="en">Instances</th><th class="ar">النُسخ</th></tr></thead>
+      <tbody>
+        <tr><td class="en"><code>PERSON</code></td><td class="ar"><code>PERSON</code></td><td class="en">Mahatma Gandhi, George Washington</td><td class="ar">Mahatma Gandhi، George Washington</td></tr>
+        <tr><td class="en"><code>PRODUCT</code></td><td class="ar"><code>PRODUCT</code></td><td class="en">Nike Air Jordan, Gibson Les Paul Custom</td><td class="ar">Nike Air Jordan، Gibson Les Paul Custom</td></tr>
+        <tr><td class="en"><code>PRODUCT TYPE</code></td><td class="ar"><code>PRODUCT TYPE</code></td><td class="en">Shoe, Video Game</td><td class="ar">Shoe، Video Game</td></tr>
+        <tr><td class="en"><code>JOB</code></td><td class="ar"><code>JOB</code></td><td class="en">Electrician, IT Technician</td><td class="ar">Electrician، IT Technician</td></tr>
+        <tr><td class="en"><code>SKILL LEVEL</code></td><td class="ar"><code>SKILL LEVEL</code></td><td class="en">Beginner, Expert</td><td class="ar">Beginner، Expert</td></tr>
+        <tr><td class="en"><code>CONCERT</code></td><td class="ar"><code>CONCERT</code></td><td class="en">U2 at the Palladium, Beyonc&eacute; at the Greek Theatre L.A.</td><td class="ar">U2 at the Palladium، Beyonc&eacute; at the Greek Theatre L.A.</td></tr>
+        <tr><td class="en"><code>ANIMAL</code></td><td class="ar"><code>ANIMAL</code></td><td class="en">Dog, Cat</td><td class="ar">Dog، Cat</td></tr>
+        <tr><td class="en"><code>CAR</code></td><td class="ar"><code>CAR</code></td><td class="en">Volkswagen Beetle, Toyota Corolla</td><td class="ar">Volkswagen Beetle، Toyota Corolla</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The entity becomes the table; each instance becomes one row. That is lesson 2's "row: data for one table instance", seen from the design side. Here are the four instances of <code>BOOK</code>:</p>
+    <p class="ar">يصبح الكيان جدولًا، وتصبح كل نسخة صفًّا واحدًا. وهذا تعريف الدرس 2 «الصفّ: بيانات نسخة واحدة من الجدول»، منظورًا إليه من جهة التصميم. هذه النُسخ الأربع من <code>BOOK</code>:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE books (id VARCHAR(15) PRIMARY KEY, title VARCHAR(50) NOT NULL UNIQUE)","INSERT INTO books VALUES ('BK001','A Vision'), ('BK002','War and Peace'), ('BK003','Citizen of the World'), ('BK004','Androcles and the Lion')"],"sql":"SELECT id, title\nFROM books\nORDER BY id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>id</code></th><th><code>title</code></th></tr></thead>
+          <tbody>
+            <tr><td><code>BK001</code></td><td>A Vision</td></tr>
+            <tr><td><code>BK002</code></td><td>War and Peace</td></tr>
+            <tr><td><code>BK003</code></td><td>Citizen of the World</td></tr>
+            <tr><td><code>BK004</code></td><td>Androcles and the Lion</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">A new book is an <code>INSERT</code>: one more row, the same table. The classmate's model needed a new box for a new member; the database needs no new table for a new instance.</p>
+    <p class="ar">الكتاب الجديد <code>INSERT</code>: صفّ إضافي، والجدول نفسه. احتاج نموذج الزميل إلى صندوق جديد لكل عضو جديد، أمّا قاعدة البيانات فلا تحتاج إلى جدول جديد لكل نسخة جديدة.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which pair is written as <em>entity &rarr; one of its instances</em>?</p>
+    <p class="q ar">أيّ زوج مكتوب على صورة <em>كيان &larr; إحدى نُسخه</em>؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en"><code>CAR</code> &rarr; Toyota Corolla</span><span class="ar"><code>CAR</code> &larr; Toyota Corolla</span></button></li>
+      <li><button class="opt"><span class="en">Toyota Corolla &rarr; <code>CAR</code></span><span class="ar">Toyota Corolla &larr; <code>CAR</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>BOOK</code> &rarr; <code>AUTHOR</code></span><span class="ar"><code>BOOK</code> &larr; <code>AUTHOR</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>CAR</code> is the set; Toyota Corolla is one occurrence of it. The second pair is backwards, and <code>BOOK</code> and <code>AUTHOR</code> are two different entities.</p>
+      <p class="ar"><code>CAR</code> هو المجموعة، وToyota Corolla حدوثٌ واحد منها. والزوج الثاني معكوس، و<code>BOOK</code> و<code>AUTHOR</code> كيانان مختلفان.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">What should the classmate's box <code>SARA HAMDAN</code> have been?</p>
+    <p class="q ar">ماذا كان يجب أن يكون صندوق الزميل <code>SARA HAMDAN</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Nothing &mdash; members do not belong in the model</span><span class="ar">لا شيء &mdash; الأعضاء لا ينتمون إلى النموذج</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">One box, <code>MEMBER</code>; Sara Hamdan is one of its instances</span><span class="ar">صندوق واحد، <code>MEMBER</code>؛ وSara Hamdan إحدى نُسخه</span></button></li>
+      <li><button class="opt"><span class="en">A box per member, renamed <code>MEMBER 1</code>, <code>MEMBER 2</code></span><span class="ar">صندوق لكل عضو، باسم <code>MEMBER 1</code> و<code>MEMBER 2</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The model draws the set, once. Sara, Omar and Lina are instances; they live in the database as rows, not in the diagram as boxes.</p>
+      <p class="ar">يرسم النموذج المجموعة مرّة واحدة. أمّا Sara وOmar وLina فنُسخ، تعيش في قاعدة البيانات صفوفًا، لا في المخطّط صناديق.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t2l4-h3"><span class="en">3 · Many instances, a few &mdash; never just one</span><span class="ar">٣ · نُسخ كثيرة أو قليلة &mdash; وليست واحدة فقط</span></h2>
+
+  <div class="problem">
+    <p class="en">Matt adds a sixth box, <code>LIBRARY</code>, "because this is a library database". The faculty member asks a fair question: "List the libraries for me." There is one &mdash; the school's. The list is over before it starts.</p>
+    <p class="ar">يضيف مات صندوقًا سادسًا، <code>LIBRARY</code>، «لأن هذه قاعدة بيانات مكتبة». فيسأل عضو هيئة التدريس سؤالًا منصفًا: «اسرد لي المكتبات». هناك مكتبة واحدة &mdash; مكتبة المدرسة. تنتهي القائمة قبل أن تبدأ.</p>
+  </div>
+
+  <p class="en">The slides note that some entities have many instances and some have only a few. A Dalmatian, a Siamese cat, a cow and a pig are instances of <code>ANIMAL</code>; a convertible, a sedan and a station wagon are instances of <code>CAR</code>. The library has thousands of books, but only a handful of publishers.</p>
+  <p class="ar">تلاحظ الشرائح أن لبعض الكيانات نُسخًا كثيرة، ولبعضها نُسخًا قليلة فقط. فالدلماسي (Dalmatian) والقطّ السيامي والبقرة والخنزير نُسخ من <code>ANIMAL</code>، والسيارة المكشوفة وسيارة السيدان وسيارة الستيشن نُسخ من <code>CAR</code>. وفي المكتبة آلاف الكتب، لكن حفنة قليلة من الناشرين.</p>
+  <p class="en">The lecturer's notes add the limit: it would not make sense to have an entity with only one instance. An entity is a set you can list. A set that can only ever hold one thing is not a list; it is the setting of the whole model.</p>
+  <p class="ar">وتضيف ملاحظات المحاضِرة الحدّ: لا معنى لكيان ليس له إلا نسخة واحدة. فالكيان مجموعة يمكنك سردها، والمجموعة التي لا يمكن أن تحمل أبدًا إلا شيئًا واحدًا ليست قائمة؛ إنها سياق النموذج كلّه.</p>
+
+  <figure class="diagram" data-diagram="t2-instance-counts"><figcaption><span class="en">Count the cards. <code>BOOK</code> has many and keeps growing; <code>PUBLISHER</code> has a few. <code>LIBRARY</code> has exactly one, now and always &mdash; so it is drawn in red: it is not an entity of this model.</span><span class="ar">عُدّ البطاقات. لـ <code>BOOK</code> كثير منها، ويزداد؛ ولـ <code>PUBLISHER</code> قليل. أمّا <code>LIBRARY</code> فله واحدة بالضبط، الآن ودائمًا &mdash; لذلك رُسم بالأحمر: إنه ليس كيانًا في هذا النموذج.</span></figcaption></figure>
+
+  <div class="evolve" id="t2l4-e2">
+    <div class="ver" data-title-en="Version 1 — LIBRARY as a sixth entity" data-title-ar="الإصدار 1 — LIBRARY كيانًا سادسًا">
+      <pre class="code" data-lang="text"><code>MEMBER   BOOK   AUTHOR   PUBLISHER   BOOK TRANSACTION   LIBRARY
+
+LIBRARY instances:  School Library</code></pre>
+      <p class="en">Defect: <code>LIBRARY</code> has one instance and always will. There is nothing to list, nothing to count and nothing to tell apart. Every member, book and borrowing would point at that one library, and the pointer would never say anything new.</p>
+      <p class="ar">العيب: لـ <code>LIBRARY</code> نسخة واحدة، وسيبقى كذلك دائمًا. لا شيء لتسرده، ولا شيء لتعدّه، ولا شيء لتميّزه من غيره. كل عضو وكتاب واستعارة سيشير إلى تلك المكتبة الواحدة، والإشارة لن تقول شيئًا جديدًا أبدًا.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — the library is the business, not an entity" data-title-ar="الإصدار 2 — المكتبة هي العمل، لا كيان فيه">
+      <pre class="code" data-lang="text"><code>The school library  (the business this model is about)
+
+MEMBER   BOOK   AUTHOR   PUBLISHER   BOOK TRANSACTION</code></pre>
+      <p class="en">Fixed: the library is the business whose needs the model captures, so it is the model's title, not a box in it. The five entities left all have many instances, or at least a few.</p>
+      <p class="ar">أُصلح: المكتبة هي العمل الذي يلتقط النموذج احتياجاته، فهي عنوان النموذج، لا صندوق فيه. والكيانات الخمسة الباقية لكلٍّ منها نُسخ كثيرة، أو قليلة على الأقلّ.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Build all three and count each one's instances:</p>
+    <p class="ar">ابنِ الثلاثة، وعُدّ نُسخ كلٍّ منها:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE library (id NUMBER PRIMARY KEY, name VARCHAR(50) NOT NULL)","INSERT INTO library VALUES (1, 'School Library')","CREATE TABLE publishers (id NUMBER PRIMARY KEY, name VARCHAR(50) NOT NULL)","INSERT INTO publishers VALUES (1, 'Riwaq Press'), (2, 'Al-Manara Books')","CREATE TABLE books (id VARCHAR(15) PRIMARY KEY, title VARCHAR(50) NOT NULL UNIQUE)","INSERT INTO books VALUES ('BK001','A Vision'), ('BK002','War and Peace'), ('BK003','Citizen of the World'), ('BK004','Androcles and the Lion')"],"sql":"SELECT 'LIBRARY' AS entity, COUNT(*) AS instances FROM library\nUNION ALL\nSELECT 'PUBLISHER' AS entity, COUNT(*) AS instances FROM publishers\nUNION ALL\nSELECT 'BOOK' AS entity, COUNT(*) AS instances FROM books;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>entity</code></th><th><code>instances</code></th></tr></thead>
+          <tbody>
+            <tr><td>LIBRARY</td><td>1</td></tr>
+            <tr><td>PUBLISHER</td><td>2</td></tr>
+            <tr><td>BOOK</td><td>4</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">A <code>library</code> table holds one row forever. No query ever needs it to tell two libraries apart, and a <code>library_id</code> column in <code>books</code> would hold <code>1</code> in every row &mdash; the redundancy of lesson 1, by design.</p>
+    <p class="ar">يحمل جدول <code>library</code> صفًّا واحدًا إلى الأبد. لا يحتاج أيّ استعلام إليه ليميّز مكتبة من أخرى، وعمود <code>library_id</code> في <code>books</code> سيحمل <code>1</code> في كل صفّ &mdash; وهذا هو تكرار البيانات من الدرس 1، عن قصد.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why does the lesson reject <code>LIBRARY</code> as an entity of Matt's model?</p>
+    <p class="q ar">لماذا يرفض الدرس <code>LIBRARY</code> كيانًا في نموذج مات؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A library is intangible</span><span class="ar">المكتبة غير ملموسة</span></button></li>
+      <li><button class="opt"><span class="en">Entities must have thousands of instances</span><span class="ar">يجب أن يكون للكيانات آلاف النُسخ</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">In this model it would only ever have one instance</span><span class="ar">في هذا النموذج لن تكون له أبدًا إلا نسخة واحدة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">An entity with one instance makes no sense: there is nothing to list. A few instances is fine &mdash; <code>PUBLISHER</code> has two. And a library building is perfectly tangible.</p>
+      <p class="ar">لا معنى لكيان له نسخة واحدة: لا شيء لتسرده. أمّا النُسخ القليلة فلا بأس بها &mdash; فلـ <code>PUBLISHER</code> نسختان. ومبنى المكتبة ملموس تمامًا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t2l4-h4"><span class="en">4 · Tangible, intangible, or an event</span><span class="ar">٤ · ملموس، أو غير ملموس، أو حدث</span></h2>
+
+  <div class="problem">
+    <p class="en">The librarian objects to <code>BOOK TRANSACTION</code>: "A borrowing isn't a thing. You can't put it on a shelf." Yet the faculty member wants to know who borrowed <em>A Vision</em>, and when. If only touchable things counted, that question would have nowhere to live.</p>
+    <p class="ar">يعترض أمين المكتبة على <code>BOOK TRANSACTION</code>: «الاستعارة ليست شيئًا. لا تستطيع وضعها على رفّ». ومع ذلك يريد عضو هيئة التدريس أن يعرف من استعار <em>A Vision</em>، ومتى. لو كانت الأشياء الملموسة وحدها تُحسب، لما وجد هذا السؤال مكانًا يعيش فيه.</p>
+  </div>
+
+  <p class="en">The slides list three kinds of entity. An entity can be tangible, like <code>PERSON</code> or <code>PRODUCT</code>; intangible, like <code>SKILL LEVEL</code>; or an event, like <code>CONCERT</code>. All three are entities in exactly the same sense: sets of similar things the business must keep data about.</p>
+  <p class="ar">تذكر الشرائح ثلاثة أنواع من الكيانات. فالكيان قد يكون ملموسًا، مثل <code>PERSON</code> أو <code>PRODUCT</code>؛ أو غير ملموس، مثل <code>SKILL LEVEL</code>؛ أو حدثًا، مثل <code>CONCERT</code>. والثلاثة كلّها كيانات بالمعنى نفسه تمامًا: مجموعات من الأشياء المتشابهة يجب على العمل أن يحتفظ ببيانات عنها.</p>
+
+  <figure class="diagram" data-diagram="t2-entity-kinds"><figcaption><span class="en">The three kinds, with the library's entities beside the slides' examples. <code>BOOK TRANSACTION</code> sits with <code>CONCERT</code>: both happen at a time.</span><span class="ar">الأنواع الثلاثة، وكيانات المكتبة إلى جانب أمثلة الشرائح. يقع <code>BOOK TRANSACTION</code> مع <code>CONCERT</code>: كلاهما يقع في وقت ما.</span></figcaption></figure>
+
+  <h3 id="t2l4-s2"><span class="en">Tangible and intangible</span><span class="ar">الملموس وغير الملموس</span></h3>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="tangible">tangible</span> entity is one whose instances are perceptible to the senses, especially to touch.</p>
+    <p class="ar"><strong>تعريف.</strong> الكيان <span class="term" data-term="tangible">الملموس</span> (Tangible) كيانٌ تدرك الحواسّ نُسخه، ولا سيّما اللمس.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="intangible">intangible</span> entity is one whose instances cannot be perceived by the senses.</p>
+    <p class="ar"><strong>تعريف.</strong> الكيان <span class="term" data-term="intangible">غير الملموس</span> (Intangible) كيانٌ لا تدرك الحواسّ نُسخه.</p>
+  </div>
+
+  <p class="en">You can hand someone Sara Hamdan's copy of <em>A Vision</em>. You cannot hand them "Expert". <code>SKILL LEVEL</code>, <code>JOB</code> and <code>PRODUCT TYPE</code> are ideas, yet a business lists them exactly as it lists members: Beginner, Expert; Electrician, IT Technician; Shoe, Video Game.</p>
+  <p class="ar">تستطيع أن تناول أحدًا نسخة Sara Hamdan من <em>A Vision</em>. ولا تستطيع أن تناوله «Expert». فـ <code>SKILL LEVEL</code> و<code>JOB</code> و<code>PRODUCT TYPE</code> أفكار، ومع ذلك يسردها العمل تمامًا كما يسرد الأعضاء: Beginner وExpert؛ Electrician وIT Technician؛ Shoe وVideo Game.</p>
+
+  <h3 id="t2l4-s3"><span class="en">Events</span><span class="ar">الأحداث</span></h3>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="event-entity">event</span> entity is one whose instances are happenings: each one takes place at a particular time.</p>
+    <p class="ar"><strong>تعريف.</strong> الكيان <span class="term" data-term="event-entity">الحدث</span> (Event) كيانٌ نُسخه وقائع: كلٌّ منها يقع في وقت محدّد.</p>
+  </div>
+
+  <p class="en">U2 at the Palladium is one instance of <code>CONCERT</code>. Sara borrowing <em>A Vision</em> on 1 March is one instance of <code>BOOK TRANSACTION</code>. That is why lesson 3's logical model put <code># * Tran Date</code> in it: an event is pinned down by when it happened.</p>
+  <p class="ar">U2 at the Palladium نسخةٌ واحدة من <code>CONCERT</code>. واستعارة Sara لـ <em>A Vision</em> في 1 آذار نسخةٌ واحدة من <code>BOOK TRANSACTION</code>. ولهذا وضع النموذج المنطقي في الدرس 3 فيه <code># * Tran Date</code>: فالحدث يُحدَّد بوقت وقوعه.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">To the database, all three kinds are the same: a table, one row per instance. Here is the event, <code>BOOK TRANSACTION</code>, with the columns from lesson 3's physical model. Each row is something that happened:</p>
+    <p class="ar">الأنواع الثلاثة واحدة في نظر قاعدة البيانات: جدول، وصفّ لكل نسخة. هذا هو الحدث <code>BOOK TRANSACTION</code>، بأعمدة النموذج الفيزيائي من الدرس 3. وكل صفّ شيءٌ وقع:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE book_transactions (tran_date DATE NOT NULL, type VARCHAR(10), members_id NUMBER NOT NULL, books_id VARCHAR(15) NOT NULL, PRIMARY KEY (tran_date, books_id))","INSERT INTO book_transactions VALUES ('2026-03-01','borrow',1,'BK001'), ('2026-03-05','borrow',2,'BK002'), ('2026-03-05','borrow',1,'BK003'), ('2026-03-12','return',1,'BK001')"],"sql":"SELECT tran_date, type, members_id, books_id\nFROM book_transactions\nORDER BY tran_date, books_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>tran_date</code></th><th><code>type</code></th><th><code>members_id</code></th><th><code>books_id</code></th></tr></thead>
+          <tbody>
+            <tr><td>2026-03-01</td><td>borrow</td><td>1</td><td><code>BK001</code></td></tr>
+            <tr><td>2026-03-05</td><td>borrow</td><td>2</td><td><code>BK002</code></td></tr>
+            <tr><td>2026-03-05</td><td>borrow</td><td>1</td><td><code>BK003</code></td></tr>
+            <tr><td>2026-03-12</td><td>return</td><td>1</td><td><code>BK001</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Sara (member <code>1</code>) appears three times, and that is right: she is one instance of <code>MEMBER</code> but took part in three instances of <code>BOOK TRANSACTION</code>. An event entity grows every day the library is open.</p>
+    <p class="ar">تظهر Sara (العضو <code>1</code>) ثلاث مرّات، وهذا صحيح: فهي نسخة واحدة من <code>MEMBER</code>، لكنها شاركت في ثلاث نُسخ من <code>BOOK TRANSACTION</code>. والكيان الحدث يكبر كل يوم تفتح فيه المكتبة أبوابها.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which kind of entity is <code>SKILL LEVEL</code>?</p>
+    <p class="q ar">من أيّ نوع الكيان <code>SKILL LEVEL</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Tangible</span><span class="ar">ملموس</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Intangible</span><span class="ar">غير ملموس</span></button></li>
+      <li><button class="opt"><span class="en">An event</span><span class="ar">حدث</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">This is the slides' own example of an intangible entity. Beginner and Expert cannot be touched or seen, and they do not happen at a time.</p>
+      <p class="ar">هذا مثال الشرائح نفسها على الكيان غير الملموس. فـ Beginner وExpert لا يُلمسان ولا يُريان، ولا يقعان في وقت ما.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The librarian says a borrowing "isn't a thing", so <code>BOOK TRANSACTION</code> cannot be an entity. Is that right?</p>
+    <p class="q ar">يقول أمين المكتبة إن الاستعارة «ليست شيئًا»، فلا يمكن أن يكون <code>BOOK TRANSACTION</code> كيانًا. هل هذا صحيح؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Yes &mdash; an entity must be tangible</span><span class="ar">نعم &mdash; يجب أن يكون الكيان ملموسًا</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">No &mdash; it is an event entity: the library must keep data about each borrowing</span><span class="ar">لا &mdash; إنه كيان حدث: يجب على المكتبة أن تحتفظ ببيانات عن كل استعارة</span></button></li>
+      <li><button class="opt"><span class="en">No &mdash; but only because a book is tangible</span><span class="ar">لا &mdash; لكن فقط لأن الكتاب ملموس</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Entities can be tangible, intangible or events. What matters is that the business must know data about it &mdash; and the library must know who borrowed what, and when.</p>
+      <p class="ar">قد تكون الكيانات ملموسة أو غير ملموسة أو أحداثًا. والمهمّ أن يحتاج العمل إلى معرفة بيانات عنه &mdash; والمكتبة تحتاج إلى معرفة من استعار ماذا، ومتى.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t2l4-h5"><span class="en">5 · Is DOG an entity or an instance?</span><span class="ar">٥ · هل DOG كيان أم نسخة؟</span></h2>
+
+  <div class="problem">
+    <p class="en">Two clients call Matt on the same day, and both say, "We need to keep data about dogs." The first runs an animal shelter that takes in any animal. The second breeds dogs and nothing else. Should both models have a box called <code>DOG</code>?</p>
+    <p class="ar">يتّصل عميلان بمات في اليوم نفسه، وكلاهما يقول: «نحتاج إلى الاحتفاظ ببيانات عن الكلاب». الأول يدير مأوًى للحيوانات يستقبل أيّ حيوان. والثاني يربّي الكلاب ولا شيء غيرها. هل يجب أن يحوي النموذجان كلاهما صندوقًا اسمه <code>DOG</code>؟</p>
+  </div>
+
+  <p class="en">The slides' answer is: it depends. If we consider many different kinds of animal, it makes sense to have the entity <code>ANIMAL</code>, with instances Dog, Cat, Horse. But a dog-breeding business keeps data on many breeds of dog and on no other species. For the breeder, the natural entity is <code>DOG</code>, with instances Terrier, Poodle, Labrador.</p>
+  <p class="ar">جواب الشرائح: هذا يعتمد. فإذا كنّا نتعامل مع أنواع كثيرة من الحيوانات، فمن المنطقي أن يكون الكيان <code>ANIMAL</code>، ونُسخه Dog وCat وHorse. لكنّ عمل تربية الكلاب يحتفظ ببيانات عن سلالات كثيرة من الكلاب، ولا شيء عن غيرها من الأنواع. فالكيان الطبيعي عند المربّي هو <code>DOG</code>، ونُسخه Terrier وPoodle وLabrador.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="business-context">business context</span> decides whether a thing is an entity or an instance: what the business needs to list is the entity, and each item on that list is an instance.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="business-context">سياق العمل</span> (Business Context) هو الذي يقرّر هل الشيء كيان أم نسخة: ما يحتاج العمل إلى سرده هو الكيان، وكل عنصر في تلك القائمة نسخة.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t2-dog-question"><figcaption><span class="en">One word, two jobs. For the shelter, Dog is one card under <code>ANIMAL</code>. For the breeder, the same word becomes the softbox, and the cards beneath it are breeds.</span><span class="ar">كلمة واحدة، ودوران. عند المأوى، Dog بطاقة واحدة تحت <code>ANIMAL</code>. وعند المربّي، تصبح الكلمة نفسها الصندوق المستدير، والبطاقات تحتها سلالات.</span></figcaption></figure>
+
+  <div class="evolve" id="t2l4-e3">
+    <div class="ver" data-title-en="Version 1 — the breeder, modelled like the shelter" data-title-ar="الإصدار 1 — المربّي، منمذَجًا كالمأوى">
+      <pre class="code" data-lang="text"><code>ANIMAL
+  instances:  Dog</code></pre>
+      <p class="en">Defect: the breeder only ever deals with dogs, so <code>ANIMAL</code> has one instance &mdash; the mistake of section 3. And the breeds, the very thing the breeder needs to list, have no set to belong to.</p>
+      <p class="ar">العيب: لا يتعامل المربّي أبدًا إلا مع الكلاب، فلـ <code>ANIMAL</code> نسخة واحدة &mdash; وهذا خطأ القسم 3. والسلالات، وهي بالضبط ما يحتاج المربّي إلى سرده، لا مجموعة تنتمي إليها.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — DOG is the entity" data-title-ar="الإصدار 2 — DOG هو الكيان">
+      <pre class="code" data-lang="text"><code>DOG
+  instances:  Terrier, Poodle, Labrador, ...</code></pre>
+      <p class="en">Fixed: the entity is the set the breeder actually lists, and it has many instances. The word "dog" moved up a level: an instance for the shelter, the entity for the breeder. Neither model is wrong for its own business.</p>
+      <p class="ar">أُصلح: الكيان هو المجموعة التي يسردها المربّي فعلًا، ولها نُسخ كثيرة. ارتقت كلمة «dog» مستوًى واحدًا: نسخة عند المأوى، وكيان عند المربّي. ولا أحد النموذجين خاطئ بالنسبة إلى عمله.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">In the shelter's database, "Dog" is a <em>value</em> in a row of <code>animals</code>:</p>
+    <p class="ar">في قاعدة بيانات المأوى، «Dog» <em>قيمة</em> في صفّ من صفوف <code>animals</code>:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE animals (id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO animals VALUES (1, 'Dog'), (2, 'Cat'), (3, 'Horse')"],"sql":"SELECT id, name\nFROM animals\nORDER BY id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>id</code></th><th><code>name</code></th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Dog</td></tr>
+            <tr><td>2</td><td>Cat</td></tr>
+            <tr><td>3</td><td>Horse</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">In the breeder's database, "dog" is the <em>table</em>, and the rows are breeds:</p>
+    <p class="ar">وفي قاعدة بيانات المربّي، «dog» هو <em>الجدول</em>، والصفوف سلالات:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE dogs (id NUMBER PRIMARY KEY, breed VARCHAR(20) NOT NULL)","INSERT INTO dogs VALUES (1, 'Terrier'), (2, 'Poodle'), (3, 'Labrador')"],"sql":"SELECT id, breed\nFROM dogs\nORDER BY id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>id</code></th><th><code>breed</code></th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Terrier</td></tr>
+            <tr><td>2</td><td>Poodle</td></tr>
+            <tr><td>3</td><td>Labrador</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Same word, different place: a row in one database, a table name in the other. The choice is made in the conceptual model, from the business's needs, and <code>CREATE TABLE</code> only follows it.</p>
+    <p class="ar">الكلمة نفسها، في مكان مختلف: صفّ في قاعدة بيانات، واسم جدول في الأخرى. ويُتّخذ هذا الاختيار في النموذج المفاهيمي، انطلاقًا من احتياجات العمل، و<code>CREATE TABLE</code> يتبعه فقط.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">For the dog-breeding business, what is Poodle?</p>
+    <p class="q ar">بالنسبة إلى عمل تربية الكلاب، ما هو Poodle؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">An entity</span><span class="ar">كيان</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">An instance of <code>DOG</code></span><span class="ar">نسخة من <code>DOG</code></span></button></li>
+      <li><button class="opt"><span class="en">An instance of <code>ANIMAL</code></span><span class="ar">نسخة من <code>ANIMAL</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The breeder's entity is <code>DOG</code>, and its instances are breeds: Terrier, Poodle, Labrador. The breeder's model has no <code>ANIMAL</code> at all.</p>
+      <p class="ar">كيان المربّي هو <code>DOG</code>، ونُسخه سلالات: Terrier وPoodle وLabrador. ولا يحوي نموذج المربّي <code>ANIMAL</code> إطلاقًا.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A greengrocer sells many kinds of fruit. A citrus farm grows only citrus, and keeps data on each variety. For which business is <code>ORANGE</code> more naturally an entity?</p>
+    <p class="q ar">يبيع بائع خضار أنواعًا كثيرة من الفاكهة. ومزرعة حمضيات لا تزرع إلا الحمضيات، وتحتفظ ببيانات عن كل صنف. لأيّ العملين يكون <code>ORANGE</code> كيانًا بشكل أكثر طبيعية؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The greengrocer</span><span class="ar">بائع الخضار</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The citrus farm &mdash; if it lists many varieties of orange</span><span class="ar">مزرعة الحمضيات &mdash; إن كانت تسرد أصنافًا كثيرة من البرتقال</span></button></li>
+      <li><button class="opt"><span class="en">Neither &mdash; orange is always an instance of <code>FRUIT</code></span><span class="ar">لا أحد منهما &mdash; البرتقال دائمًا نسخة من <code>FRUIT</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">This is the DOG question again. The greengrocer lists fruits, so orange is one instance of <code>FRUIT</code>. A farm that lists many varieties of orange needs <code>ORANGE</code> as the set. "Always" is the wrong word: it depends on the business.</p>
+      <p class="ar">هذا سؤال DOG مرّة أخرى. بائع الخضار يسرد الفواكه، فالبرتقال نسخة واحدة من <code>FRUIT</code>. أمّا المزرعة التي تسرد أصنافًا كثيرة من البرتقال فتحتاج إلى <code>ORANGE</code> مجموعةً. وكلمة «دائمًا» هي الخطأ: الأمر يعتمد على العمل.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t2l4-h6"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Entity or instance?</span><span class="ar">تمرين 1 · كيان أم نسخة؟</span></h4>
+    <p class="en">Sort these eight into four pairs of <em>entity &mdash; instance</em>: <code>PUBLISHER</code> · Leo Tolstoy · <code>CONCERT</code> · Expert · <code>AUTHOR</code> · Al-Manara Books · <code>SKILL LEVEL</code> · Beyonc&eacute; at the Greek Theatre L.A.</p>
+    <p class="ar">رتّب هذه الثمانية في أربعة أزواج على صورة <em>كيان &mdash; نسخة</em>: <code>PUBLISHER</code> · Leo Tolstoy · <code>CONCERT</code> · Expert · <code>AUTHOR</code> · Al-Manara Books · <code>SKILL LEVEL</code> · Beyonc&eacute; at the Greek Theatre L.A.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en"><code>PUBLISHER</code> &mdash; Al-Manara Books. <code>AUTHOR</code> &mdash; Leo Tolstoy. <code>CONCERT</code> &mdash; Beyonc&eacute; at the Greek Theatre L.A. <code>SKILL LEVEL</code> &mdash; Expert. The entities are the names you can make a list under; the instances are single items on those lists.</p>
+      <p class="ar"><code>PUBLISHER</code> &mdash; Al-Manara Books. و<code>AUTHOR</code> &mdash; Leo Tolstoy. و<code>CONCERT</code> &mdash; Beyonc&eacute; at the Greek Theatre L.A. و<code>SKILL LEVEL</code> &mdash; Expert. الكيانات هي الأسماء التي يمكنك أن تكتب تحتها قائمة، والنُسخ عناصر مفردة في تلك القوائم.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Find the entities</span><span class="ar">تمرين 2 · جِد الكيانات</span></h4>
+    <p class="en">A school writes: "We keep a record of every student and every teacher. Each course is taught in a room, and each student gets a grade in each course. Our building has a blue front door." List the entities, give one possible instance of each, and say which noun you left out and why.</p>
+    <p class="ar">تكتب مدرسة: «نحتفظ بسجلّ لكل طالب ولكل معلّم. تُدرَّس كل مادة في غرفة، ويحصل كل طالب على علامة في كل مادة. ولمبنانا باب أمامي أزرق». اسرد الكيانات، وأعطِ نسخة ممكنة لكلٍّ منها، وقل أيّ اسم تركته ولماذا.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en"><code>STUDENT</code>, <code>TEACHER</code>, <code>COURSE</code>, <code>ROOM</code>, <code>GRADE</code> &mdash; the slides' own list for a school. Instances could be a student called Lina Khalil, a course called Database, room B12, grade A. "Door" and "building" are nouns, but the school keeps no data about them, and the school has one building &mdash; a one-instance set.</p>
+      <p class="ar"><code>STUDENT</code> و<code>TEACHER</code> و<code>COURSE</code> و<code>ROOM</code> و<code>GRADE</code> &mdash; وهي قائمة الشرائح نفسها للمدرسة. والنُسخ قد تكون طالبة اسمها Lina Khalil، ومادة اسمها Database، والغرفة B12، والعلامة A. أمّا «الباب» و«المبنى» فاسمان، لكنّ المدرسة لا تحتفظ ببيانات عنهما، وللمدرسة مبنى واحد &mdash; مجموعة بنسخة واحدة.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Three kinds</span><span class="ar">تمرين 3 · ثلاثة أنواع</span></h4>
+    <p class="en">Mark each entity tangible, intangible or event: <code>PRODUCT</code> · <code>PRODUCT TYPE</code> · <code>CONCERT</code> · <code>MEMBER</code> · <code>JOB</code> · <code>BOOK TRANSACTION</code> · <code>CAR</code> · <code>SKILL LEVEL</code>.</p>
+    <p class="ar">صنّف كل كيان: ملموس، أو غير ملموس، أو حدث: <code>PRODUCT</code> · <code>PRODUCT TYPE</code> · <code>CONCERT</code> · <code>MEMBER</code> · <code>JOB</code> · <code>BOOK TRANSACTION</code> · <code>CAR</code> · <code>SKILL LEVEL</code>.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Tangible: <code>PRODUCT</code>, <code>MEMBER</code>, <code>CAR</code> &mdash; you can touch a Nike Air Jordan, Sara Hamdan, a Toyota Corolla. Intangible: <code>PRODUCT TYPE</code>, <code>JOB</code>, <code>SKILL LEVEL</code> &mdash; "Shoe", "Electrician" and "Expert" are categories, not objects. Event: <code>CONCERT</code>, <code>BOOK TRANSACTION</code> &mdash; each instance happens at a time.</p>
+      <p class="ar">ملموس: <code>PRODUCT</code> و<code>MEMBER</code> و<code>CAR</code> &mdash; تستطيع أن تلمس Nike Air Jordan وSara Hamdan وToyota Corolla. غير ملموس: <code>PRODUCT TYPE</code> و<code>JOB</code> و<code>SKILL LEVEL</code> &mdash; فـ «Shoe» و«Electrician» و«Expert» فئات، لا أشياء. حدث: <code>CONCERT</code> و<code>BOOK TRANSACTION</code> &mdash; كل نسخة منهما تقع في وقت ما.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · An entity becomes a table</span><span class="ar">تمرين 4 · كيانٌ يصبح جدولًا</span></h4>
+    <p class="en">Create a table <code>authors</code> with columns <code>id</code> (the key) and <code>name</code>. Insert three instances: <code>AD0001</code> Oscar Wilde, <code>AD0002</code> Leo Tolstoy, <code>AD0003</code> Oliver Goldsmith. Then try to insert Jane Austen with id <code>AD0003</code>, and count the instances.</p>
+    <p class="ar">أنشئ جدولًا <code>authors</code> بعمودين: <code>id</code> (المفتاح) و<code>name</code>. أضف ثلاث نُسخ: <code>AD0001</code> Oscar Wilde، و<code>AD0002</code> Leo Tolstoy، و<code>AD0003</code> Oliver Goldsmith. ثم حاول إضافة Jane Austen بالمعرّف <code>AD0003</code>، وعُدّ النُسخ.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"explore","objects":true,"dataset":{},"sql":""}
+      </script>
+    </div>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE authors (
+  id   VARCHAR(6)  PRIMARY KEY,
+  name VARCHAR(30) NOT NULL
+);
+
+INSERT INTO authors VALUES ('AD0001', 'Oscar Wilde'), ('AD0002', 'Leo Tolstoy'), ('AD0003', 'Oliver Goldsmith');
+INSERT INTO authors VALUES ('AD0003', 'Jane Austen');</code></pre>
+      <div class="output">
+        <pre class="code" data-lang="text"><code>Cannot insert record, because it already exists in primary key index</code></pre>
+      </div>
+      <p class="en">Run <code>SELECT COUNT(*) AS instances FROM authors;</code> and it returns <code>3</code>. The entity is one table; each instance is one row, and two rows cannot claim to be the same instance. How an instance is told apart from the others is lesson 6.</p>
+      <p class="ar">شغّل <code>SELECT COUNT(*) AS instances FROM authors;</code> فيعيد <code>3</code>. الكيان جدول واحد، وكل نسخة صفّ واحد، ولا يستطيع صفّان أن يدّعيا أنهما النسخة نفسها. أمّا كيف تُميَّز النسخة من غيرها فموضوع الدرس 6.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · It depends</span><span class="ar">تمرين 5 · هذا يعتمد</span></h4>
+    <p class="en">On the slides, a convertible, a sedan and a station wagon are instances of <code>CAR</code>. Describe a business for which <code>SEDAN</code> would more naturally be the entity, and name three instances it might list. Then say what goes wrong if that business uses <code>CAR</code> instead.</p>
+    <p class="ar">في الشرائح، السيارة المكشوفة وسيارة السيدان وسيارة الستيشن نُسخ من <code>CAR</code>. صِف عملًا يكون فيه <code>SEDAN</code> هو الكيان بشكل أكثر طبيعية، وسمِّ ثلاث نُسخ قد يسردها. ثم قل ما الخطأ إن استعمل ذلك العمل <code>CAR</code> بدلًا منه.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">A dealer that sells only sedans and keeps data on many sedan models: <code>SEDAN</code>, with instances such as Toyota Corolla, Honda Civic, Hyundai Elantra. If it used <code>CAR</code> with the instances convertible, sedan, station wagon, <code>CAR</code> would have one instance only, "sedan" &mdash; the DOG mistake again &mdash; and the models it sells would have no set to belong to.</p>
+      <p class="ar">وكيل لا يبيع إلا سيارات السيدان، ويحتفظ ببيانات عن طُرز كثيرة منها: <code>SEDAN</code>، ونُسخه مثل Toyota Corolla وHonda Civic وHyundai Elantra. ولو استعمل <code>CAR</code> بالنُسخ المكشوفة والسيدان والستيشن، لكان لـ <code>CAR</code> نسخة واحدة فقط، «sedan» &mdash; وهذا خطأ DOG مرّة أخرى &mdash; ولما وجدت الطُرز التي يبيعها مجموعةً تنتمي إليها.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">An entity is something of significance to the business about which data must be known: a name for a set of similar things you can list. It is usually a noun.</li>
+      <li class="ar">الكيان شيءٌ ذو أهمية للعمل يجب أن تُعرف عنه بيانات: اسم لمجموعة من الأشياء المتشابهة يمكنك سردها. وهو في الغالب اسم.</li>
+      <li class="en">An instance is a single occurrence of an entity. The model draws the entity once; instances come and go as rows.</li>
+      <li class="ar">النسخة حدوثٌ واحد للكيان. يرسم النموذج الكيان مرّة واحدة، والنُسخ تأتي وتذهب صفوفًا.</li>
+      <li class="en">Some entities have many instances, some a few. An entity with only one instance makes no sense.</li>
+      <li class="ar">لبعض الكيانات نُسخ كثيرة، ولبعضها نُسخ قليلة. ولا معنى لكيان ليس له إلا نسخة واحدة.</li>
+      <li class="en">Entities are tangible (<code>PERSON</code>, <code>BOOK</code>), intangible (<code>SKILL LEVEL</code>) or events (<code>CONCERT</code>, <code>BOOK TRANSACTION</code>). All three become tables the same way.</li>
+      <li class="ar">الكيانات ملموسة (<code>PERSON</code> و<code>BOOK</code>)، أو غير ملموسة (<code>SKILL LEVEL</code>)، أو أحداث (<code>CONCERT</code> و<code>BOOK TRANSACTION</code>). والثلاثة تصبح جداول بالطريقة نفسها.</li>
+      <li class="en">Entity or instance depends on the business: Dog is an instance of <code>ANIMAL</code> for a shelter, and <code>DOG</code> is the entity for a breeder.</li>
+      <li class="ar">كونه كيانًا أو نسخة يعتمد على العمل: Dog نسخة من <code>ANIMAL</code> عند المأوى، و<code>DOG</code> هو الكيان عند المربّي.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Drawing instances as boxes (<code>SARA HAMDAN</code>) instead of the entity (<code>MEMBER</code>).</li>
+      <li class="ar">رسم النُسخ صناديق (<code>SARA HAMDAN</code>) بدلًا من الكيان (<code>MEMBER</code>).</li>
+      <li class="en">Turning every noun into an entity, even ones the business keeps no data about.</li>
+      <li class="ar">تحويل كل اسم إلى كيان، حتى الأسماء التي لا يحتفظ العمل ببيانات عنها.</li>
+      <li class="en">Making the business itself an entity (<code>LIBRARY</code>) when it can only ever have one instance.</li>
+      <li class="ar">جعل العمل نفسه كيانًا (<code>LIBRARY</code>) وهو لن تكون له أبدًا إلا نسخة واحدة.</li>
+      <li class="en">Rejecting an entity because you cannot touch it &mdash; skill levels and borrowings are entities too.</li>
+      <li class="ar">رفض كيان لأنك لا تستطيع لمسه &mdash; فمستويات المهارة والاستعارات كيانات أيضًا.</li>
+      <li class="en">Answering "is DOG an entity?" without asking which business the model is for.</li>
+      <li class="ar">الإجابة عن «هل DOG كيان؟» دون السؤال: لأيّ عمل هذا النموذج؟</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="#t2-test-04">Test 4 &mdash; Entities and Instances</a>. Then <a href="#t2-lesson-05">Lesson 5 &mdash; Attributes and Their Values</a> asks the question version 2 of the first evolve block left open: what do we record about each instance?</p>
+    <p class="ar">اختبر نفسك بـ<a href="#t2-test-04">الاختبار 4 &mdash; الكيانات والنُسخ</a>. ثم يطرح <a href="#t2-lesson-05">الدرس 5 &mdash; الخصائص وقيمها</a> السؤال الذي تركه الإصدار 2 من أوّل كتلة تطوّر مفتوحًا: ماذا نسجّل عن كل نسخة؟</p>
+  </div>
+
+</section>
