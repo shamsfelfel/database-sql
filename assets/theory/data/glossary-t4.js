@@ -68,6 +68,74 @@ window.DBTGlossary["t4"] = [
   ]
  },
  {
+  "id": "inheritance",
+  "term": {
+   "en": "Inheritance",
+   "ar": "الوراثة"
+  },
+  "def": {
+   "en": "The rule that a subtype has every attribute and every relationship of its supertype, with their marks, without their being drawn again.",
+   "ar": "القاعدة التي تجعل للنوع الفرعي كل خاصية وكل علاقة لنوعه الأعلى، بعلاماتها، دون أن تُرسم من جديد."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "inherited-attribute",
+   "inherited-relationship",
+   "supertype"
+  ],
+  "used": [
+   "t4l2-h3"
+  ]
+ },
+ {
+  "id": "inherited-attribute",
+  "term": {
+   "en": "Inherited attribute",
+   "ar": "الخاصية الموروثة"
+  },
+  "def": {
+   "en": "An attribute a subtype has because its supertype lists it, such as the Amount of every CHECK.",
+   "ar": "خاصيةٌ يملكها النوع الفرعي لأن نوعه الأعلى يذكرها، مثل Amount في كل CHECK."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "inheritance",
+   "specialized-attribute"
+  ],
+  "used": [
+   "t4l2-h3"
+  ]
+ },
+ {
+  "id": "inherited-relationship",
+  "term": {
+   "en": "Inherited relationship",
+   "ar": "العلاقة الموروثة"
+  },
+  "def": {
+   "en": "A relationship a subtype has because the line is drawn to its supertype, such as every FINAL being taken by students.",
+   "ar": "علاقةٌ يملكها النوع الفرعي لأن خطّها مرسوم إلى نوعه الأعلى، مثل أن كل FINAL يأخذه الطلاب."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "inheritance",
+   "supertype-relationship",
+   "subtype-relationship"
+  ],
+  "used": [
+   "t4l2-h5"
+  ]
+ },
+ {
   "id": "not-applicable",
   "term": {
    "en": "Not applicable (value)",
@@ -157,6 +225,50 @@ window.DBTGlossary["t4"] = [
   ]
  },
  {
+  "id": "specialization",
+  "term": {
+   "en": "Specialization",
+   "ar": "التخصيص"
+  },
+  "def": {
+   "en": "A narrower kind of an entity: everything the entity is, plus something of its own; every subtype is a specialization of its supertype.",
+   "ar": "نوعٌ أضيق من كيانٍ ما: هو كل ما يكونه الكيان، ومعه شيء خاصّ به؛ وكل نوع فرعي تخصيصٌ لنوعه الأعلى."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "subtype",
+   "specialized-attribute"
+  ],
+  "used": [
+   "t4l2-s2"
+  ]
+ },
+ {
+  "id": "specialized-attribute",
+  "term": {
+   "en": "Specialized attribute",
+   "ar": "الخاصية المتخصّصة"
+  },
+  "def": {
+   "en": "An attribute listed inside one subtype because only that kind of instance has it, such as Card Number in CREDIT CARD.",
+   "ar": "خاصيةٌ تُذكر داخل نوع فرعي واحد لأن ذلك النوع من النُّسَخ وحده يملكها، مثل Card Number في CREDIT CARD."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "subtype",
+   "inherited-attribute"
+  ],
+  "used": [
+   "t4l2-h2"
+  ]
+ },
+ {
   "id": "subdivide",
   "term": {
    "en": "Subdivide (an entity)",
@@ -177,6 +289,96 @@ window.DBTGlossary["t4"] = [
   ],
   "used": [
    "t4l1-h4"
+  ]
+ },
+ {
+  "id": "subtype",
+  "term": {
+   "en": "Subtype",
+   "ar": "النوع الفرعي"
+  },
+  "def": {
+   "en": "An entity based on a supertype but different from it because of its specialized attributes and purpose, drawn enclosed inside the supertype, such as CREDIT CARD.",
+   "ar": "كيانٌ مبنيّ على نوع أعلى لكنه يختلف عنه بخصائصه المتخصّصة وغرضه، ويُرسم محاطًا داخل النوع الأعلى، مثل CREDIT CARD."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "supertype",
+   "specialization",
+   "specialized-attribute"
+  ],
+  "used": [
+   "t4l2-h2"
+  ]
+ },
+ {
+  "id": "subtype-relationship",
+  "term": {
+   "en": "Subtype relationship",
+   "ar": "علاقة النوع الفرعي"
+  },
+  "def": {
+   "en": "A relationship drawn to one subtype's box, so it holds only for that kind of instance, such as QUIZ including BONUS QUESTIONs.",
+   "ar": "علاقةٌ مرسومة إلى صندوق نوع فرعي واحد، فلا تصدق إلا على ذلك النوع من النُّسَخ، مثل تضمّن QUIZ لأسئلة BONUS QUESTION."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "supertype-relationship",
+   "subtype"
+  ],
+  "used": [
+   "t4l2-s4"
+  ]
+ },
+ {
+  "id": "supertype",
+  "term": {
+   "en": "Supertype",
+   "ar": "النوع الأعلى"
+  },
+  "def": {
+   "en": "An entity constructed with the attributes that are common to all of the subtypes related to it, such as PAYMENT.",
+   "ar": "كيانٌ يُبنى من الخصائص المشتركة بين كل الأنواع الفرعية المرتبطة به، مثل PAYMENT."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "subtype",
+   "inheritance",
+   "supertype-relationship"
+  ],
+  "used": [
+   "t4l2-h1"
+  ]
+ },
+ {
+  "id": "supertype-relationship",
+  "term": {
+   "en": "Supertype relationship",
+   "ar": "علاقة النوع الأعلى"
+  },
+  "def": {
+   "en": "A relationship drawn to the supertype's outer box, and so inherited by every one of its subtypes; right only when it is true of every kind.",
+   "ar": "علاقةٌ مرسومة إلى الصندوق الخارجي للنوع الأعلى، فيرثها كل نوع من أنواعه الفرعية؛ ولا تصحّ إلا حين تصدق على كل الأنواع."
+  },
+  "cat": {
+   "en": "Supertypes and subtypes",
+   "ar": "الأنواع العليا والفرعية"
+  },
+  "see": [
+   "subtype-relationship",
+   "inherited-relationship"
+  ],
+  "used": [
+   "t4l2-s5"
   ]
  },
  {

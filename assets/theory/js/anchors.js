@@ -267,6 +267,20 @@ window.DBTAnchors = {
 "t4l1-s3": "lessons/t4-lesson-01.html",
 "t4l1-s4": "lessons/t4-lesson-01.html",
 "t4l1-s5": "lessons/t4-lesson-01.html",
+"t4l2-e1": "lessons/t4-lesson-02.html",
+"t4l2-e2": "lessons/t4-lesson-02.html",
+"t4l2-h1": "lessons/t4-lesson-02.html",
+"t4l2-h2": "lessons/t4-lesson-02.html",
+"t4l2-h3": "lessons/t4-lesson-02.html",
+"t4l2-h4": "lessons/t4-lesson-02.html",
+"t4l2-h5": "lessons/t4-lesson-02.html",
+"t4l2-h6": "lessons/t4-lesson-02.html",
+"t4l2-h7": "lessons/t4-lesson-02.html",
+"t4l2-s1": "lessons/t4-lesson-02.html",
+"t4l2-s2": "lessons/t4-lesson-02.html",
+"t4l2-s3": "lessons/t4-lesson-02.html",
+"t4l2-s4": "lessons/t4-lesson-02.html",
+"t4l2-s5": "lessons/t4-lesson-02.html",
 "t5-chapter": "chapters/t5.html",
 "t5-exam-a": "exams/t5-exam-a.html",
 "t5-exam-b": "exams/t5-exam-b.html",
@@ -1001,6 +1015,54 @@ window.DBTHeadings = {
 "t4l1-s5": {
 "ar": "الخيار سؤال لا جواب",
 "en": "A choice is a question, not an answer"
+},
+"t4l2-h1": {
+"ar": "١ · النوع الأعلى: ما تملكه كل دفعة",
+"en": "1 · The supertype: what every payment has"
+},
+"t4l2-h2": {
+"ar": "٢ · النوع الفرعي: ما يضيفه كل نوع",
+"en": "2 · The subtype: what each kind adds"
+},
+"t4l2-h3": {
+"ar": "٣ · الوراثة: للنوع الفرعي كل ما لنوعه الأعلى",
+"en": "3 · Inheritance: a subtype has everything its supertype has"
+},
+"t4l2-h4": {
+"ar": "٤ · EXAM المحاضِرة، مرسومًا ثلاث مرّات",
+"en": "4 · The lecturer's EXAM, drawn three times"
+},
+"t4l2-h5": {
+"ar": "٥ · العلاقات تُورث أيضًا",
+"en": "5 · Relationships are inherited too"
+},
+"t4l2-h6": {
+"ar": "٦ · قراءة التسلسل الهرمي في الاتجاهين",
+"en": "6 · Reading the hierarchy both ways"
+},
+"t4l2-h7": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t4l2-s1": {
+"ar": "تُذكر مرّة، وتصدق على الجميع",
+"en": "Listed once, true of all"
+},
+"t4l2-s2": {
+"ar": "كيف يُرسم النوع الفرعي",
+"en": "How a subtype is drawn"
+},
+"t4l2-s3": {
+"ar": "قراءة النوع الفرعي كاملًا",
+"en": "Reading a subtype in full"
+},
+"t4l2-s4": {
+"ar": "العلاقات الخاصّة تبقى في الداخل",
+"en": "Own relationships stay inside"
+},
+"t4l2-s5": {
+"ar": "أين مكان العلاقة",
+"en": "Where a relationship belongs"
 },
 "t5idx-h1": {
 "ar": "الدروس",

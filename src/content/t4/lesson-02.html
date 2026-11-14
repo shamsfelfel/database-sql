@@ -1,0 +1,609 @@
+<section class="page" id="t4-lesson-02">
+
+  <span class="kicker">Lesson 2</span>
+  <h1><span class="en">Supertype and Subtype</span><span class="ar">النوع الأعلى والنوع الفرعي</span></h1>
+  <p class="lede en">By the end of this lesson you will be able to name the supertype and the subtypes in a drawing, say which attributes and relationships belong in the outer box and which belong inside, list everything a subtype has by inheritance, and spot a relationship drawn on the wrong box.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تسمّي النوع الأعلى والأنواع الفرعية في الرسم، وأن تقول أيّ الخصائص والعلاقات مكانها الصندوق الخارجي وأيّها مكانه الداخل، وأن تعدّد كل ما يملكه النوع الفرعي بالوراثة، وأن تلمح علاقةً رُسمت على الصندوق الخطأ.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> The same shop and the same six payments as <a href="#t4-lesson-01">Lesson 1</a>, which ended with <code>CASH</code>, <code>CHECK</code> and <code>CREDIT CARD</code> drawn inside <code>PAYMENT</code>. This lesson names those boxes and reads them properly. Midway, the lecturer's <code>EXAM</code> example shows the same idea in a second setting.</p>
+    <p class="ar"><strong>السياق.</strong> المتجر نفسه والدفعات الست نفسها في <a href="#t4-lesson-01">الدرس 1</a>، الذي انتهى بـ <code>CASH</code> و<code>CHECK</code> و<code>CREDIT CARD</code> مرسومةً داخل <code>PAYMENT</code>. يسمّي هذا الدرس تلك الصناديق ويقرؤها قراءةً صحيحة. وفي منتصفه يعرض مثالُ المحاضِرة <code>EXAM</code> الفكرةَ نفسها في سياق ثانٍ.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Define a supertype and a subtype, and point to each in a drawing.</li>
+      <li class="ar">تعريف النوع الأعلى والنوع الفرعي، والإشارة إلى كلٍّ منهما في الرسم.</li>
+      <li class="en">Decide whether an attribute belongs in the supertype or in one subtype.</li>
+      <li class="ar">الحكم على خاصيةٍ: هل مكانها النوع الأعلى أم نوع فرعي واحد.</li>
+      <li class="en">List every attribute and relationship a subtype has, including the inherited ones.</li>
+      <li class="ar">تعداد كل خاصية وعلاقة يملكها النوع الفرعي، بما فيها الموروثة.</li>
+      <li class="en">Place a relationship on the supertype or on a subtype, and say what each choice means for every kind.</li>
+      <li class="ar">وضع العلاقة على النوع الأعلى أو على نوع فرعي، وبيان ما يعنيه كل خيار لكل الأنواع.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t4l2-h1"><span class="en">1 · The supertype: what every payment has</span><span class="ar">١ · النوع الأعلى: ما تملكه كل دفعة</span></h2>
+
+  <div class="problem">
+    <p class="en">The manager asks for the total taken on 3 March, of every kind. A new clerk looks at the drawing from Lesson 1, sees three inner boxes and starts adding them up one by one. But <code>* Amount</code> is not in any of the inner boxes. Where does the answer come from?</p>
+    <p class="ar">يطلب المدير مجموع ما قُبض في 3 آذار، من كل الأنواع. ينظر موظّف جديد إلى رسم الدرس 1، فيرى ثلاثة صناديق داخلية ويبدأ بجمعها واحدًا واحدًا. لكن <code>* Amount</code> ليست في أيٍّ من الصناديق الداخلية. فمن أين يأتي الجواب؟</p>
+  </div>
+
+  <p class="en">From the outer box. <code>PAYMENT</code> holds what every payment has: an ID, a date and an amount. A question about all payments is a question about <code>PAYMENT</code>, whatever kind each one turns out to be.</p>
+  <p class="ar">من الصندوق الخارجي. يحمل <code>PAYMENT</code> ما تملكه كل دفعة: رقمًا وتاريخًا ومبلغًا. والسؤال عن كل المدفوعات سؤالٌ عن <code>PAYMENT</code>، أيًّا كان نوع كل دفعة منها.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="supertype">supertype</span> is an entity constructed with the attributes that are common to all of the subtypes related to it.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="supertype">النوع الأعلى</span> (Supertype) كيانٌ يُبنى من الخصائص المشتركة بين كل الأنواع الفرعية المرتبطة به.</p>
+  </div>
+
+  <h3 id="t4l2-s1"><span class="en">Listed once, true of all</span><span class="ar">تُذكر مرّة، وتصدق على الجميع</span></h3>
+
+  <p class="en">The slides are strict about where the common part goes: it is listed <em>only</em> in the supertype. Nobody copies <code>* Payment Date</code> into <code>CHECK</code> to be safe. Drawn once in the outer box, it already holds for every payment inside it.</p>
+  <p class="ar">الشرائح صارمة في مكان الجزء المشترك: يُذكر في النوع الأعلى <em>وحده</em>. لا أحد ينسخ <code>* Payment Date</code> إلى <code>CHECK</code> احتياطًا. فما يُرسم مرّة واحدة في الصندوق الخارجي يصدق أصلًا على كل دفعة داخله.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">One way to build this model is a <code>payments</code> table for the supertype, holding only the common columns, plus one table per subtype. The manager's question then reads one table and never asks what kind each payment is:</p>
+    <p class="ar">من طرق بناء هذا النموذج جدولُ <code>payments</code> للنوع الأعلى لا يحمل إلا الأعمدة المشتركة، مع جدول لكل نوع فرعي. عندها يقرأ سؤالُ المدير جدولًا واحدًا، ولا يسأل أبدًا عن نوع كل دفعة:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)", "INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')", "CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)", "INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90)", "CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))", "INSERT INTO cash_payments VALUES (1), (4)", "CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), customer_id NUMBER NOT NULL REFERENCES customers(customer_id))", "INSERT INTO check_payments VALUES (2,1), (6,2)", "CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))", "INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111',2), (5,'5500 0000 0000 0004',1)"], "sql": "SELECT COUNT(*) AS payments, SUM(amount) AS taken\nFROM payments\nWHERE payment_date = '2026-03-03';"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>payments</code></th><th><code>taken</code></th></tr></thead>
+          <tbody><tr><td>2</td><td>325</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Payment 4 in cash (15) and payment 3 by card (310). Compare Lesson 1's three separate tables, where the same question needed one <code>SELECT</code> per kind.</p>
+    <p class="ar">الدفعة 4 نقدًا (15) والدفعة 3 بالبطاقة (310). وقارن ذلك بالجداول الثلاثة المنفصلة في الدرس 1، حيث احتاج السؤال نفسه إلى <code>SELECT</code> لكل نوع.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapter 7</span><span class="ar">خيط · الفصل 7 في SQL</span></h4>
+    <p class="en"><a href="@/chapters/chapter-7.html">Chapter 7 &mdash; Normalization</a> removes repeated data by moving it into one table that others refer to. A supertype does the same thing one step earlier: the date and amount are given a single home in the model, so no table ever has to be repaired later.</p>
+    <p class="ar">يزيل <a href="@/chapters/chapter-7.html">الفصل 7 &mdash; التطبيع</a> البيانات المكرّرة بنقلها إلى جدول واحد تشير إليه الجداول الأخرى. والنوع الأعلى يفعل الشيء نفسه قبل ذلك بخطوة: يُعطى التاريخ والمبلغ بيتًا واحدًا في النموذج، فلا يحتاج أيّ جدول إلى إصلاح لاحقًا.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which of these belongs in the supertype <code>PAYMENT</code>?</p>
+    <p class="q ar">أيّ هذه مكانه النوع الأعلى <code>PAYMENT</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>* Card Number</code></span><span class="ar"><code>* Card Number</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>* Amount</code></span><span class="ar"><code>* Amount</code></span></button></li>
+      <li><button class="opt"><span class="en">The relationship to <code>CUSTOMER</code></span><span class="ar">العلاقة مع <code>CUSTOMER</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Every payment has an amount, so it is common and goes in the supertype. The card number belongs to card payments only, and cash payments have no customer: both stay out of the outer box.</p>
+      <p class="ar">لكل دفعة مبلغ، فهو مشترك ومكانه النوع الأعلى. أمّا رقم البطاقة فلا يخصّ إلا دفعات البطاقة، والدفعات النقدية لا زبون لها: فكلاهما يبقى خارج الصندوق الخارجي.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The shop starts recording a <code>* Receipt Number</code> printed on every payment. Where is it drawn?</p>
+    <p class="q ar">يبدأ المتجر بتسجيل <code>* Receipt Number</code> يُطبع على كل دفعة. أين تُرسم؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">In <code>CASH</code>, <code>CHECK</code> and <code>CREDIT CARD</code>, once each</span><span class="ar">في <code>CASH</code> و<code>CHECK</code> و<code>CREDIT CARD</code>، مرّة في كلٍّ منها</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Once, in <code>PAYMENT</code></span><span class="ar">مرّة واحدة، في <code>PAYMENT</code></span></button></li>
+      <li><button class="opt"><span class="en">In a new subtype called <code>RECEIPT</code></span><span class="ar">في نوع فرعي جديد اسمه <code>RECEIPT</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"Every payment" is the signal: common attributes are listed only in the supertype. Drawing it three times is exactly the repeated structure Lesson 1 warned about.</p>
+      <p class="ar">«كل دفعة» هي الإشارة: فالخصائص المشتركة لا تُذكر إلا في النوع الأعلى. ورسمها ثلاث مرّات هو بعينه البنية المكرّرة التي حذّر منها الدرس 1.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t4l2-h2"><span class="en">2 · The subtype: what each kind adds</span><span class="ar">٢ · النوع الفرعي: ما يضيفه كل نوع</span></h2>
+
+  <div class="problem">
+    <p class="en">The bank calls about payment 3 and wants its card number. The clerk looks in <code>PAYMENT</code> and does not find it. A colleague says: "Move it up there &mdash; then it is easy to find." What would that do to the cash payments?</p>
+    <p class="ar">يتّصل البنك بشأن الدفعة 3 ويطلب رقم بطاقتها. يبحث الموظّف في <code>PAYMENT</code> فلا يجده. يقول زميل: «انقله إلى الأعلى &mdash; فيسهل العثور عليه.» فماذا سيفعل ذلك بالدفعات النقدية؟</p>
+  </div>
+
+  <p class="en">It would give every payment a card number, which is Lesson 1's single entity again. <code>* Card Number</code> stays inside <code>CREDIT CARD</code> because it is what makes a credit card payment different. That inner box is a subtype.</p>
+  <p class="ar">سيعطي كل دفعة رقم بطاقة، وهذا هو الكيان الواحد في الدرس 1 من جديد. تبقى <code>* Card Number</code> داخل <code>CREDIT CARD</code> لأنها ما يجعل دفعة البطاقة مختلفة. وذلك الصندوق الداخلي نوعٌ فرعي.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="subtype">subtype</span> is an entity based on a supertype, but different from it because of its specialized attributes and purpose.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="subtype">النوع الفرعي</span> (Subtype) كيانٌ مبنيّ على نوع أعلى، لكنه يختلف عنه بخصائصه المتخصّصة وغرضه.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="specialized-attribute">specialized attribute</span> is an attribute listed inside one subtype because only that kind of instance has it.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="specialized-attribute">الخاصية المتخصّصة</span> (Specialized attribute) خاصيةٌ تُذكر داخل نوع فرعي واحد لأن ذلك النوع من النُّسَخ وحده يملكها.</p>
+  </div>
+
+  <h3 id="t4l2-s2"><span class="en">How a subtype is drawn</span><span class="ar">كيف يُرسم النوع الفرعي</span></h3>
+
+  <p class="en">The slides say each subtype is a <span class="term" data-term="specialization">specialization</span> of its supertype, and <em>therefore must be enclosed within</em> it. So the subtype is a softbox inside the supertype's softbox, its name in capitals at the top, its own attributes below the name.</p>
+  <p class="ar">تقول الشرائح إن كل نوع فرعي <span class="term" data-term="specialization">تخصيصٌ</span> (Specialization) لنوعه الأعلى، <em>ولذلك يجب أن يُحاط داخله</em>. فالنوع الفرعي صندوقٌ مستدير الزوايا داخل صندوق النوع الأعلى، اسمه بحروف كبيرة في أعلاه، وخصائصه الخاصّة تحت الاسم.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="specialization">specialization</span> is a narrower kind of an entity: everything the entity is, plus something of its own.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="specialization">التخصيص</span> (Specialization) نوعٌ أضيق من كيانٍ ما: هو كل ما يكونه الكيان، ومعه شيء خاصّ به.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t4-pay-anatomy"><figcaption><span class="en">The four parts of the drawing. Notice that <code>CASH</code> is still a subtype although it lists nothing of its own: the slides say a subtype <em>generally</em> has attributes or relationships of its own, not always.</span><span class="ar">الأجزاء الأربعة للرسم. لاحظ أن <code>CASH</code> ما زال نوعًا فرعيًّا مع أنه لا يذكر شيئًا خاصًّا به: فالشرائح تقول إن للنوع الفرعي <em>في الغالب</em> خصائص أو علاقات خاصّة به، لا دائمًا.</span></figcaption></figure>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">In the supertype-plus-subtype build, <code>card_payments</code> holds only what is special to cards: <code>card_number</code>, declared <code>NOT NULL</code> because the attribute is <code>*</code>, and the customer. Its <code>payment_id</code> is both its primary key and a foreign key to <code>payments</code>:</p>
+    <p class="ar">في بناء «النوع الأعلى مع الأنواع الفرعية» لا يحمل <code>card_payments</code> إلا ما يخصّ البطاقات: <code>card_number</code>، المعرَّف <code>NOT NULL</code> لأن الخاصية <code>*</code>، والزبون. و<code>payment_id</code> فيه مفتاحه الأساسي ومفتاح أجنبي إلى <code>payments</code> في آنٍ واحد:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)", "INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')", "CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)", "INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90)", "CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))", "INSERT INTO cash_payments VALUES (1), (4)", "CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), customer_id NUMBER NOT NULL REFERENCES customers(customer_id))", "INSERT INTO check_payments VALUES (2,1), (6,2)", "CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))", "INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111',2), (5,'5500 0000 0000 0004',1)"], "sql": "SELECT * FROM card_payments ORDER BY payment_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>payment_id</code></th><th><code>card_number</code></th><th><code>customer_id</code></th></tr></thead>
+          <tbody>
+            <tr><td>3</td><td>4111 1111 1111 1111</td><td>2</td></tr>
+            <tr><td>5</td><td>5500 0000 0000 0004</td><td>1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">No date, no amount: those are not special to cards. And no empty <code>card_number</code> anywhere, because cash rows never enter this table.</p>
+    <p class="ar">لا تاريخ ولا مبلغ: فهذان لا يخصّان البطاقات. ولا <code>card_number</code> فارغ في أيّ مكان، لأن الصفوف النقدية لا تدخل هذا الجدول أبدًا.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the drawing, how do you know <code>CHECK</code> is a subtype of <code>PAYMENT</code>?</p>
+    <p class="q ar">في الرسم، كيف تعرف أن <code>CHECK</code> نوعٌ فرعي من <code>PAYMENT</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A relationship line joins them</span><span class="ar">يصل بينهما خطّ علاقة</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Its softbox is drawn inside <code>PAYMENT</code>'s softbox</span><span class="ar">صندوقه مرسوم داخل صندوق <code>PAYMENT</code></span></button></li>
+      <li><button class="opt"><span class="en">Its name is written in smaller letters</span><span class="ar">اسمه مكتوب بحروف أصغر</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A subtype is enclosed within its supertype. There is no line between them: a line is a relationship between two different entities, and a cheque is not related to a payment &mdash; it <em>is</em> one.</p>
+      <p class="ar">النوع الفرعي محاطٌ داخل نوعه الأعلى. ولا خطّ بينهما: فالخطّ علاقة بين كيانين مختلفين، والشيك لا يرتبط بدفعة &mdash; بل <em>هو</em> دفعة.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Wallet payments arrive (Lesson 1). Which attribute is a specialized attribute of <code>WALLET</code>?</p>
+    <p class="q ar">تصل دفعات المحفظة (الدرس 1). أيّ خاصية هي خاصية متخصّصة لـ <code>WALLET</code>؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en"><code>* Wallet ID</code></span><span class="ar"><code>* Wallet ID</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>* Payment Date</code></span><span class="ar"><code>* Payment Date</code></span></button></li>
+      <li><button class="opt"><span class="en"><code># Payment ID</code></span><span class="ar"><code># Payment ID</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Only wallet payments have a wallet ID, so it is listed inside <code>WALLET</code>. The date and the ID belong to every payment and are already in <code>PAYMENT</code>.</p>
+      <p class="ar">لا يملك رقمَ المحفظة إلا دفعاتُ المحفظة، فيُذكر داخل <code>WALLET</code>. أمّا التاريخ والرقم فيخصّان كل دفعة، وهما موجودان أصلًا في <code>PAYMENT</code>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t4l2-h3"><span class="en">3 · Inheritance: a subtype has everything its supertype has</span><span class="ar">٣ · الوراثة: للنوع الفرعي كل ما لنوعه الأعلى</span></h2>
+
+  <div class="problem">
+    <p class="en">A student reading the drawing says: "<code>CREDIT CARD</code> has one attribute, the card number. So a card payment has no amount." The bank, which has just been charged 310 for payment 3, would disagree. What did the student miss?</p>
+    <p class="ar">يقول طالب يقرأ الرسم: «لـ <code>CREDIT CARD</code> خاصية واحدة هي رقم البطاقة. إذن لا مبلغ لدفعة البطاقة.» والبنك، الذي خُصم منه للتوّ 310 للدفعة 3، لا يوافقه. فما الذي فات الطالب؟</p>
+  </div>
+
+  <p class="en">The common attributes are listed only in the supertype, <em>but they are inherited in every subtype</em>. A credit card payment is a payment, so it has a payment ID, a date and an amount, exactly as if they were drawn inside its box &mdash; plus its card number.</p>
+  <p class="ar">تُذكر الخصائص المشتركة في النوع الأعلى وحده، <em>لكن كل نوع فرعي يرثها</em>. فدفعة البطاقة دفعةٌ، ولها إذن رقم دفعة وتاريخ ومبلغ، كأنها مرسومة داخل صندوقها تمامًا &mdash; ومعها رقم بطاقتها.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="inheritance">Inheritance</span> means a subtype has every attribute and every relationship of its supertype without their being drawn again.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="inheritance">الوراثة</span> (Inheritance) تعني أن للنوع الفرعي كلَّ خاصية وكلَّ علاقة لنوعه الأعلى دون أن تُرسم من جديد.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="inherited-attribute">inherited attribute</span> is an attribute a subtype has because its supertype lists it.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="inherited-attribute">الخاصية الموروثة</span> (Inherited attribute) خاصيةٌ يملكها النوع الفرعي لأن نوعه الأعلى يذكرها.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t4-pay-inherit"><figcaption><span class="en">Read a subtype in full: first everything from the supertype, then what is its own. Payment 3 has five values, and only two of them come from the <code>CREDIT CARD</code> box.</span><span class="ar">اقرأ النوع الفرعي كاملًا: أولًا كل ما يأتي من النوع الأعلى، ثم ما هو خاصّ به. للدفعة 3 خمس قيم، لا يأتي من صندوق <code>CREDIT CARD</code> منها إلا اثنتان.</span></figcaption></figure>
+
+  <h3 id="t4l2-s3"><span class="en">Reading a subtype in full</span><span class="ar">قراءة النوع الفرعي كاملًا</span></h3>
+
+  <p class="en">To list what a subtype has, walk outwards: its own box, then every box around it. The <code>*</code> and <code>o</code> marks come along unchanged. <code>* Amount</code> is mandatory in <code>PAYMENT</code>, so it is mandatory for every <code>CREDIT CARD</code>, <code>CHECK</code> and <code>CASH</code>.</p>
+  <p class="ar">لتعدّد ما يملكه النوع الفرعي، امشِ إلى الخارج: صندوقه أولًا، ثم كل صندوق يحيط به. وتنتقل العلامتان <code>*</code> و<code>o</code> كما هما. فـ <code>* Amount</code> إلزامية في <code>PAYMENT</code>، فهي إلزامية إذن لكل <code>CREDIT CARD</code> و<code>CHECK</code> و<code>CASH</code>.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Inheritance in tables is a join on the shared key. Each row of <code>card_payments</code> is completed by the <code>payments</code> row with the same <code>payment_id</code>, which gives it its date and amount back:</p>
+    <p class="ar">الوراثة في الجداول ربطٌ (Join) على المفتاح المشترك. فكل صف في <code>card_payments</code> يكتمل بصفّ <code>payments</code> الذي له <code>payment_id</code> نفسه، فيستعيد تاريخه ومبلغه:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)", "INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')", "CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)", "INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90)", "CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))", "INSERT INTO cash_payments VALUES (1), (4)", "CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), customer_id NUMBER NOT NULL REFERENCES customers(customer_id))", "INSERT INTO check_payments VALUES (2,1), (6,2)", "CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))", "INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111',2), (5,'5500 0000 0000 0004',1)"], "sql": "SELECT p.payment_id, p.payment_date, p.amount, c.card_number\nFROM payments p\nJOIN card_payments c ON c.payment_id = p.payment_id\nORDER BY p.payment_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>payment_id</code></th><th><code>payment_date</code></th><th><code>amount</code></th><th><code>card_number</code></th></tr></thead>
+          <tbody>
+            <tr><td>3</td><td>2026-03-03</td><td>310</td><td>4111 1111 1111 1111</td></tr>
+            <tr><td>5</td><td>2026-03-04</td><td>220</td><td>5500 0000 0000 0004</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Three columns inherited from the supertype's table, one from the subtype's own. That is the diagram above, as rows.</p>
+    <p class="ar">ثلاثة أعمدة موروثة من جدول النوع الأعلى، وعمود واحد من جدول النوع الفرعي نفسه. وهذا هو المخطّط أعلاه، صفوفًا.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which attributes does a <code>CHECK</code> have?</p>
+    <p class="q ar">ما الخصائص التي يملكها <code>CHECK</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">None &mdash; its box is empty</span><span class="ar">لا شيء &mdash; صندوقه فارغ</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code># Payment ID</code>, <code>* Payment Date</code> and <code>* Amount</code>, all inherited</span><span class="ar"><code># Payment ID</code> و<code>* Payment Date</code> و<code>* Amount</code>، كلها موروثة</span></button></li>
+      <li><button class="opt"><span class="en">The three common attributes and <code>* Card Number</code></span><span class="ar">الخصائص المشتركة الثلاث و<code>* Card Number</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">An empty-looking subtype box still inherits everything in its supertype. It does not inherit from its <em>sibling</em> <code>CREDIT CARD</code>: inheritance runs from the outer box inwards, never sideways.</p>
+      <p class="ar">صندوق النوع الفرعي الذي يبدو فارغًا يرث مع ذلك كل ما في نوعه الأعلى. لكنه لا يرث من <em>شقيقه</em> <code>CREDIT CARD</code>: فالوراثة تسري من الصندوق الخارجي إلى الداخل، لا جانبيًّا أبدًا.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Suppose <code>PAYMENT</code> listed <code>o Note</code>, an optional remark. For a <code>CREDIT CARD</code>, the note is &hellip;</p>
+    <p class="q ar">لنفترض أن <code>PAYMENT</code> يذكر <code>o Note</code>، وهي ملاحظة اختيارية. بالنسبة لـ <code>CREDIT CARD</code>، الملاحظة &hellip;</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">mandatory, because card payments are stricter</span><span class="ar">إلزامية، لأن دفعات البطاقة أكثر صرامة</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">optional, exactly as in the supertype</span><span class="ar">اختيارية، تمامًا كما في النوع الأعلى</span></button></li>
+      <li><button class="opt"><span class="en">not available, because it is not drawn inside <code>CREDIT CARD</code></span><span class="ar">غير متاحة، لأنها غير مرسومة داخل <code>CREDIT CARD</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">An inherited attribute keeps its mark. The subtype gets the attribute and its rule together; nothing about it changes on the way in.</p>
+      <p class="ar">الخاصية الموروثة تحتفظ بعلامتها. فالنوع الفرعي يأخذ الخاصية وقاعدتها معًا، ولا يتغيّر فيها شيء في طريقها إلى الداخل.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t4l2-h4"><span class="en">4 · The lecturer's EXAM, drawn three times</span><span class="ar">٤ · <code>EXAM</code> المحاضِرة، مرسومًا ثلاث مرّات</span></h2>
+
+  <div class="problem">
+    <p class="en">A course has quizzes, a midterm and a final. Every exam has a number, a description, a weight, a date and a grade for the written component. A midterm also has a grade for an oral presentation; a final has extra points for an optional paper. Students take exams, and a quiz may include bonus questions. Draw it.</p>
+    <p class="ar">في مقرّر اختبارات قصيرة وامتحان نصفي وامتحان نهائي. لكل امتحان رقم ووصف ووزن وتاريخ ودرجة للجزء الكتابي. وللنصفي أيضًا درجة لعرض شفهي، وللنهائي نقاط إضافية لورقة بحثية اختيارية. والطلاب يأخذون الامتحانات، وقد يتضمّن الاختبار القصير أسئلة إضافية. ارسم ذلك.</p>
+  </div>
+
+  <p class="en">This is the slides' second example: <em>EXAM is a supertype of QUIZ, MIDTERM and FINAL. The subtypes have several attributes in common; these are listed at the supertype level.</em> Watch a first draft get there in two repairs.</p>
+  <p class="ar">هذا هو المثال الثاني في الشرائح: <em>EXAM نوعٌ أعلى لـ QUIZ وMIDTERM وFINAL. تشترك الأنواع الفرعية في عدّة خصائص، وهذه تُذكر على مستوى النوع الأعلى.</em> تابع مسوّدة أولى تصل إلى ذلك بإصلاحين.</p>
+
+  <div class="evolve" id="t4l2-e1">
+    <div class="ver" data-title-en="Version 1 — everything inside every subtype" data-title-ar="الإصدار 1 — كل شيء داخل كل نوع فرعي">
+      <figure class="diagram" data-diagram="t4-exam-v1"></figure>
+      <p class="en">Defect: repeated structure inside the hierarchy. The five common attributes are listed three times and <code>EXAM</code> itself lists nothing. <code>take</code> is drawn three times, once to each subtype. The boxes are nested, but nothing is inherited, because nothing was put in the supertype.</p>
+      <p class="ar">العيب: بنية مكرّرة داخل التسلسل الهرمي. الخصائص المشتركة الخمس مذكورة ثلاث مرّات، و<code>EXAM</code> نفسه لا يذكر شيئًا. و<code>take</code> مرسومة ثلاث مرّات، مرّة إلى كل نوع فرعي. الصناديق متداخلة، لكن لا شيء يُورث، لأن لا شيء وُضع في النوع الأعلى.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — common attributes lifted into EXAM" data-title-ar="الإصدار 2 — الخصائص المشتركة مرفوعة إلى EXAM">
+      <figure class="diagram" data-diagram="t4-exam-v2"></figure>
+      <p class="en">Fixed: the five attributes are listed once, in <code>EXAM</code>, and inherited by all three. Each subtype now shows only what is its own. Still open: every kind of exam is taken by students, yet <code>take</code> is still drawn three times.</p>
+      <p class="ar">أُصلح: الخصائص الخمس مذكورة مرّة واحدة، في <code>EXAM</code>، وترثها الأنواع الثلاثة. وصار كل نوع فرعي لا يُظهر إلا ما يخصّه. وما زال مفتوحًا: كل أنواع الامتحان يأخذها الطلاب، ومع ذلك ما زالت <code>take</code> مرسومة ثلاث مرّات.</p>
+    </div>
+    <div class="ver" data-title-en="Version 3 — the relationship lifted too" data-title-ar="الإصدار 3 — والعلاقة مرفوعة أيضًا">
+      <figure class="diagram" data-diagram="t4-exam-v3"></figure>
+      <p class="en">Fixed: one <code>take</code> line, ending on <code>EXAM</code>'s outer box. As the slides say, <em>the same applies to relationships</em>: every <code>QUIZ</code>, <code>MIDTERM</code> and <code>FINAL</code> inherits it. This is the lecturer's model, and the recommended one.</p>
+      <p class="ar">أُصلح: خطّ <code>take</code> واحد، ينتهي عند صندوق <code>EXAM</code> الخارجي. وكما تقول الشرائح، <em>ينطبق الأمر نفسه على العلاقات</em>: فكل <code>QUIZ</code> و<code>MIDTERM</code> و<code>FINAL</code> يرثه. وهذا نموذج المحاضِرة، والنموذج الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t4l2-s4"><span class="en">Own relationships stay inside</span><span class="ar">العلاقات الخاصّة تبقى في الداخل</span></h3>
+
+  <p class="en">The <code>BONUS QUESTION</code> line did not move in any version. Only quizzes include bonus questions, so the line ends on <code>QUIZ</code>. A subtype <em>can and generally would</em> have relationships of its own, just as it has attributes of its own; <code>QUIZ</code> has no specialized attribute but one relationship.</p>
+  <p class="ar">لم يتحرّك خطّ <code>BONUS QUESTION</code> في أيّ إصدار. فالاختبارات القصيرة وحدها تتضمّن أسئلة إضافية، ولذلك ينتهي الخطّ عند <code>QUIZ</code>. والنوع الفرعي <em>يمكن، وفي الغالب، أن تكون له</em> علاقات خاصّة به، كما تكون له خصائص خاصّة؛ فليس لـ <code>QUIZ</code> خاصية متخصّصة، لكن له علاقة واحدة.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="subtype-relationship">subtype relationship</span> is a relationship drawn to one subtype's box, so it holds only for that kind of instance.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="subtype-relationship">علاقة النوع الفرعي</span> (Subtype relationship) علاقةٌ مرسومة إلى صندوق نوع فرعي واحد، فلا تصدق إلا على ذلك النوع من النُّسَخ.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Where a line ends decides where its foreign key points. <code>BONUS QUESTION</code> ends on <code>QUIZ</code>, so <code>bonus_questions.quiz_id</code> references the quizzes' table, and a bonus question cannot be attached to a final. In version 3, <code>take</code> ends on <code>EXAM</code>, so whatever records it points at <code>exams</code> with one key; version 2 would need three.</p>
+    <p class="ar">مكان انتهاء الخطّ يحدّد إلى أين يشير مفتاحه الأجنبي. ينتهي <code>BONUS QUESTION</code> عند <code>QUIZ</code>، فيشير <code>bonus_questions.quiz_id</code> إلى جدول الاختبارات القصيرة، ولا يمكن ربط سؤال إضافي بامتحان نهائي. وفي الإصدار 3 تنتهي <code>take</code> عند <code>EXAM</code>، فيشير ما يسجّلها إلى <code>exams</code> بمفتاح واحد؛ أمّا الإصدار 2 فيحتاج إلى ثلاثة.</p>
+    <pre class="code" data-lang="sql"><code>CREATE TABLE exams (
+  exam_id       NUMBER PRIMARY KEY,
+  description   VARCHAR(60) NOT NULL,
+  weight        NUMBER      NOT NULL,
+  exam_date     DATE        NOT NULL,
+  written_grade NUMBER      NOT NULL
+);
+CREATE TABLE quizzes (
+  exam_id NUMBER PRIMARY KEY REFERENCES exams(exam_id)
+);
+CREATE TABLE bonus_questions (
+  bq_number     NUMBER PRIMARY KEY,
+  question_text VARCHAR(200) NOT NULL,
+  quiz_id       NUMBER NOT NULL REFERENCES quizzes(exam_id)
+);</code></pre>
+    <p class="en"><code>take</code> is many-to-many, and Chapter 5 shows how such a line becomes a table. What matters here is only which table its key points to.</p>
+    <p class="ar"><code>take</code> علاقة متعدّد إلى متعدّد، ويبيّن الفصل 5 كيف يصبح خطّ كهذا جدولًا. وما يهمّ هنا هو فقط الجدول الذي يشير إليه مفتاحه.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which is better, version 2 or version 3 of <code>EXAM</code>, and why?</p>
+    <p class="q ar">أيّهما أفضل، الإصدار 2 أم الإصدار 3 من <code>EXAM</code>، ولماذا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Version 2, because each subtype shows clearly that students take it</span><span class="ar">الإصدار 2، لأن كل نوع فرعي يُظهر بوضوح أن الطلاب يأخذونه</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Version 3, because <code>take</code> is common to every exam and is drawn once, on the supertype</span><span class="ar">الإصدار 3، لأن <code>take</code> مشتركة بين كل الامتحانات، فتُرسم مرّة واحدة على النوع الأعلى</span></button></li>
+      <li><button class="opt"><span class="en">They say different things, so neither is better</span><span class="ar">يقولان أشياء مختلفة، فلا أحدهما أفضل</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Both say the same business rule; version 3 says it once. A relationship every subtype has is a common relationship, and like a common attribute it belongs in the supertype.</p>
+      <p class="ar">كلاهما يقول قاعدة العمل نفسها، والإصدار 3 يقولها مرّة واحدة. فالعلاقة التي يملكها كل نوع فرعي علاقة مشتركة، ومكانها، كالخاصية المشتركة، النوع الأعلى.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why does the <code>BONUS QUESTION</code> line stay on <code>QUIZ</code> in version 3, instead of moving to <code>EXAM</code>?</p>
+    <p class="q ar">لماذا يبقى خطّ <code>BONUS QUESTION</code> عند <code>QUIZ</code> في الإصدار 3، بدل أن ينتقل إلى <code>EXAM</code>؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">Only quizzes include bonus questions; on <code>EXAM</code> it would be inherited by midterms and finals too</span><span class="ar">الاختبارات القصيرة وحدها تتضمّن أسئلة إضافية؛ ولو كان على <code>EXAM</code> لورثه النصفي والنهائي أيضًا</span></button></li>
+      <li><button class="opt"><span class="en">Lines may never end on a supertype</span><span class="ar">لا يجوز أبدًا أن ينتهي خطّ عند نوع أعلى</span></button></li>
+      <li><button class="opt"><span class="en">It was forgotten; it should move too</span><span class="ar">نُسي؛ ويجب أن ينتقل هو أيضًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Lift only what is common. <code>take</code> is true of every exam, so it moves up. The bonus questions are true of quizzes alone, so they stay on <code>QUIZ</code> &mdash; a subtype relationship.</p>
+      <p class="ar">لا تَرفع إلا ما هو مشترك. <code>take</code> تصدق على كل امتحان، فترتفع. أمّا الأسئلة الإضافية فتصدق على الاختبارات القصيرة وحدها، فتبقى عند <code>QUIZ</code> &mdash; علاقةَ نوعٍ فرعي.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t4l2-h5"><span class="en">5 · Relationships are inherited too</span><span class="ar">٥ · العلاقات تُورث أيضًا</span></h2>
+
+  <div class="problem">
+    <p class="en">Back at the shop, a designer sees two customer lines, one from <code>CHECK</code> and one from <code>CREDIT CARD</code>, and remembers version 3 of <code>EXAM</code>: "Draw it once, on <code>PAYMENT</code>." She makes the <code>PAYMENT</code> end solid. The next morning the till refuses to record a cash sale.</p>
+    <p class="ar">في المتجر من جديد، ترى مصمّمة خطّي زبون، أحدهما من <code>CHECK</code> والآخر من <code>CREDIT CARD</code>، وتتذكّر الإصدار 3 من <code>EXAM</code>: «ارسمه مرّة واحدة، على <code>PAYMENT</code>.» وتجعل طرف <code>PAYMENT</code> متّصلًا. وفي صباح اليوم التالي يرفض الصندوق تسجيل بيعٍ نقدي.</p>
+  </div>
+
+  <p class="en">The slides: <em>subtypes inherit all attributes and all relationships of the supertype entity.</em> All, not some. A line on <code>PAYMENT</code> is a line on <code>CASH</code> as well, so the drawing now says every cash payment must be made by a customer. The business never said that.</p>
+  <p class="ar">تقول الشرائح: <em>ترث الأنواع الفرعية كل خصائص الكيان الأعلى وكل علاقاته.</em> كلّها، لا بعضها. فالخطّ على <code>PAYMENT</code> خطٌّ على <code>CASH</code> أيضًا، فيقول الرسم الآن إن كل دفعة نقدية يجب أن يقوم بها زبون. والعمل لم يقل ذلك قطّ.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="inherited-relationship">inherited relationship</span> is a relationship a subtype has because the line is drawn to its supertype.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="inherited-relationship">العلاقة الموروثة</span> (Inherited relationship) علاقةٌ يملكها النوع الفرعي لأن خطّها مرسوم إلى نوعه الأعلى.</p>
+  </div>
+
+  <div class="evolve" id="t4l2-e2">
+    <div class="ver" data-title-en="Version 1 — one customer line, on PAYMENT" data-title-ar="الإصدار 1 — خطّ زبون واحد، على PAYMENT">
+      <figure class="diagram" data-diagram="t4-pay-cust-super"></figure>
+      <p class="en">Defect: a wrong inherited relationship. The line is drawn once, but <code>CASH</code> inherits it, solid end and all: <code>Each CASH must be made by one and only one CUSTOMER</code>. A rule true of two kinds has been imposed on three.</p>
+      <p class="ar">العيب: علاقة موروثة خاطئة. الخطّ مرسوم مرّة واحدة، لكن <code>CASH</code> يرثه، بطرفه المتّصل وكل شيء: <code>Each CASH must be made by one and only one CUSTOMER</code>. فقاعدةٌ تصدق على نوعين فُرضت على ثلاثة.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — the line on each subtype that has it" data-title-ar="الإصدار 2 — الخطّ على كل نوع فرعي يملكه">
+      <figure class="diagram" data-diagram="t4-pay-subtypes"></figure>
+      <p class="en">Fixed: two subtype relationships, from <code>CHECK</code> and from <code>CREDIT CARD</code>, solid at their end. <code>CASH</code> inherits nothing about customers because <code>PAYMENT</code> has no customer line. Drawing two lines is not repetition here: they belong to two subtypes, not to all of them. This is Lesson 1's recommended model.</p>
+      <p class="ar">أُصلح: علاقتا نوع فرعي، من <code>CHECK</code> ومن <code>CREDIT CARD</code>، متّصلتان عند طرفيهما. ولا يرث <code>CASH</code> شيئًا عن الزبائن لأن <code>PAYMENT</code> لا خطّ زبون له. ورسم خطّين هنا ليس تكرارًا: فهما يخصّان نوعين فرعيّين، لا الأنواع كلها. وهذا هو النموذج الموصى به في الدرس 1.</p>
+    </div>
+  </div>
+
+  <h3 id="t4l2-s5"><span class="en">Where a relationship belongs</span><span class="ar">أين مكان العلاقة</span></h3>
+
+  <p class="en">The test is the same as for attributes. If the relationship is true of every kind, draw it once, to the supertype. If it is true of some kinds only, draw it to each of those subtypes. Never draw it to the supertype "to save a line": inheritance will hand it to everyone.</p>
+  <p class="ar">الاختبار هو نفسه الذي للخصائص. إن صدقت العلاقة على كل الأنواع فارسمها مرّة واحدة، إلى النوع الأعلى. وإن صدقت على بعض الأنواع فقط فارسمها إلى كل نوع فرعي منها. ولا ترسمها إلى النوع الأعلى «توفيرًا لخطّ»: فالوراثة ستعطيها للجميع.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="supertype-relationship">supertype relationship</span> is a relationship drawn to the supertype's outer box, and so inherited by every one of its subtypes.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="supertype-relationship">علاقة النوع الأعلى</span> (Supertype relationship) علاقةٌ مرسومة إلى الصندوق الخارجي للنوع الأعلى، فيرثها إذن كل نوع من أنواعه الفرعية.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 1 becomes a <code>customer_id</code> column on <code>payments</code>, declared <code>NOT NULL</code> because the <code>PAYMENT</code> half is solid. The four non-cash payments go in. Now record payment 1, forty in cash:</p>
+    <p class="ar">يصبح الإصدار 1 عمودَ <code>customer_id</code> في <code>payments</code>، معرَّفًا <code>NOT NULL</code> لأن نصف <code>PAYMENT</code> متّصل. تدخل الدفعات الأربع غير النقدية. والآن سجّل الدفعة 1، أربعين نقدًا:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)", "INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')", "CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))", "INSERT INTO payments VALUES (2,'2026-03-02',125,1), (3,'2026-03-03',310,2), (5,'2026-03-04',220,1), (6,'2026-03-04',90,2)"], "sql": "INSERT INTO payments (payment_id, payment_date, amount)\nVALUES (1, '2026-03-02', 40);"}
+      </script>
+    </div>
+    <div class="output">
+      <pre class="code" data-lang="text"><code>Wrong NULL value in NOT NULL column customer_id</code></pre>
+    </div>
+    <p class="en">The table did exactly what the model told it to. The defect is in the drawing: the relationship was put on the supertype, so the constraint landed on every payment. In version 2, <code>customer_id</code> lives only in <code>check_payments</code> and <code>card_payments</code>.</p>
+    <p class="ar">فعل الجدول بالضبط ما قاله له النموذج. فالعيب في الرسم: وُضعت العلاقة على النوع الأعلى، فوقع القيد على كل دفعة. وفي الإصدار 2 لا يوجد <code>customer_id</code> إلا في <code>check_payments</code> و<code>card_payments</code>.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In version 1, which ERDish sentence is true <em>by inheritance</em>?</p>
+    <p class="q ar">في الإصدار 1، أيّ جملة ERDish صحيحة <em>بالوراثة</em>؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en"><code>Each CASH must be made by one and only one CUSTOMER</code></span><span class="ar"><code>Each CASH must be made by one and only one CUSTOMER</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>Each CASH may be made by one and only one CUSTOMER</code></span><span class="ar"><code>Each CASH may be made by one and only one CUSTOMER</code></span></button></li>
+      <li><button class="opt"><span class="en">None &mdash; only <code>PAYMENT</code> is related to <code>CUSTOMER</code></span><span class="ar">لا شيء &mdash; فـ <code>PAYMENT</code> وحده مرتبط بـ <code>CUSTOMER</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Every <code>CASH</code> is a <code>PAYMENT</code>, and every <code>PAYMENT</code> must be made by a customer, solid half included. That is why version 1 is wrong for this shop.</p>
+      <p class="ar">كل <code>CASH</code> هو <code>PAYMENT</code>، وكل <code>PAYMENT</code> يجب أن يقوم به زبون، بما في ذلك النصف المتّصل. ولهذا فالإصدار 1 خاطئ لهذا المتجر.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The shop decides every payment is <em>received by</em> one <code>STAFF MEMBER</code>. Where is that line drawn?</p>
+    <p class="q ar">يقرّر المتجر أن كل دفعة <em>يستلمها</em> موظّف واحد <code>STAFF MEMBER</code>. أين يُرسم هذا الخطّ؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">To <code>CASH</code>, <code>CHECK</code> and <code>CREDIT CARD</code>, one line each</span><span class="ar">إلى <code>CASH</code> و<code>CHECK</code> و<code>CREDIT CARD</code>، خطّ لكلٍّ منها</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Once, to <code>PAYMENT</code></span><span class="ar">مرّة واحدة، إلى <code>PAYMENT</code></span></button></li>
+      <li><button class="opt"><span class="en">To <code>CASH</code> only, because cashiers handle cash</span><span class="ar">إلى <code>CASH</code> وحده، لأن أمناء الصندوق يتعاملون مع النقد</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"Every payment" makes it a supertype relationship. Drawn once on <code>PAYMENT</code>, it is inherited by all three subtypes &mdash; this time correctly.</p>
+      <p class="ar">«كل دفعة» تجعلها علاقة نوع أعلى. فإذا رُسمت مرّة واحدة على <code>PAYMENT</code> ورثتها الأنواع الفرعية الثلاثة &mdash; وهذه المرّة عن حقّ.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 6 -->
+  <h2 id="t4l2-h6"><span class="en">6 · Reading the hierarchy both ways</span><span class="ar">٦ · قراءة التسلسل الهرمي في الاتجاهين</span></h2>
+
+  <div class="problem">
+    <p class="en">A reviewer points at the <code>EXAM</code> drawing and asks two questions. "Is every midterm an exam?" and "Is every exam a quiz, a midterm or a final?" The student answers the first at once and hesitates on the second. Both answers are in the drawing.</p>
+    <p class="ar">يشير مراجع إلى رسم <code>EXAM</code> ويطرح سؤالين: «هل كل امتحان نصفي امتحان؟» و«هل كل امتحان اختبارٌ قصير أو نصفي أو نهائي؟» يجيب الطالب عن الأول فورًا، ويتردّد في الثاني. والجوابان كلاهما في الرسم.</p>
+  </div>
+
+  <p class="en">The slides read the diagram in two directions. Inwards-out: <em>every QUIZ, MIDTERM or FINAL is an EXAM</em>, and thus has a description, a weight, a date and a grade. Outwards-in: <em>every EXAM is either a QUIZ, a MIDTERM or a FINAL</em>. The first is inheritance; the second says the subtypes account for every exam.</p>
+  <p class="ar">تقرأ الشرائح المخطّط في اتجاهين. من الداخل إلى الخارج: <em>كل QUIZ أو MIDTERM أو FINAL هو EXAM</em>، ولذلك له وصف ووزن وتاريخ ودرجة. ومن الخارج إلى الداخل: <em>كل EXAM هو إمّا QUIZ أو MIDTERM أو FINAL</em>. الأولى هي الوراثة، والثانية تقول إن الأنواع الفرعية تشمل كل امتحان.</p>
+
+  <pre class="code" data-lang="text"><code>Every CREDIT CARD is a PAYMENT.                     (inwards-out)
+Every PAYMENT is a CASH, a CHECK or a CREDIT CARD.  (outwards-in)</code></pre>
+
+  <p class="en">The second reading only holds when the subtypes cover every case and no instance sits in two of them. Those are the rules of <a href="#t4-lesson-03">Lesson 3</a>.</p>
+  <p class="ar">ولا تصحّ القراءة الثانية إلا حين تشمل الأنواع الفرعية كل الحالات، ولا تقع نسخة في نوعين منها. وتلك هي قواعد <a href="#t4-lesson-03">الدرس 3</a>.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Both readings can be checked. Inwards-out is enforced by the foreign key: a <code>card_payments</code> row whose <code>payment_id</code> is not in <code>payments</code> is refused. Outwards-in is a query: look up each payment in the three subtype tables and see where it lands.</p>
+    <p class="ar">يمكن فحص القراءتين كلتيهما. فالقراءة من الداخل إلى الخارج يفرضها المفتاح الأجنبي: يُرفض صفّ في <code>card_payments</code> ليس <code>payment_id</code> فيه موجودًا في <code>payments</code>. أمّا القراءة من الخارج إلى الداخل فاستعلام: ابحث عن كل دفعة في جداول الأنواع الفرعية الثلاثة، وانظر أين تقع.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode": "demo", "objects": true, "dataset": {}, "setup": ["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)", "INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')", "CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)", "INSERT INTO payments VALUES (1,'2026-03-02',40), (2,'2026-03-02',125), (3,'2026-03-03',310), (4,'2026-03-03',15), (5,'2026-03-04',220), (6,'2026-03-04',90)", "CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id))", "INSERT INTO cash_payments VALUES (1), (4)", "CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), customer_id NUMBER NOT NULL REFERENCES customers(customer_id))", "INSERT INTO check_payments VALUES (2,1), (6,2)", "CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY REFERENCES payments(payment_id), card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL REFERENCES customers(customer_id))", "INSERT INTO card_payments VALUES (3,'4111 1111 1111 1111',2), (5,'5500 0000 0000 0004',1)"], "sql": "SELECT p.payment_id, p.amount,\n       cs.payment_id AS in_cash,\n       ch.payment_id AS in_check,\n       cc.payment_id AS in_card\nFROM payments p\nLEFT JOIN cash_payments  cs ON cs.payment_id = p.payment_id\nLEFT JOIN check_payments ch ON ch.payment_id = p.payment_id\nLEFT JOIN card_payments  cc ON cc.payment_id = p.payment_id\nORDER BY p.payment_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>payment_id</code></th><th><code>amount</code></th><th><code>in_cash</code></th><th><code>in_check</code></th><th><code>in_card</code></th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>40</td><td>1</td><td>∅</td><td>∅</td></tr>
+            <tr><td>2</td><td>125</td><td>∅</td><td>2</td><td>∅</td></tr>
+            <tr><td>3</td><td>310</td><td>∅</td><td>∅</td><td>3</td></tr>
+            <tr><td>4</td><td>15</td><td>4</td><td>∅</td><td>∅</td></tr>
+            <tr><td>5</td><td>220</td><td>∅</td><td>∅</td><td>5</td></tr>
+            <tr><td>6</td><td>90</td><td>∅</td><td>6</td><td>∅</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Every payment appears in exactly one subtype table. Try inserting <code>(99, '9999 0000 0000 0000', 1)</code> into <code>card_payments</code> and alasql answers <code>Foreign key "99" not found in table "payments"</code>: a card payment that is not a payment cannot exist.</p>
+    <p class="ar">كل دفعة تظهر في جدول نوع فرعي واحد بالضبط. وجرّب إدخال <code>(99, '9999 0000 0000 0000', 1)</code> في <code>card_payments</code> فيجيب alasql: <code>Foreign key "99" not found in table "payments"</code>: فلا يمكن أن توجد دفعة بطاقة ليست دفعة.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">From version 3 of <code>EXAM</code>, which statement can you read <em>directly</em> by inheritance?</p>
+    <p class="q ar">من الإصدار 3 لـ <code>EXAM</code>، أيّ عبارة تستطيع قراءتها <em>مباشرةً</em> بالوراثة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Every <code>EXAM</code> has a grade for oral presentation</span><span class="ar">لكل <code>EXAM</code> درجة لعرض شفهي</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Every <code>FINAL</code> has a weight and is taken by students</span><span class="ar">لكل <code>FINAL</code> وزن، ويأخذه الطلاب</span></button></li>
+      <li><button class="opt"><span class="en">Every <code>MIDTERM</code> includes bonus questions</span><span class="ar">كل <code>MIDTERM</code> يتضمّن أسئلة إضافية</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A <code>FINAL</code> is an <code>EXAM</code>, so it inherits <code>* Weight</code> and the <code>take</code> relationship. Inheritance runs inwards only: the oral grade belongs to <code>MIDTERM</code>, and bonus questions to <code>QUIZ</code>.</p>
+      <p class="ar"><code>FINAL</code> هو <code>EXAM</code>، فيرث <code>* Weight</code> وعلاقة <code>take</code>. والوراثة لا تسري إلا إلى الداخل: فدرجة العرض الشفهي تخصّ <code>MIDTERM</code>، والأسئلة الإضافية تخصّ <code>QUIZ</code>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t4l2-h7"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Up or in?</span><span class="ar">تمرين 1 · إلى الأعلى أم إلى الداخل؟</span></h4>
+    <p class="en">For the shop's <code>PAYMENT</code> hierarchy, say whether each item is drawn in <code>PAYMENT</code> or inside one or more subtypes (name them): (a) <code>Bank Name</code> of a cheque; (b) <code>Receipt Number</code> printed on every payment; (c) <code>Expiry Date</code> of the card; (d) received by a <code>STAFF MEMBER</code>; (e) made by a <code>CUSTOMER</code>; (f) <code>Cheque Number</code>.</p>
+    <p class="ar">في تسلسل <code>PAYMENT</code> في المتجر، قل عن كل بند هل يُرسم في <code>PAYMENT</code> أم داخل نوع فرعي أو أكثر (وسمِّها): (a) <code>Bank Name</code> للشيك؛ (b) <code>Receipt Number</code> المطبوع على كل دفعة؛ (c) <code>Expiry Date</code> للبطاقة؛ (d) يستلمها موظّف <code>STAFF MEMBER</code>؛ (e) يقوم بها زبون <code>CUSTOMER</code>؛ (f) <code>Cheque Number</code>.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">In <code>PAYMENT</code>: (b) and (d) &mdash; one is a common attribute, the other a supertype relationship. Inside <code>CHECK</code>: (a) and (f). Inside <code>CREDIT CARD</code>: (c). Inside both <code>CHECK</code> and <code>CREDIT CARD</code>: (e), as two subtype relationships, because cash payments have no customer.</p>
+      <p class="ar">في <code>PAYMENT</code>: (b) و(d) &mdash; الأولى خاصية مشتركة، والثانية علاقة نوع أعلى. داخل <code>CHECK</code>: (a) و(f). داخل <code>CREDIT CARD</code>: (c). وداخل <code>CHECK</code> و<code>CREDIT CARD</code> كليهما: (e)، علاقتَي نوع فرعي، لأن الدفعات النقدية لا زبون لها.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Everything a MIDTERM has</span><span class="ar">تمرين 2 · كل ما يملكه MIDTERM</span></h4>
+    <p class="en">From version 3 of <code>EXAM</code>, list every attribute and every relationship of <code>MIDTERM</code>. Mark each one <em>inherited</em> or <em>own</em>.</p>
+    <p class="ar">من الإصدار 3 لـ <code>EXAM</code>، اذكر كل خاصية وكل علاقة لـ <code>MIDTERM</code>، وعلّم كلًّا منها <em>موروثة</em> أو <em>خاصّة</em>.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="text"><code># Number                          inherited
+* Description                     inherited
+* Weight                          inherited
+* Date                            inherited
+* Grade For Written Component     inherited
+* Grade For Oral Presentation     own
+taken by STUDENT                  inherited (relationship)</code></pre>
+      <p class="en">Not on the list: <code>* Extra Points For Optional Paper</code>, which belongs to its sibling <code>FINAL</code>, and the bonus questions, which belong to <code>QUIZ</code>. Nothing is inherited sideways.</p>
+      <p class="ar">ليس في القائمة: <code>* Extra Points For Optional Paper</code>، فهي تخصّ شقيقه <code>FINAL</code>، ولا الأسئلة الإضافية، فهي تخصّ <code>QUIZ</code>. لا شيء يُورث جانبيًّا.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Find the misplaced line</span><span class="ar">تمرين 3 · جِد الخطّ في غير مكانه</span></h4>
+    <p class="en">A library draws <code>LOAN ITEM</code> with subtypes <code>BOOK</code> and <code>DVD</code>, as text below. Only DVDs need a <code>REGION</code> code entity, and every item, of either kind, is shelved in one <code>BRANCH</code>. Which line is wrong, and what does it wrongly say about books?</p>
+    <p class="ar">ترسم مكتبة <code>LOAN ITEM</code> بنوعين فرعيين <code>BOOK</code> و<code>DVD</code>، مكتوبًا نصًّا أدناه. لا يحتاج إلى كيان رمز المنطقة <code>REGION</code> إلا أقراصُ DVD، وكل مادة، من أيّ النوعين، تُرفّ في فرع واحد <code>BRANCH</code>. أيّ خطّ خاطئ، وماذا يقول خطأً عن الكتب؟</p>
+    <pre class="code" data-lang="text"><code>1  LOAN ITEM   # Item ID  * Title
+2    BOOK      * ISBN
+3    DVD       * Running Time
+4  LOAN ITEM must be coded for one and only one REGION
+5  LOAN ITEM must be shelved in one and only one BRANCH</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Line 4. Drawn on the supertype, it is inherited by <code>BOOK</code>: <code>Each BOOK must be coded for one and only one REGION</code>, which is false. Move it to <code>DVD</code>. Line 5 is right where it is: every item has a branch, so it is a supertype relationship.</p>
+      <p class="ar">السطر 4. فهو مرسوم على النوع الأعلى، فيرثه <code>BOOK</code>: <code>Each BOOK must be coded for one and only one REGION</code>، وهذا خطأ. انقله إلى <code>DVD</code>. أمّا السطر 5 ففي مكانه الصحيح: لكل مادة فرع، فهي علاقة نوع أعلى.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Repair a first draft</span><span class="ar">تمرين 4 · أصلح مسوّدة أولى</span></h4>
+    <p class="en">A café draws <code>ORDER</code> with subtypes <code>EAT IN</code> and <code>TO GO</code>, but lists everything inside the subtypes. Rewrite it so that common attributes appear once, and say which version of <code>EXAM</code> the draft resembles.</p>
+    <p class="ar">يرسم مقهى <code>ORDER</code> بنوعين فرعيين <code>EAT IN</code> و<code>TO GO</code>، لكنه يذكر كل شيء داخل الأنواع الفرعية. أعد كتابته بحيث تظهر الخصائص المشتركة مرّة واحدة، وقل أيّ إصدار من <code>EXAM</code> تشبهه المسوّدة.</p>
+    <pre class="code" data-lang="text"><code>ORDER
+  EAT IN   # Order ID  * Order Time  * Total  * Table Number
+  TO GO    # Order ID  * Order Time  * Total  * Pickup Time</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="text"><code>ORDER    # Order ID  * Order Time  * Total
+  EAT IN   * Table Number
+  TO GO    * Pickup Time</code></pre>
+      <p class="en">The draft is version 1 of <code>EXAM</code>: nested boxes, an empty supertype, the common part copied into every subtype. Lifting <code># Order ID</code>, <code>* Order Time</code> and <code>* Total</code> into <code>ORDER</code> leaves each subtype with its one specialized attribute, still mandatory.</p>
+      <p class="ar">المسوّدة هي الإصدار 1 من <code>EXAM</code>: صناديق متداخلة، ونوع أعلى فارغ، والجزء المشترك منسوخ في كل نوع فرعي. ورفعُ <code># Order ID</code> و<code>* Order Time</code> و<code>* Total</code> إلى <code>ORDER</code> يترك لكل نوع فرعي خاصيته المتخصّصة الوحيدة، وما زالت إلزامية.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · A cheque, in full</span><span class="ar">تمرين 5 · الشيك كاملًا</span></h4>
+    <p class="en">Using the supertype-plus-subtype tables of this lesson, write one query that lists every cheque with its date, its amount and the name of the customer who paid it, in payment order.</p>
+    <p class="ar">باستعمال جداول «النوع الأعلى مع الأنواع الفرعية» في هذا الدرس، اكتب استعلامًا واحدًا يعرض كل شيك مع تاريخه ومبلغه واسم الزبون الذي دفعه، مرتّبًا حسب رقم الدفعة.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT p.payment_id, p.payment_date, p.amount, c.name
+FROM payments p
+JOIN check_payments ch ON ch.payment_id = p.payment_id
+JOIN customers c       ON c.customer_id = ch.customer_id
+ORDER BY p.payment_id;</code></pre>
+      <div class="output"><div class="table-wrap"><table>
+        <thead><tr><th><code>payment_id</code></th><th><code>payment_date</code></th><th><code>amount</code></th><th><code>name</code></th></tr></thead>
+        <tbody>
+          <tr><td>2</td><td>2026-03-02</td><td>125</td><td>Linda</td></tr>
+          <tr><td>6</td><td>2026-03-04</td><td>90</td><td>Omar</td></tr>
+        </tbody>
+      </table></div></div>
+      <p class="en">The date and amount are inherited, so they come from <code>payments</code>. The customer is a subtype relationship, so its key lives in <code>check_payments</code>. The query walks the diagram: supertype, subtype, then the related entity.</p>
+      <p class="ar">التاريخ والمبلغ موروثان، فيأتيان من <code>payments</code>. والزبون علاقة نوع فرعي، فمفتاحه في <code>check_payments</code>. والاستعلام يمشي في المخطّط: النوع الأعلى، ثم النوع الفرعي، ثم الكيان المرتبط.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">A supertype holds what is common to all its subtypes, listed once and only there.</li>
+      <li class="ar">النوع الأعلى يحمل ما هو مشترك بين كل أنواعه الفرعية، مذكورًا مرّة واحدة وفيه وحده.</li>
+      <li class="en">A subtype is a specialization, enclosed inside its supertype, holding only what is its own.</li>
+      <li class="ar">النوع الفرعي تخصيصٌ، محاط داخل نوعه الأعلى، لا يحمل إلا ما يخصّه.</li>
+      <li class="en">A subtype inherits every attribute <em>and every relationship</em> of its supertype, marks included.</li>
+      <li class="ar">يرث النوع الفرعي كل خاصية <em>وكل علاقة</em> لنوعه الأعلى، بعلاماتها.</li>
+      <li class="en">A subtype can have relationships of its own, drawn to its own box.</li>
+      <li class="ar">يمكن أن تكون للنوع الفرعي علاقات خاصّة به، مرسومة إلى صندوقه.</li>
+      <li class="en">Draw on the supertype only what is true of every kind; inheritance gives it to all of them.</li>
+      <li class="ar">لا ترسم على النوع الأعلى إلا ما يصدق على كل الأنواع؛ فالوراثة تعطيه لها جميعًا.</li>
+      <li class="en">Read both ways: every subtype instance is a supertype instance, and every supertype instance is one of the subtypes.</li>
+      <li class="ar">اقرأ في الاتجاهين: كل نسخة من النوع الفرعي نسخةٌ من النوع الأعلى، وكل نسخة من النوع الأعلى واحدةٌ من الأنواع الفرعية.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Copying a common attribute into each subtype "to be safe".</li>
+      <li class="ar">نسخ خاصية مشتركة في كل نوع فرعي «احتياطًا».</li>
+      <li class="en">Reading a subtype's box alone and concluding it lacks the inherited attributes.</li>
+      <li class="ar">قراءة صندوق النوع الفرعي وحده، والاستنتاج أنه يفتقد الخصائص الموروثة.</li>
+      <li class="en">Drawing a relationship on the supertype to save a line when only some kinds have it.</li>
+      <li class="ar">رسم علاقة على النوع الأعلى توفيرًا لخطّ، وهي لا تخصّ إلا بعض الأنواع.</li>
+      <li class="en">Joining a subtype to its supertype with a relationship line instead of nesting it.</li>
+      <li class="ar">وصل النوع الفرعي بنوعه الأعلى بخطّ علاقة بدل رسمه داخله.</li>
+      <li class="en">Expecting a subtype to inherit from a sibling subtype.</li>
+      <li class="ar">توقّع أن يرث نوعٌ فرعي من نوع فرعي شقيق.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="#t4-test-02">Test 2 &mdash; Supertype and Subtype</a>. Then <a href="#t4-lesson-03">Lesson 3 &mdash; The Three Rules</a> asks whether a subtype is really <em>a kind of</em> its supertype, whether the subtypes cover every case, and whether each instance fits exactly one of them.</p>
+    <p class="ar">اختبر نفسك بـ<a href="#t4-test-02">اختبار 2 &mdash; النوع الأعلى والنوع الفرعي</a>. ثم يسأل <a href="#t4-lesson-03">الدرس 3 &mdash; القواعد الثلاث</a>: هل النوع الفرعي حقًّا <em>نوعٌ من</em> نوعه الأعلى؟ وهل تشمل الأنواع الفرعية كل الحالات؟ وهل تقع كل نسخة في واحد منها بالضبط؟</p>
+  </div>
+
+</section>
