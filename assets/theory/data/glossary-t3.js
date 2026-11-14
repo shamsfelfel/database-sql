@@ -2,6 +2,28 @@
 window.DBTGlossary = window.DBTGlossary || {};
 window.DBTGlossary["t3"] = [
  {
+  "id": "asterisk-mark",
+  "term": {
+   "en": "Asterisk (*)",
+   "ar": "النجمة (*)"
+  },
+  "def": {
+   "en": "The mark before a mandatory attribute: every instance must have a value; it becomes NOT NULL.",
+   "ar": "العلامة التي توضع قبل الخاصية الإلزامية: لا بدّ أن تكون لكل نسخة قيمة؛ وتصير NOT NULL."
+  },
+  "cat": {
+   "en": "Diagramming",
+   "ar": "الرسم"
+  },
+  "see": [
+   "hash-mark",
+   "circle-mark"
+  ],
+  "used": [
+   "t3l4-h3"
+  ]
+ },
+ {
   "id": "bidirectional",
   "term": {
    "en": "Bi-directional",
@@ -92,6 +114,28 @@ window.DBTGlossary["t3"] = [
   ]
  },
  {
+  "id": "circle-mark",
+  "term": {
+   "en": "Circle (o)",
+   "ar": "الدائرة (o)"
+  },
+  "def": {
+   "en": "The mark before an optional attribute: an instance may have no value; it becomes a nullable column.",
+   "ar": "العلامة التي توضع قبل الخاصية الاختيارية: قد لا تكون للنسخة قيمة؛ وتصير عمودًا يقبل NULL."
+  },
+  "cat": {
+   "en": "Diagramming",
+   "ar": "الرسم"
+  },
+  "see": [
+   "asterisk-mark",
+   "hash-mark"
+  ],
+  "used": [
+   "t3l4-h3"
+  ]
+ },
+ {
   "id": "crows-foot",
   "term": {
    "en": "Crow's foot",
@@ -157,6 +201,115 @@ window.DBTGlossary["t3"] = [
   ],
   "used": [
    "t3l2-s2"
+  ]
+ },
+ {
+  "id": "entity-name-convention",
+  "term": {
+   "en": "Entity-name convention",
+   "ar": "عُرف تسمية الكيان"
+  },
+  "def": {
+   "en": "An entity is named by a singular noun written all in capitals — EMPLOYEE, never Employees; the plural appears only in an ERDish sentence.",
+   "ar": "يُسمّى الكيان باسم مفرد يُكتب كله بأحرف كبيرة — EMPLOYEE، لا Employees أبدًا؛ ولا يظهر الجمع إلا في جملة ERDish."
+  },
+  "cat": {
+   "en": "Diagramming",
+   "ar": "الرسم"
+  },
+  "see": [
+   "softbox",
+   "lowercase-relationship-name"
+  ],
+  "used": [
+   "t3l4-h2"
+  ]
+ },
+ {
+  "id": "er-diagramming",
+  "term": {
+   "en": "ER diagramming",
+   "ar": "رسم مخطّطات ER"
+  },
+  "def": {
+   "en": "Drawing entities, attributes and relationships as an ERD, according to the shared conventions.",
+   "ar": "رسم الكيانات والخصائص والعلاقات مخطّطَ ERD، وفق الأعراف المشتركة."
+  },
+  "cat": {
+   "en": "Diagramming",
+   "ar": "الرسم"
+  },
+  "see": [
+   "shared-convention",
+   "softbox"
+  ],
+  "used": [
+   "t3l4-s1"
+  ]
+ },
+ {
+  "id": "hash-mark",
+  "term": {
+   "en": "Hash mark (#)",
+   "ar": "علامة # (Hash Mark)"
+  },
+  "def": {
+   "en": "The mark before an attribute that is (part of) the entity's unique identifier; it becomes the PRIMARY KEY.",
+   "ar": "العلامة التي توضع قبل خاصية هي المعرّف الفريد للكيان (أو جزء منه)؛ وتصير PRIMARY KEY."
+  },
+  "cat": {
+   "en": "Diagramming",
+   "ar": "الرسم"
+  },
+  "see": [
+   "asterisk-mark",
+   "circle-mark"
+  ],
+  "used": [
+   "t3l4-h3"
+  ]
+ },
+ {
+  "id": "international-sign",
+  "term": {
+   "en": "International sign",
+   "ar": "العلامة الدولية"
+  },
+  "def": {
+   "en": "A symbol read the same way by everyone, whatever language they speak — the slides' picture of what an ERD convention is for.",
+   "ar": "رمز يقرؤه الجميع بالطريقة نفسها، أيًّا كانت لغتهم — وهو تشبيه الشرائح لما وُجد عُرف مخطّطات ERD من أجله."
+  },
+  "cat": {
+   "en": "Diagramming",
+   "ar": "الرسم"
+  },
+  "see": [
+   "shared-convention"
+  ],
+  "used": [
+   "t3l4-h1"
+  ]
+ },
+ {
+  "id": "lowercase-relationship-name",
+  "term": {
+   "en": "Lowercase relationship name",
+   "ar": "اسم العلاقة بالأحرف الصغيرة"
+  },
+  "def": {
+   "en": "A relationship's label, written in small letters beside the entity whose sentence it completes — one at each end of the line.",
+   "ar": "وسم العلاقة، مكتوبًا بأحرف صغيرة بجانب الكيان الذي يُكمل جملتَه — واحد عند كل طرف من طرفَي الخط."
+  },
+  "cat": {
+   "en": "Diagramming",
+   "ar": "الرسم"
+  },
+  "see": [
+   "relationship-name",
+   "entity-name-convention"
+  ],
+  "used": [
+   "t3l4-h4"
   ]
  },
  {
@@ -475,6 +628,28 @@ window.DBTGlossary["t3"] = [
   ]
  },
  {
+  "id": "shared-convention",
+  "term": {
+   "en": "Shared convention",
+   "ar": "العُرف المشترك"
+  },
+  "def": {
+   "en": "An agreed way of drawing that every reader decodes the same way, whoever drew it; the words may vary with the author's accent, the drawing may not.",
+   "ar": "طريقة رسم متّفق عليها يفكّ كل قارئ رموزها بالطريقة نفسها، أيًّا كان من رسمها؛ قد تختلف الكلمات باختلاف لهجة المؤلّف، أمّا الرسم فلا."
+  },
+  "cat": {
+   "en": "Diagramming",
+   "ar": "الرسم"
+  },
+  "see": [
+   "international-sign",
+   "er-diagramming"
+  ],
+  "used": [
+   "t3l4-h1"
+  ]
+ },
+ {
   "id": "significance",
   "term": {
    "en": "Significance (of a relationship)",
@@ -540,6 +715,28 @@ window.DBTGlossary["t3"] = [
   ],
   "used": [
    "t3l3-h3"
+  ]
+ },
+ {
+  "id": "softbox",
+  "term": {
+   "en": "Softbox",
+   "ar": "الصندوق المستدير"
+  },
+  "def": {
+   "en": "A rectangle with rounded corners that stands for one entity on an ERD; the entity's name goes inside it, with the attributes listed underneath.",
+   "ar": "مستطيل بزوايا مستديرة يمثّل كيانًا واحدًا في مخطّط ERD؛ يوضع اسم الكيان داخله، وتُدرج الخصائص تحته."
+  },
+  "cat": {
+   "en": "Diagramming",
+   "ar": "الرسم"
+  },
+  "see": [
+   "entity-name-convention",
+   "er-diagramming"
+  ],
+  "used": [
+   "t3l4-h2"
   ]
  },
  {

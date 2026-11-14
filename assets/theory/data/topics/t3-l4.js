@@ -1,0 +1,19 @@
+/* Topic tags of T3 lesson 4 -- Diagramming Conventions. */
+window.DBTTopics = window.DBTTopics || {};
+window.DBTTopics["t3-shared-convention"] = { en: "Why a shared convention exists", ar: "لماذا يوجد عُرف مشترك", href: "t3l4-h1" };
+window.DBTTopics["t3-international-signs"] = { en: "International signs and accents", ar: "العلامات الدولية واللهجات", href: "t3l4-h1" };
+window.DBTTopics["t3-er-diagramming"] = { en: "ER diagramming: entities, attributes, relationships", ar: "رسم مخطّطات ER: الكيانات والخصائص والعلاقات", href: "t3l4-s1" };
+window.DBTTopics["t3-marks-to-sql"] = { en: "Each ERD mark and its SQL meaning", ar: "كل علامة في المخطّط ومعناها في SQL", href: "t3l4-s1" };
+window.DBTTopics["t3-softbox"] = { en: "Softbox", ar: "الصندوق المستدير", href: "t3l4-h2" };
+window.DBTTopics["t3-entity-name-convention"] = { en: "Singular, uppercase entity names", ar: "أسماء الكيانات المفردة بالأحرف الكبيرة", href: "t3l4-h2" };
+window.DBTTopics["t3-singular-box-plural-sentence"] = { en: "Singular in the box, plural in the sentence", ar: "مفرد في الصندوق، وجمع في الجملة", href: "t3l4-s2" };
+window.DBTTopics["t3-entity-vs-table-name"] = { en: "Entity name vs table name", ar: "اسم الكيان واسم الجدول", href: "t3l4-s2" };
+window.DBTTopics["t3-attribute-marks"] = { en: "Attribute marks: #, * and o", ar: "علامات الخصائص: # و* وo", href: "t3l4-h3" };
+window.DBTTopics["t3-hash-uid"] = { en: "# marks the unique identifier", ar: "# تَسِم المعرّف الفريد", href: "t3l4-h3" };
+window.DBTTopics["t3-hash-star"] = { en: "Why a UID is written # *", ar: "لماذا يُكتب المعرّف الفريد # *", href: "t3l4-s3" };
+window.DBTTopics["t3-marks-enforced"] = { en: "PRIMARY KEY, NOT NULL and nullable from the marks", ar: "PRIMARY KEY وNOT NULL وقبول NULL من العلامات", href: "t3l4-s3" };
+window.DBTTopics["t3-relationship-drawing"] = { en: "Drawing a relationship line by the convention", ar: "رسم خط العلاقة وفق العُرف", href: "t3l4-h4" };
+window.DBTTopics["t3-lowercase-relationship-name"] = { en: "Lowercase relationship names beside their entity", ar: "أسماء العلاقات بالأحرف الصغيرة بجانب كيانها", href: "t3l4-h4" };
+window.DBTTopics["t3-case-tells-words-apart"] = { en: "UPPERCASE entity, lowercase relationship", ar: "أحرف كبيرة للكيان، وصغيرة للعلاقة", href: "t3l4-s4" };
+window.DBTTopics["t3-convention-checklist"] = { en: "Checking an ERD against the convention", ar: "فحص مخطّط ERD في ضوء العُرف", href: "t3l4-h5" };
+window.DBTTopics["t3-spot-convention-breaks"] = { en: "Spotting convention breaks", ar: "اكتشاف مخالفات العُرف", href: "t3l4-s5" };

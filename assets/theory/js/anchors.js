@@ -187,6 +187,20 @@ window.DBTAnchors = {
 "t3l3-s3": "lessons/t3-lesson-03.html",
 "t3l3-s4": "lessons/t3-lesson-03.html",
 "t3l3-s5": "lessons/t3-lesson-03.html",
+"t3l4-e1": "lessons/t3-lesson-04.html",
+"t3l4-e2": "lessons/t3-lesson-04.html",
+"t3l4-e3": "lessons/t3-lesson-04.html",
+"t3l4-h1": "lessons/t3-lesson-04.html",
+"t3l4-h2": "lessons/t3-lesson-04.html",
+"t3l4-h3": "lessons/t3-lesson-04.html",
+"t3l4-h4": "lessons/t3-lesson-04.html",
+"t3l4-h5": "lessons/t3-lesson-04.html",
+"t3l4-h6": "lessons/t3-lesson-04.html",
+"t3l4-s1": "lessons/t3-lesson-04.html",
+"t3l4-s2": "lessons/t3-lesson-04.html",
+"t3l4-s3": "lessons/t3-lesson-04.html",
+"t3l4-s4": "lessons/t3-lesson-04.html",
+"t3l4-s5": "lessons/t3-lesson-04.html",
 "t4-chapter": "chapters/t4.html",
 "t4-exam-a": "exams/t4-exam-a.html",
 "t4-exam-b": "exams/t4-exam-b.html",
@@ -719,6 +733,50 @@ window.DBTHeadings = {
 "t3l3-s5": {
 "ar": "خط المدير: الطرفان في جدول واحد",
 "en": "The manager line: both ends in one table"
+},
+"t3l4-h1": {
+"ar": "١ · علامات يقرؤها الجميع",
+"en": "1 · Signs that everyone reads"
+},
+"t3l4-h2": {
+"ar": "٢ · الكيانات: صناديق مستديرة بأسماء مفردة وأحرف كبيرة",
+"en": "2 · Entities: softboxes with singular, uppercase names"
+},
+"t3l4-h3": {
+"ar": "٣ · الخصائص تحت الاسم: # و* وo",
+"en": "3 · Attributes under the name: #, * and o"
+},
+"t3l4-h4": {
+"ar": "٤ · العلاقات: خطوط، وأنصاف، وأطراف، وأسماء بأحرف صغيرة",
+"en": "4 · Relationships: lines, halves, ends and lowercase names"
+},
+"t3l4-h5": {
+"ar": "٥ · فحص مخطّط ERD كامل في ضوء العُرف",
+"en": "5 · Checking a whole ERD against the convention"
+},
+"t3l4-h6": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t3l4-s1": {
+"ar": "ما الذي يشمله العُرف",
+"en": "What the convention covers"
+},
+"t3l4-s2": {
+"ar": "مفرد في الصندوق، وجمع في الجملة فقط",
+"en": "Singular in the box, plural only in a sentence"
+},
+"t3l4-s3": {
+"ar": "لماذا يكتب هذا المسار # *",
+"en": "Why this track writes # *"
+},
+"t3l4-s4": {
+"ar": "ثلاثة أنواع من الكلمات، تُميَّز بحالة أحرفها",
+"en": "Three kinds of word, told apart by their case"
+},
+"t3l4-s5": {
+"ar": "اكتشف المخالفات",
+"en": "Spot the breaks"
 },
 "t4idx-h1": {
 "ar": "الدروس",

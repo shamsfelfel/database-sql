@@ -1,0 +1,528 @@
+<section class="page" id="t3-lesson-04">
+
+  <span class="kicker">Lesson 4</span>
+  <h1><span class="en">Diagramming Conventions</span><span class="ar">أعراف الرسم</span></h1>
+  <p class="lede en">By the end of this lesson you will be able to draw an entity, its attributes and its relationships exactly the way every other ERD author draws them &mdash; softbox, singular UPPERCASE name, <code>#</code> <code>*</code> <code>o</code>, lowercase relationship names &mdash; and say why one shared convention matters more than any single mark.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن ترسم الكيان وخصائصه وعلاقاته تمامًا كما يرسمها كل مؤلّف آخر لمخطّطات ERD &mdash; الصندوق المستدير، والاسم المفرد بالأحرف الكبيرة، و<code>#</code> و<code>*</code> و<code>o</code>، وأسماء العلاقات بالأحرف الصغيرة &mdash; وأن تقول لماذا يهمّ العُرف المشترك الواحد أكثر من أيّ علامة بمفردها.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> Lessons <a href="#t3-lesson-01">1</a> to <a href="#t3-lesson-03">3</a> met the marks one at a time: the named line, its solid and dashed halves, its toe and crow's foot. Chapter T2 drew softboxes with <code>#</code> <code>*</code> <code>o</code>. This lesson is the slides' <em>ER Diagramming Conventions</em>: the whole set, as one agreement. The case is the H.R. system &mdash; <code>EMPLOYEE</code>, <code>DEPARTMENT</code>, <code>JOB</code>.</p>
+    <p class="ar"><strong>السياق.</strong> قابلت الدروس من <a href="#t3-lesson-01">1</a> إلى <a href="#t3-lesson-03">3</a> العلامات واحدة واحدة: الخط المسمّى، ونصفيه المتّصل والمتقطّع، وإصبعه وقدم غرابه. ورسم الفصل T2 صناديق مستديرة فيها <code>#</code> و<code>*</code> و<code>o</code>. وهذا الدرس هو <em>أعراف رسم مخطّطات ER</em> في الشرائح: المجموعة كلها، اتّفاقًا واحدًا. والحالة هي نظام الموارد البشرية &mdash; <code>EMPLOYEE</code> و<code>DEPARTMENT</code> و<code>JOB</code>.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Explain why ER diagrams follow one shared convention, and what a private one costs the reader.</li>
+      <li class="ar">شرح لماذا تتبع مخطّطات ER عُرفًا مشتركًا واحدًا، وما الذي يكلّفه العُرف الخاص للقارئ.</li>
+      <li class="en">Draw an entity as a softbox with a singular, uppercase name.</li>
+      <li class="ar">رسم الكيان صندوقًا مستديرًا باسم مفرد وبأحرف كبيرة.</li>
+      <li class="en">List attributes under the name, marking the UID with <code>#</code>, mandatory with <code>*</code> and optional with <code>o</code>.</li>
+      <li class="ar">إدراج الخصائص تحت الاسم، مع وسم المعرّف الفريد بـ <code>#</code>، والإلزامية بـ <code>*</code>، والاختيارية بـ <code>o</code>.</li>
+      <li class="en">Draw a relationship as a line named in lowercase at both ends, with its halves and ends.</li>
+      <li class="ar">رسم العلاقة خطًّا مسمّى بأحرف صغيرة عند طرفيه، بنصفيه وطرفيه.</li>
+      <li class="en">Check a finished ERD against the convention, and read its tables straight off it.</li>
+      <li class="ar">فحص مخطّط ERD مكتمل في ضوء العُرف، وقراءة جداوله منه مباشرة.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t3l4-h1"><span class="en">1 · Signs that everyone reads</span><span class="ar">١ · علامات يقرؤها الجميع</span></h2>
+
+  <div class="problem">
+    <p class="en">Two students model the same H.R. scenario. One draws ovals called <code>Employees</code>, writes "(required)" after <code>Salary</code> and joins boxes with arrows. The other draws softboxes with <code>*</code>. The database administrator who must build the tables gets both pictures, and has to phone each author to ask what they mean.</p>
+    <p class="ar">يصمّم طالبان سيناريو الموارد البشرية نفسه. يرسم الأول أشكالًا بيضوية اسمها <code>Employees</code>، ويكتب «(مطلوب)» بعد <code>Salary</code>، ويصل الصناديق بأسهم. ويرسم الثاني صناديق مستديرة فيها <code>*</code>. ويتسلّم مدير قاعدة البيانات، الذي عليه أن يبني الجداول، الصورتين، فيضطرّ إلى الاتصال بكل مؤلّف ليسأله ما الذي تعنيه.</p>
+  </div>
+
+  <p class="en">The slides open with road signs: "People speak different languages throughout the world, but some signs are understood globally." Nobody needs to know the driver's language to read a stop sign. The lecturer's gloss for <em>signs</em> is علامات.</p>
+  <p class="ar">تبدأ الشرائح بإشارات الطريق: «يتحدّث الناس لغات مختلفة في أنحاء العالم، لكن بعض العلامات (Signs) مفهومة عالميًّا.» لا أحد يحتاج إلى معرفة لغة السائق ليقرأ إشارة «قف». وكلمة المحاضِرة لـ <em>signs</em> هي «علامات».</p>
+
+  <p class="en">ER diagramming is the same: "you may say or write things differently because of the way you speak, your accent (لهجة), and so on, but everyone draws ER diagrams according to the same conventions." The words may differ; the picture may not.</p>
+  <p class="ar">ورسم مخطّطات ER كذلك: «قد تقول الأشياء أو تكتبها بطريقة مختلفة بسبب طريقة كلامك، ولهجتك (Accent)، وما إلى ذلك، لكن الجميع يرسمون مخطّطات ER وفق الأعراف نفسها.» قد تختلف الكلمات؛ أمّا الصورة فلا.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="international-sign">international sign</span> is a symbol read the same way by everyone, whatever language they speak.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="international-sign">العلامة الدولية</span> (International Sign) رمز يقرؤه الجميع بالطريقة نفسها، أيًّا كانت اللغة التي يتكلّمونها.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="shared-convention">shared convention</span> is an agreed way of drawing that every reader decodes the same way, whoever drew it.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="shared-convention">العُرف المشترك</span> (Shared Convention) طريقة رسم متّفق عليها يفكّ كل قارئ رموزها بالطريقة نفسها، أيًّا كان من رسمها.</p>
+  </div>
+
+  <h3 id="t3l4-s1"><span class="en">What the convention covers</span><span class="ar">ما الذي يشمله العُرف</span></h3>
+
+  <p class="en">The slides give the reason in one line: "It is efficient to communicate information in a way that can be easily understood by many people." Their objective names the scope: construct ER diagram components that represent <strong>entities, attributes and relationships</strong> according to the conventions. Sections 2, 3 and 4 take them in that order.</p>
+  <p class="ar">تعطي الشرائح السبب في سطر واحد: «من الكفاءة أن تُنقل المعلومات بطريقة يفهمها كثير من الناس بسهولة.» ويسمّي هدفها المدى: بناء مكوّنات مخطّط ER التي تمثّل <strong>الكيانات والخصائص والعلاقات</strong> وفق الأعراف. وتتناولها الأقسام 2 و3 و4 بهذا الترتيب.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="er-diagramming">ER diagramming</span> is drawing entities, attributes and relationships as an ERD, according to the shared conventions.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="er-diagramming">رسم مخطّطات ER</span> (ER Diagramming) هو رسم الكيانات والخصائص والعلاقات مخطّطَ ERD، وفق الأعراف المشتركة.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The convention is also a contract with whoever builds the tables. Each mark has exactly one meaning in SQL, so the administrator reads the ERD without phoning anyone:</p>
+    <p class="ar">والعُرف عقدٌ أيضًا مع من يبني الجداول. فلكل علامة معنى واحد بالضبط في SQL، فيقرأ مدير قاعدة البيانات المخطّط دون أن يتّصل بأحد:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="en">On the ERD</th><th class="ar">في المخطّط</th><th class="en">In the table</th><th class="ar">في الجدول</th></tr></thead>
+        <tbody>
+          <tr><td class="en">a softbox, <code>EMPLOYEE</code></td><td class="ar">صندوق مستدير، <code>EMPLOYEE</code></td><td class="en">a table, <code>employees</code></td><td class="ar">جدول، <code>employees</code></td></tr>
+          <tr><td class="en"><code># * Employee ID</code></td><td class="ar"><code># * Employee ID</code></td><td class="en"><code>employee_id &hellip; PRIMARY KEY</code></td><td class="ar"><code>employee_id &hellip; PRIMARY KEY</code></td></tr>
+          <tr><td class="en"><code>* Salary</code></td><td class="ar"><code>* Salary</code></td><td class="en"><code>salary &hellip; NOT NULL</code></td><td class="ar"><code>salary &hellip; NOT NULL</code></td></tr>
+          <tr><td class="en"><code>o Commission</code></td><td class="ar"><code>o Commission</code></td><td class="en"><code>commission</code>, nullable</td><td class="ar"><code>commission</code>، يقبل NULL</td></tr>
+          <tr><td class="en">a line, crow's foot at <code>EMPLOYEE</code></td><td class="ar">خطّ، قدم الغراب عند <code>EMPLOYEE</code></td><td class="en">a foreign key in <code>employees</code></td><td class="ar">مفتاح أجنبي في <code>employees</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why do all ER diagrams follow the same conventions?</p>
+    <p class="q ar">لماذا تتبع كل مخطّطات ER الأعراف نفسها؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Because a diagram drawn any other way cannot be turned into tables</span><span class="ar">لأن المخطّط المرسوم بأيّ طريقة أخرى لا يمكن تحويله إلى جداول</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">So that any reader decodes the diagram the same way, whoever drew it</span><span class="ar">لكي يفكّ أيّ قارئ رموز المخطّط بالطريقة نفسها، أيًّا كان من رسمه</span></button></li>
+      <li><button class="opt"><span class="en">So that every designer uses the same words for the business rules</span><span class="ar">لكي يستعمل كل مصمّم الكلمات نفسها لقواعد العمل</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Like a road sign, the convention makes the picture readable without its author. The slides even allow the words to differ &mdash; your accent &mdash; as long as the drawing does not.</p>
+      <p class="ar">كإشارة الطريق، يجعل العُرف الصورة مقروءة دون مؤلّفها. بل تسمح الشرائح بأن تختلف الكلمات &mdash; لهجتك &mdash; ما دام الرسم لا يختلف.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the slides' comparison, which part of a design may differ from one author to another without harm?</p>
+    <p class="q ar">في مقارنة الشرائح، أيّ جزء من التصميم يجوز أن يختلف من مؤلّف إلى آخر دون ضرر؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">How they say or write the scenario &mdash; their "accent"</span><span class="ar">طريقة قولهم السيناريو أو كتابته &mdash; «لهجتهم»</span></button></li>
+      <li><button class="opt"><span class="en">The mark used for an optional attribute</span><span class="ar">العلامة المستعملة للخاصية الاختيارية</span></button></li>
+      <li><button class="opt"><span class="en">The shape that stands for an entity</span><span class="ar">الشكل الذي يمثّل الكيان</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Speech is allowed to vary; the drawing is not. The <code>o</code> and the softbox are part of the convention, so they are the same on every ERD.</p>
+      <p class="ar">الكلام مسموح له أن يتنوّع، أمّا الرسم فلا. فالعلامة <code>o</code> والصندوق المستدير جزء من العُرف، فهما واحد في كل مخطّط ERD.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t3l4-h2"><span class="en">2 · Entities: softboxes with singular, uppercase names</span><span class="ar">٢ · الكيانات: صناديق مستديرة بأسماء مفردة وأحرف كبيرة</span></h2>
+
+  <div class="problem">
+    <p class="en">A draft arrives with a square box called <code>Employees</code>, a rounded one called <code>dept.</code> and an oval called <code>Job Titles</code>. Is <code>Employees</code> one employee or the whole staff list? Is the oval an entity, or a note? Three habits, three questions for the author.</p>
+    <p class="ar">تصل مسوّدة فيها صندوق مربّع اسمه <code>Employees</code>، وآخر مستدير اسمه <code>dept.</code>، وشكل بيضوي اسمه <code>Job Titles</code>. هل <code>Employees</code> موظّف واحد أم قائمة الموظّفين كلها؟ وهل الشكل البيضوي كيان أم ملاحظة؟ ثلاث عادات، وثلاثة أسئلة للمؤلّف.</p>
+  </div>
+
+  <p class="en">The slides fix all three at once: "Entities are represented by softboxes. Entity names go in the softboxes. Entity names are always singular and written with all capital letters" &mdash; <code>EMPLOYEE</code>, <code>JOB</code>, <code>DEPARTMENT</code>.</p>
+  <p class="ar">تحسم الشرائح الثلاثة دفعة واحدة: «تُمثَّل الكيانات بصناديق مستديرة الزوايا. وتوضع أسماء الكيانات داخلها. وأسماء الكيانات مفردة دائمًا، وتُكتب كلها بأحرف كبيرة» &mdash; <code>EMPLOYEE</code> و<code>JOB</code> و<code>DEPARTMENT</code>.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="softbox">softbox</span> is a rectangle with rounded corners that stands for one entity on an ERD.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="softbox">الصندوق المستدير</span> (Softbox) مستطيل بزوايا مستديرة يمثّل كيانًا واحدًا في مخطّط ERD.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="entity-name-convention">entity-name convention</span>: an entity is named by a singular noun written all in capitals &mdash; <code>EMPLOYEE</code>, never <code>Employees</code>.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="entity-name-convention">عُرف تسمية الكيان</span> (Entity-Name Convention): يُسمّى الكيان باسم مفرد يُكتب كله بأحرف كبيرة &mdash; <code>EMPLOYEE</code>، لا <code>Employees</code> أبدًا.</p>
+  </div>
+
+  <div class="evolve" id="t3l4-e1">
+    <div class="ver" data-title-en="Version 1 — every box drawn its own way" data-title-ar="الإصدار 1 — كل صندوق مرسوم على طريقته">
+      <figure class="diagram" data-diagram="t3-conv-names-v1"></figure>
+      <p class="en">Defect: a private convention. Square corners, an oval, a plural, an abbreviation and mixed case each force the reader to guess. Nothing on the page says which shapes are entities.</p>
+      <p class="ar">العيب: عُرف خاص. الزوايا الحادّة، والشكل البيضوي، والجمع، والاختصار، والأحرف المختلطة، كلٌّ منها يُجبر القارئ على التخمين. ولا شيء في الصفحة يقول أيّ الأشكال كيانات.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — softboxes, singular, UPPERCASE" data-title-ar="الإصدار 2 — صناديق مستديرة، مفردة، بأحرف كبيرة">
+      <figure class="diagram" data-diagram="t3-conv-names-v2"></figure>
+      <p class="en">Fixed: three softboxes named <code>EMPLOYEE</code>, <code>DEPARTMENT</code>, <code>JOB</code>. Each name says what <em>one</em> instance is. The abbreviation is spelled out, and the plural is gone. Recommended.</p>
+      <p class="ar">أُصلح: ثلاثة صناديق مستديرة باسم <code>EMPLOYEE</code> و<code>DEPARTMENT</code> و<code>JOB</code>. كل اسم يقول ما هي النسخة <em>الواحدة</em>. وكُتب الاسم المختصر كاملًا، وزال الجمع. وهو الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t3l4-s2"><span class="en">Singular in the box, plural only in a sentence</span><span class="ar">مفرد في الصندوق، وجمع في الجملة فقط</span></h3>
+
+  <p class="en">Why singular? The box describes one instance, and every rule about it starts "Each EMPLOYEE&hellip;". When a sentence needs the plural, ERDish adds it there and only there: "Each <code>JOB</code> may be held by one or more <code>EMPLOYEE</code>s." The box itself stays <code>EMPLOYEE</code>.</p>
+  <p class="ar">لماذا المفرد؟ الصندوق يصف نسخة واحدة، وكل قاعدة عنه تبدأ بـ «Each EMPLOYEE&hellip;». وحين تحتاج الجملة إلى الجمع، تضيفه لغة ERDish هناك وهناك فقط: «Each <code>JOB</code> may be held by one or more <code>EMPLOYEE</code>s.» أمّا الصندوق نفسه فيبقى <code>EMPLOYEE</code>.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The tables have their own naming habit, as the <a href="#t2-lab">T2 lab</a> showed: the entity <code>EMPLOYEE</code> becomes the table <code>employees</code> &mdash; plural, lowercase, because a table holds many rows. Two conventions for two readers. A softbox labelled <code>employees</code> has borrowed the table's name, and reads as a physical model, not a conceptual one.</p>
+    <p class="ar">للجداول عادة تسمية خاصة بها، كما أظهر <a href="#t2-lab">مختبر T2</a>: يصبح الكيان <code>EMPLOYEE</code> الجدولَ <code>employees</code> &mdash; جمعًا وبأحرف صغيرة، لأن الجدول يحمل صفوفًا كثيرة. عُرفان لقارئين. والصندوق المستدير الذي كُتب عليه <code>employees</code> استعار اسم الجدول، فيُقرأ نموذجًا فيزيائيًّا لا نموذجًا مفاهيميًّا.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which label is drawn correctly inside a softbox?</p>
+    <p class="q ar">أيّ اسم مرسوم بشكل صحيح داخل الصندوق المستدير؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>Employees</code></span><span class="ar"><code>Employees</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>employee</code></span><span class="ar"><code>employee</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>EMPLOYEE</code></span><span class="ar"><code>EMPLOYEE</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>EMPLOYEES</code></span><span class="ar"><code>EMPLOYEES</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Singular <em>and</em> all capitals. <code>EMPLOYEES</code> has the capitals but is plural; <code>employee</code> is singular but lowercase &mdash; the case reserved for relationship names.</p>
+      <p class="ar">مفرد <em>و</em>بأحرف كبيرة كلها. <code>EMPLOYEES</code> بأحرف كبيرة لكنه جمع، و<code>employee</code> مفرد لكنه بأحرف صغيرة &mdash; وهي الحالة المحجوزة لأسماء العلاقات.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Version 1 had an oval called <code>Job Titles</code>. What does version 2 change, and why?</p>
+    <p class="q ar">كان في الإصدار 1 شكل بيضوي اسمه <code>Job Titles</code>. ماذا يغيّر الإصدار 2، ولماذا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Only the shape: names are the author's choice</span><span class="ar">الشكل فقط: الأسماء اختيار المؤلّف</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Shape and name: a softbox named <code>JOB</code>, singular and in capitals</span><span class="ar">الشكل والاسم: صندوق مستدير اسمه <code>JOB</code>، مفرد وبأحرف كبيرة</span></button></li>
+      <li><button class="opt"><span class="en">Only the name: an oval is another accepted entity shape</span><span class="ar">الاسم فقط: الشكل البيضوي شكل آخر مقبول للكيان</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Both are fixed by the convention: entities are softboxes, and their names are singular uppercase nouns. <code>Title</code> is an attribute of <code>JOB</code>, not the entity's name.</p>
+      <p class="ar">كلاهما يحسمه العُرف: الكيانات صناديق مستديرة، وأسماؤها أسماء مفردة بأحرف كبيرة. أمّا <code>Title</code> فخاصية لـ <code>JOB</code>، لا اسم الكيان.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t3l4-h3"><span class="en">3 · Attributes under the name: <code>#</code>, <code>*</code> and <code>o</code></span><span class="ar">٣ · الخصائص تحت الاسم: <code>#</code> و<code>*</code> و<code>o</code></span></h2>
+
+  <div class="problem">
+    <p class="en">The scenario says: "For each employee on commission, we also need to track potential commission." The draft lists <code>Commission</code> with no mark. The builder guesses "required" &mdash; and now Dana Smith, the president, who earns no commission, cannot be saved at all.</p>
+    <p class="ar">يقول السيناريو: «ولكل موظّف يتقاضى عمولة، نحتاج أيضًا إلى تتبّع العمولة المحتملة.» وتُدرج المسوّدة <code>Commission</code> بلا علامة. فيخمّن من يبني الجداول «مطلوبة» &mdash; فلا يعود ممكنًا حفظ Dana Smith، الرئيسة التي لا تتقاضى عمولة، أصلًا.</p>
+  </div>
+
+  <p class="en">The slides: "Attributes are listed under the entity names. Mandatory attributes are marked with an asterisk: '*'. Optional attributes are marked with a circle: 'o'. Unique identifiers are marked with a hash sign: '#'." One mark at the start of each line answers the builder's question before it is asked.</p>
+  <p class="ar">تقول الشرائح: «تُدرج الخصائص تحت أسماء الكيانات. وتُوسم الخصائص الإلزامية بنجمة: '*'. وتُوسم الخصائص الاختيارية بدائرة: 'o'. وتُوسم المعرّفات الفريدة بعلامة '#'.» علامة واحدة في أول كل سطر تجيب عن سؤال من يبني الجداول قبل أن يطرحه.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="hash-mark">hash mark</span> <code>#</code> before an attribute says it is (part of) the entity's unique identifier.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="hash-mark">علامة #</span> (Hash Mark) قبل الخاصية تقول إنها المعرّف الفريد للكيان (أو جزء منه).</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="asterisk-mark">asterisk</span> <code>*</code> before an attribute says it is mandatory: every instance must have a value.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="asterisk-mark">النجمة</span> (Asterisk) <code>*</code> قبل الخاصية تقول إنها إلزامية: لا بدّ أن تكون لكل نسخة قيمة.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="circle-mark">circle</span> <code>o</code> before an attribute says it is optional: an instance may have no value.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="circle-mark">الدائرة</span> (Circle) <code>o</code> قبل الخاصية تقول إنها اختيارية: قد لا تكون للنسخة قيمة.</p>
+  </div>
+
+  <div class="evolve" id="t3l4-e2">
+    <div class="ver" data-title-en="Version 1 — attributes listed, nothing marked" data-title-ar="الإصدار 1 — الخصائص مُدرجة، ولا شيء مُعلَّم">
+      <figure class="diagram" data-diagram="t3-conv-attrs-v1"></figure>
+      <p class="en">Defect: the attributes are there, but not their rules. Which one identifies an employee? Must <code>Salary</code> have a value? May <code>Commission</code> be empty? Each builder guesses, and two builders guess differently.</p>
+      <p class="ar">العيب: الخصائص موجودة، لكن قواعدها لا. أيّها يُعرِّف الموظّف؟ هل لا بدّ لـ <code>Salary</code> من قيمة؟ وهل يجوز أن تبقى <code>Commission</code> فارغة؟ كل من يبني الجداول يخمّن، واثنان منهم يخمّنان تخمينين مختلفين.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — # for the UID, * mandatory, o optional" data-title-ar="الإصدار 2 — # للمعرّف الفريد، و* إلزامية، وo اختيارية">
+      <figure class="diagram" data-diagram="t3-conv-attrs-v2"></figure>
+      <p class="en">Fixed: every line begins with its rule. <code>#</code> marks <code>Employee ID</code>, <code>Department ID</code> and <code>Job ID</code>; <code>*</code> every value the business always has; <code>o</code> the one it may not &mdash; <code>Commission</code>. This is the slides' model. Recommended.</p>
+      <p class="ar">أُصلح: كل سطر يبدأ بقاعدته. <code>#</code> تَسِم <code>Employee ID</code> و<code>Department ID</code> و<code>Job ID</code>، و<code>*</code> كل قيمة يملكها العمل دائمًا، و<code>o</code> القيمة الوحيدة التي قد لا يملكها &mdash; <code>Commission</code>. وهذا نموذج الشرائح. وهو الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t3l4-s3"><span class="en">Why this track writes <code># *</code></span><span class="ar">لماذا يكتب هذا المسار <code># *</code></span></h3>
+
+  <p class="en">The slide draws <code># ID</code>. Since <a href="#t2-lesson-06">T2 lesson 6</a> this track has written <code># * Employee ID</code>. Both say the same thing: an identifier with no value identifies nothing, so a UID is always mandatory as well. The <code>*</code> only makes it visible.</p>
+  <p class="ar">ترسم الشريحة <code># ID</code>. ومنذ <a href="#t2-lesson-06">الدرس 6 من T2</a> يكتب هذا المسار <code># * Employee ID</code>. وكلاهما يقول الشيء نفسه: المعرّف الذي لا قيمة له لا يُعرِّف شيئًا، فالمعرّف الفريد إلزامي دائمًا أيضًا. و<code>*</code> تجعل ذلك ظاهرًا فقط.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 2, built mark for mark: <code>#</code> is <code>PRIMARY KEY</code>, each <code>*</code> is <code>NOT NULL</code>, and <code>o Commission</code> is a plain column. Dana (no commission) and Tyler are already in. Omar is hired, and the clerk forgets his salary:</p>
+    <p class="ar">الإصدار 2، مبنيًّا علامةً علامة: <code>#</code> هي <code>PRIMARY KEY</code>، وكل <code>*</code> هي <code>NOT NULL</code>، و<code>o Commission</code> عمود عادي. Dana (بلا عمولة) وTyler موجودان من قبل. ويُعيَّن Omar، وينسى الموظّف المختصّ راتبه:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"explore","objects":true,"dataset":{},"setup":["CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, hire_date DATE NOT NULL, salary NUMBER NOT NULL, commission NUMBER)","INSERT INTO employees VALUES (100,'Dana','Smith','2015-06-17',24000,NULL), (310,'Tyler','Adams','2019-03-01',8000,0.2)"],"sql":"INSERT INTO employees (employee_id, first_name, last_name, hire_date)\nVALUES (316, 'Omar', 'Haddad', '2024-05-02');"}
+      </script>
+    </div>
+    <p class="en">It fails with <code>Wrong NULL value in NOT NULL column salary</code> &mdash; the <code>*</code>, enforced. Add <code>salary</code> with <code>7000</code> and run again: the row is saved, with no <code>commission</code> at all. That is the <code>o</code>. Try <code>310</code> as the id and the <code>#</code> answers: <code>Cannot insert record, because it already exists in primary key index</code>.</p>
+    <p class="ar">يفشل برسالة <code>Wrong NULL value in NOT NULL column salary</code> &mdash; إنها <code>*</code>، مُطبَّقة. أضف <code>salary</code> بالقيمة <code>7000</code> وشغّل من جديد: يُحفظ الصفّ، بلا <code>commission</code> إطلاقًا. وتلك هي <code>o</code>. وجرّب <code>310</code> معرّفًا فتجيب <code>#</code>: <code>Cannot insert record, because it already exists in primary key index</code>.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">"For each employee on commission, we also need to track potential commission." Which mark goes before <code>Commission</code>?</p>
+    <p class="q ar">«ولكل موظّف يتقاضى عمولة، نحتاج أيضًا إلى تتبّع العمولة المحتملة.» أيّ علامة توضع قبل <code>Commission</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>#</code></span><span class="ar"><code>#</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>*</code></span><span class="ar"><code>*</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>o</code></span><span class="ar"><code>o</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"For each employee <em>on commission</em>" means some employees are not, so some instances have no value: optional, <code>o</code>. The lecturer's gloss for <em>potential</em> is محتمل.</p>
+      <p class="ar">«لكل موظّف <em>يتقاضى عمولة</em>» تعني أن بعض الموظّفين لا يتقاضونها، فبعض النُّسَخ لا قيمة لها: اختيارية، <code>o</code>. وكلمة المحاضِرة لـ <em>potential</em> هي «محتمل».</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A softbox line reads <code>* Hire Date</code>. What does the administrator write for that column?</p>
+    <p class="q ar">سطر في صندوق مستدير نصّه <code>* Hire Date</code>. ماذا يكتب مدير قاعدة البيانات لذلك العمود؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>hire_date DATE PRIMARY KEY</code></span><span class="ar"><code>hire_date DATE PRIMARY KEY</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>hire_date DATE NOT NULL</code></span><span class="ar"><code>hire_date DATE NOT NULL</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>hire_date DATE</code>, nullable</span><span class="ar"><code>hire_date DATE</code>، يقبل NULL</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>*</code> means mandatory, so <code>NOT NULL</code>. It is not the UID &mdash; that would carry <code>#</code> &mdash; and it is not optional, which would carry <code>o</code>.</p>
+      <p class="ar"><code>*</code> تعني إلزامية، إذن <code>NOT NULL</code>. وليست المعرّف الفريد &mdash; فذاك يحمل <code>#</code> &mdash; وليست اختيارية، فتلك تحمل <code>o</code>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t3l4-h4"><span class="en">4 · Relationships: lines, halves, ends and lowercase names</span><span class="ar">٤ · العلاقات: خطوط، وأنصاف، وأطراف، وأسماء بأحرف صغيرة</span></h2>
+
+  <div class="problem">
+    <p class="en">The next draft joins the boxes with arrows labelled <code>WORKS IN</code> and <code>HOLDS</code>, in capitals, in the middle of each line. Does <code>DEPARTMENT</code> work in <code>EMPLOYEE</code>? What is the line called from the department's side? Must every employee have a job? The arrows cannot say.</p>
+    <p class="ar">تصل المسوّدة التالية الصناديق بأسهم كُتب عليها <code>WORKS IN</code> و<code>HOLDS</code>، بأحرف كبيرة، في منتصف كل خط. هل يعمل <code>DEPARTMENT</code> في <code>EMPLOYEE</code>؟ وما اسم الخط من جهة القسم؟ وهل يجب أن يكون لكل موظّف وظيفة؟ الأسهم لا تستطيع أن تقول.</p>
+  </div>
+
+  <p class="en">The slides: "Relationships are lines that connect entities. These lines are either solid or dashed. These lines terminate in either a single toe or a crow's foot at the end of each entity." A relationship's name is "the label that appears close to the entity it is assigned to. Make sure that all relationship names are in lowercase."</p>
+  <p class="ar">تقول الشرائح: «العلاقات خطوط تصل بين الكيانات. وهذه الخطوط إمّا متّصلة وإمّا متقطّعة. وتنتهي إمّا بإصبع واحدة وإمّا بقدم غراب عند طرف كل كيان.» واسم العلاقة هو «الوسم الذي يظهر قريبًا من الكيان المُسنَد إليه. وتأكّد أن أسماء العلاقات كلها بأحرف صغيرة.»</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="lowercase-relationship-name">lowercase relationship name</span> is a relationship's label, written in small letters beside the entity whose sentence it completes.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="lowercase-relationship-name">اسم العلاقة بالأحرف الصغيرة</span> (Lowercase Relationship Name) هو وسم العلاقة، مكتوبًا بأحرف صغيرة بجانب الكيان الذي يُكمل جملتَه.</p>
+  </div>
+
+  <div class="evolve" id="t3l4-e3">
+    <div class="ver" data-title-en="Version 1 — arrows, one capitalised name in the middle" data-title-ar="الإصدار 1 — أسهم، واسم واحد بأحرف كبيرة في المنتصف">
+      <figure class="diagram" data-diagram="t3-conv-rels-v1"></figure>
+      <p class="en">Defects: an arrowhead is not an ERD mark, so neither end says <em>one</em> or <em>more</em>, and no half says <em>must</em> or <em>may</em>. Each line is named once, in capitals that look like an entity, and from <code>DEPARTMENT</code> or <code>JOB</code> the line has no name.</p>
+      <p class="ar">العيوب: رأس السهم ليس علامة في مخطّط ERD، فلا يقول أيّ طرف <em>واحد</em> أو <em>أكثر</em>، ولا يقول أيّ نصف <em>يجب</em> أو <em>قد</em>. وكل خط مسمّى مرّة واحدة، بأحرف كبيرة تبدو اسم كيان، ومن جهة <code>DEPARTMENT</code> أو <code>JOB</code> لا اسم للخط.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — every mark by the convention" data-title-ar="الإصدار 2 — كل علامة وفق العُرف">
+      <figure class="diagram" data-diagram="t3-conv-hr"></figure>
+      <p class="en">Fixed: two names per line, lowercase, each beside the entity its sentence starts from &mdash; <code>work in</code> by <code>EMPLOYEE</code>, <code>responsible for</code> by <code>DEPARTMENT</code>. Solid halves at <code>EMPLOYEE</code>, dashed at the other entity; crow's feet at <code>EMPLOYEE</code>. The four sentences can now be read off the picture. Recommended.</p>
+      <p class="ar">أُصلح: اسمان لكل خط، بأحرف صغيرة، كلٌّ بجانب الكيان الذي تبدأ منه جملته &mdash; <code>work in</code> عند <code>EMPLOYEE</code>، و<code>responsible for</code> عند <code>DEPARTMENT</code>. النصفان المتّصلان عند <code>EMPLOYEE</code>، والمتقطّعان عند الكيان الآخر، وقدما الغراب عند <code>EMPLOYEE</code>. وصار ممكنًا أن تُقرأ الجمل الأربع من الصورة. وهو الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t3l4-s4"><span class="en">Three kinds of word, told apart by their case</span><span class="ar">ثلاثة أنواع من الكلمات، تُميَّز بحالة أحرفها</span></h3>
+
+  <p class="en">The convention makes a sentence self-describing. In "Each <code>EMPLOYEE</code> must work in one and only one <code>DEPARTMENT</code>", the capitals are entities, the lowercase <code>work in</code> is the relationship, and the rest is ERDish wording from <a href="#t3-lesson-02">Lesson 2</a> and <a href="#t3-lesson-03">Lesson 3</a>. Attributes never appear in it: they stay in their box, behind a mark.</p>
+  <p class="ar">يجعل العُرف الجملة تصف نفسها. ففي «Each <code>EMPLOYEE</code> must work in one and only one <code>DEPARTMENT</code>»، الأحرف الكبيرة كيانات، و<code>work in</code> بأحرفها الصغيرة هي العلاقة، والباقي صياغة ERDish من <a href="#t3-lesson-02">الدرس 2</a> و<a href="#t3-lesson-03">الدرس 3</a>. أمّا الخصائص فلا تظهر فيها أبدًا: تبقى في صندوقها، خلف علامة.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Every mark on the line reaches the table; the name does not. The crow's foot at <code>EMPLOYEE</code> puts <code>department_id</code> and <code>job_id</code> in <code>employees</code> (Lesson 3); the solid <code>EMPLOYEE</code> halves make both <code>NOT NULL</code> (Lesson 2). <code>work in</code> and <code>hold</code> become no column at all &mdash; they live on the ERD and in the business rules.</p>
+    <p class="ar">كل علامة على الخط تصل إلى الجدول، أمّا الاسم فلا. قدم الغراب عند <code>EMPLOYEE</code> تضع <code>department_id</code> و<code>job_id</code> في <code>employees</code> (الدرس 3)، والنصفان المتّصلان عند <code>EMPLOYEE</code> يجعلانهما <code>NOT NULL</code> (الدرس 2). أمّا <code>work in</code> و<code>hold</code> فلا تصيران عمودًا أصلًا &mdash; فهما تعيشان في مخطّط ERD وفي قواعد العمل.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">On the EMPLOYEE&ndash;DEPARTMENT line, where is <code>work in</code> written?</p>
+    <p class="q ar">على خط EMPLOYEE&ndash;DEPARTMENT، أين تُكتب <code>work in</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">In the middle of the line, so both entities share it</span><span class="ar">في منتصف الخط، ليتشاركها الكيانان</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Beside <code>EMPLOYEE</code>, because its sentence starts "Each EMPLOYEE must work in&hellip;"</span><span class="ar">بجانب <code>EMPLOYEE</code>، لأن جملتها تبدأ بـ «Each EMPLOYEE must work in&hellip;»</span></button></li>
+      <li><button class="opt"><span class="en">Beside <code>DEPARTMENT</code>, the entity being worked in</span><span class="ar">بجانب <code>DEPARTMENT</code>، الكيان الذي يُعمل فيه</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The name sits close to the entity it is assigned to &mdash; the one the sentence starts from. Beside <code>DEPARTMENT</code> sits the other name, <code>responsible for</code>.</p>
+      <p class="ar">يقع الاسم قريبًا من الكيان المُسنَد إليه &mdash; الكيان الذي تبدأ منه الجملة. وبجانب <code>DEPARTMENT</code> يقع الاسم الآخر، <code>responsible for</code>.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Version 1 labels a line <code>WORKS IN</code>. Which two convention rules does that label break?</p>
+    <p class="q ar">يَسِم الإصدار 1 خطًّا بـ <code>WORKS IN</code>. أيّ قاعدتين من قواعد العُرف يخالفهما هذا الوسم؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">It should be singular and longer</span><span class="ar">يجب أن يكون مفردًا وأطول</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">It is in capitals, and it is the only name on a line that needs one at each end</span><span class="ar">مكتوب بأحرف كبيرة، وهو الاسم الوحيد على خط يحتاج إلى اسم عند كل طرف</span></button></li>
+      <li><button class="opt"><span class="en">It names an attribute instead of a relationship</span><span class="ar">يسمّي خاصية بدلًا من علاقة</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Relationship names are lowercase, so they cannot be mistaken for entities; and a relationship is named at both ends (<a href="#t3-lesson-01">Lesson 1</a>), so <code>DEPARTMENT</code> needs <code>responsible for</code>.</p>
+      <p class="ar">أسماء العلاقات بأحرف صغيرة، فلا تُخلط بالكيانات؛ والعلاقة مسمّاة عند طرفيها (<a href="#t3-lesson-01">الدرس 1</a>)، فيحتاج <code>DEPARTMENT</code> إلى <code>responsible for</code>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t3l4-h5"><span class="en">5 · Checking a whole ERD against the convention</span><span class="ar">٥ · فحص مخطّط ERD كامل في ضوء العُرف</span></h2>
+
+  <div class="problem">
+    <p class="en">A classmate hands you their H.R. ERD and asks, "Is it drawn right?" Staring at the whole picture finds nothing in particular. You need an order to look in, so that no mark is skipped.</p>
+    <p class="ar">يناولك زميل مخطّط ERD للموارد البشرية ويسأل: «هل هو مرسوم بشكل صحيح؟» والتحديق في الصورة كلها لا يكشف شيئًا بعينه. تحتاج إلى ترتيب تنظر به، كي لا تفوتك علامة.</p>
+  </div>
+
+  <p class="en">Follow the slides' order &mdash; entities, attributes, relationships &mdash; and ask one question per mark. Every row of this card is a rule from the slides; every violation is one row answered "no".</p>
+  <p class="ar">اتبع ترتيب الشرائح &mdash; الكيانات، فالخصائص، فالعلاقات &mdash; واطرح سؤالًا واحدًا لكل علامة. كل صفّ في هذه البطاقة قاعدة من الشرائح، وكل مخالفة صفّ جوابه «لا».</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Check</th><th class="ar">الفحص</th><th class="en">The convention</th><th class="ar">العُرف</th></tr></thead>
+      <tbody>
+        <tr><td class="en">1 · Shape</td><td class="ar">1 · الشكل</td><td class="en">every entity is a softbox</td><td class="ar">كل كيان صندوق مستدير</td></tr>
+        <tr><td class="en">2 · Entity name</td><td class="ar">2 · اسم الكيان</td><td class="en">inside the box, singular, UPPERCASE</td><td class="ar">داخل الصندوق، مفرد، بأحرف كبيرة</td></tr>
+        <tr><td class="en">3 · Attributes</td><td class="ar">3 · الخصائص</td><td class="en">listed under the name, each with <code>#</code>, <code>*</code> or <code>o</code></td><td class="ar">مُدرجة تحت الاسم، كلٌّ منها بـ <code>#</code> أو <code>*</code> أو <code>o</code></td></tr>
+        <tr><td class="en">4 · Line</td><td class="ar">4 · الخط</td><td class="en">each half solid (must) or dashed (may)</td><td class="ar">كل نصف متّصل (يجب) أو متقطّع (قد)</td></tr>
+        <tr><td class="en">5 · Ends</td><td class="ar">5 · الأطراف</td><td class="en">each end a single toe or a crow's foot</td><td class="ar">كل طرف إصبع واحدة أو قدم غراب</td></tr>
+        <tr><td class="en">6 · Relationship names</td><td class="ar">6 · أسماء العلاقات</td><td class="en">two per line, lowercase, beside their entity</td><td class="ar">اسمان لكل خط، بأحرف صغيرة، بجانب كيانهما</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="t3l4-s5"><span class="en">Spot the breaks</span><span class="ar">اكتشف المخالفات</span></h3>
+
+  <p class="en">An ERD written as text, one mark per line. Run the card down it: lines 1, 3 and 6 each break one rule.</p>
+  <p class="ar">مخطّط ERD مكتوب نصًّا، علامة في كل سطر. مرّر البطاقة عليه: الأسطر 1 و3 و6 يخالف كلٌّ منها قاعدة واحدة.</p>
+
+  <pre class="code" data-lang="text"><code>1  softbox  Departments
+2  softbox  EMPLOYEE      # * Employee ID   * First Name   o Commission
+3  softbox  JOB           Job ID   * Title   * Max Salary   * Min Salary
+4  line     EMPLOYEE  [solid, crow's foot]  -- [dashed, single toe]  DEPARTMENT
+5  names    "work in" beside EMPLOYEE · "responsible for" beside DEPARTMENT
+6  names    "HOLD" beside EMPLOYEE · "held by" beside JOB</code></pre>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">A conforming ERD can be built without a single question. Here is version 2 turned into three tables, mark for mark, with the chapter's people in them. Run it:</p>
+    <p class="ar">مخطّط ERD الملتزم بالعُرف يمكن بناؤه دون سؤال واحد. هذا هو الإصدار 2 محوّلًا إلى ثلاثة جداول، علامةً علامة، وفيها أشخاص الفصل. شغّله:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE departments (department_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO departments VALUES (10,'Accounting'), (15,'Sales'), (22,'Development')","CREATE TABLE jobs (job_id VARCHAR(10) PRIMARY KEY, title VARCHAR(30) NOT NULL, max_salary NUMBER NOT NULL, min_salary NUMBER NOT NULL)","INSERT INTO jobs VALUES ('AD_PRES','President',40000,20000), ('AC_MGR','Accounting Manager',16000,8200), ('SA_REP','Sales Representative',12000,6000), ('IT_PROG','Programmer',10000,4000), ('ST_CLERK','Stock Clerk',5000,2000)","CREATE TABLE employees (employee_id NUMBER PRIMARY KEY, first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL, hire_date DATE NOT NULL, salary NUMBER NOT NULL, commission NUMBER, department_id NUMBER NOT NULL, job_id VARCHAR(10) NOT NULL)","INSERT INTO employees VALUES (100,'Dana','Smith','2015-06-17',24000,NULL,10,'AD_PRES'), (210,'Lawrence','Chen','2017-09-21',12000,NULL,10,'AC_MGR'), (310,'Tyler','Adams','2019-03-01',8000,0.2,15,'SA_REP'), (315,'Mariam','Odeh','2024-02-11',7000,NULL,15,'SA_REP'), (378,'Neil','Loungani','2020-01-13',9000,NULL,22,'IT_PROG')"],"sql":"SELECT e.first_name, d.name AS department, j.title AS job, e.commission\nFROM employees e\nJOIN departments d ON e.department_id = d.department_id\nJOIN jobs j ON e.job_id = j.job_id\nORDER BY e.employee_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>first_name</code></th><th><code>department</code></th><th><code>job</code></th><th><code>commission</code></th></tr></thead>
+          <tbody>
+            <tr><td>Dana</td><td>Accounting</td><td>President</td><td>∅</td></tr>
+            <tr><td>Lawrence</td><td>Accounting</td><td>Accounting Manager</td><td>∅</td></tr>
+            <tr><td>Tyler</td><td>Sales</td><td>Sales Representative</td><td>0.2</td></tr>
+            <tr><td>Mariam</td><td>Sales</td><td>Sales Representative</td><td>∅</td></tr>
+            <tr><td>Neil</td><td>Development</td><td>Programmer</td><td>∅</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Every employee has a department and a job (the solid halves); Sales and Sales Representative appear twice (the crow's feet); four commissions are empty (the <code>o</code>). Nobody is a Stock Clerk, and the dashed <code>JOB</code> half allows a job with no holder.</p>
+    <p class="ar">لكل موظّف قسم ووظيفة (النصفان المتّصلان)، وتظهر Sales وSales Representative مرّتين (قدما الغراب)، وأربع عمولات فارغة (<code>o</code>). ولا أحد أمين مخزن (Stock Clerk)، والنصف المتقطّع عند <code>JOB</code> يسمح بوظيفة لا شاغل لها.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapter 3</span><span class="ar">خيط · الفصل 3 في SQL</span></h4>
+    <p class="en">On the SQL track, <a href="@/chapters/chapter-3.html">Chapter 3 &mdash; Relationships</a> starts from tables that already exist and joins them. The ERD it would have come from is never shown. The convention is what lets a design be handed to someone else and come back as exactly those tables.</p>
+    <p class="ar">في مسار SQL، يبدأ <a href="@/chapters/chapter-3.html">الفصل 3 &mdash; العلاقات</a> من جداول موجودة أصلًا ويربطها، ولا يُعرض أبدًا مخطّط ERD الذي جاءت منه. والعُرف هو ما يسمح بتسليم التصميم لشخص آخر فيعود بتلك الجداول بالضبط.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the text ERD above, what is wrong with line 3?</p>
+    <p class="q ar">في مخطّط ERD النصّي أعلاه، ما الخطأ في السطر 3؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>JOB</code> should be plural</span><span class="ar">يجب أن يكون <code>JOB</code> جمعًا</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>Job ID</code> has no mark; as the UID it needs <code># *</code></span><span class="ar"><code>Job ID</code> بلا علامة؛ وبوصفه المعرّف الفريد يحتاج إلى <code># *</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>* Max Salary</code> should be <code>o</code></span><span class="ar">يجب أن تكون <code>* Max Salary</code> بالعلامة <code>o</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Every attribute carries a mark, and the identifier carries <code>#</code>. Line 1 breaks check 2 (<code>Departments</code> is plural and mixed case); line 6 breaks check 6 (<code>HOLD</code> is in capitals).</p>
+      <p class="ar">كل خاصية تحمل علامة، والمعرّف يحمل <code>#</code>. والسطر 1 يخالف الفحص 2 (<code>Departments</code> جمع وبأحرف مختلطة)، والسطر 6 يخالف الفحص 6 (<code>HOLD</code> بأحرف كبيرة).</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which part of the ERD has no column in the tables at all?</p>
+    <p class="q ar">أيّ جزء من مخطّط ERD لا عمود له في الجداول إطلاقًا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The <code>o</code> before <code>Commission</code></span><span class="ar">العلامة <code>o</code> قبل <code>Commission</code></span></button></li>
+      <li><button class="opt"><span class="en">The crow's foot at <code>EMPLOYEE</code></span><span class="ar">قدم الغراب عند <code>EMPLOYEE</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The relationship names <code>work in</code> and <code>responsible for</code></span><span class="ar">اسما العلاقة <code>work in</code> و<code>responsible for</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The <code>o</code> becomes a nullable <code>commission</code>; the crow's foot puts <code>department_id</code> in <code>employees</code>. The names are for people: they turn the line into ERDish sentences, and the tables never store them.</p>
+      <p class="ar">العلامة <code>o</code> تصير عمود <code>commission</code> يقبل NULL، وقدم الغراب تضع <code>department_id</code> في <code>employees</code>. أمّا الاسمان فللبشر: يحوّلان الخط إلى جمل ERDish، والجداول لا تخزّنهما أبدًا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t3l4-h6"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Fix the names</span><span class="ar">تمرين 1 · أصلح الأسماء</span></h4>
+    <p class="en">Rewrite each label so it follows the entity-name convention, and say which rule it broke: (a) <code>Customers</code> (b) <code>order</code> (c) <code>Prod. Type</code> (d) <code>JOBS</code> (e) <code>Department</code>.</p>
+    <p class="ar">أعد كتابة كل اسم بحيث يتبع عُرف تسمية الكيان، وقل أيّ قاعدة خالفها: (a) <code>Customers</code> (b) <code>order</code> (c) <code>Prod. Type</code> (d) <code>JOBS</code> (e) <code>Department</code>.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(a) <code>CUSTOMER</code> &mdash; plural and mixed case. (b) <code>ORDER</code> &mdash; lowercase. (c) <code>PRODUCT TYPE</code> &mdash; abbreviated and mixed case. (d) <code>JOB</code> &mdash; plural. (e) <code>DEPARTMENT</code> &mdash; mixed case.</p>
+      <p class="ar">(a) <code>CUSTOMER</code> &mdash; جمع وبأحرف مختلطة. (b) <code>ORDER</code> &mdash; بأحرف صغيرة. (c) <code>PRODUCT TYPE</code> &mdash; مختصر وبأحرف مختلطة. (d) <code>JOB</code> &mdash; جمع. (e) <code>DEPARTMENT</code> &mdash; بأحرف مختلطة.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Draw the softbox from the scenario</span><span class="ar">تمرين 2 · ارسم الصندوق المستدير من السيناريو</span></h4>
+    <p class="en">From the slides' scenario, write the <code>JOB</code> and <code>DEPARTMENT</code> softboxes as text, one attribute per line with its mark: "All employees hold a job, and we keep track of the job title, max and min salary for each job. Every job has a unique job id." &mdash; "Each department has a unique number." Departments also have a name.</p>
+    <p class="ar">من سيناريو الشرائح، اكتب الصندوقين المستديرين <code>JOB</code> و<code>DEPARTMENT</code> نصًّا، خاصية في كل سطر مع علامتها: «يشغل كل الموظّفين وظيفة، ونتتبّع عنوان الوظيفة، والحدّ الأعلى والأدنى لراتب كل وظيفة. ولكل وظيفة معرّف وظيفة فريد.» &mdash; «ولكل قسم رقم فريد.» وللأقسام اسم أيضًا.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="text"><code>JOB                    DEPARTMENT
+# * Job ID             # * Department ID
+* Title                * Name
+* Max Salary
+* Min Salary</code></pre>
+      <p class="en">"Unique" marks the identifier, <code>#</code> (with <code>*</code>, since a UID always has a value). "We keep track &hellip; for each job" means every job has all three values, so each is <code>*</code>. Nothing here is optional, so there is no <code>o</code>.</p>
+      <p class="ar">كلمة «فريد» تَسِم المعرّف، <code>#</code> (مع <code>*</code>، لأن للمعرّف الفريد قيمة دائمًا). و«نتتبّع &hellip; لكل وظيفة» تعني أن لكل وظيفة القيم الثلاث كلها، فكلٌّ منها <code>*</code>. ولا شيء هنا اختياري، فلا <code>o</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Find every break</span><span class="ar">تمرين 3 · جِد كل مخالفة</span></h4>
+    <p class="en">Run the six-check card over this draft. List each line that breaks the convention, the check it fails, and the corrected line.</p>
+    <p class="ar">مرّر بطاقة الفحوص الست على هذه المسوّدة. اذكر كل سطر يخالف العُرف، والفحص الذي يفشل فيه، والسطر بعد تصحيحه.</p>
+    <pre class="code" data-lang="text"><code>1  softbox  EMPLOYEE   # * Employee ID   * First Name   * Last Name   Commission
+2  oval     JOB        # * Job ID   * Title
+3  softbox  DEPARTMENT # * Department ID   * Name
+4  line     EMPLOYEE  [solid, crow's foot]  -- [dashed, arrowhead]  JOB
+5  names    "hold" beside EMPLOYEE · "Held By" beside JOB</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Line 1, check 3: <code>Commission</code> has no mark &mdash; <code>o Commission</code>. Line 2, check 1: an oval &mdash; draw <code>JOB</code> as a softbox. Line 4, check 5: an arrowhead &mdash; the <code>JOB</code> end is a single toe. Line 5, check 6: <code>Held By</code> &mdash; write <code>held by</code>. Line 3 is correct.</p>
+      <p class="ar">السطر 1، الفحص 3: <code>Commission</code> بلا علامة &mdash; <code>o Commission</code>. السطر 2، الفحص 1: شكل بيضوي &mdash; ارسم <code>JOB</code> صندوقًا مستديرًا. السطر 4، الفحص 5: رأس سهم &mdash; طرف <code>JOB</code> إصبع واحدة. السطر 5، الفحص 6: <code>Held By</code> &mdash; اكتب <code>held by</code>. والسطر 3 صحيح.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Draw the line from its sentences</span><span class="ar">تمرين 4 · ارسم الخط من جملتيه</span></h4>
+    <p class="en">"Each <code>ORDER</code> must be placed by one and only one <code>CUSTOMER</code>. Each <code>CUSTOMER</code> must place one or more <code>ORDER</code>s." Describe the line by the convention: each half, each end, and where each name is written.</p>
+    <p class="ar">«Each <code>ORDER</code> must be placed by one and only one <code>CUSTOMER</code>. Each <code>CUSTOMER</code> must place one or more <code>ORDER</code>s.» صِف الخط وفق العُرف: كل نصف، وكل طرف، وأين يُكتب كل اسم.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Both sentences say <em>must</em>, so both halves are solid. "One or more ORDERs" puts a crow's foot at <code>ORDER</code>; "one and only one CUSTOMER" a single toe at <code>CUSTOMER</code>. <code>place</code> is written beside <code>CUSTOMER</code>, <code>placed by</code> beside <code>ORDER</code> &mdash; both lowercase. The entity names stay singular in their boxes.</p>
+      <p class="ar">الجملتان تقولان <em>must</em>، فالنصفان متّصلان. و«one or more ORDERs» تضع قدم غراب عند <code>ORDER</code>، و«one and only one CUSTOMER» إصبعًا واحدة عند <code>CUSTOMER</code>. وتُكتب <code>place</code> بجانب <code>CUSTOMER</code>، و<code>placed by</code> بجانب <code>ORDER</code> &mdash; وكلاهما بأحرف صغيرة. ويبقى اسما الكيانين مفردين في صندوقيهما.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · From softbox to table</span><span class="ar">تمرين 5 · من الصندوق المستدير إلى الجدول</span></h4>
+    <p class="en">Write <code>CREATE TABLE jobs</code> from the <code>JOB</code> softbox of exercise 2, mark for mark. Then predict what happens to <code>INSERT INTO jobs (job_id, title, max_salary) VALUES ('ST_CLERK', 'Stock Clerk', 5000);</code></p>
+    <p class="ar">اكتب <code>CREATE TABLE jobs</code> من صندوق <code>JOB</code> في التمرين 2، علامةً علامة. ثم توقّع ما يحدث لـ <code>INSERT INTO jobs (job_id, title, max_salary) VALUES ('ST_CLERK', 'Stock Clerk', 5000);</code></p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>CREATE TABLE jobs (
+  job_id     VARCHAR(10) PRIMARY KEY,   -- # * Job ID
+  title      VARCHAR(30) NOT NULL,      -- * Title
+  max_salary NUMBER NOT NULL,           -- * Max Salary
+  min_salary NUMBER NOT NULL            -- * Min Salary
+);</code></pre>
+      <p class="en">The insert fails: <code>Wrong NULL value in NOT NULL column min_salary</code>. <code>Min Salary</code> carries <code>*</code>, so a job without it cannot be stored. The ERD already said so; the table only enforces it.</p>
+      <p class="ar">يفشل الإدخال: <code>Wrong NULL value in NOT NULL column min_salary</code>. فـ <code>Min Salary</code> تحمل <code>*</code>، فلا يمكن تخزين وظيفة بدونها. لقد قالها المخطّط من قبل، والجدول يطبّقها فحسب.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">ER diagrams follow one shared convention so that any reader decodes them the same way, whoever drew them &mdash; like international signs.</li>
+      <li class="ar">تتبع مخطّطات ER عُرفًا مشتركًا واحدًا كي يفكّ أيّ قارئ رموزها بالطريقة نفسها، أيًّا كان من رسمها &mdash; كالعلامات الدولية.</li>
+      <li class="en">An entity is a softbox; its name is inside it, singular and in capitals.</li>
+      <li class="ar">الكيان صندوق مستدير، واسمه داخله، مفرد وبأحرف كبيرة.</li>
+      <li class="en">Attributes are listed under the name: <code>#</code> the unique identifier, <code>*</code> mandatory, <code>o</code> optional.</li>
+      <li class="ar">تُدرج الخصائص تحت الاسم: <code>#</code> المعرّف الفريد، و<code>*</code> إلزامية، و<code>o</code> اختيارية.</li>
+      <li class="en">A relationship is a line: solid or dashed halves, a single toe or crow's foot at each end, and a lowercase name beside each entity.</li>
+      <li class="ar">العلاقة خطّ: نصفان متّصلان أو متقطّعان، وإصبع واحدة أو قدم غراب عند كل طرف، واسم بأحرف صغيرة بجانب كل كيان.</li>
+      <li class="en">The case tells words apart: UPPERCASE entity, lowercase relationship.</li>
+      <li class="ar">حالة الأحرف تميّز الكلمات: أحرف كبيرة للكيان، وصغيرة للعلاقة.</li>
+      <li class="en">Every mark except the relationship name becomes something in SQL: table, <code>PRIMARY KEY</code>, <code>NOT NULL</code>, nullable column, foreign key.</li>
+      <li class="ar">كل علامة، عدا اسم العلاقة، تصير شيئًا في SQL: جدولًا، أو <code>PRIMARY KEY</code>، أو <code>NOT NULL</code>، أو عمودًا يقبل NULL، أو مفتاحًا أجنبيًّا.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Plural or lowercase entity names (<code>Employees</code>, <code>employee</code>) &mdash; or the table's name (<code>employees</code>) on the ERD.</li>
+      <li class="ar">أسماء كيانات بالجمع أو بأحرف صغيرة (<code>Employees</code>، <code>employee</code>) &mdash; أو اسم الجدول (<code>employees</code>) في المخطّط.</li>
+      <li class="en">Ovals, square boxes or arrows: shapes from other diagram styles, not from this convention.</li>
+      <li class="ar">الأشكال البيضوية أو الصناديق المربّعة أو الأسهم: أشكال من أنماط رسم أخرى، لا من هذا العُرف.</li>
+      <li class="en">An attribute line with no mark, which leaves the builder to guess.</li>
+      <li class="ar">سطر خاصية بلا علامة، يترك من يبني الجداول يخمّن.</li>
+      <li class="en">One relationship name in the middle of the line, or a name in capitals.</li>
+      <li class="ar">اسم علاقة واحد في منتصف الخط، أو اسم بأحرف كبيرة.</li>
+      <li class="en">Writing words like "(required)" instead of the <code>*</code> every reader already knows.</li>
+      <li class="ar">كتابة كلمات مثل «(مطلوب)» بدلًا من <code>*</code> التي يعرفها كل قارئ أصلًا.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="#t3-test-04">Test 4 &mdash; Diagramming Conventions</a>. Then <a href="#t3-lesson-05">Lesson 5 &mdash; Speaking ERDish</a> turns a conforming line into its two six-part sentences, read in both directions.</p>
+    <p class="ar">اختبر نفسك بـ<a href="#t3-test-04">اختبار 4 &mdash; أعراف الرسم</a>. ثم يحوّل <a href="#t3-lesson-05">الدرس 5 &mdash; التحدّث بلغة ERDish</a> الخط الملتزم بالعُرف إلى جملتيه ذواتَي الأجزاء الستة، مقروءتين في الاتجاهين.</p>
+  </div>
+
+</section>
