@@ -1,0 +1,29 @@
+{
+  "_comment": [
+    "What scripts/build-sw.py needs to know about this course. The generator",
+    "is the same file in all seven repositories on shamsfelfel.github.io;",
+    "everything that differs between them is here. See the header of",
+    "scripts/build-sw.py for every key. It replaced scripts/build-sw.js,",
+    "which did this job in Node for this one repository.",
+    "",
+    "data/ is deliberately absent. Every case snapshot in it is also embedded",
+    "in assets/js/data.js by scripts/build-data.js, which is what the widget",
+    "reads; the JSON files are only fetched when a page is served without",
+    "data.js, so precaching them would download twenty-three files twice."
+  ],
+  "prefix": "sqllab-",
+  "precache": [
+    "/index.html",
+    "/manifest.webmanifest",
+    "assets/**",
+    "chapters/**",
+    "lessons/**",
+    "tests/**",
+    "exams/**",
+    "!**/*.py",
+    "!**/*.md",
+    "!**/*.map"
+  ],
+  "navigate_fallback": "redirect",
+  "note": "Every page, stylesheet, script, font, icon and the vendored SQL engine,\nprecached on install, so the lab runs with the network off and installs\nas an app on Windows, Android and iOS.\n"
+}

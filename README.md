@@ -116,17 +116,43 @@ activated) and *Manifest* (no errors), then tick **Offline** and reload — the 
 loads.
 
 `sw.js` holds an explicit precache list; **regenerate it whenever pages or assets are
-added or removed** (bumps the cache version so clients update):
+added or removed.** Run it last, after `node scripts/build-data.js`:
 
 ```bash
-node scripts/build-sw.js   # scans the site and rewrites sw.js
+python scripts/build-sw.py           # rewrite sw.js
+python scripts/build-sw.py --check   # verify sw.js is in step
 ```
 
-(The generator walks the html / assets / data / icons and writes the list into `sw.js`
-with a cache name built from the date plus a hash of every precached file's contents. Any
-edit to any shipped file therefore changes `sw.js`, which is what makes browsers install the
-new worker; it activates immediately, deletes the old cache, and installed apps pick up the
-new files on their next load. Run it last, after `node scripts/build-data.js`.)
+That script replaced the Node one this repository used to carry alone. It is the
+**same file in all seven apps on <https://shamsfelfel.github.io/>** — the hub and six
+courses — maintained in the hub repository and vendored here byte-for-byte, so the lab
+still builds and deploys with nothing else checked out. Everything specific to this
+course lives in [`sw.config.json`](sw.config.json), which is data, not code; `--check`
+re-hashes the vendored copy, so an edit made here instead of in the hub fails this
+repository's own suite.
+
+Three things it does that matter:
+
+- **The precache list comes from `git ls-files`, not from the filesystem.** What is
+  deployed is what is committed, so an uncommitted draft cannot become a precache
+  entry that 404s for every reader.
+- **The cache name is a content hash** (`sqllab-` plus twelve hex digits), and the
+  generated file carries no build date. A rebuild that changes nothing leaves `sw.js`
+  byte-identical, so an installed app re-downloads nothing — and when something does
+  change, install copies the unchanged files out of the previous cache instead of
+  fetching them again.
+- **`activate` deletes only caches whose name starts with `sqllab-`.** Cache Storage is
+  scoped to the origin and not to the path, so this app can see all seven apps' caches;
+  a worker that deleted everything it did not recognise would take the other six
+  offline on every deployment.
+
+`e2e/sw-invariants.spec.js` is the shared suite that tests all of this, and is likewise
+the same file in every app:
+
+```bash
+npm install          # once, for @playwright/test
+npx playwright test
+```
 
 ## Features
 

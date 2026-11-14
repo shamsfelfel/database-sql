@@ -1,0 +1,14 @@
+{
+  "name": "database-sql",
+  "version": "1.0.0",
+  "description": "SQL Lab — a bilingual, offline-first SQL course, served from https://shamsfelfel.github.io/database-sql/",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-data.js && python scripts/build-sw.py",
+    "check": "python scripts/build-sw.py --check && node scripts/verify-exercises.js",
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1"
+  }
+}

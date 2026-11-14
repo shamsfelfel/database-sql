@@ -7,3 +7,15 @@
 Thumbs.db
 .DS_Store
 *~
+
+# Node tooling for the shared service-worker suite
+node_modules/
+test-results/
+playwright-report/
+
+# Local only
+__pycache__/
+*.pyc
+.claude/
+.tmp/
+blob-report/
