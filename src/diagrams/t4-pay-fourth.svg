@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 531" direction="ltr" role="img" aria-labelledby="t4-pay-fourth-t">
+<title id="t4-pay-fourth-t">The PAYMENT hierarchy after a fourth method arrives: a new WALLET box inside PAYMENT with Wallet ID, and one new line to CUSTOMER, both highlighted / تسلسل PAYMENT بعد وصول طريقة رابعة: صندوق WALLET جديد داخل PAYMENT فيه Wallet ID، وخطّ جديد واحد إلى CUSTOMER، وكلاهما مميَّز</title>
+<g class="en"><text x="400.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">A fourth method arrives — WALLET</text></g><g class="ar"><text x="400.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">وصلت طريقة رابعة — WALLET</text></g>
+<rect x="40" y="50" width="260" height="337" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="170.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">PAYMENT</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Payment ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Payment Date</text>
+<text x="54" y="132" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Amount</text>
+<rect x="60" y="153" width="220" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="170.0" y="175" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CASH</text>
+<rect x="60" y="195" width="220" height="30" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="170.0" y="217" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CHECK</text>
+<rect x="60" y="237" width="220" height="59" rx="10" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.3"/>
+<text x="170.0" y="259" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CREDIT CARD</text>
+<text x="74" y="281" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Card Number</text>
+<rect x="60" y="308" width="220" height="59" rx="10" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--accent));stroke-width:2"/>
+<text x="170.0" y="330" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WALLET</text>
+<text x="74" y="352" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Wallet ID</text>
+<rect x="560" y="178.5" width="200" height="78" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="660.0" y="200.5" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CUSTOMER</text>
+<text x="574" y="222.5" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># Customer ID</text>
+<text x="574" y="241.5" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<path d="M280 213 L430 213" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M430 213 L430 198.5 L560 198.5" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M292 213 L280 206" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M292 213 L280 213" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M292 213 L280 220" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="310" y="206" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">made by</text>
+<text x="552" y="192.5" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">make</text>
+<path d="M280 255 L452 255" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M452 255 L452 228.5 L560 228.5" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M292 255 L280 248" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M292 255 L280 255" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M292 255 L280 262" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="310" y="248" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">made by</text>
+<text x="552" y="243.5" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">make</text>
+<path d="M280 326 L474 326" style="stroke:var(--dg-good, var(--text-soft));stroke-width:2;fill:none"/>
+<path d="M474 326 L474 258.5 L560 258.5" style="stroke:var(--dg-good, var(--text-soft));stroke-width:2;fill:none;stroke-dasharray:6 4"/>
+<path d="M292 326 L280 319" style="stroke:var(--dg-good, var(--text-soft));stroke-width:2;fill:none"/>
+<path d="M292 326 L280 326" style="stroke:var(--dg-good, var(--text-soft));stroke-width:2;fill:none"/>
+<path d="M292 326 L280 333" style="stroke:var(--dg-good, var(--text-soft));stroke-width:2;fill:none"/>
+<text x="310" y="319" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">made by</text>
+<text x="552" y="273.5" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11px">make</text>
+<rect x="40" y="407" width="720" height="92" rx="6" style="fill:var(--dg-good-soft, var(--surface));stroke:var(--dg-good, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="430" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">Added: one subtype box, one attribute, one line. Nothing that existed was touched.</text></g><g class="ar"><text x="744" y="430" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">أُضيف: صندوق نوع فرعي واحد، وخاصية واحدة، وخط واحد. ولم يُمسّ شيء ممّا كان موجودًا.</text></g>
+<g class="en"><text x="56" y="450" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:12px">WALLET inherits # Payment ID, * Payment Date and * Amount from PAYMENT — not redrawn.</text></g><g class="ar"><text x="744" y="450" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:13px">يرث WALLET من PAYMENT رقمَ الدفعة وتاريخها ومبلغها — دون إعادة رسمها.</text></g>
+<g class="en"><text x="56" y="470" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:12px">Every query about 'all payments' still reads one entity, so it does not change either.</text></g><g class="ar"><text x="744" y="470" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:13px">وكل استعلام عن «كل المدفوعات» ما زال يقرأ كيانًا واحدًا، فلا يتغيّر هو أيضًا.</text></g>
+</svg>

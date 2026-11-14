@@ -253,6 +253,20 @@ window.DBTAnchors = {
 "t4idx-h2": "chapters/t4.html",
 "t4idx-how": "chapters/t4.html",
 "t4idx-why": "chapters/t4.html",
+"t4l1-e1": "lessons/t4-lesson-01.html",
+"t4l1-e2": "lessons/t4-lesson-01.html",
+"t4l1-h1": "lessons/t4-lesson-01.html",
+"t4l1-h2": "lessons/t4-lesson-01.html",
+"t4l1-h3": "lessons/t4-lesson-01.html",
+"t4l1-h4": "lessons/t4-lesson-01.html",
+"t4l1-h5": "lessons/t4-lesson-01.html",
+"t4l1-h6": "lessons/t4-lesson-01.html",
+"t4l1-h7": "lessons/t4-lesson-01.html",
+"t4l1-s1": "lessons/t4-lesson-01.html",
+"t4l1-s2": "lessons/t4-lesson-01.html",
+"t4l1-s3": "lessons/t4-lesson-01.html",
+"t4l1-s4": "lessons/t4-lesson-01.html",
+"t4l1-s5": "lessons/t4-lesson-01.html",
 "t5-chapter": "chapters/t5.html",
 "t5-exam-a": "exams/t5-exam-a.html",
 "t5-exam-b": "exams/t5-exam-b.html",
@@ -939,6 +953,54 @@ window.DBTHeadings = {
 "t4idx-why": {
 "ar": "لماذا يهمّ هذا قبل أي SQL",
 "en": "Why this matters before any SQL"
+},
+"t4l1-h1": {
+"ar": "١ · بعض المدفوعات لا تشبه غيرها",
+"en": "1 · Some payments are not like the others"
+},
+"t4l1-h2": {
+"ar": "٢ · الخيار الأول: كيان PAYMENT واحد",
+"en": "2 · Option one: a single PAYMENT entity"
+},
+"t4l1-h3": {
+"ar": "٣ · الخيار الثاني: ثلاثة كيانات منفصلة",
+"en": "3 · Option two: three separate entities"
+},
+"t4l1-h4": {
+"ar": "٤ · حلّ وسط",
+"en": "4 · Something in between"
+},
+"t4l1-h5": {
+"ar": "٥ · تصل طريقة رابعة",
+"en": "5 · A fourth method arrives"
+},
+"t4l1-h6": {
+"ar": "٦ · لمح «الخيار»",
+"en": "6 · Spotting a choice"
+},
+"t4l1-h7": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t4l1-s1": {
+"ar": "فارغة لأنها لا تنطبق",
+"en": "Empty because it does not apply"
+},
+"t4l1-s2": {
+"ar": "ما تُخفيه كلمة «اختياري»",
+"en": "What \"optional\" hides"
+},
+"t4l1-s3": {
+"ar": "سؤال واحد، وثلاثة أماكن للبحث",
+"en": "One question, three places to look"
+},
+"t4l1-s4": {
+"ar": "عدّ التغييرات",
+"en": "Counting the changes"
+},
+"t4l1-s5": {
+"ar": "الخيار سؤال لا جواب",
+"en": "A choice is a question, not an answer"
 },
 "t5idx-h1": {
 "ar": "الدروس",

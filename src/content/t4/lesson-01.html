@@ -1,0 +1,559 @@
+<section class="page" id="t4-lesson-01">
+
+  <span class="kicker">Lesson 1</span>
+  <h1><span class="en">When One Entity Is Really Several</span><span class="ar">حين يكون الكيان الواحد عدّة كيانات</span></h1>
+  <p class="lede en">By the end of this lesson you will be able to spot the instances of an entity that have attributes or relationships the others lack, draw the payment case three ways &mdash; one entity, three entities, and subtypes inside one entity &mdash; name the defect each way carries, and predict what a fourth payment method costs each of them.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تلمح نُسَخ الكيان التي لها خصائص أو علاقات ليست لغيرها، وأن ترسم حالة المدفوعات بثلاث طرق &mdash; كيان واحد، وثلاثة كيانات، وأنواع فرعية داخل كيان واحد &mdash; وأن تسمّي العيب الذي تحمله كل طريقة، وأن تتوقّع كم تكلّف طريقةُ دفعٍ رابعة كلَّ واحدة منها.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> A shop takes payments from its customers by cash, by cheque or by credit card. The rows are those of the <a href="#t4-chapter">chapter home</a>: six payments in early March, two customers, Linda and Omar. You need entities, attributes and the <code>#</code> <code>*</code> <code>o</code> marks from <a href="#t2-lesson-05">Chapter 2</a>, and solid and dashed halves from <a href="#t3-lesson-02">Chapter 3</a>.</p>
+    <p class="ar"><strong>السياق.</strong> متجر يتلقّى المدفوعات من زبائنه نقدًا أو بشيك أو ببطاقة ائتمان. والصفوف هي صفوف <a href="#t4-chapter">صفحة الفصل</a>: ست دفعات في أوائل آذار، وزبونان هما Linda وOmar. تحتاج إلى الكيانات والخصائص وعلامات <code>#</code> و<code>*</code> و<code>o</code> من <a href="#t2-lesson-05">الفصل 2</a>، وإلى النصفين المتّصل والمتقطّع من <a href="#t3-lesson-02">الفصل 3</a>.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Sort the facts about an entity into common attributes and special properties that only a group of instances has.</li>
+      <li class="ar">فرز الحقائق عن كيانٍ إلى خصائص مشتركة وسمات خاصّة لا تملكها إلا مجموعة من النُّسَخ.</li>
+      <li class="en">Draw the payments as one entity and name the rules that model hides.</li>
+      <li class="ar">رسم المدفوعات كيانًا واحدًا، وتسمية القواعد التي يُخفيها هذا النموذج.</li>
+      <li class="en">Draw them as three separate entities and name what that model repeats.</li>
+      <li class="ar">رسمها ثلاثة كيانات منفصلة، وتسمية ما يكرّره هذا النموذج.</li>
+      <li class="en">Recognise the third way &mdash; kinds drawn inside one entity &mdash; and say why it keeps both the rules and the common part.</li>
+      <li class="ar">التعرّف إلى الطريقة الثالثة &mdash; أنواع مرسومة داخل كيان واحد &mdash; وبيان لماذا تحفظ القواعد والجزء المشترك معًا.</li>
+      <li class="en">Count what a fourth payment method changes in each design, in the diagram and in the tables.</li>
+      <li class="ar">عدّ ما تغيّره طريقةُ دفعٍ رابعة في كل تصميم، في المخطّط وفي الجداول.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t4l1-h1"><span class="en">1 · Some payments are not like the others</span><span class="ar">١ · بعض المدفوعات لا تشبه غيرها</span></h2>
+
+  <div class="problem">
+    <p class="en">The shop's accountant asks for the card number of payment 3, to settle a dispute with the bank. Then she asks who paid cheque 2, because it bounced. For payment 1, paid in cash, she asks neither: there is no card, and nobody needs to know who handed over forty in notes.</p>
+    <p class="ar">تطلب محاسبة المتجر رقم البطاقة في الدفعة 3، لتسوية خلاف مع البنك. ثم تسأل مَن دفع الشيك 2، لأنه ارتدّ. أمّا الدفعة 1، المدفوعة نقدًا، فلا تسأل عنها هذا ولا ذاك: فلا بطاقة، ولا أحد يحتاج إلى معرفة مَن سلّم الأربعين ورقًا نقديًّا.</p>
+  </div>
+
+  <p class="en">The slides put it in one sentence: <em>often some instances of an entity have attributes and/or relationships that other instances do not have.</em> All payments share a date and an amount. Only credit cards have a card number. For cheques and cards we need the <code>CUSTOMER</code> who paid; for cash we do not.</p>
+  <p class="ar">تقولها الشرائح في جملة واحدة: <em>كثيرًا ما يكون لبعض نُسَخ الكيان خصائص أو علاقات، أو كلاهما، ليست لنُسَخه الأخرى.</em> تشترك المدفوعات كلها في التاريخ والمبلغ. ولا يكون رقم البطاقة إلا لبطاقات الائتمان. وفي الشيك والبطاقة نحتاج إلى الزبون <code>CUSTOMER</code> الذي دفع، وفي النقد لا نحتاج إليه.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="common-attribute">common attribute</span> is one that every instance of the entity has, whatever its kind.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="common-attribute">الخاصية المشتركة</span> (Common attribute) خاصيةٌ تملكها كل نسخة من الكيان، أيًّا كان نوعها.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="special-property">special property</span> is an attribute or a relationship that exists only for one group of an entity's instances.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="special-property">السمة الخاصّة</span> (Special property) خاصيةٌ أو علاقةٌ لا توجد إلا لمجموعة واحدة من نُسَخ الكيان.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t4-payment-instances"><figcaption><span class="en">The six payments as instances. The first four columns are filled in every row. The last two are filled only for some kinds of payment &mdash; and the gaps line up exactly with the method.</span><span class="ar">الدفعات الست بوصفها نُسَخًا. الأعمدة الأربعة الأولى ممتلئة في كل صف. أمّا العمودان الأخيران فلا يمتلئان إلا لبعض أنواع الدفع &mdash; والفراغات تصطفّ تمامًا مع طريقة الدفع.</span></figcaption></figure>
+
+  <h3 id="t4l1-s1"><span class="en">Empty because it does not apply</span><span class="ar">فارغة لأنها لا تنطبق</span></h3>
+
+  <p class="en">In <a href="#t2l5-h5">Chapter 2</a> an optional attribute was one whose value might be missing &mdash; a member who has not given a phone number yet. The gap in payment 1's card number is different. Nothing is missing: a cash payment cannot have a card number.</p>
+  <p class="ar">في <a href="#t2l5-h5">الفصل 2</a> كانت الخاصية الاختيارية خاصيةً قد تغيب قيمتها &mdash; عضو لم يعطِ رقم هاتفه بعد. أمّا الفراغ في رقم بطاقة الدفعة 1 فمختلف. لا شيء ناقص: فالدفعة النقدية لا يمكن أن يكون لها رقم بطاقة.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A value is <span class="term" data-term="not-applicable">not applicable</span> when the attribute does not belong to that kind of instance at all, so its emptiness is a rule, not a gap in what we know.</p>
+    <p class="ar"><strong>تعريف.</strong> تكون القيمة <span class="term" data-term="not-applicable">غير منطبقة</span> (Not applicable) حين لا تخصّ الخاصيةُ ذلك النوعَ من النُّسَخ أصلًا، فيكون فراغها قاعدةً لا نقصًا في معرفتنا.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Store all six payments in one <code>payments</code> table and the pattern shows up as empty cells. Count them per method: the empties are not scattered, they follow the kind of payment exactly.</p>
+    <p class="ar">احفظ الدفعات الست في جدول واحد <code>payments</code> فيظهر النمط خلايا فارغة. عُدّها لكل طريقة دفع: الفراغات ليست مبعثرة، بل تتبع نوع الدفعة تمامًا.</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, method VARCHAR(12) NOT NULL, card_number VARCHAR(19), customer_id NUMBER)","INSERT INTO payments (payment_id, payment_date, amount, method) VALUES (1,'2026-03-02',40,'cash'), (4,'2026-03-03',15,'cash')","INSERT INTO payments (payment_id, payment_date, amount, method, customer_id) VALUES (2,'2026-03-02',125,'check',1), (6,'2026-03-04',90,'check',2)","INSERT INTO payments VALUES (3,'2026-03-03',310,'credit card','4111 1111 1111 1111',2), (5,'2026-03-04',220,'credit card','5500 0000 0000 0004',1)"],"sql":"SELECT method,\n       COUNT(*) AS payments,\n       SUM(CASE WHEN card_number IS NULL THEN 1 ELSE 0 END) AS no_card,\n       SUM(CASE WHEN customer_id IS NULL THEN 1 ELSE 0 END) AS no_customer\nFROM payments\nGROUP BY method\nORDER BY method;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>method</code></th><th><code>payments</code></th><th><code>no_card</code></th><th><code>no_customer</code></th></tr></thead>
+          <tbody>
+            <tr><td>cash</td><td>2</td><td>2</td><td>2</td></tr>
+            <tr><td>check</td><td>2</td><td>2</td><td>0</td></tr>
+            <tr><td>credit card</td><td>2</td><td>0</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Every cash row lacks both; every cheque lacks a card; no card payment lacks anything. A column that is empty for a whole kind of row is the table's way of saying "this belongs to only some of you".</p>
+    <p class="ar">كل صف نقدي يفتقد الاثنين، وكل شيك يفتقد البطاقة، ولا دفعة بطاقة تفتقد شيئًا. والعمود الفارغ في نوع كامل من الصفوف هو طريقة الجدول في قول «هذا يخصّ بعضكم فقط».</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which of these is a <em>special property</em> of some payments, rather than a common attribute?</p>
+    <p class="q ar">أيّ هذه <em>سمة خاصّة</em> ببعض المدفوعات، لا خاصية مشتركة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>Payment Date</code></span><span class="ar"><code>Payment Date</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>Amount</code></span><span class="ar"><code>Amount</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The relationship to the <code>CUSTOMER</code> who paid</span><span class="ar">العلاقة مع الزبون <code>CUSTOMER</code> الذي دفع</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Every payment has a date and an amount. Only cheque and card payments need their <code>CUSTOMER</code>. A special property can be a relationship, not only an attribute &mdash; the slides say "attributes and/or relationships".</p>
+      <p class="ar">لكل دفعة تاريخ ومبلغ. ولا يحتاج إلى <code>CUSTOMER</code> إلا الدفع بالشيك أو بالبطاقة. والسمة الخاصّة قد تكون علاقة، لا خاصية فقط &mdash; فالشرائح تقول «خصائص أو علاقات، أو كلاهما».</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Payment 4 was paid in cash and its card number is empty. What does that emptiness mean?</p>
+    <p class="q ar">الدفعة 4 مدفوعة نقدًا ورقم بطاقتها فارغ. ماذا يعني هذا الفراغ؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">The cashier forgot to type it in</span><span class="ar">نسي أمين الصندوق أن يُدخله</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">The attribute does not apply: a cash payment has no card</span><span class="ar">الخاصية لا تنطبق: فالدفعة النقدية لا بطاقة لها</span></button></li>
+      <li><button class="opt"><span class="en">The value is unknown and may be filled in later</span><span class="ar">القيمة مجهولة وقد تُملأ لاحقًا</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">This is <em>not applicable</em>, not <em>unknown</em>. No later fact will ever fill it. That is the first sign that cash and card payments are different kinds of thing.</p>
+      <p class="ar">هذه قيمة <em>غير منطبقة</em> لا <em>مجهولة</em>. ولن تملأها أيّ حقيقة لاحقة أبدًا. وهذه أول إشارة إلى أن الدفع النقدي والدفع بالبطاقة نوعان مختلفان من الأشياء.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t4l1-h2"><span class="en">2 · Option one: a single PAYMENT entity</span><span class="ar">٢ · الخيار الأول: كيان PAYMENT واحد</span></h2>
+
+  <div class="problem">
+    <p class="en">A designer in a hurry draws one <code>PAYMENT</code> box with the date and the amount, and stops. The model is neat. The next morning the accountant tries to record payment 3's card number and Linda's cheque, and there is nowhere to put either.</p>
+    <p class="ar">يرسم مصمّم مستعجل صندوقًا واحدًا <code>PAYMENT</code> فيه التاريخ والمبلغ، ويتوقّف. النموذج مرتّب. وفي صباح اليوم التالي تحاول المحاسبة تسجيل رقم بطاقة الدفعة 3 وشيك Linda، فلا تجد مكانًا لأيٍّ منهما.</p>
+  </div>
+
+  <p class="en">The first fix is the obvious one: keep one entity and give it everything any payment might need. A <code>Method</code> attribute says which kind each payment is; <code>Card Number</code> joins as optional, and a relationship to <code>CUSTOMER</code> is added for the payments that have one.</p>
+  <p class="ar">الإصلاح الأول هو البديهي: أبقِ كيانًا واحدًا وأعطه كل ما قد تحتاجه أيّ دفعة. خاصية <code>Method</code> تقول ما نوع كل دفعة، و<code>Card Number</code> تنضمّ اختيارية، وتُضاف علاقة مع <code>CUSTOMER</code> للدفعات التي لها زبون.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="type-attribute">type attribute</span> is an attribute whose value says which kind an instance is, such as <code>Method</code> = cash, check or credit card.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="type-attribute">خاصية النوع</span> (Type attribute) خاصيةٌ تقول قيمتُها ما نوع النسخة، مثل <code>Method</code> = cash أو check أو credit card.</p>
+  </div>
+
+  <div class="evolve" id="t4l1-e1">
+    <div class="ver" data-title-en="Version 1 — common attributes only" data-title-ar="الإصدار 1 — الخصائص المشتركة وحدها">
+      <figure class="diagram" data-diagram="t4-pay-one-v1"></figure>
+      <p class="en">Defect: lost data. <code>PAYMENT</code> holds what every payment has and nothing else. The card number has no attribute and the cheque's customer has no relationship, so two facts the accountant needs cannot be stored at all.</p>
+      <p class="ar">العيب: بيانات ضائعة. يحمل <code>PAYMENT</code> ما لكل دفعة ولا شيء غيره. فلا خاصية لرقم البطاقة، ولا علاقة لزبون الشيك، فلا يمكن حفظ حقيقتين تحتاج إليهما المحاسبة أصلًا.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — every extra made optional" data-title-ar="الإصدار 2 — كل إضافة اختيارية">
+      <figure class="diagram" data-diagram="t4-pay-one"></figure>
+      <p class="en">Fixed: everything can be stored. Still open: <code>o Card Number</code> is optional for every payment, card payments included, and the <code>PAYMENT</code> half of the customer line is dashed, so a cheque may have no customer. This is the best one entity can do.</p>
+      <p class="ar">أُصلح: صار كل شيء قابلًا للحفظ. وما زال مفتوحًا: <code>o Card Number</code> اختيارية لكل دفعة، بما فيها دفعات البطاقة، ونصف <code>PAYMENT</code> من خط الزبون متقطّع، فقد يكون الشيك بلا زبون. وهذا أفضل ما يستطيعه كيان واحد.</p>
+    </div>
+  </div>
+
+  <h3 id="t4l1-s2"><span class="en">What "optional" hides</span><span class="ar">ما تُخفيه كلمة «اختياري»</span></h3>
+
+  <p class="en">Version 2 must mark <code>Card Number</code> with <code>o</code>, because cash payments have none. But for a card payment it is not optional at all. One entity has one set of marks, so it cannot say "mandatory for these, absent for those". The real rule disappears.</p>
+  <p class="ar">لا بدّ أن يعلّم الإصدار 2 <code>Card Number</code> بالعلامة <code>o</code>، لأن الدفعات النقدية لا رقم لها. لكنها في دفعة البطاقة ليست اختيارية أبدًا. وللكيان الواحد مجموعة علامات واحدة، فلا يستطيع أن يقول «إلزامية لهذه، وغائبة عن تلك». فتختفي القاعدة الحقيقية.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="hidden-rule">hidden rule</span> is a business rule that is true of the business but that the model cannot show, so nothing enforces it.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="hidden-rule">القاعدة المخفيّة</span> (Hidden rule) قاعدة عمل صحيحة في المؤسسة لكن النموذج لا يستطيع إظهارها، فلا شيء يفرضها.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 2 becomes one table: <code>card_number</code> and <code>customer_id</code> must both be nullable. Three wrong rows are typed in on 5 March &mdash; a card payment with no number, a cash payment with a number, a cheque with no customer. Each one is accepted. Find them:</p>
+    <p class="ar">يصبح الإصدار 2 جدولًا واحدًا: يجب أن يقبل <code>card_number</code> و<code>customer_id</code> كلاهما القيمة الفارغة. وتُدخَل في 5 آذار ثلاثة صفوف خاطئة &mdash; دفعة بطاقة بلا رقم، ودفعة نقدية برقم بطاقة، وشيك بلا زبون. ويُقبل كلٌّ منها. جِدها:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Omar')","CREATE TABLE payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, method VARCHAR(12) NOT NULL, card_number VARCHAR(19), customer_id NUMBER)","INSERT INTO payments (payment_id, payment_date, amount, method) VALUES (1,'2026-03-02',40,'cash'), (4,'2026-03-03',15,'cash')","INSERT INTO payments (payment_id, payment_date, amount, method, customer_id) VALUES (2,'2026-03-02',125,'check',1), (6,'2026-03-04',90,'check',2)","INSERT INTO payments VALUES (3,'2026-03-03',310,'credit card','4111 1111 1111 1111',2), (5,'2026-03-04',220,'credit card','5500 0000 0000 0004',1)","INSERT INTO payments (payment_id, payment_date, amount, method, customer_id) VALUES (7,'2026-03-05',60,'credit card',1)","INSERT INTO payments (payment_id, payment_date, amount, method, card_number) VALUES (8,'2026-03-05',25,'cash','4111 1111 1111 1111')","INSERT INTO payments (payment_id, payment_date, amount, method) VALUES (9,'2026-03-05',75,'check')"],"sql":"SELECT payment_id, method, customer_id, card_number\nFROM payments\nWHERE (method = 'credit card' AND card_number IS NULL)\n   OR (method <> 'credit card' AND card_number IS NOT NULL)\n   OR (method <> 'cash' AND customer_id IS NULL)\nORDER BY payment_id;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>payment_id</code></th><th><code>method</code></th><th><code>customer_id</code></th><th><code>card_number</code></th></tr></thead>
+          <tbody>
+            <tr><td>7</td><td>credit card</td><td>1</td><td>∅</td></tr>
+            <tr><td>8</td><td>cash</td><td>∅</td><td>4111 1111 1111 1111</td></tr>
+            <tr><td>9</td><td>check</td><td>∅</td><td>∅</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">The table could not refuse them, because the model never said they were wrong. You can only find the damage afterwards, with a query that spells out the hidden rules by hand.</p>
+    <p class="ar">لم يستطع الجدول أن يرفضها، لأن النموذج لم يقل قطّ إنها خاطئة. ولا تستطيع أن تجد الضرر إلا بعد وقوعه، باستعلام يكتب القواعد المخفيّة بيدك.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which business rule can <em>not</em> be read from version 2's diagram?</p>
+    <p class="q ar">أيّ قاعدة عمل <em>لا</em> يمكن قراءتها من مخطّط الإصدار 2؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Every payment must have a date</span><span class="ar">يجب أن يكون لكل دفعة تاريخ</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Every credit card payment must have a card number</span><span class="ar">يجب أن يكون لكل دفعة بطاقة رقمُ بطاقة</span></button></li>
+      <li><button class="opt"><span class="en">A customer may make several payments</span><span class="ar">قد يقوم الزبون بعدّة دفعات</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>* Payment Date</code> shows the first rule and the crow's foot at <code>PAYMENT</code> shows the third. The diagram marks <code>Card Number</code> <code>o</code> for everyone, so the rule for card payments is hidden.</p>
+      <p class="ar"><code>* Payment Date</code> تُظهر القاعدة الأولى، وقدم الغراب عند <code>PAYMENT</code> تُظهر الثالثة. أمّا المخطّط فيعلّم <code>Card Number</code> بـ <code>o</code> للجميع، فتختفي قاعدة دفعات البطاقة.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why is version 2 better than version 1, and what does it still get wrong?</p>
+    <p class="q ar">لماذا الإصدار 2 أفضل من الإصدار 1، وما الذي ما زال يخطئ فيه؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">It can store the card number and the cheque's customer, but it cannot say which payments must have them</span><span class="ar">يستطيع حفظ رقم البطاقة وزبون الشيك، لكنه لا يستطيع أن يقول أيّ الدفعات يجب أن يكون لها ذلك</span></button></li>
+      <li><button class="opt"><span class="en">It has fewer attributes, but it repeats the date in three places</span><span class="ar">خصائصه أقلّ، لكنه يكرّر التاريخ في ثلاثة أماكن</span></button></li>
+      <li><button class="opt"><span class="en">It is better in every way; nothing is left to fix</span><span class="ar">أفضل من كل وجه؛ ولم يبقَ شيء يُصلَح</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Version 1 loses data; version 2 keeps the data and loses the rules. Repetition is the defect of the <em>next</em> option, three separate entities.</p>
+      <p class="ar">الإصدار 1 يُضيع البيانات، والإصدار 2 يحفظ البيانات ويُضيع القواعد. أمّا التكرار فهو عيب الخيار <em>التالي</em>، أي الكيانات الثلاثة المنفصلة.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t4l1-h3"><span class="en">3 · Option two: three separate entities</span><span class="ar">٣ · الخيار الثاني: ثلاثة كيانات منفصلة</span></h2>
+
+  <div class="problem">
+    <p class="en">A second designer reads version 2 and says: "If cash, cheques and cards have different rules, they are different entities." She draws <code>CASH</code>, <code>CHECK</code> and <code>CREDIT CARD</code> as three boxes. Every rule is visible now. Then the manager asks for one list of everything taken on 3 March.</p>
+    <p class="ar">تقرأ مصمّمة ثانية الإصدار 2 وتقول: «إن كان للنقد والشيكات والبطاقات قواعد مختلفة، فهي كيانات مختلفة.» وترسم <code>CASH</code> و<code>CHECK</code> و<code>CREDIT CARD</code> ثلاثة صناديق. صارت كل قاعدة ظاهرة. ثم يطلب المدير قائمة واحدة بكل ما قُبض في 3 آذار.</p>
+  </div>
+
+  <p class="en">The slides ask this exact question: <em>should we create a single PAYMENT entity, or three separate entities CASH, CHECK and CREDIT CARD?</em> Three entities fix version 2's defect. Each box carries its own marks, so <code>* Card Number</code> is mandatory where it belongs, and the <code>CHECK</code> half of its customer line is solid.</p>
+  <p class="ar">تطرح الشرائح هذا السؤال بعينه: <em>هل ننشئ كيان PAYMENT واحدًا، أم ثلاثة كيانات منفصلة CASH وCHECK وCREDIT CARD؟</em> الكيانات الثلاثة تُصلح عيب الإصدار 2. فلكل صندوق علاماته، فتكون <code>* Card Number</code> إلزامية حيث تنتمي، ويكون نصف <code>CHECK</code> من خط الزبون متّصلًا.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="separate-entities">Separate entities</span> model each kind as its own entity, with nothing in the model saying the kinds belong together.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="separate-entities">الكيانات المنفصلة</span> (Separate entities) تنمذج كل نوع كيانًا مستقلًّا، دون أن يقول شيء في النموذج إن الأنواع تنتمي إلى بعضها.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="repeated-structure">Repeated structure</span> is the same attributes or relationships drawn again in several entities, so every change to them must be made in each place.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="repeated-structure">البنية المكرّرة</span> (Repeated structure) هي الخصائص أو العلاقات نفسها مرسومةً من جديد في عدّة كيانات، فيجب أن يُجرى كل تغيير عليها في كل مكان.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t4-pay-three"><figcaption><span class="en">Three separate entities. Every rule is visible, but the three common attributes (in red) are drawn three times, and the same relationship to <code>CUSTOMER</code> is drawn twice.</span><span class="ar">ثلاثة كيانات منفصلة. كل قاعدة ظاهرة، لكن الخصائص المشتركة الثلاث (بالأحمر) مرسومة ثلاث مرّات، والعلاقة نفسها مع <code>CUSTOMER</code> مرسومة مرّتين.</span></figcaption></figure>
+
+  <h3 id="t4l1-s3"><span class="en">One question, three places to look</span><span class="ar">سؤال واحد، وثلاثة أماكن للبحث</span></h3>
+
+  <p class="en">The model no longer knows that a cheque and a card payment are both <em>payments</em>. So "what did we take on 3 March?" has no single home. You must ask each kind separately and stitch the answers together &mdash; and remember every kind each time.</p>
+  <p class="ar">لم يعد النموذج يعرف أن الشيك والدفع بالبطاقة كليهما <em>دفعة</em>. فلا يجد سؤال «ماذا قبضنا في 3 آذار؟» مكانًا واحدًا. عليك أن تسأل كل نوع على حدة، وتخيط الأجوبة معًا &mdash; وأن تتذكّر كل الأنواع في كل مرّة.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Three entities become three tables, each with its own <code>payment_date</code> and <code>amount</code>. <code>card_payments.card_number</code> can now be <code>NOT NULL</code> &mdash; a real gain. But one question about payments needs one <code>SELECT</code> per table:</p>
+    <p class="ar">تصبح الكيانات الثلاثة ثلاثة جداول، في كلٍّ منها <code>payment_date</code> و<code>amount</code>. ويمكن الآن أن يكون <code>card_payments.card_number</code> هو <code>NOT NULL</code> &mdash; وهذا كسب حقيقي. لكن السؤال الواحد عن المدفوعات يحتاج إلى <code>SELECT</code> لكل جدول:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE cash_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL)","CREATE TABLE check_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, customer_id NUMBER NOT NULL)","CREATE TABLE card_payments (payment_id NUMBER PRIMARY KEY, payment_date DATE NOT NULL, amount NUMBER NOT NULL, card_number VARCHAR(19) NOT NULL, customer_id NUMBER NOT NULL)","INSERT INTO cash_payments VALUES (1,'2026-03-02',40), (4,'2026-03-03',15)","INSERT INTO check_payments VALUES (2,'2026-03-02',125,1), (6,'2026-03-04',90,2)","INSERT INTO card_payments VALUES (3,'2026-03-03',310,'4111 1111 1111 1111',2), (5,'2026-03-04',220,'5500 0000 0000 0004',1)"],"sql":"SELECT 'cash' AS method, payment_id, amount FROM cash_payments WHERE payment_date = '2026-03-03'\nUNION ALL\nSELECT 'check', payment_id, amount FROM check_payments WHERE payment_date = '2026-03-03'\nUNION ALL\nSELECT 'credit card', payment_id, amount FROM card_payments WHERE payment_date = '2026-03-03';"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>method</code></th><th><code>payment_id</code></th><th><code>amount</code></th></tr></thead>
+          <tbody>
+            <tr><td>cash</td><td>4</td><td>15</td></tr>
+            <tr><td>credit card</td><td>3</td><td>310</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">The answer is right, but the query repeats the same condition three times and names every table by hand. Forget one branch and the day's takings are silently short.</p>
+    <p class="ar">الجواب صحيح، لكن الاستعلام يكرّر الشرط نفسه ثلاث مرّات، ويسمّي كل جدول بيده. وإن نسيت فرعًا واحدًا نقص مجموع اليوم دون أيّ إنذار.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapter 7</span><span class="ar">خيط · الفصل 7 في SQL</span></h4>
+    <p class="en"><a href="@/chapters/chapter-7.html">Chapter 7 &mdash; Normalization</a> starts from tables that already exist and splits them to remove repeated data. Here the repetition is in the <em>design</em>: the same date and amount drawn into three entities. This chapter catches it before any table is created, which normalization cannot do.</p>
+    <p class="ar">يبدأ <a href="@/chapters/chapter-7.html">الفصل 7 &mdash; التطبيع</a> من جداول موجودة فعلًا، ويقسّمها لإزالة البيانات المكرّرة. أمّا هنا فالتكرار في <em>التصميم</em>: التاريخ والمبلغ نفسهما مرسومان في ثلاثة كيانات. وهذا الفصل يلتقطه قبل أن يُنشأ أيّ جدول، وهو ما لا يستطيعه التطبيع.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The shop decides every payment must also record the <code>Staff Member</code> who took it. In the three-entity model, how many entities change?</p>
+    <p class="q ar">يقرّر المتجر أن تسجّل كل دفعة أيضًا الموظّف <code>Staff Member</code> الذي استلمها. في نموذج الكيانات الثلاثة، كم كيانًا يتغيّر؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">One</span><span class="ar">واحد</span></button></li>
+      <li><button class="opt"><span class="en">Two &mdash; only those with a customer</span><span class="ar">اثنان &mdash; اللذان لهما زبون فقط</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Three &mdash; every kind of payment</span><span class="ar">ثلاثة &mdash; كل أنواع الدفع</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A new common attribute belongs to every payment, and there is no single place for "every payment". It is added to <code>CASH</code>, <code>CHECK</code> and <code>CREDIT CARD</code> &mdash; that is repeated structure.</p>
+      <p class="ar">الخاصية المشتركة الجديدة تخصّ كل دفعة، ولا مكان واحدًا لـ«كل دفعة». فتُضاف إلى <code>CASH</code> و<code>CHECK</code> و<code>CREDIT CARD</code> &mdash; وهذه هي البنية المكرّرة.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t4l1-h4"><span class="en">4 · Something in between</span><span class="ar">٤ · حلّ وسط</span></h2>
+
+  <div class="problem">
+    <p class="en">So the shop is stuck between two bad drafts. One entity keeps the common part together and loses the rules. Three entities keep the rules and scatter the common part. Each designer is right about the other's model.</p>
+    <p class="ar">فالمتجر عالق بين مسوّدتين سيّئتين. الكيان الواحد يُبقي الجزء المشترك مجتمعًا ويُضيع القواعد. والكيانات الثلاثة تُبقي القواعد وتبعثر الجزء المشترك. وكل مصمّم محقّ فيما يقوله عن نموذج الآخر.</p>
+  </div>
+
+  <p class="en">The slides' answer: <em>sometimes it makes sense to subdivide an entity</em> &mdash; when a group of instances has special properties. Keep one <code>PAYMENT</code> for what all payments share, and draw each kind as a box <em>inside</em> it, holding only what is its own.</p>
+  <p class="ar">جواب الشرائح: <em>أحيانًا يكون من المنطقي تقسيم الكيان</em> &mdash; حين يكون لمجموعة من النُّسَخ سمات خاصّة. أبقِ <code>PAYMENT</code> واحدًا لما تشترك فيه المدفوعات كلها، وارسم كل نوع صندوقًا <em>داخله</em>، لا يحمل إلا ما يخصّه.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> To <span class="term" data-term="subdivide">subdivide</span> an entity is to draw the groups of its instances that have special properties as boxes inside it, leaving the common attributes in the outer box.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="subdivide">تقسيم الكيان</span> (Subdivide) هو رسم مجموعات نُسَخه التي لها سمات خاصّة صناديقَ داخله، مع ترك الخصائص المشتركة في الصندوق الخارجي.</p>
+  </div>
+
+  <p class="en">The outer entity is called the <strong>supertype</strong> and each inner box a <strong>subtype</strong>. <a href="#t4-lesson-02">Lesson 2</a> defines both properly. For now, put the three drafts side by side and see what each version repairs.</p>
+  <p class="ar">يُسمّى الكيان الخارجي <strong>النوع الأعلى</strong> (Supertype)، ويُسمّى كل صندوق داخلي <strong>نوعًا فرعيًّا</strong> (Subtype). ويعرّفهما <a href="#t4-lesson-02">الدرس 2</a> تعريفًا كاملًا. أمّا الآن فضع المسوّدات الثلاث جنبًا إلى جنب، وانظر ماذا يُصلح كل إصدار.</p>
+
+  <div class="evolve" id="t4l1-e2">
+    <div class="ver" data-title-en="Version 1 — one entity" data-title-ar="الإصدار 1 — كيان واحد">
+      <figure class="diagram" data-diagram="t4-pay-one"></figure>
+      <p class="en">Defect: hidden rules. The common attributes are stored once, but <code>o Card Number</code> and the dashed <code>PAYMENT</code> half apply to every kind alike. A card payment with no number is legal.</p>
+      <p class="ar">العيب: قواعد مخفيّة. الخصائص المشتركة محفوظة مرّة واحدة، لكن <code>o Card Number</code> والنصف المتقطّع عند <code>PAYMENT</code> ينطبقان على كل الأنواع بالتساوي. فدفعة البطاقة بلا رقم مقبولة.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — three separate entities" data-title-ar="الإصدار 2 — ثلاثة كيانات منفصلة">
+      <figure class="diagram" data-diagram="t4-pay-three"></figure>
+      <p class="en">Fixed: each kind shows its own rules. New defect: repeated structure. Date and amount appear three times, the customer line twice, and nothing says the three are payments.</p>
+      <p class="ar">أُصلح: كل نوع يُظهر قواعده. وعيب جديد: البنية المكرّرة. فالتاريخ والمبلغ يظهران ثلاث مرّات، وخط الزبون مرّتين، ولا شيء يقول إن الثلاثة مدفوعات.</p>
+    </div>
+    <div class="ver" data-title-en="Version 3 — kinds inside one entity" data-title-ar="الإصدار 3 — أنواع داخل كيان واحد">
+      <figure class="diagram" data-diagram="t4-pay-subtypes"></figure>
+      <p class="en">Fixed both: the common attributes are drawn once, in <code>PAYMENT</code>; <code>* Card Number</code> is mandatory inside <code>CREDIT CARD</code>; the customer line runs only to <code>CHECK</code> and <code>CREDIT CARD</code>, solid at their end. This is the recommended model.</p>
+      <p class="ar">أُصلح العيبان: الخصائص المشتركة مرسومة مرّة واحدة، في <code>PAYMENT</code>؛ و<code>* Card Number</code> إلزامية داخل <code>CREDIT CARD</code>؛ وخط الزبون لا يمتدّ إلا إلى <code>CHECK</code> و<code>CREDIT CARD</code>، متّصلًا عند طرفهما. وهذا هو النموذج الموصى به.</p>
+    </div>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 3 is a conceptual model; it does not yet decide the tables. It can become one <code>payments</code> table with a type column, a table per kind, or a <code>payments</code> table plus one table per kind. The <a href="#t4-lab">chapter lab</a> builds all three and queries each &mdash; the diagram is what tells you which rules each must keep.</p>
+    <p class="ar">الإصدار 3 نموذج مفاهيمي، ولا يقرّر الجداول بعد. فقد يصبح جدولًا واحدًا <code>payments</code> فيه عمود للنوع، أو جدولًا لكل نوع، أو جدول <code>payments</code> مع جدول لكل نوع. ويبني <a href="#t4-lab">مختبر الفصل</a> الطرق الثلاث ويستعلم من كلٍّ منها &mdash; والمخطّط هو ما يخبرك أيّ القواعد يجب أن تحفظها كلٌّ منها.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In version 3, where is <code>* Amount</code> drawn, and does a <code>CHECK</code> have an amount?</p>
+    <p class="q ar">في الإصدار 3، أين تُرسم <code>* Amount</code>، وهل للشيك <code>CHECK</code> مبلغ؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Inside each of the three inner boxes; yes</span><span class="ar">داخل كل صندوق من الصناديق الداخلية الثلاثة؛ نعم</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Once, in <code>PAYMENT</code>; yes, because a cheque is a payment</span><span class="ar">مرّة واحدة، في <code>PAYMENT</code>؛ نعم، لأن الشيك دفعة</span></button></li>
+      <li><button class="opt"><span class="en">Once, in <code>PAYMENT</code>; no, only the outer box has it</span><span class="ar">مرّة واحدة، في <code>PAYMENT</code>؛ لا، فالصندوق الخارجي وحده يملكها</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The inner box sits inside <code>PAYMENT</code>, so every cheque is a payment and has everything a payment has. Lesson 2 names this <em>inheritance</em>.</p>
+      <p class="ar">الصندوق الداخلي قائم داخل <code>PAYMENT</code>، فكل شيك دفعة، وله كل ما للدفعة. ويسمّي الدرس 2 هذا <em>الوراثة</em> (Inheritance).</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which version both shows "a card payment must have a card number" and draws the payment date only once?</p>
+    <p class="q ar">أيّ إصدار يُظهر «يجب أن يكون لدفعة البطاقة رقم بطاقة» ويرسم تاريخ الدفع مرّة واحدة فقط؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Version 1 &mdash; one entity</span><span class="ar">الإصدار 1 &mdash; كيان واحد</span></button></li>
+      <li><button class="opt"><span class="en">Version 2 &mdash; three separate entities</span><span class="ar">الإصدار 2 &mdash; ثلاثة كيانات منفصلة</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Version 3 &mdash; kinds inside one entity</span><span class="ar">الإصدار 3 &mdash; أنواع داخل كيان واحد</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Version 1 draws the date once but hides the card rule. Version 2 shows the rule but draws the date three times. Only version 3 does both.</p>
+      <p class="ar">الإصدار 1 يرسم التاريخ مرّة واحدة لكنه يُخفي قاعدة البطاقة. والإصدار 2 يُظهر القاعدة لكنه يرسم التاريخ ثلاث مرّات. ولا يفعل الأمرين معًا إلا الإصدار 3.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t4l1-h5"><span class="en">5 · A fourth method arrives</span><span class="ar">٥ · تصل طريقة رابعة</span></h2>
+
+  <div class="problem">
+    <p class="en">In April the shop starts accepting mobile-wallet payments. Each one has a wallet ID, and like a cheque or a card it is made by a known customer. The slides' last question on this case: <em>what happens if in the future we introduce a fourth method of payment?</em></p>
+    <p class="ar">في نيسان يبدأ المتجر بقبول الدفع بالمحفظة الإلكترونية. لكلّ دفعة منها رقم محفظة، ويقوم بها، كما في الشيك والبطاقة، زبونٌ معروف. وسؤال الشرائح الأخير في هذه الحالة: <em>ماذا يحدث إن أدخلنا في المستقبل طريقة دفع رابعة؟</em></p>
+  </div>
+
+  <p class="en">A good model absorbs a new kind with a small, local change. Count what each version must touch: new attributes, repeated attributes, new lines, and the queries that already exist.</p>
+  <p class="ar">النموذج الجيّد يستوعب نوعًا جديدًا بتغيير صغير موضعي. عُدّ ما يجب أن يمسّه كل إصدار: خصائص جديدة، وخصائص مكرّرة، وخطوط جديدة، والاستعلامات الموجودة أصلًا.</p>
+
+  <figure class="diagram" data-diagram="t4-pay-fourth"><figcaption><span class="en">Version 3 after the change. The new <code>WALLET</code> box and its customer line are highlighted; nothing that was already there moved.</span><span class="ar">الإصدار 3 بعد التغيير. صندوق <code>WALLET</code> الجديد وخط زبونه مميَّزان، ولم يتحرّك شيء ممّا كان موجودًا.</span></figcaption></figure>
+
+  <h3 id="t4l1-s4"><span class="en">Counting the changes</span><span class="ar">عدّ التغييرات</span></h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th><span class="en">Version</span><span class="ar">الإصدار</span></th>
+        <th><span class="en">What the diagram gains</span><span class="ar">ما يكسبه المخطّط</span></th>
+        <th><span class="en">What gets worse</span><span class="ar">ما يزداد سوءًا</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="en">1 · one entity</span><span class="ar">1 · كيان واحد</span></td>
+          <td><span class="en"><code>o Wallet ID</code>; one more value of <code>Method</code></span><span class="ar"><code>o Wallet ID</code>؛ وقيمة إضافية لـ <code>Method</code></span></td>
+          <td><span class="en">another optional attribute that is really mandatory for one kind; another hidden rule</span><span class="ar">خاصية اختيارية أخرى هي في الحقيقة إلزامية لنوع واحد؛ وقاعدة مخفيّة أخرى</span></td>
+        </tr>
+        <tr>
+          <td><span class="en">2 · three entities</span><span class="ar">2 · ثلاثة كيانات</span></td>
+          <td><span class="en">a whole <code>WALLET</code> entity: ID, date, amount, wallet ID; a third customer line</span><span class="ar">كيان <code>WALLET</code> كامل: الرقم والتاريخ والمبلغ ورقم المحفظة؛ وخط زبون ثالث</span></td>
+          <td><span class="en">the common attributes now drawn four times; every "all payments" question needs a fourth branch</span><span class="ar">الخصائص المشتركة مرسومة الآن أربع مرّات؛ وكل سؤال عن «كل المدفوعات» يحتاج إلى فرع رابع</span></td>
+        </tr>
+        <tr>
+          <td><span class="en">3 · kinds inside one entity</span><span class="ar">3 · أنواع داخل كيان واحد</span></td>
+          <td><span class="en">one inner box with <code>* Wallet ID</code>; one customer line</span><span class="ar">صندوق داخلي واحد فيه <code>* Wallet ID</code>؛ وخط زبون واحد</span></td>
+          <td><span class="en">nothing &mdash; the date and amount are already in <code>PAYMENT</code></span><span class="ar">لا شيء &mdash; فالتاريخ والمبلغ موجودان أصلًا في <code>PAYMENT</code></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Version 1's table gains a nullable <code>wallet_id</code> column, and the hidden-rules query from section 2 gains another line. Version 2 needs a fourth table, <code>wallet_payments</code>, with its own <code>payment_date</code> and <code>amount</code>, and the 3 March query a fourth <code>UNION ALL</code> branch. Version 3 adds only what is new to wallets; the shared columns stay where they were.</p>
+    <p class="ar">يكسب جدول الإصدار 1 عمودًا <code>wallet_id</code> يقبل القيمة الفارغة، ويكسب استعلام القواعد المخفيّة في القسم 2 سطرًا آخر. ويحتاج الإصدار 2 إلى جدول رابع <code>wallet_payments</code> فيه <code>payment_date</code> و<code>amount</code> خاصّان به، ويحتاج استعلام 3 آذار إلى فرع <code>UNION ALL</code> رابع. أمّا الإصدار 3 فلا يضيف إلا ما هو جديد على المحافظ، وتبقى الأعمدة المشتركة حيث كانت.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In version 3, what must be added to the diagram for wallet payments?</p>
+    <p class="q ar">في الإصدار 3، ماذا يجب أن يُضاف إلى المخطّط لدفعات المحفظة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">A new entity beside <code>PAYMENT</code>, with its own date and amount</span><span class="ar">كيان جديد بجانب <code>PAYMENT</code>، له تاريخه ومبلغه</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">A <code>WALLET</code> box inside <code>PAYMENT</code> with <code>* Wallet ID</code>, and a line to <code>CUSTOMER</code></span><span class="ar">صندوق <code>WALLET</code> داخل <code>PAYMENT</code> فيه <code>* Wallet ID</code>، وخط إلى <code>CUSTOMER</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>o Wallet ID</code> in <code>PAYMENT</code>, and nothing else</span><span class="ar"><code>o Wallet ID</code> في <code>PAYMENT</code>، ولا شيء غير ذلك</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Only what is special to wallets is new: the wallet ID and the customer who paid. The date and the amount come from <code>PAYMENT</code> without being drawn again. The third option is version 1's change, which hides the rule.</p>
+      <p class="ar">لا جديد إلا ما يخصّ المحافظ: رقم المحفظة والزبون الذي دفع. أمّا التاريخ والمبلغ فيأتيان من <code>PAYMENT</code> دون أن يُرسما من جديد. والخيار الثالث هو تغيير الإصدار 1، الذي يُخفي القاعدة.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which version makes the manager's existing "everything taken on 3 March" query wrong the day wallets arrive, unless someone edits it?</p>
+    <p class="q ar">أيّ إصدار يجعل استعلام المدير الموجود «كل ما قُبض في 3 آذار» خاطئًا يوم وصول المحافظ، ما لم يعدّله أحد؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Version 1 &mdash; one entity</span><span class="ar">الإصدار 1 &mdash; كيان واحد</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Version 2 &mdash; three separate entities</span><span class="ar">الإصدار 2 &mdash; ثلاثة كيانات منفصلة</span></button></li>
+      <li><button class="opt"><span class="en">Version 3 &mdash; kinds inside one entity</span><span class="ar">الإصدار 3 &mdash; أنواع داخل كيان واحد</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Its query names three tables. Wallet payments land in a fourth that the query never reads, so the total is short and nothing complains. In the other two versions every payment, of any kind, is still a <code>PAYMENT</code>.</p>
+      <p class="ar">استعلامه يسمّي ثلاثة جداول، ودفعات المحفظة تقع في رابع لا يقرؤه الاستعلام أبدًا، فينقص المجموع ولا يعترض شيء. أمّا في الإصدارين الآخرين فكل دفعة، من أيّ نوع، ما زالت <code>PAYMENT</code>.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 6 -->
+  <h2 id="t4l1-h6"><span class="en">6 · Spotting a choice</span><span class="ar">٦ · لمح «الخيار»</span></h2>
+
+  <div class="problem">
+    <p class="en">A student models a café and draws <code>ORDER</code> with an optional <code>o Table Number</code>, because take-away orders have no table. She has met the payment problem again without noticing it. How would she have seen it coming?</p>
+    <p class="ar">تنمذج طالبة مقهى، وترسم <code>ORDER</code> بخاصية اختيارية <code>o Table Number</code>، لأن طلبات السفري لا طاولة لها. لقد التقت بمشكلة المدفوعات مرّة أخرى دون أن تنتبه. كيف كان يمكن أن تراها قادمة؟</p>
+  </div>
+
+  <p class="en">The slides give a habit: <em>you can typically associate "choices" of something with supertypes and subtypes.</em> Food orders (eat in, to go), grocery bags (paper, plastic), payments (cheque, cash, credit). When the business says "which kind?", ask whether each kind has attributes or relationships of its own.</p>
+  <p class="ar">تعطي الشرائح عادةً مفيدة: <em>يمكنك عادةً أن تربط «الخيارات» بين أشياء بالأنواع العليا والأنواع الفرعية.</em> طلبات الطعام (في المطعم، سفري)، وأكياس البقالة (ورق، بلاستيك)، والمدفوعات (شيك، نقد، بطاقة). وحين يقول العمل «أيّ نوع؟» فاسأل: هل لكل نوع خصائص أو علاقات خاصّة به؟</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="choice">choice</span> is a point where the business picks one of several kinds of the same thing, such as the method of payment; it is the usual sign that subtypes may be needed.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="choice">الخيار</span> (Choice) موضعٌ يختار فيه العمل نوعًا من عدّة أنواع للشيء نفسه، مثل طريقة الدفع؛ وهو العلامة المعتادة على أن الأنواع الفرعية قد تلزم.</p>
+  </div>
+
+  <h3 id="t4l1-s5"><span class="en">A choice is a question, not an answer</span><span class="ar">الخيار سؤال لا جواب</span></h3>
+
+  <p class="en">The slides say <em>sometimes</em> it makes sense to subdivide, and they name the reason: a group with special properties. If the kinds differ only in their name, a <code>Method</code>-style type attribute already says everything. <a href="#t4-lesson-04">Lesson 4</a> comes back to when subtyping is the wrong tool.</p>
+  <p class="ar">تقول الشرائح إن تقسيم الكيان منطقي <em>أحيانًا</em>، وتسمّي السبب: مجموعة لها سمات خاصّة. فإن لم تختلف الأنواع إلا في اسمها، فخاصية نوعٍ على طريقة <code>Method</code> تقول كل شيء. ويعود <a href="#t4-lesson-04">الدرس 4</a> إلى الحالات التي يكون فيها التقسيم أداةً خاطئة.</p>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Use the test from section 1: is there a column that is empty for a whole kind of row? The café's <code>orders.table_number</code> is empty for every take-away order &mdash; a special property. A <code>bag_type</code> column that is just <code>'paper'</code> or <code>'plastic'</code>, with nothing else differing, leaves no such column behind.</p>
+    <p class="ar">استعمل اختبار القسم 1: هل هناك عمود فارغ في نوع كامل من الصفوف؟ فالعمود <code>orders.table_number</code> في المقهى فارغ في كل طلب سفري &mdash; إنها سمة خاصّة. أمّا عمود <code>bag_type</code> الذي ليس إلا <code>'paper'</code> أو <code>'plastic'</code>، دون أيّ اختلاف آخر، فلا يترك عمودًا كهذا.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">The café records that eat-in orders are served at a table and take-away orders have a pickup time. Is <code>ORDER</code> a candidate for subdividing?</p>
+    <p class="q ar">يسجّل المقهى أن طلبات الأكل في المكان تُقدَّم على طاولة، وأن طلبات السفري لها وقت استلام. هل <code>ORDER</code> مرشّح للتقسيم؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">Yes &mdash; each kind has an attribute the other does not</span><span class="ar">نعم &mdash; لكل نوع خاصية ليست للآخر</span></button></li>
+      <li><button class="opt"><span class="en">No &mdash; both kinds are orders, so one entity is always enough</span><span class="ar">لا &mdash; كلا النوعين طلب، فالكيان الواحد يكفي دائمًا</span></button></li>
+      <li><button class="opt"><span class="en">No &mdash; subtypes are only for payments</span><span class="ar">لا &mdash; الأنواع الفرعية للمدفوعات فقط</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Table number belongs only to eat-in orders, pickup time only to take-away: two special properties, exactly the payment pattern. "Both are orders" is why they stay inside one <code>ORDER</code>, not a reason to merge their rules.</p>
+      <p class="ar">رقم الطاولة لا يخصّ إلا طلبات الأكل في المكان، ووقت الاستلام لا يخصّ إلا السفري: سمتان خاصّتان، وهذا نمط المدفوعات بعينه. و«كلاهما طلب» سببٌ لبقائهما داخل <code>ORDER</code> واحد، لا لدمج قواعدهما.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t4l1-h7"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Common or special?</span><span class="ar">تمرين 1 · مشتركة أم خاصّة؟</span></h4>
+    <p class="en">For the shop's payments, sort each fact into <em>common attribute</em> or <em>special property</em>, and for each special property name the kinds it belongs to: (a) payment date; (b) card number; (c) made by a <code>CUSTOMER</code>; (d) amount; (e) wallet ID, once wallets arrive; (f) payment ID.</p>
+    <p class="ar">في مدفوعات المتجر، افرز كل حقيقة إلى <em>خاصية مشتركة</em> أو <em>سمة خاصّة</em>، وسمِّ لكل سمة خاصّة الأنواعَ التي تخصّها: (a) تاريخ الدفع؛ (b) رقم البطاقة؛ (c) يقوم بها <code>CUSTOMER</code>؛ (d) المبلغ؛ (e) رقم المحفظة، بعد وصول المحافظ؛ (f) رقم الدفعة.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Common: (a), (d), (f). Special: (b) credit card only; (c) cheque, credit card and wallet &mdash; a relationship, not an attribute; (e) wallet only. Every special property becomes something drawn inside its own kind's box.</p>
+      <p class="ar">مشتركة: (a) و(d) و(f). خاصّة: (b) بطاقة الائتمان فقط؛ و(c) الشيك والبطاقة والمحفظة &mdash; وهي علاقة لا خاصية؛ و(e) المحفظة فقط. وكل سمة خاصّة تصبح شيئًا يُرسم داخل صندوق نوعها.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Name the hidden rules</span><span class="ar">تمرين 2 · سمِّ القواعد المخفيّة</span></h4>
+    <p class="en">The café draws one entity, written as text below. Eat-in orders must have a table number; take-away orders must have a pickup time. List every rule this model hides, and say which mark is to blame for each.</p>
+    <p class="ar">يرسم المقهى كيانًا واحدًا، مكتوبًا نصًّا أدناه. يجب أن يكون لطلب الأكل في المكان رقم طاولة، ويجب أن يكون لطلب السفري وقت استلام. اذكر كل قاعدة يُخفيها هذا النموذج، وقل أيّ علامة هي المسؤولة عن كلٍّ منها.</p>
+    <pre class="code" data-lang="text"><code>ORDER
+  # Order ID
+  * Order Time
+  * Kind            (eat in / to go)
+  o Table Number
+  o Pickup Time</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Two hidden rules, and two forbidden combinations nothing blocks. <code>o Table Number</code> lets an eat-in order have no table, and a take-away order have one. <code>o Pickup Time</code> lets a take-away order have no pickup time, and an eat-in order have one. Each <code>o</code> is "mandatory for one kind, absent for the other", which one entity cannot say.</p>
+      <p class="ar">قاعدتان مخفيّتان، وتركيبتان ممنوعتان لا يمنعهما شيء. <code>o Table Number</code> تسمح بطلب أكل في المكان بلا طاولة، وبطلب سفري له طاولة. و<code>o Pickup Time</code> تسمح بطلب سفري بلا وقت استلام، وبطلب أكل في المكان له وقت استلام. فكل <code>o</code> تعني «إلزامية لنوع، وغائبة عن الآخر»، وهذا ما لا يستطيع الكيان الواحد قوله.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · A fifth method</span><span class="ar">تمرين 3 · طريقة خامسة</span></h4>
+    <p class="en">After wallets, the shop adds bank transfers: each has a bank account number and is made by a customer. For each of the three versions, list exactly what is added to the diagram, and how many times <code>Payment Date</code> is drawn afterwards.</p>
+    <p class="ar">بعد المحافظ، يضيف المتجر التحويلات البنكية: لكلٍّ منها رقم حساب بنكي، ويقوم بها زبون. لكل إصدار من الإصدارات الثلاثة، اذكر بالضبط ما يُضاف إلى المخطّط، وكم مرّة تُرسم <code>Payment Date</code> بعد ذلك.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">Version 1: <code>o Account Number</code> and a fifth <code>Method</code> value; date drawn once, one more hidden rule. Version 2: a whole <code>BANK TRANSFER</code> entity with ID, date, amount and account number, plus a customer line; date drawn five times. Version 3: a <code>BANK TRANSFER</code> box inside <code>PAYMENT</code> with <code>* Account Number</code>, plus a customer line; date still drawn once.</p>
+      <p class="ar">الإصدار 1: <code>o Account Number</code> وقيمة خامسة لـ <code>Method</code>؛ والتاريخ مرسوم مرّة واحدة، مع قاعدة مخفيّة أخرى. الإصدار 2: كيان <code>BANK TRANSFER</code> كامل فيه الرقم والتاريخ والمبلغ ورقم الحساب، مع خط زبون؛ والتاريخ مرسوم خمس مرّات. الإصدار 3: صندوق <code>BANK TRANSFER</code> داخل <code>PAYMENT</code> فيه <code>* Account Number</code>، مع خط زبون؛ والتاريخ ما زال مرسومًا مرّة واحدة.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · Read version 3</span><span class="ar">تمرين 4 · اقرأ الإصدار 3</span></h4>
+    <p class="en">From the version 3 diagram in section 4, write both ERDish sentences for the line between <code>CREDIT CARD</code> and <code>CUSTOMER</code>. Then explain, from the business, why <code>CASH</code> has no line at all.</p>
+    <p class="ar">من مخطّط الإصدار 3 في القسم 4، اكتب جملتَي ERDish للخط الواصل بين <code>CREDIT CARD</code> و<code>CUSTOMER</code>. ثم اشرح، انطلاقًا من العمل، لماذا ليس لـ <code>CASH</code> أيّ خط.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="erdish"><code>Each CREDIT CARD must be made by one and only one CUSTOMER.
+Each CUSTOMER    may make           one or more CREDIT CARDs.</code></pre>
+      <p class="en">The half at <code>CREDIT CARD</code> is solid with a crow's foot; the half at <code>CUSTOMER</code> is dashed with a single toe. <code>CASH</code> has no line because, as the slides say, the customer who made a payment is not needed for cash.</p>
+      <p class="ar">النصف عند <code>CREDIT CARD</code> متّصل وفيه قدم غراب، والنصف عند <code>CUSTOMER</code> متقطّع وفيه إصبع واحدة. وليس لـ <code>CASH</code> خطّ لأن الزبون الذي دفع، كما تقول الشرائح، لا يلزم في الدفع النقدي.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · One total, three tables</span><span class="ar">تمرين 5 · مجموع واحد، وثلاثة جداول</span></h4>
+    <p class="en">Using the three tables of section 3, write one query that returns the shop's total takings on 2 March. Then say which part of your query a fourth payment method would force you to change.</p>
+    <p class="ar">باستعمال الجداول الثلاثة في القسم 3، اكتب استعلامًا واحدًا يعيد مجموع ما قبضه المتجر في 2 آذار. ثم قل أيّ جزء من استعلامك ستُجبرك طريقةُ دفعٍ رابعة على تغييره.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="sql"><code>SELECT SUM(amount) AS day_total
+FROM (SELECT amount FROM cash_payments  WHERE payment_date = '2026-03-02'
+      UNION ALL
+      SELECT amount FROM check_payments WHERE payment_date = '2026-03-02'
+      UNION ALL
+      SELECT amount FROM card_payments  WHERE payment_date = '2026-03-02') AS t;</code></pre>
+      <div class="output"><div class="table-wrap"><table><thead><tr><th><code>day_total</code></th></tr></thead><tbody><tr><td>165</td></tr></tbody></table></div></div>
+      <p class="en">40 in cash plus Linda's cheque of 125. A fourth method needs a fourth <code>UNION ALL</code> branch inside the brackets, and every other "all payments" query needs the same edit. (In alasql, <code>total</code> is a reserved word, hence <code>day_total</code>.)</p>
+      <p class="ar">40 نقدًا مع شيك Linda البالغ 125. وتحتاج الطريقة الرابعة إلى فرع <code>UNION ALL</code> رابع داخل القوسين، ويحتاج كل استعلام آخر عن «كل المدفوعات» إلى التعديل نفسه. (في alasql الكلمة <code>total</code> محجوزة، ولذلك <code>day_total</code>.)</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">Often some instances of an entity have attributes or relationships the others do not: these are special properties.</li>
+      <li class="ar">كثيرًا ما يكون لبعض نُسَخ الكيان خصائص أو علاقات ليست لغيرها: وهذه هي السمات الخاصّة.</li>
+      <li class="en">An empty value can mean "not applicable", which is a rule, not "unknown".</li>
+      <li class="ar">القيمة الفارغة قد تعني «غير منطبقة»، وهذه قاعدة، لا «مجهولة».</li>
+      <li class="en">One entity keeps the common part once but hides the rules of each kind behind <code>o</code> and dashed halves.</li>
+      <li class="ar">الكيان الواحد يحفظ الجزء المشترك مرّة واحدة، لكنه يُخفي قواعد كل نوع خلف <code>o</code> والأنصاف المتقطّعة.</li>
+      <li class="en">Separate entities show every rule but repeat the common attributes and relationships, and lose the fact that the kinds belong together.</li>
+      <li class="ar">الكيانات المنفصلة تُظهر كل قاعدة، لكنها تكرّر الخصائص والعلاقات المشتركة، وتُضيع حقيقة أن الأنواع تنتمي إلى بعضها.</li>
+      <li class="en">Subdividing &mdash; kinds drawn inside one entity &mdash; keeps both; a new kind is one more inner box.</li>
+      <li class="ar">التقسيم &mdash; أنواع مرسومة داخل كيان واحد &mdash; يحفظ الأمرين معًا؛ والنوع الجديد مجرّد صندوق داخلي آخر.</li>
+      <li class="en">A "choice" in the business is the signal to ask; special properties are the reason to subdivide.</li>
+      <li class="ar">«الخيار» في العمل إشارةٌ لطرح السؤال، والسمات الخاصّة هي سبب التقسيم.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Marking an attribute <code>o</code> when it is really mandatory for one kind and absent for the others.</li>
+      <li class="ar">تعليم خاصية بـ <code>o</code> وهي في الحقيقة إلزامية لنوع وغائبة عن الأنواع الأخرى.</li>
+      <li class="en">Splitting kinds into unrelated entities and copying the common attributes into each.</li>
+      <li class="ar">تقسيم الأنواع إلى كيانات لا رابط بينها، ونسخ الخصائص المشتركة في كلٍّ منها.</li>
+      <li class="en">Forgetting that a special property can be a relationship, not only an attribute.</li>
+      <li class="ar">نسيان أن السمة الخاصّة قد تكون علاقة، لا خاصية فقط.</li>
+      <li class="en">Subdividing every choice, even when the kinds differ only in name.</li>
+      <li class="ar">تقسيم كل خيار، حتى حين لا تختلف الأنواع إلا في الاسم.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="#t4-test-01">Test 1 &mdash; When One Entity Is Really Several</a>. Then <a href="#t4-lesson-02">Lesson 2 &mdash; Supertype and Subtype</a> names the outer and inner boxes properly, and shows that a subtype inherits every attribute and every relationship of its supertype.</p>
+    <p class="ar">اختبر نفسك بـ<a href="#t4-test-01">اختبار 1 &mdash; حين يكون الكيان الواحد عدّة كيانات</a>. ثم يسمّي <a href="#t4-lesson-02">الدرس 2 &mdash; النوع الأعلى والنوع الفرعي</a> الصناديقَ الخارجية والداخلية تسميةً صحيحة، ويبيّن أن النوع الفرعي يرث كل خاصية وكل علاقة من نوعه الأعلى.</p>
+  </div>
+
+</section>

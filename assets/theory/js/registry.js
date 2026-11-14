@@ -557,7 +557,7 @@ window.DBT_REGISTRY = {
       "ar": "نقدًا أو بشيك أو ببطاقة ائتمان: كيان واحد، أم ثلاثة، أم شيء بينهما؟ وماذا يحدث حين تظهر طريقة رابعة."
      },
      "href": "lessons/t4-lesson-01.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t4-test-01",
