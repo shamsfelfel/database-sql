@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 352" direction="ltr" role="img" aria-labelledby="t3-matrix-order-t">
+<title id="t3-matrix-order-t">The relationship matrix for CUSTOMER, ITEM, ORDER and WAREHOUSE: six names in sixteen cells, giving three relationships / مصفوفة العلاقات لـ CUSTOMER وITEM وORDER وWAREHOUSE: ستة أسماء في ست عشرة خلية، تعطي ثلاث علاقات</title>
+<g class="en"><text x="390.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">Four entities, sixteen cells, three relationships</text></g><g class="ar"><text x="390.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">أربعة كيانات، ست عشرة خلية، ثلاث علاقات</text></g>
+<rect x="40" y="44" width="140" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="110.0" y="61" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:10.5px">row ↓  column →</text></g><g class="ar"><text x="110.0" y="61" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:11.5px">الصف ↓  العمود ←</text></g>
+<g class="en"><text x="110.0" y="76" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:10px">(read row first)</text></g><g class="ar"><text x="110.0" y="76" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:11px">(الصف يُقرأ أوّلًا)</text></g>
+<rect x="180" y="44" width="140" height="40" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="250.0" y="69" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">CUSTOMER</text>
+<rect x="320" y="44" width="140" height="40" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="390.0" y="69" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">ITEM</text>
+<rect x="460" y="44" width="140" height="40" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="530.0" y="69" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">ORDER</text>
+<rect x="600" y="44" width="140" height="40" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="670.0" y="69" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">WAREHOUSE</text>
+<rect x="40" y="84" width="140" height="40" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="52" y="109" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">CUSTOMER</text>
+<rect x="180" y="84" width="140" height="40" style="fill:var(--dg-line, var(--text-soft));fill-opacity:0.2;stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="250.0" y="109" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:14px">·</text>
+<rect x="320" y="84" width="140" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<rect x="460" y="84" width="140" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="530.0" y="109" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">place</text>
+<rect x="600" y="84" width="140" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<rect x="40" y="124" width="140" height="40" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="52" y="149" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">ITEM</text>
+<rect x="180" y="124" width="140" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<rect x="320" y="124" width="140" height="40" style="fill:var(--dg-line, var(--text-soft));fill-opacity:0.2;stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="390.0" y="149" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:14px">·</text>
+<rect x="460" y="124" width="140" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="530.0" y="149" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">contained on</text>
+<rect x="600" y="124" width="140" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="670.0" y="149" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">stored in</text>
+<rect x="40" y="164" width="140" height="40" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="52" y="189" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">ORDER</text>
+<rect x="180" y="164" width="140" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="250.0" y="189" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">placed by</text>
+<rect x="320" y="164" width="140" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="390.0" y="189" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">issued for</text>
+<rect x="460" y="164" width="140" height="40" style="fill:var(--dg-line, var(--text-soft));fill-opacity:0.2;stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="530.0" y="189" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:14px">·</text>
+<rect x="600" y="164" width="140" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<rect x="40" y="204" width="140" height="40" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="52" y="229" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">WAREHOUSE</text>
+<rect x="180" y="204" width="140" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<rect x="320" y="204" width="140" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="390.0" y="229" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">store</text>
+<rect x="460" y="204" width="140" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<rect x="600" y="204" width="140" height="40" style="fill:var(--dg-line, var(--text-soft));fill-opacity:0.2;stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="670.0" y="229" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:14px">·</text>
+<rect x="40" y="266" width="700" height="70" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="288" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px">Six filled cells make three pairs: CUSTOMER–ORDER, ITEM–ORDER, ITEM–WAREHOUSE.</text></g><g class="ar"><text x="724" y="288" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px">ست خلايا مملوءة تصنع ثلاثة أزواج: CUSTOMER–ORDER وITEM–ORDER وITEM–WAREHOUSE.</text></g>
+<g class="en"><text x="56" y="310" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">The empty pairs are decisions too: no CUSTOMER–WAREHOUSE line, no CUSTOMER–ITEM line.</text></g><g class="ar"><text x="724" y="310" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">والأزواج الفارغة قرارات أيضًا: لا خط بين CUSTOMER وWAREHOUSE، ولا خط بين CUSTOMER وITEM.</text></g>
+</svg>

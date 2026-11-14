@@ -447,7 +447,7 @@ window.DBT_REGISTRY = {
       "ar": "ثلاثة عشر كيانًا تخفي علاقات لا تخفيها ثلاثة. املأ المصفوفة في اتجاه واحد فقط، ثم حوّلها إلى مخطط ERD."
      },
      "href": "lessons/t3-lesson-06.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t3-test-06",

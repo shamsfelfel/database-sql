@@ -247,6 +247,49 @@ window.DBTGlossary["t3"] = [
   ]
  },
  {
+  "id": "matrix-diagonal",
+  "term": {
+   "en": "Diagonal (of a matrix)",
+   "ar": "القُطر (في المصفوفة)"
+  },
+  "def": {
+   "en": "The run of cells where an entity's row meets its own column; a filled diagonal cell is a recursive relationship.",
+   "ar": "سلسلة الخلايا التي يلتقي فيها صفّ الكيان بعموده هو؛ والخلية الممتلئة على القُطر علاقة ذاتية."
+  },
+  "cat": {
+   "en": "Matrix diagrams",
+   "ar": "مخطّطات المصفوفة"
+  },
+  "see": [
+   "matrix-cell",
+   "mirror-cells"
+  ],
+  "used": [
+   "t3l6-s1"
+  ]
+ },
+ {
+  "id": "empty-cell",
+  "term": {
+   "en": "Empty cell",
+   "ar": "الخلية الفارغة"
+  },
+  "def": {
+   "en": "A matrix cell left blank, recording the decision that the row entity has no relationship to the column entity.",
+   "ar": "خلية مصفوفة تُترك فارغة، فتسجّل قرارًا بأن لا علاقة لكيان الصف بكيان العمود."
+  },
+  "cat": {
+   "en": "Matrix diagrams",
+   "ar": "مخطّطات المصفوفة"
+  },
+  "see": [
+   "matrix-cell"
+  ],
+  "used": [
+   "t3l6-h2"
+  ]
+ },
+ {
   "id": "entity-a",
   "term": {
    "en": "Entity A",
@@ -288,6 +331,28 @@ window.DBTGlossary["t3"] = [
   ],
   "used": [
    "t3l5-h2"
+  ]
+ },
+ {
+  "id": "entity-pair",
+  "term": {
+   "en": "Entity pair",
+   "ar": "زوج الكيانات"
+  },
+  "def": {
+   "en": "Two different entities considered together; n entities make n × (n − 1) ÷ 2 pairs, and each must be asked about once.",
+   "ar": "كيانان مختلفان يُنظر إليهما معًا؛ وn من الكيانات تصنع n × (n − 1) ÷ 2 من الأزواج، ويجب السؤال عن كل زوج مرّة."
+  },
+  "cat": {
+   "en": "Matrix diagrams",
+   "ar": "مخطّطات المصفوفة"
+  },
+  "see": [
+   "matrix-diagram",
+   "mirror-cells"
+  ],
+  "used": [
+   "t3l6-h1"
   ]
  },
  {
@@ -512,6 +577,95 @@ window.DBTGlossary["t3"] = [
   ]
  },
  {
+  "id": "matrix-mapping",
+  "term": {
+   "en": "Mapping a matrix",
+   "ar": "نقل المصفوفة"
+  },
+  "def": {
+   "en": "Turning a matrix into an ERD: one relationship line for each pair of filled mirror cells, with each cell's name beside its row entity.",
+   "ar": "تحويل المصفوفة إلى مخطّط ERD: خط علاقة واحد لكل زوج من الخلايا المتقابلة الممتلئة، واسم كل خلية بجانب كيان صفّها."
+  },
+  "cat": {
+   "en": "Matrix diagrams",
+   "ar": "مخطّطات المصفوفة"
+  },
+  "see": [
+   "mirror-cells",
+   "matrix-diagram"
+  ],
+  "used": [
+   "t3l6-h5"
+  ]
+ },
+ {
+  "id": "matrix-cell",
+  "term": {
+   "en": "Matrix cell",
+   "ar": "خلية المصفوفة"
+  },
+  "def": {
+   "en": "The square where one row meets one column; it holds the name of the relationship from the row entity to the column entity, or nothing.",
+   "ar": "المربّع الذي يلتقي فيه صفّ بعمود؛ ويحمل اسم العلاقة من كيان الصف إلى كيان العمود، أو لا شيء."
+  },
+  "cat": {
+   "en": "Matrix diagrams",
+   "ar": "مخطّطات المصفوفة"
+  },
+  "see": [
+   "empty-cell",
+   "matrix-direction"
+  ],
+  "used": [
+   "t3l6-h2"
+  ]
+ },
+ {
+  "id": "matrix-diagram",
+  "term": {
+   "en": "Matrix diagram",
+   "ar": "مخطّط المصفوفة"
+  },
+  "def": {
+   "en": "A grid that lists the same entities down the side and across the top, so that each cell asks whether its row entity is related to its column entity.",
+   "ar": "شبكة تسرد الكيانات نفسها على الجانب وفي الأعلى، فتسأل كل خلية فيها هل كيان صفّها مرتبط بكيان عمودها."
+  },
+  "cat": {
+   "en": "Matrix diagrams",
+   "ar": "مخطّطات المصفوفة"
+  },
+  "see": [
+   "relationship-matrix",
+   "matrix-cell",
+   "entity-pair"
+  ],
+  "used": [
+   "t3l6-h1"
+  ]
+ },
+ {
+  "id": "matrix-direction",
+  "term": {
+   "en": "Matrix reading direction",
+   "ar": "اتجاه قراءة المصفوفة"
+  },
+  "def": {
+   "en": "The single order used to write and to read every cell: row entity, then the name in the cell, then column entity.",
+   "ar": "الترتيب الواحد المستعمل في كتابة كل خلية وقراءتها: كيان الصف، ثم الاسم في الخلية، ثم كيان العمود."
+  },
+  "cat": {
+   "en": "Matrix diagrams",
+   "ar": "مخطّطات المصفوفة"
+  },
+  "see": [
+   "matrix-cell",
+   "mirror-cells"
+  ],
+  "used": [
+   "t3l6-h3"
+  ]
+ },
+ {
   "id": "may-be",
   "term": {
    "en": "May (be)",
@@ -531,6 +685,29 @@ window.DBTGlossary["t3"] = [
   ],
   "used": [
    "t3l2-h3"
+  ]
+ },
+ {
+  "id": "mirror-cells",
+  "term": {
+   "en": "Mirror cells",
+   "ar": "الخليتان المتقابلتان"
+  },
+  "def": {
+   "en": "The two cells of one entity pair, opposite each other across the diagonal; they hold the two names of a single relationship.",
+   "ar": "خليتا زوج الكيانات الواحد، متقابلتين على جانبي القُطر؛ وتحملان اسمَي علاقة واحدة."
+  },
+  "cat": {
+   "en": "Matrix diagrams",
+   "ar": "مخطّطات المصفوفة"
+  },
+  "see": [
+   "entity-pair",
+   "matrix-diagonal",
+   "matrix-mapping"
+  ],
+  "used": [
+   "t3l6-s2"
   ]
  },
  {
@@ -824,6 +1001,27 @@ window.DBTGlossary["t3"] = [
   ],
   "used": [
    "t3l1-h6"
+  ]
+ },
+ {
+  "id": "relationship-matrix",
+  "term": {
+   "en": "Relationship matrix",
+   "ar": "مصفوفة العلاقات"
+  },
+  "def": {
+   "en": "The DFo name for a matrix diagram: a grid that collects the first facts about which entities are related.",
+   "ar": "اسم مخطّط المصفوفة في DFo: شبكة تجمع الحقائق الأولى عن الكيانات المرتبطة."
+  },
+  "cat": {
+   "en": "Matrix diagrams",
+   "ar": "مخطّطات المصفوفة"
+  },
+  "see": [
+   "matrix-diagram"
+  ],
+  "used": [
+   "t3l6-s3"
   ]
  },
  {

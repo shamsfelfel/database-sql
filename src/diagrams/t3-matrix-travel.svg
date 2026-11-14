@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 340" direction="ltr" role="img" aria-labelledby="t3-matrix-travel-t">
+<title id="t3-matrix-travel-t">The travel agency's relationship matrix: TRAVELER, COUNTRY and LANDMARK on both axes, every cell read row entity, name, column entity / مصفوفة علاقات وكالة السفر: TRAVELER وCOUNTRY وLANDMARK على المحورين، وكل خلية تُقرأ: كيان الصف ثم الاسم ثم كيان العمود</title>
+<g class="en"><text x="390.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">The travel agency's matrix, filled in one direction</text></g><g class="ar"><text x="390.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">مصفوفة وكالة السفر، مملوءة في اتجاه واحد</text></g>
+<rect x="40" y="44" width="160" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="120.0" y="61" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:10.5px">row ↓  column →</text></g><g class="ar"><text x="120.0" y="61" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:11.5px">الصف ↓  العمود ←</text></g>
+<g class="en"><text x="120.0" y="76" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:10px">(read row first)</text></g><g class="ar"><text x="120.0" y="76" text-anchor="middle" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:11px">(الصف يُقرأ أوّلًا)</text></g>
+<rect x="200" y="44" width="180" height="40" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="290.0" y="69" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">TRAVELER</text>
+<rect x="380" y="44" width="180" height="40" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="470.0" y="69" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">COUNTRY</text>
+<rect x="560" y="44" width="180" height="40" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="650.0" y="69" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">LANDMARK</text>
+<rect x="40" y="84" width="160" height="40" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="52" y="109" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">TRAVELER</text>
+<rect x="200" y="84" width="180" height="40" style="fill:var(--dg-line, var(--text-soft));fill-opacity:0.2;stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="290.0" y="109" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:14px">·</text>
+<rect x="380" y="84" width="180" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="470.0" y="109" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">visit</text>
+<rect x="560" y="84" width="180" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="650.0" y="109" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">have seen</text>
+<rect x="40" y="124" width="160" height="40" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="52" y="149" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">COUNTRY</text>
+<rect x="200" y="124" width="180" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="290.0" y="149" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">visited by</text>
+<rect x="380" y="124" width="180" height="40" style="fill:var(--dg-line, var(--text-soft));fill-opacity:0.2;stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="470.0" y="149" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:14px">·</text>
+<rect x="560" y="124" width="180" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="650.0" y="149" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">the location of</text>
+<rect x="40" y="164" width="160" height="40" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="52" y="189" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px;font-weight:700">LANDMARK</text>
+<rect x="200" y="164" width="180" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="290.0" y="189" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">seen by</text>
+<rect x="380" y="164" width="180" height="40" style="fill:var(--dg-bg, var(--surface));stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="470.0" y="189" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">located in</text>
+<rect x="560" y="164" width="180" height="40" style="fill:var(--dg-line, var(--text-soft));fill-opacity:0.2;stroke:var(--dg-line, var(--text-soft));stroke-width:1"/>
+<text x="650.0" y="189" text-anchor="middle" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--mono, monospace);font-size:14px">·</text>
+<rect x="40" y="228" width="700" height="96" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<g class="en"><text x="56" y="250" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:11.5px">Read every filled cell the same way: row entity → cell → column entity.</text></g><g class="ar"><text x="724" y="250" text-anchor="start" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:12.5px">اقرأ كل خلية مملوءة بالطريقة نفسها: كيان الصف ← الخلية ← كيان العمود.</text></g>
+<text x="56" y="274" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">TRAVELER · visit · COUNTRY</text>
+<text x="400" y="274" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">COUNTRY · visited by · TRAVELER</text>
+<text x="56" y="294" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">LANDMARK · located in · COUNTRY</text>
+<text x="400" y="294" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">COUNTRY · the location of · LANDMARK</text>
+<g class="en"><text x="56" y="314" text-anchor="start" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font, sans-serif);font-size:11px">The shaded diagonal pairs an entity with itself; it is empty here.</text></g><g class="ar"><text x="724" y="314" text-anchor="start" direction="rtl" style="fill:var(--dg-text-soft, var(--text-soft));font-family:var(--font-ar, sans-serif);font-size:12px">القُطر المظلّل يقرن الكيان بنفسه، وهو فارغ هنا.</text></g>
+</svg>

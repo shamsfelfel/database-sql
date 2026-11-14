@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 520" direction="ltr" role="img" aria-labelledby="t3-matrix-order-erd-t">
+<title id="t3-matrix-order-erd-t">The CUSTOMER, ORDER, ITEM, WAREHOUSE matrix mapped to an ERD: three lines, names from the matrix, optionality and cardinality from the business / مصفوفة CUSTOMER وORDER وITEM وWAREHOUSE منقولة إلى مخطّط ERD: ثلاثة خطوط، الأسماء من المصفوفة، والإلزامية والتعدّدية من العمل</title>
+<g class="en"><text x="390.0" y="24" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--font, sans-serif);font-size:13px;font-weight:600">The matrix mapped to an ERD</text></g><g class="ar"><text x="390.0" y="24" text-anchor="middle" direction="rtl" style="fill:var(--dg-text, var(--text));font-family:var(--font-ar, sans-serif);font-size:14px;font-weight:600">المصفوفة منقولة إلى مخطّط ERD</text></g>
+<rect x="40" y="50" width="200" height="78" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="140.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">CUSTOMER</text>
+<text x="54" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Customer ID</text>
+<text x="54" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="540" y="50" width="200" height="78" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="640.0" y="72" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ORDER</text>
+<text x="554" y="94" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Order No</text>
+<text x="554" y="113" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Order Date</text>
+<rect x="540" y="250" width="200" height="78" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="640.0" y="272" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">ITEM</text>
+<text x="554" y="294" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Item ID</text>
+<text x="554" y="313" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* Name</text>
+<rect x="40" y="250" width="200" height="78" rx="10" style="fill:var(--dg-node-fill, var(--accent-soft));stroke:var(--dg-node-stroke, var(--accent));stroke-width:1.5"/>
+<text x="140.0" y="272" text-anchor="middle" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:13px;font-weight:700">WAREHOUSE</text>
+<text x="54" y="294" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px"># * Warehouse ID</text>
+<text x="54" y="313" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12.5px">* City</text>
+<path d="M240 104 L390 104" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M390 104 L540 104" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M526 104 L540 96" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M526 104 L540 104" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M526 104 L540 112" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="250" y="95" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">place</text>
+<text x="530" y="122" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">placed by</text>
+<path d="M640 128 L640 189.0" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M640 189.0 L640 250" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M640 142 L632 128" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M640 142 L640 128" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M640 142 L648 128" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M640 236 L632 250" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M640 236 L640 250" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M640 236 L648 250" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="650" y="154" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">issued for</text>
+<text x="650" y="238" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">contained on</text>
+<path d="M240 304 L390 304" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none;stroke-dasharray:6 4"/>
+<path d="M390 304 L540 304" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M526 304 L540 296" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M526 304 L540 304" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<path d="M526 304 L540 312" style="stroke:var(--dg-line, var(--text-soft));stroke-width:1.6;fill:none"/>
+<text x="250" y="295" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">store</text>
+<text x="530" y="322" text-anchor="end" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:11.5px">stored in</text>
+<rect x="40" y="372" width="700" height="132" rx="6" style="fill:var(--dg-note-fill, var(--surface));stroke:var(--dg-note-stroke, var(--text-soft));stroke-width:1"/>
+<text x="56" y="394" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each CUSTOMER must place one or more ORDERs.</text>
+<text x="56" y="413" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each ORDER must be placed by one and only one CUSTOMER.</text>
+<text x="56" y="432" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each ORDER must be issued for one or more ITEMs.</text>
+<text x="56" y="451" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each ITEM may be contained on one or more ORDERs.</text>
+<text x="56" y="470" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each ITEM must be stored in one and only one WAREHOUSE.</text>
+<text x="56" y="489" text-anchor="start" style="fill:var(--dg-text, var(--text));font-family:var(--mono, monospace);font-size:12px">Each WAREHOUSE may store one or more ITEMs.</text>
+</svg>

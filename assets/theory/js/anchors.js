@@ -214,6 +214,17 @@ window.DBTAnchors = {
 "t3l5-s3": "lessons/t3-lesson-05.html",
 "t3l5-s4": "lessons/t3-lesson-05.html",
 "t3l5-s5": "lessons/t3-lesson-05.html",
+"t3l6-e1": "lessons/t3-lesson-06.html",
+"t3l6-e2": "lessons/t3-lesson-06.html",
+"t3l6-h1": "lessons/t3-lesson-06.html",
+"t3l6-h2": "lessons/t3-lesson-06.html",
+"t3l6-h3": "lessons/t3-lesson-06.html",
+"t3l6-h4": "lessons/t3-lesson-06.html",
+"t3l6-h5": "lessons/t3-lesson-06.html",
+"t3l6-h6": "lessons/t3-lesson-06.html",
+"t3l6-s1": "lessons/t3-lesson-06.html",
+"t3l6-s2": "lessons/t3-lesson-06.html",
+"t3l6-s3": "lessons/t3-lesson-06.html",
 "t4-chapter": "chapters/t4.html",
 "t4-exam-a": "exams/t4-exam-a.html",
 "t4-exam-b": "exams/t4-exam-b.html",
@@ -834,6 +845,42 @@ window.DBTHeadings = {
 "t3l5-s5": {
 "ar": "«may» عند الطرفين، كما تقولها الشرائح",
 "en": "May at both ends, the way the slides say it"
+},
+"t3l6-h1": {
+"ar": "١ · ثلاثة كيانات، أو ثلاثة عشر",
+"en": "1 · Three entities, or thirteen"
+},
+"t3l6-h2": {
+"ar": "٢ · بناء الشبكة",
+"en": "2 · Building the grid"
+},
+"t3l6-h3": {
+"ar": "٣ · اتجاه واحد فقط",
+"en": "3 · One direction only"
+},
+"t3l6-h4": {
+"ar": "٤ · ما لا تقوله المصفوفة",
+"en": "4 · What the matrix does not say"
+},
+"t3l6-h5": {
+"ar": "٥ · من المصفوفة إلى مخطّط ERD",
+"en": "5 · From matrix to ERD"
+},
+"t3l6-h6": {
+"ar": "تمارين",
+"en": "Exercises"
+},
+"t3l6-s1": {
+"ar": "القُطر: الكيان ونفسه",
+"en": "The diagonal: an entity and itself"
+},
+"t3l6-s2": {
+"ar": "خليتان، خط واحد",
+"en": "Two cells, one line"
+},
+"t3l6-s3": {
+"ar": "نقل مصفوفة أكبر",
+"en": "Mapping a bigger matrix"
 },
 "t4idx-h1": {
 "ar": "الدروس",

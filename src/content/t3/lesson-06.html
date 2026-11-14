@@ -1,0 +1,518 @@
+<section class="page" id="t3-lesson-06">
+
+  <span class="kicker">Lesson 6</span>
+  <h1><span class="en">Matrix Diagrams</span><span class="ar">مخطّطات المصفوفة</span></h1>
+  <p class="lede en">By the end of this lesson you will be able to find every relationship among a set of entities with a matrix diagram, fill and read it in one direction only, and turn the filled matrix into a finished ERD.</p>
+  <p class="lede ar">في نهاية هذا الدرس ستستطيع أن تجد كل علاقة بين مجموعة من الكيانات بمخطّط مصفوفة، وأن تملأه وتقرأه في اتجاه واحد فقط، وأن تحوّل المصفوفة الممتلئة إلى مخطّط ERD مكتمل.</p>
+
+  <div class="note">
+    <p class="en"><strong>The setting.</strong> Lessons <a href="#t3-lesson-01">1</a> to <a href="#t3-lesson-05">5</a> taught you to draw and speak a relationship once you know it is there. This lesson, the slides' <em>Matrix Diagrams</em>, is about finding it in the first place. Cases: the slides' school, their travel agency, and their <code>CUSTOMER</code>&ndash;<code>ORDER</code>&ndash;<code>ITEM</code>&ndash;<code>WAREHOUSE</code> matrix.</p>
+    <p class="ar"><strong>السياق.</strong> علّمتك الدروس من <a href="#t3-lesson-01">1</a> إلى <a href="#t3-lesson-05">5</a> أن ترسم العلاقة وتتحدّث بها متى عرفت أنها موجودة. وهذا الدرس، <em>مخطّطات المصفوفة</em> في الشرائح، يتناول العثور عليها أصلًا. والحالات: مدرسة الشرائح، ووكالة السفر فيها، ومصفوفة <code>CUSTOMER</code>&ndash;<code>ORDER</code>&ndash;<code>ITEM</code>&ndash;<code>WAREHOUSE</code> فيها.</p>
+  </div>
+
+  <div class="objectives">
+    <ul>
+      <li class="en">Explain why a matrix finds relationships that looking at the boxes misses.</li>
+      <li class="ar">شرح لماذا تجد المصفوفة علاقات تفوت من ينظر إلى الصناديق فقط.</li>
+      <li class="en">Build a matrix: the same entities down the side and across the top, one name per filled cell.</li>
+      <li class="ar">بناء مصفوفة: الكيانات نفسها على الجانب وفي الأعلى، واسم واحد في كل خلية ممتلئة.</li>
+      <li class="en">Write and read every cell in one direction only: row entity, name, column entity.</li>
+      <li class="ar">كتابة كل خلية وقراءتها في اتجاه واحد فقط: كيان الصف، ثم الاسم، ثم كيان العمود.</li>
+      <li class="en">Say what a matrix cannot show, and ask the questions that supply it.</li>
+      <li class="ar">بيان ما لا تستطيع المصفوفة إظهاره، وطرح الأسئلة التي تكمله.</li>
+      <li class="en">Map a filled matrix to an ERD, line by line, and read it back in ERDish.</li>
+      <li class="ar">نقل مصفوفة ممتلئة إلى مخطّط ERD، خطًّا خطًّا، وقراءته من جديد بلغة ERDish.</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ 1 -->
+  <h2 id="t3l6-h1"><span class="en">1 · Three entities, or thirteen</span><span class="ar">١ · ثلاثة كيانات، أو ثلاثة عشر</span></h2>
+
+  <div class="problem">
+    <p class="en">With <code>TEACHER</code>, <code>COURSE</code> and <code>CLASS</code> on the page, you can see every possible line at a glance. Now the school sends its full list: thirteen entities, from <code>STUDENT</code> and <code>EXAM</code> to <code>CLUB</code>, <code>CLASSROOM</code> and <code>MAINTENANCE STAFF</code>. You draw the lines you notice. Does anything say which classroom the chess club meets in?</p>
+    <p class="ar">حين يكون على الصفحة <code>TEACHER</code> و<code>COURSE</code> و<code>CLASS</code>، ترى كل خط ممكن بنظرة واحدة. ثم ترسل المدرسة قائمتها الكاملة: ثلاثة عشر كيانًا، من <code>STUDENT</code> و<code>EXAM</code> إلى <code>CLUB</code> و<code>CLASSROOM</code> و<code>MAINTENANCE STAFF</code>. ترسم الخطوط التي تلاحظها. فهل هناك ما يقول في أيّ قاعة يجتمع نادي الشطرنج؟</p>
+  </div>
+
+  <p class="en">The slides put it plainly: "It is useful to know more than one way to discover relationships." Given three entities, it "may be simple enough" to see them. "But what about finding relationships when you have thirteen or more entities?" Then you need a method that visits every pair, not an eye that visits the obvious ones.</p>
+  <p class="ar">تقولها الشرائح صراحة: «من المفيد أن تعرف أكثر من طريقة لاكتشاف العلاقات.» فمع ثلاثة كيانات «قد يكون الأمر بسيطًا بما يكفي» لتراها. «لكن ماذا عن إيجاد العلاقات حين يكون لديك ثلاثة عشر كيانًا أو أكثر؟» عندها تحتاج إلى طريقة تمرّ على كل زوج، لا إلى عين تمرّ على الأزواج الواضحة وحدها.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="matrix-diagram">matrix diagram</span> is a grid that lists the same entities down the side and across the top, so that each cell asks whether its row entity is related to its column entity.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="matrix-diagram">مخطّط المصفوفة</span> (Matrix Diagram) شبكة تسرد الكيانات نفسها على الجانب وفي الأعلى، فتسأل كل خلية فيها هل كيان صفّها مرتبط بكيان عمودها.</p>
+  </div>
+
+  <p class="en">The slides' reason for it: "Using a matrix diagram, especially when you are dealing with many entities, is a good way to make sure that you haven't missed any relationships." The numbers explain why. Three entities make 3 pairs. Thirteen make 78 pairs (13 &times; 12 &divide; 2) &mdash; too many to hold in your head, but not too many to tick off in a grid.</p>
+  <p class="ar">وسبب الشرائح لذلك: «استعمال مخطّط المصفوفة، ولا سيّما حين تتعامل مع كيانات كثيرة، طريقة جيدة للتأكّد من أنك لم تُغفل أيّ علاقة.» والأرقام تفسّر السبب. ثلاثة كيانات تصنع 3 أزواج. وثلاثة عشر تصنع 78 زوجًا (13 &times; 12 &divide; 2) &mdash; أكثر من أن تحفظها في رأسك، وليست أكثر من أن تؤشّر عليها في شبكة.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="entity-pair">entity pair</span> is two different entities considered together; <em>n</em> entities make <em>n</em> &times; (<em>n</em> &minus; 1) &divide; 2 pairs, and each must be asked about once.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="entity-pair">زوج الكيانات</span> (Entity Pair) كيانان مختلفان يُنظر إليهما معًا؛ و<em>n</em> من الكيانات تصنع <em>n</em> &times; (<em>n</em> &minus; 1) &divide; 2 من الأزواج، ويجب السؤال عن كل زوج مرّة.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">A relationship you never find is a column nobody creates. Miss <code>CLUB</code>&ndash;<code>CLASSROOM</code>, and the <code>clubs</code> table has no <code>classroom_id</code>. "Where does the chess club meet?" then has no query at all. Finding it after go-live means an <code>ALTER TABLE</code> and filling the new column for every existing row by hand.</p>
+    <p class="ar">العلاقة التي لا تجدها أبدًا عمود لا ينشئه أحد. أغفِل <code>CLUB</code>&ndash;<code>CLASSROOM</code>، فلا يكون في جدول <code>clubs</code> عمود <code>classroom_id</code>. وعندها لا يكون لسؤال «أين يجتمع نادي الشطرنج؟» أيّ استعلام. واكتشافها بعد التشغيل يعني <code>ALTER TABLE</code>، وملء العمود الجديد لكل صفّ موجود يدويًّا.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">According to the slides, what is a matrix diagram mainly for?</p>
+    <p class="q ar">بحسب الشرائح، ما الغرض الأساسي من مخطّط المصفوفة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Showing optionality and cardinality more clearly than an ERD</span><span class="ar">إظهار الإلزامية والتعدّدية بوضوح أكبر من مخطّط ERD</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Making sure you haven't missed any relationships, especially among many entities</span><span class="ar">التأكّد من أنك لم تُغفل أيّ علاقة، ولا سيّما بين كيانات كثيرة</span></button></li>
+      <li><button class="opt"><span class="en">Replacing the ERD when there are more than thirteen entities</span><span class="ar">الحلول محلّ مخطّط ERD حين يزيد عدد الكيانات على ثلاثة عشر</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">The slides: "a good way to make sure that you haven't missed any relationships." The matrix finds them; the ERD still draws them, and the matrix shows neither optionality nor cardinality (Section 4).</p>
+      <p class="ar">تقول الشرائح: «طريقة جيدة للتأكّد من أنك لم تُغفل أيّ علاقة.» المصفوفة تجدها، ومخطّط ERD هو الذي يرسمها، والمصفوفة لا تُظهر إلزامية ولا تعدّدية (القسم 4).</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">How many different entity pairs must you ask about for <code>CUSTOMER</code>, <code>ITEM</code>, <code>ORDER</code> and <code>WAREHOUSE</code>?</p>
+    <p class="q ar">كم زوجًا مختلفًا من الكيانات يجب أن تسأل عنه في <code>CUSTOMER</code> و<code>ITEM</code> و<code>ORDER</code> و<code>WAREHOUSE</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">4</span><span class="ar">4</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">6</span><span class="ar">6</span></button></li>
+      <li><button class="opt"><span class="en">12</span><span class="ar">12</span></button></li>
+      <li><button class="opt"><span class="en">16</span><span class="ar">16</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">4 &times; 3 &divide; 2 = 6. The grid has 16 cells, but 4 sit on the diagonal and the other 12 come in mirror pairs &mdash; two cells for each of the 6 pairs (Section 3).</p>
+      <p class="ar">4 &times; 3 &divide; 2 = 6. في الشبكة 16 خلية، لكن 4 منها على القُطر، والـ 12 الباقية تأتي أزواجًا متناظرة &mdash; خليتان لكل زوج من الأزواج الستة (القسم 3).</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2 -->
+  <h2 id="t3l6-h2"><span class="en">2 · Building the grid</span><span class="ar">٢ · بناء الشبكة</span></h2>
+
+  <div class="problem">
+    <p class="en">The slides' travel agency: "I keep a record of the countries that our customers have visited and the landmarks they've seen in each country. It helps us customize tours for them." Three nouns, <code>TRAVELER</code>, <code>COUNTRY</code>, <code>LANDMARK</code>. Reading it once, you hear "visited". What else is in there?</p>
+    <p class="ar">وكالة السفر في الشرائح: «أحتفظ بسجلّ للبلدان التي زارها زبائننا، وللمعالم التي رأوها في كل بلد. وهذا يساعدنا على تفصيل الجولات لهم.» ثلاثة أسماء: <code>TRAVELER</code> و<code>COUNTRY</code> و<code>LANDMARK</code>. حين تقرؤها مرّة واحدة تسمع «زاروا». فما الذي فيها غير ذلك؟</p>
+  </div>
+
+  <p class="en">Write the entities down the left side, then the same entities, in the same order, across the top. Take one cell at a time. If the row entity is related to the column entity, write the relationship name there, lowercase, so that <em>row entity &middot; name &middot; column entity</em> reads as a phrase. If not, leave the cell blank.</p>
+  <p class="ar">اكتب الكيانات على الجانب الأيسر، ثم الكيانات نفسها، بالترتيب نفسه، في الأعلى. خذ خلية واحدة في كل مرّة. فإن كان كيان الصف مرتبطًا بكيان العمود، فاكتب اسم العلاقة هناك بحروف صغيرة، بحيث تُقرأ <em>كيان الصف &middot; الاسم &middot; كيان العمود</em> عبارةً واحدة. وإن لم يكن، فاترك الخلية فارغة.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="matrix-cell">matrix cell</span> is the square where one row meets one column; it holds the name of the relationship from the row entity to the column entity, or nothing.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="matrix-cell">خلية المصفوفة</span> (Matrix Cell) هي المربّع الذي يلتقي فيه صفّ بعمود؛ وتحمل اسم العلاقة من كيان الصف إلى كيان العمود، أو لا شيء.</p>
+  </div>
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> An <span class="term" data-term="empty-cell">empty cell</span> records a decision: the row entity has no relationship to the column entity.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="empty-cell">الخلية الفارغة</span> (Empty Cell) تسجّل قرارًا: لا علاقة لكيان الصف بكيان العمود.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t3-matrix-travel"><figcaption><span class="en">The slides' travel matrix. Every off-diagonal cell is filled: the grid turned up three relationships, not one &mdash; <code>LANDMARK</code> is linked to <code>COUNTRY</code> and to <code>TRAVELER</code>. Read each cell row first.</span><span class="ar">مصفوفة السفر في الشرائح. كل خلية خارج القُطر ممتلئة: كشفت الشبكة ثلاث علاقات لا واحدة &mdash; فـ <code>LANDMARK</code> مرتبط بـ <code>COUNTRY</code> وبـ <code>TRAVELER</code>. اقرأ كل خلية بدءًا من الصف.</span></figcaption></figure>
+
+  <h3 id="t3l6-s1"><span class="en">The diagonal: an entity and itself</span><span class="ar">القُطر: الكيان ونفسه</span></h3>
+
+  <p class="en">Where the <code>TRAVELER</code> row meets the <code>TRAVELER</code> column, the grid asks Lesson 1's last question: is this entity related to itself? For the agency, no. In the H.R. matrix the same cell for <code>EMPLOYEE</code> says yes &mdash; the manager loop of <a href="#t3l5-h5">Lesson 5</a>. The diagonal is where a recursive relationship turns up.</p>
+  <p class="ar">حيث يلتقي صفّ <code>TRAVELER</code> بعمود <code>TRAVELER</code>، تطرح الشبكة السؤال الأخير من الدرس 1: هل هذا الكيان مرتبط بنفسه؟ في الوكالة: لا. أمّا في مصفوفة الموارد البشرية فالخلية نفسها لـ <code>EMPLOYEE</code> تقول نعم &mdash; إنها حلقة المدير من <a href="#t3l5-h5">الدرس 5</a>. القُطر هو المكان الذي تظهر فيه العلاقة الذاتية.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="matrix-diagonal">diagonal</span> of a matrix is the run of cells where an entity's row meets its own column; a filled diagonal cell is a recursive relationship.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="matrix-diagonal">القُطر</span> (Diagonal) في المصفوفة هو سلسلة الخلايا التي يلتقي فيها صفّ الكيان بعموده هو؛ والخلية الممتلئة على القُطر علاقة ذاتية.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Every filled cell is a promise of a key somewhere. <code>LANDMARK</code> &middot; <code>located in</code> &middot; <code>COUNTRY</code> will become a <code>country_id</code> column in <code>landmarks</code>. The empty <code>TRAVELER</code>&ndash;<code>TRAVELER</code> cell means the opposite: no column in <code>travelers</code> points at another traveler, unlike <code>employees.manager_id</code>.</p>
+    <p class="ar">كل خلية ممتلئة وعد بمفتاح في مكان ما. فـ <code>LANDMARK</code> &middot; <code>located in</code> &middot; <code>COUNTRY</code> ستصير عمود <code>country_id</code> في <code>landmarks</code>. أمّا خلية <code>TRAVELER</code>&ndash;<code>TRAVELER</code> الفارغة فتعني العكس: لا عمود في <code>travelers</code> يشير إلى مسافر آخر، بخلاف <code>employees.manager_id</code>.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the travel matrix, what is in the cell where the <code>COUNTRY</code> row meets the <code>LANDMARK</code> column?</p>
+    <p class="q ar">في مصفوفة السفر، ماذا يوجد في الخلية التي يلتقي فيها صفّ <code>COUNTRY</code> بعمود <code>LANDMARK</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en"><code>located in</code></span><span class="ar"><code>located in</code></span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en"><code>the location of</code></span><span class="ar"><code>the location of</code></span></button></li>
+      <li><button class="opt"><span class="en"><code>visited by</code></span><span class="ar"><code>visited by</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Row first: <code>COUNTRY</code> &middot; <code>the location of</code> &middot; <code>LANDMARK</code>. <code>located in</code> sits in the mirror cell, the <code>LANDMARK</code> row and the <code>COUNTRY</code> column.</p>
+      <p class="ar">الصف أوّلًا: <code>COUNTRY</code> &middot; <code>the location of</code> &middot; <code>LANDMARK</code>. أمّا <code>located in</code> ففي الخلية المقابلة، صفّ <code>LANDMARK</code> وعمود <code>COUNTRY</code>.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the H.R. matrix, the <code>EMPLOYEE</code> row meets the <code>EMPLOYEE</code> column. Why is that cell filled?</p>
+    <p class="q ar">في مصفوفة الموارد البشرية، يلتقي صفّ <code>EMPLOYEE</code> بعمود <code>EMPLOYEE</code>. لماذا تكون هذه الخلية ممتلئة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Every diagonal cell is filled automatically</span><span class="ar">لأن كل خلية على القُطر تمتلئ تلقائيًّا</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Employees manage employees: a recursive relationship sits on the diagonal</span><span class="ar">لأن الموظّفين يديرون موظّفين: والعلاقة الذاتية تقع على القُطر</span></button></li>
+      <li><button class="opt"><span class="en">It holds the UID of <code>EMPLOYEE</code></span><span class="ar">لأنها تحمل المعرّف الفريد لـ <code>EMPLOYEE</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">A diagonal cell asks whether an entity is related to itself. Usually not, as in the travel matrix; for <code>EMPLOYEE</code>, the manager loop says yes.</p>
+      <p class="ar">خلية القُطر تسأل هل الكيان مرتبط بنفسه. في الغالب لا، كما في مصفوفة السفر؛ أمّا لـ <code>EMPLOYEE</code> فحلقة المدير تقول نعم.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3 -->
+  <h2 id="t3l6-h3"><span class="en">3 · One direction only</span><span class="ar">٣ · اتجاه واحد فقط</span></h2>
+
+  <div class="problem">
+    <p class="en">Two students share the travel matrix. One fills the <code>TRAVELER</code> row thinking "countries are visited by travelers", and writes <code>visited by</code> there. Read as every other cell is read, it now says "<code>TRAVELER</code> visited by <code>COUNTRY</code>" &mdash; a country visiting a person &mdash; and the name <code>visit</code> is nowhere.</p>
+    <p class="ar">يتقاسم طالبان مصفوفة السفر. يملأ أحدهما صفّ <code>TRAVELER</code> وهو يفكّر «البلدان يزورها المسافرون»، فيكتب هناك <code>visited by</code>. وإذا قُرئت كما تُقرأ كل خلية أخرى، صارت تقول «<code>TRAVELER</code> visited by <code>COUNTRY</code>» &mdash; بلد يزور شخصًا &mdash; واسم <code>visit</code> لا وجود له.</p>
+  </div>
+
+  <p class="en">The slides: "To avoid confusion, be consistent in writing to and reading from the matrix only in one direction." Their correct readings: "<code>COUNTRY</code> visited by <code>TRAVELER</code>", "<code>LANDMARK</code> seen by <code>TRAVELER</code>". Their incorrect ones: "<code>TRAVELER</code> visited by <code>COUNTRY</code>", "<code>TRAVELER</code> seen by <code>LANDMARK</code>". Same cells, wrong way round.</p>
+  <p class="ar">تقول الشرائح: «لتجنّب الالتباس، كن متّسقًا في الكتابة في المصفوفة والقراءة منها في اتجاه واحد فقط.» قراءاتها الصحيحة: «<code>COUNTRY</code> visited by <code>TRAVELER</code>»، و«<code>LANDMARK</code> seen by <code>TRAVELER</code>». وقراءاتها الخطأ: «<code>TRAVELER</code> visited by <code>COUNTRY</code>»، و«<code>TRAVELER</code> seen by <code>LANDMARK</code>». الخلايا نفسها، بالاتجاه المعكوس.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> The <span class="term" data-term="matrix-direction">matrix reading direction</span> is the single order used to write and to read every cell: row entity, then the name in the cell, then column entity.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="matrix-direction">اتجاه قراءة المصفوفة</span> (Matrix Reading Direction) هو الترتيب الواحد المستعمل في كتابة كل خلية وقراءتها: كيان الصف، ثم الاسم في الخلية، ثم كيان العمود.</p>
+  </div>
+
+  <div class="evolve" id="t3l6-e1">
+    <div class="ver" data-title-en="Version 1 — the TRAVELER row written backwards" data-title-ar="الإصدار 1 — صفّ TRAVELER مكتوب بالعكس">
+      <figure class="diagram" data-diagram="t3-matrix-mixed"></figure>
+      <p class="en">Defect: two directions in one grid. The <code>TRAVELER</code> row was written column first, so read row first it says "<code>TRAVELER</code> visited by <code>COUNTRY</code>". Each of its pairs now shows one name twice, and <code>visit</code> and <code>have seen</code> are lost &mdash; two relationship ends with no name.</p>
+      <p class="ar">العيب: اتجاهان في شبكة واحدة. صفّ <code>TRAVELER</code> كُتب بدءًا من العمود، فإذا قُرئ بدءًا من الصف قال «<code>TRAVELER</code> visited by <code>COUNTRY</code>». وصار كل زوج من أزواجه يُظهر اسمًا واحدًا مرّتين، وضاع <code>visit</code> و<code>have seen</code> &mdash; طرفا علاقة بلا اسم.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — every cell row first" data-title-ar="الإصدار 2 — كل خلية بدءًا من الصف">
+      <figure class="diagram" data-diagram="t3-matrix-travel"></figure>
+      <p class="en">Fixed: the slides' matrix. Every cell is written and read row first, so each pair carries two different names, one per end: <code>visit</code> / <code>visited by</code>, <code>have seen</code> / <code>seen by</code>, <code>located in</code> / <code>the location of</code>. Recommended.</p>
+      <p class="ar">أُصلح: إنها مصفوفة الشرائح. كل خلية تُكتب وتُقرأ بدءًا من الصف، فيحمل كل زوج اسمين مختلفين، واحدًا لكل طرف: <code>visit</code> / <code>visited by</code>، و<code>have seen</code> / <code>seen by</code>، و<code>located in</code> / <code>the location of</code>. وهو الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t3l6-s2"><span class="en">Two cells, one line</span><span class="ar">خليتان، خط واحد</span></h3>
+
+  <p class="en">Every pair appears twice: <code>TRAVELER</code> row &times; <code>COUNTRY</code> column, and <code>COUNTRY</code> row &times; <code>TRAVELER</code> column. The two cells sit opposite each other across the diagonal. They are not two relationships: they are the two names of one, one for each end, exactly as <a href="#t3l1-h3">Lesson 1</a> said every relationship is named at both ends.</p>
+  <p class="ar">كل زوج يظهر مرّتين: صفّ <code>TRAVELER</code> &times; عمود <code>COUNTRY</code>، وصفّ <code>COUNTRY</code> &times; عمود <code>TRAVELER</code>. والخليتان متقابلتان على جانبي القُطر. وهما ليستا علاقتين، بل اسما علاقة واحدة، واحد لكل طرف، تمامًا كما قال <a href="#t3l1-h3">الدرس 1</a> إن كل علاقة تُسمّى عند طرفيها.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="mirror-cells">Mirror cells</span> are the two cells of one entity pair, opposite each other across the diagonal; they hold the two names of a single relationship.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="mirror-cells">الخليتان المتقابلتان</span> (Mirror Cells) هما خليتا زوج الكيانات الواحد، متقابلتين على جانبي القُطر؛ وتحملان اسمَي علاقة واحدة.</p>
+  </div>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Direction decides which table gets the column. "<code>LANDMARK</code> located in <code>COUNTRY</code>" leads to <code>landmarks.country_id</code>: each landmark row names its country. Read backwards, "<code>COUNTRY</code> located in <code>LANDMARK</code>" would lead a builder to <code>countries.landmark_id</code> &mdash; one landmark per country, and Jordan could keep Petra or Wadi Rum, never both.</p>
+    <p class="ar">الاتجاه يقرّر أيّ جدول يأخذ العمود. فـ «<code>LANDMARK</code> located in <code>COUNTRY</code>» تقود إلى <code>landmarks.country_id</code>: كل صفّ معلم يسمّي بلده. وإذا قُرئت بالعكس، «<code>COUNTRY</code> located in <code>LANDMARK</code>»، قادت من يبني إلى <code>countries.landmark_id</code> &mdash; معلم واحد لكل بلد، فيحتفظ الأردن بالبتراء أو بوادي رم، لا بهما معًا.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which reading of the travel matrix do the slides mark as correct?</p>
+    <p class="q ar">أيّ قراءة لمصفوفة السفر تعدّها الشرائح صحيحة؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">"<code>TRAVELER</code> seen by <code>LANDMARK</code>"</span><span class="ar">«<code>TRAVELER</code> seen by <code>LANDMARK</code>»</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">"<code>LANDMARK</code> seen by <code>TRAVELER</code>"</span><span class="ar">«<code>LANDMARK</code> seen by <code>TRAVELER</code>»</span></button></li>
+      <li><button class="opt"><span class="en">Both, since a cell can be read either way</span><span class="ar">كلتاهما، لأن الخلية تُقرأ في أيّ اتجاه</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en"><code>seen by</code> is in the <code>LANDMARK</code> row, so row first gives "<code>LANDMARK</code> seen by <code>TRAVELER</code>". Reading a cell either way is exactly the confusion the one-direction rule prevents.</p>
+      <p class="ar"><code>seen by</code> في صفّ <code>LANDMARK</code>، فالقراءة بدءًا من الصف تعطي «<code>LANDMARK</code> seen by <code>TRAVELER</code>». وقراءة الخلية في أيّ اتجاه هي بالضبط الالتباس الذي تمنعه قاعدة الاتجاه الواحد.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Why is version 2 of the evolve block better than version 1?</p>
+    <p class="q ar">لماذا الإصدار 2 في كتلة التطوّر أفضل من الإصدار 1؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Version 2 finds a relationship that version 1 has no cell for</span><span class="ar">لأن الإصدار 2 يجد علاقة لا خلية لها في الإصدار 1</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Every cell in version 2 reads row first, so each pair has its two different end names</span><span class="ar">لأن كل خلية في الإصدار 2 تُقرأ بدءًا من الصف، فيكون لكل زوج اسما طرفيه المختلفان</span></button></li>
+      <li><button class="opt"><span class="en">Version 2 adds optionality to every cell</span><span class="ar">لأن الإصدار 2 يضيف الإلزامية إلى كل خلية</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Both versions have the same filled cells. Version 1 wrote one row in the other direction, so <code>visited by</code> and <code>seen by</code> appear twice and <code>visit</code> and <code>have seen</code> not at all.</p>
+      <p class="ar">في الإصدارين الخلايا الممتلئة نفسها. لكن الإصدار 1 كتب صفًّا واحدًا في الاتجاه الآخر، فظهر <code>visited by</code> و<code>seen by</code> مرّتين، ولم يظهر <code>visit</code> و<code>have seen</code> أبدًا.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 4 -->
+  <h2 id="t3l6-h4"><span class="en">4 · What the matrix does not say</span><span class="ar">٤ · ما لا تقوله المصفوفة</span></h2>
+
+  <div class="problem">
+    <p class="en">The matrix says <code>TRAVELER</code> &middot; <code>visit</code> &middot; <code>COUNTRY</code>. A customer who signed up yesterday has visited nowhere yet &mdash; may the agency save them? Can Petra be in two countries? The cell holds a name and nothing else. There is no square for <em>must</em>, and none for <em>one or more</em>.</p>
+    <p class="ar">تقول المصفوفة <code>TRAVELER</code> &middot; <code>visit</code> &middot; <code>COUNTRY</code>. زبون سجّل أمس لم يزر أيّ بلد بعد &mdash; فهل يجوز للوكالة أن تحفظه؟ وهل يمكن أن تكون البتراء في بلدين؟ الخلية تحمل اسمًا ولا شيء غيره. لا مربّع فيها لـ <em>must</em>، ولا لـ <em>one or more</em>.</p>
+  </div>
+
+  <p class="en">The slides: "Relationships discovered via the matrix diagram are then drawn on the ERD. Matrix diagrams do not show optionality and cardinality." The matrix answers only <em>is there a relationship, and what is it called?</em> For each filled pair you still ask Lesson 2's question and Lesson 3's question, at both ends.</p>
+  <p class="ar">تقول الشرائح: «العلاقات المكتشفة بمخطّط المصفوفة تُرسم بعد ذلك في مخطّط ERD. ومخطّطات المصفوفة لا تُظهر الإلزامية ولا التعدّدية.» المصفوفة تجيب فقط عن: <em>هل هناك علاقة، وما اسمها؟</em> ولكل زوج ممتلئ تبقى عليك أسئلة الدرس 2 والدرس 3، عند الطرفين كليهما.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th class="en">Question</th><th class="ar">السؤال</th><th class="en">Answered by</th><th class="ar">يجيب عنه</th></tr></thead>
+      <tbody>
+        <tr><td class="en">Are these two entities related?</td><td class="ar">هل هذان الكيانان مرتبطان؟</td><td class="en">the matrix: filled or empty cell</td><td class="ar">المصفوفة: خلية ممتلئة أو فارغة</td></tr>
+        <tr><td class="en">What is each end called?</td><td class="ar">ما اسم كل طرف؟</td><td class="en">the matrix: the two mirror cells</td><td class="ar">المصفوفة: الخليتان المتقابلتان</td></tr>
+        <tr><td class="en">Must or may, at each end?</td><td class="ar">must أم may، عند كل طرف؟</td><td class="en">the business, asked per end (Lesson 2)</td><td class="ar">العمل، يُسأل عن كل طرف (الدرس 2)</td></tr>
+        <tr><td class="en">One and only one, or one or more?</td><td class="ar">واحد فقط لا غير، أم واحد أو أكثر؟</td><td class="en">the business, asked per end (Lesson 3)</td><td class="ar">العمل، يُسأل عن كل طرف (الدرس 3)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="en">For <code>TRAVELER</code> and <code>COUNTRY</code> the slides give the answers themselves: may, and one or more, both ways. For <code>LANDMARK</code> and <code>COUNTRY</code> the agency answers: a landmark is always in exactly one country; a country may have no landmark on record yet.</p>
+  <p class="ar">في <code>TRAVELER</code> و<code>COUNTRY</code> تعطي الشرائح الأجوبة بنفسها: may، وone or more، في الاتجاهين. وفي <code>LANDMARK</code> و<code>COUNTRY</code> تجيب الوكالة: المعلم في بلد واحد بالضبط دائمًا، وقد يكون البلد بلا معلم مسجّل بعد.</p>
+
+  <pre class="code" data-lang="erdish"><code>Each COUNTRY may be visited by one or more TRAVELERs.
+Each TRAVELER may visit one or more COUNTRYs.
+
+Each LANDMARK must be located in one and only one COUNTRY.
+Each COUNTRY may be the location of one or more LANDMARKs.</code></pre>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">The answers are what build the table. <em>One and only one</em> <code>COUNTRY</code> puts one column, <code>country_id</code>, in <code>landmarks</code>; <em>must be</em> makes it <code>NOT NULL</code>; <em>may be the location of</em> lets a country have none. Count the landmarks per country:</p>
+    <p class="ar">الأجوبة هي التي تبني الجدول. فـ <em>one and only one</em> <code>COUNTRY</code> تضع عمودًا واحدًا، <code>country_id</code>، في <code>landmarks</code>، و<em>must be</em> تجعله <code>NOT NULL</code>، و<em>may be the location of</em> تسمح لبلد بألّا يكون له معلم. عُدّ المعالم في كل بلد:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE countries (country_id VARCHAR(2) PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO countries VALUES ('JO','Jordan'), ('EG','Egypt'), ('IT','Italy'), ('JP','Japan')","CREATE TABLE landmarks (landmark_id NUMBER PRIMARY KEY, name VARCHAR(30) NOT NULL, country_id VARCHAR(2) NOT NULL)","INSERT INTO landmarks VALUES (1,'Petra','JO'), (2,'Wadi Rum','JO'), (3,'Pyramids of Giza','EG'), (4,'Colosseum','IT')"],"sql":"SELECT c.name AS country, COUNT(l.landmark_id) AS landmarks\nFROM countries c LEFT JOIN landmarks l ON l.country_id = c.country_id\nGROUP BY c.name\nORDER BY landmarks DESC, c.name;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>country</code></th><th><code>landmarks</code></th></tr></thead>
+          <tbody>
+            <tr><td>Jordan</td><td>2</td></tr>
+            <tr><td>Egypt</td><td>1</td></tr>
+            <tr><td>Italy</td><td>1</td></tr>
+            <tr><td>Japan</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Jordan's 2 is the crow's foot; Japan's 0 is <em>may be</em>. Now try <code>INSERT INTO landmarks (landmark_id, name) VALUES (5, 'Dead Sea');</code> &mdash; it fails with <code>Wrong NULL value in NOT NULL column country_id</code>. None of this was in the matrix. <code>TRAVELER</code>&ndash;<code>COUNTRY</code>, plural at both ends, cannot be one column at all; Chapter T5 gives it a table of its own.</p>
+    <p class="ar">الرقم 2 عند الأردن هو قدم الغراب، والصفر عند اليابان هو <em>may be</em>. جرّب الآن <code>INSERT INTO landmarks (landmark_id, name) VALUES (5, 'Dead Sea');</code> &mdash; فيفشل برسالة <code>Wrong NULL value in NOT NULL column country_id</code>. ولم يكن شيء من هذا في المصفوفة. أمّا <code>TRAVELER</code>&ndash;<code>COUNTRY</code>، الجمع عند طرفيها، فلا يمكن أن تكون عمودًا واحدًا أصلًا؛ والفصل T5 يعطيها جدولًا خاصًّا بها.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">Which of these can a filled matrix tell you about <code>LANDMARK</code> and <code>COUNTRY</code>?</p>
+    <p class="q ar">أيّ هذه تستطيع المصفوفة الممتلئة أن تخبرك به عن <code>LANDMARK</code> و<code>COUNTRY</code>؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">That every landmark must be located in a country</span><span class="ar">أن كل معلم يجب أن يقع في بلد</span></button></li>
+      <li><button class="opt"><span class="en">That a country can be the location of one or more landmarks</span><span class="ar">أن البلد يمكن أن يكون موقع معلم واحد أو أكثر</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">That they are related, and the names <code>located in</code> and <code>the location of</code></span><span class="ar">أنهما مرتبطان، والاسمين <code>located in</code> و<code>the location of</code></span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">"Matrix diagrams do not show optionality and cardinality." The first option is optionality, the second cardinality; both come from asking the business.</p>
+      <p class="ar">«مخطّطات المصفوفة لا تُظهر الإلزامية ولا التعدّدية.» الخيار الأول إلزامية، والثاني تعدّدية، وكلاهما يأتي من سؤال العمل.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">From the slides' two sentences for <code>TRAVELER</code> and <code>COUNTRY</code>, how is the line drawn?</p>
+    <p class="q ar">من جملتَي الشرائح عن <code>TRAVELER</code> و<code>COUNTRY</code>، كيف يُرسم الخط؟</p>
+    <ul class="options">
+      <li><button class="opt" data-correct="true"><span class="en">Dashed all the way, with a crow's foot at both ends</span><span class="ar">متقطّعًا كله، مع قدم غراب عند الطرفين</span></button></li>
+      <li><button class="opt"><span class="en">Solid all the way, with a single toe at both ends</span><span class="ar">متّصلًا كله، مع إصبع واحدة عند الطرفين</span></button></li>
+      <li><button class="opt"><span class="en">Dashed at <code>TRAVELER</code>, solid at <code>COUNTRY</code>, crow's foot at <code>COUNTRY</code> only</span><span class="ar">متقطّعًا عند <code>TRAVELER</code>، متّصلًا عند <code>COUNTRY</code>، وقدم غراب عند <code>COUNTRY</code> فقط</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Both sentences say <em>may</em>, so both halves are dashed; both say <em>one or more</em>, so each sentence draws a crow's foot at its far end &mdash; one at each entity.</p>
+      <p class="ar">الجملتان كلتاهما تقولان <em>may</em>، فالنصفان متقطّعان؛ وكلتاهما تقولان <em>one or more</em>، فترسم كل جملة قدم غراب عند طرفها البعيد &mdash; واحدة عند كل كيان.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ 5 -->
+  <h2 id="t3l6-h5"><span class="en">5 · From matrix to ERD</span><span class="ar">٥ · من المصفوفة إلى مخطّط ERD</span></h2>
+
+  <div class="problem">
+    <p class="en">The agency's designer drew the ERD straight from the scenario, before any matrix: <code>TRAVELER</code>, <code>COUNTRY</code>, one line. <code>LANDMARK</code> got a box and nothing else. Nobody can read a sentence about which country Petra is in &mdash; and that was half of what the agency asked to keep.</p>
+    <p class="ar">رسم مصمّم الوكالة مخطّط ERD مباشرة من السيناريو، قبل أيّ مصفوفة: <code>TRAVELER</code> و<code>COUNTRY</code> وخط واحد. ونال <code>LANDMARK</code> صندوقًا ولا شيء غيره. لا يستطيع أحد أن يقرأ جملة تقول في أيّ بلد تقع البتراء &mdash; وهذا كان نصف ما طلبت الوكالة الاحتفاظ به.</p>
+  </div>
+
+  <p class="en">Mapping is mechanical. One softbox per entity. One line per pair of filled mirror cells; an empty pair gets no line. Each cell's name is written at the end beside its <em>row</em> entity. Then the answers from Section 4 set the halves and the ends, and you read every line back in ERDish.</p>
+  <p class="ar">النقل عمل آلي. صندوق ليّن لكل كيان. وخط لكل زوج من الخلايا المتقابلة الممتلئة؛ والزوج الفارغ لا خط له. واسم كل خلية يُكتب عند الطرف المجاور لكيان <em>صفّها</em>. ثم تحدّد أجوبة القسم 4 النصفين والطرفين، وتقرأ كل خط من جديد بلغة ERDish.</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> <span class="term" data-term="matrix-mapping">Mapping a matrix</span> to an ERD means drawing one relationship line for each pair of filled mirror cells, with each cell's name beside its row entity.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="matrix-mapping">نقل المصفوفة</span> (Mapping a Matrix) إلى مخطّط ERD يعني رسم خط علاقة واحد لكل زوج من الخلايا المتقابلة الممتلئة، واسم كل خلية بجانب كيان صفّها.</p>
+  </div>
+
+  <div class="evolve" id="t3l6-e2">
+    <div class="ver" data-title-en="Version 1 — from the scenario alone" data-title-ar="الإصدار 1 — من السيناريو وحده">
+      <figure class="diagram" data-diagram="t3-matrix-travel-v1"></figure>
+      <p class="en">Defect: a missed relationship &mdash; two, in fact. Only the pair the designer noticed got a line. <code>LANDMARK</code> is drawn but joined to nothing, so the model cannot say where a landmark is or who has seen it.</p>
+      <p class="ar">العيب: علاقة فائتة &mdash; بل علاقتان. لم ينل خطًّا إلا الزوج الذي لاحظه المصمّم. <code>LANDMARK</code> مرسوم لكنه غير موصول بشيء، فلا يستطيع النموذج أن يقول أين يقع المعلم ولا من رآه.</p>
+    </div>
+    <div class="ver" data-title-en="Version 2 — one line per filled pair" data-title-ar="الإصدار 2 — خط لكل زوج ممتلئ">
+      <figure class="diagram" data-diagram="t3-matrix-travel-erd"></figure>
+      <p class="en">Fixed: the matrix had three filled pairs, so the ERD has three lines. <code>visit</code>, <code>have seen</code> sit beside <code>TRAVELER</code>, its row; <code>located in</code> beside <code>LANDMARK</code>. The halves and ends come from Section 4's answers. Six sentences, all readable. Recommended.</p>
+      <p class="ar">أُصلح: كان في المصفوفة ثلاثة أزواج ممتلئة، ففي المخطّط ثلاثة خطوط. <code>visit</code> و<code>have seen</code> بجانب <code>TRAVELER</code>، صاحب صفّهما، و<code>located in</code> بجانب <code>LANDMARK</code>. والنصفان والطرفان من أجوبة القسم 4. ست جمل، كلها مقروءة. وهو الموصى به.</p>
+    </div>
+  </div>
+
+  <h3 id="t3l6-s3"><span class="en">Mapping a bigger matrix</span><span class="ar">نقل مصفوفة أكبر</span></h3>
+
+  <p class="en">The DFo slides call the same tool a <strong>relationship matrix</strong>, used to "collect initial information about the relationships among a set of entities". Their example has four entities and sixteen cells. Six cells are filled, so there are three lines to draw:</p>
+  <p class="ar">تسمّي شرائح DFo الأداة نفسها <strong>مصفوفة العلاقات</strong> (Relationship Matrix)، وتُستعمل «لجمع المعلومات الأوّلية عن العلاقات بين مجموعة من الكيانات». ومثالها فيه أربعة كيانات وست عشرة خلية. ست خلايا ممتلئة، فهناك ثلاثة خطوط تُرسم:</p>
+
+  <div class="note">
+    <p class="en"><strong>Definition.</strong> A <span class="term" data-term="relationship-matrix">relationship matrix</span> is the DFo name for a matrix diagram: a grid that collects the first facts about which entities are related.</p>
+    <p class="ar"><strong>تعريف.</strong> <span class="term" data-term="relationship-matrix">مصفوفة العلاقات</span> (Relationship Matrix) هو اسم مخطّط المصفوفة في DFo: شبكة تجمع الحقائق الأولى عن الكيانات المرتبطة.</p>
+  </div>
+
+  <figure class="diagram" data-diagram="t3-matrix-order"><figcaption><span class="en">The DFo matrix. Notice the blanks: <code>CUSTOMER</code> never meets <code>ITEM</code> or <code>WAREHOUSE</code> directly. A customer reaches an item only through an order.</span><span class="ar">مصفوفة DFo. لاحظ الفراغات: <code>CUSTOMER</code> لا يلتقي بـ <code>ITEM</code> ولا بـ <code>WAREHOUSE</code> مباشرة. الزبون يصل إلى الصنف عبر الطلب فقط.</span></figcaption></figure>
+
+  <figure class="diagram" data-diagram="t3-matrix-order-erd"><figcaption><span class="en">The same matrix mapped. Names come from the cells, each beside its row entity: <code>place</code> by <code>CUSTOMER</code>, <code>store</code> by <code>WAREHOUSE</code>. The marks come from the business: an order must have its one customer, an item must be stored in one warehouse, a warehouse may stand empty.</span><span class="ar">المصفوفة نفسها بعد النقل. الأسماء من الخلايا، كلٌّ بجانب كيان صفّه: <code>place</code> بجانب <code>CUSTOMER</code>، و<code>store</code> بجانب <code>WAREHOUSE</code>. والعلامات من العمل: الطلب يجب أن يكون له زبونه الواحد، والصنف يجب أن يُخزَّن في مستودع واحد، والمستودع قد يكون فارغًا.</span></figcaption></figure>
+
+  <div class="sql-lens"><h4><span class="en">In the database</span><span class="ar">في قاعدة البيانات</span></h4>
+    <p class="en">Three lines, three decisions. <code>CUSTOMER</code>&ndash;<code>ORDER</code> becomes <code>orders.customer_id NOT NULL</code>. <code>ITEM</code>&ndash;<code>WAREHOUSE</code> becomes <code>items.warehouse_id NOT NULL</code>, and an empty warehouse is allowed. <code>ORDER</code>&ndash;<code>ITEM</code> has crow's feet at both ends, so it waits for Chapter T5. Count the items per warehouse:</p>
+    <p class="ar">ثلاثة خطوط، ثلاثة قرارات. <code>CUSTOMER</code>&ndash;<code>ORDER</code> تصير <code>orders.customer_id NOT NULL</code>. و<code>ITEM</code>&ndash;<code>WAREHOUSE</code> تصير <code>items.warehouse_id NOT NULL</code>، والمستودع الفارغ مسموح. أمّا <code>ORDER</code>&ndash;<code>ITEM</code> فعند طرفيها قدما غراب، فتنتظر الفصل T5. عُدّ الأصناف في كل مستودع:</p>
+    <div class="qb-widget">
+      <script type="application/json" class="wd-config">
+      {"mode":"demo","objects":true,"dataset":{},"setup":["CREATE TABLE customers (customer_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL)","INSERT INTO customers VALUES (1,'Linda'), (2,'Krishna'), (3,'Mel')","CREATE TABLE orders (order_no NUMBER PRIMARY KEY, customer_id NUMBER NOT NULL)","INSERT INTO orders VALUES (10,1), (102,1), (77,2), (100,3)","CREATE TABLE warehouses (warehouse_id NUMBER PRIMARY KEY, city VARCHAR(20) NOT NULL)","INSERT INTO warehouses VALUES (1,'Gaza'), (2,'Khan Younis')","CREATE TABLE items (item_id NUMBER PRIMARY KEY, name VARCHAR(20) NOT NULL, warehouse_id NUMBER NOT NULL)","INSERT INTO items VALUES (1,'Apple pie',1), (2,'Orange juice',1), (3,'Hamburger',1), (4,'Salad',1)"],"sql":"SELECT w.city AS warehouse, COUNT(i.item_id) AS items\nFROM warehouses w LEFT JOIN items i ON i.warehouse_id = w.warehouse_id\nGROUP BY w.city\nORDER BY items DESC;"}
+      </script>
+    </div>
+    <div class="output">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th><code>warehouse</code></th><th><code>items</code></th></tr></thead>
+          <tbody>
+            <tr><td>Gaza</td><td>4</td></tr>
+            <tr><td>Khan Younis</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="en">Khan Younis's 0 is the dashed half beside <code>WAREHOUSE</code>. Try <code>INSERT INTO items (item_id, name) VALUES (5, 'Fruit cup');</code> &mdash; it fails with <code>Wrong NULL value in NOT NULL column warehouse_id</code>: the solid half beside <code>ITEM</code>. And no table has a <code>customer_id</code> next to a <code>warehouse_id</code>: that pair was empty.</p>
+    <p class="ar">الصفر عند Khan Younis هو النصف المتقطّع بجانب <code>WAREHOUSE</code>. جرّب <code>INSERT INTO items (item_id, name) VALUES (5, 'Fruit cup');</code> &mdash; فيفشل برسالة <code>Wrong NULL value in NOT NULL column warehouse_id</code>: إنه النصف المتّصل بجانب <code>ITEM</code>. ولا جدول فيه <code>customer_id</code> بجانب <code>warehouse_id</code>: فذلك الزوج كان فارغًا.</p>
+  </div>
+
+  <div class="thread"><h4><span class="en">Thread · SQL Chapter 3</span><span class="ar">خيط · الفصل 3 في SQL</span></h4>
+    <p class="en">On the SQL track, <a href="@/chapters/chapter-3.html">Chapter 3 &mdash; Relationships</a> joins tables that are already linked by keys. It never asks how anyone knew which links to build. The matrix is that step: every join you can write there began as a filled pair, and every join you cannot write began as a blank.</p>
+    <p class="ar">في مسار SQL، يربط <a href="@/chapters/chapter-3.html">الفصل 3 &mdash; العلاقات</a> جداول موصولة بمفاتيح أصلًا. ولا يسأل أبدًا كيف عرف أحد أيّ الروابط يبني. والمصفوفة هي تلك الخطوة: كل ربط تستطيع كتابته هناك بدأ زوجًا ممتلئًا، وكل ربط لا تستطيع كتابته بدأ خلية فارغة.</p>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">In the DFo ERD, beside which entity is the name <code>store</code> written, and why?</p>
+    <p class="q ar">في مخطّط DFo، بجانب أيّ كيان يُكتب الاسم <code>store</code>، ولماذا؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">Beside <code>ITEM</code>, because items are what is stored</span><span class="ar">بجانب <code>ITEM</code>، لأن الأصناف هي ما يُخزَّن</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">Beside <code>WAREHOUSE</code>, because <code>store</code> is in the <code>WAREHOUSE</code> row</span><span class="ar">بجانب <code>WAREHOUSE</code>، لأن <code>store</code> في صفّ <code>WAREHOUSE</code></span></button></li>
+      <li><button class="opt"><span class="en">In the middle of the line, because a matrix name has no end</span><span class="ar">في منتصف الخط، لأن اسم المصفوفة لا طرف له</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">Row first: <code>WAREHOUSE</code> &middot; <code>store</code> &middot; <code>ITEM</code>. The row entity is entity A of that sentence, and the name goes beside entity A. Its mirror, <code>stored in</code>, goes beside <code>ITEM</code>.</p>
+      <p class="ar">الصف أوّلًا: <code>WAREHOUSE</code> &middot; <code>store</code> &middot; <code>ITEM</code>. كيان الصف هو الكيان A في تلك الجملة، والاسم يُكتب بجانب الكيان A. ومقابله، <code>stored in</code>، يُكتب بجانب <code>ITEM</code>.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <p class="q en">A matrix of five entities has four pairs of filled mirror cells and one filled diagonal cell. How many relationship lines does the ERD get?</p>
+    <p class="q ar">مصفوفة لخمسة كيانات فيها أربعة أزواج من الخلايا المتقابلة الممتلئة، وخلية ممتلئة واحدة على القُطر. كم خط علاقة يكون في مخطّط ERD؟</p>
+    <ul class="options">
+      <li><button class="opt"><span class="en">4</span><span class="ar">4</span></button></li>
+      <li><button class="opt" data-correct="true"><span class="en">5</span><span class="ar">5</span></button></li>
+      <li><button class="opt"><span class="en">9</span><span class="ar">9</span></button></li>
+    </ul>
+    <div class="feedback" hidden>
+      <p class="en">One line per pair of mirror cells (4), plus one recursive line for the diagonal cell. Counting every filled cell (9) draws each relationship twice.</p>
+      <p class="ar">خط لكل زوج من الخلايا المتقابلة (4)، وخط ذاتي واحد لخلية القُطر. أمّا عدّ كل خلية ممتلئة (9) فيرسم كل علاقة مرّتين.</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ exercises -->
+  <h2 id="t3l6-h6"><span class="en">Exercises</span><span class="ar">تمارين</span></h2>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 1 · Count the school's grid</span><span class="ar">تمرين 1 · عُدّ شبكة المدرسة</span></h4>
+    <p class="en">The school's matrix lists its thirteen entities on both axes. How many cells does it have? How many are on the diagonal? How many different entity pairs must you ask about?</p>
+    <p class="ar">تسرد مصفوفة المدرسة كياناتها الثلاثة عشر على المحورين. كم خلية فيها؟ وكم منها على القُطر؟ وكم زوجًا مختلفًا من الكيانات يجب أن تسأل عنه؟</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">13 &times; 13 = 169 cells. 13 on the diagonal. The other 156 come in mirror pairs, so 156 &divide; 2 = 78 entity pairs &mdash; the same as 13 &times; 12 &divide; 2. Plus 13 diagonal questions about recursion.</p>
+      <p class="ar">13 &times; 13 = 169 خلية. منها 13 على القُطر. والـ 156 الباقية تأتي أزواجًا متقابلة، فيكون 156 &divide; 2 = 78 زوجًا من الكيانات &mdash; وهو نفسه 13 &times; 12 &divide; 2. يُضاف إليها 13 سؤالًا على القُطر عن العلاقة الذاتية.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 2 · Fill the H.R. matrix</span><span class="ar">تمرين 2 · املأ مصفوفة الموارد البشرية</span></h4>
+    <p class="en">Build the matrix for <code>EMPLOYEE</code>, <code>DEPARTMENT</code>, <code>JOB</code> and <code>LOCATION</code>, using the names from earlier lessons. Write every cell row first. Which cells stay blank?</p>
+    <p class="ar">ابنِ المصفوفة لـ <code>EMPLOYEE</code> و<code>DEPARTMENT</code> و<code>JOB</code> و<code>LOCATION</code>، مستعملًا الأسماء من الدروس السابقة. اكتب كل خلية بدءًا من الصف. أيّ الخلايا تبقى فارغة؟</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th><code>EMPLOYEE</code></th><th><code>DEPARTMENT</code></th><th><code>JOB</code></th><th><code>LOCATION</code></th></tr></thead>
+          <tbody>
+            <tr><th><code>EMPLOYEE</code></th><td><code>manager of</code> / <code>managed by</code></td><td><code>work in</code></td><td><code>hold</code></td><td></td></tr>
+            <tr><th><code>DEPARTMENT</code></th><td><code>responsible for</code></td><td></td><td></td><td><code>located in</code></td></tr>
+            <tr><th><code>JOB</code></th><td><code>held by</code></td><td></td><td></td><td></td></tr>
+            <tr><th><code>LOCATION</code></th><td></td><td><code>address of</code></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="en">Blank: <code>EMPLOYEE</code>&ndash;<code>LOCATION</code>, <code>DEPARTMENT</code>&ndash;<code>JOB</code>, <code>JOB</code>&ndash;<code>LOCATION</code>, and three diagonal cells. The <code>EMPLOYEE</code> diagonal holds the manager loop. An employee's location is reached through the department; a direct line would be the extra line of <a href="#t3l1-h1">Lesson 1</a>.</p>
+      <p class="ar">الفارغة: <code>EMPLOYEE</code>&ndash;<code>LOCATION</code>، و<code>DEPARTMENT</code>&ndash;<code>JOB</code>، و<code>JOB</code>&ndash;<code>LOCATION</code>، وثلاث خلايا على القُطر. وقُطر <code>EMPLOYEE</code> يحمل حلقة المدير. أمّا موقع الموظّف فيُوصَل إليه عبر القسم؛ والخط المباشر سيكون الخط الزائد في <a href="#t3l1-h1">الدرس 1</a>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 3 · Find the backwards cells</span><span class="ar">تمرين 3 · جِد الخلايا المعكوسة</span></h4>
+    <p class="en">A student filled the DFo matrix like this. Read each cell row first and say which ones are written in the wrong direction.</p>
+    <p class="ar">ملأ طالب مصفوفة DFo هكذا. اقرأ كل خلية بدءًا من الصف وقل أيّها مكتوب في الاتجاه الخطأ.</p>
+    <pre class="code" data-lang="text"><code>(a) CUSTOMER row,  ORDER column:     place
+(b) ORDER row,     CUSTOMER column:  place
+(c) ITEM row,      WAREHOUSE column: store
+(d) WAREHOUSE row, ITEM column:      store
+(e) ORDER row,     ITEM column:      issued for</code></pre>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <p class="en">(b) reads "<code>ORDER</code> place <code>CUSTOMER</code>": backwards; it should be <code>placed by</code>. (c) reads "<code>ITEM</code> store <code>WAREHOUSE</code>": backwards; it should be <code>stored in</code>. (a), (d) and (e) are right. The giveaway: (a)&ndash;(b) and (c)&ndash;(d) are mirror pairs carrying one name twice.</p>
+      <p class="ar">(b) تُقرأ «<code>ORDER</code> place <code>CUSTOMER</code>»: معكوسة؛ والصحيح <code>placed by</code>. و(c) تُقرأ «<code>ITEM</code> store <code>WAREHOUSE</code>»: معكوسة؛ والصحيح <code>stored in</code>. أمّا (a) و(d) و(e) فصحيحة. والعلامة الفاضحة: (a)&ndash;(b) و(c)&ndash;(d) زوجان متقابلان يحمل كلٌّ منهما اسمًا واحدًا مرّتين.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 4 · The agency adds hotels</span><span class="ar">تمرين 4 · الوكالة تضيف الفنادق</span></h4>
+    <p class="en">The agency adds <code>HOTEL</code>: "Each hotel is in one country. We record the hotels our travelers have stayed in." Add a <code>HOTEL</code> row and column to the travel matrix and fill the new cells. Which new cells stay blank?</p>
+    <p class="ar">تضيف الوكالة <code>HOTEL</code>: «كل فندق في بلد واحد. ونسجّل الفنادق التي أقام فيها مسافرونا.» أضف صفًّا وعمودًا لـ <code>HOTEL</code> إلى مصفوفة السفر واملأ الخلايا الجديدة. أيّ الخلايا الجديدة تبقى فارغة؟</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="text"><code>TRAVELER row, HOTEL column:  stayed in
+HOTEL row,    TRAVELER column: host of
+HOTEL row,    COUNTRY column:  located in
+COUNTRY row,  HOTEL column:    the location of</code></pre>
+      <p class="en">Blank: <code>HOTEL</code>&ndash;<code>LANDMARK</code> and the <code>HOTEL</code> diagonal. Other lowercase names are fine if each reads row first. Two new lines; from the scenario, <code>hotels.country_id</code> will be <code>NOT NULL</code>.</p>
+      <p class="ar">الفارغة: <code>HOTEL</code>&ndash;<code>LANDMARK</code> وقُطر <code>HOTEL</code>. وتصلح أسماء أخرى بحروف صغيرة إن قُرئت كلٌّ منها بدءًا من الصف. خطّان جديدان؛ ومن السيناريو، يكون <code>hotels.country_id</code> بقيد <code>NOT NULL</code>.</p>
+    </details>
+  </div>
+
+  <div class="exercise">
+    <h4><span class="en">Exercise 5 · Map it and say it</span><span class="ar">تمرين 5 · انقلها وقُلها</span></h4>
+    <p class="en">Take only the <code>ITEM</code>&ndash;<code>ORDER</code> pair of the DFo matrix. Which name is written beside which entity? The business says: an order must be issued for at least one item, and an item may be on many orders or on none. Write both ERDish sentences and describe the ends.</p>
+    <p class="ar">خذ زوج <code>ITEM</code>&ndash;<code>ORDER</code> وحده من مصفوفة DFo. أيّ اسم يُكتب بجانب أيّ كيان؟ يقول العمل: الطلب يجب أن يصدر لصنف واحد على الأقل، والصنف قد يكون في طلبات كثيرة أو في لا شيء. اكتب جملتي ERDish وصِف الطرفين.</p>
+    <details class="solution"><summary><span class="en">Show the answer</span><span class="ar">اعرض الجواب</span></summary>
+      <pre class="code" data-lang="erdish"><code>Each ORDER must be issued for one or more ITEMs.
+Each ITEM may be contained on one or more ORDERs.</code></pre>
+      <p class="en"><code>issued for</code> beside <code>ORDER</code> (its row), <code>contained on</code> beside <code>ITEM</code>. Solid half at <code>ORDER</code>, dashed half at <code>ITEM</code>, a crow's foot at each end. None of this was in the matrix except the two names.</p>
+      <p class="ar"><code>issued for</code> بجانب <code>ORDER</code> (صاحب صفّها)، و<code>contained on</code> بجانب <code>ITEM</code>. النصف متّصل عند <code>ORDER</code> ومتقطّع عند <code>ITEM</code>، وقدم غراب عند كل طرف. ولم يكن شيء من هذا في المصفوفة سوى الاسمين.</p>
+    </details>
+  </div>
+
+  <div class="card takeaways">
+    <h4><span class="en">Key takeaways</span><span class="ar">الخلاصة</span></h4>
+    <ul>
+      <li class="en">A matrix diagram lists the same entities down the side and across the top, so every pair is visited once: the way not to miss a relationship among many entities.</li>
+      <li class="ar">مخطّط المصفوفة يسرد الكيانات نفسها على الجانب وفي الأعلى، فيُزار كل زوج مرّة: وهذه طريقة ألّا تفوتك علاقة بين كيانات كثيرة.</li>
+      <li class="en">A filled cell holds a lowercase name; an empty cell records that there is no relationship. A filled diagonal cell is a recursive relationship.</li>
+      <li class="ar">الخلية الممتلئة تحمل اسمًا بحروف صغيرة، والفارغة تسجّل أن لا علاقة. والخلية الممتلئة على القُطر علاقة ذاتية.</li>
+      <li class="en">Write and read in one direction only: row entity &middot; name &middot; column entity.</li>
+      <li class="ar">اكتب واقرأ في اتجاه واحد فقط: كيان الصف &middot; الاسم &middot; كيان العمود.</li>
+      <li class="en">Mirror cells are the two names of one relationship, not two relationships.</li>
+      <li class="ar">الخليتان المتقابلتان اسما علاقة واحدة، لا علاقتان.</li>
+      <li class="en">A matrix shows no optionality and no cardinality: ask the business, at both ends, for every filled pair.</li>
+      <li class="ar">المصفوفة لا تُظهر إلزامية ولا تعدّدية: اسأل العمل، عند الطرفين، عن كل زوج ممتلئ.</li>
+      <li class="en">Mapping: one line per filled pair, each name beside its row entity, then the marks, then read it back in ERDish.</li>
+      <li class="ar">النقل: خط لكل زوج ممتلئ، وكل اسم بجانب كيان صفّه، ثم العلامات، ثم القراءة من جديد بلغة ERDish.</li>
+    </ul>
+    <h4><span class="en">Mistakes to avoid</span><span class="ar">أخطاء يجب تجنّبها</span></h4>
+    <ul>
+      <li class="en">Filling some cells column first: "<code>TRAVELER</code> visited by <code>COUNTRY</code>".</li>
+      <li class="ar">ملء بعض الخلايا بدءًا من العمود: «<code>TRAVELER</code> visited by <code>COUNTRY</code>».</li>
+      <li class="en">Drawing two lines for one pair because it has two filled cells.</li>
+      <li class="ar">رسم خطّين لزوج واحد لأن فيه خليتين ممتلئتين.</li>
+      <li class="en">Taking the solid or dashed half, or the crow's foot, from the matrix: it has neither.</li>
+      <li class="ar">أخذ النصف المتّصل أو المتقطّع، أو قدم الغراب، من المصفوفة: فهي لا تحمل شيئًا منها.</li>
+      <li class="en">Writing a name beside the column entity instead of the row entity.</li>
+      <li class="ar">كتابة الاسم بجانب كيان العمود بدلًا من كيان الصف.</li>
+      <li class="en">Skipping the diagonal, and with it the recursive relationships.</li>
+      <li class="ar">تجاوز القُطر، ومعه العلاقات الذاتية.</li>
+    </ul>
+  </div>
+
+  <div class="callout ahead">
+    <p class="en">Check yourself with <a href="#t3-test-06">Test 6 &mdash; Matrix Diagrams</a>. Then the <a href="#t3-lab">SQL Lab</a> turns the chapter's relationships into foreign keys, and makes the database refuse the rows the ERD forbids.</p>
+    <p class="ar">اختبر نفسك بـ<a href="#t3-test-06">اختبار 6 &mdash; مخطّطات المصفوفة</a>. ثم يحوّل <a href="#t3-lab">مختبر SQL</a> علاقات الفصل إلى مفاتيح أجنبية، ويجعل قاعدة البيانات ترفض الصفوف التي يمنعها مخطّط ERD.</p>
+  </div>
+
+</section>
