@@ -459,7 +459,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 6 — مخططات المصفوفة"
      },
      "href": "tests/t3-test-06.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t3-lab",
