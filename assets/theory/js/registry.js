@@ -106,7 +106,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 2 — الجواب العلائقي"
      },
      "href": "tests/t2-test-02.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t2-lesson-03",
