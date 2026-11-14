@@ -351,7 +351,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 2 — الإلزامية — «يجب» أم «قد»"
      },
      "href": "tests/t3-test-02.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t3-lesson-03",
