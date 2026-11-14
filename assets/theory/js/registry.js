@@ -133,7 +133,7 @@ window.DBT_REGISTRY = {
       "ar": "اختبار 3 — ثلاثة نماذج، قاعدة بيانات واحدة"
      },
      "href": "tests/t2-test-03.html",
-     "written": false
+     "written": true
     },
     {
      "id": "t2-lesson-04",
