@@ -36,6 +36,18 @@
     theory:   { en: "Theory", ar: "النظري" },
     practical:{ en: "Practical", ar: "العملي" },
     install:  { en: "Install", ar: "تثبيت" },
+
+    /* The live SQL box is the SQL course's widget, and it labels its own
+       chrome with data-i18n. These eight are copied verbatim from that
+       course's assets/js/i18n.js so a button reads the same in both tracks. */
+    run:          { en: "Run", ar: "تشغيل" },
+    reset_db:     { en: "Reset DB", ar: "إعادة ضبط القاعدة" },
+    run_hint:     { en: "Ctrl/Cmd + Enter to run", ar: "Ctrl/Cmd + Enter للتشغيل" },
+    keep_db:      { en: "Keep after refresh", ar: "احتفظ بها بعد التحديث" },
+    maximize:     { en: "\u2922 Maximize", ar: "\u2922 تكبير" },
+    database:     { en: "Database", ar: "قاعدة البيانات" },
+    check_answer: { en: "Check answer", ar: "تحقق من الإجابة" },
+    reset:        { en: "Reset", ar: "إعادة تعيين" },
     offline:  { en: "Works fully offline", ar: "يعمل دون اتصال بالكامل" },
     resume:   { en: "Continue where you stopped", ar: "تابع من حيث توقّفت" },
     start:    { en: "Start the chapter", ar: "ابدأ الفصل" },

@@ -82,6 +82,10 @@
     if (window.CODE) window.CODE.init();
     if (window.DBTAssess) window.DBTAssess.renderAll(document);
     if (window.DBTTrace) window.DBTTrace.mountAll(document);
+    /* The live SQL boxes are the SQL course's widget, shared rather than
+       copied, so this track has to start it the way that course's app.js
+       does: nothing else on a theory page knows what .qb-widget is. */
+    if (window.SqlWidgets) window.SqlWidgets.initAll(document);
     if (window.DBTGlossaryUI) window.DBTGlossaryUI.mountAll(document);
     if (window.HOME) window.HOME.init();
 

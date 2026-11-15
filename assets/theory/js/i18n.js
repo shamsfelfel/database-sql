@@ -53,9 +53,11 @@
      the author. The shell builds most of them after init() has run,
      so this is also called once everything exists. */
   function relabel(scope) {
-    var els = (scope || document).querySelectorAll("[data-ui]");
+    var els = (scope || document).querySelectorAll("[data-ui], [data-i18n]");
     for (var i = 0; i < els.length; i++) {
-      var s = t(els[i].getAttribute("data-ui"));
+      /* data-ui is this shell's own; data-i18n belongs to the SQL widget,
+         which labels its chrome that way. Both read from the same table. */
+      var s = t(els[i].getAttribute("data-ui") || els[i].getAttribute("data-i18n"));
       /* A label may carry its own numbers: data-a and data-b fill {a} and {b}.
          Without this a counted label ("4 of 6 lessons ready") would come back
          from a language change with its placeholders showing. */
