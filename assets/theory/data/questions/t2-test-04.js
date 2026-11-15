@@ -311,35 +311,32 @@ window.DBTBanks["t2-test-04"] = {
       solution: { out: "library_id | books\n1          | 4" }
     },
 
-    /* ---------------------------------------------------- 4 · tangible, intangible, or an event */
+    /* ---------------------------------------------------- 4 · tangible or intangible (events: q15) */
     {
       id: "t2l4q14", type: "contrast", level: "medium",
-      topics: ["t2-entity-kinds", "t2-tangible", "t2-intangible", "t2-event-entity"],
+      topics: ["t2-entity-kinds", "t2-tangible", "t2-intangible"],
       q: {
-        en: "Sort each entity: tangible, intangible, or an event?",
-        ar: "صنّف كل كيان: ملموس، أم غير ملموس، أم حدث؟"
+        en: "Sort each entity: is it tangible or intangible?",
+        ar: "صنّف كل كيان: هل هو ملموس أم غير ملموس؟"
       },
       concepts: [
         { en: "Tangible", ar: "ملموس" },
-        { en: "Intangible", ar: "غير ملموس" },
-        { en: "Event", ar: "حدث" }
+        { en: "Intangible", ar: "غير ملموس" }
       ],
       rows: [
         { s: { en: "PRODUCT (Nike Air Jordan)", ar: "PRODUCT (Nike Air Jordan)" }, a: 0 },
         { s: { en: "PRODUCT TYPE (Shoe)", ar: "PRODUCT TYPE (Shoe)" }, a: 1 },
-        { s: { en: "CONCERT (Beyoncé at the Greek Theatre L.A.)", ar: "CONCERT (Beyoncé at the Greek Theatre L.A.)" }, a: 2 },
         { s: { en: "JOB (Electrician)", ar: "JOB (Electrician)" }, a: 1 },
         { s: { en: "MEMBER (Sara Hamdan)", ar: "MEMBER (Sara Hamdan)" }, a: 0 },
-        { s: { en: "BOOK TRANSACTION (Sara borrows A Vision on 1 March)", ar: "BOOK TRANSACTION (Sara borrows A Vision on 1 March)" }, a: 2 },
         { s: { en: "SKILL LEVEL (Expert)", ar: "SKILL LEVEL (Expert)" }, a: 1 }
       ],
       hint: {
-        en: "Can you hand an instance to someone? If not, does it take place at a particular time?",
-        ar: "هل تستطيع أن تناول النسخة لأحد؟ وإن لم تستطع، فهل تقع في وقت محدّد؟"
+        en: "Can you hand an instance of it to someone?",
+        ar: "هل تستطيع أن تناول نسخة منه لأحد؟"
       },
       explain: {
-        en: "Tangible instances can be touched: a pair of shoes, a person. Intangible ones are ideas a business still lists: Shoe as a category, Electrician, Expert. Events happen at a time: a concert, a borrowing. PRODUCT and PRODUCT TYPE are the pair to separate: the shoe on the shelf is tangible, the category \"Shoe\" is not. All three kinds become tables the same way.",
-        ar: "النُسخ الملموسة يمكن لمسها: زوج أحذية، شخص. والنُسخ غير الملموسة أفكار يسردها العمل مع ذلك: Shoe بوصفه صنفًا، وElectrician، وExpert. والأحداث تقع في وقت: حفلة، استعارة. والزوج الذي يجب الفصل بينه هو PRODUCT وPRODUCT TYPE: الحذاء على الرفّ ملموس، أمّا الصنف «Shoe» فلا. والأنواع الثلاثة تصبح جداول بالطريقة نفسها."
+        en: "Tangible instances can be touched: a pair of shoes, a person. Intangible ones are ideas a business still lists: Shoe as a category, Electrician, Expert. PRODUCT and PRODUCT TYPE are the pair to separate &mdash; the shoe on the shelf is tangible, the category \"Shoe\" is not. The third kind, an event, is the next question. All three become tables the same way.",
+        ar: "النُسخ الملموسة يمكن لمسها: زوج أحذية، شخص. والنُسخ غير الملموسة أفكار يسردها العمل مع ذلك: Shoe بوصفه صنفًا، وElectrician، وExpert. والزوج الذي يجب الفصل بينه هو PRODUCT وPRODUCT TYPE &mdash; الحذاء على الرفّ ملموس، أمّا الصنف «Shoe» فلا. أمّا النوع الثالث، وهو الحدث، فهو موضوع السؤال التالي. والأنواع الثلاثة تصبح جداول بالطريقة نفسها."
       }
     },
     {

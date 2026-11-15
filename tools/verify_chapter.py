@@ -504,8 +504,12 @@ def check_question(q, at, topics, types_seen):
         if t == "fill" and q.get("code") and not re.search(r"_{3,}\w*_{0,}", q["code"]):
             fail("%s: fill code has no ____n____ markers" % at)
 
-    if t in ("complete", "error", "compare", "write") and not q.get("solution") and t != "compare":
-        if t != "error" or not q.get("options"):
+    # A worked solution is for the questions a student types into. When the
+    # answer is chosen from options the right option IS the solution, and
+    # `explain` already says why -- which is why `error` was exempted when it
+    # has options, and the same reasoning covers `complete`.
+    if t in ("complete", "error", "write") and not q.get("solution"):
+        if t == "write" or not q.get("options"):
             fail("%s: %s should carry a worked solution" % (at, t))
 
     bl = []

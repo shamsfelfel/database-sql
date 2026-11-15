@@ -664,8 +664,7 @@ window.DBTGlossary["t5"] = [
    "ar": "أنواع العلاقات"
   },
   "see": [
-   "hidden-attribute",
-   "single-valued"
+   "hidden-attribute"
   ],
   "used": [
    "t5l4-s3"
@@ -708,8 +707,7 @@ window.DBTGlossary["t5"] = [
    "ar": "أنواع العلاقات"
   },
   "see": [
-   "transfer",
-   "one-and-only-one"
+   "transfer"
   ],
   "used": [
    "t5l1-s1"
@@ -797,8 +795,6 @@ window.DBTGlossary["t5"] = [
    "ar": "أنواع العلاقات"
   },
   "see": [
-   "optionality",
-   "cardinality",
    "transferability"
   ],
   "used": [

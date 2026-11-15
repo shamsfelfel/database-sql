@@ -30,7 +30,7 @@ window.DBT_REGISTRY = {
    "key": "t2",
    "track": "theory",
    "num": 2,
-   "ready": false,
+   "ready": true,
    "title": {
     "en": "The Relational Model and the Conceptual Model",
     "ar": "النموذج العلائقي والنموذج المفاهيمي"
@@ -275,7 +275,7 @@ window.DBT_REGISTRY = {
    "key": "t3",
    "track": "theory",
    "num": 3,
-   "ready": false,
+   "ready": true,
    "title": {
     "en": "Reading and Drawing Relationships",
     "ar": "قراءة العلاقات ورسمها"
@@ -520,7 +520,7 @@ window.DBT_REGISTRY = {
    "key": "t4",
    "track": "theory",
    "num": 4,
-   "ready": false,
+   "ready": true,
    "title": {
     "en": "Supertypes and Subtypes",
     "ar": "الأنواع العليا والأنواع الفرعية"
@@ -738,7 +738,7 @@ window.DBT_REGISTRY = {
    "key": "t5",
    "track": "theory",
    "num": 5,
-   "ready": false,
+   "ready": true,
    "title": {
     "en": "Relationship Types, and Resolving Them",
     "ar": "أنواع العلاقات وحلّها"
