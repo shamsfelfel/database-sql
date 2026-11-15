@@ -19,6 +19,12 @@ const { defineConfig, devices } = require('@playwright/test');
 
 const PORT = Number(process.env.PORT || 8077);
 
+// Windows has `python` (via the launcher) and usually not `python3`; Linux and
+// macOS have `python3` and often no bare `python` at all. Guessing one of them
+// means the dev server exits 127 on the other half of the machines and the
+// suite fails before it runs a test. PYTHON overrides it.
+const PYTHON = process.env.PYTHON || (process.platform === 'win32' ? 'python' : 'python3');
+
 module.exports = defineConfig({
   testDir: './e2e',
   fullyParallel: false,
@@ -35,7 +41,7 @@ module.exports = defineConfig({
   },
 
   webServer: {
-    command: `python scripts/dev-server.py ${PORT}`,
+    command: `${PYTHON} scripts/dev-server.py ${PORT}`,
     url: `http://127.0.0.1:${PORT}/index.html`,
     // Never inherit a server someone left running: it may be serving an
     // older build.
