@@ -70,7 +70,13 @@
   }
 
   function fmtCell(v) {
-    if (v === null || v === undefined) return { text: '∅', cls: 'cell-null' };
+    /* Three shapes of absent, not one. alasql keeps a NULL as undefined in an
+       untyped column but as NaN in one declared NUMBER, and typeof NaN is
+       'number', so without the third test it would print as "NaN" -- on the
+       very rows a lesson about optional values is pointing at. */
+    if (v === null || v === undefined || (typeof v === 'number' && isNaN(v))) {
+      return { text: '∅', cls: 'cell-null' };
+    }
     if (typeof v === 'number') return { text: String(v), cls: 'cell-num' };
     if (typeof v === 'boolean') return { text: String(v), cls: 'cell-bool' };
     if (typeof v === 'object') return { text: JSON.stringify(v), cls: '' };

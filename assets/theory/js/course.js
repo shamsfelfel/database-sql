@@ -47,6 +47,17 @@
     maximize:     { en: "\u2922 Maximize", ar: "\u2922 تكبير" },
     database:     { en: "Database", ar: "قاعدة البيانات" },
     check_answer: { en: "Check answer", ar: "تحقق من الإجابة" },
+    /* and the ones it writes while it runs: the status line, the row
+       words, the grading verdict. */
+    correct:      { en: "Correct", ar: "صحيح" },
+    db_empty:     { en: "No tables yet", ar: "لا توجد جداول بعد" },
+    db_restored:  { en: "Saved database restored", ar: "تمت استعادة قاعدة البيانات المحفوظة" },
+    incorrect:    { en: "Not quite — try again", ar: "ليست صحيحة تمامًا — حاول مجددًا" },
+    no_rows:      { en: "Query ran — 0 rows returned.", ar: "تم تنفيذ الاستعلام — أُعيد 0 صف." },
+    row_word:     { en: "row", ar: "صف" },
+    rows_returned: { en: "rows", ar: "صفوف" },
+    rows_word:    { en: "rows", ar: "صفوف" },
+    statement_ok: { en: "Statement ran successfully.", ar: "تم تنفيذ العبارة بنجاح." },
     reset:        { en: "Reset", ar: "إعادة تعيين" },
     offline:  { en: "Works fully offline", ar: "يعمل دون اتصال بالكامل" },
     resume:   { en: "Continue where you stopped", ar: "تابع من حيث توقّفت" },
